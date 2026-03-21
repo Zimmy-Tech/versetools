@@ -58,7 +58,26 @@ FORGE_DIR       = _SC / "sc_data_forge_47/libs/foundry/records"
 DCB_FILE        = _SC / "sc_data_47/Data/Game2.dcb"
 GLOBAL_INI      = _SC / "sc_data_xml_47/Data/Localization/english/global.ini"
 OUTPUT_FILE     = Path(__file__).parent / "versedb_data.json"
-GAME_VERSION    = "4.7.175.25458"   # update each extraction (from build_manifest.id → "Version")
+BUILD_MANIFEST  = Path("/home/bryan/projects/SC Raw Data/PTU/build_manifest.id")
+
+def _read_game_version():
+    """Read build_manifest.id and format as '<major>.<minor>.<patch>-<tag>.<p4change>'."""
+    try:
+        data = json.loads(BUILD_MANIFEST.read_text())["Data"]
+        branch = data.get("Branch", "")          # e.g. "sc-alpha-4.7.0"
+        tag    = data.get("Tag", "ptu")           # e.g. "public" → we'll use "ptu" for PTU builds
+        p4     = data.get("RequestedP4ChangeNum", "")  # e.g. "11494258"
+        # Extract version digits from branch: sc-alpha-4.7.0 → 4.7.0
+        import re
+        m = re.search(r"(\d+\.\d+\.\d+)", branch)
+        ver = m.group(1) if m else data.get("Version", "unknown")
+        # Tag mapping: "public" on a PTU branch → "ptu"
+        tag_label = "ptu" if "ptu" in str(BUILD_MANIFEST).lower() else tag
+        return f"{ver}-{tag_label}.{p4}" if p4 else ver
+    except Exception:
+        return "unknown"
+
+GAME_VERSION = _read_game_version()
 
 # ── Localization ───────────────────────────────────────────────────────────────
 
