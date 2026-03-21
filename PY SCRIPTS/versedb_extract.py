@@ -261,30 +261,54 @@ def extract_flight_stats(ship_class_name, forge_dir):
     qd_spool = safe_float(core.get("bootWaitTime", 0)) if core is not None else 0.0
 
     # ── Linear acceleration (G's) ──────────────────────────────────────────────
-    # accel (m/s²) = scmSpeed / timeToFullSpeed  →  G = accel / 9.81
+    # accel (m/s²) = scmSpeed / timeToFullSpeed × linearScale  →  G = accel / 9.81
     # Axes: x = strafe, y = forward/retro, z = up/down
     G = 9.81
     sp = ifcs.find("speedProfile")
     pos_t = sp.find("positiveLinearTimeToFullSpeed") if sp is not None else None
     neg_t = sp.find("negativeLinearTimeToFullSpeed") if sp is not None else None
 
+    # Per-axis scale multipliers (differentiates axes when times are equal)
+    pos_s = ifcs.find("positiveLinearScale")
+    neg_s = ifcs.find("negativeLinearScale")
+    sc_fwd     = safe_float(pos_s.get("y", 1)) if pos_s is not None else 1.0
+    sc_retro   = safe_float(neg_s.get("y", 1)) if neg_s is not None else 1.0
+    sc_strafe  = safe_float(pos_s.get("x", 1)) if pos_s is not None else 1.0
+    sc_up      = safe_float(pos_s.get("z", 1)) if pos_s is not None else 1.0
+    sc_down    = safe_float(neg_s.get("z", 1)) if neg_s is not None else 1.0
+
     t_fwd    = safe_float(pos_t.get("y", 0)) if pos_t is not None else 0.0
     t_retro  = safe_float(neg_t.get("y", 0)) if neg_t is not None else 0.0
     t_strafe = safe_float(pos_t.get("x", 0)) if pos_t is not None else 0.0
-    t_vert   = safe_float(pos_t.get("z", 0)) if pos_t is not None else 0.0
+    t_up     = safe_float(pos_t.get("z", 0)) if pos_t is not None else 0.0
+    t_down   = safe_float(neg_t.get("z", 0)) if neg_t is not None else 0.0
 
-    accel_fwd    = (scm_speed / t_fwd    / G) if t_fwd    > 0 else 0.0
-    accel_retro  = (scm_speed / t_retro  / G) if t_retro  > 0 else 0.0
-    accel_strafe = (scm_speed / t_strafe / G) if t_strafe > 0 else 0.0
-    accel_vert   = (scm_speed / t_vert   / G) if t_vert   > 0 else 0.0
+    accel_fwd    = (scm_speed / t_fwd    / G * sc_fwd)    if t_fwd    > 0 else 0.0
+    accel_retro  = (scm_speed / t_retro  / G * sc_retro)  if t_retro  > 0 else 0.0
+    accel_strafe = (scm_speed / t_strafe / G * sc_strafe) if t_strafe > 0 else 0.0
+    accel_up     = (scm_speed / t_up     / G * sc_up)     if t_up     > 0 else 0.0
+    accel_down   = (scm_speed / t_down   / G * sc_down)   if t_down   > 0 else 0.0
 
-    # AB forward G = SCM forward accel × afterburnAccelMultiplierPositive.y
-    ab_fwd_mul = 1.0
+    # AB multipliers per axis (from final <afterburner> element)
+    ab_mul_pos_x = ab_mul_pos_y = ab_mul_pos_z = 1.0
+    ab_mul_neg_x = ab_mul_neg_y = ab_mul_neg_z = 1.0
     if ab is not None:
         ab_pos_mul = ab.find("afterburnAccelMultiplierPositive")
+        ab_neg_mul = ab.find("afterburnAccelMultiplierNegative")
         if ab_pos_mul is not None:
-            ab_fwd_mul = safe_float(ab_pos_mul.get("y", 1))
-    accel_ab_fwd = accel_fwd * ab_fwd_mul
+            ab_mul_pos_x = safe_float(ab_pos_mul.get("x", 1))
+            ab_mul_pos_y = safe_float(ab_pos_mul.get("y", 1))
+            ab_mul_pos_z = safe_float(ab_pos_mul.get("z", 1))
+        if ab_neg_mul is not None:
+            ab_mul_neg_x = safe_float(ab_neg_mul.get("x", 1))
+            ab_mul_neg_y = safe_float(ab_neg_mul.get("y", 1))
+            ab_mul_neg_z = safe_float(ab_neg_mul.get("z", 1))
+
+    accel_ab_fwd    = accel_fwd    * ab_mul_pos_y
+    accel_ab_retro  = accel_retro  * ab_mul_neg_y
+    accel_ab_strafe = accel_strafe * ab_mul_pos_x
+    accel_ab_up     = accel_up     * ab_mul_pos_z
+    accel_ab_down   = accel_down   * ab_mul_neg_z
 
     return {
         "scmSpeed":      round(scm_speed, 0),
@@ -303,8 +327,13 @@ def extract_flight_stats(ship_class_name, forge_dir):
         "accelFwd":      round(accel_fwd, 1),
         "accelRetro":    round(accel_retro, 1),
         "accelStrafe":   round(accel_strafe, 1),
-        "accelVert":     round(accel_vert, 1),
-        "accelAbFwd":         round(accel_ab_fwd, 1),
+        "accelUp":       round(accel_up, 1),
+        "accelDown":     round(accel_down, 1),
+        "accelAbFwd":    round(accel_ab_fwd, 1),
+        "accelAbRetro":  round(accel_ab_retro, 1),
+        "accelAbStrafe": round(accel_ab_strafe, 1),
+        "accelAbUp":     round(accel_ab_up, 1),
+        "accelAbDown":   round(accel_ab_down, 1),
         "thrusterPowerBars":  thruster_power_bars,
     }
 
