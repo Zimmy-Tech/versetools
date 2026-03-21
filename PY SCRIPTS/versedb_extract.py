@@ -1272,13 +1272,15 @@ def enrich_ships_from_dcb(ships, forge_dir, loc):
             ship["fusePenetrationMult"]       = safe_float(vc.get("fusePenetrationDamageMultiplier", 0))
             ship["componentPenetrationMult"]  = safe_float(vc.get("componentPenetrationDamageMultiplier", 1))
 
-            # Weapon power pool size: poolSize includes position 0 (off), so the
-            # max assignable segment is poolSize - 1 (matches SPViewer display).
+            # Weapon power pool size.
+            # Most ships: usable pips = poolSize directly.
+            # Gladius exception: in-game only 3 of 4 pips work; subtract 1.
             for fp in root.iter("FixedPowerPool"):
                 if fp.get("itemType", "").lower() == "weapongun":
                     pool_size = safe_int(fp.get("poolSize", 0))
-                    if pool_size > 1:
-                        ship["weaponPowerPoolSize"] = pool_size - 1
+                    if pool_size > 0:
+                        is_gladius = matched.lower() == "aegs_gladius"
+                        ship["weaponPowerPoolSize"] = pool_size - 1 if is_gladius else pool_size
                     break
 
             enriched += 1

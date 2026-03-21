@@ -472,7 +472,7 @@
       "insuranceExpediteCost": 17643,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "aegs_eclipse_scitem_seat_pilot",
         "hardpoint_seat_access": "aegs_eclipse_scitem_seataccess",
@@ -1304,7 +1304,7 @@
       "insuranceExpediteCost": 24582,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "aegs_hammerhead_scitem_pilot_seat",
         "hardpoint_seat_pilot.display_hud": "h_dashboard_projector_hud_aegs_hammerhead",
@@ -3067,7 +3067,7 @@
       "insuranceExpediteCost": 84375,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 1.0,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "aegs_javelin_scitem_seat_pilot",
         "hardpoint_seataccess_pilot": "aegs_javelin_seataccess_pilot",
@@ -3628,7 +3628,7 @@
       "insuranceExpediteCost": 12555,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.8,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_controller_flight": "controller_flight_aegs_reclaimer",
         "hardpoint_seat_access_pilot": "aegs_reclaimer_seataccess_pilot",
@@ -4189,7 +4189,7 @@
       "insuranceExpediteCost": 13199,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_cockpit_selfdestruct": "vhcl_selfdestruct_80s",
         "hardpoint_controller_comms": "controller_comms",
@@ -4707,7 +4707,7 @@
       "insuranceExpediteCost": 32116,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.7,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_pilot_seat": "aegs_retaliator_scitem_seat_pilot",
         "hardpoint_seat_access": "aegs_retaliator_scitem_seataccess_pilot",
@@ -5161,7 +5161,7 @@
       "insuranceExpediteCost": 4689,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "aegs_sabre_scitem_seat_pilot",
         "hardpoint_seat_access": "aegs_sabre_scitem_seataccess",
@@ -5479,7 +5479,7 @@
       "insuranceExpediteCost": 3934,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "aegs_sabre_firebird_scitem_seat_pilot",
         "hardpoint_seat_access": "aegs_sabre_firebird_scitem_seataccess",
@@ -5766,7 +5766,7 @@
       "insuranceExpediteCost": 3934,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "aegs_sabre_peregrine_scitem_seat_pilot",
         "hardpoint_seat_access": "aegs_sabre_peregrine_scitem_seataccess",
@@ -6058,7 +6058,7 @@
       "insuranceExpediteCost": 3934,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "aegs_sabre_raven_scitem_seat_pilot",
         "hardpoint_seat_access": "aegs_sabre_raven_scitem_seataccess",
@@ -6499,7 +6499,7 @@
       "insuranceExpediteCost": 9113,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_door_rear": "door_rn_roomconnector_breachable_openreverse_ip_vanguard_ramp",
         "hardpoint_controller_flight": "controller_flight_aegs_vanguard",
@@ -6877,7 +6877,7 @@
       "insuranceExpediteCost": 3121,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.3,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "anvl_arrow_seataccess",
         "hardpoint_seat_pilot": "anvl_arrow_seat_pilot",
@@ -7258,7 +7258,7 @@
       "insuranceExpediteCost": 19595,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.9,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_armor": "armr_anvl_carrack",
         "hardpoint_cockpit_selfdestruct": "vhcl_selfdestruct_60s",
@@ -7883,7 +7883,7 @@
       "insuranceExpediteCost": 3800,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "anvl_gladiator_scitem_seataccess",
         "hardpoint_seat_pilot": "anvl_gladiator_scitem_seat_pilot",
@@ -8260,7 +8260,7 @@
       "insuranceExpediteCost": 3040,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "anvl_hawk_seataccess",
         "hardpoint_seat_pilot": "anvl_hawk_seat_pilot",
@@ -9299,7 +9299,7 @@
       "insuranceExpediteCost": 3375,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "anvl_hornet_seataccess",
         "hardpoint_seat_pilot": "anvl_hornet_f7a_mk1_seat_pilot",
@@ -9676,7 +9676,7 @@
       "insuranceExpediteCost": 4148,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "anvl_hurricane_scitem_seat_pilot",
         "hardpoint_seat_access": "anvl_hurricane_scitem_seataccess",
@@ -10118,7 +10118,7 @@
       "insuranceExpediteCost": 8020,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.3,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armor": "armr_anvl_lightning_f8",
         "hardpoint_selfdestruct": "vhcl_selfdestruct_20s",
@@ -10446,7 +10446,7 @@
       "insuranceExpediteCost": 12940,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_controller_cooler": "controller_cooler",
         "hardpoint_controller_energy": "controller_energy",
@@ -11081,7 +11081,7 @@
       "insuranceExpediteCost": 3940,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.3,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armor": "armr_anvl_terrapin",
         "hardpoint_self_destruct_pilot": "vhcl_selfdestruct_30s",
@@ -11470,7 +11470,7 @@
       "insuranceExpediteCost": 11910,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "anvl_valkyrie_scitem_seat_pilot",
         "hardpoint_pilot_seataccess": "anvl_valkyrie_scitem_seataccess",
@@ -11781,7 +11781,7 @@
       "insuranceExpediteCost": 5715,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_controller_flight": "controller_flight_argo_mole",
         "hardpoint_controller_energy": "controller_energy",
@@ -12017,7 +12017,7 @@
       "insuranceExpediteCost": 205,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_pilot_chair": "argo_mpuv_1t_scitem_seat_pilot",
         "hardpoint_seat_access": "argo_mpuv_scitem_seataccess",
@@ -12226,7 +12226,7 @@
       "insuranceExpediteCost": 205,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 1,
+      "weaponPowerPoolSize": 2,
       "defaultLoadout": {
         "hardpoint_pilot_chair": "argo_mpuv_1t_scitem_seat_pilot",
         "hardpoint_seat_access": "argo_mpuv_1t_scitem_seataccess",
@@ -12555,7 +12555,7 @@
       "insuranceExpediteCost": 2050,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_quantum_fuel_1": "qtnk_argo_raft_large",
         "hardpoint_thruster_vtol_rear_left": "argo_raft_thruster_vtol",
@@ -12808,7 +12808,7 @@
       "insuranceExpediteCost": 6200,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "argo_srv_scitem_seat",
         "hardpoint_dashboard_pilot": "argo_srv_scitem_dashboard_pilot",
@@ -13169,7 +13169,7 @@
       "insuranceExpediteCost": 6168,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "banu_defender_seat",
         "hardpoint_dashboard_pilot": "banu_defender_dashboard_pilot",
@@ -13797,7 +13797,7 @@
       "insuranceExpediteCost": 2687,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "cnou_nomad_seataccess_pilot",
         "hardpoint_seat_pilot": "cnou_nomad_seat_pilot",
@@ -13993,7 +13993,7 @@
       "insuranceExpediteCost": 1850,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_controller_cooler": "controller_cooler",
         "hardpoint_controller_energy": "controller_energy",
@@ -14368,7 +14368,7 @@
       "insuranceExpediteCost": 9393,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.8,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armor": "armr_crus_star_runner",
         "hardpoint_self_destruct": "vhcl_selfdestruct_60s",
@@ -15294,7 +15294,7 @@
       "insuranceExpediteCost": 2700,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "drak_buccaneer_scitem_seat_pilot",
         "hardpoint_seat_access": "drak_buccaneer_scitem_seataccess",
@@ -15701,7 +15701,7 @@
       "insuranceExpediteCost": 7730,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.8,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_seat_access_pilot": "drak_caterpillar_seataccess_pilot",
         "hardpoint_seat_access_copilot": "drak_caterpillar_seataccess_copilot",
@@ -16236,7 +16236,7 @@
       "insuranceExpediteCost": 6251,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armour": "armr_drak_cutlass_black",
         "hardpoint_self_destruct_pilot": "vhcl_selfdestruct_30s",
@@ -16714,7 +16714,7 @@
       "insuranceExpediteCost": 6643,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armour": "armr_drak_cutlass_blue",
         "hardpoint_self_destruct_pilot": "vhcl_selfdestruct_30s",
@@ -17108,7 +17108,7 @@
       "insuranceExpediteCost": 6310,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armor": "armr_drak_cutlass_red",
         "hardpoint_self_destruct_pilot": "vhcl_selfdestruct_30s",
@@ -17332,7 +17332,7 @@
       "insuranceExpediteCost": 55,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 1,
+      "weaponPowerPoolSize": 2,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "drak_dragonfly_scitem_seat_pilot",
         "hardpoint_seat_access": "drak_dragonfly_scitem_seataccess",
@@ -17653,7 +17653,7 @@
       "insuranceExpediteCost": 1015,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "drak_herald_scitem_seat_pilot",
         "hardpoint_seat_pilot.display_hud": "h_dashboard_projector_hud_drak_herald",
@@ -18148,7 +18148,7 @@
       "insuranceExpediteCost": 9993,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seataccess_pilot": "espr_prowler_seataccess_pilot",
         "hardpoint_pilot_seat": "espr_prowler_seat_pilot",
@@ -18544,7 +18544,7 @@
       "insuranceExpediteCost": 9200,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seataccess_pilot": "espr_prowler_seataccess_pilot",
         "hardpoint_pilot_seat": "espr_prowler_utility_seat_pilot",
@@ -18979,7 +18979,7 @@
       "insuranceExpediteCost": 5243,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "espr_talon_seataccess",
         "hardpoint_seat_pilot": "espr_talon_pilot_seat",
@@ -19191,7 +19191,7 @@
       "insuranceExpediteCost": 2000,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_controller_cooler": "controller_cooler",
         "hardpoint_controller_energy": "controller_energy",
@@ -19624,7 +19624,7 @@
       "insuranceExpediteCost": 14820,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armour": "armr_glsn_shiv",
         "hardpoint_self_destruct_pilot": "vhcl_selfdestruct_30s",
@@ -19971,7 +19971,7 @@
       "insuranceExpediteCost": 6190,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_controller_cooler": "controller_cooler",
         "hardpoint_controller_energy": "controller_energy",
@@ -20403,7 +20403,7 @@
       "insuranceExpediteCost": 1375,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "krig_p52_merlin_seataccess",
         "hardpoint_seat_pilot": "krig_p52_merlin_seat_pilot",
@@ -21478,7 +21478,7 @@
       "insuranceExpediteCost": 6503,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_door_rear": "door_rn_roomconnector_breachable_openreverse_freelancer_reardoor",
         "hardpoint_door_airlock": "door_rn_roomconnector_breachable_openreverse_freelancer_airlock",
@@ -21806,7 +21806,7 @@
       "insuranceExpediteCost": 2700,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "misc_hull_a_seat_pilot",
         "hardpoint_seat_access": "misc_hull_a_seataccess_pilot",
@@ -22102,7 +22102,7 @@
       "insuranceExpediteCost": 22500,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.9,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "misc_hull_c_scitem_pilot_seat",
         "hardpoint_seat_copilot": "misc_hull_c_scitem_copilot_seat",
@@ -22479,7 +22479,7 @@
       "insuranceExpediteCost": 3040,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "misc_prospector_scitem_seat",
         "hardpoint_seat_pilot.screen_radar": "radar_display_misc_prospector",
@@ -22777,7 +22777,7 @@
       "insuranceExpediteCost": 3040,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "misc_razor_seat_pilot",
         "hardpoint_seat_access": "misc_razor_seataccess",
@@ -23162,7 +23162,7 @@
       "insuranceExpediteCost": 340,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "misc_reliant_scitem_seat_pilot",
         "hardpoint_seat_pilot.hardpoint_cockpit_radar": "radar_display_misc_reliant",
@@ -23517,7 +23517,7 @@
       "insuranceExpediteCost": 9000,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_seat_access": "misc_starfarer_base_scitem_seataccess",
         "hardpoint_seat_pilot": "misc_starfarer_scitem_seat_pilot",
@@ -23891,7 +23891,7 @@
       "insuranceExpediteCost": 1858,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_controller_comms": "controller_comms",
         "hardpoint_controller_cooler": "controller_cooler",
@@ -24239,7 +24239,7 @@
       "insuranceExpediteCost": 3618,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "scmSpeed": 258.0,
       "navSpeed": 1440.0,
       "boostSpeedFwd": 550.0,
@@ -24507,7 +24507,7 @@
       "insuranceExpediteCost": 12027,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_armor": "armr_orig_400i",
         "hardpoint_cockpit_selfdestruct": "vhcl_selfdestruct_60s",
@@ -24996,7 +24996,7 @@
       "insuranceExpediteCost": 17550,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.8,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_seat_access_pilot": "orig_600i_pilot_seataccess",
         "hardpoint_seat_pilot": "orig_600i_seat_pilot",
@@ -25333,7 +25333,7 @@
       "insuranceExpediteCost": 510,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_pilot_seat": "orig_85x_scitem_seat_pilot",
         "hardpoint_copilot_seat": "orig_85x_scitem_seat_copilot",
@@ -25655,7 +25655,7 @@
       "insuranceExpediteCost": 33750,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 1.0,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_seat_access_pilot": "orig_890j_pilot_seataccess",
         "hardpoint_seat_pilot": "orig_890j_seat_pilot",
@@ -26087,7 +26087,7 @@
       "insuranceExpediteCost": 3040,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "orig_m50_seataccess",
         "hardpoint_pilot_chair": "orig_m50_seat_pilot",
@@ -28886,7 +28886,7 @@
       "insuranceExpediteCost": 3374,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "rsi_mantis_seataccess",
         "hardpoint_seat_pilot": "rsi_mantis_seat_pilot",
@@ -29236,7 +29236,7 @@
       "insuranceExpediteCost": 44030,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.8,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_controller_light": "controller_light",
         "hardpoint_controller_flight": "controller_flight_rsi_polaris",
@@ -29949,7 +29949,7 @@
       "insuranceExpediteCost": 3800,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_avionics": "comp_behr_s01_csr-rp",
         "hardpoint_cockpit_selfdestruct": "vhcl_selfdestruct_30s",
@@ -30682,7 +30682,7 @@
       "insuranceExpediteCost": 5124,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_controller_flight": "controller_flight_vncl_blade",
         "hardpoint_seat_pilot": "vncl_blade_scitem_seat_pilot",
@@ -31053,7 +31053,7 @@
       "insuranceExpediteCost": 2955,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "vncl_scythe_scitem_seat_pilot",
         "hardpoint_seat_access": "vncl_scythe_seataccess",
@@ -31232,7 +31232,7 @@
       "insuranceExpediteCost": 55,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 1,
+      "weaponPowerPoolSize": 2,
       "defaultLoadout": {
         "hardpoint_seat_access": "xian_nox_scitem_seataccess",
         "hardpoint_seat_pilot": "xian_nox_scitem_seat_pilot",
@@ -31512,7 +31512,7 @@
       "insuranceExpediteCost": 2535,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "xian_scout_scitem_seataccess",
         "hardpoint_seat_pilot": "xian_scout_scitem_seat_pilot",
@@ -31657,7 +31657,7 @@
       "insuranceExpediteCost": 3800,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "xnaa_santokyai_seataccess_pilot",
         "hardpoint_seat_pilot": "xnaa_santokyai_seat_pilot",
@@ -32119,7 +32119,7 @@
       "insuranceExpediteCost": 9430,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "anvl_asgard_scitem_seat_pilot",
         "hardpoint_pilot_seataccess": "anvl_asgard_scitem_seataccess",
@@ -32552,7 +32552,7 @@
       "insuranceExpediteCost": 5050,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "anvl_hornet_f7cm_mk2_seataccess",
         "hardpoint_seat_pilot": "anvl_hornet_f7cm_mk2_seat_pilot",
@@ -32850,7 +32850,7 @@
       "insuranceExpediteCost": 9470,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 1.0,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_armor": "armr_argo_moth",
         "landingpad_helper": "default_landingsystem",
@@ -33501,7 +33501,7 @@
       "insuranceExpediteCost": 6910,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "drak_clipper_pilot_seat",
         "hardpoint_seat_pilot_dashboard": "drak_clipper_dashboard",
@@ -33721,7 +33721,7 @@
       "insuranceExpediteCost": 1030,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "drak_golem_scitem_seat_pilot",
         "hardpoint_seat_access": "drak_golem_seataccess_pilot",
@@ -33936,7 +33936,7 @@
       "insuranceExpediteCost": 1030,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "drak_golem_ox_scitem_seat_pilot",
         "hardpoint_seat_access": "drak_golem_ox_seataccess_pilot",
@@ -34246,7 +34246,7 @@
       "insuranceExpediteCost": 3900,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "misc_fortune_scitem_seat",
         "hardpoint_seat_pilot.screen_radar": "radar_display_misc_fortune",
@@ -35053,7 +35053,7 @@
       "insuranceExpediteCost": 7190,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.7,
-      "weaponPowerPoolSize": 7,
+      "weaponPowerPoolSize": 8,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "misc_starlancer_pilot_seat",
         "hardpoint_seat_pilot_dashboard": "misc_starlancer_pilot_dashboard",
@@ -35327,7 +35327,7 @@
       "insuranceExpediteCost": 5710,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "mrai_guardian_seatdashboard",
         "hardpoint_seat_pilot.display_hud": "h_dashboard_projector_hud_mrai_guardian",
@@ -35521,7 +35521,7 @@
       "insuranceExpediteCost": 4200,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.6,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "mrai_guardian_mx_seatdashboard",
         "hardpoint_seat_pilot.display_hud": "h_dashboard_projector_hud_mrai_guardian",
@@ -35709,7 +35709,7 @@
       "insuranceExpediteCost": 75,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "mrai_pulse_seataccess",
         "hardpoint_seat_pilot": "mrai_pulse_seat_pilot",
@@ -35902,7 +35902,7 @@
       "insuranceExpediteCost": 333,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 1.0,
-      "weaponPowerPoolSize": 3
+      "weaponPowerPoolSize": 4
     },
     {
       "className": "probe_turret_1_a",
@@ -36627,7 +36627,7 @@
       "insuranceExpediteCost": 6750,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_access": "rsi_meteor_seataccess",
         "hardpoint_seat_pilot": "rsi_meteor_scitem_seatdashboard_pilot",
@@ -37242,7 +37242,7 @@
       "insuranceExpediteCost": 24850,
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.8,
-      "weaponPowerPoolSize": 9,
+      "weaponPowerPoolSize": 10,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "rsi_perseus_pilot_seatdashboard",
         "hardpoint_seat_pilot.radar_helper": "radar_display_rsi_perseus",
@@ -37564,7 +37564,7 @@
       "insuranceExpediteCost": 5620,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 3,
+      "weaponPowerPoolSize": 4,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "rsi_salvation_scitem_seatdashboard",
         "hardpoint_seat_pilot.radar_helper": "radar_display_mantis",
@@ -38030,7 +38030,7 @@
       "insuranceExpediteCost": 19220,
       "fusePenetrationMult": 0.0,
       "componentPenetrationMult": 0.4,
-      "weaponPowerPoolSize": 5,
+      "weaponPowerPoolSize": 6,
       "defaultLoadout": {
         "hardpoint_seat_pilot": "vncl_stinger_scitem_seat_pilot",
         "hardpoint_seat_access_pilot": "vncl_stinger_seataccess",
