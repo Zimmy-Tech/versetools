@@ -1,0 +1,16 @@
+# SC raw game data (large binary/extracted files)
+# SC extracted game data (large, version-specific)
+SC FILES/
+PY SCRIPTS/sc_data_merged/
+PY SCRIPTS/sc_data_merged
+
+# Windows Zone Identifier alternate data stream files (colon-separated on Linux)
+*:Zone.Identifier
+
+# Claude Code local settings
+.claude/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
