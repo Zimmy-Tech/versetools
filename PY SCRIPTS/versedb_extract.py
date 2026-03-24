@@ -42,6 +42,7 @@ Then run:
 Output: versedb_data.json in the same folder as this script.
 """
 
+import copy
 import json
 import os
 import re
@@ -364,14 +365,14 @@ SKIP_TYPES = {
     "WeaponController", "CommsController", "Scanner", "FuelIntake",
     "FuelTank", "ManneuverThruster", "MainThruster", "WeaponDefensive",
     "CountermeasureLauncher", "Door", "Elevator", "Avionics",
-    "SelfDestruct", "LifeSupportGenerator", "PowerDistribution",
+    "SelfDestruct", "PowerDistribution",
     "FuelController", "CargoContainer",
 }
 
 KEEP_TYPES = {
     "WeaponGun", "WeaponTachyon", "WeaponMining", "MissileLauncher",
-    "BombLauncher", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler",
-    "QuantumDrive", "Radar", "Sensor", "QuantumFuelTank",
+    "BombLauncher", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler", "LifeSupportGenerator",
+    "QuantumDrive", "Radar", "Sensor", "QuantumFuelTank", "MiningModifier", "ToolArm", "UtilityTurret", "SalvageHead", "SalvageModifier",
 }
 
 def parse_vehicle_xml(xml_path, loc):
@@ -417,11 +418,15 @@ def parse_vehicle_xml(xml_path, loc):
         hp_val = safe_float(dm)
         total_hp += hp_val
         name = part.get("name", "")
-        if name == "Body":
+        if name.lower() == "body":
             body_hp = hp_val
         # Collect named structural parts (skip sub-flaps etc.)
         if name and "_Flap" not in name and "_Tip" not in name:
             vital_parts[name] = hp_val
+
+    # If no explicit "body" part, use the largest HP part as vital
+    if body_hp == 0 and vital_parts:
+        body_hp = max(vital_parts.values())
 
     manufacturer = mfr_from_classname(class_name)
 
@@ -441,8 +446,8 @@ def parse_vehicle_xml(xml_path, loc):
         if "uneditable" in flags and "invisible" in flags:
             continue
 
-        min_size = safe_int(item_port.get("minSize", 0))
-        max_size = safe_int(item_port.get("maxSize", 0))
+        min_size = safe_int(item_port.get("minSize") or item_port.get("minsize", 0))
+        max_size = safe_int(item_port.get("maxSize") or item_port.get("maxsize", 0))
         if max_size == 0:
             continue
 
@@ -518,7 +523,7 @@ def parse_vehicle_xml(xml_path, loc):
         # Hull HP
         "totalHp":          round(total_hp, 0),
         "bodyHp":           round(body_hp, 0),
-        "vitalParts":       {k: round(v, 0) for k, v in vital_parts.items() if k != "Body"},
+        "vitalParts":       {k: round(v, 0) for k, v in vital_parts.items() if k.lower() != "body"},
     }
 
 # ── Component parsers ──────────────────────────────────────────────────────────
@@ -549,6 +554,34 @@ def get_power_draw(root):
                                 if v:
                                     return safe_float(v)
     return 0.0
+
+def parse_cooling_demand(root):
+    """
+    Extract cooling demand fields from a component's ItemResourceState(Online).
+    Returns: {minConsumptionFraction, psruRef}
+    - minConsumptionFraction: from the delta that consumes Power (Conversion or Consumption)
+    - psruRef: hex index of SPowerSegmentResourceUnit for power consumption
+    """
+    mcf = 0.0
+    psru_ref = ""
+    txt = ET.tostring(root, encoding='unicode')
+    # MCF from any delta that consumes Power (Conversion first, then Consumption)
+    for tag in ("ItemResourceDeltaConversion", "ItemResourceDeltaConsumption"):
+        for delta in root.iter(tag):
+            cons = delta.find("consumption")
+            if cons is not None and cons.get("resource") == "Power":
+                mcf = safe_float(delta.get("minimumConsumptionFraction", "0"))
+                break
+        if mcf > 0:
+            break
+    # PSRU ref from consumption resource="Power"
+    m = re.search(r'<consumption\s+resource="Power"[^>]*SPowerSegmentResourceUnit\[([0-9A-Fa-f]+)\]', txt)
+    if not m:
+        m = re.search(r'SPowerSegmentResourceUnit\[([0-9A-Fa-f]+)\][^<]*resource="Power"', txt)
+    if m:
+        psru_ref = m.group(1)
+    return {"minConsumptionFraction": round(mcf, 6), "psruRef": psru_ref}
+
 
 def parse_power_ranges(root):
     """
@@ -611,13 +644,68 @@ def parse_weapon_item(root, class_name, loc):
 
     ammo_ref = ""
     max_ammo_count = 0
+    max_restock_count = 3  # default
     ammo_cont = root.find(".//SAmmoContainerComponentParams")
     if ammo_cont is not None:
         ammo_ref = ammo_cont.get("ammoParamsRecord", "")
         max_ammo_count = safe_int(ammo_cont.get("maxAmmoCount", "0"))
+        max_restock_count = safe_int(ammo_cont.get("maxRestockCount", "3"))
+
+    # Extract SStandardResourceUnit hex ref for DCB power draw enrichment
+    sru_ref = ""
+    txt = ET.tostring(root, encoding='unicode')
+    m_sru = re.search(r'resource="Power"[^>]*resourceAmountPerSecond="SStandardResourceUnit\[([0-9A-Fa-f]+)\]"', txt)
+    if m_sru:
+        sru_ref = m_sru.group(1)
+
+    # Heat params for overheat calculation
+    heat_per_shot = 0.0
+    heat_ref = ""
+    # heatPerShot can be on fire action params or anywhere in the weapon XML
+    m_hps = re.search(r'heatPerShot="([^"]+)"', txt)
+    if m_hps:
+        heat_per_shot = safe_float(m_hps.group(1))
+    m_heat = re.search(r'simplifiedHeatParams="SWeaponSimplifiedHeatParams\[([0-9A-Fa-f]+)\]"', txt)
+    if m_heat:
+        heat_ref = m_heat.group(1)
 
     fire_rate = extract_fire_rate(root)
     display = resolve_item_name(loc, class_name)
+    # Try XML Localization Name directly (handles non-standard naming like Pitman)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+
+    # Mining laser modifier references (FloatModifierMultiplicative)
+    mining_mod_refs = {}
+    for ref_name in ("laserInstability", "optimalChargeWindowSizeModifier", "resistanceModifier"):
+        m_ref = re.search(rf'{ref_name}="FloatModifierMultiplicative\[([0-9A-Fa-f]+)\]"', txt)
+        if m_ref:
+            mining_mod_refs[ref_name] = m_ref.group(1)
+
+    # Count mining module slots (MiningModifier ports)
+    module_slots = 0
+    for port_def in root.iter("SItemPortDef"):
+        for type_el in port_def.findall(".//SItemPortDefTypes"):
+            if type_el.get("Type") == "MiningModifier":
+                module_slots += 1
+                break
+
+    # Mining laser range, throttle, and DPS refs for power values
+    m_fdr = re.search(r'fullDamageRange="([^"]+)"', txt)
+    m_zdr = re.search(r'zeroDamageRange="([^"]+)"', txt)
+    m_tmin = re.search(r'throttleMinimum="([^"]+)"', txt)
+    optimal_range = safe_float(m_fdr.group(1)) if m_fdr else None
+    max_range = safe_float(m_zdr.group(1)) if m_zdr else None
+    throttle_min = safe_float(m_tmin.group(1)) if m_tmin else None
+    # DamageInfo refs — used to read max power from DCB
+    dps_refs = re.findall(r'damagePerSecond="DamageInfo\[([0-9A-Fa-f]+)\]"', txt)
+    mining_dps_ref = dps_refs[-1] if dps_refs else None  # last ref = max power mode
 
     return {
         "className":      class_name,
@@ -632,6 +720,16 @@ def parse_weapon_item(root, class_name, loc):
         "ammoRef":        ammo_ref,
         "fireRate":       fire_rate,
         "isBallistic":    max_ammo_count > 0,
+        "maxRestockCount": max_restock_count,
+        "sruRef":         sru_ref,
+        "heatPerShot":    round(heat_per_shot, 4) if heat_per_shot > 0 else None,
+        "heatRef":        heat_ref,
+        "moduleSlots":    module_slots if module_slots > 0 else None,
+        "miningModRefs":  mining_mod_refs if mining_mod_refs else None,
+        "optimalRange":   optimal_range,
+        "maxRange":       max_range,
+        "throttleMin":    throttle_min,
+        "_miningDpsRef":  mining_dps_ref,
         "damage": {
             "physical": 0.0, "energy": 0.0, "distortion": 0.0,
             "thermal": 0.0, "biochemical": 0.0, "stun": 0.0,
@@ -640,7 +738,7 @@ def parse_weapon_item(root, class_name, loc):
         "dps":            0.0,
         "projectileSpeed": 0.0,
         "range":          0.0,
-        "ammoCount":      None,
+        "ammoCount":      max_ammo_count if max_ammo_count > 0 else None,
     }
 
 def parse_missile_rack_item(root, class_name, loc):
@@ -774,6 +872,9 @@ def parse_shield_item(root, class_name, loc):
         repair_time  = safe_float(repair_el.get("timeToRepair", 0))
         repair_ratio = safe_float(repair_el.get("healthRatio", 0))
 
+    # Cooling demand fields (PSRU + MCF)
+    cooling = parse_cooling_demand(root)
+
     display = resolve_item_name(loc, class_name)
     grade_letter, item_class = resolve_grade_and_class(loc, class_name)
     return {
@@ -784,6 +885,8 @@ def parse_shield_item(root, class_name, loc):
         "size":               info["size"],
         "grade":              grade_letter or info["grade"],
         "itemClass":          item_class,
+        "psruRef":            cooling["psruRef"],
+        "minConsumptionFraction": cooling["minConsumptionFraction"],
         # Shield pool
         "hp":                 safe_float(sg.get("MaxShieldHealth", 0)),
         "regenRate":          safe_float(sg.get("MaxShieldRegen", 0)),
@@ -921,6 +1024,8 @@ def parse_cooler_item(root, class_name, loc):
     hp_el = root.find(".//SHealthComponentParams")
     component_hp = safe_float(hp_el.get("Health", 0)) if hp_el is not None else 0.0
 
+    cooling = parse_cooling_demand(root)
+
     display = resolve_item_name(loc, class_name)
     grade_letter, item_class = resolve_grade_and_class(loc, class_name)
     return {
@@ -933,12 +1038,206 @@ def parse_cooler_item(root, class_name, loc):
         "itemClass":    item_class,
         "coolingRate":  round(cooling_rate, 1),
         "sruRef":       sru_ref,
+        "psruRef":      cooling["psruRef"],
+        "minConsumptionFraction": cooling["minConsumptionFraction"],
         # Power segments
         **parse_power_ranges(root),
         "emMax":        round(em_max, 0),
         "irSignature":  round(ir_sig, 1),
         "componentHp":  round(component_hp, 0),
     }
+
+def parse_lifesupport_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "LifeSupportGenerator":
+        return None
+    cooling = parse_cooling_demand(root)
+    # LS uses @item_Name references with different prefix than className
+    display = resolve_item_name(loc, class_name)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+    return {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "LifeSupportGenerator",
+        "size":         info["size"],
+        "grade":        info["grade"],
+        "psruRef":      cooling["psruRef"],
+        "minConsumptionFraction": cooling["minConsumptionFraction"],
+        **parse_power_ranges(root),
+    }
+
+
+def parse_miningmodifier_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "MiningModifier":
+        return None
+    display = resolve_item_name(loc, class_name)
+    # Try XML Localization Name directly
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+    # Determine active vs passive from class name
+    is_active = "active" in class_name.lower()
+    return {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "MiningModifier",
+        "subType":      "Active" if is_active else "Passive",
+        "size":         info["size"],
+        "grade":        info["grade"],
+    }
+
+
+def parse_miningarm_item(root, class_name, loc):
+    """Parse mining arms, mining modules, salvage modifiers (shared generic parser)."""
+    info = parse_attachdef(root)
+    if not info:
+        return None
+    display = resolve_item_name(loc, class_name)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+    item_type = info["type"]
+    result = {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         item_type,
+        "size":         info["size"],
+        "grade":        info["grade"],
+    }
+    if item_type == "MiningModifier":
+        result["subType"] = "Active" if "active" in class_name.lower() else "Passive"
+        # Extract FloatModifierMultiplicative refs for DCB enrichment
+        txt = ET.tostring(root, encoding='unicode')
+        mod_refs = {}
+        for m in re.finditer(r'(\w+)="FloatModifier(?:Multiplicative)?\[([0-9A-Fa-f]+)\]"', txt):
+            mod_refs[m.group(1)] = m.group(2)
+        if mod_refs:
+            result["_miningModRefs"] = mod_refs
+        charges = re.search(r'charges="(\d+)"', txt)
+        if charges:
+            result["charges"] = int(charges.group(1))
+        # Active modules: extract damageMultiplier (power boost) from first showInUI=1 phase
+        if "active" in class_name.lower():
+            dms = [(float(m.group(1)), m.start()) for m in re.finditer(r'damageMultiplier="([^"]+)"', txt) if float(m.group(1)) != 1.0]
+            for dm_val, pos in dms:
+                ctx = txt[max(0, pos - 300):pos]
+                if 'showInUI="1"' in ctx:
+                    result["miningPowerMult"] = round(dm_val, 2)
+                    break
+    # Salvage modifier stats (scraper/tractor tools)
+    if item_type == "SalvageModifier":
+        txt = ET.tostring(root, encoding='unicode')
+        m = re.search(r'salvageModifier\s+salvageSpeedMultiplier="([^"]+)"\s+radiusMultiplier="([^"]+)"\s+extractionEfficiency="([^"]+)"', txt)
+        if m:
+            result["salvageSpeed"] = round(safe_float(m.group(1)), 4)
+            result["salvageRadius"] = round(safe_float(m.group(2)), 4)
+            result["salvageEfficiency"] = round(safe_float(m.group(3)), 4)
+    return result
+
+
+def parse_salvagehead_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "SalvageHead":
+        return None
+    display = resolve_item_name(loc, class_name)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+    return {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "SalvageHead",
+        "size":         info["size"],
+        "grade":        info["grade"],
+    }
+
+
+def parse_radar_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "Radar":
+        return None
+
+    cooling = parse_cooling_demand(root)
+    grade_letter, item_class = resolve_grade_and_class(loc, class_name)
+
+    # Aim assist distances
+    aim = root.find(".//aimAssist")
+    aim_min = safe_float(aim.get("distanceMinAssignment", 0)) if aim is not None else 0.0
+    aim_max = safe_float(aim.get("distanceMaxAssignment", 0)) if aim is not None else 0.0
+    aim_buffer = safe_float(aim.get("outsideRangeBufferDistance", 0)) if aim is not None else 0.0
+
+    # Signature detection — IR, EM, CS, RS sensitivities (first 4 detection entries)
+    sig_dets = root.findall(".//SCItemRadarSignatureDetection")
+    def get_sig(idx):
+        if idx >= len(sig_dets): return 0.0
+        return safe_float(sig_dets[idx].get("sensitivity", 0))
+
+    # EM signature
+    em_max = 0.0
+    for em_el in root.iter("EMSignature"):
+        v = safe_float(em_el.get("nominalSignature", 0))
+        if v > 0:
+            em_max = v
+            break
+
+    # Component HP
+    hp_el = root.find(".//SHealthComponentParams")
+    component_hp = safe_float(hp_el.get("Health", 0)) if hp_el is not None else 0.0
+
+    display = resolve_item_name(loc, class_name)
+    return {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "Radar",
+        "subType":      info.get("subType", ""),
+        "size":         info["size"],
+        "grade":        grade_letter or info["grade"],
+        "itemClass":    item_class,
+        "psruRef":      cooling["psruRef"],
+        "minConsumptionFraction": cooling["minConsumptionFraction"],
+        # Aim assist
+        "aimMin":       round(aim_min, 0),
+        "aimMax":       round(aim_max, 0),
+        "aimBuffer":    round(aim_buffer, 0),
+        # Signature detection sensitivities (IR=0, EM=1, CS=2, RS=3 in XML order)
+        "irSensitivity": round(get_sig(0), 4),
+        "emSensitivity": round(get_sig(1), 4),
+        "csSensitivity": round(get_sig(2), 4),
+        "rsSensitivity": round(get_sig(3), 4),
+        # Signatures & health
+        "emMax":        round(em_max, 0),
+        "componentHp":  round(component_hp, 0),
+        **parse_power_ranges(root),
+    }
+
 
 def parse_quantumdrive_item(root, class_name, loc):
     info = parse_attachdef(root)
@@ -993,6 +1292,15 @@ def parse_quantumdrive_item(root, class_name, loc):
         repair_time  = safe_float(repair_el.get("timeToRepair", 0))
         repair_ratio = safe_float(repair_el.get("healthRatio", 0))
 
+    # SStandardResourceUnit ref for power consumption (= pip count for QDs)
+    sru_ref = ""
+    txt = ET.tostring(root, encoding='unicode')
+    m_sru = re.search(r'<consumption\s+resource="Power"[^>]*SStandardResourceUnit\[([0-9A-Fa-f]+)\]', txt)
+    if not m_sru:
+        m_sru = re.search(r'SStandardResourceUnit\[([0-9A-Fa-f]+)\][^<]*resource="Power"', txt)
+    if m_sru:
+        sru_ref = m_sru.group(1)
+
     display = resolve_item_name(loc, class_name)
     grade_letter, item_class = resolve_grade_and_class(loc, class_name)
     return {
@@ -1003,6 +1311,7 @@ def parse_quantumdrive_item(root, class_name, loc):
         "size":             info["size"],
         "grade":            grade_letter or info["grade"],
         "itemClass":        item_class,
+        "sruRef":           sru_ref,
         # Travel (normal)
         "speed":            round(speed, 0),
         "spoolTime":        round(spool_time, 1),
@@ -1033,8 +1342,8 @@ def parse_weapon_mount_item(root, class_name, loc):
     info = parse_attachdef(root)
     if not info or info["type"] != "Turret":
         return None
-    # Accept gimbals/fixed mounts, ball turrets, and canard (nose) turrets
-    if info["subType"] not in ("GunTurret", "Gun", "BallTurret", "CanardTurret"):
+    # Accept gimbals/fixed mounts, ball turrets, canard (nose) turrets, and PDC turrets
+    if info["subType"] not in ("GunTurret", "Gun", "BallTurret", "CanardTurret", "PDCTurret"):
         return None
     # Use the XML's Localization Name ref to check for a real display name.
     # Falling back to class-name derivation misses items whose loc key doesn't
@@ -1062,7 +1371,7 @@ def parse_weapon_mount_item(root, class_name, loc):
 
     # Ball/Canard turrets are full turrets (equip to Turret-type hardpoints)
     # Gimbals/fixed mounts are weapon mounts (equip to WeaponGun-type hardpoints)
-    if info["subType"] in ("BallTurret", "CanardTurret"):
+    if info["subType"] in ("BallTurret", "CanardTurret", "PDCTurret"):
         result = {
             "className":    class_name,
             "name":         display,
@@ -1097,10 +1406,16 @@ FOLDER_PARSERS = {
     "shieldgenerator":   parse_shield_item,
     "powerplant":        parse_powerplant_item,
     "cooler":            parse_cooler_item,
+    "lifesupport":       parse_lifesupport_item,
+    "radar":             parse_radar_item,
     "quantumdrive":      parse_quantumdrive_item,
     "missile_racks":     parse_missile_rack_item,
     "weapons/missiles":  parse_missile_projectile_item,
     "weapon_mounts":     parse_weapon_mount_item,
+    "turret":            parse_weapon_mount_item,
+    "utility/mining/miningarm": parse_miningarm_item,
+    "utility/salvage/salvagehead": parse_salvagehead_item,
+    "utility/salvage/salvagemodifiers": parse_miningarm_item,  # reuse generic parser
 }
 
 def scan_components(forge_dir, loc):
@@ -1172,14 +1487,23 @@ def parse_ammo_params(forge_dir):
 
 def enrich_weapons(items, ammo_data):
     """Match weapons to ammo params (speed, range)."""
+    # Build a sorted-word index for fuzzy matching (handles word-order mismatches like PDC weapons)
+    ammo_sorted = {}
+    for key, val in ammo_data.items():
+        sorted_key = "_".join(sorted(key.split("_")))
+        ammo_sorted[sorted_key] = val
     speed_enriched = 0
     for item in items.values():
         if item.get("type") not in ("WeaponGun", "WeaponTachyon", "WeaponMining"):
             continue
         key = item.get("className", "").lower()
-        if key in ammo_data:
-            item["projectileSpeed"] = ammo_data[key]["speed"]
-            item["range"]           = ammo_data[key]["range"]
+        data = ammo_data.get(key)
+        if not data:
+            sorted_key = "_".join(sorted(key.split("_")))
+            data = ammo_sorted.get(sorted_key)
+        if data:
+            item["projectileSpeed"] = data["speed"]
+            item["range"]           = data["range"]
             speed_enriched += 1
     print(f"  Enriched {speed_enriched} weapons with speed/range")
 
@@ -1229,6 +1553,93 @@ def resolve_role(val, loc):
             return v
     return display
 
+def _resolve_variant_name(variant_cls, loc):
+    """Try multiple localization key patterns for a variant class name."""
+    # Direct match: vehicle_namersi_constellation_andromeda
+    key = f"vehicle_name{variant_cls}"
+    if key in loc:
+        return loc[key]
+    # Strip common infixes like _gs_ (Aurora): rsi_aurora_gs_mr → rsi_aurora_mr
+    stripped = re.sub(r'_gs_', '_', variant_cls)
+    key2 = f"vehicle_name{stripped}"
+    if key2 in loc:
+        return loc[key2]
+    # Fallback: title-case the class name
+    return variant_cls.replace("_", " ").title()
+
+
+def expand_ship_variants(ships, forge_dir, loc):
+    """
+    Detect ships that have multiple player-flyable variants in the DataForge
+    spaceships directory and split them into separate entries.
+    E.g., RSI_Constellation → RSI_Constellation_Andromeda, _Phoenix, _Taurus, _Aquila.
+    Each variant clones the base ship's hardpoints/mass/HP and gets its own
+    className, name, and (later) loadout/poolSize from the forge entity XML.
+    """
+    spaceship_dir = forge_dir / "entities" / "spaceships"
+    if not spaceship_dir.exists():
+        return ships
+
+    # Suffixes that indicate non-player variants (AI, derelict, test, etc.)
+    SKIP_SUFFIXES = re.compile(
+        r'_pu_ai|_pu_pirate|_unmanned|_template|_ea_ai|_ea_outlaw|_pir$|_military|'
+        r'_piano|_emerald|_indestructible|_dunlevy|_stealth|_exec|_hijacked|'
+        r'_collector|_cleanair|_shop|_display|_invis|_civ_def|_salvage|_xenothreat|'
+        r'_fleetweek|_restoration|_ninetails|_nt_qig|_blacjac|_crusader|_qig$|'
+        r'_sec$|_hurstondynamics|_tutorial|_medivac|_derelict|_wreck|_boarded|'
+        r'_teach$|_showdown$|_bis\d|_gamemaster|_invictus|_bombless|_s3bombs|'
+        r'_nointerior|_nodebris|_citizencon|_drug|_shipshowdown|_shipboarded|'
+        r'_tier_|_plat$|_fw_\d|_ai_|_nocargo|_halfcargo|_override|_spawn$|'
+        r'_utility$|_civilian$|_stunt|_temp$|_crewless|_mission_|_swarm$|'
+        r'_psec$|_advocacy$|_low_poly|_dropship'
+    )
+
+    expanded = {}
+    variants_added = 0
+
+    for base_cls, base_ship in ships.items():
+        base_lower = base_cls.lower()
+        # Find all forge entity XMLs that start with this base class name
+        forge_files = sorted(spaceship_dir.glob(f"{base_lower}*.xml.xml"))
+
+        # Filter to player-flyable variants
+        player_variants = []
+        for ff in forge_files:
+            stem = ff.stem.replace(".xml", "")  # e.g., "rsi_constellation_andromeda"
+            # Must start with the base name
+            if not stem.lower().startswith(base_lower):
+                continue
+            suffix = stem[len(base_lower):]  # e.g., "_andromeda"
+            # Skip non-player variants
+            if SKIP_SUFFIXES.search(suffix):
+                continue
+            player_variants.append(stem)
+
+        if len(player_variants) <= 1:
+            # No variants or just the base — keep as-is
+            # If there's exactly one variant and its name differs from base, rename
+            if len(player_variants) == 1 and player_variants[0].lower() != base_lower:
+                variant_cls = player_variants[0]
+                clone = copy.deepcopy(base_ship)
+                clone["className"] = variant_cls
+                clone["name"] = _resolve_variant_name(variant_cls, loc)
+                expanded[variant_cls] = clone
+                variants_added += 1
+            else:
+                expanded[base_cls] = base_ship
+        else:
+            # Multiple variants — clone base for each
+            for variant_cls in player_variants:
+                clone = copy.deepcopy(base_ship)
+                clone["className"] = variant_cls
+                clone["name"] = _resolve_variant_name(variant_cls, loc)
+                expanded[variant_cls] = clone
+                variants_added += 1
+
+    print(f"  Expanded {variants_added} variants from {len(ships)} base vehicles → {len(expanded)} total ships")
+    return expanded
+
+
 def enrich_ships_from_dcb(ships, forge_dir, loc):
     spaceship_dir = forge_dir / "entities" / "spaceships"
     if not spaceship_dir.exists():
@@ -1272,16 +1683,51 @@ def enrich_ships_from_dcb(ships, forge_dir, loc):
             ship["fusePenetrationMult"]       = safe_float(vc.get("fusePenetrationDamageMultiplier", 0))
             ship["componentPenetrationMult"]  = safe_float(vc.get("componentPenetrationDamageMultiplier", 1))
 
-            # Weapon power pool size.
-            # Most ships: usable pips = poolSize directly.
-            # Gladius exception: in-game only 3 of 4 pips work; subtract 1.
+            # Weapon power pool size (= max weapon pips assignable).
             for fp in root.iter("FixedPowerPool"):
                 if fp.get("itemType", "").lower() == "weapongun":
                     pool_size = safe_int(fp.get("poolSize", 0))
                     if pool_size > 0:
-                        is_gladius = matched.lower() == "aegs_gladius"
-                        ship["weaponPowerPoolSize"] = pool_size - 1 if is_gladius else pool_size
+                        ship["weaponPowerPoolSize"] = pool_size
                     break
+
+            # Add hardpoints from forge entity XML that aren't in the vehicle XML
+            existing_ids = {hp["id"].lower() for hp in ship.get("hardpoints", [])}
+            for port_def in root.iter("SItemPortDef"):
+                port_name = port_def.get("Name", "")
+                if not port_name or port_name.lower() in existing_ids:
+                    continue
+                flags = port_def.get("Flags", "")
+                if "invisible" in flags and "uneditable" in flags:
+                    continue
+                min_size = safe_int(port_def.get("MinSize", 0))
+                max_size = safe_int(port_def.get("MaxSize", 0))
+                if max_size == 0:
+                    continue
+                types_el = port_def.find("Types")
+                if types_el is None:
+                    continue
+                port_type = ""
+                for type_el in types_el.findall("SItemPortDefTypes"):
+                    t = type_el.get("Type", "")
+                    if t:
+                        port_type = t
+                        break
+                if not port_type:
+                    continue
+                label = port_def.get("DisplayName", "")
+                if label.startswith("@"):
+                    label = loc.get(label[1:].lower(), port_name)
+                ship["hardpoints"].append({
+                    "id": port_name,
+                    "label": label or port_name,
+                    "type": port_type,
+                    "subtypes": "",
+                    "minSize": min_size,
+                    "maxSize": max_size,
+                    "flags": flags,
+                    "allTypes": [{"type": port_type, "subtypes": ""}],
+                })
 
             enriched += 1
         except Exception:
@@ -1538,12 +1984,14 @@ def _dcb_parse_header(d):
         "blob_text": _text, "text_start": text_start,
     }
 
-def enrich_armor_from_forge(ships, forge_dir):
-    """Read each ship's armor item XML and extract armor HP, deflection, and signal modifiers."""
+def enrich_armor_from_forge(ships, forge_dir, dcb_path=None):
+    """Read each ship's armor item XML and extract armor HP, deflection, signal modifiers, and hull damage multipliers."""
     armor_dir = forge_dir / "entities" / "scitem" / "ships" / "armor"
     if not armor_dir.exists():
         print(f"  WARNING: armor dir not found at {armor_dir}")
         return
+    # Collect DamageInfo refs for DCB lookup
+    dmg_info_refs = {}  # ship className -> hex index
     enriched = 0
     for ship in ships.values():
         armor_cls = (ship.get("defaultLoadout") or {}).get("hardpoint_armor", "")
@@ -1563,6 +2011,11 @@ def enrich_armor_from_forge(ships, forge_dir):
                 if defl is not None:
                     ship["armorDeflectPhys"] = safe_float(defl.get("DamagePhysical", 0))
                     ship["armorDeflectEnrg"] = safe_float(defl.get("DamageEnergy", 0))
+                # Extract DamageInfo reference for hull damage multipliers
+                txt = ET.tostring(root, encoding='unicode')
+                m = re.search(r'damageMultiplier="DamageInfo\[([0-9A-Fa-f]+)\]"', txt)
+                if m:
+                    dmg_info_refs[ship["className"]] = m.group(1)
             hp_el = root.find(".//SHealthComponentParams")
             if hp_el is not None:
                 ship["armorHp"] = safe_float(hp_el.get("Health", 0))
@@ -1570,6 +2023,379 @@ def enrich_armor_from_forge(ships, forge_dir):
         except Exception:
             pass
     print(f"  Armor stats enriched: {enriched} ships")
+
+    # Read hull damage multipliers from DCB DamageInfo records
+    # Layout: 6 × f32 = 24 bytes (physical, energy, distortion, thermal, biochemical, stun)
+    if dcb_path and dcb_path.exists() and dmg_info_refs:
+        with open(dcb_path, "rb") as f:
+            dcb_d = f.read()
+        h = _dcb_parse_header(dcb_d)
+        di_si = h["struct_by_name"].get("DamageInfo")
+        if di_si is not None and di_si in h["struct_data"]:
+            di_off, di_cnt = h["struct_data"][di_si]
+            dmg_enriched = 0
+            for cls_name, hex_idx in dmg_info_refs.items():
+                idx = int(hex_idx, 16)
+                if idx >= di_cnt:
+                    continue
+                phys, enrg, dist = struct.unpack_from("<fff", dcb_d, di_off + idx * 24)
+                ship = ships[cls_name]
+                ship["hullDmgPhys"] = round(phys, 2)
+                ship["hullDmgEnrg"] = round(enrg, 2)
+                ship["hullDmgDist"] = round(dist, 2)
+                dmg_enriched += 1
+            print(f"  Hull damage multipliers enriched: {dmg_enriched} ships")
+
+def enrich_salvage_buffs(ships, forge_dir):
+    """Extract per-ship salvage hull buff values from salvage_buff_modifier XMLs."""
+    buff_dir = forge_dir / "entities" / "scitem" / "ships" / "utility" / "salvage" / "salvagemodifiers"
+    if not buff_dir.exists():
+        return
+    enriched = 0
+    for xml_file in buff_dir.glob("salvage_buff_modifier_*.xml.xml"):
+        stem = xml_file.stem.replace(".xml", "")
+        ship_key = stem.replace("salvage_buff_modifier_", "")
+        if ship_key == "template":
+            continue
+        try:
+            root = ET.parse(xml_file).getroot()
+            txt = ET.tostring(root, encoding='unicode')
+            m = re.search(r'salvageModifier\s+salvageSpeedMultiplier="([^"]+)"\s+radiusMultiplier="([^"]+)"\s+extractionEfficiency="([^"]+)"', txt)
+            if not m:
+                continue
+            speed = safe_float(m.group(1))
+            radius = safe_float(m.group(2))
+            efficiency = safe_float(m.group(3))
+            for cls, ship in ships.items():
+                if ship_key in cls.lower():
+                    ship["salvageSpeedMult"] = round(speed, 4)
+                    ship["salvageRadiusMult"] = round(radius, 4)
+                    ship["salvageEfficiency"] = round(efficiency, 4)
+                    enriched += 1
+        except Exception:
+            pass
+    print(f"  Salvage hull buffs applied: {enriched} ships")
+
+
+def enrich_engineering_buffs(ships, forge_dir):
+    """Extract maxAmmoLoadMultiplier from engineering_buff_modifier XMLs per ship."""
+    buff_dir = forge_dir / "entities" / "scitem" / "ships" / "utility" / "engineering"
+    if not buff_dir.exists():
+        print(f"  WARNING: engineering buff dir not found")
+        return
+    enriched = 0
+    for xml_file in buff_dir.glob("engineering_buff_modifier_*.xml.xml"):
+        stem = xml_file.stem.replace(".xml", "")  # e.g., engineering_buff_modifier_anvl_asgard
+        ship_key = stem.replace("engineering_buff_modifier_", "")  # e.g., anvl_asgard
+        try:
+            root = ET.parse(xml_file).getroot()
+            regen_mod = root.find(".//regenModifier")
+            if regen_mod is None:
+                continue
+            ammo_mult = safe_float(regen_mod.get("maxAmmoLoadMultiplier", "1"))
+            if ammo_mult == 1.0:
+                continue
+            # Match to ships: buff key may be a prefix (e.g., "rsi_constellation" matches all variants)
+            for cls, ship in ships.items():
+                if cls.lower().startswith(ship_key) or cls.lower() == ship_key:
+                    ship["ammoLoadMultiplier"] = round(ammo_mult, 4)
+                    enriched += 1
+        except Exception:
+            pass
+    print(f"  Engineering ammo buffs applied: {enriched} ships")
+
+
+def enrich_cargo_capacity(ships, forge_dir, dcb_path=None):
+    """Compute cargo capacity (SCU) per ship from inventory containers + mining pods."""
+    # Scan both inventory container directories
+    inv_dirs = [
+        forge_dir / "inventorycontainers" / "ships",
+        forge_dir / "inventorycontainers" / "cargogrid",
+    ]
+    inv_dirs = [d for d in inv_dirs if d.exists()]
+    if not inv_dirs:
+        print(f"  WARNING: no inventory container dirs found")
+        return
+    # Build cache: container class name -> SCU, and GUID -> SCU for entity resolution
+    scu_cache = {}
+    guid_scu = {}  # sorted GUID chars -> SCU (SC uses different byte orders for same GUID)
+    def guid_key(g):
+        """Normalize GUID by sorting hex chars — SC uses mixed-endian byte orders."""
+        return "".join(sorted(g.replace("-", "").lower()))
+    for inv_dir in inv_dirs:
+      for xml_file in inv_dir.glob("*.xml.xml"):
+        stem = xml_file.stem.replace(".xml", "")
+        try:
+            root = ET.parse(xml_file).getroot()
+            dim = root.find(".//interiorDimensions")
+            if dim is None:
+                continue
+            x = safe_float(dim.get("x", 0))
+            y = safe_float(dim.get("y", 0))
+            z = safe_float(dim.get("z", 0))
+            scu = int(x / 1.25) * int(y / 1.25) * int(z / 1.25)
+            if 0 < scu < 10000:  # skip unreasonably large placeholder containers
+                key = re.sub(r'_template$', '', stem.lower())
+                # Normalize cargogridic → cargogrid (RAFT uses 'ic' suffix variant)
+                key = key.replace('cargogridic', 'cargogrid')
+                scu_cache[key] = scu
+                # Also index by GUID for entity->container resolution
+                ref = root.get("__ref")
+                if ref:
+                    guid_scu[guid_key(ref)] = scu
+        except Exception:
+            pass
+
+    # Scan cargo grid entity files — these reference inventory containers by GUID
+    # (e.g. Carrack's anvl_carrack_cargogrid -> containerParams GUID -> anvl_carrack_cargogrid_large)
+    cg_entity_dir = forge_dir / "entities" / "scitem" / "ships" / "cargogrid"
+    if cg_entity_dir.exists():
+        for xml_file in cg_entity_dir.rglob("*.xml.xml"):
+            stem = xml_file.stem.replace(".xml", "")
+            # Strip entityclassdefinition. prefix (some files use this naming)
+            if stem.lower().startswith("entityclassdefinition."):
+                stem = stem[len("entityclassdefinition."):]
+            ek = stem.lower()
+            if ek in scu_cache:
+                continue  # already have direct match
+            try:
+                root = ET.parse(xml_file).getroot()
+                container = root.find(".//SCItemInventoryContainerComponentParams")
+                if container is None:
+                    continue
+                cp = container.get("containerParams", "")
+                if not cp or cp == "null":
+                    continue
+                gk = guid_key(cp)
+                if gk in guid_scu:
+                    scu_cache[ek] = guid_scu[gk]
+            except Exception:
+                pass
+
+    # Build mining pod cache: pod class name -> SCU (from SStandardCargoUnit in forge XML)
+    pod_scu_refs = {}  # class_name -> hex index
+    pod_dir = forge_dir / "entities" / "scitem" / "ships" / "utility" / "mining" / "miningpods"
+    if pod_dir.exists():
+        for xml_file in pod_dir.glob("cargo_shipmining_pod_*.xml.xml"):
+            stem = xml_file.stem.replace(".xml", "")
+            if "collapsed" in stem or "template" in stem:
+                continue
+            try:
+                root = ET.parse(xml_file).getroot()
+                txt = ET.tostring(root, encoding='unicode')
+                m = re.search(r'SStandardCargoUnit\[([0-9A-Fa-f]+)\]', txt)
+                if m:
+                    pod_scu_refs[stem.lower()] = m.group(1)
+            except Exception:
+                pass
+
+    # Read SStandardCargoUnit values from DCB
+    pod_scu_cache = {}
+    if dcb_path and dcb_path.exists() and pod_scu_refs:
+        with open(dcb_path, "rb") as f:
+            dcb_d = f.read()
+        h = _dcb_parse_header(dcb_d)
+        scu_si = h["struct_by_name"].get("SStandardCargoUnit")
+        if scu_si and scu_si in h["struct_data"]:
+            scu_off, scu_cnt = h["struct_data"][scu_si]
+            for cls_name, hex_idx in pod_scu_refs.items():
+                idx = int(hex_idx, 16)
+                if idx < scu_cnt:
+                    val = struct.unpack_from("<f", dcb_d, scu_off + idx * 4)[0]
+                    if val > 0:
+                        pod_scu_cache[cls_name] = round(val)
+
+    enriched = 0
+    for ship in ships.values():
+        lo = ship.get("defaultLoadout") or {}
+        total_scu = 0
+        ore_scu = 0
+        # Mining pod ore capacity
+        for key, cls in lo.items():
+            cls_lower = cls.lower()
+            if cls_lower in pod_scu_cache and "stored" not in key.lower():
+                ore_scu += pod_scu_cache[cls_lower]
+        # Cargo grid capacity
+        for key, cls in lo.items():
+            if "cargogrid" not in key.lower() and "cargo_grid" not in key.lower() and "cargogrid" not in cls.lower():
+                continue
+            # Match the loadout class to an inventory container
+            cls_lower = cls.lower()
+            scu = scu_cache.get(cls_lower, 0)
+            if scu == 0:
+                # Fuzzy match handles:
+                #   Word reordering: "rear_max" vs "max_rear"
+                #   Prefix variation: "orig_600" vs "orig_600i"
+                cls_words = sorted(cls_lower.replace("cargogrid", "").split("_"))
+                cls_set = set(cls_words) - {""}
+                best_score = 0
+                for cache_key, cache_scu in scu_cache.items():
+                    cache_set = set(cache_key.replace("cargogrid", "").split("_")) - {""}
+                    # Exact word set match (handles reordering)
+                    if cls_set == cache_set:
+                        scu = cache_scu
+                        break
+                    # Fuzzy: check if all non-matching words are substrings of each other
+                    diff = cls_set ^ cache_set
+                    if len(diff) <= 2 and len(cls_set & cache_set) >= max(len(cls_set), len(cache_set)) - 1:
+                        diff_list = list(diff)
+                        if len(diff_list) == 2 and (diff_list[0] in diff_list[1] or diff_list[1] in diff_list[0]):
+                            scu = cache_scu
+                            break
+            total_scu += scu
+        ship["cargoCapacity"] = total_scu
+        ship["oreCapacity"] = ore_scu
+        if total_scu > 0 or ore_scu > 0:
+            enriched += 1
+
+    # Manual overrides for ships whose cargo grids are attached to elevators/bays
+    # and not directly in the default loadout (e.g. Constellation series)
+    cargo_overrides = {
+        "rsi_constellation_andromeda": 96,
+        "rsi_constellation_aquila": 96,
+        "rsi_constellation_phoenix": 80,
+        "rsi_constellation_taurus": 174,  # 168 main + 6 tail
+        "cnou_nomad": 24,
+        "gama_syulen": 3,  # 3 cargo arms × 1 SCU each
+        "cnou_mustang_alpha": 4,
+        "rsi_aurora_gs_cl": 6,
+        "rsi_aurora_gs_es": 3,
+        "rsi_aurora_gs_mr": 3,
+        "rsi_aurora_gs_ln": 3,
+        "rsi_aurora_gs_lx": 3,
+        "misc_fortune": 16,  # two distinct cargo grids
+        "aegs_hammerhead": 40,
+    }
+    # Build case-insensitive lookup for overrides
+    ships_lower = {k.lower(): k for k in ships}
+    for cls_name, scu in cargo_overrides.items():
+        actual_key = ships_lower.get(cls_name.lower())
+        if actual_key:
+            old = ships[actual_key].get("cargoCapacity", 0)
+            if old != scu:
+                ships[actual_key]["cargoCapacity"] = scu
+                if old == 0:
+                    enriched += 1
+    print(f"  Cargo capacity computed: {enriched} ships with cargo/ore")
+
+
+def enrich_countermeasures(ships, forge_dir):
+    """Extract countermeasure counts (decoy/noise) per ship from CM launcher XMLs."""
+    cm_dir = forge_dir / "entities" / "scitem" / "ships" / "countermeasures"
+    if not cm_dir.exists():
+        print(f"  WARNING: countermeasures dir not found")
+        return
+    # Cache: CM class name -> (type, count)
+    cm_cache = {}
+    for xml_file in cm_dir.glob("*.xml.xml"):
+        stem = xml_file.stem.replace(".xml", "")
+        try:
+            root = ET.parse(xml_file).getroot()
+            ammo = root.find(".//SAmmoContainerComponentParams")
+            if ammo is None:
+                continue
+            count = safe_int(ammo.get("maxAmmoCount", 0))
+            if count <= 0:
+                continue
+            # Determine type from filename or ammo record
+            stem_lower = stem.lower()
+            if "flare" in stem_lower or "decoy" in stem_lower:
+                cm_type = "decoy"
+            elif "chaff" in stem_lower or "noise" in stem_lower:
+                cm_type = "noise"
+            else:
+                continue
+            cm_cache[stem_lower] = (cm_type, count)
+        except Exception:
+            pass
+
+    enriched = 0
+    for ship in ships.values():
+        lo = ship.get("defaultLoadout") or {}
+        decoys = 0
+        noise = 0
+        for key, cls in lo.items():
+            if "countermeasure" not in key.lower() and "cm_launcher" not in key.lower() and "cml" not in key.lower():
+                continue
+            info = cm_cache.get(cls.lower())
+            if info:
+                if info[0] == "decoy":
+                    decoys += info[1]
+                else:
+                    noise += info[1]
+        ship["cmDecoys"] = decoys
+        ship["cmNoise"] = noise
+        if decoys > 0 or noise > 0:
+            enriched += 1
+    print(f"  Countermeasures enriched: {enriched} ships")
+
+
+def enrich_fuel_capacity(ships, forge_dir, dcb_path=None):
+    """Extract hydrogen and quantum fuel tank capacities per ship."""
+    tank_dir = forge_dir / "entities" / "scitem" / "ships" / "fueltanks"
+    if not tank_dir.exists():
+        print(f"  WARNING: fueltanks dir not found")
+        return
+
+    # Scan tank entity files for SStandardCargoUnit references
+    # htnk_* = hydrogen, qtnk_* = quantum
+    tank_refs = {}  # class_name -> (type, hex_index)
+    for xml_file in tank_dir.glob("*.xml.xml"):
+        stem = xml_file.stem.replace(".xml", "").lower()
+        if not stem.startswith("htnk_") and not stem.startswith("qtnk_"):
+            continue
+        tank_type = "hydrogen" if stem.startswith("htnk_") else "quantum"
+        try:
+            root = ET.parse(xml_file).getroot()
+            txt = ET.tostring(root, encoding='unicode')
+            m = re.search(r'capacity="SStandardCargoUnit\[([0-9A-Fa-f]+)\]"', txt)
+            if m:
+                tank_refs[stem] = (tank_type, m.group(1))
+        except Exception:
+            pass
+
+    if not tank_refs:
+        print(f"  WARNING: no fuel tank refs found")
+        return
+
+    # Read SStandardCargoUnit values from DCB
+    tank_capacities = {}  # class_name -> capacity_mscu
+    if dcb_path and dcb_path.exists():
+        with open(dcb_path, "rb") as f:
+            dcb_d = f.read()
+        h = _dcb_parse_header(dcb_d)
+        scu_si = h["struct_by_name"].get("SStandardCargoUnit")
+        if scu_si and scu_si in h["struct_data"]:
+            scu_off, scu_cnt = h["struct_data"][scu_si]
+            for cls_name, (tank_type, hex_idx) in tank_refs.items():
+                idx = int(hex_idx, 16)
+                if idx < scu_cnt:
+                    val = struct.unpack_from("<f", dcb_d, scu_off + idx * 4)[0]
+                    if val > 0:
+                        tank_capacities[cls_name] = (tank_type, round(val, 1))
+
+    # Match tanks to ships via default loadout
+    enriched = 0
+    for ship in ships.values():
+        lo = ship.get("defaultLoadout") or {}
+        h2_total = 0.0
+        qt_total = 0.0
+        for key, cls in lo.items():
+            cls_lower = cls.lower()
+            if cls_lower in tank_capacities:
+                tank_type, cap = tank_capacities[cls_lower]
+                if tank_type == "hydrogen":
+                    h2_total += cap
+                else:
+                    qt_total += cap
+        if h2_total > 0:
+            ship["hydrogenFuelCapacity"] = round(h2_total, 1)
+        if qt_total > 0:
+            ship["quantumFuelCapacity"] = round(qt_total, 1)
+        if h2_total > 0 or qt_total > 0:
+            enriched += 1
+    print(f"  Fuel capacity enriched: {enriched} ships")
+
 
 def enrich_from_dcb(items, dcb_path, loc):
     """
@@ -1655,7 +2481,7 @@ def enrich_from_dcb(items, dcb_path, loc):
     # ProjectileDetonationParams->explosionParams->damageInfo in forge XML.
     # Parse ammo XMLs for DamagePhysical etc. as a fallback.
     forge_ammo_damage = {}
-    ammo_xml_dir = Path(r"E:\VerseDB\sc_data_forge\libs\foundry\records\ammoparams\vehicle")
+    ammo_xml_dir = FORGE_DIR / "ammoparams/vehicle"
     if ammo_xml_dir.exists():
         for xml_file in ammo_xml_dir.glob("*.xml"):
             try:
@@ -1722,7 +2548,7 @@ def enrich_from_dcb(items, dcb_path, loc):
     #   Looping (laser/energy): <SWeaponSequenceEntryParams delay="350" unit="RPM" .../>
     #   Rapid/Gatling:          <SWeaponActionFireRapidParams fireRate="1200" .../>
     #   Single (cannon):        <SWeaponActionFireSingleParams fireRate="100" .../>
-    weapons_dir = Path(r"E:\VerseDB\sc_data_forge\libs\foundry\records\entities\scitem\ships\weapons")
+    weapons_dir = FORGE_DIR / "entities/scitem/ships/weapons"
     rpm_enriched = 0
     if weapons_dir.exists():
         for xml_file in weapons_dir.rglob("*.xml"):
@@ -1757,6 +2583,42 @@ def enrich_from_dcb(items, dcb_path, loc):
                 pass
     print(f"  Weapons enriched with fire rate: {rpm_enriched}")
 
+    # ── Enrich energy weapons with regen params from SWeaponRegenConsumerParams ──
+    # Layout (28 bytes = 7 × f32):
+    #   [0] initialRegenPerSec, [4] requestedRegenPerSec, [8] regenerationCooldown,
+    #   [12] costPerBullet, [16] requestedAmmoLoad, [20] maxAmmoLoad, [24] maxRegenPerSec
+    regen_enriched = 0
+    if regen_si and regen_si in sd:
+        r_off, r_cnt = sd[regen_si]
+        r_rs = sdefs[regen_si][4]  # 28 bytes = 7 × f32
+        regen_pattern = re.compile(
+            r'weaponRegenConsumerParams="SWeaponRegenConsumerParams\[([0-9A-Fa-f]+)\]"')
+        for xml_file in (FORGE_DIR / "entities/scitem/ships/weapons").glob("*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item or item.get("isBallistic"): continue
+            if item.get("type") not in ("WeaponGun", "WeaponTachyon"): continue
+            try:
+                m = regen_pattern.search(xml_file.read_text(errors='replace'))
+                if not m: continue
+                inst_idx = int(m.group(1), 16)
+                if inst_idx >= r_cnt: continue
+                base = r_off + inst_idx * r_rs
+                cooldown       = f32at(base + 8)   # f32[2]
+                cost_per_bullet = f32at(base + 12)  # f32[3]
+                req_ammo_load  = f32at(base + 16)  # f32[4]
+                max_ammo_load  = f32at(base + 20)  # f32[5]
+                if max_ammo_load > 0:
+                    item["ammoCount"]       = round(max_ammo_load)
+                    item["regenCooldown"]   = round(cooldown, 4)
+                    item["costPerBullet"]   = round(cost_per_bullet, 2)
+                    item["requestedAmmoLoad"] = round(req_ammo_load, 2)
+                    item["maxAmmoLoad"]     = round(max_ammo_load)
+                    regen_enriched += 1
+            except Exception:
+                pass
+    print(f"  Energy weapons enriched with regen params: {regen_enriched}")
+
     # ── Fix shield display names ───────────────────────────────────────────────
     for item in items.values():
         if item.get("type") != "Shield": continue
@@ -1781,6 +2643,131 @@ def enrich_from_dcb(items, dcb_path, loc):
                 item["coolingRate"] = round(val, 2)
                 cool_enriched += 1
         print(f"  Coolers enriched with cooling rate: {cool_enriched}/{len([i for i in items.values() if i.get('type')=='Cooler'])}")
+
+        # Also enrich weapons with power draw from SStandardResourceUnit
+        wpn_pwr_enriched = 0
+        for item in items.values():
+            if item.get("type") not in ("WeaponGun", "WeaponTachyon"): continue
+            ref = item.pop("sruRef", "")
+            if not ref: continue
+            idx = int(ref, 16)
+            val = get_sru(idx)
+            if val > 0:
+                item["powerDraw"] = round(val, 4)
+                wpn_pwr_enriched += 1
+        print(f"  Weapons enriched with DCB power draw: {wpn_pwr_enriched}")
+
+    # ── Enrich mining lasers with max power from DamageInfo ──
+    di_si_mining = h["struct_by_name"].get("DamageInfo")
+    if di_si_mining and di_si_mining in sd:
+        di_off_m, di_cnt_m = sd[di_si_mining]
+        mining_pwr_enriched = 0
+        for item in items.values():
+            if item.get("type") != "WeaponMining": continue
+            ref = item.pop("_miningDpsRef", None)
+            if not ref: continue
+            idx = int(ref, 16)
+            if idx >= di_cnt_m: continue
+            # Sum all damage types for total DPS = max power
+            total = sum(struct.unpack_from("<f", d, di_off_m + idx * 24 + i * 4)[0] for i in range(6))
+            if total > 0:
+                item["miningMaxPower"] = round(total, 1)
+                tmin = item.get("throttleMin", 0)
+                if tmin > 0:
+                    item["miningMinPower"] = round(total * tmin, 1)
+                mining_pwr_enriched += 1
+        print(f"  Mining lasers enriched with power: {mining_pwr_enriched}")
+
+    # ── Enrich mining lasers with modifier values from FloatModifierMultiplicative ──
+    fmm_si = h["struct_by_name"].get("FloatModifierMultiplicative")
+    if fmm_si and fmm_si in sd:
+        fmm_off, fmm_cnt = sd[fmm_si]
+        fmm_rs = sdefs[fmm_si][4]  # 5 bytes: u8 + f32
+        def get_fmm(idx):
+            if idx >= fmm_cnt: return 0.0
+            return struct.unpack_from("<f", d, fmm_off + idx * fmm_rs + 1)[0]
+
+        mining_enriched = 0
+        for item in items.values():
+            if item.get("type") != "WeaponMining": continue
+            refs = item.pop("miningModRefs", None)
+            if not refs: continue
+            for key, hex_idx in refs.items():
+                idx = int(hex_idx, 16)
+                val = get_fmm(idx)
+                if key == "laserInstability":
+                    item["miningInstability"] = round(val, 1)
+                elif key == "optimalChargeWindowSizeModifier":
+                    item["miningOptimalWindow"] = round(val, 1)
+                elif key == "resistanceModifier":
+                    item["miningResistance"] = round(val, 1)
+            mining_enriched += 1
+        print(f"  Mining lasers enriched with modifiers: {mining_enriched}")
+
+        # Also enrich mining modules with the same struct
+        mod_enriched = 0
+        for item in items.values():
+            if item.get("type") != "MiningModifier": continue
+            refs = item.pop("_miningModRefs", None)
+            if not refs: continue
+            for key, hex_idx in refs.items():
+                idx = int(hex_idx, 16)
+                val = get_fmm(idx)
+                if key == "laserInstability":
+                    item["miningInstability"] = round(val, 1)
+                elif key == "optimalChargeWindowSizeModifier":
+                    item["miningOptimalWindow"] = round(val, 1)
+                elif key == "optimalChargeWindowRateModifier":
+                    item["miningOptimalRate"] = round(val, 1)
+                elif key == "resistanceModifier":
+                    item["miningResistance"] = round(val, 1)
+                elif key == "shatterdamageModifier":
+                    item["miningShatterDamage"] = round(val, 1)
+                elif key == "filterModifier":
+                    item["miningInertMaterials"] = round(val, 1)
+                elif key == "catastrophicChargeWindowRateModifier":
+                    item["miningOvercharge"] = round(val, 1)
+            mod_enriched += 1
+        print(f"  Mining modules enriched with modifiers: {mod_enriched}")
+
+    # ── Enrich weapons with heat/overheat params from SWeaponSimplifiedHeatParams ──
+    shp_si = h["struct_by_name"].get("SWeaponSimplifiedHeatParams")
+    if shp_si and shp_si in sd:
+        shp_off, shp_cnt = sd[shp_si]
+        shp_rs = sdefs[shp_si][4]  # 101 bytes
+        heat_enriched = 0
+        for item in items.values():
+            if item.get("type") not in ("WeaponGun", "WeaponTachyon"): continue
+            ref = item.pop("heatRef", "")
+            if not ref: continue
+            idx = int(ref, 16)
+            if idx >= shp_cnt: continue
+            base = shp_off + idx * shp_rs
+            max_heat      = f32at(base + 4)   # [1] = max heat capacity
+            cooling_rate   = f32at(base + 8)   # [2] = cooling per second
+            cooling_delay  = f32at(base + 16)  # [4] = cooling delay
+            overheat_time  = f32at(base + 20)  # [5] = overheat cooldown
+            if max_heat > 0:
+                item["maxHeat"]         = round(max_heat, 2)
+                item["coolingRate"]     = round(cooling_rate, 2)
+                item["coolingDelay"]    = round(cooling_delay, 4)
+                item["overheatCooldown"] = round(overheat_time, 2)
+                heat_enriched += 1
+        print(f"  Weapons enriched with heat params: {heat_enriched}")
+
+    if sru_si and sru_si in sd:
+        # Also enrich QDs with power draw from SStandardResourceUnit (= pip count)
+        qd_pwr_enriched = 0
+        for item in items.values():
+            if item.get("type") != "QuantumDrive": continue
+            ref = item.pop("sruRef", "")
+            if not ref: continue
+            idx = int(ref, 16)
+            val = get_sru(idx)
+            if val > 0:
+                item["powerDraw"] = round(val)  # integer pip count for QDs
+                qd_pwr_enriched += 1
+        print(f"  QDs enriched with power draw: {qd_pwr_enriched}")
 
     # ── Enrich power plants with power output from SPowerSegmentResourceUnit ──
     # PSRU stores direct u32 integer values (power segment count), not f32
@@ -1808,6 +2795,21 @@ def enrich_from_dcb(items, dcb_path, loc):
             name = item.get("name","")
             if name.lower().startswith("powr "):
                 item["name"] = resolve_item_name(loc, item.get("className",""))
+
+        # Also enrich shields with power consumption (bars needed to turn on)
+        # Enrich shields, coolers, and life support with PSRU power draw
+        psru_enriched = {"Shield": 0, "Cooler": 0, "LifeSupportGenerator": 0, "Radar": 0}
+        for item in items.values():
+            if item.get("type") not in psru_enriched: continue
+            ref = item.pop("psruRef", "")
+            if not ref: continue
+            idx = int(ref, 16)
+            val = get_psru(idx)
+            if val > 0:
+                item["powerDraw"] = val  # integer: power segments consumed
+                psru_enriched[item["type"]] += 1
+        for t, n in psru_enriched.items():
+            print(f"  {t} enriched with power draw: {n}")
 
     # ── Enrich QD with DCB speed/cal data ─────────────────────────────────────
     # QD forge XMLs have no direct DCB record — match by record-table order.
@@ -1952,12 +2954,22 @@ def main():
             skipped += 1
     print(f"  Parsed {len(ships)} ships ({skipped} skipped)")
 
+    # 2b. Expand ship variants — some vehicle XMLs are shared across variants
+    # (e.g., RSI_Constellation → Andromeda, Phoenix, Taurus, Aquila)
+    print("\n[2b] Expanding ship variants…")
+    ships = expand_ship_variants(ships, FORGE_DIR, loc)
+
     # 3. Enrich from DCB forge
     print("\n[3/6] Enriching ships from DCB forge data…")
     enrich_ships_from_dcb(ships, FORGE_DIR, loc)
     if DCB_FILE.exists():
         extract_default_loadouts(ships, FORGE_DIR, DCB_FILE)
-    enrich_armor_from_forge(ships, FORGE_DIR)
+    enrich_armor_from_forge(ships, FORGE_DIR, DCB_FILE)
+    enrich_engineering_buffs(ships, FORGE_DIR)
+    enrich_salvage_buffs(ships, FORGE_DIR)
+    enrich_cargo_capacity(ships, FORGE_DIR, DCB_FILE)
+    enrich_countermeasures(ships, FORGE_DIR)
+    enrich_fuel_capacity(ships, FORGE_DIR, DCB_FILE)
     for ship in ships.values():
         ship["size"] = classify_size(ship)
 
@@ -1973,6 +2985,38 @@ def main():
         else:
             flight_missing += 1
     print(f"  Flight stats extracted: {flight_enriched} ships  ({flight_missing} no FC found)")
+
+    # 3c. User-tested acceleration data (community-sourced, not from game files)
+    # Initialize all ships to 0, override with verified in-game data
+    accel_overrides = {
+        "aegs_gladius": {
+            "accelFwd": 12.6, "accelRetro": 2.7, "accelStrafe": 6.0, "accelUp": 9.2, "accelDown": 3.0,
+            "accelAbFwd": 19.6, "accelAbRetro": 3.3, "accelAbStrafe": 11.9, "accelAbUp": 11.8, "accelAbDown": 3.9,
+            "accelTestedDate": "2026-03-24",
+        },
+        "anvl_hornet_f7cm_mk2": {
+            "accelFwd": 9.7, "accelRetro": 3.1, "accelStrafe": 6.4, "accelUp": 6.8, "accelDown": 3.9,
+            "accelAbFwd": 15.0, "accelAbRetro": 4.4, "accelAbStrafe": 8.6, "accelAbUp": 9.2, "accelAbDown": 5.3,
+            "accelTestedDate": "2026-03-24",
+        },
+    }
+    accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
+    for ship in ships.values():
+        override = accel_lower.get(ship["className"].lower())
+        if override:
+            ship.update(override)
+        else:
+            ship["accelFwd"] = 0
+            ship["accelRetro"] = 0
+            ship["accelStrafe"] = 0
+            ship["accelUp"] = 0
+            ship["accelDown"] = 0
+            ship["accelAbFwd"] = 0
+            ship["accelAbRetro"] = 0
+            ship["accelAbStrafe"] = 0
+            ship["accelAbUp"] = 0
+            ship["accelAbDown"] = 0
+            ship["accelTestedDate"] = ""
 
     # 4. Components
     print("\n[4/6] Scanning components…")
@@ -1997,6 +3041,8 @@ def main():
     # Strip internal-only temp fields before serializing
     for item in items.values():
         item.pop("_damageInfoIdx", None)
+        item.pop("_miningModRefs", None)
+        item.pop("_miningDpsRef", None)
     ship_list = list(ships.values())
     item_list = list(items.values())
 
