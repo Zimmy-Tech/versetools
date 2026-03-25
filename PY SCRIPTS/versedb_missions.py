@@ -346,6 +346,12 @@ def main():
 
             gen_name = gf.stem.replace(".xml", "")
 
+            # Extract generator-level cooldown (on defaultAvailability element)
+            gen_personal_cd = re.search(r'personalCooldownTime="([^"]+)"', txt)
+            gen_abandon_cd = re.search(r'abandonedCooldownTime="([^"]+)"', txt)
+            gen_cooldown = int(float(gen_personal_cd.group(1))) if gen_personal_cd else 0
+            gen_abandon_cooldown = int(float(gen_abandon_cd.group(1))) if gen_abandon_cd else 0
+
             # Extract generator-level default title from contractParams
             gen_title_m = re.search(r'<contractParams[^>]*>.*?param="Title"\s+value="([^"]+)"', txt, re.S)
             gen_title = loc_lookup(loc, gen_title_m.group(1)) if gen_title_m else ""
@@ -392,6 +398,12 @@ def main():
                         "maxRank": max_display,
                     })
 
+                # Cooldown & time limit (may be on attrs or in body)
+                combined = attrs + body
+                personal_cd = re.search(r'personalCooldownTime="([^"]+)"', combined)
+                abandoned_cd = re.search(r'abandonedCooldownTime="([^"]+)"', combined)
+                time_limit = re.search(r'timeToComplete="([^"]+)"', combined)
+
                 entry = {
                     "className": debug_name,
                     "title": title,
@@ -404,6 +416,12 @@ def main():
                     "maxPlayers": 1,
                     "canShare": False,
                 }
+                if personal_cd:
+                    entry["cooldownMin"] = int(float(personal_cd.group(1)))
+                if abandoned_cd:
+                    entry["abandonCooldownMin"] = int(float(abandoned_cd.group(1)))
+                if time_limit:
+                    entry["timeLimitMin"] = int(float(time_limit.group(1)))
                 if desc:
                     entry["description"] = desc
                 if rep_reqs:
@@ -430,10 +448,18 @@ def main():
                     entry["blueprintRewards"] = all_items
                 return entry
 
+            def _apply_gen_cooldown(entry):
+                """Apply generator-level cooldown if entry doesn't have its own."""
+                if gen_cooldown and "cooldownMin" not in entry:
+                    entry["cooldownMin"] = gen_cooldown
+                if gen_abandon_cooldown and "abandonCooldownMin" not in entry:
+                    entry["abandonCooldownMin"] = gen_abandon_cooldown
+
             # Parse top-level Contracts
             for cm in re.finditer(r'<Contract\s([^>]+)>(.*?)</Contract>', txt, re.S):
                 entry = parse_contract_element(cm.group(1), cm.group(2), gen_name, gen_title)
                 if entry:
+                    _apply_gen_cooldown(entry)
                     contracts.append(entry)
                     contract_title = entry["title"]
 
@@ -441,6 +467,7 @@ def main():
                     for sm in re.finditer(r'<SubContract\s([^>]+)>(.*?)</SubContract>', cm.group(2), re.S):
                         sub = parse_contract_element(sm.group(1), sm.group(2), gen_name, contract_title)
                         if sub and sub["title"] != contract_title:
+                            _apply_gen_cooldown(sub)
                             contracts.append(sub)
 
                     # Parse nested CareerContracts
