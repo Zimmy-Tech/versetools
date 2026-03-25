@@ -379,7 +379,7 @@ SKIP_TYPES = {
 }
 
 KEEP_TYPES = {
-    "WeaponGun", "WeaponTachyon", "WeaponMining", "MissileLauncher",
+    "WeaponGun", "WeaponTachyon", "WeaponMining", "TractorBeam", "MissileLauncher",
     "BombLauncher", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler", "LifeSupportGenerator",
     "QuantumDrive", "Radar", "Sensor", "QuantumFuelTank", "MiningModifier", "ToolArm", "UtilityTurret", "SalvageHead", "SalvageModifier",
 }
@@ -648,7 +648,7 @@ def extract_fire_rate(root):
 
 def parse_weapon_item(root, class_name, loc):
     info = parse_attachdef(root)
-    if not info or info["type"] not in ("WeaponGun", "WeaponTachyon", "WeaponMining"):
+    if not info or info["type"] not in ("WeaponGun", "WeaponTachyon", "WeaponMining", "TractorBeam"):
         return None
 
     ammo_ref = ""
