@@ -3,6 +3,7 @@ versedb_extract.py
 ==================
 Extracts ship, weapon, shield, power plant, cooler, and quantum drive data
 from Star Citizen's extracted game files and outputs versedb_data.json.
+Also runs versedb_missions.py (missions/contracts) and crafting_extract.py (crafting recipes).
 
 PREREQUISITES — run these commands first (Linux paths, adjust version suffix as needed):
 
@@ -39,7 +40,15 @@ PREREQUISITES — run these commands first (Linux paths, adjust version suffix a
 Then run:
   python versedb_extract.py
 
-Output: versedb_data.json in the same folder as this script.
+Output files (all auto-copied to versedb-app/public/):
+  - versedb_data.json      — ships, weapons, shields, power plants, coolers, QDs
+  - versedb_missions.json  — missions & contracts with rep requirements, blueprint rewards
+  - versedb_crafting.json  — 1,040 crafting recipes with ingredients, quality modifiers
+
+Pipeline steps:
+  [1-7] Ship/component extraction, DCB enrichment, default loadouts
+  [8/9] Mission & contract extraction (versedb_missions.py)
+  [9/9] Crafting recipe extraction (crafting_extract.py) — parses DCB inline struct_data
 """
 
 import copy
@@ -473,7 +482,7 @@ def parse_vehicle_xml(xml_path, loc):
         # Label
         display_attr = item_port.get("display_name", "")
         if display_attr:
-            label = loc.get(display_attr.lower(), display_attr)
+            label = loc.get(display_attr.lower()) or loc.get("itemport_" + display_attr.lower()) or display_attr
         else:
             label = (part_name
                      .replace("hardpoint_", "")
@@ -3085,6 +3094,37 @@ def main():
     print(f"  Coolers:       {m['coolers']}")
     print(f"  Quantum Drives:{m['quantumDrives']}")
     print(f"\nDrop versedb_data.json into the VerseDB app to load.")
+
+    # 8. Missions & Contracts (separate extraction)
+    print("\n[8/9] Extracting missions & contracts…")
+    import subprocess
+    mission_script = Path(__file__).parent / "versedb_missions.py"
+    if mission_script.exists():
+        result = subprocess.run([sys.executable, str(mission_script)], capture_output=True, text=True)
+        for line in result.stdout.splitlines():
+            if any(kw in line for kw in ['Done', 'Total', 'Parsed', 'Filtered', 'Copied']):
+                print(f"  {line.strip()}")
+        if result.returncode != 0:
+            print(f"  WARNING: Mission extraction failed")
+            if result.stderr:
+                print(f"  {result.stderr[:200]}")
+    else:
+        print(f"  WARNING: {mission_script} not found — skipping mission extraction")
+
+    # 9. Crafting Recipes (DCB inline struct extraction)
+    print("\n[9/9] Extracting crafting recipes…")
+    crafting_script = Path(__file__).parent / "crafting_extract.py"
+    if crafting_script.exists():
+        result = subprocess.run([sys.executable, str(crafting_script)], capture_output=True, text=True)
+        for line in result.stdout.splitlines():
+            if any(kw in line for kw in ['Extracted', 'Unique', 'Saved', 'Copied']):
+                print(f"  {line.strip()}")
+        if result.returncode != 0:
+            print(f"  WARNING: Crafting extraction failed")
+            if result.stderr:
+                print(f"  {result.stderr[:200]}")
+    else:
+        print(f"  WARNING: {crafting_script} not found — skipping crafting extraction")
 
 if __name__ == "__main__":
     main()
