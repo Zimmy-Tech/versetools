@@ -1645,6 +1645,24 @@ def expand_ship_variants(ships, forge_dir, loc):
                 expanded[variant_cls] = clone
                 variants_added += 1
 
+    # Manual variant expansion for ships whose variants don't share the base prefix
+    MANUAL_VARIANTS = {
+        "ORIG_300i": ["orig_315p", "orig_325a", "orig_350r"],
+    }
+    for base_cls, variant_list in MANUAL_VARIANTS.items():
+        base_ship = expanded.get(base_cls)
+        if not base_ship:
+            continue
+        for variant_cls in variant_list:
+            forge_file = spaceship_dir / f"{variant_cls}.xml.xml"
+            if not forge_file.exists():
+                continue
+            clone = copy.deepcopy(base_ship)
+            clone["className"] = variant_cls
+            clone["name"] = _resolve_variant_name(variant_cls, loc)
+            expanded[variant_cls] = clone
+            variants_added += 1
+
     print(f"  Expanded {variants_added} variants from {len(ships)} base vehicles → {len(expanded)} total ships")
     return expanded
 
@@ -1869,10 +1887,17 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
                 pass
         return result
 
+    # Forge entity name -> vehicle XML name aliases (when names differ)
+    FORGE_ALIASES = {
+        "anvl_c8_pisces":       "ANVL_Pisces",
+        "krig_l22_alphawolf":   "KRIG_L22_alpha_wolf",
+    }
+
     enriched = 0
     for xml_file in sorted(spaceship_dir.glob("*.xml")):
         stem = xml_file.stem.replace(".xml", "")
-        matched = next((k for k in ships if k.lower() == stem.lower()), None)
+        alias = FORGE_ALIASES.get(stem.lower())
+        matched = next((k for k in ships if k.lower() == (alias or stem).lower()), None)
         if not matched:
             continue
         try:
@@ -1888,6 +1913,38 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
         except Exception:
             pass
     print(f"  Default loadouts extracted: {enriched} ships")
+
+    # Fallback loadouts for ships with empty DCB data
+    _300_BASE_LOADOUT = {
+        "hardpoint_weapon_nose":             "mount_gimbal_s3",
+        "hardpoint_weapon_nose.hardpoint_class_2": "behr_lasercannon_s3",
+        "hardpoint_weapon_wing_left":        "mount_gimbal_s3",
+        "hardpoint_weapon_wing_left.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_weapon_wing_right":       "mount_gimbal_s3",
+        "hardpoint_weapon_wing_right.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_shield_generator_left":   "shld_seco_s01_web_scitem",
+        "hardpoint_shield_generator_right":  "shld_seco_s01_web_scitem",
+        "hardpoint_cooler_left":             "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_cooler_right":            "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_power_plant":             "powr_lplt_s01_powerbolt_scitem",
+        "hardpoint_radar":                   "radr_wlop_s01_capstan",
+        "hardpoint_life_support":            "lfsp_tydt_s01_comfortair",
+    }
+    FALLBACK_LOADOUTS = {
+        "ORIG_300i": {**_300_BASE_LOADOUT},
+        "orig_315p": {**_300_BASE_LOADOUT,
+            "hardpoint_tractor.turret_left": "grin_tractorbeam_s2",
+        },
+        "orig_325a": {**_300_BASE_LOADOUT},
+        "orig_350r": {**_300_BASE_LOADOUT},
+    }
+    for ship_cls, fallback in FALLBACK_LOADOUTS.items():
+        if ship_cls in ships and not ships[ship_cls].get("defaultLoadout"):
+            ships[ship_cls]["defaultLoadout"] = fallback
+            enriched += 1
+            print(f"  Fallback loadout applied: {ship_cls}")
+
+
     spaceship_dir = forge_dir / "entities" / "spaceships"
     if not spaceship_dir.exists():
         print(f"  WARNING: spaceships dir not found")
@@ -2617,12 +2674,14 @@ def enrich_from_dcb(items, dcb_path, loc):
                 cost_per_bullet = f32at(base + 12)  # f32[3]
                 req_ammo_load  = f32at(base + 16)  # f32[4]
                 max_ammo_load  = f32at(base + 20)  # f32[5]
+                max_regen_per_sec = f32at(base + 24)  # f32[6]
                 if max_ammo_load > 0:
                     item["ammoCount"]       = round(max_ammo_load)
                     item["regenCooldown"]   = round(cooldown, 4)
                     item["costPerBullet"]   = round(cost_per_bullet, 2)
                     item["requestedAmmoLoad"] = round(req_ammo_load, 2)
                     item["maxAmmoLoad"]     = round(max_ammo_load)
+                    item["maxRegenPerSec"]  = round(max_regen_per_sec, 2)
                     regen_enriched += 1
             except Exception:
                 pass
@@ -2977,6 +3036,26 @@ def main():
     enrich_engineering_buffs(ships, FORGE_DIR)
     enrich_salvage_buffs(ships, FORGE_DIR)
     enrich_cargo_capacity(ships, FORGE_DIR, DCB_FILE)
+
+    # Remove hardpoints that don't belong on specific variants
+    HP_EXCLUSIONS = {
+        "ORIG_300i":   {"hardpoint_tractor"},  # tractor turret only on 315p
+        "orig_325a":   {"hardpoint_tractor"},
+        "orig_350r":   {"hardpoint_tractor"},
+    }
+    for ship_cls, excluded_ids in HP_EXCLUSIONS.items():
+        if ship_cls in ships:
+            ships[ship_cls]["hardpoints"] = [
+                hp for hp in ships[ship_cls].get("hardpoints", [])
+                if hp["id"].lower() not in {x.lower() for x in excluded_ids}
+            ]
+
+    # Manual cargo overrides for ships missing DCB cargo data
+    CARGO_OVERRIDES = {"ORIG_300i": 8, "orig_315p": 12, "orig_325a": 4, "orig_350r": 0}
+    for ship_cls, scu in CARGO_OVERRIDES.items():
+        if ship_cls in ships:
+            ships[ship_cls]["cargoCapacity"] = scu
+
     enrich_countermeasures(ships, FORGE_DIR)
     enrich_fuel_capacity(ships, FORGE_DIR, DCB_FILE)
     for ship in ships.values():
@@ -3052,7 +3131,27 @@ def main():
         item.pop("_damageInfoIdx", None)
         item.pop("_miningModRefs", None)
         item.pop("_miningDpsRef", None)
-    ship_list = list(ships.values())
+    SKIP_SHIPS = {
+        "AEGS_Idris_FW_25", "RSI_Bengal",               # capitals — no usable loadout data
+        "EA_destructable_probe", "Low_Poly_Ship",        # not real ships
+        "probe_turret_1_a", "probe_comms_1_a",           # probes / turret entities
+    }
+    # Deduplicate ships that differ only by className casing (keep the one with a loadout)
+    seen_names = {}
+    for cls, ship in list(ships.items()):
+        name = ship.get("name", "")
+        if name in seen_names:
+            prev_cls = seen_names[name]
+            prev_has = bool(ships[prev_cls].get("defaultLoadout"))
+            curr_has = bool(ship.get("defaultLoadout"))
+            if curr_has and not prev_has:
+                del ships[prev_cls]
+                seen_names[name] = cls
+            else:
+                del ships[cls]
+        else:
+            seen_names[name] = cls
+    ship_list = [s for s in ships.values() if s["className"] not in SKIP_SHIPS]
     item_list = list(items.values())
 
     def count_type(t):

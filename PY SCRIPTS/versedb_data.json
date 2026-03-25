@@ -3,7 +3,7 @@
     "game": "Star Citizen PTU",
     "version": "4.7.0-ptu.11494258",
     "extractedBy": "VerseDB Extractor v3",
-    "shipCount": 189,
+    "shipCount": 182,
     "itemCount": 1017,
     "weapons": 306,
     "weaponsWithDPS": 118,
@@ -8772,422 +8772,6 @@
       "accelTestedDate": ""
     },
     {
-      "className": "AEGS_Idris_FW_25",
-      "name": "AEGS Idris FW 25",
-      "manufacturer": "Aegis Dynamics",
-      "mass": 37854373.0,
-      "size": "capital",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_front_left_turret",
-          "label": "port_NameTurret010",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RT_FrontLeft"
-        },
-        {
-          "id": "hardpoint_front_right_turret",
-          "label": "Turret 9",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RT_FrontRight"
-        },
-        {
-          "id": "hardpoint_shield_generator_left",
-          "label": "Shield Generator Left",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler Left",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_quantum_drive",
-          "label": "Quantum Drive",
-          "type": "QuantumDrive",
-          "subtypes": "QDrive",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "QuantumDrive",
-              "subtypes": "QDrive"
-            }
-          ],
-          "controllerTag": "quantum_drive"
-        },
-        {
-          "id": "hardpoint_shield_generator_right",
-          "label": "Shield Generator Right",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_right",
-          "label": "Cooler Right",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_right_lower_turret",
-          "label": "Turret 6",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "LowerRightTurret"
-        },
-        {
-          "id": "hardpoint_left_lower_turret",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "LowerLeftTurret"
-        },
-        {
-          "id": "hardpoint_front_turret",
-          "label": "Turret 1",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 7,
-          "maxSize": 7,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "UpperForeTurret"
-        },
-        {
-          "id": "hardpoint_nose_railgun",
-          "label": "Weapon Slot",
-          "type": "WeaponGun",
-          "subtypes": "Gun",
-          "minSize": 10,
-          "maxSize": 10,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "WeaponGun",
-              "subtypes": "Gun"
-            }
-          ],
-          "controllerTag": "MainWeaponsControl"
-        },
-        {
-          "id": "hardpoint_powerplant_01",
-          "label": "Powerplant 01",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_02",
-          "label": "Powerplant 02",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_left_turret",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "UpperLeftTurret"
-        },
-        {
-          "id": "hardpoint_rear_upper_turret_left",
-          "label": "Turret 7",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "UpperRearTurretLeft"
-        },
-        {
-          "id": "hardpoint_rear_tail_turret_left",
-          "label": "port_NameTurret011",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RT_BottomLeft"
-        },
-        {
-          "id": "hardpoint_missile_launcher",
-          "label": "Missile Rack",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ],
-          "controllerTag": "WeaponsSeat"
-        },
-        {
-          "id": "hardpoint_rear_tail_turret_right",
-          "label": "port_NameTurret010",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RT_BottomRight"
-        },
-        {
-          "id": "hardpoint_rear_turret_tail",
-          "label": "Turret 8",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "LowerRearTurretTail"
-        },
-        {
-          "id": "hardpoint_right_turret",
-          "label": "Turret 3",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "UpperRightTurret"
-        },
-        {
-          "id": "hardpoint_rear_upper_turret_right",
-          "label": "Turret 7",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "UpperRearTurretRight"
-        },
-        {
-          "id": "hardpoint_camera_turret_lower",
-          "label": "Turret 1",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "WeaponsSeat",
-          "portTags": "Idris_Base"
-        },
-        {
-          "id": "hardpoint_camera_turret_upper",
-          "label": "Turret 2",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "WeaponsSeat",
-          "portTags": "Idris_Base"
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 18015000.0,
-      "bodyHp": 6100000.0,
-      "vitalParts": {
-        "airlock_section": 375000.0,
-        "Idris_Thruster_Main_01_Left": 300000.0,
-        "Idris_Thruster_Main_01_Right": 300000.0,
-        "Nose": 2750000.0,
-        "Nose_VFX_Hack": 1000000.0,
-        "walkway_left": 1000000.0,
-        "tail_engine_mount_left": 300000.0,
-        "Idris_Thruster_Main_02_Left": 200000.0,
-        "Bridge": 2150000.0,
-        "Idris_Thruster_Main_01_RearLeft": 300000.0,
-        "Idris_Thruster_Main_01_RearRight": 300000.0,
-        "Tail": 2150000.0,
-        "escapepod_door_rear_left": 5000.0,
-        "escapepod_door_rear_right": 5000.0,
-        "radar": 190000.0,
-        "tail_antennamount": 190000.0,
-        "walkway_right": 100000.0,
-        "tail_engine_mount_right": 100000.0,
-        "Idris_Thruster_Main_02_Right": 200000.0
-      },
-      "ammoLoadMultiplier": 6.0,
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "accelTestedDate": ""
-    },
-    {
       "className": "AEGS_Javelin",
       "name": "Aegis Javelin",
       "manufacturer": "Aegis Dynamics",
@@ -14472,697 +14056,6 @@
       "cmNoise": 5,
       "hydrogenFuelCapacity": 12.0,
       "quantumFuelCapacity": 1.3,
-      "scmSpeed": 240.0,
-      "navSpeed": 1400.0,
-      "boostSpeedFwd": 600.0,
-      "boostSpeedBwd": 260.0,
-      "boostRampUp": 0.4,
-      "boostRampDown": 0.2,
-      "pitch": 52.0,
-      "yaw": 43.0,
-      "roll": 160.0,
-      "pitchBoosted": 62.4,
-      "yawBoosted": 51.6,
-      "rollBoosted": 192.0,
-      "qdSpoolDelay": 4.0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "thrusterPowerBars": 4,
-      "accelTestedDate": ""
-    },
-    {
-      "className": "AEGS_Sabre_Firebird",
-      "name": "Aegis Sabre Firebird",
-      "manufacturer": "Aegis Dynamics",
-      "mass": 73493.0,
-      "size": "small",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_shield_generator_B",
-          "label": "Shield Generator 2",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator_A",
-          "label": "Shield Generator 1",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_02",
-          "label": "Power Plant 2",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler 1",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_quantum_drive",
-          "label": "Quantum Drive",
-          "type": "QuantumDrive",
-          "subtypes": "QDrive",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "QuantumDrive",
-              "subtypes": "QDrive"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_01",
-          "label": "Power Plant 1",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_right",
-          "label": "Cooler 2",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_radar",
-          "label": "Radar",
-          "type": "Radar",
-          "subtypes": "ShortRangeRadar,MidRangeRadar",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Radar",
-              "subtypes": "ShortRangeRadar,MidRangeRadar"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_lifesupport",
-          "label": "Lifesupport",
-          "type": "LifeSupportGenerator",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "LifeSupportGenerator",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_weapon_left_wing",
-          "label": "Weapon - Left Wing",
-          "type": "Turret",
-          "subtypes": "Gun,GunTurret",
-          "minSize": 3,
-          "maxSize": 3,
-          "flags": "left",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "Gun,GunTurret"
-            },
-            {
-              "type": "WeaponGun",
-              "subtypes": "Gun"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_weapon_missilerack",
-          "label": "Missile Rack",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_weapon_right_wing",
-          "label": "Weapon - Right Wing",
-          "type": "Turret",
-          "subtypes": "Gun,GunTurret",
-          "minSize": 3,
-          "maxSize": 3,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "Gun,GunTurret"
-            },
-            {
-              "type": "WeaponGun",
-              "subtypes": "Gun"
-            }
-          ]
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 15510.0,
-      "bodyHp": 2500.0,
-      "vitalParts": {
-        "door_l1": 1.0,
-        "door_r1": 1.0,
-        "wing_left": 2000.0,
-        "wing_left_aileron_mesh": 1000.0,
-        "landing_gear_doors_rear_left": 1.0,
-        "wing_right": 2000.0,
-        "landing_gear_doors_rear_right": 1.0,
-        "wing_right_aileron_mesh": 1000.0,
-        "landinggear_door_front_right": 1.0,
-        "landinggear_door_front_left": 1.0,
-        "tail": 2500.0,
-        "AEGS_Sabre_Firebird_winglet_right_debris": 500.0,
-        "AEGS_Sabre_Firebird_winglet_left_debris": 500.0,
-        "nose": 2500.0,
-        "canopy": 1000.0,
-        "ladder_door": 1.0,
-        "personal_storage_door": 1.0,
-        "G_fuel_main_door": 1.0,
-        "G_fuel_small_door": 1.0
-      },
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "scmSpeed": 240.0,
-      "navSpeed": 1400.0,
-      "boostSpeedFwd": 600.0,
-      "boostSpeedBwd": 260.0,
-      "boostRampUp": 0.4,
-      "boostRampDown": 0.2,
-      "pitch": 49.0,
-      "yaw": 41.0,
-      "roll": 160.0,
-      "pitchBoosted": 58.8,
-      "yawBoosted": 49.2,
-      "rollBoosted": 192.0,
-      "qdSpoolDelay": 4.0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "thrusterPowerBars": 4,
-      "accelTestedDate": ""
-    },
-    {
-      "className": "AEGS_Sabre_Peregrine",
-      "name": "Aegis Sabre Peregrine",
-      "manufacturer": "Aegis Dynamics",
-      "mass": 73493.0,
-      "size": "small",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_shield_generator_B",
-          "label": "Shield Generator 2",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator_A",
-          "label": "Shield Generator 1",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_02",
-          "label": "Power Plant 2",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler 1",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_quantum_drive",
-          "label": "Quantum Drive",
-          "type": "QuantumDrive",
-          "subtypes": "QDrive",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "QuantumDrive",
-              "subtypes": "QDrive"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_01",
-          "label": "Power Plant 1",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_right",
-          "label": "Cooler 2",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_radar",
-          "label": "Radar",
-          "type": "Radar",
-          "subtypes": "ShortRangeRadar,MidRangeRadar",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Radar",
-              "subtypes": "ShortRangeRadar,MidRangeRadar"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_lifesupport",
-          "label": "Lifesupport",
-          "type": "LifeSupportGenerator",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "LifeSupportGenerator",
-              "subtypes": ""
-            }
-          ]
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 13550.0,
-      "bodyHp": 2400.0,
-      "vitalParts": {
-        "nose": 2400.0,
-        "canopy": 1000.0,
-        "peregrine_rear_wing_l_bottom": 500.0,
-        "peregrine_rear_wing_l_top": 500.0,
-        "peregrine_rear_wing_r_bottom": 500.0,
-        "peregrine_rear_wing_r_top": 500.0,
-        "tail": 1000.0,
-        "wing_front_flap_left": 100.0,
-        "wing_front_flap_right": 100.0,
-        "wing_left": 2000.0,
-        "wing_left_aileron_mesh_a": 75.0,
-        "wing_left_aileron_mesh_b": 75.0,
-        "wing_flap_left_rear": 100.0,
-        "wing_right": 2000.0,
-        "wing_right_aileron_mesh_b": 100.0,
-        "wing_right_aileron_mesh_a": 100.0,
-        "wing_flap_right_rear": 100.0
-      },
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "scmSpeed": 267.0,
-      "navSpeed": 1447.0,
-      "boostSpeedFwd": 655.0,
-      "boostSpeedBwd": 277.0,
-      "boostRampUp": 0.4,
-      "boostRampDown": 0.2,
-      "pitch": 61.0,
-      "yaw": 51.0,
-      "roll": 187.0,
-      "pitchBoosted": 73.2,
-      "yawBoosted": 61.2,
-      "rollBoosted": 224.4,
-      "qdSpoolDelay": 4.0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "thrusterPowerBars": 4,
-      "accelTestedDate": ""
-    },
-    {
-      "className": "AEGS_Sabre_Raven",
-      "name": "Aegis Sabre Raven",
-      "manufacturer": "Aegis Dynamics",
-      "mass": 68711.0,
-      "size": "small",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_weapon_left_wing",
-          "label": "Weapon - Left Wing",
-          "type": "Turret",
-          "subtypes": "Gun,GunTurret",
-          "minSize": 3,
-          "maxSize": 3,
-          "flags": "left",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "Gun,GunTurret"
-            },
-            {
-              "type": "WeaponGun",
-              "subtypes": "Gun"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_weapon_right_wing",
-          "label": "Weapon - Right Wing",
-          "type": "Turret",
-          "subtypes": "Gun,GunTurret",
-          "minSize": 3,
-          "maxSize": 3,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "Gun,GunTurret"
-            },
-            {
-              "type": "WeaponGun",
-              "subtypes": "Gun"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator_B",
-          "label": "Shield Generator 2",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator_A",
-          "label": "Shield Generator 1",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_02",
-          "label": "Power Plant 2",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler 1",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_quantum_drive",
-          "label": "Quantum Drive",
-          "type": "QuantumDrive",
-          "subtypes": "QDrive",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "QuantumDrive",
-              "subtypes": "QDrive"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_01",
-          "label": "Power Plant 1",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_right",
-          "label": "Cooler 2",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_radar",
-          "label": "Radar",
-          "type": "Radar",
-          "subtypes": "ShortRangeRadar,MidRangeRadar",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Radar",
-              "subtypes": "ShortRangeRadar,MidRangeRadar"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_lifesupport",
-          "label": "Lifesupport",
-          "type": "LifeSupportGenerator",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "LifeSupportGenerator",
-              "subtypes": ""
-            }
-          ]
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 12516.0,
-      "bodyHp": 2500.0,
-      "vitalParts": {
-        "bombay_door_left": 1.0,
-        "bombay_door_left_inside": 1.0,
-        "bombay_door_right": 1.0,
-        "bombay_door_right_inside": 1.0,
-        "ground_fuel_port_door": 1.0,
-        "door_flap": 1.0,
-        "landinggear_door_front_right": 1.0,
-        "landinggear_door_front_left": 1.0,
-        "door_l1": 1.0,
-        "door_l2": 1.0,
-        "door_r1": 1.0,
-        "door_r2": 1.0,
-        "nose": 2500.0,
-        "ladder_door": 1.0,
-        "canopy": 1000.0,
-        "door_mesh": 1.0,
-        "tail": 2500.0,
-        "wing_left": 2000.0,
-        "landing_gear_doors_rear_left": 1.0,
-        "wing_right": 2000.0,
-        "landing_gear_doors_rear_right": 1.0
-      },
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
       "scmSpeed": 240.0,
       "navSpeed": 1400.0,
       "boostSpeedFwd": 600.0,
@@ -28833,10 +27726,90 @@
         "Wing_Right": 250.0,
         "Wing_Right_Debris": 250.0
       },
-      "cargoCapacity": 0,
+      "defaultLoadout": {
+        "hardpoint_cockpit_selfdestruct": "vhcl_selfdestruct_30s",
+        "hardpoint_controller_cooler": "controller_cooler",
+        "hardpoint_controller_energy": "controller_energy",
+        "hardpoint_controller_flight": "controller_flight_anvl_pisces",
+        "hardpoint_controller_shield": "controller_shield_anvl_pisces",
+        "hardpoint_controller_weapon": "controller_weapon",
+        "hardpoint_cooler": "cool_aegs_s01_bracer_scitem",
+        "hardpoint_dashboard_pilot": "anvl_pisces_scitem_dashboard_pilot",
+        "hardpoint_dashboard_pilot.radar_helper": "radar_display_c8_pisces",
+        "hardpoint_dashboard_pilot.display_hud": "h_dashboard_projector_hud_anvl_c8_pisces",
+        "hardpoint_dashboard_pilot.screen_support_left": "vehicle_screen_mfd",
+        "hardpoint_dashboard_pilot.screen_mfd_left": "vehicle_screen_mfd",
+        "hardpoint_dashboard_pilot.screen_mfd_right": "vehicle_screen_mfd",
+        "hardpoint_dashboard_pilot.screen_support_right": "vehicle_screen_mfd",
+        "hardpoint_dashboard_pilot.screen_annunciator_center": "vehicle_screen_physical",
+        "hardpoint_fuel_intake_left": "intk_anvl_pisces",
+        "hardpoint_fuel_intake_right": "intk_anvl_pisces",
+        "hardpoint_fuel_tank": "htnk_anvl_pisces",
+        "hardpoint_power_plant": "powr_aegs_s01_regulus_scitem",
+        "hardpoint_radar": "radr_grnp_s01_ecouter",
+        "hardpoint_armor": "armr_anvl_c8_pisces",
+        "hardpoint_seat_access": "anvl_pisces_scitem_seataccess",
+        "hardpoint_seat_pilot": "anvl_pisces_scitem_seat_pilot",
+        "hardpoint_shield_generator": "shld_asas_s01_shimmer_scitem",
+        "hardpoint_thruster_front_bottom_left": "anvl_pisces_thruster_mav_joint",
+        "hardpoint_thruster_front_bottom_right": "anvl_pisces_thruster_mav_joint",
+        "hardpoint_thruster_front_side_left": "anvl_pisces_thruster_mav_fixed",
+        "hardpoint_thruster_front_side_right": "anvl_pisces_thruster_mav_fixed",
+        "hardpoint_thruster_front_top_left": "anvl_pisces_thruster_mav_joint_top",
+        "hardpoint_thruster_front_top_right": "anvl_pisces_thruster_mav_joint_top",
+        "hardpoint_thruster_main_left": "anvl_pisces_thruster_main_left",
+        "hardpoint_thruster_main_right": "anvl_pisces_thruster_main_right",
+        "hardpoint_thruster_rear_bottom_left": "anvl_pisces_thruster_mav_joint",
+        "hardpoint_thruster_rear_bottom_right": "anvl_pisces_thruster_mav_joint",
+        "hardpoint_thruster_rear_side_left": "anvl_pisces_thruster_mav_fixed",
+        "hardpoint_thruster_rear_side_right": "anvl_pisces_thruster_mav_fixed",
+        "hardpoint_thruster_rear_top_left": "anvl_pisces_thruster_mav_joint_top",
+        "hardpoint_thruster_rear_top_right": "anvl_pisces_thruster_mav_joint_top",
+        "hardpoint_thruster_retro_left": "anvl_pisces_thruster_retro_left",
+        "hardpoint_thruster_retro_right": "anvl_pisces_thruster_retro_right",
+        "hardpoint_controller_light": "controller_light",
+        "hardpoint_controller_countermeasures_launcher_left": "anvl_valkyrie_cml_flare",
+        "hardpoint_controller_countermeasures_launcher_right": "anvl_valkyrie_cml_chaff",
+        "hardpoint_quantum_drive": "qdrv_tars_s01_expedition_scitem",
+        "hardpoint_quantum_drive.hardpoint_jump_drive": "jdrv_tars_s01_explorer_scitem",
+        "hardpoint_quantum_fuel_tank": "qtnk_anvl_pisces",
+        "hardpoint_controller_comms": "controller_comms",
+        "landingpad_helper": "default_landingsystem",
+        "hardpoint_weapon_gun_left": "mount_gimbal_s1",
+        "hardpoint_weapon_gun_left.hardpoint_class_2": "klwe_laserrepeater_s1",
+        "hardpoint_weapon_gun_right": "mount_gimbal_s1",
+        "hardpoint_weapon_gun_right.hardpoint_class_2": "klwe_laserrepeater_s1",
+        "hardpoint_controller_door": "controller_door",
+        "hardpoint_cargogrid_left": "anvl_pisces_cargogrid",
+        "hardpoint_cargogrid_right": "anvl_pisces_cargogrid",
+        "hardpoint_door": "door_rn_roomconnector_breachable_openclose_ip_pisces",
+        "hardpoint_weapon_missile_right": "mrck_s01_behr_single_s01",
+        "hardpoint_weapon_missile_right.missile_01_attach": "misl_s01_ir_behr_marksman",
+        "hardpoint_weapon_missile_left": "mrck_s01_behr_single_s01",
+        "hardpoint_weapon_missile_left.missile_01_attach": "misl_s01_ir_behr_marksman",
+        "hardpoint_controller_fuel": "controller_fuel",
+        "hardpoint_fuel_port": "dockingtube_fuel_ports_anvl_pisces",
+        "hardpoint_air_traffic_controller": "anvl_pisces_shipatcdatamanager",
+        "hardpoint_lifesupport": "lfsp_tydt_s01_comfortair",
+        "hardpoint_controller_missile": "controller_missile",
+        "hardpoint_controller_capacitor_assignment": "controller_capacitorassignment",
+        "hardpoint_relay": "relay_2slot_slim"
+      },
+      "signalEM": 1.0,
+      "signalCrossSection": 1.0,
+      "signalIR": 1.0,
+      "armorDeflectPhys": 12.0,
+      "armorDeflectEnrg": 6.0,
+      "armorHp": 3025.0,
+      "hullDmgPhys": 0.7,
+      "hullDmgEnrg": 0.5,
+      "hullDmgDist": 1.0,
+      "cargoCapacity": 4,
       "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
+      "cmDecoys": 48,
+      "cmNoise": 5,
+      "hydrogenFuelCapacity": 3.2,
+      "quantumFuelCapacity": 1.8,
       "scmSpeed": 220.0,
       "navSpeed": 1150.0,
       "boostSpeedFwd": 460.0,
@@ -45048,112 +44021,6 @@
       "accelTestedDate": ""
     },
     {
-      "className": "EA_destructable_probe",
-      "name": "EA destructable probe",
-      "manufacturer": "EA",
-      "mass": 200000.0,
-      "size": "medium",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_powerplant",
-          "label": "Powerplant",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 3,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator",
-          "label": "Shield Generator",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_right",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 450000.0,
-      "bodyHp": 450000.0,
-      "vitalParts": {},
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "accelTestedDate": ""
-    },
-    {
       "className": "ESPR_Prowler",
       "name": "Esperia Prowler",
       "manufacturer": "Esperia",
@@ -48844,10 +47711,186 @@
         "wing_rear_right": 200.0,
         "wing_rear_spoiler_right": 50.0
       },
+      "defaultLoadout": {
+        "hardpoint_controller_cooler": "controller_cooler",
+        "hardpoint_controller_energy": "controller_energy",
+        "hardpoint_controller_flight": "controller_flight_krig_l22_alphawolf",
+        "hardpoint_controller_missile": "controller_missile",
+        "hardpoint_controller_shield": "controller_shield_krig_l22_alphawolf",
+        "hardpoint_controller_weapon": "controller_weapon",
+        "hardpoint_controller_capacitor_assignment": "controller_capacitorassignment",
+        "hardpoint_controller_comms": "controller_comms",
+        "hardpoint_controller_fuel": "controller_fuel",
+        "hardpoint_controller_atc": "krig_l22_alphawolf_shipatcdatamanager",
+        "hardpoint_controller_light": "controller_light",
+        "hardpoint_controller_door": "controller_door",
+        "hardpoint_armor": "armr_krig_l22_alphawolf",
+        "hardpoint_power_plant": "powr_sasu_s01_lightblossom_scitem",
+        "hardpoint_cooler_left": "cool_lplt_s01_blastchill_scitem",
+        "hardpoint_cooler_right": "cool_lplt_s01_blastchill_scitem",
+        "hardpoint_shield_generator_left": "shld_seco_s01_hex_scitem",
+        "hardpoint_shield_generator_right": "shld_seco_s01_hex_scitem",
+        "hardpoint_computer": "comp_behr_s01_csr-rp",
+        "hardpoint_fuel_tank_hydrogen": "htnk_krig_l22_alphawolf",
+        "hardpoint_fuel_tank_quantum": "qtnk_krig_l22_alphawolf",
+        "hardpoint_radar": "radr_grnp_s01_ecouter",
+        "hardpoint_relay": "relay_1slot",
+        "hardpoint_quantum_drive": "qdrv_wetk_s01_vk00_scitem",
+        "hardpoint_quantum_drive.hardpoint_jump_drive": "jdrv_tars_s01_explorer_scitem",
+        "hardpoint_life_support": "lfsp_tydt_s01_comfortair",
+        "hardpoint_selfdestruct": "vhcl_selfdestruct_20s",
+        "hardpoint_seat_access": "krig_l22_alphawolf_seat_access_pilot",
+        "hardpoint_seat_pilot": "krig_l21_wolf_seat_pilot",
+        "hardpoint_seat_dashboard": "krig_l22_alphawolf_pilot_dashboard",
+        "hardpoint_seat_dashboard.radar_helper": "radar_display_krig_wolf",
+        "hardpoint_seat_dashboard.rtt_screen_left": "vehicle_screen_mfd",
+        "hardpoint_seat_dashboard.rtt_screen_right": "vehicle_screen_mfd",
+        "hardpoint_seat_dashboard.rtt_annunciator_screen_pilot_left": "vehicle_screen_physical",
+        "hardpoint_seat_dashboard.rtt_annunciator_screen_pilot_right": "vehicle_screen_physical",
+        "hardpoint_seat_dashboard.hud_left": "vehicle_screen_physical_l21_l",
+        "hardpoint_seat_dashboard.hud_right": "vehicle_screen_physical_l22_r",
+        "hardpoint_seat_dashboard.indicators_left": "vehicle_screen_physical_l22",
+        "hardpoint_seat_dashboard.indicators_right": "vehicle_screen_physical",
+        "hardpoint_seat_dashboard.clock_screen": "vehicle_screen_physical",
+        "hardpoint_weapon_left": "mount_gimbal_s4_wolf",
+        "hardpoint_weapon_left.hardpoint_class_2": "krig_laserrepeater_bespoke_s4",
+        "hardpoint_weapon_right": "mount_gimbal_s4_wolf",
+        "hardpoint_weapon_right.hardpoint_class_2": "krig_laserrepeater_bespoke_s4",
+        "hardpoint_missile_rack_left": "mrck_s02_krig_triple",
+        "hardpoint_missile_rack_left.missile_01_attach": "misl_s02_em_taln_dominator",
+        "hardpoint_missile_rack_left.missile_02_attach": "misl_s02_em_taln_dominator",
+        "hardpoint_missile_rack_left.missile_03_attach": "misl_s02_em_taln_dominator",
+        "hardpoint_missile_rack_right": "mrck_s02_krig_triple_right",
+        "hardpoint_missile_rack_right.missile_01_attach": "misl_s02_em_taln_dominator",
+        "hardpoint_missile_rack_right.missile_02_attach": "misl_s02_em_taln_dominator",
+        "hardpoint_missile_rack_right.missile_03_attach": "misl_s02_em_taln_dominator",
+        "hardpoint_countermeasures_left": "krig_wolf_cml_flare",
+        "hardpoint_countermeasures_right": "krig_wolf_cml_chaff",
+        "hardpoint_thruster_main": "krig_l22_alphawolf_thruster_main",
+        "hardpoint_thruster_main_wing_left_inner": "krig_l22_alphawolf_thruster_main_wing",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_01": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_02": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_03": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_04": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_05": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_06": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_07": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_08": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_09": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_exterior_010": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_01": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_02": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_03": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_04": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_05": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_06": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_07": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_08": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_inner.hardpoint_fin_interior_09": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer": "krig_l22_alphawolf_thruster_main_wing",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_01": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_02": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_03": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_04": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_05": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_06": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_07": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_08": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_09": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_exterior_010": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_01": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_02": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_03": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_04": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_05": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_06": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_07": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_08": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_left_outer.hardpoint_fin_interior_09": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner": "krig_l22_alphawolf_thruster_main_wing",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_01": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_02": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_03": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_04": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_05": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_06": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_07": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_08": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_09": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_exterior_010": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_01": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_02": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_03": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_04": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_05": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_06": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_07": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_08": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_inner.hardpoint_fin_interior_09": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer": "krig_l22_alphawolf_thruster_main_wing",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_01": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_02": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_03": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_04": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_05": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_06": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_07": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_08": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_09": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_exterior_010": "krig_l21_wolf_wingtip_exterior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_01": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_02": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_03": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_04": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_05": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_06": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_07": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_08": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_main_wing_right_outer.hardpoint_fin_interior_09": "krig_l21_wolf_wingtip_interior",
+        "hardpoint_thruster_retro_left": "krig_l22_alphawolf_thruster_retro",
+        "hardpoint_thruster_retro_right": "krig_l22_alphawolf_thruster_retro",
+        "hardpoint_thruster_mav_fbl": "krig_l22_alphawolf_thruster_mav_capsule_bottom",
+        "hardpoint_thruster_mav_fbr": "krig_l22_alphawolf_thruster_mav_capsule_bottom",
+        "hardpoint_thruster_mav_fsl": "krig_l22_alphawolf_thruster_mav_round",
+        "hardpoint_thruster_mav_fsr": "krig_l22_alphawolf_thruster_mav_round",
+        "hardpoint_thruster_mav_ftl": "krig_l22_alphawolf_thruster_mav_capsule_top",
+        "hardpoint_thruster_mav_ftr": "krig_l22_alphawolf_thruster_mav_capsule_top",
+        "hardpoint_thruster_mav_mbl": "krig_l22_alphawolf_thruster_mav_capsule_bottom",
+        "hardpoint_thruster_mav_mbr": "krig_l22_alphawolf_thruster_mav_capsule_bottom",
+        "hardpoint_thruster_mav_mtl": "krig_l22_alphawolf_thruster_mav_capsule_top",
+        "hardpoint_thruster_mav_mtr": "krig_l22_alphawolf_thruster_mav_capsule_top",
+        "hardpoint_thruster_mav_rbl": "krig_l22_alphawolf_thruster_mav_capsule_bottom",
+        "hardpoint_thruster_mav_rbr": "krig_l22_alphawolf_thruster_mav_capsule_bottom",
+        "hardpoint_thruster_mav_rsl": "krig_l22_alphawolf_thruster_mav_capsule",
+        "hardpoint_thruster_mav_rsr": "krig_l22_alphawolf_thruster_mav_capsule",
+        "hardpoint_thruster_mav_rtl": "krig_l22_alphawolf_thruster_mav_capsule_top",
+        "hardpoint_thruster_mav_rtr": "krig_l22_alphawolf_thruster_mav_capsule_top",
+        "hardpoint_fport_ground": "krig_wolf_ground_fuelport",
+        "hardpoint_weapons_locker": "weapon_rack_krig_wolf",
+        "hardpoint_fuel_port": "dockingtube_fuel_ports_krig_alphawolf",
+        "landingpad_helper": "default_landingsystem",
+        "hardpoint_main_thruster_pipes_left": "krig_l22_alphawolf_thruster_mav_pipe_left",
+        "hardpoint_main_thruster_pipes_right": "krig_l22_alphawolf_thruster_mav_pipe_right"
+      },
+      "signalEM": 1.12,
+      "signalCrossSection": 1.12,
+      "signalIR": 1.12,
+      "armorDeflectPhys": 10.0,
+      "armorDeflectEnrg": 8.0,
+      "armorHp": 3375.0,
+      "hullDmgPhys": 0.75,
+      "hullDmgEnrg": 0.6,
+      "hullDmgDist": 1.0,
       "cargoCapacity": 0,
       "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
+      "cmDecoys": 48,
+      "cmNoise": 5,
+      "hydrogenFuelCapacity": 9.0,
+      "quantumFuelCapacity": 0.9,
       "accelFwd": 0,
       "accelRetro": 0,
       "accelStrafe": 0,
@@ -49097,709 +48140,6 @@
       "accelAbUp": 0,
       "accelAbDown": 0,
       "thrusterPowerBars": 4,
-      "accelTestedDate": ""
-    },
-    {
-      "className": "Low_Poly_Ship",
-      "name": "Low Poly Ship",
-      "manufacturer": "LOW",
-      "mass": 50000.0,
-      "size": "small",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_quantum_drive",
-          "label": "Quantum Drive",
-          "type": "QuantumDrive",
-          "subtypes": "QDrive",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "QuantumDrive",
-              "subtypes": "QDrive"
-            }
-          ],
-          "controllerTag": "quantum_drive"
-        },
-        {
-          "id": "hardpoint_missile_body_01",
-          "label": "Missile Slot 1",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_body_02",
-          "label": "Missile Slot 2",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_body_03",
-          "label": "Missile Slot 3",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_body_04",
-          "label": "Missile Slot 4",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_body_05",
-          "label": "Missile Slot 5",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_body_06",
-          "label": "Missile Slot 6",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_body_07",
-          "label": "Missile Slot 7",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_body_08",
-          "label": "Missile Slot 8",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_manned_turret_body_01",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_02",
-          "label": "Turret 6",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_02"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_03",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_03"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_04",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_04"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_05",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_05"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_06",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_06"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_07",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_07"
-        },
-        {
-          "id": "hardpoint_remote_Turret_Body_01",
-          "label": "Turret 2",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RemoteTurretWeapons_Body_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_nose_01",
-          "label": "Turret 1",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Nose_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_nose_02",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Nose_02"
-        },
-        {
-          "id": "hardpoint_remote_Turret_Nose_01",
-          "label": "Turret 2",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RemoteTurretWeapons_Nose_01"
-        },
-        {
-          "id": "hardpoint_remote_Turret_Nose_02",
-          "label": "Turret 3",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RemoteTurretWeapons_Nose_02"
-        },
-        {
-          "id": "hardpoint_nose_weapon_01",
-          "label": "Weapon Slot",
-          "type": "WeaponGun",
-          "subtypes": "Gun",
-          "minSize": 1,
-          "maxSize": 12,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "WeaponGun",
-              "subtypes": "Gun"
-            }
-          ],
-          "controllerTag": "MainWeaponsControl"
-        },
-        {
-          "id": "hardpoint_missile_nose_01",
-          "label": "Missile Slot 1",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_nose_02",
-          "label": "Missile Slot 2",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_nose_03",
-          "label": "Missile Slot 3",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_missile_nose_04",
-          "label": "Missile Slot 4",
-          "type": "MissileLauncher",
-          "subtypes": "MissileRack",
-          "minSize": 1,
-          "maxSize": 59,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "MissileLauncher",
-              "subtypes": "MissileRack"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_01",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_02",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_02"
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_03",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_03"
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_04",
-          "label": "Turret 7",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_04"
-        },
-        {
-          "id": "hardpoint_remote_Turret_Tail_01",
-          "label": "port_NameTurret011",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RemoteTurretWeapons_Tail_01"
-        },
-        {
-          "id": "hardpoint_remote_Turret_Tail_02",
-          "label": "port_NameTurret011",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable lower",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "RemoteTurretWeapons_Tail_02"
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_aux_01_01",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_Aux_01_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_aux_01_02",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_Aux_01_02"
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_aux_02_01",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_Aux_02_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_tail_aux_02_02",
-          "label": "Turret 2",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Tail_Aux_02_02"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_aux_03_01",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_Aux_03_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_aux_03_02",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_Aux_03_02"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_aux_03_03",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_Aux_03_03"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_aux_04_01",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_Aux_04_01"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_aux_04_02",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_Aux_04_02"
-        },
-        {
-          "id": "hardpoint_manned_turret_body_aux_04_03",
-          "label": "Turret 5",
-          "type": "TurretBase",
-          "subtypes": "MannedTurret",
-          "minSize": 1,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "TurretBase",
-              "subtypes": "MannedTurret"
-            }
-          ],
-          "controllerTag": "Turret_Body_Aux_04_03"
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 112509.0,
-      "bodyHp": 10000.0,
-      "vitalParts": {
-        "Nose": 100000.0,
-        "Aux_Location_Nose_01": 1.0,
-        "Aux_Location_Nose_02": 1.0,
-        "Tail": 2500.0,
-        "Aux_Location_Tail_01": 1.0,
-        "Aux_Location_Tail_02": 1.0,
-        "Aux_Location_Body_01": 1.0,
-        "Aux_Location_Body_02": 1.0,
-        "Aux_Location_Body_03": 1.0,
-        "Aux_Location_Body_04": 1.0,
-        "Aux_Location_Body_05": 1.0
-      },
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
       "accelTestedDate": ""
     },
     {
@@ -53163,133 +51503,6 @@
       "accelAbStrafe": 0,
       "accelAbUp": 0,
       "accelAbDown": 0,
-      "accelTestedDate": ""
-    },
-    {
-      "className": "MISC_Fury_LX",
-      "name": "Mirai Fury LX",
-      "manufacturer": "Musashi Industrial & Starflight Concern",
-      "mass": 12832.0,
-      "size": "small",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_power_plant",
-          "label": "Power Plant",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler 2",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_radar",
-          "label": "Radar",
-          "type": "Radar",
-          "subtypes": "ShortRangeRadar,MidRangeRadar",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Radar",
-              "subtypes": "ShortRangeRadar,MidRangeRadar"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_right",
-          "label": "Cooler 1",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator",
-          "label": "Shield Generator",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 2160.0,
-      "bodyHp": 400.0,
-      "vitalParts": {
-        "Body_Top_Plate": 400.0,
-        "Front_Lower_Plate": 400.0,
-        "Mesh_Wing_Bottom_Left": 240.0,
-        "Mesh_Wing_Bottom_Right": 240.0,
-        "Mesh_Wing_Top_Left": 240.0,
-        "Mesh_Wing_Top_Right": 240.0
-      },
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "scmSpeed": 900.0,
-      "navSpeed": 1280.0,
-      "boostSpeedFwd": 1280.0,
-      "boostSpeedBwd": 900.0,
-      "boostRampUp": 0.4,
-      "boostRampDown": 0.2,
-      "pitch": 72.0,
-      "yaw": 72.0,
-      "roll": 230.0,
-      "pitchBoosted": 86.4,
-      "yawBoosted": 86.4,
-      "rollBoosted": 276.0,
-      "qdSpoolDelay": 4.0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "thrusterPowerBars": 4,
       "accelTestedDate": ""
     },
     {
@@ -59455,23 +57668,6 @@
           ]
         },
         {
-          "id": "hardpoint_tractor",
-          "label": "Tractor Turret",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 2,
-          "maxSize": 2,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "pilotSeat",
-          "portTags": "ORIG_315p_Turret"
-        },
-        {
           "id": "hardpoint_weapon_nose",
           "label": "Weapon - Nose",
           "type": "Turret",
@@ -59546,7 +57742,22 @@
       "fusePenetrationMult": 0.7,
       "componentPenetrationMult": 0.5,
       "weaponPowerPoolSize": 4,
-      "cargoCapacity": 0,
+      "defaultLoadout": {
+        "hardpoint_weapon_nose": "mount_gimbal_s3",
+        "hardpoint_weapon_nose.hardpoint_class_2": "behr_lasercannon_s3",
+        "hardpoint_weapon_wing_left": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_left.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_weapon_wing_right": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_right.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_shield_generator_left": "shld_seco_s01_web_scitem",
+        "hardpoint_shield_generator_right": "shld_seco_s01_web_scitem",
+        "hardpoint_cooler_left": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_cooler_right": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_power_plant": "powr_lplt_s01_powerbolt_scitem",
+        "hardpoint_radar": "radr_wlop_s01_capstan",
+        "hardpoint_life_support": "lfsp_tydt_s01_comfortair"
+      },
+      "cargoCapacity": 8,
       "oreCapacity": 0,
       "cmDecoys": 0,
       "cmNoise": 0,
@@ -65244,1739 +63455,6 @@
       "accelAbStrafe": 0,
       "accelAbUp": 0,
       "accelAbDown": 0,
-      "accelTestedDate": ""
-    },
-    {
-      "className": "RSI_Bengal",
-      "name": "RSI Bengal Carrier",
-      "manufacturer": "Roberts Space Industries",
-      "mass": 113000000.0,
-      "size": "capital",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_AA_turret_24",
-          "label": "AA_turret_24",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_24"
-        },
-        {
-          "id": "hardpoint_AA_turret_29",
-          "label": "AA_turret_29",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_29"
-        },
-        {
-          "id": "hardpoint_AA_turret_30",
-          "label": "AA_turret_30",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_30"
-        },
-        {
-          "id": "hardpoint_AA_turret_31",
-          "label": "AA_turret_31",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_31"
-        },
-        {
-          "id": "hardpoint_AA_turret_32",
-          "label": "AA_turret_32",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_32"
-        },
-        {
-          "id": "hardpoint_AA_turret_33",
-          "label": "AA_turret_33",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_33"
-        },
-        {
-          "id": "hardpoint_AA_turret_34",
-          "label": "AA_turret_34",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_34"
-        },
-        {
-          "id": "hardpoint_AA_turret_35",
-          "label": "AA_turret_35",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_35"
-        },
-        {
-          "id": "hardpoint_AA_turret_36",
-          "label": "AA_turret_36",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_36"
-        },
-        {
-          "id": "hardpoint_AI_turret_11",
-          "label": "AI_turret_11",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_11"
-        },
-        {
-          "id": "hardpoint_AI_turret_12",
-          "label": "AI_turret_12",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_12"
-        },
-        {
-          "id": "hardpoint_AI_turret_15",
-          "label": "AI_turret_15",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_15"
-        },
-        {
-          "id": "hardpoint_AI_turret_16",
-          "label": "AI_turret_16",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_16"
-        },
-        {
-          "id": "hardpoint_AI_turret_19",
-          "label": "AI_turret_19",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_19"
-        },
-        {
-          "id": "hardpoint_AI_turret_20",
-          "label": "AI_turret_20",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_20"
-        },
-        {
-          "id": "hardpoint_missile_turret_11",
-          "label": "missile_turret_11",
-          "type": "Turret",
-          "subtypes": "MissileTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "MissileTurret"
-            }
-          ],
-          "controllerTag": "missile_turret_11"
-        },
-        {
-          "id": "hardpoint_missile_turret_12",
-          "label": "missile_turret_12",
-          "type": "Turret",
-          "subtypes": "MissileTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "MissileTurret"
-            }
-          ],
-          "controllerTag": "missile_turret_12"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_01",
-          "label": "phalanx_turret_01",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_01"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_02",
-          "label": "phalanx_turret_02",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_02"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_03",
-          "label": "phalanx_turret_03",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_03"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_04",
-          "label": "phalanx_turret_04",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_04"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_05",
-          "label": "phalanx_turret_05",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_05"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_06",
-          "label": "phalanx_turret_06",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_06"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_07",
-          "label": "phalanx_turret_07",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_07"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_08",
-          "label": "phalanx_turret_08",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_08"
-        },
-        {
-          "id": "hardpoint_AA_turret_17",
-          "label": "AA_turret_17",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_17"
-        },
-        {
-          "id": "hardpoint_AA_turret_18",
-          "label": "AA_turret_18",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_18"
-        },
-        {
-          "id": "hardpoint_AA_turret_26",
-          "label": "AA_turret_26",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_26"
-        },
-        {
-          "id": "hardpoint_AA_turret_25",
-          "label": "AA_turret_25",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_25"
-        },
-        {
-          "id": "hardpoint_AA_turret_20",
-          "label": "AA_turret_20",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_20"
-        },
-        {
-          "id": "hardpoint_AA_turret_19",
-          "label": "AA_turret_19",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_19"
-        },
-        {
-          "id": "hardpoint_AA_turret_09",
-          "label": "AA_turret_09",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_09"
-        },
-        {
-          "id": "hardpoint_AA_turret_10",
-          "label": "AA_turret_10",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_10"
-        },
-        {
-          "id": "hardpoint_AA_turret_11",
-          "label": "AA_turret_11",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_11"
-        },
-        {
-          "id": "hardpoint_AA_turret_12",
-          "label": "AA_turret_12",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_12"
-        },
-        {
-          "id": "hardpoint_AA_turret_13",
-          "label": "AA_turret_13",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_13"
-        },
-        {
-          "id": "hardpoint_AA_turret_14",
-          "label": "AA_turret_14",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_14"
-        },
-        {
-          "id": "hardpoint_AA_turret_15",
-          "label": "AA_turret_15",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_15"
-        },
-        {
-          "id": "hardpoint_AA_turret_16",
-          "label": "AA_turret_16",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_16"
-        },
-        {
-          "id": "hardpoint_AA_turret_37",
-          "label": "AA_turret_37",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_37"
-        },
-        {
-          "id": "hardpoint_AA_turret_38",
-          "label": "AA_turret_38",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_38"
-        },
-        {
-          "id": "hardpoint_AI_turret_01",
-          "label": "AI_turret_01",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_01"
-        },
-        {
-          "id": "hardpoint_AI_turret_02",
-          "label": "AI_turret_02",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_02"
-        },
-        {
-          "id": "hardpoint_AI_turret_05",
-          "label": "AI_turret_05",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_05"
-        },
-        {
-          "id": "hardpoint_AI_turret_06",
-          "label": "AI_turret_06",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_06"
-        },
-        {
-          "id": "hardpoint_AI_turret_13",
-          "label": "AI_turret_13",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_13"
-        },
-        {
-          "id": "hardpoint_AI_turret_14",
-          "label": "AI_turret_14",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_14"
-        },
-        {
-          "id": "hardpoint_AI_turret_17",
-          "label": "AI_turret_17",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_17"
-        },
-        {
-          "id": "hardpoint_AI_turret_18",
-          "label": "AI_turret_18",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_18"
-        },
-        {
-          "id": "hardpoint_AI_turret_21",
-          "label": "AI_turret_21",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_21"
-        },
-        {
-          "id": "hardpoint_AI_turret_22",
-          "label": "AI_turret_22",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_22"
-        },
-        {
-          "id": "hardpoint_cooler_01",
-          "label": "Cooler 1",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "left",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_02",
-          "label": "Cooler 2",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_03",
-          "label": "Cooler 3",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_04",
-          "label": "Cooler 4",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_05",
-          "label": "Cooler 5",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_06",
-          "label": "Cooler 6",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_07",
-          "label": "Cooler 7",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_08",
-          "label": "Cooler 8",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_09",
-          "label": "Cooler 9",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_10",
-          "label": "Cooler 10",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 5,
-          "flags": "right",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_main_turret",
-          "label": "Main_Turret",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 12,
-          "maxSize": 12,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "Main_Turret_01"
-        },
-        {
-          "id": "hardpoint_missile_turret_06",
-          "label": "missile_turret_06",
-          "type": "Turret",
-          "subtypes": "MissileTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "MissileTurret"
-            }
-          ],
-          "controllerTag": "missile_turret_06"
-        },
-        {
-          "id": "hardpoint_missile_turret_08",
-          "label": "missile_turret_08",
-          "type": "Turret",
-          "subtypes": "MissileTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "MissileTurret"
-            }
-          ],
-          "controllerTag": "missile_turret_08"
-        },
-        {
-          "id": "hardpoint_medium_turret_01",
-          "label": "medium_turret_01",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "medium_turret_01"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_11",
-          "label": "phalanx_turret_11",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_11"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_12",
-          "label": "phalanx_turret_12",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_12"
-        },
-        {
-          "id": "hardpoint_powerplant_01",
-          "label": "Power Plant 1",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_02",
-          "label": "Power Plant 2",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_03",
-          "label": "Power Plant 3",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_04",
-          "label": "Power Plant 4",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_05",
-          "label": "Power Plant 5",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_06",
-          "label": "Power Plant 6",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_07",
-          "label": "Power Plant 7",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_08",
-          "label": "Power Plant 8",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_09",
-          "label": "Power Plant 9",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant_10",
-          "label": "Power Plant 10",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 2,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_quantum_drive",
-          "label": "Quantum Drive",
-          "type": "QuantumDrive",
-          "subtypes": "QDrive",
-          "minSize": 4,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "QuantumDrive",
-              "subtypes": "QDrive"
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator",
-          "label": "Shield Generator",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 6,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_medium_turret_02",
-          "label": "medium_turret_02",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "medium_turret_02"
-        },
-        {
-          "id": "hardpoint_medium_turret_03",
-          "label": "medium_turret_03",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "medium_turret_03"
-        },
-        {
-          "id": "hardpoint_medium_turret_04",
-          "label": "medium_turret_04",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "medium_turret_04"
-        },
-        {
-          "id": "hardpoint_medium_turret_05",
-          "label": "medium_turret_05",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "medium_turret_05"
-        },
-        {
-          "id": "hardpoint_medium_turret_06",
-          "label": "medium_turret_06",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "medium_turret_06"
-        },
-        {
-          "id": "hardpoint_AA_turret_01",
-          "label": "AA Turret 01",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_01"
-        },
-        {
-          "id": "hardpoint_AA_turret_02",
-          "label": "AA Turret 02",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_02"
-        },
-        {
-          "id": "hardpoint_AA_turret_03",
-          "label": "AA_turret_03",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_03"
-        },
-        {
-          "id": "hardpoint_AA_turret_04",
-          "label": "AA_turret_04",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_04"
-        },
-        {
-          "id": "hardpoint_AA_turret_05",
-          "label": "AA_turret_05",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_turret_05"
-        },
-        {
-          "id": "hardpoint_AA_turret_06",
-          "label": "AA_turret_06",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_Turret_06"
-        },
-        {
-          "id": "hardpoint_AA_turret_07",
-          "label": "AA_turret_06",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_Turret_06"
-        },
-        {
-          "id": "hardpoint_AA_turret_08",
-          "label": "AA_turret_08",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_Turret_08"
-        },
-        {
-          "id": "hardpoint_AA_turret_21",
-          "label": "AA_turret_21",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_Turret_21"
-        },
-        {
-          "id": "hardpoint_AA_turret_22",
-          "label": "AA_turret_22",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 8,
-          "maxSize": 8,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AA_Turret_22"
-        },
-        {
-          "id": "hardpoint_AI_turret_03",
-          "label": "AI_turret_03",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_03"
-        },
-        {
-          "id": "hardpoint_AI_turret_04",
-          "label": "AI_turret_04",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_04"
-        },
-        {
-          "id": "hardpoint_AI_turret_07",
-          "label": "AI_turret_07",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_07"
-        },
-        {
-          "id": "hardpoint_AI_turret_08",
-          "label": "AI_turret_08",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_08"
-        },
-        {
-          "id": "hardpoint_AI_turret_09",
-          "label": "AI_turret_09",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_09"
-        },
-        {
-          "id": "hardpoint_AI_turret_10",
-          "label": "AI_turret_10",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 9,
-          "maxSize": 9,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "AI_turret_10"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_09",
-          "label": "phalanx_turret_09",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_09"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_10",
-          "label": "phalanx_turret_10",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_10"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_13",
-          "label": "phalanx_turret_13",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_13"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_14",
-          "label": "phalanx_turret_14",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_14"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_15",
-          "label": "phalanx_turret_15",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_15"
-        },
-        {
-          "id": "hardpoint_phalanx_turret_16",
-          "label": "phalanx_turret_16",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 6,
-          "maxSize": 6,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "phalanx_turret_16"
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 370200.0,
-      "bodyHp": 40000.0,
-      "vitalParts": {
-        "Tail": 40000.0,
-        "EngineMount_Right": 40000.0,
-        "thruster_right_main": 20000.0,
-        "thruster_right_top": 20000.0,
-        "thruster_right_top_antennas": 10000.0,
-        "EngineMount_Left": 40000.0,
-        "thruster_left_main": 20000.0,
-        "thruster_left_top": 20000.0,
-        "thruster_left_top_antennas": 20000.0,
-        "Bridge": 40000.0,
-        "rsi_bengal_bridge_mesh": 20000.0,
-        "rsi_bengal_bridge_top_mesh": 200.0,
-        "Nose": 40000.0
-      },
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "scmSpeed": 22.0,
-      "navSpeed": 900.0,
-      "boostSpeedFwd": 290.0,
-      "boostSpeedBwd": 230.0,
-      "boostRampUp": 0.0,
-      "boostRampDown": 0.2,
-      "pitch": 2.0,
-      "yaw": 2.0,
-      "roll": 8.0,
-      "pitchBoosted": 2.4,
-      "yawBoosted": 2.4,
-      "rollBoosted": 9.6,
-      "qdSpoolDelay": 4.0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "thrusterPowerBars": 10,
       "accelTestedDate": ""
     },
     {
@@ -82571,248 +79049,6 @@
       "accelTestedDate": ""
     },
     {
-      "className": "probe_comms_1_a",
-      "name": "CHCO Auris PDC Monitor",
-      "manufacturer": "PROBE",
-      "mass": 200000.0,
-      "size": "medium",
-      "role": "Light Freight",
-      "career": "Transport",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_right",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant",
-          "label": "Powerplant",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 3,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator",
-          "label": "Shield Generator",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 15777.0,
-      "bodyHp": 4000.0,
-      "vitalParts": {
-        "left_wing": 125.0,
-        "dish_right": 1.0,
-        "dish_left": 1.0,
-        "cockpit": 4000.0,
-        "nose": 6000.0,
-        "receiver_02": 75.0,
-        "receiver_01": 75.0,
-        "receiver_03": 75.0,
-        "right_wing": 125.0,
-        "tail": 1250.0,
-        "hardpoint_fuel_tank": 50.0
-      },
-      "dimWidth": 40.0,
-      "dimLength": 18.0,
-      "dimHeight": 13.0,
-      "insuranceStandardMinutes": 33.33,
-      "insuranceExpediteMinutes": 3.33,
-      "insuranceExpediteCost": 333,
-      "fusePenetrationMult": 0.7,
-      "componentPenetrationMult": 1.0,
-      "weaponPowerPoolSize": 4,
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "accelTestedDate": ""
-    },
-    {
-      "className": "probe_turret_1_a",
-      "name": "probe turret 1 a",
-      "manufacturer": "PROBE",
-      "mass": 200000.0,
-      "size": "medium",
-      "role": "",
-      "career": "",
-      "crew": 1,
-      "hardpoints": [
-        {
-          "id": "hardpoint_cooler",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 3,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_cooler_left",
-          "label": "Cooler",
-          "type": "Cooler",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 1,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Cooler",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_powerplant",
-          "label": "Powerplant",
-          "type": "PowerPlant",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 4,
-          "flags": "uneditable",
-          "allTypes": [
-            {
-              "type": "PowerPlant",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_shield_generator",
-          "label": "Shield Generator",
-          "type": "Shield",
-          "subtypes": "",
-          "minSize": 1,
-          "maxSize": 4,
-          "flags": "invisible",
-          "allTypes": [
-            {
-              "type": "Shield",
-              "subtypes": ""
-            }
-          ]
-        },
-        {
-          "id": "hardpoint_turret",
-          "label": "Turret",
-          "type": "Turret",
-          "subtypes": "GunTurret",
-          "minSize": 5,
-          "maxSize": 5,
-          "flags": "$uneditable",
-          "allTypes": [
-            {
-              "type": "Turret",
-              "subtypes": "GunTurret"
-            }
-          ],
-          "controllerTag": "PilotSeatWeapons"
-        }
-      ],
-      "flightSpoolDelay": 1.0,
-      "totalHp": 11525.0,
-      "bodyHp": 6000.0,
-      "vitalParts": {
-        "cockpit": 4000.0,
-        "nose": 6000.0,
-        "receiver_01": 75.0,
-        "receiver_02": 75.0,
-        "receiver_03": 75.0,
-        "tail": 1250.0,
-        "hardpoint_fuel_tank": 50.0
-      },
-      "cargoCapacity": 0,
-      "oreCapacity": 0,
-      "cmDecoys": 0,
-      "cmNoise": 0,
-      "accelFwd": 0,
-      "accelRetro": 0,
-      "accelStrafe": 0,
-      "accelUp": 0,
-      "accelDown": 0,
-      "accelAbFwd": 0,
-      "accelAbRetro": 0,
-      "accelAbStrafe": 0,
-      "accelAbUp": 0,
-      "accelAbDown": 0,
-      "accelTestedDate": ""
-    },
-    {
       "className": "rsi_apollo_triage",
       "name": "RSI Apollo Triage",
       "manufacturer": "Roberts Space Industries",
@@ -86026,6 +82262,933 @@
       "accelAbDown": 0,
       "thrusterPowerBars": 4,
       "accelTestedDate": ""
+    },
+    {
+      "className": "orig_315p",
+      "name": "Origin 315p",
+      "manufacturer": "Origin Jumpworks",
+      "mass": 69677.0,
+      "size": "small",
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "crew": 1,
+      "hardpoints": [
+        {
+          "id": "hardpoint_shield_generator_left",
+          "label": "Shield Generator 1",
+          "type": "Shield",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Shield",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_shield_generator_right",
+          "label": "Shield Generator 1",
+          "type": "Shield",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Shield",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_cooler_left",
+          "label": "Cooler 1",
+          "type": "Cooler",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Cooler",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_cooler_right",
+          "label": "Cooler 2",
+          "type": "Cooler",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible right",
+          "allTypes": [
+            {
+              "type": "Cooler",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_radar",
+          "label": "Radar",
+          "type": "Radar",
+          "subtypes": "ShortRangeRadar,MidRangeRadar",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Radar",
+              "subtypes": "ShortRangeRadar,MidRangeRadar"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_power_plant",
+          "label": "Power Plant 1",
+          "type": "PowerPlant",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "main rear invisible",
+          "allTypes": [
+            {
+              "type": "PowerPlant",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_quantum_drive",
+          "label": "Quantum Drive",
+          "type": "QuantumDrive",
+          "subtypes": "QDrive",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "QuantumDrive",
+              "subtypes": "QDrive"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_missilerack_left",
+          "label": "Missile Rack - Left Wing",
+          "type": "MissileLauncher",
+          "subtypes": "MissileRack",
+          "minSize": 2,
+          "maxSize": 2,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "MissileLauncher",
+              "subtypes": "MissileRack"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_wing_left",
+          "label": "Weapon - Left Wing",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "left wing",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_missilerack_right",
+          "label": "Missile Rack - Right Wing",
+          "type": "MissileLauncher",
+          "subtypes": "MissileRack",
+          "minSize": 2,
+          "maxSize": 2,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "MissileLauncher",
+              "subtypes": "MissileRack"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_wing_right",
+          "label": "Weapon - Right Wing",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "right wing",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_tractor",
+          "label": "Tractor Turret",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 2,
+          "maxSize": 2,
+          "flags": "$uneditable",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            }
+          ],
+          "controllerTag": "pilotSeat",
+          "portTags": "ORIG_315p_Turret"
+        },
+        {
+          "id": "hardpoint_weapon_nose",
+          "label": "Weapon - Nose",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "nose",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_fuel_port",
+          "label": "hardpoint_fuel_port",
+          "type": "DockingCollar",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "dockingport1",
+          "allTypes": [
+            {
+              "type": "DockingCollar",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_air_traffic_controller",
+          "label": "hardpoint_air_traffic_controller",
+          "type": "AirTrafficController",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "AirTrafficController",
+              "subtypes": ""
+            }
+          ]
+        }
+      ],
+      "flightSpoolDelay": 1.0,
+      "totalHp": 8700.0,
+      "bodyHp": 1900.0,
+      "vitalParts": {
+        "nose": 1900.0,
+        "glass_canopy_front": 1500.0,
+        "tail": 1900.0,
+        "wing_left_bottom": 800.0,
+        "wing_b_left": 500.0,
+        "wing_left_top": 200.0,
+        "wing_flap_left": 200.0,
+        "wing_right_bottom": 800.0,
+        "wing_b_right": 500.0,
+        "wing_right_top": 200.0,
+        "wing_flap_right": 200.0
+      },
+      "dimWidth": 17.0,
+      "dimLength": 27.0,
+      "dimHeight": 8.0,
+      "insuranceStandardMinutes": 5.18,
+      "insuranceExpediteMinutes": 1.73,
+      "insuranceExpediteCost": 2579,
+      "fusePenetrationMult": 0.7,
+      "componentPenetrationMult": 0.5,
+      "weaponPowerPoolSize": 4,
+      "defaultLoadout": {
+        "hardpoint_weapon_nose": "mount_gimbal_s3",
+        "hardpoint_weapon_nose.hardpoint_class_2": "behr_lasercannon_s3",
+        "hardpoint_weapon_wing_left": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_left.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_weapon_wing_right": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_right.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_shield_generator_left": "shld_seco_s01_web_scitem",
+        "hardpoint_shield_generator_right": "shld_seco_s01_web_scitem",
+        "hardpoint_cooler_left": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_cooler_right": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_power_plant": "powr_lplt_s01_powerbolt_scitem",
+        "hardpoint_radar": "radr_wlop_s01_capstan",
+        "hardpoint_life_support": "lfsp_tydt_s01_comfortair",
+        "hardpoint_tractor.turret_left": "grin_tractorbeam_s2"
+      },
+      "cargoCapacity": 12,
+      "oreCapacity": 0,
+      "cmDecoys": 0,
+      "cmNoise": 0,
+      "scmSpeed": 258.0,
+      "navSpeed": 1460.0,
+      "boostSpeedFwd": 550.0,
+      "boostSpeedBwd": 270.0,
+      "boostRampUp": 0.4,
+      "boostRampDown": 0.2,
+      "pitch": 50.0,
+      "yaw": 46.0,
+      "roll": 175.0,
+      "pitchBoosted": 60.0,
+      "yawBoosted": 55.2,
+      "rollBoosted": 210.0,
+      "qdSpoolDelay": 4.0,
+      "accelFwd": 0,
+      "accelRetro": 0,
+      "accelStrafe": 0,
+      "accelUp": 0,
+      "accelDown": 0,
+      "accelAbFwd": 0,
+      "accelAbRetro": 0,
+      "accelAbStrafe": 0,
+      "accelAbUp": 0,
+      "accelAbDown": 0,
+      "thrusterPowerBars": 4,
+      "accelTestedDate": ""
+    },
+    {
+      "className": "orig_325a",
+      "name": "Origin 325a",
+      "manufacturer": "Origin Jumpworks",
+      "mass": 69677.0,
+      "size": "small",
+      "role": "Interceptor",
+      "career": "Combat",
+      "crew": 1,
+      "hardpoints": [
+        {
+          "id": "hardpoint_shield_generator_left",
+          "label": "Shield Generator 1",
+          "type": "Shield",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Shield",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_shield_generator_right",
+          "label": "Shield Generator 1",
+          "type": "Shield",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Shield",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_cooler_left",
+          "label": "Cooler 1",
+          "type": "Cooler",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Cooler",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_cooler_right",
+          "label": "Cooler 2",
+          "type": "Cooler",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible right",
+          "allTypes": [
+            {
+              "type": "Cooler",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_radar",
+          "label": "Radar",
+          "type": "Radar",
+          "subtypes": "ShortRangeRadar,MidRangeRadar",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Radar",
+              "subtypes": "ShortRangeRadar,MidRangeRadar"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_power_plant",
+          "label": "Power Plant 1",
+          "type": "PowerPlant",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "main rear invisible",
+          "allTypes": [
+            {
+              "type": "PowerPlant",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_quantum_drive",
+          "label": "Quantum Drive",
+          "type": "QuantumDrive",
+          "subtypes": "QDrive",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "QuantumDrive",
+              "subtypes": "QDrive"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_missilerack_left",
+          "label": "Missile Rack - Left Wing",
+          "type": "MissileLauncher",
+          "subtypes": "MissileRack",
+          "minSize": 2,
+          "maxSize": 2,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "MissileLauncher",
+              "subtypes": "MissileRack"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_wing_left",
+          "label": "Weapon - Left Wing",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "left wing",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_missilerack_right",
+          "label": "Missile Rack - Right Wing",
+          "type": "MissileLauncher",
+          "subtypes": "MissileRack",
+          "minSize": 2,
+          "maxSize": 2,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "MissileLauncher",
+              "subtypes": "MissileRack"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_wing_right",
+          "label": "Weapon - Right Wing",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "right wing",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_nose",
+          "label": "Weapon - Nose",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "nose",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_fuel_port",
+          "label": "hardpoint_fuel_port",
+          "type": "DockingCollar",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "dockingport1",
+          "allTypes": [
+            {
+              "type": "DockingCollar",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_air_traffic_controller",
+          "label": "hardpoint_air_traffic_controller",
+          "type": "AirTrafficController",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "AirTrafficController",
+              "subtypes": ""
+            }
+          ]
+        }
+      ],
+      "flightSpoolDelay": 1.0,
+      "totalHp": 8700.0,
+      "bodyHp": 1900.0,
+      "vitalParts": {
+        "nose": 1900.0,
+        "glass_canopy_front": 1500.0,
+        "tail": 1900.0,
+        "wing_left_bottom": 800.0,
+        "wing_b_left": 500.0,
+        "wing_left_top": 200.0,
+        "wing_flap_left": 200.0,
+        "wing_right_bottom": 800.0,
+        "wing_b_right": 500.0,
+        "wing_right_top": 200.0,
+        "wing_flap_right": 200.0
+      },
+      "dimWidth": 17.0,
+      "dimLength": 27.5,
+      "dimHeight": 8.0,
+      "insuranceStandardMinutes": 6.21,
+      "insuranceExpediteMinutes": 2.07,
+      "insuranceExpediteCost": 3900,
+      "fusePenetrationMult": 0.7,
+      "componentPenetrationMult": 0.5,
+      "weaponPowerPoolSize": 4,
+      "defaultLoadout": {
+        "hardpoint_weapon_nose": "mount_gimbal_s3",
+        "hardpoint_weapon_nose.hardpoint_class_2": "behr_lasercannon_s3",
+        "hardpoint_weapon_wing_left": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_left.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_weapon_wing_right": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_right.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_shield_generator_left": "shld_seco_s01_web_scitem",
+        "hardpoint_shield_generator_right": "shld_seco_s01_web_scitem",
+        "hardpoint_cooler_left": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_cooler_right": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_power_plant": "powr_lplt_s01_powerbolt_scitem",
+        "hardpoint_radar": "radr_wlop_s01_capstan",
+        "hardpoint_life_support": "lfsp_tydt_s01_comfortair"
+      },
+      "cargoCapacity": 4,
+      "oreCapacity": 0,
+      "cmDecoys": 0,
+      "cmNoise": 0,
+      "scmSpeed": 260.0,
+      "navSpeed": 1430.0,
+      "boostSpeedFwd": 600.0,
+      "boostSpeedBwd": 270.0,
+      "boostRampUp": 0.4,
+      "boostRampDown": 0.2,
+      "pitch": 54.0,
+      "yaw": 48.0,
+      "roll": 180.0,
+      "pitchBoosted": 64.8,
+      "yawBoosted": 57.6,
+      "rollBoosted": 216.0,
+      "qdSpoolDelay": 4.0,
+      "accelFwd": 0,
+      "accelRetro": 0,
+      "accelStrafe": 0,
+      "accelUp": 0,
+      "accelDown": 0,
+      "accelAbFwd": 0,
+      "accelAbRetro": 0,
+      "accelAbStrafe": 0,
+      "accelAbUp": 0,
+      "accelAbDown": 0,
+      "thrusterPowerBars": 4,
+      "accelTestedDate": ""
+    },
+    {
+      "className": "orig_350r",
+      "name": "Origin 350r",
+      "manufacturer": "Origin Jumpworks",
+      "mass": 69677.0,
+      "size": "small",
+      "role": "Racing",
+      "career": "Competition",
+      "crew": 1,
+      "hardpoints": [
+        {
+          "id": "hardpoint_shield_generator_left",
+          "label": "Shield Generator 1",
+          "type": "Shield",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Shield",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_shield_generator_right",
+          "label": "Shield Generator 1",
+          "type": "Shield",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Shield",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_cooler_left",
+          "label": "Cooler 1",
+          "type": "Cooler",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Cooler",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_cooler_right",
+          "label": "Cooler 2",
+          "type": "Cooler",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible right",
+          "allTypes": [
+            {
+              "type": "Cooler",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_radar",
+          "label": "Radar",
+          "type": "Radar",
+          "subtypes": "ShortRangeRadar,MidRangeRadar",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "Radar",
+              "subtypes": "ShortRangeRadar,MidRangeRadar"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_power_plant",
+          "label": "Power Plant 1",
+          "type": "PowerPlant",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "main rear invisible",
+          "allTypes": [
+            {
+              "type": "PowerPlant",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_quantum_drive",
+          "label": "Quantum Drive",
+          "type": "QuantumDrive",
+          "subtypes": "QDrive",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "invisible",
+          "allTypes": [
+            {
+              "type": "QuantumDrive",
+              "subtypes": "QDrive"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_missilerack_left",
+          "label": "Missile Rack - Left Wing",
+          "type": "MissileLauncher",
+          "subtypes": "MissileRack",
+          "minSize": 2,
+          "maxSize": 2,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "MissileLauncher",
+              "subtypes": "MissileRack"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_wing_left",
+          "label": "Weapon - Left Wing",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "left wing",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_missilerack_right",
+          "label": "Missile Rack - Right Wing",
+          "type": "MissileLauncher",
+          "subtypes": "MissileRack",
+          "minSize": 2,
+          "maxSize": 2,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "MissileLauncher",
+              "subtypes": "MissileRack"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_wing_right",
+          "label": "Weapon - Right Wing",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "right wing",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_weapon_nose",
+          "label": "Weapon - Nose",
+          "type": "Turret",
+          "subtypes": "GunTurret",
+          "minSize": 3,
+          "maxSize": 3,
+          "flags": "nose",
+          "allTypes": [
+            {
+              "type": "Turret",
+              "subtypes": "GunTurret"
+            },
+            {
+              "type": "WeaponGun",
+              "subtypes": "Gun"
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_fuel_port",
+          "label": "hardpoint_fuel_port",
+          "type": "DockingCollar",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "dockingport1",
+          "allTypes": [
+            {
+              "type": "DockingCollar",
+              "subtypes": ""
+            }
+          ]
+        },
+        {
+          "id": "hardpoint_air_traffic_controller",
+          "label": "hardpoint_air_traffic_controller",
+          "type": "AirTrafficController",
+          "subtypes": "",
+          "minSize": 1,
+          "maxSize": 1,
+          "flags": "",
+          "allTypes": [
+            {
+              "type": "AirTrafficController",
+              "subtypes": ""
+            }
+          ]
+        }
+      ],
+      "flightSpoolDelay": 1.0,
+      "totalHp": 8700.0,
+      "bodyHp": 1900.0,
+      "vitalParts": {
+        "nose": 1900.0,
+        "glass_canopy_front": 1500.0,
+        "tail": 1900.0,
+        "wing_left_bottom": 800.0,
+        "wing_b_left": 500.0,
+        "wing_left_top": 200.0,
+        "wing_flap_left": 200.0,
+        "wing_right_bottom": 800.0,
+        "wing_b_right": 500.0,
+        "wing_right_top": 200.0,
+        "wing_flap_right": 200.0
+      },
+      "dimWidth": 17.0,
+      "dimLength": 27.0,
+      "dimHeight": 8.0,
+      "insuranceStandardMinutes": 10.14,
+      "insuranceExpediteMinutes": 3.38,
+      "insuranceExpediteCost": 4573,
+      "fusePenetrationMult": 0.7,
+      "componentPenetrationMult": 0.5,
+      "weaponPowerPoolSize": 4,
+      "defaultLoadout": {
+        "hardpoint_weapon_nose": "mount_gimbal_s3",
+        "hardpoint_weapon_nose.hardpoint_class_2": "behr_lasercannon_s3",
+        "hardpoint_weapon_wing_left": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_left.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_weapon_wing_right": "mount_gimbal_s3",
+        "hardpoint_weapon_wing_right.hardpoint_class_2": "behr_ballisticrepeater_s3",
+        "hardpoint_shield_generator_left": "shld_seco_s01_web_scitem",
+        "hardpoint_shield_generator_right": "shld_seco_s01_web_scitem",
+        "hardpoint_cooler_left": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_cooler_right": "cool_lplt_s01_arcticstorm_scitem",
+        "hardpoint_power_plant": "powr_lplt_s01_powerbolt_scitem",
+        "hardpoint_radar": "radr_wlop_s01_capstan",
+        "hardpoint_life_support": "lfsp_tydt_s01_comfortair"
+      },
+      "cargoCapacity": 0,
+      "oreCapacity": 0,
+      "cmDecoys": 0,
+      "cmNoise": 0,
+      "scmSpeed": 265.0,
+      "navSpeed": 1500.0,
+      "boostSpeedFwd": 490.0,
+      "boostSpeedBwd": 270.0,
+      "boostRampUp": 0.4,
+      "boostRampDown": 0.2,
+      "pitch": 56.0,
+      "yaw": 56.0,
+      "roll": 180.0,
+      "pitchBoosted": 67.2,
+      "yawBoosted": 67.2,
+      "rollBoosted": 216.0,
+      "qdSpoolDelay": 4.0,
+      "accelFwd": 0,
+      "accelRetro": 0,
+      "accelStrafe": 0,
+      "accelUp": 0,
+      "accelDown": 0,
+      "accelAbFwd": 0,
+      "accelAbRetro": 0,
+      "accelAbStrafe": 0,
+      "accelAbUp": 0,
+      "accelAbDown": 0,
+      "thrusterPowerBars": 4,
+      "accelTestedDate": ""
     }
   ],
   "items": [
@@ -86065,7 +83228,8 @@
       "regenCooldown": 1.73,
       "costPerBullet": 400.0,
       "requestedAmmoLoad": 1300.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "apar_ballisticscattergun_s1_shark",
@@ -86141,7 +83305,8 @@
       "regenCooldown": 1.68,
       "costPerBullet": 78.6,
       "requestedAmmoLoad": 11425.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "hrst_laserscattergun_s1",
@@ -86179,7 +83344,8 @@
       "regenCooldown": 0.33,
       "costPerBullet": 70.0,
       "requestedAmmoLoad": 11200.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "gats_ballisticcannon_s2",
@@ -86409,7 +83575,8 @@
       "regenCooldown": 0.764,
       "costPerBullet": 125.0,
       "requestedAmmoLoad": 30000.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mining_laser_shin_klein_s1",
@@ -86487,7 +83654,8 @@
       "regenCooldown": 0.764,
       "costPerBullet": 124.8,
       "requestedAmmoLoad": 43680.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "gats_ballisticgatling_s3",
@@ -86714,7 +83882,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 168.0,
       "requestedAmmoLoad": 16860.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "klwe_laserrepeater_s1_atls",
@@ -86752,7 +83921,8 @@
       "regenCooldown": 0.726,
       "costPerBullet": 21.6,
       "requestedAmmoLoad": 8100.0,
-      "maxAmmoLoad": 70
+      "maxAmmoLoad": 70,
+      "maxRegenPerSec": 7.43
     },
     {
       "className": "behr_lasercannon_sf7e_s7",
@@ -86790,7 +83960,8 @@
       "regenCooldown": 1.94,
       "costPerBullet": 1200.0,
       "requestedAmmoLoad": 128130.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s7_idris_m_dummy",
@@ -86828,7 +83999,8 @@
       "regenCooldown": 1.62,
       "costPerBullet": 1281.0,
       "requestedAmmoLoad": 128130.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s3_cleanair",
@@ -86866,7 +84038,8 @@
       "regenCooldown": 1.33,
       "costPerBullet": 253.0,
       "requestedAmmoLoad": 25320.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "gats_ballisticgatling_s1",
@@ -86942,7 +84115,8 @@
       "regenCooldown": 0.838,
       "costPerBullet": 32.4,
       "requestedAmmoLoad": 12150.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "bengal_ballisticcannon_s8",
@@ -87018,7 +84192,8 @@
       "regenCooldown": 1.4,
       "costPerBullet": 176.5,
       "requestedAmmoLoad": 25650.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s9_lowpoly",
@@ -87056,7 +84231,8 @@
       "regenCooldown": 1.79,
       "costPerBullet": 2883.0,
       "requestedAmmoLoad": 288300.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "espr_lasercannon_s2",
@@ -87094,7 +84270,8 @@
       "regenCooldown": 1.27,
       "costPerBullet": 78.6,
       "requestedAmmoLoad": 11425.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "jokr_distortioncannon_s1",
@@ -87132,7 +84309,8 @@
       "regenCooldown": 1.6,
       "costPerBullet": 90.0,
       "requestedAmmoLoad": 4500.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_ballisticgatling_s7",
@@ -87244,7 +84422,8 @@
       "regenCooldown": 1.65,
       "costPerBullet": 300.0,
       "requestedAmmoLoad": 1000.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "argo_atls_tractorbeam_s1",
@@ -87318,7 +84497,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 25.7,
       "requestedAmmoLoad": 4500.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "behr_distortionrepeater_vng_s2",
@@ -87356,7 +84536,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 27.0,
       "requestedAmmoLoad": 6750.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "espr_ballisticcannon_s3",
@@ -87432,7 +84613,8 @@
       "regenCooldown": 0.25,
       "costPerBullet": 48.5,
       "requestedAmmoLoad": 18187.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "espr_ballisticcannon_s5",
@@ -87508,7 +84690,8 @@
       "regenCooldown": 0.727,
       "costPerBullet": 84.0,
       "requestedAmmoLoad": 29120.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "behr_lasercannon_s4",
@@ -87546,7 +84729,8 @@
       "regenCooldown": 1.4,
       "costPerBullet": 379.0,
       "requestedAmmoLoad": 37980.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_laserrepeater_pdc_s1",
@@ -87584,7 +84768,8 @@
       "regenCooldown": 0.605,
       "costPerBullet": 32.4,
       "requestedAmmoLoad": 12150.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "behr_laserrepeater_s10_securitynetwork",
@@ -87622,7 +84807,8 @@
       "regenCooldown": 1.24,
       "costPerBullet": 947.5,
       "requestedAmmoLoad": 331625.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mining_laser_s0_template",
@@ -87700,7 +84886,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 202.0,
       "requestedAmmoLoad": 20200.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "wep_tractorbeam_s1_utility_1",
@@ -87812,7 +84999,8 @@
       "regenCooldown": 1.74,
       "costPerBullet": 55.0,
       "requestedAmmoLoad": 5625.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_distortioncannon_vng_s2",
@@ -87850,7 +85038,8 @@
       "regenCooldown": 1.39,
       "costPerBullet": 90.0,
       "requestedAmmoLoad": 6750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s6_turret",
@@ -87888,7 +85077,8 @@
       "regenCooldown": 1.54,
       "costPerBullet": 854.0,
       "requestedAmmoLoad": 85750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "apar_ballisticscattergun_s2_shark",
@@ -87964,7 +85154,8 @@
       "regenCooldown": 1.68,
       "costPerBullet": 135.0,
       "requestedAmmoLoad": 6750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_ballisticcannon_s7_idris",
@@ -88078,7 +85269,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 112.0,
       "requestedAmmoLoad": 11200.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "klwe_laserrepeater_pdc_s2",
@@ -88116,7 +85308,8 @@
       "regenCooldown": 0.693,
       "costPerBullet": 32.4,
       "requestedAmmoLoad": 12150.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "rsi_perseus_ballisticcannon_b_s8",
@@ -88192,7 +85385,8 @@
       "regenCooldown": 1.82,
       "costPerBullet": 500.0,
       "requestedAmmoLoad": 1600.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s1",
@@ -88230,7 +85424,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 112.0,
       "requestedAmmoLoad": 11200.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "jokr_distortioncannon_s3",
@@ -88268,7 +85463,8 @@
       "regenCooldown": 1.76,
       "costPerBullet": 202.8,
       "requestedAmmoLoad": 10140.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "amrs_lasercannon_s6",
@@ -88306,7 +85502,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 683.0,
       "requestedAmmoLoad": 68300.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s7_lowpoly",
@@ -88344,7 +85541,8 @@
       "regenCooldown": 1.62,
       "costPerBullet": 1281.0,
       "requestedAmmoLoad": 128130.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "kron_lasercannon_s1",
@@ -88382,7 +85580,8 @@
       "regenCooldown": 1.6,
       "costPerBullet": 52.3,
       "requestedAmmoLoad": 7600.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "kbar_ballisticcannon_s3",
@@ -88494,7 +85693,8 @@
       "regenCooldown": 0.364,
       "costPerBullet": 155.0,
       "requestedAmmoLoad": 24800.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "behr_javelinballisticcannon_s7_lowpoly",
@@ -88609,7 +85809,8 @@
       "regenCooldown": 0.726,
       "costPerBullet": 21.6,
       "requestedAmmoLoad": 8100.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "klwe_laserrepeater_s6_lowpoly",
@@ -88647,7 +85848,8 @@
       "regenCooldown": 0.926,
       "costPerBullet": 163.7,
       "requestedAmmoLoad": 61387.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "amrs_lasercannon_s1",
@@ -88685,7 +85887,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 90.0,
       "requestedAmmoLoad": 9000.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "wep_tractorbeam_s1_military_1",
@@ -88759,7 +85962,8 @@
       "regenCooldown": 0.882,
       "costPerBullet": 109.1,
       "requestedAmmoLoad": 40912.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "vncl_gen2_plasmacannon_s4",
@@ -88797,7 +86001,8 @@
       "regenCooldown": 3.0,
       "costPerBullet": 450.0,
       "requestedAmmoLoad": 5625.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s6_securitynetwork",
@@ -88835,7 +86040,8 @@
       "regenCooldown": 1.54,
       "costPerBullet": 854.0,
       "requestedAmmoLoad": 85750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "bengal_turret_ballisticcannon_s8",
@@ -88911,7 +86117,8 @@
       "regenCooldown": 0.762,
       "costPerBullet": 32.4,
       "requestedAmmoLoad": 12150.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "amrs_lasercannon_s2",
@@ -88949,7 +86156,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 135.0,
       "requestedAmmoLoad": 13500.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "none_laserrepeater_s3",
@@ -88987,7 +86195,8 @@
       "regenCooldown": 0.727,
       "costPerBullet": 144.7,
       "requestedAmmoLoad": 25200.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "behr_laserrepeater_s10",
@@ -89025,7 +86234,8 @@
       "regenCooldown": 1.24,
       "costPerBullet": 947.5,
       "requestedAmmoLoad": 331625.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "klwe_laserrepeater_s5_idris_m",
@@ -89063,7 +86273,8 @@
       "regenCooldown": 0.882,
       "costPerBullet": 109.1,
       "requestedAmmoLoad": 40912.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "klwe_massdriver_s2",
@@ -89139,7 +86350,8 @@
       "regenCooldown": 3.0,
       "costPerBullet": 450.0,
       "requestedAmmoLoad": 5625.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_ballisticrepeater_vng_s2",
@@ -89215,7 +86427,8 @@
       "regenCooldown": 3.0,
       "costPerBullet": 375.0,
       "requestedAmmoLoad": 3750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "krig_lasercannon_s3",
@@ -89253,7 +86466,8 @@
       "regenCooldown": 1.76,
       "costPerBullet": 202.0,
       "requestedAmmoLoad": 20250.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "klwe_laserrepeater_s5_lowpoly",
@@ -89291,7 +86505,8 @@
       "regenCooldown": 0.882,
       "costPerBullet": 109.1,
       "requestedAmmoLoad": 40912.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "espr_ballisticcannon_s2",
@@ -89405,7 +86620,8 @@
       "regenCooldown": 0.952,
       "costPerBullet": 19.0,
       "requestedAmmoLoad": 10450.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "behr_ballisticgatling_s4",
@@ -89481,7 +86697,8 @@
       "regenCooldown": 0.4,
       "costPerBullet": 202.0,
       "requestedAmmoLoad": 20250.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "espr_lasercannon_s1",
@@ -89519,7 +86736,8 @@
       "regenCooldown": 1.21,
       "costPerBullet": 52.3,
       "requestedAmmoLoad": 7600.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "amrs_lasercannon_s5",
@@ -89557,7 +86775,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 455.0,
       "requestedAmmoLoad": 45500.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s8",
@@ -89595,7 +86814,8 @@
       "regenCooldown": 1.7,
       "costPerBullet": 1922.0,
       "requestedAmmoLoad": 192200.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s7_turret",
@@ -89633,7 +86853,8 @@
       "regenCooldown": 1.62,
       "costPerBullet": 1281.0,
       "requestedAmmoLoad": 128130.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "mining_laser_grin_arbor_s0",
@@ -89709,7 +86930,8 @@
       "regenCooldown": 1.52,
       "costPerBullet": 168.0,
       "requestedAmmoLoad": 16850.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_javelinballisticcannon_s7",
@@ -89823,7 +87045,8 @@
       "regenCooldown": 0.667,
       "costPerBullet": 40.5,
       "requestedAmmoLoad": 15187.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "wep_tractorbeam_s4_template",
@@ -90047,7 +87270,8 @@
       "regenCooldown": 1.47,
       "costPerBullet": 264.0,
       "requestedAmmoLoad": 38375.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s3",
@@ -90085,7 +87309,8 @@
       "regenCooldown": 1.33,
       "costPerBullet": 253.0,
       "requestedAmmoLoad": 25320.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "mining_laser_shin_klein_s2",
@@ -90201,7 +87426,8 @@
       "regenCooldown": 0.66,
       "costPerBullet": 37.0,
       "requestedAmmoLoad": 12932.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "behr_lasercannon_s7_idris_m",
@@ -90239,7 +87465,8 @@
       "regenCooldown": 1.62,
       "costPerBullet": 1281.0,
       "requestedAmmoLoad": 128130.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "apar_ballisticscattergun_s6",
@@ -90581,7 +87808,8 @@
       "regenCooldown": 0.25,
       "costPerBullet": 72.7,
       "requestedAmmoLoad": 27262.5,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "kbar_ballisticcannon_s1",
@@ -90695,7 +87923,8 @@
       "regenCooldown": 0.364,
       "costPerBullet": 440.0,
       "requestedAmmoLoad": 15400.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "rsi_ballisticcannon_s5_meteor_bespoke",
@@ -90771,7 +88000,8 @@
       "regenCooldown": 0.762,
       "costPerBullet": 47.5,
       "requestedAmmoLoad": 15825.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mxox_neutroncannon_s2",
@@ -90809,7 +88039,8 @@
       "regenCooldown": 0.381,
       "costPerBullet": 135.0,
       "requestedAmmoLoad": 13500.0,
-      "maxAmmoLoad": 90
+      "maxAmmoLoad": 90,
+      "maxRegenPerSec": 2112.0
     },
     {
       "className": "amrs_aagun_cc_s3",
@@ -90847,7 +88078,8 @@
       "regenCooldown": 0.364,
       "costPerBullet": 1.0,
       "requestedAmmoLoad": 100.0,
-      "maxAmmoLoad": 60
+      "maxAmmoLoad": 60,
+      "maxRegenPerSec": 1947.0
     },
     {
       "className": "mining_laser_drak_golem_s1",
@@ -90963,7 +88195,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 168.0,
       "requestedAmmoLoad": 16887.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "mining_laser_test",
@@ -91038,7 +88271,8 @@
       "regenCooldown": 1.24,
       "costPerBullet": 947.5,
       "requestedAmmoLoad": 331625.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "vncl_neutroncannon_s5",
@@ -91076,7 +88310,8 @@
       "regenCooldown": 0.485,
       "costPerBullet": 200.0,
       "requestedAmmoLoad": 5625.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "none_laserrepeater_s2",
@@ -91114,7 +88349,8 @@
       "regenCooldown": 0.693,
       "costPerBullet": 96.3,
       "requestedAmmoLoad": 16875.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mining_laser_thcn_impact_s2",
@@ -91270,7 +88506,8 @@
       "regenCooldown": 1.47,
       "costPerBullet": 569.0,
       "requestedAmmoLoad": 56900.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "vncl_gen2_plasmacannon_s2",
@@ -91308,7 +88545,8 @@
       "regenCooldown": 1.0,
       "costPerBullet": 60.0,
       "requestedAmmoLoad": 3750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "hrst_laserscattergun_s2",
@@ -91346,7 +88584,8 @@
       "regenCooldown": 0.346,
       "costPerBullet": 110.0,
       "requestedAmmoLoad": 17600.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "klwe_massdriver_s3",
@@ -91422,7 +88661,8 @@
       "regenCooldown": 1.62,
       "costPerBullet": 1281.0,
       "requestedAmmoLoad": 128130.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "asad_distortionrepeater_s2",
@@ -91460,7 +88700,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 38.5,
       "requestedAmmoLoad": 6737.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "hrst_laserrepeater_s5",
@@ -91498,7 +88739,8 @@
       "regenCooldown": 0.802,
       "costPerBullet": 187.1,
       "requestedAmmoLoad": 65485.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "glsn_laserrepeater_s3",
@@ -91536,7 +88778,8 @@
       "regenCooldown": 0.25,
       "costPerBullet": 48.5,
       "requestedAmmoLoad": 18187.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mining_laser_grin_arbor_s2",
@@ -91652,7 +88895,8 @@
       "regenCooldown": 0.25,
       "costPerBullet": 32.4,
       "requestedAmmoLoad": 12150.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mining_laser_thcn_impact_s1",
@@ -91844,7 +89088,8 @@
       "regenCooldown": 0.926,
       "costPerBullet": 163.7,
       "requestedAmmoLoad": 61387.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mining_laser_mpuv_arm",
@@ -92069,7 +89314,8 @@
       "regenCooldown": 1.79,
       "costPerBullet": 2883.0,
       "requestedAmmoLoad": 288300.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "bengal_ballisticgatling_s6",
@@ -92145,7 +89391,8 @@
       "regenCooldown": 0.84,
       "costPerBullet": 72.7,
       "requestedAmmoLoad": 27262.5,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "gats_ballisticcannon_s1",
@@ -92259,7 +89506,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 57.9,
       "requestedAmmoLoad": 10132.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mxox_neutronrepeater_s3",
@@ -92297,7 +89545,8 @@
       "regenCooldown": 0.8,
       "costPerBullet": 71.25,
       "requestedAmmoLoad": 23750.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "prar_distortionscattergun_s6",
@@ -92335,7 +89584,8 @@
       "regenCooldown": 0.421,
       "costPerBullet": 265.0,
       "requestedAmmoLoad": 63600.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "prar_distortionscattergun_s4",
@@ -92373,7 +89623,8 @@
       "regenCooldown": 0.382,
       "costPerBullet": 120.0,
       "requestedAmmoLoad": 28800.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "kron_lasercannon_s3",
@@ -92411,7 +89662,8 @@
       "regenCooldown": 1.76,
       "costPerBullet": 117.6,
       "requestedAmmoLoad": 17100.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s2_cleanair",
@@ -92449,7 +89701,8 @@
       "regenCooldown": 0.75,
       "costPerBullet": 168.0,
       "requestedAmmoLoad": 16887.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_lasercannon_s6",
@@ -92487,7 +89740,8 @@
       "regenCooldown": 1.54,
       "costPerBullet": 854.0,
       "requestedAmmoLoad": 85750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "wep_tractorbeam_s2_military_1",
@@ -92561,7 +89815,8 @@
       "regenCooldown": 0.882,
       "costPerBullet": 109.1,
       "requestedAmmoLoad": 40912.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mxox_neutronrepeater_s1",
@@ -92599,7 +89854,8 @@
       "regenCooldown": 0.726,
       "costPerBullet": 31.6,
       "requestedAmmoLoad": 10550.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "prar_distortionscattergun_s5",
@@ -92637,7 +89893,8 @@
       "regenCooldown": 0.401,
       "costPerBullet": 180.0,
       "requestedAmmoLoad": 63600.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "mining_laser_shin_klein_s0",
@@ -92753,7 +90010,8 @@
       "regenCooldown": 0.8,
       "costPerBullet": 84.0,
       "requestedAmmoLoad": 29120.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "klwe_massdriver_s10",
@@ -92869,7 +90127,8 @@
       "regenCooldown": 5.0,
       "costPerBullet": 43.0,
       "requestedAmmoLoad": 10200.0,
-      "maxAmmoLoad": 60
+      "maxAmmoLoad": 60,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "rsi_bespoke_ballisticcannon_a",
@@ -92945,7 +90204,8 @@
       "regenCooldown": 1.94,
       "costPerBullet": 1200.0,
       "requestedAmmoLoad": 128130.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_massdriver_s12",
@@ -93021,7 +90281,8 @@
       "regenCooldown": 1.98,
       "costPerBullet": 60.0,
       "requestedAmmoLoad": 3750.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "mining_laser_grin_lancet_s2",
@@ -93250,7 +90511,8 @@
       "regenCooldown": 1.54,
       "costPerBullet": 397.0,
       "requestedAmmoLoad": 57737.5,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_nova_ballisticgatling_s5",
@@ -93366,7 +90628,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 303.0,
       "requestedAmmoLoad": 30300.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "espr_ballisticcannon_s4",
@@ -93442,7 +90705,8 @@
       "regenCooldown": 0.5,
       "costPerBullet": 90.0,
       "requestedAmmoLoad": 9000.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "apar_ballisticscattergun_s3_shark",
@@ -93518,7 +90782,8 @@
       "regenCooldown": 0.693,
       "costPerBullet": 55.4,
       "requestedAmmoLoad": 19390.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "apar_ballisticscattergun_s3",
@@ -93594,7 +90859,8 @@
       "regenCooldown": 0.84,
       "costPerBullet": 72.7,
       "requestedAmmoLoad": 27262.5,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "espr_lasercannon_s3",
@@ -93632,7 +90898,8 @@
       "regenCooldown": 1.33,
       "costPerBullet": 117.6,
       "requestedAmmoLoad": 17100.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "none_laserrepeater_s1",
@@ -93670,7 +90937,8 @@
       "regenCooldown": 0.66,
       "costPerBullet": 64.3,
       "requestedAmmoLoad": 11250.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "vncl_plasmacannon_s5",
@@ -93708,7 +90976,8 @@
       "regenCooldown": 3.0,
       "costPerBullet": 450.0,
       "requestedAmmoLoad": 5625.0,
-      "maxAmmoLoad": 25
+      "maxAmmoLoad": 25,
+      "maxRegenPerSec": 3.0
     },
     {
       "className": "behr_ballisticgatling_s7_collector",
@@ -93784,7 +91053,8 @@
       "regenCooldown": 0.762,
       "costPerBullet": 55.4,
       "requestedAmmoLoad": 19390.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "hrst_laserrepeater_s6",
@@ -93822,7 +91092,8 @@
       "regenCooldown": 0.842,
       "costPerBullet": 280.8,
       "requestedAmmoLoad": 98262.0,
-      "maxAmmoLoad": 75
+      "maxAmmoLoad": 75,
+      "maxRegenPerSec": 15.0
     },
     {
       "className": "rpod_s3_fski_9x_s3",
