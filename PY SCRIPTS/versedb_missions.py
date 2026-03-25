@@ -398,6 +398,46 @@ def main():
                         "maxRank": max_display,
                     })
 
+                # Mission flow — detect phases from variable names
+                phase_patterns = [
+                    ("DefendLocationWrapper_EnemyShips", "Defend Location"),
+                    ("DefendEntities_AttackingShips", "Defend Entities"),
+                    ("EscortShipToLandingArea_InitialEnemies", "Escort to LZ"),
+                    ("EscortShipToLandingArea_EscortReinforcementsWave", "  + Reinforcement Waves"),
+                    ("EscortShipFromLandingArea_InitialEnemies", "Escort from LZ"),
+                    ("EscortShipFromLandingArea_EscortReinforcementsWave", "  + Reinforcement Waves"),
+                    ("EscortShipFromLandingArea_InterdictionShips", "  + Interdiction"),
+                    ("SearchAndDestroy_MissionLocation", "Search & Destroy"),
+                    ("SearchAndDestroy_Reinforcements", "  + Reinforcements"),
+                    ("SupportAttackedShip", "Defend Attacked Ship"),
+                    ("KillShip_MissionTargets", "Kill Targets"),
+                    ("InvisibleTimer_MissionTargets", "Timed Encounter"),
+                    ("WaveShips", "Wave Attack"),
+                    ("AmbushTime", "Ambush"),
+                    ("TargetSpawnDescriptions", "  + Target Ships"),
+                    ("EnableAlliedReinforcements", "  + Allied Support"),
+                    ("MissionTargets", "Destroy Targets"),
+                    ("BP_SpawnTarget", "Eliminate Target"),
+                    ("BP_SpawnDescriptions_Wave1", "FPS Wave 1"),
+                    ("BP_SpawnDescriptions_Wave2", "FPS Wave 2"),
+                    ("BP_SpawnDescriptions_Wave3", "FPS Wave 3"),
+                    ("BP_SpawnDescriptions_PreBossWave", "FPS Boss Wave"),
+                    ("NumberOfWaves", "Multi-Wave Defense"),
+                    ("DefendingShips", "Defend Cargo"),
+                    ("TargetComponents", "Investigation"),
+                    ("ExistingEntitiesToFind_BP", "Find & Destroy Targets"),
+                    ("ShipsToSpawn_BP", "  + Enemy Ship Spawns"),
+                    ("OverrideTurretHosility_BP", "  + Hostile Turrets"),
+                    ("EntitySpawnDescriptions_BP", "Eliminate Spawned Enemies"),
+                    ("BP_SpawnDescriptions", "FPS Combat"),
+                ]
+                flow = []
+                seen = set()
+                for pattern, label in phase_patterns:
+                    if pattern in body and label not in seen:
+                        flow.append(label)
+                        seen.add(label)
+
                 # Cooldown & time limit (may be on attrs or in body)
                 combined = attrs + body
                 personal_cd = re.search(r'personalCooldownTime="([^"]+)"', combined)
@@ -422,6 +462,8 @@ def main():
                     entry["abandonCooldownMin"] = int(float(abandoned_cd.group(1)))
                 if time_limit:
                     entry["timeLimitMin"] = int(float(time_limit.group(1)))
+                if flow:
+                    entry["missionFlow"] = flow
                 if desc:
                     entry["description"] = desc
                 if rep_reqs:
