@@ -1935,8 +1935,53 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
         "orig_315p": {**_300_BASE_LOADOUT,
             "hardpoint_tractor.turret_left": "grin_tractorbeam_s2",
         },
-        "orig_325a": {**_300_BASE_LOADOUT},
-        "orig_350r": {**_300_BASE_LOADOUT},
+        "orig_325a": {
+            "hardpoint_weapon_nose":             "mount_gimbal_s4",
+            "hardpoint_weapon_nose.hardpoint_class_2": "behr_lasercannon_s4",
+            "hardpoint_weapon_wing_left":        "mount_gimbal_s3",
+            "hardpoint_weapon_wing_left.hardpoint_class_2": "behr_ballisticrepeater_s3",
+            "hardpoint_weapon_wing_right":       "mount_gimbal_s3",
+            "hardpoint_weapon_wing_right.hardpoint_class_2": "behr_ballisticrepeater_s3",
+            "hardpoint_weapon_missilerack_left":  "mrck_s03_behr_dual_s02",
+            "hardpoint_weapon_missilerack_left.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_weapon_missilerack_left.missile_02_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_weapon_missilerack_right": "mrck_s03_behr_dual_s02",
+            "hardpoint_weapon_missilerack_right.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_weapon_missilerack_right.missile_02_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_weapon_missilerack_center": "mrck_s05_behr_quad_s03",
+            "hardpoint_weapon_missilerack_center.missile_01_attach": "misl_s03_cs_fski_arrester",
+            "hardpoint_weapon_missilerack_center.missile_02_attach": "misl_s03_cs_fski_arrester",
+            "hardpoint_weapon_missilerack_center.missile_03_attach": "misl_s03_cs_fski_arrester",
+            "hardpoint_weapon_missilerack_center.missile_04_attach": "misl_s03_cs_fski_arrester",
+            "hardpoint_shield_generator_left":   "shld_godi_s01_allstop_scitem",
+            "hardpoint_shield_generator_right":  "shld_godi_s01_allstop_scitem",
+            "hardpoint_cooler_left":             "cool_aegs_s01_bracer_scitem",
+            "hardpoint_cooler_right":            "cool_aegs_s01_bracer_scitem",
+            "hardpoint_power_plant":             "powr_aegs_s01_regulus_scitem",
+            "hardpoint_quantum_drive":           "qdrv_wetk_s01_beacon_scitem",
+            "hardpoint_radar":                   "radr_grnp_s01_ecouter",
+            "hardpoint_life_support":            "lfsp_tydt_s01_comfortair",
+        },
+        "orig_350r": {
+            "hardpoint_weapon_nose":             "mount_gimbal_s3",
+            "hardpoint_weapon_nose.hardpoint_class_2": "behr_lasercannon_s3",
+            "hardpoint_weapon_wing_left":        "mount_gimbal_s3",
+            "hardpoint_weapon_wing_left.hardpoint_class_2": "klwe_laserrepeater_s3",
+            "hardpoint_weapon_wing_right":       "mount_gimbal_s3",
+            "hardpoint_weapon_wing_right.hardpoint_class_2": "klwe_laserrepeater_s3",
+            "hardpoint_weapon_missilerack_left":  "mrck_s02_behr_single_s02",
+            "hardpoint_weapon_missilerack_left.missile_01_attach": "misl_s02_cs_thcn_strikeforce",
+            "hardpoint_weapon_missilerack_right": "mrck_s02_behr_single_s02",
+            "hardpoint_weapon_missilerack_right.missile_01_attach": "misl_s02_cs_thcn_strikeforce",
+            "hardpoint_shield_generator_left":   "shld_yorm_s01_targa_scitem",
+            "hardpoint_shield_generator_right":  "shld_yorm_s01_targa_scitem",
+            "hardpoint_cooler_left":             "cool_acom_s01_quickcool_scitem",
+            "hardpoint_cooler_right":            "cool_acom_s01_quickcool_scitem",
+            "hardpoint_power_plant":             "powr_acom_s01_sunflare_scitem",
+            "hardpoint_quantum_drive":           "qdrv_rsi_s01_eos_scitem",
+            "hardpoint_radar":                   "radr_nave_s01_snsr6",
+            "hardpoint_life_support":            "lfsp_tydt_s01_comfortair",
+        },
     }
     for ship_cls, fallback in FALLBACK_LOADOUTS.items():
         if ship_cls in ships and not ships[ship_cls].get("defaultLoadout"):
@@ -3049,6 +3094,31 @@ def main():
                 hp for hp in ships[ship_cls].get("hardpoints", [])
                 if hp["id"].lower() not in {x.lower() for x in excluded_ids}
             ]
+
+    # Hardpoint modifications for specific variants
+    if "orig_325a" in ships:
+        s325 = ships["orig_325a"]
+        # Nose is S4 on 325a (S3 on other 300-series)
+        for hp in s325.get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_weapon_nose":
+                hp["minSize"] = 4
+                hp["maxSize"] = 4
+        # 325a has a third (bespoke center) missile rack
+        s325["hardpoints"].append({
+            "id": "hardpoint_weapon_missilerack_center",
+            "label": "Missile Rack",
+            "type": "MissileLauncher",
+            "subtypes": "",
+            "minSize": 5,
+            "maxSize": 5,
+            "flags": "",
+            "allTypes": [{"type": "MissileLauncher", "subtypes": ""}],
+        })
+        # Upgrade the two side racks from S2 to S3
+        for hp in s325.get("hardpoints", []):
+            if hp["id"].lower() in ("hardpoint_weapon_missilerack_left", "hardpoint_weapon_missilerack_right"):
+                hp["minSize"] = 3
+                hp["maxSize"] = 3
 
     # Manual cargo overrides for ships missing DCB cargo data
     CARGO_OVERRIDES = {"ORIG_300i": 8, "orig_315p": 12, "orig_325a": 4, "orig_350r": 0}
