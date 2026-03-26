@@ -1,0 +1,227 @@
+:host {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.finder-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  padding: 14px;
+  gap: 12px;
+  max-width: 900px;
+  width: 100%;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+
+.filter-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.filter-input {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 5px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  width: 250px;
+
+  &:focus { border-color: var(--accent2); }
+}
+
+.selected-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--accent2);
+  padding: 4px 10px;
+}
+
+.chip-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.chip-meta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.chip-close {
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 14px;
+  margin-left: 4px;
+  &:hover { color: var(--text); }
+}
+
+.search-results {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  max-height: 350px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.search-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--bg3);
+  transition: background 0.1s;
+
+  &:hover { background: var(--bg3); }
+  &:last-child { border-bottom: none; }
+}
+
+.sr-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sr-meta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.results-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.results-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.results-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.results-grid {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+  align-content: start;
+  justify-content: center;
+}
+
+.result-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.15s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px; height: 100%;
+    background: var(--border2);
+    transition: background 0.15s;
+  }
+
+  &:hover { border-color: var(--border2); }
+  &:hover::before { background: var(--accent); }
+}
+
+.result-ship-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.result-ship-meta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.result-slot {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--accent2);
+  margin-top: 6px;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 8px;
+  opacity: 0.5;
+}
+
+.empty-icon { font-size: 48px; }
+
+.empty-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.empty-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--text3);
+}

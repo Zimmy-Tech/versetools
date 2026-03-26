@@ -1,0 +1,647 @@
+@if (!data.selectedShip()) {
+  <div class="empty-state">
+    <div class="empty-icon">⬡</div>
+    <div class="empty-title">Select a Ship</div>
+    <div class="empty-sub">Choose a ship from the ship picker at the top to build a loadout</div>
+  </div>
+} @else {
+  <div class="loadout-builder">
+
+    <div class="loadout-main">
+
+      <!-- Ship Side Panel -->
+      <div class="ship-side-panel">
+        <div class="ship-header-row">
+        <div class="ship-header-content">
+        <div class="ship-title">
+          <div class="ship-name-big">{{ data.selectedShip()!.name }}</div>
+          <div class="ship-mfr-big">{{ data.selectedShip()!.manufacturer }}</div>
+          <div class="ship-stats-row">
+            <div class="stat-pill">
+              <span class="stat-pill-label">Role</span>
+              <span class="stat-pill-val">{{ data.selectedShip()!.role || '—' }}</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Career</span>
+              <span class="stat-pill-val">{{ data.selectedShip()!.career || '—' }}</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Crew</span>
+              <span class="stat-pill-val">{{ data.selectedShip()!.crew }}</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Mass</span>
+              <span class="stat-pill-val">{{ massDisplay() }}</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Size</span>
+              <span class="stat-pill-val">{{ (data.selectedShip()!.size || '—') | uppercase }}</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Cargo</span>
+              <span class="stat-pill-val">{{ data.selectedShip()!.cargoCapacity ?? 0 }} SCU</span>
+            </div>
+            @if (data.selectedShip()!.oreCapacity) {
+              <div class="stat-pill">
+                <span class="stat-pill-label">Ore</span>
+                <span class="stat-pill-val">{{ data.selectedShip()!.oreCapacity }} SCU</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Stats Blocks -->
+        <div class="stats-blocks">
+
+          <!-- Flight Data -->
+          <div class="stats-block block-flight">
+            <div class="stats-block-title">Flight Data</div>
+            <div class="stats-block-body">
+            @if (data.selectedShip()!.scmSpeed || data.selectedShip()!.accelFwd) {
+              <div class="flight-group">
+                <div class="flight-group-label">Speed (m/s)</div>
+                <div class="flight-stat">
+                  <span class="fs-label">SCM</span>
+                  <span class="fs-val">{{ data.selectedShip()!.scmSpeed }}</span>
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">NAV</span>
+                  <span class="fs-val">{{ data.selectedShip()!.navSpeed }}</span>
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">AB Fwd</span>
+                  <span class="fs-val accent">{{ data.selectedShip()!.boostSpeedFwd }}</span>
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">AB Bwd</span>
+                  <span class="fs-val">{{ data.selectedShip()!.boostSpeedBwd }}</span>
+                </div>
+              </div>
+              <div class="flight-divider"></div>
+              <div class="flight-group">
+                <div class="flight-group-label">Rotation (°/s)</div>
+                @if (pitchRot(); as p) {
+                  <div class="flight-stat">
+                    <span class="fs-label">Pitch</span>
+                    <span class="fs-val">{{ p.base }}</span>
+                    @if (p.boosted !== p.base) {
+                      <span class="fs-slash">/</span><span class="fs-boost">{{ p.boosted }}</span>
+                    }
+                  </div>
+                }
+                @if (yawRot(); as y) {
+                  <div class="flight-stat">
+                    <span class="fs-label">Yaw</span>
+                    <span class="fs-val">{{ y.base }}</span>
+                    @if (y.boosted !== y.base) {
+                      <span class="fs-slash">/</span><span class="fs-boost">{{ y.boosted }}</span>
+                    }
+                  </div>
+                }
+                @if (rollRot(); as r) {
+                  <div class="flight-stat">
+                    <span class="fs-label">Roll</span>
+                    <span class="fs-val">{{ r.base }}</span>
+                    @if (r.boosted !== r.base) {
+                      <span class="fs-slash">/</span><span class="fs-boost">{{ r.boosted }}</span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="flight-divider"></div>
+              <div class="flight-group">
+                <div class="flight-group-label">Fuel (mSCU)</div>
+                @if (data.selectedShip()!.hydrogenFuelCapacity) {
+                  <div class="flight-stat">
+                    <span class="fs-label">Hydrogen</span>
+                    <span class="fs-val">{{ data.selectedShip()!.hydrogenFuelCapacity }}</span>
+                  </div>
+                }
+                @if (data.selectedShip()!.quantumFuelCapacity) {
+                  <div class="flight-stat">
+                    <span class="fs-label">Quantum</span>
+                    <span class="fs-val">{{ data.selectedShip()!.quantumFuelCapacity }}</span>
+                  </div>
+                }
+              </div>
+              @if (data.selectedShip()!.boostRampUp) {
+                <div class="flight-divider"></div>
+                <div class="flight-group">
+                  <div class="flight-group-label">AB Ramp</div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Up / Down</span>
+                    <span class="fs-val">{{ data.selectedShip()!.boostRampUp }}s / {{ data.selectedShip()!.boostRampDown }}s</span>
+                  </div>
+                </div>
+              }
+              <div class="flight-divider"></div>
+              <div class="flight-group">
+                <div class="flight-group-label">Acceleration (G)</div>
+                <div class="flight-stat">
+                  <span class="fs-label">Fwd</span>
+                  <span class="fs-val">{{ data.selectedShip()!.accelFwd }}</span>
+                  @if (data.selectedShip()!.accelAbFwd) {
+                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbFwd }}</span>
+                  }
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">Retro</span>
+                  <span class="fs-val">{{ data.selectedShip()!.accelRetro }}</span>
+                  @if (data.selectedShip()!.accelAbRetro) {
+                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbRetro }}</span>
+                  }
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">Strafe</span>
+                  <span class="fs-val">{{ data.selectedShip()!.accelStrafe }}</span>
+                  @if (data.selectedShip()!.accelAbStrafe) {
+                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbStrafe }}</span>
+                  }
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">Up</span>
+                  <span class="fs-val">{{ data.selectedShip()!.accelUp }}</span>
+                  @if (data.selectedShip()!.accelAbUp) {
+                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbUp }}</span>
+                  }
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">Down</span>
+                  <span class="fs-val">{{ data.selectedShip()!.accelDown }}</span>
+                  @if (data.selectedShip()!.accelAbDown) {
+                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbDown }}</span>
+                  }
+                </div>
+                @if (data.selectedShip()!.accelTestedDate) {
+                  <div class="flight-stat tested-date">
+                    <span class="fs-label">Tested</span>
+                    <span class="fs-val">{{ data.selectedShip()!.accelTestedDate }}</span>
+                  </div>
+                }
+              </div>
+            }
+            </div><!-- /stats-block-body -->
+          </div>
+
+          <!-- Hull Data -->
+          <div class="stats-block block-hull">
+            <div class="stats-block-title">Hull Data</div>
+            <div class="stats-block-body">
+            @if (data.selectedShip()!.totalHp) {
+              <div class="flight-group">
+                <div class="flight-group-label">Hull (HP)</div>
+                <div class="flight-stat">
+                  <span class="fs-label">Total</span>
+                  <span class="fs-val">{{ data.selectedShip()!.totalHp }}</span>
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">Vital</span>
+                  <span class="fs-val">{{ data.selectedShip()!.bodyHp }}</span>
+                </div>
+                @if (data.selectedShip()!.armorHp) {
+                  <div class="flight-stat">
+                    <span class="fs-label">Armor</span>
+                    <span class="fs-val">{{ data.selectedShip()!.armorHp }}</span>
+                  </div>
+                }
+              </div>
+              @if (data.selectedShip()!.armorDeflectPhys) {
+                <div class="flight-divider"></div>
+                <div class="flight-group">
+                  <div class="flight-group-label">Armor Deflect</div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Phys</span>
+                    <span class="fs-val">{{ data.selectedShip()!.armorDeflectPhys }}</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Enrg</span>
+                    <span class="fs-val">{{ data.selectedShip()!.armorDeflectEnrg }}</span>
+                  </div>
+                </div>
+              }
+              @if (data.selectedShip()!.hullDmgPhys !== undefined) {
+                <div class="flight-divider"></div>
+                <div class="flight-group">
+                  <div class="flight-group-label">Hull Damage Mult</div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Phys</span>
+                    <span class="fs-val">{{ ((data.selectedShip()!.hullDmgPhys! - 1) * 100).toFixed(0) }}%</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Enrg</span>
+                    <span class="fs-val">{{ ((data.selectedShip()!.hullDmgEnrg! - 1) * 100).toFixed(0) }}%</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Dist</span>
+                    <span class="fs-val">{{ ((data.selectedShip()!.hullDmgDist! - 1) * 100).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              }
+              @if (data.selectedShip()!.signalEM !== undefined) {
+                <div class="flight-divider"></div>
+                <div class="flight-group">
+                  <div class="flight-group-label">Signature</div>
+                  <div class="flight-stat">
+                    <span class="fs-label">EM</span>
+                    <span class="fs-val">{{ signalPct(data.selectedShip()!.signalEM) }}</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Cross</span>
+                    <span class="fs-val">{{ signalPct(data.selectedShip()!.signalCrossSection) }}</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">IR</span>
+                    <span class="fs-val">{{ signalPct(data.selectedShip()!.signalIR) }}</span>
+                  </div>
+                </div>
+              }
+              @if (data.selectedShip()!.dimLength) {
+                <div class="flight-divider"></div>
+                <div class="flight-group">
+                  <div class="flight-group-label">Dimensions (m)</div>
+                  <div class="flight-stat">
+                    <span class="fs-label">W</span>
+                    <span class="fs-val">{{ data.selectedShip()!.dimWidth?.toFixed(0) }}</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">L</span>
+                    <span class="fs-val">{{ data.selectedShip()!.dimLength?.toFixed(0) }}</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">H</span>
+                    <span class="fs-val">{{ data.selectedShip()!.dimHeight?.toFixed(0) }}</span>
+                  </div>
+                </div>
+              }
+              @if (data.selectedShip()!.cmDecoys || data.selectedShip()!.cmNoise) {
+                <div class="flight-divider"></div>
+                <div class="flight-group">
+                  <div class="flight-group-label">Countermeasures</div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Decoys</span>
+                    <span class="fs-val">{{ data.selectedShip()!.cmDecoys ?? 0 }}</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Noise</span>
+                    <span class="fs-val">{{ data.selectedShip()!.cmNoise ?? 0 }}</span>
+                  </div>
+                </div>
+              }
+              @if (data.selectedShip()!.salvageSpeedMult) {
+                <div class="flight-divider"></div>
+                <div class="flight-group">
+                  <div class="flight-group-label">Salvage Hull</div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Speed</span>
+                    <span class="fs-val">{{ data.selectedShip()!.salvageSpeedMult }}x</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Radius</span>
+                    <span class="fs-val">{{ data.selectedShip()!.salvageRadiusMult }}x</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Efficiency</span>
+                    <span class="fs-val">{{ ((data.selectedShip()!.salvageEfficiency ?? 0) * 100).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              }
+            }
+            </div><!-- /stats-block-body -->
+          </div>
+
+          <!-- Misc -->
+          <div class="stats-block block-misc">
+            <div class="stats-block-title">Misc</div>
+            <div class="stats-block-body">
+            @if (data.selectedShip()!.insuranceStandardMinutes) {
+              <div class="flight-group">
+                <div class="flight-group-label">Insurance</div>
+                <div class="flight-stat">
+                  <span class="fs-label">Std</span>
+                  <span class="fs-val">{{ data.selectedShip()!.insuranceStandardMinutes }}m</span>
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">Exp</span>
+                  <span class="fs-val">{{ data.selectedShip()!.insuranceExpediteMinutes }}m</span>
+                </div>
+                <div class="flight-stat">
+                  <span class="fs-label">Cost</span>
+                  <span class="fs-val accent">{{ data.selectedShip()!.insuranceExpediteCost }} aUEC</span>
+                </div>
+              </div>
+              <div class="flight-divider"></div>
+            }
+            @if (shipBuyPrices().length) {
+              <div class="flight-group">
+                <div class="flight-group-label">Buy Price</div>
+                @for (bp of shipBuyPrices(); track bp.shop) {
+                  <div class="buy-price-entry">
+                    <div class="buy-shop">{{ bp.shop }}</div>
+                    <div class="buy-divider"></div>
+                    <div class="buy-val">{{ bp.price.toLocaleString('en-US') }} aUEC</div>
+                  </div>
+                }
+              </div>
+            }
+            </div><!-- /stats-block-body -->
+          </div>
+
+        </div><!-- /stats-blocks -->
+        </div><!-- /ship-header-content -->
+        </div><!-- /ship-header-row -->
+      </div><!-- /ship-side-panel -->
+
+      <!-- Loadout Area -->
+      <div class="loadout-right">
+
+      <!-- Loadout Controls -->
+      <div class="loadout-controls">
+        <button class="btn-reset" (click)="data.resetLoadout()">Reset to Default</button>
+        <button class="btn-cart-add" (click)="data.addNonStockToCart()">Add Non-Stock to Cart</button>
+      </div>
+
+      <!-- Four-column layout: Weapons | Shields+PP | Everything Else | Stats -->
+      <div class="three-columns">
+
+        <!-- Left: Weapons & Missiles (mining/salvage ships show tools first) -->
+        <div class="hardpoints-scroll col-weapons">
+
+          <!-- Mining/Salvage (before weapons on mining/salvage ships) -->
+          @if (isMiningShip() && miningSlots().length) {
+            <div class="slot-group-label">Mining / Salvage <span class="collapse-btn" (click)="toggleSection('mining')">{{ isCollapsed('mining') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of miningSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('mining')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('mining')"
+                                      [miningCombined]="getCombinedTotals(sub.id)" />
+                  @for (mod of subSlotsMap()[sub.id] ?? []; track mod.id) {
+                    <div class="sub-slot-indent">
+                      <app-hardpoint-slot [hardpoint]="mod" [collapsed]="isCollapsed('mining')" />
+                    </div>
+                  }
+                </div>
+              }
+            }
+          }
+
+          @if (pilotGunSlots().length) {
+            <div class="slot-group-label">Pilot Weapons <span class="collapse-btn" (click)="toggleSection('pilot-guns')">{{ isCollapsed('pilot-guns') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of pilotGunSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('pilot-guns')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('pilot-guns')"
+                                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                </div>
+              }
+            }
+          }
+          @if (crewGunSlots().length) {
+            <div class="slot-group-label">Crew Weapons <span class="collapse-btn" (click)="toggleSection('crew-guns')">{{ isCollapsed('crew-guns') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of crewGunSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('crew-guns')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('crew-guns')"
+                                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                </div>
+              }
+            }
+          }
+          @if (missileSlots().length) {
+            <div class="slot-group-label">Missiles <span class="collapse-btn" (click)="toggleSection('missiles')">{{ isCollapsed('missiles') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of missileSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('missiles')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('missiles')"
+                                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                </div>
+              }
+            }
+          }
+
+          <!-- Mining/Salvage (after weapons on non-mining ships) -->
+          @if (!isMiningShip() && miningSlots().length) {
+            <div class="slot-group-label">Mining / Salvage <span class="collapse-btn" (click)="toggleSection('mining')">{{ isCollapsed('mining') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of miningSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('mining')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('mining')"
+                                      [miningCombined]="getCombinedTotals(sub.id)" />
+                  @for (mod of subSlotsMap()[sub.id] ?? []; track mod.id) {
+                    <div class="sub-slot-indent">
+                      <app-hardpoint-slot [hardpoint]="mod" />
+                    </div>
+                  }
+                </div>
+              }
+            }
+          }
+        </div>
+
+        <!-- Center: Shields & Power Plants -->
+        <div class="hardpoints-scroll col-defense">
+
+          @if (shieldSlots().length) {
+            <div class="slot-group-label">Shields <span class="collapse-btn" (click)="toggleSection('shields')">{{ isCollapsed('shields') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of primaryShieldSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('shields')" />
+            }
+            @if (excessShieldSlots().length) {
+              <div class="slot-group-label excess-label">Excess Shields <span>(HP pool only)</span></div>
+              @for (hp of excessShieldSlots(); track hp.id) {
+                <div class="excess-shield">
+                  <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('shields')" />
+                </div>
+              }
+            }
+          }
+
+          @if (ppSlots().length) {
+            <div class="slot-group-label">Power Plant <span class="collapse-btn" (click)="toggleSection('power')">{{ isCollapsed('power') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of ppSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('power')" />
+            }
+          }
+
+          @if (tractorSlots().length) {
+            <div class="slot-group-label">Tractor Beam <span class="collapse-btn" (click)="toggleSection('tractor')">{{ isCollapsed('tractor') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of tractorSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('tractor')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('tractor')" />
+                </div>
+              }
+            }
+          }
+
+          @if (pdcSlots().length) {
+            <div class="slot-group-label">Point Defense <span class="collapse-btn" (click)="toggleSection('pdc')">{{ isCollapsed('pdc') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of pdcSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('pdc')" />
+            }
+          }
+
+          <!-- Test Component Block (UI testbed) -->
+          @if (data.selectedShip()) {
+            <div class="slot-group-label">Test Component</div>
+            <div class="test-block">
+
+              <!-- VARIANT A: Jane's Spec Card -->
+              <div class="jane-card">
+                <div class="jane-header">
+                  <span class="jane-class">SHD-II</span>
+                  <span class="jane-divider-h"></span>
+                  <span class="jane-title">Phantom Shield Gen</span>
+                </div>
+                <div class="jane-meta">
+                  <span>BASILISK</span>
+                  <span>Grade C</span>
+                  <span>Industrial</span>
+                </div>
+                <div class="jane-body">
+                  <div class="jane-primary">
+                    <span class="jane-primary-val">45,000</span>
+                    <span class="jane-primary-unit">HP</span>
+                  </div>
+                  <div class="jane-specs">
+                    <div class="jane-spec"><span class="jane-spec-k">REGEN</span><span class="jane-spec-v">850/s</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">DMG DELAY</span><span class="jane-spec-v">6.1s</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">DOWN DELAY</span><span class="jane-spec-v">12.1s</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">EM SIG</span><span class="jane-spec-v">2,480</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">PWR MIN</span><span class="jane-spec-v">4 bars</span></div>
+                  </div>
+                </div>
+                <div class="jane-footer">
+                  <span class="jane-ref">REF SHD-BASL-S02-001</span>
+                </div>
+              </div>
+
+              <!-- VARIANT B: Tactical Readout -->
+              <div class="tac-card">
+                <div class="tac-stripe"></div>
+                <div class="tac-content">
+                  <div class="tac-top">
+                    <span class="tac-size">S3</span>
+                    <span class="tac-name">Vortex Cooler</span>
+                    <span class="tac-mfr">J-SPAN</span>
+                  </div>
+                  <div class="tac-grid">
+                    <div class="tac-cell">
+                      <div class="tac-cell-val">185k</div>
+                      <div class="tac-cell-key">COOLING</div>
+                    </div>
+                    <div class="tac-cell">
+                      <div class="tac-cell-val">4.2</div>
+                      <div class="tac-cell-key">IR SIG</div>
+                    </div>
+                    <div class="tac-cell">
+                      <div class="tac-cell-val">2</div>
+                      <div class="tac-cell-key">PWR PIPS</div>
+                    </div>
+                    <div class="tac-cell">
+                      <div class="tac-cell-val">1,400</div>
+                      <div class="tac-cell-key">COMP HP</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- VARIANT C: Compact Inline -->
+              <div class="cmp-card">
+                <div class="cmp-tag">S1</div>
+                <div class="cmp-info">
+                  <div class="cmp-name">Nova Repeater <span class="cmp-type">ENERGY</span></div>
+                  <div class="cmp-stats">
+                    <span class="cmp-kv"><em>DPS</em> 420</span>
+                    <span class="cmp-sep">|</span>
+                    <span class="cmp-kv"><em>ALPHA</em> 28.0</span>
+                    <span class="cmp-sep">|</span>
+                    <span class="cmp-kv"><em>RPM</em> 900</span>
+                    <span class="cmp-sep">|</span>
+                    <span class="cmp-kv"><em>RNG</em> 2.1km</span>
+                    <span class="cmp-sep">|</span>
+                    <span class="cmp-kv"><em>AMMO</em> 75</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          }
+        </div>
+
+        <!-- Right: Coolers, QD, Radar, LS -->
+        <div class="hardpoints-scroll col-systems">
+
+          @if (coolerSlots().length) {
+            <div class="slot-group-label">Coolers <span class="collapse-btn" (click)="toggleSection('coolers')">{{ isCollapsed('coolers') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of coolerSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('coolers')" />
+            }
+          }
+
+          @if (qdSlots().length) {
+            <div class="slot-group-label">Quantum Drive <span class="collapse-btn" (click)="toggleSection('qd')">{{ isCollapsed('qd') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of qdSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
+            }
+          }
+
+          @if (radarSlots().length) {
+            <div class="slot-group-label">Radar <span class="collapse-btn" (click)="toggleSection('radar')">{{ isCollapsed('radar') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of radarSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('radar')" />
+            }
+          }
+
+          @if (lsSlots().length) {
+            <div class="slot-group-label">Life Support <span class="collapse-btn" (click)="toggleSection('ls')">{{ isCollapsed('ls') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of lsSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('ls')" />
+            }
+          }
+        </div>
+
+        <!-- Right: Power Block + DPS Output + Details -->
+        <div class="stats-column">
+          <div class="ship-image-inset">
+            <img [src]="'ship-images/' + data.selectedShip()!.className.toLowerCase() + '.webp'"
+                 [alt]="data.selectedShip()!.name"
+                 (error)="$any($event.target).style.display='none'"
+                 loading="lazy">
+          </div>
+          <app-power-bars />
+          <app-dps-panel />
+
+        </div>
+
+      </div>
+      </div><!-- /loadout-right -->
+    </div>
+
+  </div>
+
+  @if (data.focusedItem()) {
+    <div class="focus-overlay" (click)="data.focusedItem.set(null)"></div>
+    <div class="focus-popout">
+      <div class="focus-header">
+        <span class="focus-title">{{ data.focusedItem()!.name }}</span>
+        <span class="focus-close" (click)="data.focusedItem.set(null)">&times;</span>
+      </div>
+      <div class="focus-body">
+        <table class="focus-table">
+          @for (row of focusRows(); track row.key) {
+            <tr>
+              <td class="fk">{{ row.key }}</td>
+              <td class="fv">{{ row.value }}</td>
+            </tr>
+          }
+        </table>
+      </div>
+    </div>
+  }
+}

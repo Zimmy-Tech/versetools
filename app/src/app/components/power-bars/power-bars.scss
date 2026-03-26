@@ -1,0 +1,193 @@
+.pb-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  min-width: 0;
+}
+
+.pb-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 5px;
+  margin-bottom: 4px;
+  text-align: center;
+  width: 100%;
+}
+
+.pb-controls-row {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.flight-mode-toggle {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.fm-btn {
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text3);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 6px 9px;
+  cursor: pointer;
+  line-height: 1;
+
+  &:last-child { border-bottom: none; }
+
+  &.active {
+    background: var(--accent);
+    color: #000;
+  }
+
+  &:not(.active):hover { color: var(--text2); }
+}
+
+.pb-grid {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  justify-content: center;
+  // height is set dynamically via [style.height.px] binding in the template
+}
+
+.pb-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+  cursor: default;
+
+  &.restricted {
+    .pb-block { background: var(--border) !important; opacity: 0.4; }
+  }
+  &.placeholder {
+    .pb-block { background: var(--border); opacity: 0.2; }
+    .pb-label { opacity: 0.4; }
+  }
+}
+
+.pb-spacer {
+  // flex value set inline to push blocks to bottom
+  min-height: 0;
+}
+
+.pb-block {
+  width: 28px;
+  height: 10px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  transition: background 0.1s;
+
+  &.active {
+    background: var(--accent);
+  }
+
+  // Blocks below the powerMin threshold — only style when inactive
+  &.deadzone:not(.active) {
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  // Merged minimum-band block: taller block representing all powerMin pips together
+  &.pb-block-minband {
+    border-radius: 2px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  &.clickable {
+    cursor: pointer;
+    &:hover { filter: brightness(1.4); }
+  }
+}
+
+.pb-bars-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.pb-label-row {
+  display: flex;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.pb-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  width: 28px;
+
+  &.placeholder { opacity: 0.4; }
+
+  .pb-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    opacity: 0.8;
+    filter: brightness(1.2);
+
+    &.clickable {
+      cursor: pointer;
+      &:hover { opacity: 1; filter: brightness(1.5); }
+    }
+  }
+}
+
+.pb-budget {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+  text-align: center;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+
+  &.over { color: #e84040; }
+}
+
+.pb-cooling {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--green, #40c080);
+  text-align: center;
+  padding-top: 2px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+
+  &.deficit { color: #e84040; }
+
+  .pb-cooling-label {
+    color: var(--text3);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}

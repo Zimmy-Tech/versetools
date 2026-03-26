@@ -1,0 +1,135 @@
+.components-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  padding: 14px;
+  gap: 12px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+
+.filter-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.filter-select, .filter-input {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 5px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+
+  &:focus { border-color: var(--accent2); }
+}
+
+.filter-input { width: 120px; }
+
+.count-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.component-grid {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+  align-content: start;
+}
+
+.comp-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.15s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px; height: 100%;
+    background: var(--border2);
+    transition: background 0.15s;
+  }
+
+  &:hover { border-color: var(--border2); }
+  &:hover::before { background: var(--accent); }
+}
+
+.comp-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.comp-card-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.comp-card-mfr {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  margin-top: 1px;
+}
+
+.comp-type-badge {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.comp-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+
+.comp-stat { display: flex; flex-direction: column; gap: 1px; min-width: 60px; }
+.comp-stat-label {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.comp-stat-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+  &.accent { color: var(--accent); }
+  &.green  { color: var(--green); }
+}

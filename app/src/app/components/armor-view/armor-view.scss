@@ -1,0 +1,221 @@
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+  justify-content: center;
+  padding: 16px;
+}
+
+.armor-damage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  max-width: 500px;
+}
+
+// ── Filter bar ───────────────────────────────────────────
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+  flex-shrink: 0;
+}
+
+.filter-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.filter-select {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 3px 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  outline: none;
+  cursor: pointer;
+  &:focus { border-color: var(--accent2); }
+}
+
+.weapon-picker { min-width: 300px; }
+
+// ── Weapon info ──────────────────────────────────────────
+
+.weapon-info {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.weapon-info-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+.weapon-info-size {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.08);
+  border: 1px solid var(--accent2);
+  padding: 1px 8px;
+}
+
+.weapon-info-alpha {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+// ── Ship size buttons ────────────────────────────────────
+
+.size-buttons {
+  display: flex;
+  gap: 3px;
+  padding: 6px 10px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.size-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  padding: 3px 12px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { color: var(--text); border-color: var(--accent2); }
+  &.active { background: var(--accent2); color: #fff; border-color: var(--accent); }
+}
+
+// ── Ship table ───────────────────────────────────────────
+
+.ship-list-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+}
+
+.ship-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.ship-table th {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text2);
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.th-status { width: 30px; text-align: center; }
+.th-deflect { width: 70px; text-align: right; }
+.th-diff { width: 70px; text-align: right; }
+
+.ship-table td {
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  color: var(--text2);
+}
+
+.ship-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+.cell-status {
+  text-align: center;
+  font-size: 14px;
+}
+
+.cell-ship {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.cell-deflect {
+  text-align: right;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.cell-diff {
+  text-align: right;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  &.positive { color: var(--green); }
+  &.negative { color: var(--red); }
+}
+
+.row-penetrated {
+  background: rgba(255, 68, 68, 0.03);
+}
+
+.row-deflected {
+  background: rgba(0, 230, 118, 0.03);
+}
+
+.armor-icon {
+  font-weight: 700;
+  &.pen { color: var(--green); }
+  &.def { color: var(--red); }
+}
+
+// ── Empty state ──────────────────────────────────────────
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-hint {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+}

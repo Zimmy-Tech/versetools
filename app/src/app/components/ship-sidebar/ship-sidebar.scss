@@ -1,0 +1,99 @@
+.ship-sidebar {
+  width: 220px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-search {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-wrap {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 6px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+
+  &:focus { border-color: var(--accent2); }
+  &::placeholder { color: var(--text3); }
+}
+
+.ship-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-top: none;
+  z-index: 100;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.ship-option {
+  display: flex;
+  flex-direction: column;
+  padding: 7px 12px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.1s;
+
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+  &.active {
+    background: rgba(0, 200, 255, 0.06);
+    border-left-color: var(--accent);
+
+    .ship-option-name { color: var(--accent); }
+  }
+}
+
+.ship-option-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.ship-option-mfr {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  margin-top: 1px;
+}
+
+.selected-ship {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.selected-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.selected-mfr {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+}

@@ -1,0 +1,212 @@
+<div class="split">
+
+  <!-- LEFT: Ship Reference (read-only) -->
+  <div class="split-left">
+    <div class="split-header">
+      <div class="split-header-label">SHIP REFERENCE</div>
+    </div>
+
+    <div class="split-scroll">
+      <!-- Ship Identity -->
+      <div class="ref-ship">
+        <img class="ref-img" src="ship-images/aegs_gladius.webp" alt="Gladius">
+        <div class="ref-identity">
+          <div class="ref-name">Aegis Gladius</div>
+          <div class="ref-meta">Light Fighter | Size S | Crew 1</div>
+          <div class="ref-pills">
+            <span>Mass 49t</span>
+            <span>Cargo 0 SCU</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flight -->
+      <div class="ref-section">
+        <div class="ref-section-title">Flight</div>
+        <div class="ref-grid">
+          <div class="ref-cell">
+            <div class="ref-cell-val">280</div>
+            <div class="ref-cell-key">SCM</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val">1193</div>
+            <div class="ref-cell-key">NAV</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val accent">520</div>
+            <div class="ref-cell-key">AB FWD</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val">268</div>
+            <div class="ref-cell-key">AB BWD</div>
+          </div>
+        </div>
+        <div class="ref-grid">
+          <div class="ref-cell">
+            <div class="ref-cell-val">12.6<span class="ref-boost">/19.6</span></div>
+            <div class="ref-cell-key">FWD G</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val">2.7<span class="ref-boost">/3.3</span></div>
+            <div class="ref-cell-key">RETRO G</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val">6.0<span class="ref-boost">/11.9</span></div>
+            <div class="ref-cell-key">STRAFE G</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val">9.2<span class="ref-boost">/11.8</span></div>
+            <div class="ref-cell-key">UP G</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rotation -->
+      <div class="ref-section">
+        <div class="ref-section-title">Rotation</div>
+        <div class="ref-grid">
+          <div class="ref-cell">
+            <div class="ref-cell-val">60<span class="ref-boost">/78</span></div>
+            <div class="ref-cell-key">PITCH</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val">60<span class="ref-boost">/78</span></div>
+            <div class="ref-cell-key">YAW</div>
+          </div>
+          <div class="ref-cell">
+            <div class="ref-cell-val">200<span class="ref-boost">/200</span></div>
+            <div class="ref-cell-key">ROLL</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hull -->
+      <div class="ref-section">
+        <div class="ref-section-title">Hull & Defense</div>
+        <div class="ref-list">
+          <div class="ref-row"><span>Total HP</span><span>9,075</span></div>
+          <div class="ref-row"><span>Vital HP</span><span>2,400</span></div>
+          <div class="ref-row"><span>Armor HP</span><span>4,125</span></div>
+          <div class="ref-row"><span>Phys Dmg Mult</span><span>-25%</span></div>
+          <div class="ref-row"><span>Enrg Dmg Mult</span><span>-40%</span></div>
+          <div class="ref-row"><span>Hydrogen Fuel</span><span>13.6 mSCU</span></div>
+          <div class="ref-row"><span>Quantum Fuel</span><span>1.3 mSCU</span></div>
+        </div>
+      </div>
+
+      <!-- Buy -->
+      <div class="ref-section">
+        <div class="ref-section-title">Purchase</div>
+        <div class="ref-buy">
+          <div class="ref-buy-shop">New Deal Lorville</div>
+          <div class="ref-buy-price">1,508,220 aUEC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="split-divider"></div>
+
+  <!-- RIGHT: Loadout Workspace (interactive) -->
+  <div class="split-right">
+    <div class="split-header">
+      <div class="split-header-label">LOADOUT BUILDER</div>
+      <button class="split-reset">Reset to Default</button>
+      <button class="split-cart">Add Non-Stock to Cart</button>
+    </div>
+
+    <div class="split-scroll">
+      <!-- Power bars placeholder -->
+      <div class="work-power">
+        <div class="work-power-title">POWER MANAGEMENT</div>
+        <div class="work-power-bars">
+          @for (bar of ['WPNS','THRU','SHLD','QD','RADR','LS','CLR']; track bar) {
+            <div class="work-pwr-col">
+              <div class="work-pwr-bar"><div class="work-pwr-fill"></div></div>
+              <span class="work-pwr-label">{{ bar }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Weapons -->
+      <div class="work-group">
+        <div class="work-group-title">Pilot Weapons</div>
+        <div class="work-slot">
+          <div class="work-slot-label">S3 Nose</div>
+          <div class="work-slot-item">CF-337 Panther Repeater <span class="work-type">ENERGY</span></div>
+          <div class="work-slot-stats">DPS 285.7 | ALPHA 19.0 | AMMO 75</div>
+        </div>
+        <div class="work-slot">
+          <div class="work-slot-label">S3 Left Wing</div>
+          <div class="work-slot-item">CF-337 Panther Repeater <span class="work-type">ENERGY</span></div>
+          <div class="work-slot-stats">DPS 285.7 | ALPHA 19.0 | AMMO 75</div>
+        </div>
+        <div class="work-slot">
+          <div class="work-slot-label">S3 Right Wing</div>
+          <div class="work-slot-item">CF-337 Panther Repeater <span class="work-type">ENERGY</span></div>
+          <div class="work-slot-stats">DPS 285.7 | ALPHA 19.0 | AMMO 75</div>
+        </div>
+      </div>
+
+      <!-- Missiles -->
+      <div class="work-group">
+        <div class="work-group-title">Missiles</div>
+        <div class="work-slot">
+          <div class="work-slot-label">S3 Left</div>
+          <div class="work-slot-item">Tempest II x2 <span class="work-type">CS</span></div>
+        </div>
+        <div class="work-slot">
+          <div class="work-slot-label">S3 Right</div>
+          <div class="work-slot-item">Arrester III x1 <span class="work-type">CS</span></div>
+        </div>
+      </div>
+
+      <!-- Defense -->
+      <div class="work-group">
+        <div class="work-group-title">Defense</div>
+        <div class="work-slot">
+          <div class="work-slot-label">S1 Shield</div>
+          <div class="work-slot-item">Shimmer</div>
+          <div class="work-slot-stats">HP 5,500 | Regen 220/s</div>
+        </div>
+        <div class="work-slot">
+          <div class="work-slot-label">S1 Power Plant</div>
+          <div class="work-slot-item">Regulus</div>
+          <div class="work-slot-stats">3 SEG</div>
+        </div>
+      </div>
+
+      <!-- Systems -->
+      <div class="work-group">
+        <div class="work-group-title">Systems</div>
+        <div class="work-slot">
+          <div class="work-slot-label">S1 Cooler</div>
+          <div class="work-slot-item">Bracer</div>
+        </div>
+        <div class="work-slot">
+          <div class="work-slot-label">S1 QD</div>
+          <div class="work-slot-item">Beacon</div>
+          <div class="work-slot-stats">190 Mm/s</div>
+        </div>
+        <div class="work-slot">
+          <div class="work-slot-label">S1 Radar</div>
+          <div class="work-slot-item">Surveyor-Go</div>
+        </div>
+      </div>
+
+      <!-- DPS Summary -->
+      <div class="work-dps">
+        <div class="work-dps-row">
+          <span>Pilot Burst DPS</span>
+          <span class="accent">856.1</span>
+        </div>
+        <div class="work-dps-row">
+          <span>Pilot Sustained DPS</span>
+          <span>742.3</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="changelog-view">
+
+  @if (!loaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading changelog...</div>
+    </div>
+  } @else if (!entries().length) {
+    <div class="empty-state">
+      <div class="empty-icon">&#9662;</div>
+      <div class="empty-title">No Changelog Data</div>
+      <div class="empty-sub">Run the extractor against a new build to generate a diff.</div>
+    </div>
+  } @else {
+
+    <!-- Version selector -->
+    <div class="version-bar">
+      <span class="version-label">Patch</span>
+      <select class="version-select" (change)="selectedIdx.set(+$any($event.target).value)">
+        @for (entry of entries(); track $index; let i = $index) {
+          <option [value]="i">{{ entry.fromVersion }} → {{ entry.toVersion }} ({{ entry.date }})</option>
+        }
+      </select>
+      <span class="change-count">{{ totalChanges() }} changes</span>
+    </div>
+
+    @if (selectedEntry(); as entry) {
+      <div class="changelog-body">
+
+        <!-- Added items -->
+        @if (groupedAdded().length) {
+          <div class="section">
+            <div class="section-title added-title">Added</div>
+            @for (group of groupedAdded(); track group.label) {
+              <div class="group-label">{{ group.label }}</div>
+              <div class="add-remove-list">
+                @for (item of group.items; track item.className) {
+                  <div class="ar-item added">+ {{ item.name }}</div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Removed items -->
+        @if (groupedRemoved().length) {
+          <div class="section">
+            <div class="section-title removed-title">Removed</div>
+            @for (group of groupedRemoved(); track group.label) {
+              <div class="group-label">{{ group.label }}</div>
+              <div class="add-remove-list">
+                @for (item of group.items; track item.className) {
+                  <div class="ar-item removed">- {{ item.name }}</div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Changed items grouped by category -->
+        @for (group of groupedChanges(); track group.category) {
+          <div class="section">
+            <div class="section-title">{{ group.label }}</div>
+            <div class="changes-list">
+              @for (item of group.items; track item.className) {
+                <div class="change-card">
+                  <div class="change-name">{{ item.name }}</div>
+                  <div class="change-fields">
+                    @for (d of item.fields; track d.field) {
+                      <div class="field-row">
+                        <span class="field-name">{{ fmtField(d.field) }}</span>
+                        <span class="field-old">{{ fmtVal(d.old) }}</span>
+                        <span class="field-arrow">→</span>
+                        <span class="field-new" [class.buffed]="isBuffed(d)" [class.nerfed]="isNerfed(d)">{{ fmtVal(d.new) }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+      </div>
+    }
+
+  }
+</div>

@@ -1,0 +1,253 @@
+<div class="missions-view">
+
+  @if (!loaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading missions...</div>
+    </div>
+  } @else {
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <span class="filter-label">Search</span>
+      <input class="filter-input" type="text" placeholder="title, giver, description..."
+             [value]="searchQuery()"
+             (input)="searchQuery.set($any($event.target).value); resetPage()">
+
+      <span class="filter-label">Category</span>
+      <select class="filter-select" (change)="categoryFilter.set($any($event.target).value)">
+        @for (cat of categories(); track cat) {
+          <option [value]="cat">{{ cat || 'All' }}</option>
+        }
+      </select>
+
+      <span class="filter-label">Lawful</span>
+      <select class="filter-select" (change)="lawfulFilter.set($any($event.target).value); resetPage()">
+        <option value="">All</option>
+        <option value="lawful">Lawful</option>
+        <option value="unlawful">Unlawful</option>
+      </select>
+
+      <span class="filter-label">System</span>
+      <select class="filter-select" (change)="systemFilter.set($any($event.target).value); resetPage()">
+        @for (sys of systems(); track sys) {
+          <option [value]="sys">{{ sys || 'All' }}</option>
+        }
+      </select>
+
+      <span class="filter-label">Activity</span>
+      <select class="filter-select" (change)="activityFilter.set($any($event.target).value); resetPage()">
+        @for (act of activities(); track act) {
+          <option [value]="act">{{ act || 'All' }}</option>
+        }
+      </select>
+
+      <span class="filter-label">Faction</span>
+      <select class="filter-select" (change)="repScopeFilter.set($any($event.target).value); resetPage()">
+        @for (scope of repScopes(); track scope) {
+          <option [value]="scope">{{ scope ? fmtScope(scope) : 'All' }}</option>
+        }
+      </select>
+
+      <button class="filter-btn-bp" [class.active]="repScopeFilter() === 'wikelo'"
+              (click)="repScopeFilter.set(repScopeFilter() === 'wikelo' ? '' : 'wikelo'); resetPage()">Wikelo</button>
+
+      <button class="filter-btn-bp" [class.active]="blueprintFilter()"
+              (click)="blueprintFilter.set(!blueprintFilter()); resetPage()">Blueprints</button>
+
+      <span class="filter-label">Sort</span>
+      <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
+        <option value="reward">Reward (high)</option>
+        <option value="title">Title (A-Z)</option>
+        <option value="category">Category</option>
+      </select>
+
+      @if (hasActiveFilter()) {
+        <div class="pager">
+          <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
+          <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
+          <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
+        </div>
+      }
+    </div>
+
+    @if (!hasActiveFilter()) {
+      <div class="empty-state">
+        <div class="empty-title">Mission Database</div>
+        <div class="empty-sub">{{ allMissions().length }} missions available. Use the filters above to search.</div>
+      </div>
+    }
+
+    <!-- Mission list -->
+    <div class="mission-list" [style.display]="hasActiveFilter() ? '' : 'none'">
+      @for (m of filteredMissions(); track m.className) {
+        <div class="mission-card" [class.unlawful]="!m.lawful" [class.selected]="selectedMission()?.className === m.className" (click)="selectMission(m, $event)">
+          <div class="mission-header">
+            <div class="mission-cat">{{ m.category }}</div>
+            <div class="mission-title">{{ m.title }}</div>
+            <div class="mission-reward">
+              <span class="reward-val">{{ fmtReward(m.reward) }}</span>
+              <span class="reward-unit">{{ m.currency }}</span>
+            </div>
+          </div>
+          <div class="mission-meta">
+            @if (m.giver) {
+              <span class="meta-item"><em>From</em> {{ m.giver }}</span>
+            }
+            @if (m.lawful) {
+              <span class="meta-tag lawful">LAWFUL</span>
+            } @else {
+              <span class="meta-tag unlawful">UNLAWFUL</span>
+            }
+            @if (m.maxPlayers > 1) {
+              <span class="meta-item"><em>Players</em> {{ m.maxPlayers }}</span>
+            }
+            @if (m.canShare) {
+              <span class="meta-tag share">SHAREABLE</span>
+            }
+            @if (m.difficulty >= 0) {
+              <span class="meta-item"><em>Diff</em> {{ m.difficulty }}</span>
+            }
+            @if (m.onceOnly) {
+              <span class="meta-tag once">ONCE ONLY</span>
+            }
+            @if (m.prison) {
+              <span class="meta-tag prison">PRISON</span>
+            }
+            @if (m.multiSystem) {
+              <span class="meta-tag multi">MULTI-SYSTEM</span>
+            }
+            @if (m.system) {
+              <span class="meta-item"><em>Sys</em> {{ m.system }}</span>
+            }
+            @if (m.activity) {
+              <span class="meta-tag activity">{{ m.activity }}</span>
+            }
+            @if (m.lifetimeMin) {
+              <span class="meta-item"><em>Life</em> {{ m.lifetimeMin }}m</span>
+            }
+            @if (m.respawnMin) {
+              <span class="meta-item"><em>Respawn</em> {{ m.respawnMin }}m</span>
+            }
+            @if (m.cooldownMin) {
+              <span class="meta-item"><em>CD</em> {{ m.cooldownMin }}m</span>
+            }
+            @if (m.timeLimitMin) {
+              <span class="meta-item"><em>Time</em> {{ m.timeLimitMin }}m</span>
+            }
+          </div>
+          @if (m.repScopes?.length) {
+            <div class="mission-rep">
+              <em>Rep Reward</em>
+              @for (scope of m.repScopes; track scope) {
+                <span class="rep-scope">{{ scope }}</span>
+              }
+            </div>
+          }
+          @if (uniqueReqs(m); as reqs) {
+            @if (reqs.length) {
+              <div class="mission-rep">
+                @for (req of reqs; track req.scope) {
+                  <span class="rep-req"><em>Required Rep:</em> {{ req.minRank }}</span>
+                  <span class="rep-req max"><em>Max Rep:</em> {{ req.maxRank }}</span>
+                }
+              </div>
+            }
+          }
+
+        </div>
+      }
+    </div>
+
+    <!-- Popout detail panel -->
+    @if (selectedMission(); as sm) {
+      <div class="popout-overlay" (click)="closePopout()"></div>
+      <div class="popout-panel">
+        <div class="popout-header">
+          <div class="popout-title">{{ sm.title }}</div>
+          <span class="popout-close" (click)="closePopout()">✕</span>
+        </div>
+        <div class="popout-body">
+          <div class="popout-meta">
+            <span class="popout-cat">{{ sm.category }}</span>
+            @if (sm.lawful) {
+              <span class="meta-tag lawful">LAWFUL</span>
+            } @else {
+              <span class="meta-tag unlawful">UNLAWFUL</span>
+            }
+            @if (sm.system) { <span class="meta-item"><em>System</em> {{ sm.system }}</span> }
+            @if (sm.activity) { <span class="meta-tag activity">{{ sm.activity }}</span> }
+            @if (sm.multiSystem) { <span class="meta-tag multi">MULTI-SYSTEM</span> }
+          </div>
+
+          <div class="popout-stats">
+            <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
+            @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
+            @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
+            @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
+            @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
+            @if (sm.lifetimeMin) { <div class="popout-stat"><span class="ps-label">Lifetime</span><span class="ps-val">{{ sm.lifetimeMin }} min</span></div> }
+            @if (sm.respawnMin) { <div class="popout-stat"><span class="ps-label">Respawn</span><span class="ps-val">{{ sm.respawnMin }} min</span></div> }
+            @if (sm.timeLimitMin) { <div class="popout-stat"><span class="ps-label">Time Limit</span><span class="ps-val">{{ sm.timeLimitMin }} min</span></div> }
+            @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
+            @if (sm.abandonCooldownMin) { <div class="popout-stat"><span class="ps-label">Abandon CD</span><span class="ps-val">{{ sm.abandonCooldownMin }} min</span></div> }
+            @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
+          </div>
+
+          @if (sm.repScopes?.length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Reputation Rewards</div>
+              <div class="popout-tags">
+                @for (scope of sm.repScopes; track scope) {
+                  <span class="rep-scope">{{ scope }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (uniqueReqs(sm); as reqs) {
+            @if (reqs.length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Reputation Requirements</div>
+                @for (req of reqs; track req.scope) {
+                  <div class="popout-stat"><span class="ps-label">Scope</span><span class="ps-val">{{ fmtScope(req.scope) }}</span></div>
+                  <div class="popout-stat"><span class="ps-label">Required Rep</span><span class="ps-val rep-min">{{ req.minRank }}</span></div>
+                  <div class="popout-stat"><span class="ps-label">Max Rep</span><span class="ps-val rep-max">{{ req.maxRank }}</span></div>
+                }
+              </div>
+            }
+          }
+
+          @if (sm.missionFlow?.length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Mission Flow</div>
+              <div class="mission-flow">
+                @for (phase of sm.missionFlow; track $index) {
+                  <div class="flow-step" [class.sub-step]="phase.startsWith('  ')">{{ phase.trim() }}</div>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sm.blueprintRewards?.length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Blueprint Rewards</div>
+              <div class="popout-tags">
+                @for (bp of sm.blueprintRewards; track bp) {
+                  <span class="bp-tag">{{ bp }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sm.description) {
+            <div class="popout-section">
+              <div class="popout-section-title">Description</div>
+              <div class="popout-desc">{{ cleanDesc(sm.description) }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+  }
+</div>

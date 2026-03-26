@@ -1,0 +1,61 @@
+<div class="finder-view">
+
+  <!-- Search bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Find Item</span>
+    <input class="filter-input" type="text" placeholder="Search by name..."
+           [value]="searchQuery()"
+           (input)="searchQuery.set($any($event.target).value)">
+    @if (selectedItem()) {
+      <div class="selected-chip">
+        <span class="chip-name">{{ selectedItem()!.name }}</span>
+        <span class="chip-meta">{{ selectedItem()!.type }} · S{{ selectedItem()!.size ?? '?' }}</span>
+        <span class="chip-close" (click)="selectedItem.set(null); searchQuery.set('')">✕</span>
+      </div>
+    }
+  </div>
+
+  <!-- Search results dropdown (only when typing and no item selected) -->
+  @if (searchQuery().length >= 2 && !selectedItem()) {
+    <div class="search-results">
+      @if (matchedItems().length === 0) {
+        <div class="no-results">No items found</div>
+      }
+      @for (item of matchedItems(); track item.className) {
+        <div class="search-result-row" (click)="selectItem(item)">
+          <span class="sr-name">{{ item.name }}</span>
+          <span class="sr-meta">{{ item.type }} · S{{ item.size ?? '?' }} · {{ item.manufacturer || '—' }}</span>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Results: ships with this default component -->
+  @if (selectedItem()) {
+    <div class="results-header">
+      <span class="results-title">Default on {{ uniqueShipCount() }} ship{{ uniqueShipCount() === 1 ? '' : 's' }}</span>
+      <span class="results-count">{{ results().length }} slot{{ results().length === 1 ? '' : 's' }}</span>
+    </div>
+
+    @if (results().length === 0) {
+      <div class="no-results">No ships use this item as default equipment.</div>
+    } @else {
+      <div class="results-grid">
+        @for (r of results(); track r.ship.className + r.slotId) {
+          <div class="result-card">
+            <div class="result-ship-name">{{ r.ship.name }}</div>
+            <div class="result-ship-meta">{{ r.ship.manufacturer }} · {{ r.ship.size | uppercase }} · {{ r.ship.role || '—' }}</div>
+            <div class="result-slot">{{ fmtSlot(r.slotId) }}</div>
+          </div>
+        }
+      </div>
+    }
+  } @else if (searchQuery().length < 2) {
+    <div class="empty-state">
+      <div class="empty-icon">&#x1F50D;</div>
+      <div class="empty-title">Default Component Finder</div>
+      <div class="empty-sub">Search for any item to see which ships use it as default equipment</div>
+    </div>
+  }
+
+</div>
