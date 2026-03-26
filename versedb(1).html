@@ -1251,6 +1251,24 @@ function setLoadoutItem(slotId, className) {
   updateDPS();
 }
 
+// ── Weapon ammo calculation ──────────────────────────────────────────────
+// Formula: ammo(N) = min(round(N × effectiveBase / sumPower), cap)
+function calcWeaponAmmo(weapon, pips, poolSize, allWeapons, ammoLoadMultiplier) {
+  if (!weapon || weapon.isBallistic) return weapon?.ammoCount || null;
+  if (!weapon.powerDraw) return weapon?.ammoCount || null;
+  const sumPower = allWeapons.reduce((s, w) => s + (w?.powerDraw || 0), 0);
+  if (sumPower <= 0) return weapon.ammoCount || null;
+  const effBase = (weapon.maxAmmoLoad || 75) * (ammoLoadMultiplier || 1);
+  const cap = Math.floor(effBase);
+  const raw = pips * effBase / sumPower;
+  return Math.min(Math.round(raw), cap);
+}
+
+function calcMaxPips(poolSize, allWeapons) {
+  const sumPower = allWeapons.reduce((s, w) => s + (w?.powerDraw || 0), 0);
+  return Math.min(poolSize, Math.ceil(sumPower));
+}
+
 function updateDPS() {
   const panel = document.getElementById('dps-panel');
   if (!panel) return;
@@ -1277,17 +1295,25 @@ function updateDPS() {
 
   const powerBalance = ppOutput - totalDraw;
 
+  // Compute ammo at max power for each energy weapon
+  const poolSize = selectedShip?.weaponPowerPoolSize || 4;
+  const maxPips = calcMaxPips(poolSize, weapons);
+
   // Update individual slot DPS labels
   if (selectedShip) {
     selectedShip.hardpoints.forEach(hp => {
       const item = loadout[hp.id];
       const el = document.getElementById('slot-dps-' + hp.id.replace(/[^a-z0-9]/gi,'_'));
       if (!el) return;
-      el.textContent = item?.dps > 0 ? `${item.dps.toFixed(0)} DPS` :
-                       item?.hp > 0 ? `${item.hp.toFixed(0)} HP` :
-                       item?.powerOutput > 0 ? `${item.powerOutput} PWR` :
-                       item?.coolingRate > 0 ? `${item.coolingRate.toFixed(0)} COOL` :
-                       item?.speed > 0 ? `${(item.speed/1e6).toFixed(0)}Mm/s` : '';
+      if (item?.dps > 0) {
+        const ammo = calcWeaponAmmo(item, maxPips, poolSize, weapons);
+        el.textContent = `${item.dps.toFixed(0)} DPS` + (ammo != null ? ` / ${ammo}` : '');
+      } else {
+        el.textContent = item?.hp > 0 ? `${item.hp.toFixed(0)} HP` :
+                         item?.powerOutput > 0 ? `${item.powerOutput} PWR` :
+                         item?.coolingRate > 0 ? `${item.coolingRate.toFixed(0)} COOL` :
+                         item?.speed > 0 ? `${(item.speed/1e6).toFixed(0)}Mm/s` : '';
+      }
     });
   }
 
@@ -1353,17 +1379,20 @@ function updateDPS() {
 
     ${weapons.length > 0 ? `
     <div>
-      <div class="panel-section-title">Weapons</div>
+      <div class="panel-section-title">Weapons <span style="color:var(--text3);font-size:10px;font-weight:normal">${maxPips} pip${maxPips!==1?'s':''}</span></div>
       <div class="weapon-breakdown">
-        ${weapons.map(w => `
+        ${weapons.map(w => {
+          const ammo = calcWeaponAmmo(w, maxPips, poolSize, weapons);
+          const ammoStr = ammo != null ? `${ammo} ammo` : '';
+          return `
           <div class="weapon-row">
             <div class="weapon-row-name">${w.name}</div>
             <div class="weapon-row-dps">
               ${w.dps > 0 ? `${w.dps.toFixed(0)} dps` : w.fireRate > 0 ? `${w.fireRate}rpm` : '—'}
-              ${w.alphaDamage > 0 ? `<span style="color:var(--text3);font-size:10px"> / ${w.alphaDamage.toFixed(0)}α</span>` : ''}
+              ${ammoStr ? `<span style="color:var(--text3);font-size:10px"> / ${ammoStr}</span>` : ''}
             </div>
-          </div>
-        `).join('')}
+          </div>`;
+        }).join('')}
       </div>
     </div>` : ''}
 
@@ -1455,6 +1484,13 @@ function renderCompCard(item) {
         <span class="comp-stat-label">Range</span>
         <span class="comp-stat-val">${item.range > 0 ? (item.range/1000).toFixed(1)+'km' : '—'}</span>
       </div>
+      ${(() => {
+        const ws = Object.values(loadout).filter(x => x?.type === 'WeaponGun' || x?.type === 'WeaponTachyon');
+        const ps = selectedShip?.weaponPowerPoolSize || 4;
+        const mp = calcMaxPips(ps, ws);
+        const a = calcWeaponAmmo(item, mp, ps, ws);
+        return a != null ? `<div class="comp-stat"><span class="comp-stat-label">Ammo</span><span class="comp-stat-val">${a}</span></div>` : '';
+      })()}
     `;
   } else if (t === 'Shield') {
     stats = `
@@ -1585,6 +1621,13 @@ function renderCompare() {
       ['Distortion', i => i.damage?.distortion > 0 ? i.damage.distortion.toFixed(2) : '—', false],
       ['Speed', i => i.projectileSpeed > 0 ? i.projectileSpeed.toFixed(0)+' m/s' : '—', false],
       ['Range', i => i.range > 0 ? (i.range/1000).toFixed(1)+' km' : '—', false, v => parseFloat(v)||0, true],
+      ['Ammo (max pwr)', i => {
+        const ws = Object.values(loadout).filter(x => x?.type === 'WeaponGun' || x?.type === 'WeaponTachyon');
+        const ps = selectedShip?.weaponPowerPoolSize || 4;
+        const mp = calcMaxPips(ps, ws);
+        const a = calcWeaponAmmo(i, mp, ps, ws);
+        return a != null ? ''+a : (i.ammoCount > 0 ? ''+i.ammoCount : '—');
+      }, false, v => parseFloat(v)||0, true],
       ['Power Draw', i => i.powerDraw > 0 ? i.powerDraw.toFixed(2) : '—', false, v => parseFloat(v)||0, false],
     ],
     'Shield': [

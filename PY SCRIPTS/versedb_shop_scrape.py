@@ -4,19 +4,20 @@ versedb_shop_scrape.py
 Fetches ship and item shop prices from the UEX Corp API and merges them
 into an existing versedb_data.json.
 
-Run independently of versedb_extract.py on a weekly/monthly cycle.
-
-Usage:
+Runs automatically as part of versedb_extract.py, or standalone:
     python3 versedb_shop_scrape.py
+    VERSEDB_DATA_MODE=ptu python3 versedb_shop_scrape.py
 """
 
 import json
+import os
 import sys
 import urllib.request
 from pathlib import Path
 
+_DATA_MODE = os.environ.get("VERSEDB_DATA_MODE", "live")
 DATA_FILE = Path(__file__).parent / "versedb_data.json"
-APP_FILE = Path(__file__).parent / "../../versedb-app/public/versedb_data.json"
+APP_FILE = Path(__file__).parent / "../../versedb-app/public" / _DATA_MODE / "versedb_data.json"
 
 UEX_VEHICLE_URL = "https://api.uexcorp.space/2.0/vehicles_purchases_prices_all"
 UEX_ITEM_URL = "https://api.uexcorp.space/2.0/items_prices_all"
@@ -127,13 +128,11 @@ def main():
     print(f"\n{'=' * 60}")
     print(f"Done!  {DATA_FILE}  ({size_mb:.1f} MB)")
 
-    # Copy to app if the app directory exists
-    if APP_FILE.parent.exists():
-        import shutil
-        shutil.copy2(DATA_FILE, APP_FILE)
-        print(f"Copied to {APP_FILE}")
-    else:
-        print(f"App directory not found at {APP_FILE.parent} — skipping copy")
+    # Copy to app (mode-aware subfolder)
+    import shutil
+    APP_FILE.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(DATA_FILE, APP_FILE)
+    print(f"Copied to {APP_FILE}")
 
 
 if __name__ == "__main__":

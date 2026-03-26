@@ -7,9 +7,11 @@ Outputs: versedb_crafting.json with all crafting blueprints, recipes, and ingred
 import struct, json, sys, re
 from pathlib import Path
 
+import os
 _SC = Path(__file__).resolve().parent.parent / "SC FILES"
-DCB_FILE = _SC / "sc_data_47" / "Data" / "Game2.dcb"
-LOC_FILE = _SC / "sc_data_xml_47" / "Data" / "Localization" / "english" / "global.ini"
+_DATA_MODE = os.environ.get("VERSEDB_DATA_MODE", "live")
+DCB_FILE = _SC / f"sc_data_{_DATA_MODE}" / "Data" / "Game2.dcb"
+LOC_FILE = _SC / f"sc_data_xml_{_DATA_MODE}" / "Data" / "Localization" / "english" / "global.ini"
 
 # Clean up entity class names to display names
 RESOURCE_RENAMES = {
@@ -476,12 +478,13 @@ def parse_dcb():
         json.dump(output, f, indent=2)
     print(f"\nSaved to {out_path}")
 
-    # Auto-copy to Angular app
-    import shutil
-    app_path = Path(__file__).parent / "../../versedb-app/public/versedb_crafting.json"
-    if app_path.parent.exists():
-        shutil.copy2(out_path, app_path)
-        print(f"Copied to {app_path}")
+    # Auto-copy to Angular app (mode-aware subfolder)
+    import shutil, os
+    _data_mode = os.environ.get("VERSEDB_DATA_MODE", "live")
+    app_path = Path(__file__).parent / "../../versedb-app/public" / _data_mode / "versedb_crafting.json"
+    app_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(out_path, app_path)
+    print(f"Copied to {app_path}")
 
     return output
 

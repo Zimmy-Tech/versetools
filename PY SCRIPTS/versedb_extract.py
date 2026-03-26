@@ -2,59 +2,37 @@
 versedb_extract.py
 ==================
 Extracts ship, weapon, shield, power plant, cooler, and quantum drive data
-from Star Citizen's extracted game files and outputs versedb_data.json.
+from Star Citizen's game files (Data.p4k) and outputs versedb_data.json.
 Also runs versedb_missions.py (missions/contracts) and crafting_extract.py (crafting recipes).
 
-PREREQUISITES — run these commands first (Linux paths, adjust version suffix as needed):
+PREREQUISITES:
+  - unp4k must be on PATH
+  - SC Raw Data folder must contain LIVE/ and/or PTU/ with Data.p4k
 
-  P4K="/home/bryan/projects/SC Raw Data/PTU/Data.p4k"
-  SC="/home/bryan/projects/versedb/SC FILES"
+Usage:
+  python versedb_extract.py                  # Extract both LIVE and PTU (default)
+  python versedb_extract.py --mode live      # Extract LIVE only
+  python versedb_extract.py --mode ptu       # Extract PTU only
+  python versedb_extract.py --reextract      # Force re-extraction from p4k (clears intermediate dirs)
 
-  # 1. Extract vehicle XMLs (decrypts automatically)
-  unp4k extract "$P4K" "*Implementations*Xml*.xml" --convert-xml -o "$SC/sc_data_xml_47"
+The pipeline automatically:
+  1. Extracts vehicle XMLs, localization, and Game2.dcb from the p4k (if not already extracted)
+  2. Forges the DCB into XML records via unp4k
+  3. Parses ships, weapons, shields, power plants, coolers, quantum drives
+  4. Enriches from DCB binary (damage, fire rate, power draw, etc.)
+  5. Extracts missions & contracts (versedb_missions.py)
+  6. Extracts crafting recipes (crafting_extract.py)
+  7. Copies all output to versedb-app/public/<live|ptu>/
 
-  # 2. Extract localization
-  unp4k extract "$P4K" "*english*global.ini" -o "$SC/sc_data_xml_47"
-
-  # 3. Extract Game2.dcb
-  unp4k extract "$P4K" "*Game2.dcb" -o "$SC/sc_data_47"
-
-  # 4. Fix backslash paths (unp4k on Linux uses literal backslashes)
-  python3 -c "
-  import os, shutil
-  from pathlib import Path
-  def fix(d):
-      base = Path(d)
-      for e in list(base.iterdir()):
-          if chr(92) in e.name:
-              dest = base / e.name.replace(chr(92), '/')
-              dest.parent.mkdir(parents=True, exist_ok=True)
-              shutil.move(str(e), str(dest))
-  fix('$SC/sc_data_xml_47')
-  fix('$SC/sc_data_47')
-  "
-
-  # 5. Forge the DCB into XML records
-  unp4k dcb "$SC/sc_data_47/Data/Game2.dcb" -o "$SC/sc_data_forge_47"
-
-Then run:
-  python versedb_extract.py
-
-Output files (all auto-copied to versedb-app/public/):
-  - versedb_data.json      — ships, weapons, shields, power plants, coolers, QDs
-  - versedb_missions.json  — missions & contracts with rep requirements, blueprint rewards
-  - versedb_crafting.json  — 1,040 crafting recipes with ingredients, quality modifiers
-
-Pipeline steps:
-  [1-7] Ship/component extraction, DCB enrichment, default loadouts
-  [8/9] Mission & contract extraction (versedb_missions.py)
-  [9/9] Crafting recipe extraction (crafting_extract.py) — parses DCB inline struct_data
+Intermediate files are stored in per-mode folders (sc_data_live/, sc_data_ptu/, etc.)
+so LIVE and PTU data never interfere with each other.
 """
 
 import copy
 import json
 import os
 import re
+import shutil
 import struct
 import sys
 from pathlib import Path
@@ -62,32 +40,107 @@ from xml.etree import ElementTree as ET
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 
-_SC = Path("/home/bryan/projects/versedb/SC FILES")
-VEHICLE_XML_DIR = _SC / "sc_data_xml_47/Data/Scripts/Entities/Vehicles/Implementations/Xml"
-FORGE_DIR       = _SC / "sc_data_forge_47/libs/foundry/records"
-DCB_FILE        = _SC / "sc_data_47/Data/Game2.dcb"
-GLOBAL_INI      = _SC / "sc_data_xml_47/Data/Localization/english/global.ini"
-OUTPUT_FILE     = Path(__file__).parent / "versedb_data.json"
-BUILD_MANIFEST  = Path("/home/bryan/projects/SC Raw Data/PTU/build_manifest.id")
+_SC        = Path("/home/bryan/projects/versedb/SC FILES")
+_RAW_DATA  = Path("/home/bryan/projects/SC Raw Data")
+OUTPUT_FILE = Path(__file__).parent / "versedb_data.json"
 
-def _read_game_version():
+# ── Mode-aware paths (set by _configure_mode) ────────────────────────────────
+DATA_MODE: str = "live"
+VEHICLE_XML_DIR: Path = Path()
+FORGE_DIR: Path = Path()
+DCB_FILE: Path = Path()
+GLOBAL_INI: Path = Path()
+BUILD_MANIFEST: Path = Path()
+GAME_VERSION: str = "unknown"
+APP_DATA_DIR: Path = Path()
+
+def _configure_mode(mode: str) -> None:
+    """Set all path globals based on the selected mode ('live' or 'ptu')."""
+    global DATA_MODE, VEHICLE_XML_DIR, FORGE_DIR, DCB_FILE, GLOBAL_INI
+    global BUILD_MANIFEST, GAME_VERSION, APP_DATA_DIR
+
+    DATA_MODE = mode
+    mode_upper = mode.upper()  # LIVE or PTU — matches folder names in SC Raw Data
+
+    # Per-mode intermediate folders so LIVE and PTU never clobber each other
+    VEHICLE_XML_DIR = _SC / f"sc_data_xml_{mode}/Data/Scripts/Entities/Vehicles/Implementations/Xml"
+    FORGE_DIR       = _SC / f"sc_data_forge_{mode}/libs/foundry/records"
+    DCB_FILE        = _SC / f"sc_data_{mode}/Data/Game2.dcb"
+    GLOBAL_INI      = _SC / f"sc_data_xml_{mode}/Data/Localization/english/global.ini"
+    BUILD_MANIFEST  = _RAW_DATA / mode_upper / "build_manifest.id"
+    APP_DATA_DIR    = Path(__file__).parent / "../../versedb-app/public" / mode
+
+    GAME_VERSION = _read_game_version()
+
+def _read_game_version() -> str:
     """Read build_manifest.id and format as '<major>.<minor>.<patch>-<tag>.<p4change>'."""
     try:
         data = json.loads(BUILD_MANIFEST.read_text())["Data"]
-        branch = data.get("Branch", "")          # e.g. "sc-alpha-4.7.0"
-        tag    = data.get("Tag", "ptu")           # e.g. "public" → we'll use "ptu" for PTU builds
-        p4     = data.get("RequestedP4ChangeNum", "")  # e.g. "11494258"
-        # Extract version digits from branch: sc-alpha-4.7.0 → 4.7.0
-        import re
+        branch = data.get("Branch", "")
+        tag    = data.get("Tag", "ptu")
+        p4     = data.get("RequestedP4ChangeNum", "")
         m = re.search(r"(\d+\.\d+\.\d+)", branch)
         ver = m.group(1) if m else data.get("Version", "unknown")
-        # Tag mapping: "public" on a PTU branch → "ptu"
-        tag_label = "ptu" if "ptu" in str(BUILD_MANIFEST).lower() else tag
+        tag_label = "ptu" if DATA_MODE == "ptu" else tag
         return f"{ver}-{tag_label}.{p4}" if p4 else ver
     except Exception:
         return "unknown"
 
-GAME_VERSION = _read_game_version()
+def _run_p4k_extraction() -> None:
+    """Run unp4k to extract vehicle XMLs, localization, DCB, and forge records."""
+    import subprocess as sp
+
+    p4k = _RAW_DATA / DATA_MODE.upper() / "Data.p4k"
+    if not p4k.exists():
+        print(f"  ERROR: {p4k} not found — skipping p4k extraction")
+        return
+
+    xml_dir = _SC / f"sc_data_xml_{DATA_MODE}"
+    dcb_dir = _SC / f"sc_data_{DATA_MODE}"
+    forge_dir = _SC / f"sc_data_forge_{DATA_MODE}"
+
+    steps = [
+        ("Extracting vehicle XMLs",
+         ["unp4k", "extract", str(p4k), "*Implementations*Xml*.xml", "--convert-xml", "-o", str(xml_dir)]),
+        ("Extracting localization",
+         ["unp4k", "extract", str(p4k), "*english*global.ini", "-o", str(xml_dir)]),
+        ("Extracting Game2.dcb",
+         ["unp4k", "extract", str(p4k), "*Game2.dcb", "-o", str(dcb_dir)]),
+    ]
+
+    for label, cmd in steps:
+        print(f"  {label}…")
+        result = sp.run(cmd, capture_output=True, text=True)
+        # Print the "Extracted: N files" line
+        for line in result.stdout.splitlines():
+            if "Extracted" in line:
+                print(f"    {line.strip()}")
+        if result.returncode != 0:
+            print(f"    ERROR: {result.stderr[:200]}")
+            return
+
+    # Fix backslash paths (unp4k on Linux uses literal backslashes)
+    print("  Fixing backslash paths…")
+    for d in (xml_dir, dcb_dir):
+        for entry in list(d.iterdir()):
+            if "\\" in entry.name:
+                dest = d / entry.name.replace("\\", "/")
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(entry), str(dest))
+
+    # Forge DCB into XML records
+    dcb_path = dcb_dir / "Data/Game2.dcb"
+    if dcb_path.exists():
+        print("  Forging DCB into XML records…")
+        result = sp.run(["unp4k", "dcb", str(dcb_path), "-o", str(forge_dir)],
+                        capture_output=True, text=True)
+        for line in result.stdout.splitlines():
+            if "Exported" in line or "records" in line.lower():
+                print(f"    {line.strip()}")
+        if result.returncode != 0:
+            print(f"    ERROR: {result.stderr[:200]}")
+    else:
+        print(f"  ERROR: {dcb_path} not found after extraction")
 
 # ── Localization ───────────────────────────────────────────────────────────────
 
@@ -1409,6 +1462,61 @@ def parse_weapon_mount_item(root, class_name, loc):
         result["itemTags"] = item_tags
     return result
 
+def parse_module_item(root, class_name, loc):
+    """Parse a ship module (e.g. Aurora MK II cargo/combat modules)."""
+    info = parse_attachdef(root)
+    if not info or info["type"] != "Module":
+        return None
+
+    # Skip abstract base modules with no localization
+    loc_el = root.find(".//AttachDef/Localization") or root.find(".//Localization")
+    loc_name_ref = loc_el.get("Name", "") if loc_el is not None else ""
+    if loc_name_ref in ("@LOC_PLACEHOLDER", "@LOC_EMPTY", ""):
+        return None
+
+    display = loc_lookup(loc, loc_name_ref) if loc_name_ref else resolve_item_name(loc, class_name)
+    if not display or display.startswith("@"):
+        display = resolve_item_name(loc, class_name)
+    if not display or display.startswith("@"):
+        return None
+
+    # Extract sub-hardpoints that this module provides (like turrets expose sub-slots)
+    sub_ports = []
+    for port_el in root.iter("SItemPortDef"):
+        port_name = port_el.get("Name", "")
+        if not port_name:
+            continue
+        types_el = port_el.findall(".//SItemPortDefTypes")
+        port_types = [t.get("Type", "") for t in types_el if t.get("Type")]
+        if not port_types:
+            continue
+        sub_ports.append({
+            "id": port_name,
+            "type": port_types[0],
+            "minSize": int(port_el.get("MinSize", 0)),
+            "maxSize": int(port_el.get("MaxSize", 0)),
+            "allTypes": [{"type": t} for t in port_types],
+        })
+
+    # Extract item tags for port-tag filtering
+    attach_el = root.find(".//AttachDef")
+    tags_raw = (attach_el.get("Tags", "") if attach_el is not None else "").split()
+    item_tags = [t.lstrip("$") for t in tags_raw if "_" in t]
+
+    result = {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "Module",
+        "size":         info["size"],
+        "grade":        info["grade"],
+    }
+    if sub_ports:
+        result["subPorts"] = sub_ports
+    if item_tags:
+        result["itemTags"] = item_tags
+    return result
+
 # Maps forge subfolder -> parser function
 FOLDER_PARSERS = {
     "weapons":           parse_weapon_item,
@@ -1425,6 +1533,7 @@ FOLDER_PARSERS = {
     "utility/mining/miningarm": parse_miningarm_item,
     "utility/salvage/salvagehead": parse_salvagehead_item,
     "utility/salvage/salvagemodifiers": parse_miningarm_item,  # reuse generic parser
+    "module":            parse_module_item,
 }
 
 def scan_components(forge_dir, loc):
@@ -1989,6 +2098,59 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
             enriched += 1
             print(f"  Fallback loadout applied: {ship_cls}")
 
+    # Module default overrides — inject defaults for module slots not populated in DCB.
+    # Also defines module loadouts: sub-slot items that should be equipped when a module is active.
+    MODULE_DEFAULTS = {
+        "rsi_aurora_mk2": {
+            "hardpoint_module": "rsi_aurora_mk2_module_cargo",
+        },
+    }
+    # Per-module default loadouts: when this module is equipped, these sub-slots are populated.
+    # Key format: "hardpoint_module.<sub_port_id>" for racks, dot-extended for missiles.
+    MODULE_LOADOUTS = {
+        "rsi_aurora_mk2_module_missile": {
+            "hardpoint_module.missile_01_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_01_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.missile_02_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_02_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.missile_03_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_03_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.missile_04_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_04_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.missile_05_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_05_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.missile_06_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_06_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.missile_07_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_07_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.missile_08_rack": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+            "hardpoint_module.missile_08_rack.missile_01_attach": "misl_s02_em_taln_dominator",
+            "hardpoint_module.hardpoint_shield_generator_back": "shld_behr_s01_5sa_scitem",
+        },
+    }
+    module_count = 0
+    for ship_cls, module_loadout in MODULE_DEFAULTS.items():
+        if ship_cls in ships and ships[ship_cls].get("defaultLoadout") is not None:
+            dl = ships[ship_cls]["defaultLoadout"]
+            for slot, item_cls in module_loadout.items():
+                if slot not in dl:
+                    dl[slot] = item_cls
+                    module_count += 1
+            # Inject module loadout entries for the default module
+            default_module_cls = module_loadout.get("hardpoint_module", "")
+            if default_module_cls in MODULE_LOADOUTS:
+                for sub_slot, sub_cls in MODULE_LOADOUTS[default_module_cls].items():
+                    if sub_slot not in dl:
+                        dl[sub_slot] = sub_cls
+                        module_count += 1
+            # Also inject loadouts for ALL modules into the ship's defaultLoadout
+            # so the UI can populate sub-slots when swapping modules
+            for mod_cls, mod_loadout in MODULE_LOADOUTS.items():
+                for sub_slot, sub_cls in mod_loadout.items():
+                    if sub_slot not in dl:
+                        dl[sub_slot] = sub_cls
+    if module_count:
+        print(f"  Module defaults injected: {module_count} slots")
 
     spaceship_dir = forge_dir / "entities" / "spaceships"
     if not spaceship_dir.exists():
@@ -3032,10 +3194,18 @@ def enrich_from_dcb(items, dcb_path, loc):
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def main():
+def main(mode: str = "live"):
+    _configure_mode(mode)
+
     print("=" * 60)
-    print("VerseDB Extractor — Star Citizen Data Pipeline")
+    print(f"VerseDB Extractor — Star Citizen Data Pipeline [{DATA_MODE.upper()}]")
     print("=" * 60)
+
+    # Step 0: Extract from p4k if intermediate dirs don't exist yet
+    need_extract = not VEHICLE_XML_DIR.exists() or not FORGE_DIR.exists() or not DCB_FILE.exists()
+    if need_extract:
+        print(f"\n[0] Extracting from {DATA_MODE.upper()} p4k…")
+        _run_p4k_extraction()
 
     # Validate
     errors = []
@@ -3121,7 +3291,8 @@ def main():
                 hp["maxSize"] = 3
 
     # Manual cargo overrides for ships missing DCB cargo data
-    CARGO_OVERRIDES = {"ORIG_300i": 8, "orig_315p": 12, "orig_325a": 4, "orig_350r": 0}
+    CARGO_OVERRIDES = {"ORIG_300i": 8, "orig_315p": 12, "orig_325a": 4, "orig_350r": 0,
+                       "rsi_aurora_mk2": 2}  # base cargo without module
     for ship_cls, scu in CARGO_OVERRIDES.items():
         if ship_cls in ships:
             ships[ship_cls]["cargoCapacity"] = scu
@@ -3157,6 +3328,11 @@ def main():
             "accelAbFwd": 15.0, "accelAbRetro": 4.4, "accelAbStrafe": 8.6, "accelAbUp": 9.2, "accelAbDown": 5.3,
             "accelTestedDate": "2026-03-24",
         },
+        "rsi_aurora_mk2": {
+            "accelFwd": 9.2, "accelRetro": 3.0, "accelStrafe": 5.2, "accelUp": 5.2, "accelDown": 4.0,
+            "accelAbFwd": 15.3, "accelAbRetro": 3.4, "accelAbStrafe": 7.0, "accelAbUp": 6.8, "accelAbDown": 5.6,
+            "accelTestedDate": "2026-03-25",
+        },
     }
     accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
     for ship in ships.values():
@@ -3180,6 +3356,14 @@ def main():
     print("\n[4/6] Scanning components…")
     items = scan_components(FORGE_DIR, loc)
     print(f"  Total: {len(items)} components")
+
+    # Module metadata enrichment
+    MODULE_META = {
+        "rsi_aurora_mk2_module_cargo":   {"cargoBonus": 6},
+    }
+    for cls, meta in MODULE_META.items():
+        if cls in items:
+            items[cls].update(meta)
 
     # 5. Ammo params (forge XML: speed, range)
     print("\n[5/7] Parsing ammo params (forge XML)…")
@@ -3231,7 +3415,7 @@ def main():
 
     output = {
         "meta": {
-            "game":          "Star Citizen PTU",
+            "game":          f"Star Citizen {DATA_MODE.upper()}",
             "version":       GAME_VERSION,
             "extractedBy":   "VerseDB Extractor v3",
             "shipCount":     len(ship_list),
@@ -3250,7 +3434,7 @@ def main():
 
     # ── Generate changelog by diffing against previous extraction ──────────────
     CHANGELOG_FILE = Path(__file__).parent / "versedb_changelog.json"
-    CHANGELOG_APP  = Path(__file__).parent / "../../versedb-app/public/versedb_changelog.json"
+    CHANGELOG_APP  = APP_DATA_DIR / "versedb_changelog.json"
 
     TRACKED_FIELDS = {
         "ship": ["mass", "hp", "cargoCapacity", "weaponPowerPoolSize", "thrusterPowerBars",
@@ -3369,9 +3553,8 @@ def main():
 
                         with open(CHANGELOG_FILE, "w", encoding="utf-8") as f:
                             json.dump(changelog, f, indent=2, ensure_ascii=False)
-                        if CHANGELOG_APP.parent.exists():
-                            import shutil
-                            shutil.copy2(CHANGELOG_FILE, CHANGELOG_APP)
+                        CHANGELOG_APP.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(CHANGELOG_FILE, CHANGELOG_APP)
 
                         print(f"\n[CHANGELOG] {prev_version} → {new_version}")
                         print(f"  Changes: {len(all_changes)}, Added: {len(all_added)}, Removed: {len(all_removed)}")
@@ -3389,10 +3572,15 @@ def main():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
+    # Auto-copy to versedb-app/public/<live|ptu>/
+    APP_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(OUTPUT_FILE, APP_DATA_DIR / "versedb_data.json")
+
     size_mb = OUTPUT_FILE.stat().st_size / 1_048_576
     m = output["meta"]
     print(f"\n{'=' * 60}")
     print(f"Done!  {OUTPUT_FILE}")
+    print(f"  Copied to {APP_DATA_DIR / 'versedb_data.json'}")
     print(f"  Size:          {size_mb:.1f} MB")
     print(f"  Ships:         {m['shipCount']}")
     print(f"  Weapons:       {m['weapons']} ({m['weaponsWithDPS']} with DPS)")
@@ -3400,14 +3588,14 @@ def main():
     print(f"  Power Plants:  {m['powerPlants']}")
     print(f"  Coolers:       {m['coolers']}")
     print(f"  Quantum Drives:{m['quantumDrives']}")
-    print(f"\nDrop versedb_data.json into the VerseDB app to load.")
 
     # 8. Missions & Contracts (separate extraction)
-    print("\n[8/9] Extracting missions & contracts…")
+    print("\n[8/10] Extracting missions & contracts…")
     import subprocess
+    sub_env = {**os.environ, "VERSEDB_DATA_MODE": DATA_MODE}
     mission_script = Path(__file__).parent / "versedb_missions.py"
     if mission_script.exists():
-        result = subprocess.run([sys.executable, str(mission_script)], capture_output=True, text=True)
+        result = subprocess.run([sys.executable, str(mission_script)], capture_output=True, text=True, env=sub_env)
         for line in result.stdout.splitlines():
             if any(kw in line for kw in ['Done', 'Total', 'Parsed', 'Filtered', 'Copied']):
                 print(f"  {line.strip()}")
@@ -3419,10 +3607,10 @@ def main():
         print(f"  WARNING: {mission_script} not found — skipping mission extraction")
 
     # 9. Crafting Recipes (DCB inline struct extraction)
-    print("\n[9/9] Extracting crafting recipes…")
+    print("\n[9/10] Extracting crafting recipes…")
     crafting_script = Path(__file__).parent / "crafting_extract.py"
     if crafting_script.exists():
-        result = subprocess.run([sys.executable, str(crafting_script)], capture_output=True, text=True)
+        result = subprocess.run([sys.executable, str(crafting_script)], capture_output=True, text=True, env=sub_env)
         for line in result.stdout.splitlines():
             if any(kw in line for kw in ['Extracted', 'Unique', 'Saved', 'Copied']):
                 print(f"  {line.strip()}")
@@ -3433,5 +3621,39 @@ def main():
     else:
         print(f"  WARNING: {crafting_script} not found — skipping crafting extraction")
 
+    # 10. Shop Prices (UEX Corp API)
+    print("\n[10/10] Fetching shop prices from UEX…")
+    shop_script = Path(__file__).parent / "versedb_shop_scrape.py"
+    if shop_script.exists():
+        result = subprocess.run([sys.executable, str(shop_script)], capture_output=True, text=True, env=sub_env)
+        for line in result.stdout.splitlines():
+            if any(kw in line for kw in ['matched', 'Done', 'Copied', 'WARNING', 'ERROR']):
+                print(f"  {line.strip()}")
+        if result.returncode != 0:
+            print(f"  WARNING: Shop price fetch failed")
+            if result.stderr:
+                print(f"  {result.stderr[:200]}")
+    else:
+        print(f"  WARNING: {shop_script} not found — skipping shop prices")
+
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description="VerseDB Extractor — Star Citizen Data Pipeline")
+    parser.add_argument("--mode", choices=["live", "ptu", "both"], default="both",
+                        help="Which build to extract: live, ptu, or both (default: both)")
+    parser.add_argument("--reextract", action="store_true",
+                        help="Force re-extraction from p4k even if intermediate dirs exist")
+    args = parser.parse_args()
+
+    modes = ["live", "ptu"] if args.mode == "both" else [args.mode]
+    for m in modes:
+        if args.reextract:
+            # Remove intermediate dirs to force fresh extraction
+            for suffix in (f"sc_data_xml_{m}", f"sc_data_{m}", f"sc_data_forge_{m}"):
+                d = _SC / suffix
+                if d.exists():
+                    shutil.rmtree(d)
+                    print(f"  Cleared {d}")
+        main(m)
+        if len(modes) > 1:
+            print("\n" + "─" * 60 + "\n")

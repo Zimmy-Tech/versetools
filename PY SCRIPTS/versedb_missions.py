@@ -14,10 +14,11 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
-FORGE_DIR = Path(__file__).parent / "../SC FILES/sc_data_forge_47/libs/foundry/records"
-GLOBAL_INI = Path(__file__).parent / "../SC FILES/sc_data_xml_47/Data/Localization/english/global.ini"
+_DATA_MODE = os.environ.get("VERSEDB_DATA_MODE", "live")
+FORGE_DIR = Path(__file__).parent / f"../SC FILES/sc_data_forge_{_DATA_MODE}/libs/foundry/records"
+GLOBAL_INI = Path(__file__).parent / f"../SC FILES/sc_data_xml_{_DATA_MODE}/Data/Localization/english/global.ini"
 OUTPUT_FILE = Path(__file__).parent / "versedb_missions.json"
-APP_FILE = Path(__file__).parent / "../../versedb-app/public/versedb_missions.json"
+APP_FILE = Path(__file__).parent / "../../versedb-app/public" / _DATA_MODE / "versedb_missions.json"
 
 def load_localization(ini_path):
     loc = {}
@@ -629,11 +630,11 @@ def main():
     for cat, count in sorted(categories.items()):
         print(f"    {cat}: {count}")
 
-    # Copy to app
-    if APP_FILE.parent.exists():
-        import shutil
-        shutil.copy2(OUTPUT_FILE, APP_FILE)
-        print(f"\n  Copied to {APP_FILE}")
+    # Copy to app (mode-aware subfolder)
+    import shutil
+    APP_FILE.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(OUTPUT_FILE, APP_FILE)
+    print(f"\n  Copied to {APP_FILE}")
 
 if __name__ == "__main__":
     main()
