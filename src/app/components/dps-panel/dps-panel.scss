@@ -1,0 +1,283 @@
+.dps-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+}
+
+.dps-stats-col {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+
+  &.collapsible {
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    &:hover { color: var(--text2); }
+  }
+}
+
+.chevron {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.dps-total {
+  text-align: center;
+  padding: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+}
+
+.dps-num {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.dps-label {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.dps-bars { display: flex; flex-direction: column; gap: 6px; }
+
+.bar-row { display: flex; flex-direction: column; gap: 3px; }
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+}
+.bar-track { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+
+.phys { color: var(--phys); }
+.enrg { color: var(--enrg); }
+.dist { color: var(--dist); }
+.phys-fill { background: var(--phys); }
+.enrg-fill { background: var(--enrg); }
+.dist-fill { background: var(--dist); }
+
+.mono { font-family: 'Share Tech Mono', monospace; }
+
+.no-weapons {
+  color: var(--text3);
+  font-size: 13px;
+  text-align: center;
+  padding: 8px;
+}
+
+.weapon-list { display: flex; flex-direction: column; gap: 4px; max-height: 200px; overflow-y: auto; }
+.weapon-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--bg3);
+  border-left: 2px solid var(--border2);
+}
+.weapon-name {
+  font-size: 13px;
+  color: var(--text2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+.weapon-stat { font-size: 13px; color: var(--text); margin-left: 8px; white-space: nowrap; }
+
+.section-subtitle {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-top: 6px;
+  margin-bottom: 3px;
+}
+
+.resist-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 1px 0;
+}
+
+.stat-block {
+  padding: 8px 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  gap: 16px;
+  &[title] {
+    cursor: help;
+    .stat-label { border-bottom: 1px dotted var(--text3); }
+  }
+}
+.stat-label { color: var(--text2); white-space: nowrap; }
+
+.hover-hint {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--text3);
+  opacity: 0.6;
+  margin-left: 6px;
+}
+
+// ── Armor Check ──────────────────────────────────────────
+
+.armor-type-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.armor-check-block {
+  gap: 4px;
+}
+
+.armor-icon {
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 4px;
+  &.pen { color: var(--green); }
+  &.def { color: var(--red); }
+}
+
+.armor-size {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-left: 2px;
+}
+
+.detail-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: none;
+  border: 1px solid var(--border2);
+  padding: 1px 8px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: all 0.15s;
+  &:hover { color: var(--accent); border-color: var(--accent2); }
+}
+
+// ── Armor Detail Popout ──────────────────────────────────
+
+.popout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 900;
+}
+
+.popout-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  max-width: 90vw;
+  max-height: 80vh;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  z-index: 901;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.popout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+.popout-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+.popout-close {
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 18px;
+  line-height: 1;
+  &:hover { color: var(--text); }
+}
+
+.popout-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.popout-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+
+.armor-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 4px;
+}

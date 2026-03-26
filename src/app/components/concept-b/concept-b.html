@@ -1,0 +1,159 @@
+<div class="briefing">
+
+  <!-- Ship Banner -->
+  <div class="brief-banner">
+    <img class="brief-ship-img" src="ship-images/aegs_gladius.webp" alt="Gladius">
+    <div class="brief-ship-info">
+      <div class="brief-ship-name">Aegis Gladius</div>
+      <div class="brief-ship-meta">Light Fighter | Size S | Crew 1 | Mass 49t</div>
+      <div class="brief-ship-pills">
+        <span>SCM 280</span>
+        <span>NAV 1193</span>
+        <span>HP 9,075</span>
+        <span>Cargo 0 SCU</span>
+        <span>Fwd 12.6G</span>
+      </div>
+    </div>
+    <div class="brief-dps-callout">
+      <div class="brief-dps-val">856</div>
+      <div class="brief-dps-label">PILOT DPS</div>
+    </div>
+  </div>
+
+  <!-- System Tabs -->
+  <div class="brief-tabs">
+    <button class="brief-tab" [class.active]="activeSystem() === 'weapons'" (click)="activeSystem.set('weapons')">Weapons</button>
+    <button class="brief-tab" [class.active]="activeSystem() === 'defense'" (click)="activeSystem.set('defense')">Defense</button>
+    <button class="brief-tab" [class.active]="activeSystem() === 'propulsion'" (click)="activeSystem.set('propulsion')">Propulsion</button>
+    <button class="brief-tab" [class.active]="activeSystem() === 'systems'" (click)="activeSystem.set('systems')">Systems</button>
+  </div>
+
+  <!-- System Content -->
+  <div class="brief-content">
+    @switch (activeSystem()) {
+      @case ('weapons') {
+        <div class="brief-section">
+          <div class="brief-row">
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S3</span> Weapon - Nose</div>
+              <div class="brief-slot-item">
+                <span class="brief-item-name">CF-337 Panther Repeater</span>
+                <span class="brief-item-type">ENERGY</span>
+              </div>
+              <div class="brief-slot-stats">DPS 285.7 | Alpha 19.0 | Ammo 75 (4/4)</div>
+            </div>
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S3</span> Weapon - Left Wing</div>
+              <div class="brief-slot-item">
+                <span class="brief-item-name">CF-337 Panther Repeater</span>
+                <span class="brief-item-type">ENERGY</span>
+              </div>
+              <div class="brief-slot-stats">DPS 285.7 | Alpha 19.0 | Ammo 75 (4/4)</div>
+            </div>
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S3</span> Weapon - Right Wing</div>
+              <div class="brief-slot-item">
+                <span class="brief-item-name">CF-337 Panther Repeater</span>
+                <span class="brief-item-type">ENERGY</span>
+              </div>
+              <div class="brief-slot-stats">DPS 285.7 | Alpha 19.0 | Ammo 75 (4/4)</div>
+            </div>
+          </div>
+          <div class="brief-row">
+            <div class="brief-slot missile">
+              <div class="brief-slot-header"><span class="brief-sz">S3</span> Missiles - Left</div>
+              <div class="brief-slot-item"><span class="brief-item-name">Tempest II x2</span><span class="brief-item-type">CS</span></div>
+              <div class="brief-slot-stats">DMG 5,840 | Lock 2.5s</div>
+            </div>
+            <div class="brief-slot missile">
+              <div class="brief-slot-header"><span class="brief-sz">S3</span> Missiles - Right</div>
+              <div class="brief-slot-item"><span class="brief-item-name">Arrester III x1</span><span class="brief-item-type">CS</span></div>
+              <div class="brief-slot-stats">DMG 4,200 | Lock 3.0s</div>
+            </div>
+          </div>
+        </div>
+      }
+      @case ('defense') {
+        <div class="brief-section">
+          <div class="brief-row">
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S1</span> Shield</div>
+              <div class="brief-slot-item"><span class="brief-item-name">Shimmer</span></div>
+              <div class="brief-slot-stats">HP 5,500 | Regen 220/s | Down 8.8s</div>
+            </div>
+          </div>
+          <div class="brief-subsection">
+            <div class="brief-sub-title">Hull</div>
+            <div class="brief-sub-grid">
+              <div class="brief-sub-stat"><span>Total HP</span><span>9,075</span></div>
+              <div class="brief-sub-stat"><span>Vital HP</span><span>2,400</span></div>
+              <div class="brief-sub-stat"><span>Armor</span><span>4,125</span></div>
+              <div class="brief-sub-stat"><span>Phys Dmg</span><span>-25%</span></div>
+              <div class="brief-sub-stat"><span>Enrg Dmg</span><span>-40%</span></div>
+            </div>
+          </div>
+        </div>
+      }
+      @case ('propulsion') {
+        <div class="brief-section">
+          <div class="brief-row">
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S1</span> Quantum Drive</div>
+              <div class="brief-slot-item"><span class="brief-item-name">Beacon</span></div>
+              <div class="brief-slot-stats">190 Mm/s | Spool 4.0s | Cal 1.5s</div>
+            </div>
+          </div>
+          <div class="brief-subsection">
+            <div class="brief-sub-title">Acceleration</div>
+            <div class="brief-sub-grid">
+              <div class="brief-sub-stat"><span>Fwd</span><span>12.6 / 19.6G</span></div>
+              <div class="brief-sub-stat"><span>Retro</span><span>2.7 / 3.3G</span></div>
+              <div class="brief-sub-stat"><span>Strafe</span><span>6.0 / 11.9G</span></div>
+              <div class="brief-sub-stat"><span>Up</span><span>9.2 / 11.8G</span></div>
+              <div class="brief-sub-stat"><span>Down</span><span>3.0 / 3.9G</span></div>
+            </div>
+          </div>
+          <div class="brief-subsection">
+            <div class="brief-sub-title">Fuel</div>
+            <div class="brief-sub-grid">
+              <div class="brief-sub-stat"><span>Hydrogen</span><span>13.6 mSCU</span></div>
+              <div class="brief-sub-stat"><span>Quantum</span><span>1.3 mSCU</span></div>
+            </div>
+          </div>
+        </div>
+      }
+      @case ('systems') {
+        <div class="brief-section">
+          <div class="brief-row">
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S1</span> Power Plant</div>
+              <div class="brief-slot-item"><span class="brief-item-name">Regulus</span></div>
+              <div class="brief-slot-stats">3 SEG | Grade C</div>
+            </div>
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S1</span> Cooler</div>
+              <div class="brief-slot-item"><span class="brief-item-name">Bracer</span></div>
+              <div class="brief-slot-stats">105k rate | Grade C</div>
+            </div>
+            <div class="brief-slot">
+              <div class="brief-slot-header"><span class="brief-sz">S1</span> Radar</div>
+              <div class="brief-slot-item"><span class="brief-item-name">Surveyor-Go</span></div>
+              <div class="brief-slot-stats">Aim 585-632m</div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Power ribbon -->
+  <div class="brief-power-ribbon">
+    <span class="brief-pwr-label">POWER</span>
+    @for (bar of ['WPNS','THRU','SHLD','QD','RADR','LS','CLR']; track bar) {
+      <div class="brief-pwr-bar">
+        <div class="brief-pwr-fill" [style.height]="bar === 'WPNS' ? '50%' : bar === 'THRU' ? '50%' : bar === 'SHLD' ? '60%' : '25%'"></div>
+        <span class="brief-pwr-name">{{ bar }}</span>
+      </div>
+    }
+  </div>
+</div>

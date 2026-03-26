@@ -1,0 +1,200 @@
+:host {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.compare-view {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 14px;
+  gap: 14px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.selector-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.slot-color {
+  width: 4px;
+  height: 100%;
+  min-height: 32px;
+  flex-shrink: 0;
+}
+
+.compare-slot-select {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: none;
+  color: var(--text);
+  padding: 5px 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+
+  &:focus { border-color: var(--accent2); }
+}
+
+.selector-row th {
+  background: var(--bg3) !important;
+  border-top: none !important;
+  padding: 6px 8px !important;
+}
+
+/* ── Comparison table ─────────────────── */
+.compare-table-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 10px;
+  overflow: auto;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: var(--text);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    &.item-col {
+      color: var(--accent);
+      background: rgba(0, 200, 255, 0.05);
+      border-top: 2px solid;
+    }
+  }
+
+  td {
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    color: var(--text2);
+  }
+
+  tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+  td.row-label {
+    background: var(--bg2);
+    color: var(--text3);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  td.best {
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 600;
+  }
+
+  td.val { font-family: 'Share Tech Mono', monospace; }
+}
+
+/* ── Radar chart ──────────────────────── */
+.radar-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 16px;
+}
+
+.radar-svg {
+  width: 300px;
+  height: 300px;
+}
+
+.radar-ring {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 0.5;
+}
+
+.radar-spoke {
+  stroke: var(--border);
+  stroke-width: 0.5;
+}
+
+.radar-poly {
+  fill-opacity: 0.08;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transition: fill-opacity 0.2s;
+
+  &:hover {
+    fill-opacity: 0.18;
+    stroke-width: 2;
+  }
+}
+
+.radar-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--text3);
+  letter-spacing: 0.5px;
+  dominant-baseline: central;
+}
+
+.radar-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.legend-name {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+/* ── Empty state ──────────────────────── */
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.empty-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+}

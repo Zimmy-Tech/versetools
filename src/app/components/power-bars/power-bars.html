@@ -1,0 +1,81 @@
+@if (data.selectedShip()) {
+  <div class="pb-wrap">
+    <div class="pb-title">Power</div>
+    <div class="pb-controls-row">
+      <div class="flight-mode-toggle">
+        <button class="fm-btn" [class.active]="data.flightMode() === 'scm'"
+                (click)="data.flightMode() !== 'scm' && data.toggleFlightMode()">SCM</button>
+        <button class="fm-btn" [class.active]="data.flightMode() === 'nav'"
+                (click)="data.flightMode() !== 'nav' && data.toggleFlightMode()">NAV</button>
+      </div>
+      <div class="pb-bars-col">
+        <div class="pb-grid" [style.height.px]="maxHeight() * 12">
+          @for (col of columns(); track col.id) {
+            <div class="pb-col" [class.restricted]="col.restricted" [class.placeholder]="col.placeholder"
+                 [title]="col.placeholder ? col.label + ' (not yet available)' : col.label">
+
+              <!-- Spacer to bottom-align all bars -->
+              <div class="pb-spacer" [style.flex]="maxHeight() - col.max"></div>
+
+              <!-- Individual blocks: segments col.max down to col.powerMin+1 -->
+              @for (i of range(col.max - col.powerMin); track i) {
+                <div class="pb-block"
+                     [class.active]="(col.max - i) <= col.alloc"
+                     [class.clickable]="!col.restricted && !col.placeholder"
+                     (click)="setAlloc(col, col.max - i)">
+                </div>
+              }
+              <!-- Minimum band(s): for shields, show per-shield bands stacked bottom-up -->
+              @if (col.shieldBands && col.shieldBands.length > 1) {
+                @for (band of col.shieldBands; track band.hpId; let i = $index) {
+                  <div class="pb-block pb-block-minband"
+                       [style.height.px]="band.min * 10 + (band.min - 1) * 2"
+                       [class.active]="shieldBandThreshold(col, i) <= col.alloc"
+                       [class.clickable]="!col.restricted && !col.placeholder"
+                       (click)="setAlloc(col, shieldBandThreshold(col, i))">
+                  </div>
+                }
+              } @else {
+                <div class="pb-block"
+                     [class.pb-block-minband]="col.powerMin > 1"
+                     [style.height.px]="col.powerMin * 10 + (col.powerMin - 1) * 2"
+                     [class.active]="col.powerMin <= col.alloc"
+                     [class.clickable]="!col.restricted && !col.placeholder"
+                     (click)="setAlloc(col, col.powerMin)">
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Labels in a shared row so they always share the same baseline -->
+        <div class="pb-label-row">
+          @for (col of columns(); track col.id) {
+            <div class="pb-label" [class.placeholder]="col.placeholder" [title]="col.label"
+                 (click)="togglePower(col, $event)">
+              @if (iconFor(col)) {
+                <img [src]="iconFor(col)!" [alt]="col.label" class="pb-icon"
+                     [class.clickable]="!col.placeholder && col.id !== '__tools__'">
+              } @else {
+                {{ col.label }}
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (data.totalPowerOut() > 0) {
+      <div class="pb-budget" [class.over]="data.totalPowerUsed() > data.totalPowerOut()">
+        {{ data.totalPowerUsed() }}/{{ data.totalPowerOut() }}
+      </div>
+    }
+
+    @if (coolingSupply() > 0) {
+      <div class="pb-cooling" [class.deficit]="coolingDemand() > coolingSupply()">
+        <span class="pb-cooling-label">Cooling Supply Usage</span>
+        <span class="pb-cooling-values">{{ coolingPct() }}%</span>
+      </div>
+    }
+  </div>
+}

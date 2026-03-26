@@ -1,0 +1,68 @@
+<div class="armor-damage">
+
+  <!-- Controls -->
+  <div class="filter-bar">
+    <span class="filter-label">Damage Type</span>
+    <select class="filter-select" [value]="dmgType()" (change)="dmgType.set($any($event.target).value)">
+      <option value="physical">Physical</option>
+      <option value="energy">Energy</option>
+    </select>
+    <span class="filter-label">Weapon</span>
+    <select class="filter-select weapon-picker" [value]="selectedWeapon()" (change)="selectedWeapon.set($any($event.target).value)">
+      <option value="">— select weapon —</option>
+      @for (w of weapons(); track w.className) {
+        <option [value]="w.className">{{ w.name }} (S{{ w.size }}) — {{ (w.damage![dmgType()] ?? 0).toFixed(1) }}</option>
+      }
+    </select>
+  </div>
+
+  @if (activeWeapon(); as w) {
+    <!-- Weapon info -->
+    <div class="weapon-info">
+      <span class="weapon-info-name">{{ w.name }}</span>
+      <span class="weapon-info-size">S{{ w.size }}</span>
+      <span class="weapon-info-alpha">Alpha: {{ (w.damage![dmgType()] ?? 0).toFixed(1) }}</span>
+    </div>
+
+    <!-- Ship size filter -->
+    <div class="size-buttons">
+      @for (opt of shipSizeOptions; track opt.value) {
+        <button class="size-btn" [class.active]="shipSize() === opt.value"
+                (click)="shipSize.set(opt.value)">{{ opt.label }}</button>
+      }
+    </div>
+
+    <!-- Nearby ships -->
+    <div class="ship-list-wrap">
+      <table class="ship-table">
+        <thead>
+          <tr>
+            <th class="th-status"></th>
+            <th>Ship</th>
+            <th class="th-deflect">Deflect</th>
+            <th class="th-diff">Margin</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of nearbyShips(); track row.ship.className) {
+            <tr [class.row-deflected]="row.deflected" [class.row-penetrated]="!row.deflected">
+              <td class="cell-status">
+                <span class="armor-icon" [class.pen]="!row.deflected" [class.def]="row.deflected">{{ row.deflected ? '\u2717' : '\u2713' }}</span>
+              </td>
+              <td class="cell-ship">{{ row.ship.name }}</td>
+              <td class="cell-deflect">{{ row.deflect }}</td>
+              <td class="cell-diff" [class.positive]="row.deflected" [class.negative]="!row.deflected">
+                {{ row.deflected ? '+' : '' }}{{ (row.deflect - (w.damage![dmgType()] ?? 0)).toFixed(1) }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-hint">Select a weapon to see which ships can deflect it</div>
+    </div>
+  }
+
+</div>

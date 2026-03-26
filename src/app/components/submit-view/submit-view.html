@@ -1,0 +1,94 @@
+<div class="submit-view">
+  <div class="submit-panel">
+
+    <div class="panel-title">Submit Acceleration Data</div>
+    <div class="panel-sub">Help improve VerseDB by submitting in-game tested acceleration values.</div>
+
+    <!-- Submitter name -->
+    <div class="field-group">
+      <label class="field-label">Your Name</label>
+      <input class="field-input" type="text" placeholder="Callsign or handle"
+             [value]="form().submitterName"
+             (input)="updateField('submitterName', $any($event.target).value)" />
+    </div>
+
+    <!-- Ship picker -->
+    <div class="field-group">
+      <label class="field-label">Ship</label>
+      <select class="field-select" [value]="form().shipClassName"
+              (change)="updateField('shipClassName', $any($event.target).value)">
+        <option value="">— select ship —</option>
+        @for (s of shipOptions(); track s.className) {
+          <option [value]="s.className">{{ s.name }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Acceleration fields -->
+    <div class="accel-grid">
+      <div class="accel-header">
+        <span class="ah-axis"></span>
+        <span class="ah-label">Normal (G)</span>
+        <span class="ah-label">Boosted (G)</span>
+      </div>
+
+      <div class="accel-row">
+        <span class="ar-axis">Forward</span>
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().fwd" (input)="updateField('fwd', $any($event.target).value)" />
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().fwdBoost" (input)="updateField('fwdBoost', $any($event.target).value)" />
+      </div>
+
+      <div class="accel-row">
+        <span class="ar-axis">Retro</span>
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().retro" (input)="updateField('retro', $any($event.target).value)" />
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().retroBoost" (input)="updateField('retroBoost', $any($event.target).value)" />
+      </div>
+
+      <div class="accel-row">
+        <span class="ar-axis">Left / Right</span>
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().strafe" (input)="updateField('strafe', $any($event.target).value)" />
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().strafeBoost" (input)="updateField('strafeBoost', $any($event.target).value)" />
+      </div>
+
+      <div class="accel-row">
+        <span class="ar-axis">Up</span>
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().up" (input)="updateField('up', $any($event.target).value)" />
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().upBoost" (input)="updateField('upBoost', $any($event.target).value)" />
+      </div>
+
+      <div class="accel-row">
+        <span class="ar-axis">Down</span>
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().down" (input)="updateField('down', $any($event.target).value)" />
+        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+               [value]="form().downBoost" (input)="updateField('downBoost', $any($event.target).value)" />
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="field-group">
+      <label class="field-label">Notes <span class="optional">(optional)</span></label>
+      <textarea class="field-textarea" rows="2" placeholder="Game version, conditions, etc."
+                [value]="form().notes"
+                (input)="updateField('notes', $any($event.target).value)"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button class="submit-btn" [disabled]="!canSubmit()" (click)="submit()">
+      @if (submitted()) {
+        Submitted
+      } @else {
+        Submit Data
+      }
+    </button>
+
+  </div>
+</div>

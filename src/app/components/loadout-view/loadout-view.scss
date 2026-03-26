@@ -1,0 +1,930 @@
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text3);
+}
+
+.empty-icon { font-size: 50px; opacity: 0.3; }
+.empty-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.empty-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+}
+
+.loadout-builder {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.loadout-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  padding: 12px;
+  gap: 12px;
+  width: 100%;
+}
+
+.loadout-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 8px;
+  min-width: 0;
+}
+
+.three-columns {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  overflow: auto;
+
+  .col-weapons { flex: 3; min-width: 0; }
+  .col-defense { flex: 2; min-width: 0; }
+  .col-systems { flex: 2; min-width: 0; }
+}
+
+.stats-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex-shrink: 0;
+  width: clamp(240px, 20vw, 320px);
+
+  app-power-bars, app-dps-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+  }
+}
+
+.ship-side-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: clamp(180px, 15vw, 260px);
+}
+
+.ship-header-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.ship-header-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+}
+
+.ship-name-big {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.ship-mfr-big {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--accent2);
+  margin-top: 3px;
+  letter-spacing: 1px;
+}
+
+.stats-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.stats-block {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+
+  .stats-block-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+.stats-block-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.ship-image-inset {
+  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--accent);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+.ship-stats-row {
+  display: flex;
+  gap: 8px 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.stat-pill { display: flex; flex-direction: column; gap: 1px; }
+.stat-pill-label {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.stat-pill-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.flight-divider {
+  display: none;
+}
+
+
+.flight-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 6px;
+}
+
+.flight-group-label {
+  text-align: left;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.flight-stat {
+  display: flex;
+  align-items: baseline;
+}
+
+.buy-price-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4px;
+
+  &:first-child { margin-top: 4px; }
+}
+
+.buy-shop {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: center;
+}
+
+.buy-divider {
+  width: 80%;
+  height: 1px;
+  background: var(--border2);
+  margin: 2px 0;
+}
+
+.buy-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  text-align: center;
+}
+
+.fs-label {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: right;
+  width: 10ch;
+  flex-shrink: 0;
+  margin-right: 3ch;
+}
+
+.fs-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+  text-align: right;
+  min-width: 4ch;
+
+  &.accent { color: var(--accent); }
+}
+
+/* ── Dot leaders for all stat blocks ── */
+.stats-block {
+  .flight-stat {
+    gap: 0;
+  }
+  .fs-label {
+    width: auto;
+    flex-shrink: 0;
+    margin-right: 0;
+    text-align: left;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  // Dot leader filler between label and value
+  .flight-stat::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px dotted var(--border2);
+    margin: 0 6px;
+    min-width: 8px;
+    align-self: baseline;
+    position: relative;
+    top: -3px;
+  }
+  // Reorder so filler sits between label and value
+  .fs-label { order: 1; }
+  .flight-stat::after { order: 2; }
+  .fs-val { order: 3; }
+  .fs-slash { order: 4; }
+  .fs-boost { order: 5; }
+}
+
+/* ── Right-column stats block (2-col flowing grid) ── */
+.right-stats-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+
+.right-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.tested-date {
+  margin-top: 2px;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.fs-slash {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--text3);
+  width: 2ch;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.fs-boost {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+}
+
+.loadout-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 0 0 4px;
+}
+
+.btn-cart-add {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.06);
+  border: 1px solid var(--accent2);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(0, 200, 255, 0.15); }
+}
+
+.btn-reset {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+}
+
+.hardpoints-columns, .three-columns > .hardpoints-scroll {
+  min-width: 0;
+}
+
+.hardpoints-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+  min-width: 0;
+
+  &:first-child { --label-w: 200px; }
+  &:last-child  { --label-w: 100px; }
+}
+
+.sys-stats {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 2px;
+}
+
+.sys-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sys-stat-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+.sys-stat-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+  text-align: right;
+
+  &.phys { color: #c8a87a; }
+  &.enrg { color: #7ab8e8; }
+  &.dist { color: #b07ae8; }
+}
+
+.sys-stat-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 3px 0;
+}
+
+.sub-slot-indent {
+  padding-left: 18px;
+  border-left: 2px solid var(--border);
+  margin-left: 6px;
+}
+
+.slot-group-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text2);
+  text-transform: uppercase;
+  padding: 6px 0 3px;
+  border-bottom: 1px solid var(--border);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .collapse-btn {
+    font-size: 11px;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--text3);
+    cursor: pointer;
+    margin-left: auto;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    letter-spacing: 0;
+    transition: all 0.15s;
+    &:hover { color: var(--accent); border-color: var(--accent2); }
+  }
+
+  &.excess-label {
+    color: var(--text3);
+    opacity: 0.7;
+    font-size: 11px;
+    span { font-weight: 400; letter-spacing: 0.5px; text-transform: none; }
+  }
+}
+
+.excess-shield {
+  opacity: 0.6;
+  border-left: 2px solid rgba(0, 200, 255, 0.3);
+  padding-left: 4px;
+}
+
+.focus-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 900;
+}
+
+.focus-popout {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  max-width: 90vw;
+  max-height: 80vh;
+  background: var(--bg2);
+  border: 1px solid var(--accent2);
+  z-index: 901;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.focus-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+.focus-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.focus-close {
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 18px;
+  line-height: 1;
+  &:hover { color: var(--text); }
+}
+
+.focus-body {
+  overflow-y: auto;
+}
+
+.focus-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+
+  tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+
+  td {
+    padding: 3px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .fk {
+    color: var(--text3);
+    white-space: nowrap;
+    width: 40%;
+  }
+
+  .fv {
+    color: var(--text);
+    text-align: right;
+  }
+}
+
+/* ── Mining combined stats ───────────────────────── */
+.mining-combined {
+  background: var(--bg3);
+  border: 1px solid var(--accent2);
+  padding: 6px 10px;
+  margin-top: 6px;
+}
+
+.mining-combined-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.mining-combined-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 3ch;
+}
+
+.mc-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: right;
+}
+
+.mc-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+  text-align: right;
+  width: 10ch;
+  flex-shrink: 0;
+}
+
+/* ── Test Component Block (UI testbed) ───────────── */
+.test-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ═══ VARIANT A: Jane's Spec Card ═══
+   Military technical manual style — classification header,
+   ruled sections, reference codes, primary stat callout */
+.jane-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+
+  // Top-left corner cut
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    border: 8px solid transparent;
+    border-top-color: var(--accent2);
+    border-left-color: var(--accent2);
+  }
+}
+
+.jane-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 18px;
+  border-bottom: 2px solid var(--accent2);
+}
+
+.jane-class {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+
+.jane-divider-h {
+  width: 1px;
+  height: 14px;
+  background: var(--border2);
+}
+
+.jane-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.jane-meta {
+  display: flex;
+  gap: 12px;
+  padding: 3px 10px 3px 18px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 200, 255, 0.02);
+}
+
+.jane-body {
+  display: flex;
+  padding: 8px 10px 8px 18px;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.jane-primary {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.jane-primary-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.jane-primary-unit {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+
+.jane-specs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
+}
+
+.jane-spec {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1px 0;
+  border-bottom: 1px dotted rgba(255,255,255,0.06);
+
+  &:last-child { border-bottom: none; }
+}
+
+.jane-spec-k {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+}
+
+.jane-spec-v {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.jane-footer {
+  padding: 2px 10px 3px 18px;
+  border-top: 1px solid var(--border);
+  background: rgba(0, 200, 255, 0.02);
+}
+
+.jane-ref {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 2px;
+  opacity: 0.6;
+}
+
+/* ═══ VARIANT B: Tactical Readout ═══
+   HUD-style data grid — left accent stripe,
+   stats in a 2×2 grid with value-over-label cells */
+.tac-card {
+  display: flex;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.tac-stripe {
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  flex-shrink: 0;
+}
+
+.tac-content {
+  flex: 1;
+  padding: 6px 10px;
+}
+
+.tac-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tac-size {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 0 5px;
+  letter-spacing: 1px;
+}
+
+.tac-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+
+.tac-mfr {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+
+.tac-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.tac-cell {
+  text-align: center;
+  padding: 4px;
+  background: var(--bg3);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.tac-cell-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.tac-cell-key {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+/* ═══ VARIANT C: Compact Inline ═══
+   Dense single-line readout — size tag, name, then
+   all stats on one line separated by pipes */
+.cmp-card {
+  display: flex;
+  align-items: stretch;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.cmp-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  background: var(--bg3);
+  border-right: 2px solid var(--accent2);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.cmp-info {
+  flex: 1;
+  padding: 5px 10px;
+}
+
+.cmp-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.cmp-type {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--accent2);
+  margin-left: 6px;
+}
+
+.cmp-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+}
+
+.cmp-kv em {
+  font-style: normal;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+  margin-right: 3px;
+}
+
+.cmp-sep {
+  color: var(--border2);
+  font-size: 10px;
+}

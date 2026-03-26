@@ -1,0 +1,92 @@
+<div class="compare-view">
+
+  <!-- Table with selectors as first row -->
+  <div class="compare-table-wrap">
+    @if (true) {
+      <table class="compare-table">
+        <thead>
+          <tr class="selector-row">
+            <th></th>
+            @for (slot of slots(); track $index; let i = $index) {
+              <th>
+                <div class="selector-wrap">
+                  <div class="slot-color" [style.background]="slotColors[i]"></div>
+                  <select class="compare-slot-select" (change)="setSlot(i, $any($event.target).value)">
+                    <option value="">— Select —</option>
+                    @for (item of weaponItems(); track item.className) {
+                      <option [value]="item.className" [selected]="slot?.className === item.className">
+                        {{ item.name }} (S{{ item.size }})
+                      </option>
+                    }
+                  </select>
+                </div>
+              </th>
+            }
+          </tr>
+          <tr>
+            <th>Stat</th>
+            @for (item of slots(); track $index; let i = $index) {
+              <th [class.item-col]="item !== null"
+                  [style.border-top-color]="item ? slotColors[i] : ''">
+                {{ item?.name ?? '—' }}
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row[0]) {
+            <tr>
+              <td class="row-label">{{ row[0] }}</td>
+              @for (item of slots(); track $index; let i = $index) {
+                <td [class.best]="isBest(row, i)" [class.val]="!isBest(row, i)">
+                  {{ getCellValue(row, item) }}
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div class="empty-state">
+        <div class="empty-sub">Select components above to compare</div>
+      </div>
+    }
+  </div>
+
+  <!-- Radar chart below table -->
+  @if (radarAxes().length >= 3) {
+    <div class="radar-wrap">
+      <svg class="radar-svg" viewBox="0 0 300 300">
+        @for (ring of radarGrid(); track $index) {
+          <polygon [attr.points]="ring" class="radar-ring" />
+        }
+        @for (spoke of radarSpokes(); track $index) {
+          <line x1="150" y1="150" [attr.x2]="spoke.x2" [attr.y2]="spoke.y2" class="radar-spoke" />
+        }
+        @for (poly of radarPolygons(); track $index; let i = $index) {
+          @if (poly) {
+            <polygon [attr.points]="poly"
+                     [style.stroke]="slotColors[i]"
+                     [style.fill]="slotColors[i]"
+                     class="radar-poly" />
+          }
+        }
+        @for (lbl of radarLabels(); track lbl.label) {
+          <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
+                class="radar-label">{{ lbl.label }}</text>
+        }
+      </svg>
+      <div class="radar-legend">
+        @for (slot of slots(); track $index; let i = $index) {
+          @if (slot) {
+            <div class="legend-item">
+              <div class="legend-swatch" [style.background]="slotColors[i]"></div>
+              <span class="legend-name">{{ slot.name }}</span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+</div>

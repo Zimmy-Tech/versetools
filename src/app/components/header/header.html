@@ -1,0 +1,63 @@
+<header>
+  <div class="logo">Verse<span>DB</span></div>
+
+  <nav class="nav-tabs">
+    <button class="nav-tab" [class.active]="activeTab() === 'loadout'"
+            (click)="tabChange.emit('loadout')">Loadout</button>
+
+    <!-- Ship picker sits between Loadout and Cart, only on Loadout tab -->
+    @if (data.isLoaded() && activeTab() === 'loadout') {
+      <div class="ship-picker-wrap">
+        <input class="ship-picker-input" type="text"
+               [placeholder]="data.selectedShip()?.name ?? 'Select a ship...'"
+               [value]="searchQuery()"
+               (input)="onSearch($any($event.target).value)"
+               (focus)="openDropdown()"
+               (blur)="closeDropdown()">
+        @if (showDropdown() && filteredShips().length > 0) {
+          <div class="ship-picker-dropdown">
+            @for (ship of filteredShips(); track ship.className) {
+              <div class="ship-picker-option"
+                   [class.active]="data.selectedShip()?.className === ship.className"
+                   (mousedown)="selectShip(ship)">
+                <span class="spo-name">{{ ship.name }}</span>
+                <span class="spo-mfr">{{ ship.manufacturer }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @for (tab of nonLoadoutTabs; track tab.id) {
+      <button class="nav-tab" [class.active]="activeTab() === tab.id"
+              (click)="tabChange.emit(tab.id)">{{ tab.label }}@if (tab.id === 'cart' && data.cartCount() > 0) {
+        <span class="cart-badge">{{ data.cartCount() }}</span>
+      }</button>
+    }
+  </nav>
+
+  <div class="header-right">
+    <div class="data-status">
+      <div class="status-dot" [class.live]="data.isLoaded()"></div>
+      @if (data.isLoaded()) {
+        <span>{{ data.db()!.meta.shipCount }} SHIPS · {{ data.db()!.meta.itemCount }} ITEMS</span>
+      } @else {
+        <span>NO DATA</span>
+      }
+    </div>
+
+    @if (data.isLoaded() && data.db()!.meta.version) {
+      <div class="build-label">{{ data.db()!.meta.version }}</div>
+    }
+
+    <!-- LIVE / PTU toggle -->
+    <div class="data-toggle">
+      <span class="toggle-label" [class.active]="data.dataMode() === 'live'">LIVE</span>
+      <div class="toggle-track" (click)="toggleDataMode()">
+        <div class="toggle-thumb" [class.ptu]="data.dataMode() === 'ptu'"></div>
+      </div>
+      <span class="toggle-label" [class.active]="data.dataMode() === 'ptu'">PTU</span>
+    </div>
+  </div>
+</header>

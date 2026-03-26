@@ -1,0 +1,280 @@
+<div class="crafting-view">
+
+  @if (!loaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading crafting data...</div>
+    </div>
+  } @else {
+
+    <div class="crafting-instructions">Pick an item to see the Crafting UI which includes sliders for the materials quality and the effects of quality materials. Adding items to your Materials List will open a tally window for bulk gathering requirements.</div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <span class="filter-label">Search</span>
+      <input class="filter-input" type="text" placeholder="item name, resource..."
+             [value]="searchQuery()"
+             (input)="searchQuery.set($any($event.target).value); resetPage()">
+
+      <span class="filter-label">Category</span>
+      <select class="filter-select" (change)="categoryFilter.set($any($event.target).value); subtypeFilter.set(''); resetPage()">
+        @for (cat of categories(); track cat) {
+          <option [value]="cat">{{ cat || 'All' }}</option>
+        }
+      </select>
+
+      @if (subtypes().length > 1) {
+        <span class="filter-label">Type</span>
+        <select class="filter-select" (change)="subtypeFilter.set($any($event.target).value); resetPage()">
+          @for (sub of subtypes(); track sub) {
+            <option [value]="sub">{{ sub || 'All' }}</option>
+          }
+        </select>
+      }
+
+      <span class="filter-label">Resource</span>
+      <select class="filter-select" (change)="resourceFilter.set($any($event.target).value); resetPage()">
+        @for (res of resources(); track res) {
+          <option [value]="res">{{ res || 'All' }}</option>
+        }
+      </select>
+
+      <span class="filter-label">Sort</span>
+      <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
+        <option value="name">Name (A-Z)</option>
+        <option value="time">Craft Time</option>
+        <option value="ingredients">Ingredients</option>
+      </select>
+
+      @if (hasActiveFilter()) {
+        <div class="pager">
+          <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
+          <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
+          <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
+        </div>
+      }
+    </div>
+
+    @if (!hasActiveFilter()) {
+      <div class="empty-state">
+        <div class="fab-icon">&#9878;</div>
+        <div class="empty-title">Crafting Database</div>
+        <div class="empty-sub">{{ allRecipes().length }} blueprints available. Use the filters above to search.</div>
+      </div>
+    }
+
+    <!-- Recipe list + static tally sidebar -->
+    <div class="recipe-area" [style.display]="hasActiveFilter() ? '' : 'none'">
+
+      @if (materialsList().length) {
+        <div class="tally-panel">
+          <div class="tally-header">
+            <span class="tally-title">Materials List</span>
+            <span class="tally-clear" (click)="clearMaterialsList()">Clear</span>
+          </div>
+
+          <div class="tally-items">
+            @for (entry of materialsList(); track $index; let i = $index) {
+              <div class="tally-item">
+                <span class="tally-item-name">{{ entry.itemName }}</span>
+                <span class="tally-item-remove" (click)="removeFromMaterialsList(i)">&#10005;</span>
+              </div>
+            }
+          </div>
+
+          <div class="tally-divider"></div>
+
+          <div class="tally-totals">
+            <div class="tally-section-title">Total Materials</div>
+            @for (t of materialsTally(); track t.resource) {
+              <div class="tally-row" [class.ore]="t.type === 'resource' && t.quantity < 1"
+                   [class.gem]="t.type === 'item' || (t.type === 'resource' && t.quantity >= 1)">
+                <span class="tally-res">{{ t.resource }}</span>
+                <span class="tally-qty">{{ fmtTallyQty(t) }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="tally-divider"></div>
+          <div class="tally-row tally-time">
+            <span class="tally-res">Total Craft Time</span>
+            <span class="tally-qty">{{ fmtTime(totalCraftTime()) }}</span>
+          </div>
+        </div>
+      }
+
+      <div class="recipe-list">
+        @for (r of filteredRecipes(); track r.className) {
+          <div class="recipe-card" [class.selected]="selectedRecipe()?.className === r.className"
+               (click)="selectRecipe(r, $event)">
+            <div class="rc-top">
+              <span class="rc-sub-tag">{{ r.subtype || r.category }}</span>
+              <span class="rc-name">{{ r.itemName }}</span>
+              <span class="rc-time">{{ fmtTime(r.craftTimeSeconds) }}</span>
+            </div>
+            <div class="rc-bottom">
+              @for (ing of r.ingredients; track ing.resource) {
+                <span class="rc-chip" [class.ore]="isOre(ing)" [class.gem]="isGem(ing)">
+                  <span class="rc-chip-name">{{ ing.resource }}</span>
+                  <span class="rc-chip-qty">{{ fmtQty(ing) }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Popout detail panel -->
+    @if (selectedRecipe(); as sr) {
+      <div class="popout-overlay" (click)="closePopout()"></div>
+      <div class="popout-panel">
+        <div class="popout-header">
+          <div class="popout-title">{{ sr.itemName }}</div>
+          <span class="popout-close" (click)="closePopout()">&#10005;</span>
+        </div>
+        <div class="popout-body">
+
+          <div class="popout-meta">
+            <span class="po-cat">{{ sr.category }}</span>
+            <span class="po-class">{{ sr.className }}</span>
+          </div>
+
+          <div class="po-stats">
+            <div class="po-stat">
+              <span class="po-label">Craft Time</span>
+              <span class="po-val accent">{{ fmtTime(sr.craftTimeSeconds) }}</span>
+            </div>
+            <div class="po-stat">
+              <span class="po-label">Ingredients</span>
+              <span class="po-val">{{ sr.ingredients.length }}</span>
+            </div>
+          </div>
+
+          <div class="po-section">
+            <div class="po-section-title">Required Materials</div>
+            <div class="po-mat-list">
+              @for (ing of sr.ingredients; track ing.resource) {
+                <div class="po-mat" [class.ore]="isOre(ing)" [class.gem]="isGem(ing)">
+                  <span class="po-mat-icon">{{ isOre(ing) ? '&#9670;' : '&#9672;' }}</span>
+                  <span class="po-mat-name">{{ ing.resource }}</span>
+                  <span class="po-mat-qty">{{ fmtQty(ing) }}</span>
+                  @if (ing.minQuality && ing.minQuality > 0) {
+                    <span class="po-mat-qual">min quality {{ ing.minQuality }}</span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          @if (dismantleReturns().length) {
+            <div class="po-section">
+              <div class="po-section-title">Disassembly Returns <span class="po-section-note">50% efficiency</span></div>
+              <div class="po-mat-list">
+                @for (d of dismantleReturns(); track d.resource) {
+                  <div class="po-mat dismantle">
+                    <span class="po-mat-icon">&#9660;</span>
+                    <span class="po-mat-name">{{ d.resource }}</span>
+                    <span class="po-mat-qty">{{ fmtDismantleQty(d) }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sr.optionalIngredients?.length) {
+            <div class="po-section">
+              <div class="po-section-title">Optional Materials</div>
+              <div class="po-mat-list">
+                @for (ing of sr.optionalIngredients; track ing.resource) {
+                  <div class="po-mat optional">
+                    <span class="po-mat-icon">&#9671;</span>
+                    <span class="po-mat-name">{{ ing.resource }}</span>
+                    <span class="po-mat-qty">{{ fmtQty(ing) }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sr.research) {
+            <div class="po-section">
+              <div class="po-section-title">Research</div>
+              <div class="po-stat">
+                <span class="po-label">Research Time</span>
+                <span class="po-val accent">{{ fmtTime(sr.research.timeSeconds) }}</span>
+              </div>
+              @if (sr.research.ingredients.length) {
+                <div class="po-mat-list">
+                  @for (ing of sr.research.ingredients; track ing.resource) {
+                    <div class="po-mat">
+                      <span class="po-mat-name">{{ ing.resource }}</span>
+                      <span class="po-mat-qty">{{ fmtQty(ing) }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Quality Simulator -->
+          @if (hasQualityMods(sr)) {
+            <div class="po-section quality-section">
+              <div class="po-section-title">Material Quality</div>
+
+              <div class="quality-sliders">
+                @for (ing of ingredientsWithQuality(sr); track ing.resource) {
+                  <div class="quality-row">
+                    <span class="qr-name" [class.ore]="isOre(ing)" [class.gem]="isGem(ing)">{{ ing.resource }}</span>
+                    <input type="range" class="qr-slider" min="0" max="1000" step="10"
+                           [value]="qualityValues()[ing.resource] ?? 500"
+                           (input)="setQuality(ing.resource, +$any($event.target).value)">
+                    <span class="qr-val">{{ qualityValues()[ing.resource] ?? 500 }}</span>
+                  </div>
+                }
+              </div>
+
+              @if (qualityEffects().length) {
+                <div class="quality-results">
+                  <div class="qr-header-row">
+                    <span class="qr-prop-header">Stat</span>
+                    <span class="qr-mod-header">Combined Effect</span>
+                  </div>
+                  @for (eff of qualityEffects(); track eff.property) {
+                    <div class="qr-result">
+                      <span class="qr-prop">{{ eff.property }}</span>
+                      <span class="qr-combined" [class.positive]="eff.combined > 1.001"
+                            [class.negative]="eff.combined < 0.999"
+                            [class.neutral]="eff.combined >= 0.999 && eff.combined <= 1.001">
+                        {{ fmtMod(eff.combined) }}
+                      </span>
+                    </div>
+                    <div class="qr-breakdown">
+                      @for (c of eff.contributions; track c.resource) {
+                        <span class="qr-contrib" [class.positive]="c.modifier > 1.001"
+                              [class.negative]="c.modifier < 0.999">
+                          {{ c.resource }}: {{ fmtMod(c.modifier) }}
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Add to materials list button -->
+          <div class="add-materials-row">
+            <button class="qty-btn" (click)="addQty.set(Math.max(1, addQty() - 1))">−</button>
+            <span class="qty-display">{{ addQty() }}</span>
+            <button class="qty-btn" (click)="addQty.set(addQty() + 1)">+</button>
+            <button class="add-materials-btn" (click)="addToMaterialsList(sr, addQty()); closePopout()">
+              + Add to Materials List
+            </button>
+          </div>
+
+        </div>
+      </div>
+    }
+
+  }
+</div>

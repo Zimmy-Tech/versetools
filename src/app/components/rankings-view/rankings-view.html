@@ -1,0 +1,185 @@
+<div class="flight-perf">
+  <!-- Three columns -->
+  <div class="columns">
+    <!-- LEFT: Rankings list -->
+    <div class="col col-list">
+      <div class="filter-bar">
+        <div class="sort-buttons">
+          <span class="filter-label">ROT</span>
+          @for (f of ['pitch', 'yaw', 'roll']; track f) {
+            <button class="sort-btn" [class.active]="sortField() === f"
+                    (click)="setSort($any(f))">{{ f | uppercase }}</button>
+          }
+        </div>
+        <div class="filter-sep"></div>
+        <div class="sort-buttons">
+          <span class="filter-label">ACCEL</span>
+          @for (f of ['accelFwd', 'accelRetro', 'accelStrafe', 'accelUp', 'accelDown']; track f) {
+            <button class="sort-btn" [class.active]="sortField() === f"
+                    (click)="setSort($any(f))">{{ {accelFwd:'FWD',accelRetro:'RET',accelStrafe:'STR',accelUp:'UP',accelDown:'DN'}[f] }}</button>
+          }
+        </div>
+        <div class="filter-sep"></div>
+        <label class="boost-toggle">
+          <input type="checkbox" [checked]="listBoosted()" (change)="listBoosted.set($any($event.target).checked)" />
+          <span>Boosted</span>
+        </label>
+        <div class="filter-sep"></div>
+        <select class="filter-select" [value]="sizeFilter()" (change)="sizeFilter.set($any($event.target).value)">
+          <option value="">All Sizes</option>
+          @for (s of sizeOptions.slice(1); track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+        <input class="filter-input" type="text" placeholder="Search..."
+               [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+        <span class="count-badge">{{ rankedShips().length }}</span>
+      </div>
+      <div class="ranking-header">
+        <span class="rh-rank">#</span>
+        <span class="rh-name">SHIP</span>
+        <span class="rh-bar">{{ fieldLabel(activeSortField()) | uppercase }}</span>
+        <span class="rh-val">{{ fieldUnit(activeSortField()) }}</span>
+      </div>
+      <div class="ranking-list">
+        @for (entry of rankedShips(); track entry.ship.className) {
+          <div class="ranking-row" [class.top3]="entry.rank <= 3">
+            <span class="row-rank">{{ entry.rank }}</span>
+            <span class="row-name">{{ entry.ship.name }}</span>
+            <span class="row-bar">
+              <div class="bar-track">
+                <div class="bar-fill" [style.width.%]="entry.bar"
+                     [class.bar-top]="entry.rank <= 3"
+                     [class.bar-high]="entry.rank > 3 && entry.bar >= 70"
+                     [class.bar-mid]="entry.bar >= 40 && entry.bar < 70"
+                     [class.bar-low]="entry.bar < 40"></div>
+              </div>
+            </span>
+            <span class="row-val">{{ fmtVal(entry.value) }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- CENTER: Rotation comparison -->
+    <div class="col col-radar">
+      <div class="radar-box">
+        <div class="radar-title-row">
+          <div class="radar-title">ROTATION</div>
+          <label class="boost-toggle">
+            <input type="checkbox" [checked]="rotBoosted()" (change)="rotBoosted.set($any($event.target).checked)" />
+            <span>Boosted</span>
+          </label>
+        </div>
+        <div class="radar-pickers">
+          @for (slot of rotSlots(); track $index) {
+            <div class="picker-row">
+              <div class="picker-color" [style.background]="slotColors[$index]"></div>
+              <select class="picker-select" [value]="slot?.className ?? ''"
+                      (change)="setRotSlot($index, $any($event.target).value)">
+                <option value="">— select ship —</option>
+                @for (s of shipsWithRotation(); track s.className) {
+                  <option [value]="s.className">{{ s.name }}</option>
+                }
+              </select>
+            </div>
+          }
+        </div>
+        <div class="radar-wrap">
+          <svg viewBox="0 0 300 300" class="radar-svg">
+            @for (ring of rotGrid; track $index) {
+              <polygon [attr.points]="ring" class="radar-ring" />
+            }
+            @for (spoke of rotSpokes; track $index) {
+              <line [attr.x1]="150" [attr.y1]="150" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
+            }
+            @for (poly of rotPolygons(); track $index) {
+              @if (poly) {
+                <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
+                         [attr.fill]="poly.color" class="radar-poly" />
+              }
+            }
+            @for (lbl of rotLabels; track $index) {
+              <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
+                    dominant-baseline="central" class="radar-label">{{ lbl.text }}</text>
+            }
+          </svg>
+        </div>
+        <!-- Ship stats in jane-spec style -->
+        @for (slot of rotSlots(); track $index) {
+          @if (slot) {
+            <div class="ship-stats-card" [style.border-color]="slotColors[$index]">
+              <div class="stats-card-name" [style.color]="slotColors[$index]">{{ slot.name }}</div>
+              <div class="stats-card-specs">
+                <div class="jane-spec"><span class="jane-spec-k">Pitch</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.pitchBoosted ?? 0) : (slot.pitch ?? 0)) }}°/s</span></div>
+                <div class="jane-spec"><span class="jane-spec-k">Yaw</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.yawBoosted ?? 0) : (slot.yaw ?? 0)) }}°/s</span></div>
+                <div class="jane-spec"><span class="jane-spec-k">Roll</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.rollBoosted ?? 0) : (slot.roll ?? 0)) }}°/s</span></div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- RIGHT: Acceleration comparison -->
+    <div class="col col-radar">
+      <div class="radar-box">
+        <div class="radar-title-row">
+          <div class="radar-title">ACCELERATION</div>
+          <label class="boost-toggle">
+            <input type="checkbox" [checked]="accelBoosted()" (change)="accelBoosted.set($any($event.target).checked)" />
+            <span>Boosted</span>
+          </label>
+        </div>
+        <div class="radar-pickers">
+          @for (slot of accelSlots(); track $index) {
+            <div class="picker-row">
+              <div class="picker-color" [style.background]="slotColors[$index]"></div>
+              <select class="picker-select" [value]="slot?.className ?? ''"
+                      (change)="setAccelSlot($index, $any($event.target).value)">
+                <option value="">— select ship —</option>
+                @for (s of shipsWithAccel(); track s.className) {
+                  <option [value]="s.className">{{ s.name }}</option>
+                }
+              </select>
+            </div>
+          }
+        </div>
+        <div class="radar-wrap">
+          <svg viewBox="0 0 300 300" class="radar-svg">
+            @for (ring of accelGrid; track $index) {
+              <polygon [attr.points]="ring" class="radar-ring" />
+            }
+            @for (spoke of accelSpokes; track $index) {
+              <line [attr.x1]="150" [attr.y1]="150" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
+            }
+            @for (poly of accelPolygons(); track $index) {
+              @if (poly) {
+                <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
+                         [attr.fill]="poly.color" class="radar-poly" />
+              }
+            }
+            @for (lbl of accelLabels; track $index) {
+              <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
+                    dominant-baseline="central" class="radar-label">{{ lbl.text }}</text>
+            }
+          </svg>
+        </div>
+        @for (slot of accelSlots(); track $index) {
+          @if (slot) {
+            <div class="ship-stats-card" [style.border-color]="slotColors[$index]">
+              <div class="stats-card-name" [style.color]="slotColors[$index]">{{ slot.name }}</div>
+              <div class="stats-card-specs">
+                <div class="jane-spec"><span class="jane-spec-k">Forward</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbFwd ?? 0) : (slot.accelFwd ?? 0)) }} G</span></div>
+                <div class="jane-spec"><span class="jane-spec-k">Retro</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbRetro ?? 0) : (slot.accelRetro ?? 0)) }} G</span></div>
+                <div class="jane-spec"><span class="jane-spec-k">Strafe</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbStrafe ?? 0) : (slot.accelStrafe ?? 0)) }} G</span></div>
+                <div class="jane-spec"><span class="jane-spec-k">Up</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbUp ?? 0) : (slot.accelUp ?? 0)) }} G</span></div>
+                <div class="jane-spec"><span class="jane-spec-k">Down</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbDown ?? 0) : (slot.accelDown ?? 0)) }} G</span></div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>

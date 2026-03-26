@@ -1,0 +1,109 @@
+<div class="components-view">
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Type</span>
+    <select class="filter-select" (change)="typeFilter.set($any($event.target).value)">
+      @for (opt of typeOptions; track opt.value) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
+    </select>
+
+    <span class="filter-label">Size</span>
+    <select class="filter-select" (change)="sizeFilter.set($any($event.target).value)">
+      @for (s of sizeOptions; track s) {
+        <option [value]="s">{{ s ? 'S' + s : 'All' }}</option>
+      }
+    </select>
+
+    <span class="filter-label">Search</span>
+    <input class="filter-input" type="text" placeholder="name..."
+           (input)="searchQuery.set($any($event.target).value)">
+
+    <span class="count-badge">{{ filteredItems().length }}</span>
+  </div>
+
+  <!-- Component grid -->
+  <div class="component-grid">
+    @for (item of filteredItems(); track item.className) {
+      <div class="comp-card">
+        <div class="comp-card-header">
+          <div>
+            <div class="comp-card-name">{{ item.name }}</div>
+            <div class="comp-card-mfr">{{ item.manufacturer || '—' }} · S{{ item.size ?? '?' }}</div>
+          </div>
+          <div class="comp-type-badge">{{ typeLabel(item.type) }}</div>
+        </div>
+
+        <div class="comp-stats">
+          @switch (item.type) {
+            @case ('WeaponGun') {
+              <div class="comp-stat">
+                <span class="comp-stat-label">DPS</span>
+                <span class="comp-stat-val accent">{{ (item.dps ?? 0) > 0 ? item.dps!.toFixed(1) : '—' }}</span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">Alpha</span>
+                <span class="comp-stat-val" [style.color]="primaryDmgColor(item)">
+                  {{ (item.alphaDamage ?? 0) > 0 ? item.alphaDamage!.toFixed(1) : '—' }}
+                </span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">RPM</span>
+                <span class="comp-stat-val">{{ (item.fireRate ?? 0) > 0 ? item.fireRate!.toFixed(0) : '—' }}</span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">Range</span>
+                <span class="comp-stat-val">{{ (item.range ?? 0) > 0 ? ((item.range! / 1000).toFixed(1) + 'km') : '—' }}</span>
+              </div>
+            }
+            @case ('Shield') {
+              <div class="comp-stat">
+                <span class="comp-stat-label">HP</span>
+                <span class="comp-stat-val accent">{{ (item.hp ?? 0) > 0 ? item.hp!.toFixed(0) : '—' }}</span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">Regen</span>
+                <span class="comp-stat-val">{{ (item.regenRate ?? 0) > 0 ? (item.regenRate!.toFixed(0) + '/s') : '—' }}</span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">Downed</span>
+                <span class="comp-stat-val">{{ (item.downedRegenDelay ?? 0) > 0 ? (item.downedRegenDelay!.toFixed(1) + 's') : '—' }}</span>
+              </div>
+            }
+            @case ('PowerPlant') {
+              <div class="comp-stat">
+                <span class="comp-stat-label">Output</span>
+                <span class="comp-stat-val green">{{ (item.powerOutput ?? 0) > 0 ? (item.powerOutput + ' seg') : '—' }}</span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">EM Sig</span>
+                <span class="comp-stat-val">{{ (item.emSignature ?? 0) > 0 ? item.emSignature!.toFixed(0) : '—' }}</span>
+              </div>
+            }
+            @case ('Cooler') {
+              <div class="comp-stat">
+                <span class="comp-stat-label">Cooling</span>
+                <span class="comp-stat-val green">{{ (item.coolingRate ?? 0) > 0 ? item.coolingRate!.toFixed(0) : '—' }}</span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">IR Sig</span>
+                <span class="comp-stat-val">{{ (item.irSignature ?? 0) > 0 ? item.irSignature!.toFixed(0) : '—' }}</span>
+              </div>
+            }
+            @case ('QuantumDrive') {
+              <div class="comp-stat">
+                <span class="comp-stat-label">Speed</span>
+                <span class="comp-stat-val accent">{{ (item.speed ?? 0) > 0 ? (((item.speed! / 1e3).toFixed(0)) + ' Mm/s') : '—' }}</span>
+              </div>
+              <div class="comp-stat">
+                <span class="comp-stat-label">Cal Time</span>
+                <span class="comp-stat-val">{{ (item.calTime ?? 0) > 0 ? (item.calTime!.toFixed(1) + 's') : '—' }}</span>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

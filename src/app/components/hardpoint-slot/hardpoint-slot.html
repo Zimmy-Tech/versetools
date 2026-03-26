@@ -1,0 +1,630 @@
+<div class="hardpoint-slot" [class.no-label]="hideLabel()">
+  @if (!hideLabel()) {
+    <div class="slot-label">
+      <span class="slot-size-tag">S{{ hardpoint().maxSize }}</span>
+      {{ hardpoint().label }}
+    </div>
+  }
+
+  @if (isLifeSupportSlot()) {
+
+    <!-- Life Support locked display -->
+    <div class="slot-fixed">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="fixed-badge">FIXED</span>
+      <span>{{ currentItem()?.name ?? 'Life Support · Size ' + hardpoint().maxSize }}</span>
+      @if (lsStats(); as ls) {
+        <span class="ls-stat">
+          <span class="ls-stat-label">Pwr</span> {{ ls.powerDraw }}
+          <span class="ls-stat-sep">·</span>
+          <span class="ls-stat-label">Cool</span> {{ ls.cooling }}
+          <span class="ls-stat-sep">·</span>
+          <span class="ls-stat-label">Pips</span> {{ ls.pips }}
+        </span>
+      }
+    </div>
+
+  } @else if (isLocked()) {
+    <div class="slot-fixed">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="fixed-badge">FIXED</span>
+      <span>{{ currentItem()?.name ?? (typeLabel() + ' · Size ' + hardpoint().maxSize) }}</span>
+    </div>
+    <div class="slot-stat muted">—</div>
+  } @else if (isWeaponSlot()) {
+
+    <!-- Weapon trigger row — compact card when weapon equipped -->
+    @if (weaponCompact(); as wc) {
+      <div class="cmp-trigger" (click)="togglePicker($event)">
+        <span class="focus-btn" (click)="focusItem($event)" title="Details"></span>
+        <div class="cmp-tag">{{ wc.size }}</div>
+        <div class="cmp-info">
+          <div class="cmp-name">{{ wc.name }} <span class="cmp-type">{{ wc.dmgType }}</span></div>
+        </div>
+        <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+      </div>
+    } @else {
+      <div class="weapon-trigger" (click)="togglePicker($event)">
+        @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+        <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+        <span class="trigger-stat">{{ slotStat() }}</span>
+        <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+      </div>
+    }
+
+    <!-- Rich picker (inline, full width) -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search weapons..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        @if (availableSizes().length > 1) {
+          <div class="picker-size-filters">
+            <button class="size-btn" [class.active]="pickerSizeFilter() === null"
+                    (click)="pickerSizeFilter.set(null)">All</button>
+            @for (sz of availableSizes(); track sz) {
+              <button class="size-btn" [class.active]="pickerSizeFilter() === sz"
+                      (click)="pickerSizeFilter.set(sz)">S{{ sz }}</button>
+            }
+          </div>
+        }
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th>Sz</th>
+                <th class="col-name">Name</th>
+                <th>Type</th>
+                <th>Ammo</th>
+                <th>DPS</th>
+                <th>Alpha</th>
+                <th>Pen.Dst</th>
+                <th>Pen.Rad</th>
+                <th>RPM</th>
+                <th>Vel</th>
+                <th>Range</th>
+                <th>Spread</th>
+                <th>Pwr</th>
+                <th>EM</th>
+                <th>Overheat</th>
+                <th>HP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="16">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.subType ?? '—' }}</td>
+                  <td>{{ ammoForOption(opt) }}</td>
+                  <td>{{ fmt(opt.dps) }}</td>
+                  <td>{{ fmt(opt.alphaDamage, 1) }}</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>{{ fmt(opt.fireRate) }}</td>
+                  <td>{{ fmt(opt.projectileSpeed) }}</td>
+                  <td>{{ fmt(opt.range) }}</td>
+                  <td>—</td>
+                  <td>{{ fmt(opt.powerDraw, 2) }}</td>
+                  <td>{{ fmt(opt.emSignature) }}</td>
+                  <td>—</td>
+                  <td>{{ fmt(opt.componentHp) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isShieldSlot()) {
+
+    <!-- Shield trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-stat">{{ slotStat() }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Shield picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search shields..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th>Sz</th>
+                <th class="col-name">Name</th>
+                <th>Class</th>
+                <th>Grade</th>
+                <th>HP Pool</th>
+                <th>Regen/s</th>
+                <th>Regen Time</th>
+                <th>Enrg Res</th>
+                <th>Dmg Delay</th>
+                <th>Dwn Delay</th>
+                <th>Min Pwr</th>
+                <th>Max Pwr</th>
+                <th>EM Max</th>
+                <th>Health</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="14">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.itemClass ?? '—' }}</td>
+                  <td>{{ opt.grade ?? '—' }}</td>
+                  <td>{{ fmt(opt.hp) }}</td>
+                  <td>{{ fmt(opt.regenRate) }}</td>
+                  <td>{{ fmtRegenTime(opt.hp, opt.regenRate) }}</td>
+                  <td>{{ fmtRes(opt.resistEnrgMax) }}</td>
+                  <td>{{ fmt(opt.damagedRegenDelay, 2) }}s</td>
+                  <td>{{ fmt(opt.downedRegenDelay, 2) }}s</td>
+                  <td>{{ fmt(opt.powerDraw, 2) }}</td>
+                  <td>—</td>
+                  <td>{{ fmt(opt.emMax) }}</td>
+                  <td>{{ fmt(opt.componentHp) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isMissileSlot()) {
+
+    <!-- Missile trigger row — compact card when missile equipped -->
+    @if (missileCompact(); as mc) {
+      <div class="cmp-trigger" (click)="togglePicker($event)">
+        <span class="focus-btn" (click)="focusItem($event)" title="Details"></span>
+        <div class="cmp-tag">{{ mc.size }}</div>
+        <div class="cmp-info">
+          <div class="cmp-name">{{ mc.name }} @if (mc.count > 1) { <span class="cmp-count">x{{ mc.count }}</span> } <span class="cmp-type">{{ mc.acqType }}</span></div>
+        </div>
+        <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+      </div>
+    } @else {
+      <div class="weapon-trigger" (click)="togglePicker($event)">
+        @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+        <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+        <span class="trigger-stat">{{ slotStat() }}</span>
+        <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+      </div>
+    }
+
+    <!-- Missile picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search missiles..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th>Sz</th>
+                <th class="col-name">Name</th>
+                <th>Type</th>
+                <th>Damage</th>
+                <th>Speed</th>
+                <th>Acquisition</th>
+                <th>Arm Time</th>
+                <th>Lock Time</th>
+                <th>Ignite Time</th>
+                <th>Lock Angle</th>
+                <th>Lock Min Dst</th>
+                <th>Lock Max Dst</th>
+                <th>Health</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="13">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.subType ?? '—' }}</td>
+                  <td>{{ fmt(opt.alphaDamage) }}</td>
+                  <td>{{ fmt(opt.projectileSpeed) }}</td>
+                  <td>{{ opt.acquisition ?? '—' }}</td>
+                  <td>{{ fmt(opt.armTime, 2) }}s</td>
+                  <td>{{ fmt(opt.lockTime, 2) }}s</td>
+                  <td>{{ fmt(opt.igniteTime, 2) }}s</td>
+                  <td>{{ fmt(opt.lockAngle, 0) }}°</td>
+                  <td>{{ fmt(opt.lockRangeMin) }}m</td>
+                  <td>{{ fmt(opt.lockRangeMax) }}m</td>
+                  <td>—</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isCoolerSlot()) {
+
+    <!-- Cooler trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-stat">{{ slotStat() }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Cooler picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search coolers..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th>Sz</th>
+                <th class="col-name">Name</th>
+                <th>Class</th>
+                <th>Grade</th>
+                <th>Cooling</th>
+                <th>Min Pwr</th>
+                <th>Max Pwr</th>
+                <th>EM Max</th>
+                <th>IR Max</th>
+                <th>Health</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="10">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.itemClass ?? '—' }}</td>
+                  <td>{{ opt.grade ?? '—' }}</td>
+                  <td>{{ fmt(opt.coolingRate, 1) }}</td>
+                  <td>{{ fmt(opt.powerMin) }}</td>
+                  <td>{{ fmt(opt.powerMax) }}</td>
+                  <td>{{ fmt(opt.emMax) }}</td>
+                  <td>{{ fmt(opt.irSignature) }}</td>
+                  <td>{{ fmt(opt.componentHp) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isQuantumDriveSlot()) {
+
+    <!-- Quantum Drive trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-stat">{{ slotStat() }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Quantum Drive picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search quantum drives..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th>Sz</th>
+                <th class="col-name">Name</th>
+                <th>Class</th>
+                <th>Grade</th>
+                <th>Max Speed</th>
+                <th>Efficiency</th>
+                <th>Max Dist</th>
+                <th>Spool Nav</th>
+                <th>Max Cooldown</th>
+                <th>Power</th>
+                <th>EM Max</th>
+                <th>Health</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="12">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.itemClass ?? '—' }}</td>
+                  <td>{{ opt.grade ?? '—' }}</td>
+                  <td>{{ opt.speed ? (opt.speed / 1000).toFixed(0) + ' Mm/s' : '—' }}</td>
+                  <td>{{ opt.fuelRate ? opt.fuelRate.toFixed(5) : '—' }}</td>
+                  <td>—</td>
+                  <td>{{ fmt(opt.spoolTime, 1) }}s</td>
+                  <td>{{ fmt(opt.cooldownTime, 1) }}s</td>
+                  <td>—</td>
+                  <td>{{ fmt(opt.emMax) }}</td>
+                  <td>{{ fmt(opt.hp) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isPowerPlantSlot()) {
+
+    <!-- Power Plant trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-stat">{{ slotStat() }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Power Plant picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search power plants..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th>Sz</th>
+                <th class="col-name">Name</th>
+                <th>Class</th>
+                <th>Grade</th>
+                <th>Pwr Max</th>
+                <th>Dist Max Dmg</th>
+                <th>Dist Decay</th>
+                <th>Dist Recovery</th>
+                <th>EM/Seg</th>
+                <th>EM Decay</th>
+                <th>Health</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="11">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.itemClass ?? '—' }}</td>
+                  <td>{{ opt.grade ?? '—' }}</td>
+                  <td>{{ fmt(opt.powerOutput) }}</td>
+                  <td>{{ fmt(opt.distortionMax) }}</td>
+                  <td>{{ fmt(opt.distortionDecayRate, 2) }}</td>
+                  <td>{{ fmt(opt.distortionDecayDelay, 2) }}s</td>
+                  <td>{{ fmt(opt.emMax) }}</td>
+                  <td>{{ fmt(opt.emDecayRate, 2) }}</td>
+                  <td>{{ fmt(opt.componentHp) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isRadarSlot()) {
+
+    <!-- Radar trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-stat">{{ slotStat() }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Radar picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search radars..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th>Sz</th>
+                <th class="col-name">Name</th>
+                <th>Class</th>
+                <th>Grade</th>
+                <th>Aim Min</th>
+                <th>Aim Max</th>
+                <th>Aim Buf</th>
+                <th>IR</th>
+                <th>EM</th>
+                <th>CS</th>
+                <th>RS</th>
+                <th>Min Pwr</th>
+                <th>Max Pwr</th>
+                <th>EM Max</th>
+                <th>Health</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="15">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.itemClass ?? '—' }}</td>
+                  <td>{{ opt.grade ?? '—' }}</td>
+                  <td>{{ fmt(opt.aimMin) }}</td>
+                  <td>{{ fmt(opt.aimMax) }}</td>
+                  <td>{{ fmt(opt.aimBuffer) }}</td>
+                  <td>{{ fmt(opt.irSensitivity, 2) }}</td>
+                  <td>{{ fmt(opt.emSensitivity, 2) }}</td>
+                  <td>{{ fmt(opt.csSensitivity, 2) }}</td>
+                  <td>{{ fmt(opt.rsSensitivity, 2) }}</td>
+                  <td>{{ fmtRadarMinPwr(opt) }}</td>
+                  <td>{{ fmt(opt.powerDraw) }}</td>
+                  <td>{{ fmt(opt.emMax) }}</td>
+                  <td>{{ fmt(opt.componentHp) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isMiningModSlot()) {
+
+    <!-- Mining Module trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      @if (currentItem()?.subType) {
+        <span class="trigger-stat">{{ currentItem()!.subType }}</span>
+      }
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Mining Module picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search modules..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th class="col-name">Name</th>
+                <th>Type</th>
+                <th>Charges</th>
+                <th>Instab</th>
+                <th>Window</th>
+                <th>Rate</th>
+                <th>Resist</th>
+                <th>Shatter</th>
+                <th>Inert</th>
+                <th>Overchg</th>
+                <th>Power</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="11">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr class="picker-row" [class.active]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.subType === 'Active' ? 'ACT' : 'PAS' }}</td>
+                  <td>{{ opt.charges ?? '—' }}</td>
+                  <td>{{ fmtMod(opt.miningInstability) }}</td>
+                  <td>{{ fmtMod(opt.miningOptimalWindow) }}</td>
+                  <td>{{ fmtMod(opt.miningOptimalRate) }}</td>
+                  <td>{{ fmtMod(opt.miningResistance) }}</td>
+                  <td>{{ fmtMod(opt.miningShatterDamage) }}</td>
+                  <td>{{ fmtMod(opt.miningInertMaterials) }}</td>
+                  <td>{{ fmtMod(opt.miningOvercharge) }}</td>
+                  <td>{{ opt.miningPowerMult ? ((opt.miningPowerMult - 1) * 100 > 0 ? '+' : '') + ((opt.miningPowerMult - 1) * 100).toFixed(0) + '%' : '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else {
+    <!-- Simple select for non-weapon slots -->
+    <select class="slot-select" (change)="onChange($any($event.target).value)">
+      <option value="">— Empty — ({{ options().length }} available)</option>
+      @for (opt of options(); track opt.className) {
+        <option [value]="opt.className" [selected]="currentItem()?.className === opt.className">
+          S{{ opt.size }} {{ opt.name }}
+        </option>
+      }
+    </select>
+    @if (slotStat()) {
+      <div class="slot-stat">{{ slotStat() }}</div>
+    }
+  }
+  @if (janeCard(); as jc) {
+    @if (!collapsed() && !pickerOpen() && itemStatRows().length > 0) {
+      <div class="jane-card-slot">
+        <div class="jane-meta">
+          @for (m of jc.meta; track m) {
+            <span>{{ m }}</span>
+          }
+        </div>
+        <div class="jane-body">
+          <div class="jane-primary">
+            <span class="jane-primary-val">{{ jc.primaryVal }}</span>
+            <span class="jane-primary-unit">{{ jc.primaryUnit }}</span>
+          </div>
+          <div class="jane-specs">
+            @for (row of itemStatRows(); track $index) {
+              @if (!row.divider) {
+                <div class="jane-spec">
+                  <span class="jane-spec-k">{{ row.label }}</span>
+                  <span class="jane-spec-v" [class]="row.cls ?? ''">{{ row.value }}</span>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    }
+  } @else if (!collapsed() && itemStatRows().length > 0 && !pickerOpen()) {
+    <div class="item-stats" [class.right-col]="isWeaponSlot()">
+      @for (row of itemStatRows(); track $index) {
+        @if (row.divider) {
+          <div class="is-divider"></div>
+        } @else {
+          <div class="is-row">
+            <span class="is-label">{{ row.label }}</span>
+            <span class="is-val" [class]="row.cls ?? ''">{{ row.value }}</span>
+          </div>
+        }
+      }
+    </div>
+  }
+</div>

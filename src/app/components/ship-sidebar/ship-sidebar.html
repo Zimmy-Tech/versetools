@@ -1,0 +1,29 @@
+<aside class="ship-sidebar">
+  <div class="sidebar-search">
+    <div class="search-wrap">
+      <input class="search-input" type="text" placeholder="Search ships..."
+             [value]="searchQuery()"
+             (input)="onSearch($any($event.target).value)"
+             (focus)="open()"
+             (blur)="close()">
+      @if (showDropdown() && filteredShips().length > 0) {
+        <div class="ship-dropdown">
+          @for (ship of filteredShips(); track ship.className) {
+            <div class="ship-option"
+                 [class.active]="data.selectedShip()?.className === ship.className"
+                 (mousedown)="select(ship)">
+              <span class="ship-option-name">{{ ship.name }}</span>
+              <span class="ship-option-mfr">{{ ship.manufacturer }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+    @if (data.selectedShip(); as ship) {
+      <div class="selected-ship">
+        <span class="selected-name">{{ ship.name }}</span>
+        <span class="selected-mfr">{{ ship.manufacturer }}</span>
+      </div>
+    }
+  </div>
+</aside>

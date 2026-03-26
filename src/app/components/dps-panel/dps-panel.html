@@ -1,0 +1,210 @@
+<div class="dps-panel">
+
+  <div class="dps-stats-col">
+
+    <!-- DPS Output -->
+    <div>
+      <div class="section-title">DPS Output <span class="hover-hint">Hover for Info</span></div>
+      <div class="stat-block">
+        @if (pilotBurstDPS() > 0 || pilotDPS() > 0) {
+          <div class="stat-row" title="All weapons firing simultaneously at maximum fire rate. Does not account for ammo depletion or overheat.">
+            <span class="stat-label">Pilot Peak DPS</span>
+            <span class="mono">{{ pilotBurstDPS().toFixed(0) }}</span>
+          </div>
+          <div class="stat-row" title="Total burst damage divided by time to exhaust the longest-firing weapon. Accounts for weapons running out at different times.">
+            <span class="stat-label">Pilot Burst DPS</span>
+            <span class="mono">{{ pilotBurst().time > 0 ? (pilotBurst().damage / pilotBurst().time).toFixed(0) : '0' }}</span>
+          </div>
+          <div class="stat-row" title="Average damage per second over a 10-second window. Energy weapons fire then regen (no regen while firing). Ballistic weapons cycle through overheat and cooldown.">
+            <span class="stat-label">Pilot DPS (10s)</span>
+            <span class="mono">{{ pilotDPS().toFixed(0) }}</span>
+          </div>
+          <div class="stat-row" title="Total damage dealt before all weapons are forced to stop. Energy weapons exhaust their ammo pool, ballistic weapons overheat.">
+            <span class="stat-label">Pilot Burst Damage</span>
+            <span class="mono">{{ pilotBurst().damage.toFixed(0) }}</span>
+          </div>
+          @if (pilotBurst().time > 0) {
+            <div class="stat-row" title="Time until the last weapon finishes its burst. Weapons fire in parallel — this is the longest individual burst.">
+              <span class="stat-label">Burst Time</span>
+              <span class="mono">{{ pilotBurst().time.toFixed(1) }}s</span>
+            </div>
+          }
+          <div class="stat-row" title="Combined damage from a single trigger pull of all weapons simultaneously.">
+            <span class="stat-label">Pilot Alpha</span>
+            <span class="mono">{{ pilotAlpha().toFixed(0) }}</span>
+          </div>
+        }
+        @if (totalMissileDmg() > 0) {
+          <div class="stat-row" title="Total damage from all equipped missiles fired at once.">
+            <span class="stat-label">Missiles</span>
+            <span class="mono">{{ totalMissileDmg().toFixed(0) }} dmg</span>
+          </div>
+        }
+        @if (crewBurstDPS() > 0 || crewDPS() > 0) {
+          <div class="stat-row" title="All crew turret weapons firing simultaneously at maximum fire rate. Does not account for ammo depletion or overheat.">
+            <span class="stat-label">Crew Peak DPS</span>
+            <span class="mono">{{ crewBurstDPS().toFixed(0) }}</span>
+          </div>
+          <div class="stat-row" title="Total crew burst damage divided by time to exhaust the longest-firing turret weapon.">
+            <span class="stat-label">Crew Burst DPS</span>
+            <span class="mono">{{ crewBurst().time > 0 ? (crewBurst().damage / crewBurst().time).toFixed(0) : '0' }}</span>
+          </div>
+          <div class="stat-row" title="Average crew turret damage per second over a 10-second window. Accounts for energy regen cycles and ballistic overheat.">
+            <span class="stat-label">Crew DPS (10s)</span>
+            <span class="mono">{{ crewDPS().toFixed(0) }}</span>
+          </div>
+          <div class="stat-row" title="Total crew turret damage before all weapons are forced to stop.">
+            <span class="stat-label">Crew Burst Damage</span>
+            <span class="mono">{{ crewBurst().damage.toFixed(0) }}</span>
+          </div>
+          @if (crewBurst().time > 0) {
+            <div class="stat-row" title="Time until the last crew turret weapon finishes its burst.">
+              <span class="stat-label">Burst Time</span>
+              <span class="mono">{{ crewBurst().time.toFixed(1) }}s</span>
+            </div>
+          }
+          <div class="stat-row" title="Combined damage from a single trigger pull of all crew turret weapons.">
+            <span class="stat-label">Crew Alpha</span>
+            <span class="mono">{{ crewAlpha().toFixed(0) }}</span>
+          </div>
+        }
+        @if (pilotBurstDPS() === 0 && totalMissileDmg() === 0 && crewBurstDPS() === 0) {
+          <div class="no-weapons">No weapons equipped</div>
+        }
+      </div>
+    </div>
+
+    <!-- Shield HP -->
+    @if (totalShieldHP() > 0) {
+      <div>
+        <div class="section-title">Shields</div>
+        <div class="stat-block">
+          <div class="stat-row" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
+            <span class="stat-label">Total HP Pool</span>
+            <span class="mono">{{ totalShieldHP().toFixed(0) }}</span>
+          </div>
+          <div class="stat-row" title="Combined regen rate from primary shields (first 2) at current power pip allocation. Scaled by power band modifiers.">
+            <span class="stat-label">Regen Rate</span>
+            <span class="mono">{{ shieldRegenRate().toFixed(0) }}/s</span>
+          </div>
+          @if (shieldRegenTime() > 0) {
+            <div class="stat-row" title="Time to regenerate the full shield HP pool from zero at the current regen rate.">
+              <span class="stat-label">Full Regen</span>
+              <span class="mono">{{ shieldRegenTime().toFixed(1) }}s</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Signature -->
+    @if (totalEM() > 0 || totalIR() > 0) {
+      <div>
+        <div class="section-title">Signature</div>
+        <div class="stat-block">
+          @if (totalEM() > 0) {
+            <div class="stat-row" title="Electromagnetic signature from all powered components, scaled by ship armor EM modifier. Higher values make you easier to detect on radar.">
+              <span class="stat-label">EM</span>
+              <span class="mono">{{ totalEM().toFixed(0) }}</span>
+            </div>
+          }
+          @if (totalIR() > 0) {
+            <div class="stat-row" title="Infrared signature from all powered components, scaled by ship armor IR modifier. Higher values make you easier to detect on IR scanners.">
+              <span class="stat-label">IR</span>
+              <span class="mono">{{ totalIR().toFixed(0) }}</span>
+            </div>
+          }
+          @if (crossSection() !== undefined) {
+            <div class="stat-row" title="Physical cross-section modifier from ship armor. Affects how easily your ship is detected visually and by radar at range.">
+              <span class="stat-label">Cross-Section</span>
+              <span class="mono">{{ pct(crossSection()) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Armor Check -->
+    @if (armorCheck(); as ac) {
+      <div>
+        <div class="section-title">Armor Check
+          <button class="detail-btn" (click)="showArmorDetail.set(true)">Detail</button>
+        </div>
+        @if (ac.physical.length > 0) {
+          <div class="armor-type-label">Physical Deflect: {{ ac.physDeflect }}</div>
+          <div class="stat-block armor-check-block">
+            @for (w of ac.physical; track w.name) {
+              <div class="stat-row">
+                <span class="stat-label">
+                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
+                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                </span>
+                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+              </div>
+            }
+          </div>
+        }
+        @if (ac.energy.length > 0) {
+          <div class="armor-type-label">Energy Deflect: {{ ac.enrgDeflect }}</div>
+          <div class="stat-block armor-check-block">
+            @for (w of ac.energy; track w.name) {
+              <div class="stat-row">
+                <span class="stat-label">
+                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
+                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                </span>
+                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+
+</div>
+
+<!-- Armor Detail Popout -->
+@if (showArmorDetail()) {
+  <div class="popout-overlay" (click)="showArmorDetail.set(false)"></div>
+  <div class="popout-panel">
+    <div class="popout-header">
+      <span class="popout-title">Armor Check — {{ data.selectedShip()?.name }}</span>
+      <span class="popout-close" (click)="showArmorDetail.set(false)">&times;</span>
+    </div>
+    <div class="popout-body">
+      @if (armorDetailList(); as dl) {
+        @if (dl.physical.length > 0) {
+          <div class="popout-section-title">Physical — Deflect: {{ dl.physDeflect }}</div>
+          <div class="armor-detail-list">
+            @for (w of dl.physical; track w.name) {
+              <div class="stat-row">
+                <span class="stat-label">
+                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
+                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                </span>
+                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+              </div>
+            }
+          </div>
+        }
+        @if (dl.energy.length > 0) {
+          <div class="popout-section-title" [style.margin-top]="dl.physical.length > 0 ? '16px' : '0'">Energy — Deflect: {{ dl.enrgDeflect }}</div>
+          <div class="armor-detail-list">
+            @for (w of dl.energy; track w.name) {
+              <div class="stat-row">
+                <span class="stat-label">
+                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
+                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                </span>
+                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+              </div>
+            }
+          </div>
+        }
+      }
+    </div>
+  </div>
+}
+
