@@ -1757,15 +1757,16 @@ def expand_ship_variants(ships, forge_dir, loc):
     # Manual variant expansion for ships whose variants don't share the base prefix
     MANUAL_VARIANTS = {
         "ORIG_300i": ["orig_315p", "orig_325a", "orig_350r"],
+        "VNCL_Scythe": ["vncl_glaive"],
+        "TMBL_Cyclone": ["TMBL_Cyclone_AA", "TMBL_Cyclone_MT", "TMBL_Cyclone_RC", "TMBL_Cyclone_RN", "TMBL_Cyclone_TR"],
     }
     for base_cls, variant_list in MANUAL_VARIANTS.items():
         base_ship = expanded.get(base_cls)
         if not base_ship:
             continue
         for variant_cls in variant_list:
-            forge_file = spaceship_dir / f"{variant_cls}.xml.xml"
-            if not forge_file.exists():
-                continue
+            if variant_cls in expanded:
+                continue  # already expanded via prefix matching
             clone = copy.deepcopy(base_ship)
             clone["className"] = variant_cls
             clone["name"] = _resolve_variant_name(variant_cls, loc)
@@ -3333,6 +3334,31 @@ def main(mode: str = "live"):
             "accelAbFwd": 15.3, "accelAbRetro": 3.4, "accelAbStrafe": 7.0, "accelAbUp": 6.8, "accelAbDown": 5.6,
             "accelTestedDate": "2026-03-25",
         },
+        "rsi_aurora_gs_se": {
+            "accelFwd": 11.8, "accelRetro": 3.9, "accelStrafe": 7.1, "accelUp": 7.1, "accelDown": 5.6,
+            "accelAbFwd": 16.5, "accelAbRetro": 5.1, "accelAbStrafe": 9.6, "accelAbUp": 9.3, "accelAbDown": 7.8,
+            "accelTestedDate": "2026-03-26",
+        },
+        "aegs_reclaimer": {
+            "accelFwd": 2.0, "accelRetro": 1.5, "accelStrafe": 1.0, "accelUp": 2.0, "accelDown": 2.0,
+            "accelAbFwd": 2.7, "accelAbRetro": 2.1, "accelAbStrafe": 1.3, "accelAbUp": 2.8, "accelAbDown": 2.6,
+            "accelTestedDate": "2026-03-26",
+        },
+        "anvl_asgard": {
+            "accelFwd": 4.6, "accelRetro": 2.5, "accelStrafe": 3.5, "accelUp": 3.8, "accelDown": 3.8,
+            "accelAbFwd": 6.9, "accelAbRetro": 3.6, "accelAbStrafe": 4.3, "accelAbUp": 5.0, "accelAbDown": 5.4,
+            "accelTestedDate": "2026-03-26",
+        },
+        "krig_l22_alpha_wolf": {
+            "accelFwd": 13.9, "accelRetro": 4.7, "accelStrafe": 10.2, "accelUp": 10.2, "accelDown": 5.4,
+            "accelAbFwd": 19.5, "accelAbRetro": 6.1, "accelAbStrafe": 13.7, "accelAbUp": 13.2, "accelAbDown": 7.6,
+            "accelTestedDate": "2026-03-26",
+        },
+        "rsi_polaris": {
+            "accelFwd": 2.7, "accelRetro": 1.5, "accelStrafe": 1.5, "accelUp": 2.0, "accelDown": 2.0,
+            "accelAbFwd": 4.1, "accelAbRetro": 1.8, "accelAbStrafe": 2.0, "accelAbUp": 2.6, "accelAbDown": 2.4,
+            "accelTestedDate": "2026-03-26",
+        },
     }
     accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
     for ship in ships.values():
@@ -3407,6 +3433,45 @@ def main(mode: str = "live"):
             seen_names[name] = cls
     ship_list = [s for s in ships.values() if s["className"] not in SKIP_SHIPS]
     item_list = list(items.values())
+
+    # ── Preserve ships/items from previous extraction that are missing now ────
+    # Ships only ever get added, never removed. If a ship existed before but
+    # wasn't found in this extraction (XML missing, variant rename, etc.), keep
+    # it with its last-known data and mark it stale.
+    # Ships that were previously stale but now extracted successfully get cleared.
+    from datetime import datetime, timezone
+    for s in ship_list:
+        s.pop("_stale", None)
+        s.pop("_staleDate", None)
+    for i in item_list:
+        i.pop("_stale", None)
+        i.pop("_staleDate", None)
+    if OUTPUT_FILE.exists():
+        try:
+            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+                prev = json.load(f)
+            new_ship_keys = {s["className"] for s in ship_list}
+            new_item_keys = {i["className"] for i in item_list}
+            preserved_ships = 0
+            preserved_items = 0
+            for prev_ship in prev.get("ships", []):
+                if prev_ship["className"] not in new_ship_keys and prev_ship["className"] not in SKIP_SHIPS:
+                    if not prev_ship.get("_stale"):
+                        prev_ship["_stale"] = True
+                        prev_ship["_staleDate"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                    ship_list.append(prev_ship)
+                    preserved_ships += 1
+            for prev_item in prev.get("items", []):
+                if prev_item["className"] not in new_item_keys:
+                    if not prev_item.get("_stale"):
+                        prev_item["_stale"] = True
+                        prev_item["_staleDate"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                    item_list.append(prev_item)
+                    preserved_items += 1
+            if preserved_ships or preserved_items:
+                print(f"  Preserved from previous: {preserved_ships} ships, {preserved_items} items (marked stale)")
+        except Exception as e:
+            print(f"  Warning: could not load previous data for preservation: {e}")
 
     def count_type(t):
         return sum(1 for i in item_list if i.get("type") == t)
@@ -3512,8 +3577,8 @@ def main(mode: str = "live"):
             new_version = output["meta"]["version"]
 
             if prev_version != new_version:
-                prev_ships = {s["className"]: s for s in prev.get("ships", [])}
-                new_ships = {s["className"]: s for s in ship_list}
+                prev_ships = {s["className"]: s for s in prev.get("ships", []) if not s.get("_stale")}
+                new_ships = {s["className"]: s for s in ship_list if not s.get("_stale")}
                 prev_items = {i["className"]: i for i in prev.get("items", [])}
                 new_items = {i["className"]: i for i in item_list}
 
