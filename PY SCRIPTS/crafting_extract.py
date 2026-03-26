@@ -481,7 +481,7 @@ def parse_dcb():
     # Auto-copy to Angular app (mode-aware subfolder)
     import shutil, os
     _data_mode = os.environ.get("VERSEDB_DATA_MODE", "live")
-    app_path = Path(__file__).parent / "../../versedb-app/public" / _data_mode / "versedb_crafting.json"
+    app_path = Path(__file__).parent / "../app/public" / _data_mode / "versedb_crafting.json"
     app_path.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(out_path, app_path)
     print(f"Copied to {app_path}")

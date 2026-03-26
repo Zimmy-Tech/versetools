@@ -14,3 +14,11 @@ PY SCRIPTS/sc_data_merged
 __pycache__/
 *.pyc
 *.pyo
+
+# Node / Angular
+app/node_modules/
+app/dist/
+app/.angular/
+
+# Python venv
+venv/

@@ -22,7 +22,7 @@ The pipeline automatically:
   4. Enriches from DCB binary (damage, fire rate, power draw, etc.)
   5. Extracts missions & contracts (versedb_missions.py)
   6. Extracts crafting recipes (crafting_extract.py)
-  7. Copies all output to versedb-app/public/<live|ptu>/
+  7. Copies all output to app/public/<live|ptu>/
 
 Intermediate files are stored in per-mode folders (sc_data_live/, sc_data_ptu/, etc.)
 so LIVE and PTU data never interfere with each other.
@@ -68,7 +68,7 @@ def _configure_mode(mode: str) -> None:
     DCB_FILE        = _SC / f"sc_data_{mode}/Data/Game2.dcb"
     GLOBAL_INI      = _SC / f"sc_data_xml_{mode}/Data/Localization/english/global.ini"
     BUILD_MANIFEST  = _RAW_DATA / mode_upper / "build_manifest.id"
-    APP_DATA_DIR    = Path(__file__).parent / "../../versedb-app/public" / mode
+    APP_DATA_DIR    = Path(__file__).parent / "../app/public" / mode
 
     GAME_VERSION = _read_game_version()
 
@@ -3637,7 +3637,7 @@ def main(mode: str = "live"):
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    # Auto-copy to versedb-app/public/<live|ptu>/
+    # Auto-copy to app/public/<live|ptu>/
     APP_DATA_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copy2(OUTPUT_FILE, APP_DATA_DIR / "versedb_data.json")
 

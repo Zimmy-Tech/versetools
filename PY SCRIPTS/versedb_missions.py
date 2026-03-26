@@ -18,7 +18,7 @@ _DATA_MODE = os.environ.get("VERSEDB_DATA_MODE", "live")
 FORGE_DIR = Path(__file__).parent / f"../SC FILES/sc_data_forge_{_DATA_MODE}/libs/foundry/records"
 GLOBAL_INI = Path(__file__).parent / f"../SC FILES/sc_data_xml_{_DATA_MODE}/Data/Localization/english/global.ini"
 OUTPUT_FILE = Path(__file__).parent / "versedb_missions.json"
-APP_FILE = Path(__file__).parent / "../../versedb-app/public" / _DATA_MODE / "versedb_missions.json"
+APP_FILE = Path(__file__).parent / "../app/public" / _DATA_MODE / "versedb_missions.json"
 
 def load_localization(ini_path):
     loc = {}

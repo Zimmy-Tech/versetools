@@ -17,7 +17,7 @@ from pathlib import Path
 
 _DATA_MODE = os.environ.get("VERSEDB_DATA_MODE", "live")
 DATA_FILE = Path(__file__).parent / "versedb_data.json"
-APP_FILE = Path(__file__).parent / "../../versedb-app/public" / _DATA_MODE / "versedb_data.json"
+APP_FILE = Path(__file__).parent / "../app/public" / _DATA_MODE / "versedb_data.json"
 
 UEX_VEHICLE_URL = "https://api.uexcorp.space/2.0/vehicles_purchases_prices_all"
 UEX_ITEM_URL = "https://api.uexcorp.space/2.0/items_prices_all"
