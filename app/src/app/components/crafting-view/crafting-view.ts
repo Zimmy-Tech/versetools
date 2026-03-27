@@ -50,9 +50,30 @@ export class CraftingViewComponent {
   categoryFilter = signal('');
   subtypeFilter = signal('');
   resourceFilter = signal('');
+  setFilter = signal('');
   sortBy = signal<'name' | 'time' | 'ingredients'>('name');
   page = signal(1);
   readonly pageSize = 100;
+
+  readonly armorSets = [
+    'ADP', 'Antium', 'Argus', 'Artimex', 'Balor HCH', 'CBH-3', 'Corbel',
+    'Defiance', 'DustUp', 'G-2', 'Geist', 'Inquisitor', 'Monde', 'Morozov-SH',
+    'ORC-mkV', 'ORC-mkX', 'PAB-1', 'Palatino', 'Strata', 'Testudo', 'TrueDef-Pro',
+    'Calico', 'Citadel', 'Lynx', 'Venture', 'Aves', 'Aril', 'Arden-SL',
+  ];
+
+  readonly weaponPistols = ['Arclight', 'Coda', 'LH86', 'Pulse', 'Tripledown', 'Yubarev'];
+  readonly weaponRifles = ['Gallant', 'Karna', 'Killshot', 'P4-AR', 'S71'];
+  readonly weaponSnipers = ['A03', 'Arrowhead', 'Atzkav', 'P6-LR', 'Scalpel', 'Zenith'];
+  readonly weaponShotguns = ['BR-2', 'Deadrig', 'Devastator', 'Prism', 'R97', 'Ravager'];
+  readonly weaponSMGs = ['C54', 'Custodian', 'Lumin', 'P8-SC', 'Quartz', 'S-38'];
+  readonly weaponLMGs = ['Demeco', 'F55', 'FS-9', 'Fresnel', 'Pulverizer'];
+
+  toggleSet(set: string): void {
+    this.setFilter.set(this.setFilter() === set ? '' : set);
+    this.searchQuery.set('');
+    this.page.set(1);
+  }
 
   selectedRecipe = signal<CraftingRecipe | null>(null);
   addQty = signal(1);
@@ -82,7 +103,8 @@ export class CraftingViewComponent {
   });
 
   hasActiveFilter = computed(() =>
-    this.searchQuery().length >= 2 || this.categoryFilter() !== '' || this.resourceFilter() !== ''
+    this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
+    this.resourceFilter() !== '' || this.setFilter() !== ''
   );
 
   private allFiltered = computed(() => {
@@ -91,12 +113,14 @@ export class CraftingViewComponent {
     const cat = this.categoryFilter();
     const sub = this.subtypeFilter();
     const res = this.resourceFilter();
+    const setF = this.setFilter();
     const sort = this.sortBy();
 
     let recipes = this.allRecipes();
     if (cat) recipes = recipes.filter(r => r.category === cat);
     if (sub) recipes = recipes.filter(r => r.subtype === sub);
     if (res) recipes = recipes.filter(r => r.ingredients.some(i => i.resource === res));
+    if (setF) recipes = recipes.filter(r => r.itemName.toLowerCase().startsWith(setF.toLowerCase()));
     if (search) {
       recipes = recipes.filter(r =>
         r.itemName.toLowerCase().includes(search) ||

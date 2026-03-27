@@ -1,0 +1,135 @@
+<div class="bp-finder">
+
+  @if (!loaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading blueprints...</div>
+    </div>
+  } @else {
+
+    <div class="bp-layout">
+
+      <!-- Sidebar -->
+      <div class="bp-sidebar">
+        <div class="sb-section">
+          <span class="sb-label">Armor Sets</span>
+          <div class="sb-buttons">
+            @for (set of armorSets; track set) {
+              <button class="sb-btn" [class.active]="setFilter() === set"
+                      (click)="toggleSet(set)">{{ set }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="sb-section">
+          <span class="sb-label">Weapons</span>
+          <div class="sb-buttons">
+            @for (set of weaponSets; track set) {
+              <button class="sb-btn" [class.active]="setFilter() === set"
+                      (click)="toggleSet(set)">{{ set }}</button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="bp-main">
+        <div class="bp-search-bar">
+          <input class="bp-search" type="text" placeholder="Search blueprints..."
+                 [value]="searchQuery()"
+                 (input)="searchQuery.set($any($event.target).value)">
+          <select class="bp-type-select" (change)="typeFilter.set($any($event.target).value)">
+            @for (t of types(); track t) {
+              <option [value]="t">{{ t || 'All Types' }}</option>
+            }
+          </select>
+          <span class="bp-count">{{ filtered().length }} blueprints</span>
+        </div>
+
+        <div class="bp-list">
+          @for (bp of filtered(); track bp.name) {
+            <div class="bp-card" [class.expanded]="expandedBp() === bp.name" (click)="toggleExpand(bp.name)">
+              <div class="bp-header">
+                <span class="bp-name">{{ bp.name }}</span>
+                <span class="bp-type">{{ bp.type }}</span>
+                <span class="bp-mission-count">{{ bp.missions.length }} mission{{ bp.missions.length !== 1 ? 's' : '' }}</span>
+                <span class="bp-arrow">{{ expandedBp() === bp.name ? '▾' : '▸' }}</span>
+              </div>
+
+              @if (expandedBp() === bp.name) {
+                <div class="bp-missions">
+                  @for (m of bp.missions; track m.className) {
+                    <div class="bpm-row">
+                      <span class="bpm-title-link" (click)="openMission(m, $event)">{{ m.title }}</span>
+                      <span class="bpm-cat">{{ m.category }}</span>
+                      <span class="bpm-reward">{{ fmtReward(m.reward) }}</span>
+                      <span class="bpm-law" [class.lawful]="m.lawful" [class.unlawful]="!m.lawful">{{ m.lawful ? 'L' : 'U' }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+
+  }
+
+  @if (selectedMission(); as sm) {
+    <div class="popout-overlay" (click)="closePopout()"></div>
+    <div class="popout-panel">
+      <div class="popout-header">
+        <div class="popout-title">{{ sm.title }}</div>
+        <span class="popout-close" (click)="closePopout()">&#x2715;</span>
+      </div>
+      <div class="popout-body">
+        <div class="popout-meta">
+          <span class="popout-cat">{{ sm.category }}</span>
+          @if (sm.lawful) {
+            <span class="meta-tag lawful">LAWFUL</span>
+          } @else {
+            <span class="meta-tag unlawful">UNLAWFUL</span>
+          }
+          @if (sm.system) { <span class="meta-item"><em>System</em> {{ sm.system }}</span> }
+          @if (sm.activity) { <span class="meta-tag activity">{{ sm.activity }}</span> }
+        </div>
+
+        <div class="popout-stats">
+          <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
+          @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
+          @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
+          @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
+          @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
+          @if (sm.lifetimeMin) { <div class="popout-stat"><span class="ps-label">Lifetime</span><span class="ps-val">{{ sm.lifetimeMin }} min</span></div> }
+          @if (sm.respawnMin) { <div class="popout-stat"><span class="ps-label">Respawn</span><span class="ps-val">{{ sm.respawnMin }} min</span></div> }
+          @if (sm.timeLimitMin) { <div class="popout-stat"><span class="ps-label">Time Limit</span><span class="ps-val">{{ sm.timeLimitMin }} min</span></div> }
+          @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
+          @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
+        </div>
+
+        @if (sm.repScopes?.length) {
+          <div class="popout-section">
+            <div class="popout-section-title">Reputation Rewards</div>
+            <div class="popout-tags">
+              @for (scope of sm.repScopes; track scope) {
+                <span class="rep-scope">{{ scope }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        @if (sm.blueprintRewards?.length) {
+          <div class="popout-section">
+            <div class="popout-section-title">Blueprint Rewards</div>
+            <div class="popout-tags">
+              @for (bp of sm.blueprintRewards; track bp) {
+                <span class="bp-reward-tag">{{ bp }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

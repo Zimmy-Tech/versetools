@@ -6,6 +6,78 @@
     </div>
   } @else {
 
+    <div class="crafting-layout">
+
+    <!-- Sidebar -->
+    <div class="craft-sidebar">
+      <div class="sb-section">
+        <span class="sb-label">Armor Sets</span>
+        <div class="sb-buttons">
+          @for (set of armorSets; track set) {
+            <button class="sb-btn" [class.active]="setFilter() === set"
+                    (click)="toggleSet(set)">{{ set }}</button>
+          }
+        </div>
+      </div>
+      <div class="sb-section">
+        <span class="sb-label">Pistols</span>
+        <div class="sb-buttons">
+          @for (w of weaponPistols; track w) {
+            <button class="sb-btn" [class.active]="setFilter() === w"
+                    (click)="toggleSet(w)">{{ w }}</button>
+          }
+        </div>
+      </div>
+      <div class="sb-section">
+        <span class="sb-label">Rifles</span>
+        <div class="sb-buttons">
+          @for (w of weaponRifles; track w) {
+            <button class="sb-btn" [class.active]="setFilter() === w"
+                    (click)="toggleSet(w)">{{ w }}</button>
+          }
+        </div>
+      </div>
+      <div class="sb-section">
+        <span class="sb-label">Snipers</span>
+        <div class="sb-buttons">
+          @for (w of weaponSnipers; track w) {
+            <button class="sb-btn" [class.active]="setFilter() === w"
+                    (click)="toggleSet(w)">{{ w }}</button>
+          }
+        </div>
+      </div>
+      <div class="sb-section">
+        <span class="sb-label">Shotguns</span>
+        <div class="sb-buttons">
+          @for (w of weaponShotguns; track w) {
+            <button class="sb-btn" [class.active]="setFilter() === w"
+                    (click)="toggleSet(w)">{{ w }}</button>
+          }
+        </div>
+      </div>
+      <div class="sb-section">
+        <span class="sb-label">SMGs</span>
+        <div class="sb-buttons">
+          @for (w of weaponSMGs; track w) {
+            <button class="sb-btn" [class.active]="setFilter() === w"
+                    (click)="toggleSet(w)">{{ w }}</button>
+          }
+        </div>
+      </div>
+      <div class="sb-section">
+        <span class="sb-label">LMGs</span>
+        <div class="sb-buttons">
+          @for (w of weaponLMGs; track w) {
+            <button class="sb-btn" [class.active]="setFilter() === w"
+                    (click)="toggleSet(w)">{{ w }}</button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="craft-main">
+
     <div class="crafting-instructions">Pick an item to see the Crafting UI which includes sliders for the materials quality and the effects of quality materials. Adding items to your Materials List will open a tally window for bulk gathering requirements.</div>
 
     <!-- Filter bar -->
@@ -65,6 +137,27 @@
     <!-- Recipe list + static tally sidebar -->
     <div class="recipe-area" [style.display]="hasActiveFilter() ? '' : 'none'">
 
+      <div class="recipe-list">
+        @for (r of filteredRecipes(); track r.className) {
+          <div class="recipe-card" [class.selected]="selectedRecipe()?.className === r.className"
+               (click)="selectRecipe(r, $event)">
+            <div class="rc-top">
+              <span class="rc-sub-tag">{{ r.subtype || r.category }}</span>
+              <span class="rc-name">{{ r.itemName }}</span>
+              <span class="rc-time">{{ fmtTime(r.craftTimeSeconds) }}</span>
+            </div>
+            <div class="rc-bottom">
+              @for (ing of r.ingredients; track ing.resource) {
+                <span class="rc-chip" [class.ore]="isOre(ing)" [class.gem]="isGem(ing)">
+                  <span class="rc-chip-name">{{ ing.resource }}</span>
+                  <span class="rc-chip-qty">{{ fmtQty(ing) }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
       @if (materialsList().length) {
         <div class="tally-panel">
           <div class="tally-header">
@@ -102,26 +195,6 @@
         </div>
       }
 
-      <div class="recipe-list">
-        @for (r of filteredRecipes(); track r.className) {
-          <div class="recipe-card" [class.selected]="selectedRecipe()?.className === r.className"
-               (click)="selectRecipe(r, $event)">
-            <div class="rc-top">
-              <span class="rc-sub-tag">{{ r.subtype || r.category }}</span>
-              <span class="rc-name">{{ r.itemName }}</span>
-              <span class="rc-time">{{ fmtTime(r.craftTimeSeconds) }}</span>
-            </div>
-            <div class="rc-bottom">
-              @for (ing of r.ingredients; track ing.resource) {
-                <span class="rc-chip" [class.ore]="isOre(ing)" [class.gem]="isGem(ing)">
-                  <span class="rc-chip-name">{{ ing.resource }}</span>
-                  <span class="rc-chip-qty">{{ fmtQty(ing) }}</span>
-                </span>
-              }
-            </div>
-          </div>
-        }
-      </div>
     </div>
 
     <!-- Popout detail panel -->
@@ -276,5 +349,7 @@
       </div>
     }
 
+  </div><!-- craft-main -->
+  </div><!-- crafting-layout -->
   }
 </div>

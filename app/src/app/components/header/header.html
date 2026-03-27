@@ -25,9 +25,19 @@
       }
     </div>
 
-    <!-- Missions -->
-    <button class="nav-tab" [class.active]="activeTab() === 'missions'"
-            (click)="tabChange.emit('missions')">Missions</button>
+    <!-- Missions dropdown -->
+    <div class="nav-group" (blur)="closeGroups()" tabindex="-1">
+      <button class="nav-tab" [class.active]="isMissionsActive()"
+              (click)="toggleMissions()">Missions <span class="nav-arrow">{{ missionsOpen() ? '▾' : '▸' }}</span></button>
+      @if (missionsOpen()) {
+        <div class="nav-dropdown">
+          @for (tab of missionsTabs; track tab.id) {
+            <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
+                 (mousedown)="selectGroupTab(tab.id)">{{ tab.label }}</div>
+          }
+        </div>
+      }
+    </div>
 
     <!-- Industry Tools dropdown -->
     <div class="nav-group" (blur)="closeGroups()" tabindex="-1">
@@ -110,7 +120,8 @@
               @for (lo of storedLoadouts(); track lo.timestamp; let i = $index) {
                 <div class="lb-option" (mousedown)="loadStoredLoadout(i)">
                   <span class="lb-option-name">{{ lo.name }}</span>
-                  <span class="lb-option-ship">{{ lo.shipName }}</span>
+                  @if (lo.peakDps) { <span class="lb-option-stat">{{ lo.peakDps }} DPS</span> }
+                  @if (lo.totalAlpha) { <span class="lb-option-stat">{{ lo.totalAlpha }} Alpha</span> }
                   <button class="lb-delete" (mousedown)="deleteStoredLoadout(i, $event)" title="Delete">&#x2715;</button>
                 </div>
               }

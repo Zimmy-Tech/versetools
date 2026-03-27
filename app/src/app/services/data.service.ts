@@ -82,6 +82,9 @@ export class DataService {
           this.selectedShip.set(null);
           this.loadout.set({});
           this.modeVersion.update(v => v + 1);
+          // Auto-select Gladius as default ship
+          const gladius = db.ships.find(s => s.className === 'aegs_gladius');
+          if (gladius) this.selectShip(gladius);
         },
         error: () => console.warn(`Could not load ${prefix}versedb_data.json`),
       });

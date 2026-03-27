@@ -62,6 +62,7 @@ export class MissionsViewComponent {
   repScopeFilter = signal('');
   sortBy = signal<'reward' | 'title' | 'category'>('reward');
   blueprintFilter = signal(false);
+  blueprintNameFilter = signal('');
   page = signal(1);
   readonly pageSize = 20;
 
@@ -89,11 +90,19 @@ export class MissionsViewComponent {
     return ['', ...Array.from(scopes).sort()];
   });
 
+  blueprintNames = computed(() => {
+    const names = new Set<string>();
+    for (const m of this.allMissions()) {
+      for (const bp of m.blueprintRewards ?? []) names.add(bp);
+    }
+    return ['', ...Array.from(names).sort()];
+  });
+
   hasActiveFilter = computed(() => {
     return this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
            this.activityFilter() !== '' || this.repScopeFilter() !== '' ||
-           this.blueprintFilter();
+           this.blueprintFilter() || this.blueprintNameFilter() !== '';
   });
 
   private allFiltered = computed(() => {
@@ -106,6 +115,7 @@ export class MissionsViewComponent {
     const act = this.activityFilter();
     const rep = this.repScopeFilter();
     const bp = this.blueprintFilter();
+    const bpName = this.blueprintNameFilter();
     const sort = this.sortBy();
 
     let missions = this.allMissions();
@@ -115,7 +125,8 @@ export class MissionsViewComponent {
     if (law === 'unlawful') missions = missions.filter(m => !m.lawful);
     if (sys) missions = missions.filter(m => m.system === sys);
     if (act) missions = missions.filter(m => m.activity === act);
-    if (bp) missions = missions.filter(m => m.blueprintRewards?.length);
+    if (bpName) missions = missions.filter(m => m.blueprintRewards?.includes(bpName));
+    else if (bp) missions = missions.filter(m => m.blueprintRewards?.length);
     if (rep) missions = missions.filter(m =>
       m.repScopes?.includes(rep) ||
       m.repRequirements?.some(r => r.scope === rep) ||

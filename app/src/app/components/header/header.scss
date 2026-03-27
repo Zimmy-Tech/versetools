@@ -359,6 +359,18 @@ header {
   flex-shrink: 0;
 }
 
+.lb-option-stat {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.06);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  padding: 0 5px;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .lb-delete {
   background: none;
   border: none;

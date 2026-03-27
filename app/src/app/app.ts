@@ -14,6 +14,7 @@ import { ArmorViewComponent } from './components/armor-view/armor-view';
 import { SubmitViewComponent } from './components/submit-view/submit-view';
 import { FormulasViewComponent } from './components/formulas-view/formulas-view';
 import { MiningViewComponent } from './components/mining-view/mining-view';
+import { BlueprintFinderComponent } from './components/blueprint-finder/blueprint-finder';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,7 @@ import { MiningViewComponent } from './components/mining-view/mining-view';
     SubmitViewComponent,
     FormulasViewComponent,
     MiningViewComponent,
+    BlueprintFinderComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

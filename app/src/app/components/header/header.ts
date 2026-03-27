@@ -2,7 +2,7 @@ import { Component, output, input, signal, computed } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'submit' | 'formulas' | 'changelog';
+export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'submit' | 'formulas' | 'changelog';
 
 interface StoredLoadout {
   name: string;
@@ -14,6 +14,8 @@ interface StoredLoadout {
   weaponsPower: number;
   thrusterPower: number;
   timestamp: number;
+  peakDps?: number;
+  totalAlpha?: number;
 }
 
 const STORAGE_KEY = 'versedb_loadouts';
@@ -35,41 +37,50 @@ export class HeaderComponent {
     { id: 'finder', label: 'Default Loadout Finder' },
   ];
 
+  readonly missionsTabs: { id: TabName; label: string }[] = [
+    { id: 'missions', label: 'Missions' },
+    { id: 'blueprints', label: 'Blueprint Finder' },
+  ];
+
   readonly industryToolsTabs: { id: TabName; label: string }[] = [
     { id: 'mining', label: 'Mining' },
     { id: 'crafting', label: 'Crafting' },
   ];
 
-  readonly flatTabs: { id: TabName; label: string }[] = [
-    { id: 'cart', label: 'Cart' },
-    { id: 'components', label: 'Components' },
-    { id: 'missions', label: 'Missions' },
-    { id: 'submit', label: 'Submit Data' },
-    { id: 'formulas', label: 'Formulas' },
-    { id: 'changelog', label: 'Changelog' },
-  ];
-
   shipToolsOpen = signal(false);
+  missionsOpen = signal(false);
   industryToolsOpen = signal(false);
 
   isShipToolActive = computed(() => this.shipToolsTabs.some(t => t.id === this.activeTab()));
+  isMissionsActive = computed(() => this.missionsTabs.some(t => t.id === this.activeTab()));
   isIndustryToolActive = computed(() => this.industryToolsTabs.some(t => t.id === this.activeTab()));
 
-  toggleShipTools(): void {
-    this.shipToolsOpen.set(!this.shipToolsOpen());
+  private closeAllGroups(): void {
+    this.shipToolsOpen.set(false);
+    this.missionsOpen.set(false);
     this.industryToolsOpen.set(false);
   }
+  toggleShipTools(): void {
+    const open = !this.shipToolsOpen();
+    this.closeAllGroups();
+    this.shipToolsOpen.set(open);
+  }
+  toggleMissions(): void {
+    const open = !this.missionsOpen();
+    this.closeAllGroups();
+    this.missionsOpen.set(open);
+  }
   toggleIndustryTools(): void {
-    this.industryToolsOpen.set(!this.industryToolsOpen());
-    this.shipToolsOpen.set(false);
+    const open = !this.industryToolsOpen();
+    this.closeAllGroups();
+    this.industryToolsOpen.set(open);
   }
   selectGroupTab(id: TabName): void {
     this.tabChange.emit(id);
-    this.shipToolsOpen.set(false);
-    this.industryToolsOpen.set(false);
+    this.closeAllGroups();
   }
   closeGroups(): void {
-    setTimeout(() => { this.shipToolsOpen.set(false); this.industryToolsOpen.set(false); }, 150);
+    setTimeout(() => this.closeAllGroups(), 150);
   }
 
   searchQuery  = signal('');
@@ -131,6 +142,16 @@ export class HeaderComponent {
     for (const [slotId, item] of Object.entries(loadout)) {
       if (item) items[slotId] = item.className;
     }
+    // Compute peak DPS and total alpha from all guns in loadout
+    let peakDps = 0;
+    let totalAlpha = 0;
+    for (const item of Object.values(loadout)) {
+      if (item && (item.type === 'WeaponGun' || item.type === 'WeaponTachyon')) {
+        peakDps += item.dps ?? 0;
+        totalAlpha += item.alphaDamage ?? 0;
+      }
+    }
+
     const existing = this.readStorage();
     const name = `${ship.name} #${existing.filter(l => l.shipClassName === ship.className).length + 1}`;
     existing.push({
@@ -142,6 +163,8 @@ export class HeaderComponent {
       weaponsPower: this.data.weaponsPower(),
       thrusterPower: this.data.thrusterPower(),
       timestamp: Date.now(),
+      peakDps: Math.round(peakDps),
+      totalAlpha: Math.round(totalAlpha * 10) / 10,
     });
     this.writeStorage(existing);
   }
