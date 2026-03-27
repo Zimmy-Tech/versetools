@@ -2503,6 +2503,18 @@ def enrich_armor_from_forge(ships, forge_dir, dcb_path=None):
     enriched = 0
     for ship in ships.values():
         armor_cls = (ship.get("defaultLoadout") or {}).get("hardpoint_armor", "")
+        # Fallback: derive armor class from ship className (armr_{className})
+        # Try exact match first, then strip trailing segments for variant → base fallback
+        if not armor_cls:
+            base = ship["className"].lower()
+            candidates = [f"armr_{base}"]
+            parts = base.split("_")
+            for i in range(len(parts) - 1, 1, -1):
+                candidates.append(f"armr_{'_'.join(parts[:i])}")
+            for cand in candidates:
+                if (armor_dir / f"{cand}.xml.xml").exists():
+                    armor_cls = cand
+                    break
         if not armor_cls:
             continue
         armor_file = armor_dir / f"{armor_cls.lower()}.xml.xml"

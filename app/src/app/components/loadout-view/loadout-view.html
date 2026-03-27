@@ -231,19 +231,31 @@
               @if (data.selectedShip()!.hullDmgPhys !== undefined) {
                 <div class="flight-divider"></div>
                 <div class="flight-group">
-                  <div class="flight-group-label">Hull Damage Mult</div>
+                  <div class="flight-group-label">Damage Durability</div>
                   <div class="flight-stat">
                     <span class="fs-label">Phys</span>
-                    <span class="fs-val">{{ ((data.selectedShip()!.hullDmgPhys! - 1) * 100).toFixed(0) }}%</span>
+                    <span class="fs-val">{{ ((1 - data.selectedShip()!.hullDmgPhys!) * 100).toFixed(0) }}%</span>
                   </div>
                   <div class="flight-stat">
                     <span class="fs-label">Enrg</span>
-                    <span class="fs-val">{{ ((data.selectedShip()!.hullDmgEnrg! - 1) * 100).toFixed(0) }}%</span>
+                    <span class="fs-val">{{ ((1 - data.selectedShip()!.hullDmgEnrg!) * 100).toFixed(0) }}%</span>
                   </div>
                   <div class="flight-stat">
                     <span class="fs-label">Dist</span>
-                    <span class="fs-val">{{ ((data.selectedShip()!.hullDmgDist! - 1) * 100).toFixed(0) }}%</span>
+                    <span class="fs-val">{{ ((1 - data.selectedShip()!.hullDmgDist!) * 100).toFixed(0) }}%</span>
                   </div>
+                  @if (data.selectedShip()!.fusePenetrationMult !== undefined) {
+                    <div class="flight-stat">
+                      <span class="fs-label">Fuse</span>
+                      <span class="fs-val">{{ ((1 - data.selectedShip()!.fusePenetrationMult!) * 100).toFixed(0) }}%</span>
+                    </div>
+                  }
+                  @if (data.selectedShip()!.componentPenetrationMult !== undefined) {
+                    <div class="flight-stat">
+                      <span class="fs-label">Comp</span>
+                      <span class="fs-val">{{ ((1 - data.selectedShip()!.componentPenetrationMult!) * 100).toFixed(0) }}%</span>
+                    </div>
+                  }
                 </div>
               }
               @if (data.selectedShip()!.signalEM !== undefined) {
