@@ -39,7 +39,7 @@ export class DpsPanelComponent {
     if (hp.type === 'Turret') {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
       // gunNacelle = pilot-controlled weapon nacelle (e.g., Constellation nose guns)
-      return !!ct && !ct.includes('remote_turret') && !ct.includes('pilot') && !ct.includes('gunnacelle');
+      return !!ct && !ct.includes('remote_turret') && !ct.includes('pilot') && !ct.includes('gunnacelle') && !ct.includes('gunnose');
     }
     return false;
   }
@@ -267,14 +267,25 @@ export class DpsPanelComponent {
   );
 
   // Only first 2 shields (primaries) contribute to regen, scaled by power pips
+  // Includes shields from module sub-slots (e.g., Aurora DM Module)
   private primaryShieldEntries = computed(() => {
     const ship = this.data.selectedShip();
     if (!ship) return [];
     const loadout = this.data.loadout();
-    return ship.hardpoints
-      .filter(hp => loadout[hp.id]?.type === 'Shield')
-      .slice(0, 2)
-      .map(hp => ({ hpId: hp.id, item: loadout[hp.id] }));
+    const shieldEntries: { hpId: string; item: any }[] = [];
+    // Top-level shield hardpoints
+    for (const hp of ship.hardpoints) {
+      if (loadout[hp.id]?.type === 'Shield') {
+        shieldEntries.push({ hpId: hp.id, item: loadout[hp.id] });
+      }
+    }
+    // Module sub-slot shields
+    for (const [key, item] of Object.entries(loadout)) {
+      if (item?.type === 'Shield' && key.includes('.') && !shieldEntries.some(e => e.hpId === key)) {
+        shieldEntries.push({ hpId: key, item });
+      }
+    }
+    return shieldEntries.slice(0, 2);
   });
 
   // Linear model: totalRegen scales as (allocatedPips / maxPips) across the

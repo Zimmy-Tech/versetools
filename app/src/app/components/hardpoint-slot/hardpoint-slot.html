@@ -8,20 +8,11 @@
 
   @if (isLifeSupportSlot()) {
 
-    <!-- Life Support locked display -->
-    <div class="slot-fixed">
+    <!-- Life Support display -->
+    <div class="weapon-trigger">
       @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
-      <span class="fixed-badge">FIXED</span>
-      <span>{{ currentItem()?.name ?? 'Life Support · Size ' + hardpoint().maxSize }}</span>
-      @if (lsStats(); as ls) {
-        <span class="ls-stat">
-          <span class="ls-stat-label">Pwr</span> {{ ls.powerDraw }}
-          <span class="ls-stat-sep">·</span>
-          <span class="ls-stat-label">Cool</span> {{ ls.cooling }}
-          <span class="ls-stat-sep">·</span>
-          <span class="ls-stat-label">Pips</span> {{ ls.pips }}
-        </span>
-      }
+      <span class="trigger-name">{{ currentItem()?.name ?? 'Life Support · Size ' + hardpoint().maxSize }}</span>
+      <span class="trigger-stat">{{ slotStat() }}</span>
     </div>
 
   } @else if (isLocked()) {

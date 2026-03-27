@@ -162,6 +162,19 @@ export class DataService {
       // Sub-slots (dot-notation keys whose values are weapons or missiles)
       for (const [dotKey, cls] of Object.entries(ship.defaultLoadout)) {
         if (!dotKey.includes('.')) continue;
+        // Skip sub-slots whose parent module doesn't have the matching sub-port
+        const topKey = dotKey.split('.')[0];
+        const parentItem = newLoadout[topKey];
+        if (parentItem?.type === 'Module') {
+          const subs = parentItem.subPorts ?? [];
+          if (subs.length === 0) {
+            continue; // Module has no sub-ports — skip all children
+          }
+          const firstSeg = dotKey.split('.')[1];
+          if (!subs.some((sp: any) => sp.id === firstSeg)) {
+            continue; // Sub-port doesn't exist on this module variant
+          }
+        }
         const item = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
         if (item && (item.type === 'WeaponGun' || item.type === 'Missile' || item.type === 'WeaponMining' || item.type === 'SalvageHead' || item.type === 'SalvageModifier' || item.type === 'TractorBeam')) newLoadout[dotKey] = item;
       }
@@ -266,6 +279,49 @@ export class DataService {
             if (!dotKey.startsWith(prefix)) continue;
             const defaultItem = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
             if (defaultItem?.type === 'WeaponGun') current[dotKey] = lockedWeapon;
+          }
+        }
+      } else if (item.type === 'Module') {
+        // Module equipped: auto-fill sub-ports with default items
+        const moduleDefaults: Record<string, Record<string, string>> = {
+          'aegs_retaliator_module_front_bomber': {
+            'hardpoint_torpedo_launcher_fore': 'mrck_s09_aegs_retaliator_fore',
+            'hardpoint_torpedo_launcher_fore.missile_01_attach': 'misl_s09_cs_taln_argos',
+            'hardpoint_torpedo_launcher_fore.missile_02_attach': 'misl_s09_cs_taln_argos',
+            'hardpoint_torpedo_launcher_fore.missile_03_attach': 'misl_s09_cs_taln_argos',
+            'hardpoint_torpedo_launcher_fore.missile_04_attach': 'misl_s09_cs_taln_argos',
+          },
+          'aegs_retaliator_module_rear_bomber': {
+            'hardpoint_torpedo_launcher_rear': 'mrck_s09_aegs_retaliator_rear',
+            'hardpoint_torpedo_launcher_rear.missile_01_attach': 'misl_s09_cs_taln_argos',
+            'hardpoint_torpedo_launcher_rear.missile_02_attach': 'misl_s09_cs_taln_argos',
+          },
+          'rsi_aurora_mk2_module_missile': {
+            'missile_01_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_01_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'missile_02_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_02_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'missile_03_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_03_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'missile_04_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_04_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'missile_05_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_05_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'missile_06_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_06_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'missile_07_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_07_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'missile_08_rack': 'mrck_s01_rsi_aurora_mk2_combat_module_rack',
+            'missile_08_rack.missile_01_attach': 'misl_s02_em_taln_dominator',
+            'hardpoint_shield_generator_back': 'shld_behr_s01_5sa_scitem',
+          },
+        };
+        const modDefaults = moduleDefaults[item.className.toLowerCase()];
+        if (modDefaults) {
+          for (const [subKey, cls] of Object.entries(modDefaults)) {
+            const fullKey = `${slotId}.${subKey}`;
+            const subItem = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
+            if (subItem) current[fullKey] = subItem;
           }
         }
       } else if (item.type !== 'WeaponGun' && item.type !== 'WeaponTachyon') {
@@ -644,7 +700,22 @@ export class DataService {
         if (acceptsMiningMod && i.type === 'MiningModifier') return true;
         if (acceptsSalvage && i.type === 'SalvageHead') return true;
         if (acceptsSalvageMod && i.type === 'SalvageModifier') return true;
-        if (!acceptsGun && !acceptsTurret && !acceptsRack && !acceptsMissile && !acceptsMining && !acceptsMiningMod && !acceptsSalvage && !acceptsSalvageMod) return i.type === hp.type;
+        if (!acceptsGun && !acceptsTurret && !acceptsRack && !acceptsMissile && !acceptsMining && !acceptsMiningMod && !acceptsSalvage && !acceptsSalvageMod) {
+          if (i.type === 'Module' && hp.type === 'Module') {
+            // Only show modules belonging to this ship
+            if (!clsL.includes(shipCls.replace(/_/g, '').toLowerCase().slice(0, 8)) &&
+                !clsL.includes(shipCls.toLowerCase())) {
+              // Try matching by ship name prefix (e.g., "retaliator", "aurora_mk2")
+              const shipWords = shipCls.toLowerCase().split('_').filter(w => w.length > 3);
+              if (!shipWords.some(w => clsL.includes(w))) return false;
+            }
+            // Filter front/rear modules to matching bays
+            const hpPos = hp.id.toLowerCase().includes('front') ? 'front' : hp.id.toLowerCase().includes('rear') ? 'rear' : '';
+            const itemPos = clsL.includes('front') ? 'front' : clsL.includes('rear') ? 'rear' : '';
+            if (hpPos && itemPos && hpPos !== itemPos) return false;
+          }
+          return i.type === hp.type;
+        }
         return false;
       })
       .sort((a, b) => {

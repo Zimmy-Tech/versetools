@@ -27,7 +27,7 @@ export class LoadoutViewComponent {
   readonly utilityTypes = ['Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar', 'LifeSupportGenerator'];
 
   collapsedSections = signal<Set<string>>(new Set([
-    'pilot-guns', 'crew-guns', 'missiles', 'mining', 'power', 'pdc', 'tractor', 'coolers', 'ls', 'modules',
+    'pilot-guns', 'crew-guns', 'missiles', 'mining', 'power', 'pdc', 'tractor', 'coolers', 'modules',
   ]));
 
   isCollapsed(section: string): boolean {
@@ -48,7 +48,7 @@ export class LoadoutViewComponent {
     if (hp.type === 'Turret') {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
       // gunNacelle = pilot-controlled weapon nacelle (e.g., Constellation nose guns)
-      return !!ct && !ct.includes('remote_turret') && !ct.includes('pilot') && !ct.includes('gunnacelle');
+      return !!ct && !ct.includes('remote_turret') && !ct.includes('pilot') && !ct.includes('gunnacelle') && !ct.includes('gunnose');
     }
     return false;
   }
@@ -499,26 +499,34 @@ export class LoadoutViewComponent {
       // Group missile sub-ports into a single collapsed rack entry
       const missilePorts = equippedModule.subPorts.filter((sp: any) => sp.type === 'Missile' || sp.type === 'MissileLauncher');
       if (missilePorts.length) {
-        // Find missile leaves: deepest dot-notation keys under each missile rack
+        // Find missile leaves from both defaultLoadout AND current loadout
         const missileLeaves: string[] = [];
+        const allLoadoutKeys = [...new Set([...allKeys, ...Object.keys(currentLoadout).map(k => k.toLowerCase())])];
         for (const sp of missilePorts) {
           const rackKey = `${hp.id}.${sp.id}`;
           const rackPrefix = rackKey.toLowerCase() + '.';
-          const rackChildren = allKeys.filter(k => k.startsWith(rackPrefix));
+          const rackChildren = allLoadoutKeys.filter(k => k.startsWith(rackPrefix));
           if (rackChildren.length) {
-            // Has children — find leaves (missiles under the rack)
             const leaves = rackChildren.filter(k => !rackChildren.some(k2 => k2.startsWith(k + '.')));
             missileLeaves.push(...leaves);
+          } else {
+            // No children found — check if the rack itself is equipped and use its capacity
+            const equippedRack = currentLoadout[rackKey];
+            if (equippedRack?.type === 'MissileLauncher' && equippedRack.capacity) {
+              for (let mi = 1; mi <= equippedRack.capacity; mi++) {
+                missileLeaves.push(`${rackKey}.missile_0${mi}_attach`);
+              }
+            }
           }
         }
         if (missileLeaves.length) {
-          const firstMissileCls = defaultLoadout[missileLeaves[0]];
-          const firstMissile = items.find(i => i.className.toLowerCase() === firstMissileCls?.toLowerCase());
-          const missileSize = firstMissile?.size ?? 1;
+          const firstMissileItem = currentLoadout[missileLeaves[0]] ??
+            items.find(i => i.className.toLowerCase() === (defaultLoadout[missileLeaves[0]] ?? '').toLowerCase());
+          const missileSize = firstMissileItem?.size ?? 9;
           const firstLeaf = missileLeaves[0];
           moduleSubs.push({
             id: firstLeaf,
-            label: `Missiles ×${missileLeaves.length}`,
+            label: `Torpedoes ×${missileLeaves.length}`,
             type: 'Missile',
             subtypes: '',
             minSize: missileSize,
@@ -530,9 +538,9 @@ export class LoadoutViewComponent {
         }
       }
 
-      // Non-missile sub-ports (e.g. shield)
+      // Non-missile/door sub-ports (e.g. shield)
       for (const sp of equippedModule.subPorts) {
-        if (sp.type === 'Missile' || sp.type === 'MissileLauncher') continue;
+        if (sp.type === 'Missile' || sp.type === 'MissileLauncher' || sp.type === 'Door' || sp.type === 'Misc') continue;
         const subId = `${hp.id}.${sp.id}`;
         moduleSubs.push({
           id: subId,

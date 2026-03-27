@@ -1,4 +1,4 @@
-import { Component, output, input, signal, computed } from '@angular/core';
+import { Component, output, input, signal, computed, HostListener, ElementRef } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
@@ -79,8 +79,14 @@ export class HeaderComponent {
     this.tabChange.emit(id);
     this.closeAllGroups();
   }
-  closeGroups(): void {
-    setTimeout(() => this.closeAllGroups(), 150);
+
+  @HostListener('document:click', ['$event'])
+  onDocClick(e: MouseEvent): void {
+    // Close dropdowns when clicking outside nav-group elements
+    const target = e.target as HTMLElement;
+    if (!target.closest('.nav-group')) {
+      this.closeAllGroups();
+    }
   }
 
   searchQuery  = signal('');

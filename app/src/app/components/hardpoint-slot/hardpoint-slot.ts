@@ -82,7 +82,11 @@ export class HardpointSlotComponent {
     if (!item || item.type !== 'LifeSupportGenerator') return null;
     const pips = this.data.powerAlloc()[this.hardpoint().id] ?? 0;
     const cooling = componentCoolingDemand(item, pips);
-    return { pips, powerDraw: item.powerDraw ?? 0, cooling: cooling.toFixed(1) };
+    return {
+      pips, powerDraw: item.powerDraw ?? 0, cooling: cooling.toFixed(1),
+      hp: item.componentHp ?? 0, emMax: item.emMax ?? 0,
+      distMax: item.distortionMax ?? 0,
+    };
   });
 
   currentItem = computed(() => this.data.loadout()[this.hardpoint().id] ?? null);
@@ -147,6 +151,8 @@ export class HardpointSlotComponent {
         const effSpeed = item.salvageSpeed ? (item.salvageSpeed * hs) : 0;
         return { classCode: 'SLV-' + (item.size ?? '?'), primaryVal: effSpeed > 0 ? effSpeed.toFixed(2) : '—', primaryUnit: 'SPD', meta };
       }
+      case 'LifeSupportGenerator':
+        return { classCode: 'LSG-' + (item.size ?? '?'), primaryVal: (item.componentHp ?? 0).toString(), primaryUnit: 'HP', meta };
       default:
         return null;
     }
@@ -325,6 +331,7 @@ export class HardpointSlotComponent {
     if ((item.powerOutput ?? 0) > 0)  return `${item.powerOutput} PWR`;
     if ((item.coolingRate ?? 0) > 0)  return `${item.coolingRate!.toFixed(0)} COOL`;
     if ((item.speed ?? 0) > 0)        return `${((item.speed ?? 0) / 1e3).toFixed(0)} Mm/s`;
+    if (item.type === 'LifeSupportGenerator') return '';
     if (item.type === 'Missile') {
       const capacity = this.rackLeafIds().length;
       const alpha = item.alphaDamage ?? 0;
@@ -481,6 +488,19 @@ export class HardpointSlotComponent {
       if (item.emSensitivity) rows.push({ label: 'EM Sens', value: (item.emSensitivity * 100).toFixed(0) + '%' });
       if (item.csSensitivity) rows.push({ label: 'CS Sens', value: (item.csSensitivity * 100).toFixed(0) + '%' });
       rows.push({ label: 'Power Pips', value: pips + ' / ' + maxPips });
+    } else if (item.type === 'LifeSupportGenerator') {
+      if (item.componentHp) rows.push({ label: 'Health', value: f(item.componentHp)! });
+      if (item.powerDraw) rows.push({ label: 'Power Draw', value: f(item.powerDraw)! });
+      const pips = this.data.powerAlloc()[this.hardpoint().id] ?? 0;
+      const cooling = componentCoolingDemand(item, pips);
+      rows.push({ label: 'Cooling Demand', value: cooling.toFixed(1) });
+      if (item.emMax) rows.push({ label: 'EM Signature', value: f(item.emMax)! });
+      if (item.distortionMax) {
+        rows.push({ label: '', value: '', divider: true });
+        rows.push({ label: 'Distortion Max', value: f(item.distortionMax)! });
+        if (item.distortionDecayRate) rows.push({ label: 'Dist Decay Rate', value: f(item.distortionDecayRate)! });
+        if (item.distortionDecayDelay) rows.push({ label: 'Dist Decay Delay', value: item.distortionDecayDelay.toFixed(1) + 's' });
+      }
     } else if (item.type === 'SalvageModifier' && item.salvageSpeed) {
       const ship = this.data.selectedShip();
       const hs = ship?.salvageSpeedMult ?? 1;

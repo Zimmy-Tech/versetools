@@ -39,7 +39,7 @@
             </div>
             <div class="stat-pill">
               <span class="stat-pill-label">Cargo</span>
-              <span class="stat-pill-val">{{ data.selectedShip()!.cargoCapacity ?? 0 }} SCU</span>
+              <span class="stat-pill-val">{{ effectiveCargo() }} SCU</span>
             </div>
             @if (data.selectedShip()!.oreCapacity) {
               <div class="stat-pill">
@@ -431,6 +431,21 @@
             }
           }
 
+          @if (moduleSlots().length) {
+            <div class="slot-group-label">Modules <span class="collapse-btn" (click)="toggleSection('modules')">{{ isCollapsed('modules') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of moduleSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('modules')" />
+              @if (!isCollapsed('modules') && subSlotsMap()[hp.id]; as subs) {
+                @for (sub of subs; track sub.id) {
+                  <div class="sub-slot-indent">
+                    <app-hardpoint-slot [hardpoint]="sub"
+                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                  </div>
+                }
+              }
+            }
+          }
+
           <!-- Mining/Salvage (after weapons on non-mining ships) -->
           @if (!isMiningShip() && miningSlots().length) {
             <div class="slot-group-label">Mining / Salvage <span class="collapse-btn" (click)="toggleSection('mining')">{{ isCollapsed('mining') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
@@ -613,6 +628,7 @@
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('ls')" />
             }
           }
+
         </div>
 
         <!-- Right: Power Block + DPS Output + Details -->

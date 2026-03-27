@@ -1136,6 +1136,18 @@ def parse_lifesupport_item(root, class_name, loc):
             v = loc.get(key)
             if v and not v.startswith("@") and len(v) > 2:
                 display = v
+    # Health
+    hp_el = root.find(".//SHealthComponentParams")
+    component_hp = safe_float(hp_el.get("Health", 0)) if hp_el is not None else 0.0
+    # EM signature
+    em_el = root.find(".//EMSignature")
+    em_max = safe_float(em_el.get("nominalSignature", 0)) if em_el is not None else 0.0
+    em_decay = safe_float(em_el.get("decayRate", 0)) if em_el is not None else 0.0
+    # Distortion
+    dist_el = root.find(".//SDistortionParams")
+    dist_max = safe_float(dist_el.get("Maximum", 0)) if dist_el is not None else 0.0
+    dist_decay_rate = safe_float(dist_el.get("DecayRate", 0)) if dist_el is not None else 0.0
+    dist_decay_delay = safe_float(dist_el.get("DecayDelay", 0)) if dist_el is not None else 0.0
     return {
         "className":    class_name,
         "name":         display,
@@ -1145,6 +1157,12 @@ def parse_lifesupport_item(root, class_name, loc):
         "grade":        info["grade"],
         "psruRef":      cooling["psruRef"],
         "minConsumptionFraction": cooling["minConsumptionFraction"],
+        "componentHp":          round(component_hp, 0),
+        "emMax":                round(em_max, 0),
+        "emDecayRate":          round(em_decay, 2),
+        "distortionMax":        round(dist_max, 0),
+        "distortionDecayRate":  round(dist_decay_rate, 0),
+        "distortionDecayDelay": round(dist_decay_delay, 1),
         **parse_power_ranges(root),
     }
 
@@ -3551,6 +3569,17 @@ def main(mode: str = "live"):
             dict(_radar_hp), dict(_ls_hp),
         ])
 
+    # Add Retaliator module hardpoints (front + rear bays for cargo/torpedo modules)
+    if "AEGS_Retaliator" in ships:
+        ships["AEGS_Retaliator"]["hardpoints"].extend([
+            {"id": "hardpoint_front_module", "label": "Front Module Bay",
+             "type": "Module", "subtypes": "", "minSize": 1, "maxSize": 10,
+             "flags": "", "allTypes": [{"type": "Module", "subtypes": ""}]},
+            {"id": "hardpoint_rear_module", "label": "Rear Module Bay",
+             "type": "Module", "subtypes": "", "minSize": 1, "maxSize": 10,
+             "flags": "", "allTypes": [{"type": "Module", "subtypes": ""}]},
+        ])
+
     # Add MIS-specific internal missile launchers (2x S5 bespoke racks, 10x S3 missiles each)
     if "misc_freelancer_mis" in ships:
         ships["misc_freelancer_mis"]["hardpoints"].extend([
@@ -3694,7 +3723,9 @@ def main(mode: str = "live"):
 
     # Module metadata enrichment
     MODULE_META = {
-        "rsi_aurora_mk2_module_cargo":   {"cargoBonus": 6},
+        "rsi_aurora_mk2_module_cargo":              {"cargoBonus": 6},
+        "aegs_retaliator_module_front_cargo":       {"cargoBonus": 36},
+        "aegs_retaliator_module_rear_cargo":        {"cargoBonus": 36},
     }
     for cls, meta in MODULE_META.items():
         if cls in items:

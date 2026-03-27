@@ -12,42 +12,42 @@
     }</button>
 
     <!-- Ship Tools dropdown -->
-    <div class="nav-group" (blur)="closeGroups()" tabindex="-1">
+    <div class="nav-group">
       <button class="nav-tab" [class.active]="isShipToolActive()"
               (click)="toggleShipTools()">Ship Tools <span class="nav-arrow">{{ shipToolsOpen() ? '▾' : '▸' }}</span></button>
       @if (shipToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of shipToolsTabs; track tab.id) {
             <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
-                 (mousedown)="selectGroupTab(tab.id)">{{ tab.label }}</div>
+                 (click)="selectGroupTab(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
     </div>
 
     <!-- Missions dropdown -->
-    <div class="nav-group" (blur)="closeGroups()" tabindex="-1">
+    <div class="nav-group">
       <button class="nav-tab" [class.active]="isMissionsActive()"
               (click)="toggleMissions()">Missions <span class="nav-arrow">{{ missionsOpen() ? '▾' : '▸' }}</span></button>
       @if (missionsOpen()) {
         <div class="nav-dropdown">
           @for (tab of missionsTabs; track tab.id) {
             <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
-                 (mousedown)="selectGroupTab(tab.id)">{{ tab.label }}</div>
+                 (click)="selectGroupTab(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
     </div>
 
     <!-- Industry Tools dropdown -->
-    <div class="nav-group" (blur)="closeGroups()" tabindex="-1">
+    <div class="nav-group">
       <button class="nav-tab" [class.active]="isIndustryToolActive()"
               (click)="toggleIndustryTools()">Industry Tools <span class="nav-arrow">{{ industryToolsOpen() ? '▾' : '▸' }}</span></button>
       @if (industryToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of industryToolsTabs; track tab.id) {
             <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
-                 (mousedown)="selectGroupTab(tab.id)">{{ tab.label }}</div>
+                 (click)="selectGroupTab(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
