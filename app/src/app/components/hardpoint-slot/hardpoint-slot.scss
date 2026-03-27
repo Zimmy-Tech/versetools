@@ -409,6 +409,13 @@
     white-space: nowrap;
     text-align: left;
     border-bottom: 1px solid var(--border2);
+
+    &.sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+      &:hover { color: var(--text); }
+    }
   }
 
   td {

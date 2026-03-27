@@ -260,6 +260,22 @@ export class HardpointSlotComponent {
   pickerSizeFilter = signal<number | null>(null);
   pickerTop        = signal('0px');
   pickerLeft       = signal('0px');
+  pickerSortKey    = signal<string>('');
+  pickerSortAsc    = signal(true);
+
+  toggleSort(key: string): void {
+    if (this.pickerSortKey() === key) {
+      this.pickerSortAsc.set(!this.pickerSortAsc());
+    } else {
+      this.pickerSortKey.set(key);
+      this.pickerSortAsc.set(key === 'name'); // name defaults ascending, numbers descending
+    }
+  }
+
+  sortIndicator(key: string): string {
+    if (this.pickerSortKey() !== key) return '';
+    return this.pickerSortAsc() ? ' ▲' : ' ▼';
+  }
 
   availableSizes = computed(() => {
     const sizes = [...new Set(this.options().map(o => o.size ?? 0).filter(s => s > 0))];
@@ -269,16 +285,36 @@ export class HardpointSlotComponent {
   filteredOptions = computed(() => {
     const q = this.pickerSearch().toLowerCase().trim();
     const sizeFilter = this.pickerSizeFilter();
+    const sortKey = this.pickerSortKey();
+    const asc = this.pickerSortAsc();
+
     let opts = this.options();
     if (sizeFilter !== null) opts = opts.filter(o => o.size === sizeFilter);
-    if (!q) return opts;
-    return opts.filter(o =>
-      o.name.toLowerCase().includes(q) ||
-      (o.subType ?? '').toLowerCase().includes(q) ||
-      (o.manufacturer ?? '').toLowerCase().includes(q) ||
-      (o.itemClass ?? '').toLowerCase().includes(q) ||
-      String(o.size) === q
-    );
+    if (q) {
+      opts = opts.filter(o =>
+        o.name.toLowerCase().includes(q) ||
+        (o.subType ?? '').toLowerCase().includes(q) ||
+        (o.manufacturer ?? '').toLowerCase().includes(q) ||
+        (o.itemClass ?? '').toLowerCase().includes(q) ||
+        String(o.size) === q
+      );
+    }
+
+    if (sortKey) {
+      opts = [...opts].sort((a, b) => {
+        let va: any = (a as any)[sortKey];
+        let vb: any = (b as any)[sortKey];
+        // Handle nulls
+        if (va == null) va = typeof vb === 'string' ? '' : 0;
+        if (vb == null) vb = typeof va === 'string' ? '' : 0;
+        let cmp: number;
+        if (typeof va === 'string') cmp = va.localeCompare(vb);
+        else cmp = (va as number) - (vb as number);
+        return asc ? cmp : -cmp;
+      });
+    }
+
+    return opts;
   });
 
   slotStat = computed(() => {

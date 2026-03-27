@@ -47,12 +47,8 @@ export class DataService {
       .reduce((sum, item) => sum + (item.powerOutput ?? 0), 0);
   });
 
-  /** Number of mining/salvage tools equipped (1 pip each, always on). */
-  toolPower = computed(() =>
-    Object.values(this.loadout()).filter(
-      i => i?.type === 'WeaponMining' || i?.type === 'SalvageHead'
-    ).length
-  );
+  /** Power allocated to mining/salvage tools (2 pips per tool, togglable). */
+  toolPower = signal(0);
 
   /** Tractor beam power: 2-pip merged block, toggled on/off. */
   tractorPower = signal<number>(0);
@@ -216,6 +212,13 @@ export class DataService {
     const poolSize = ship.weaponPowerPoolSize ?? 0;
     const wpnDefault = Math.max(0, Math.round(poolSize * 0.5));
     this.weaponsPower.set(wpnDefault);
+
+    // Tools: 1 pip per tool (MOLE uses 2 pips per turret), default ON
+    const toolCount = Object.values(newLoadout).filter(
+      i => i?.type === 'WeaponMining' || i?.type === 'SalvageHead'
+    ).length;
+    const pipsPerTool = ship.className.toLowerCase() === 'argo_mole' ? 2 : 1;
+    this.toolPower.set(toolCount * pipsPerTool);
   }
 
   resetLoadout(): void {
@@ -276,6 +279,15 @@ export class DataService {
       if (this.weaponsPower() > maxPips) {
         this.weaponsPower.set(maxPips);
       }
+    }
+    // Clamp tool power to current tool count × pips per tool
+    const toolCount = Object.values(this.loadout()).filter(
+      i => i?.type === 'WeaponMining' || i?.type === 'SalvageHead'
+    ).length;
+    const ppt = this.selectedShip()?.className?.toLowerCase() === 'argo_mole' ? 2 : 1;
+    const toolMax = toolCount * ppt;
+    if (this.toolPower() > toolMax) {
+      this.toolPower.set(toolMax);
     }
     // Clamp total allocations to power plant output
     const totalOut = this.totalPowerOut();
@@ -583,6 +595,8 @@ export class DataService {
 
         const clsL = i.className.toLowerCase();
         if (this.PICKER_BLACKLIST.has(clsL)) return false;
+        const nameL = (i.name ?? '').toLowerCase();
+        if (nameL.includes('placeholder') || nameL.includes('template')) return false;
         const exclusiveShip = exclusive.get(clsL);
 
         // Vanguard nose-only weapons: only on that specific slot

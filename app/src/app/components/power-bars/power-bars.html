@@ -17,6 +17,17 @@
               <!-- Spacer to bottom-align all bars -->
               <div class="pb-spacer" [style.flex]="maxHeight() - col.max"></div>
 
+              <!-- Tools with merged blocks (e.g. MOLE: 2 pips per turret) -->
+              @if (col.id === '__tools__' && $any(col).toolBlockSize > 1) {
+                @for (i of range(col.max / $any(col).toolBlockSize); track i) {
+                  <div class="pb-block pb-block-minband"
+                       [style.height.px]="$any(col).toolBlockSize * 10 + ($any(col).toolBlockSize - 1) * 2"
+                       [class.active]="(col.max - i * $any(col).toolBlockSize) <= col.alloc"
+                       [class.clickable]="true"
+                       (click)="setAlloc(col, col.max - i * $any(col).toolBlockSize)">
+                  </div>
+                }
+              } @else {
               <!-- Individual blocks: segments col.max down to col.powerMin+1 -->
               @for (i of range(col.max - col.powerMin); track i) {
                 <div class="pb-block"
@@ -43,6 +54,7 @@
                      [class.clickable]="!col.restricted && !col.placeholder"
                      (click)="setAlloc(col, col.powerMin)">
                 </div>
+              }
               }
             </div>
           }

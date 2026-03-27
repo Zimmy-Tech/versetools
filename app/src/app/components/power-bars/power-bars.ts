@@ -93,17 +93,22 @@ export class PowerBarsComponent {
       }
     }
 
-    // Tools — 1 pip per mining laser or salvage head equipped (if any)
+    // Tools — 1 pip per mining laser or salvage head (togglable on/off)
+    // Exception: MOLE uses 2-pip merged blocks per turret
     const toolCount = Object.values(loadout).filter(
       i => i?.type === 'WeaponMining' || i?.type === 'SalvageHead'
     ).length;
     if (toolCount > 0) {
+      const shipCls = this.data.selectedShip()?.className?.toLowerCase() ?? '';
+      const pipsPerTool = shipCls === 'argo_mole' ? 2 : 1;
+      const toolMax = toolCount * pipsPerTool;
       cols.push({
         id: '__tools__', label: 'TOOL',
-        max: toolCount, powerMin: toolCount,
-        alloc: toolCount,
+        max: toolMax, powerMin: pipsPerTool,
+        alloc: this.data.toolPower(),
         restricted: false, placeholder: false, item: null,
-      });
+        toolBlockSize: pipsPerTool,
+      } as any);
     }
 
     // Tractor beams — merged 2-pip block, toggled on/off
@@ -265,7 +270,12 @@ export class PowerBarsComponent {
   togglePower(col: PowerBarCol, e: MouseEvent): void {
     e.stopPropagation();
     if (col.placeholder) return;
-    if (col.id === '__tools__') return; // Tools always on
+
+    if (col.id === '__tools__') {
+      // Toggle all tools on/off
+      this.data.toolPower.set(col.alloc > 0 ? 0 : col.max);
+      return;
+    }
 
     if (col.id === '__tractor__') {
       this.data.tractorPower.set(col.alloc > 0 ? 0 : 2);
@@ -328,7 +338,12 @@ export class PowerBarsComponent {
     }
     target = Math.max(0, target);
 
-    if (col.id === '__tools__') return; // Tools are always on, not adjustable
+    if (col.id === '__tools__') {
+      const blockSize = (col as any).toolBlockSize ?? 1;
+      const snapped = Math.round(target / blockSize) * blockSize;
+      this.data.toolPower.set(Math.min(col.max, Math.max(0, snapped)));
+      return;
+    }
     if (col.id === '__tractor__') {
       this.data.tractorPower.set(target > 0 ? 2 : 0);
       return;

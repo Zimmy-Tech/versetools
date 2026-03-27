@@ -112,6 +112,14 @@
   }
 }
 
+.ship-image {
+  width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
 .ship-name-big {
   font-family: 'Rajdhani', sans-serif;
   font-size: 20px;
@@ -171,7 +179,7 @@
   flex-shrink: 0;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border: 2px solid var(--accent);
+  border: 1px solid var(--accent);
   background: var(--bg);
   display: flex;
   align-items: center;

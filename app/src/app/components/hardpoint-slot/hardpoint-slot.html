@@ -30,7 +30,7 @@
       <span class="fixed-badge">FIXED</span>
       <span>{{ currentItem()?.name ?? (typeLabel() + ' · Size ' + hardpoint().maxSize) }}</span>
     </div>
-    @if (currentItem()?.type !== 'WeaponMount' && currentItem()?.type !== 'MissileLauncher' && currentItem()?.type !== 'BombLauncher') {
+    @if (currentItem() && currentItem()!.type !== 'WeaponMount' && currentItem()!.type !== 'MissileLauncher' && currentItem()!.type !== 'BombLauncher' && currentItem()!.type !== 'Turret' && currentItem()!.type !== 'TurretBase' && currentItem()!.type !== 'ToolArm' && currentItem()!.type !== 'UtilityTurret') {
       <div class="slot-stat muted">—</div>
     }
   } @else if (isWeaponSlot()) {
@@ -75,22 +75,22 @@
           <table class="picker-table">
             <thead>
               <tr>
-                <th>Sz</th>
-                <th class="col-name">Name</th>
-                <th>Type</th>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('subType')">Type{{ sortIndicator('subType') }}</th>
                 <th>Ammo</th>
-                <th>DPS</th>
-                <th>Alpha</th>
-                <th>Pen.Dst</th>
+                <th class="sortable" (click)="toggleSort('dps')">DPS{{ sortIndicator('dps') }}</th>
+                <th class="sortable" (click)="toggleSort('alphaDamage')">Alpha{{ sortIndicator('alphaDamage') }}</th>
+                <th class="sortable" (click)="toggleSort('penetrationDistance')">Pen.Dst{{ sortIndicator('penetrationDistance') }}</th>
                 <th>Pen.Rad</th>
-                <th>RPM</th>
-                <th>Vel</th>
-                <th>Range</th>
+                <th class="sortable" (click)="toggleSort('fireRate')">RPM{{ sortIndicator('fireRate') }}</th>
+                <th class="sortable" (click)="toggleSort('projectileSpeed')">Vel{{ sortIndicator('projectileSpeed') }}</th>
+                <th class="sortable" (click)="toggleSort('range')">Range{{ sortIndicator('range') }}</th>
                 <th>Spread</th>
-                <th>Pwr</th>
-                <th>EM</th>
+                <th class="sortable" (click)="toggleSort('powerDraw')">Pwr{{ sortIndicator('powerDraw') }}</th>
+                <th class="sortable" (click)="toggleSort('emSignature')">EM{{ sortIndicator('emSignature') }}</th>
                 <th>Overheat</th>
-                <th>HP</th>
+                <th class="sortable" (click)="toggleSort('componentHp')">HP{{ sortIndicator('componentHp') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -145,19 +145,19 @@
           <table class="picker-table">
             <thead>
               <tr>
-                <th>Sz</th>
-                <th class="col-name">Name</th>
-                <th>Class</th>
-                <th>Grade</th>
-                <th>HP Pool</th>
-                <th>Regen/s</th>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('itemClass')">Class{{ sortIndicator('itemClass') }}</th>
+                <th class="sortable" (click)="toggleSort('grade')">Grade{{ sortIndicator('grade') }}</th>
+                <th class="sortable" (click)="toggleSort('hp')">HP Pool{{ sortIndicator('hp') }}</th>
+                <th class="sortable" (click)="toggleSort('regenRate')">Regen/s{{ sortIndicator('regenRate') }}</th>
                 <th>Regen Time</th>
-                <th>Enrg Res</th>
-                <th>Dmg Delay</th>
-                <th>Dwn Delay</th>
-                <th>Min Pwr</th>
+                <th class="sortable" (click)="toggleSort('resistEnrgMax')">Enrg Res{{ sortIndicator('resistEnrgMax') }}</th>
+                <th class="sortable" (click)="toggleSort('damagedRegenDelay')">Dmg Delay{{ sortIndicator('damagedRegenDelay') }}</th>
+                <th class="sortable" (click)="toggleSort('downedRegenDelay')">Dwn Delay{{ sortIndicator('downedRegenDelay') }}</th>
+                <th class="sortable" (click)="toggleSort('powerDraw')">Min Pwr{{ sortIndicator('powerDraw') }}</th>
                 <th>Max Pwr</th>
-                <th>EM Max</th>
+                <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
                 <th>Health</th>
               </tr>
             </thead>
@@ -222,18 +222,18 @@
           <table class="picker-table">
             <thead>
               <tr>
-                <th>Sz</th>
-                <th class="col-name">Name</th>
-                <th>Type</th>
-                <th>Damage</th>
-                <th>Speed</th>
-                <th>Acquisition</th>
-                <th>Arm Time</th>
-                <th>Lock Time</th>
-                <th>Ignite Time</th>
-                <th>Lock Angle</th>
-                <th>Lock Min Dst</th>
-                <th>Lock Max Dst</th>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('subType')">Type{{ sortIndicator('subType') }}</th>
+                <th class="sortable" (click)="toggleSort('alphaDamage')">Damage{{ sortIndicator('alphaDamage') }}</th>
+                <th class="sortable" (click)="toggleSort('projectileSpeed')">Speed{{ sortIndicator('projectileSpeed') }}</th>
+                <th class="sortable" (click)="toggleSort('acquisition')">Acquisition{{ sortIndicator('acquisition') }}</th>
+                <th class="sortable" (click)="toggleSort('armTime')">Arm Time{{ sortIndicator('armTime') }}</th>
+                <th class="sortable" (click)="toggleSort('lockTime')">Lock Time{{ sortIndicator('lockTime') }}</th>
+                <th class="sortable" (click)="toggleSort('igniteTime')">Ignite Time{{ sortIndicator('igniteTime') }}</th>
+                <th class="sortable" (click)="toggleSort('lockAngle')">Lock Angle{{ sortIndicator('lockAngle') }}</th>
+                <th class="sortable" (click)="toggleSort('lockRangeMin')">Lock Min Dst{{ sortIndicator('lockRangeMin') }}</th>
+                <th class="sortable" (click)="toggleSort('lockRangeMax')">Lock Max Dst{{ sortIndicator('lockRangeMax') }}</th>
                 <th>Health</th>
               </tr>
             </thead>
@@ -286,16 +286,16 @@
           <table class="picker-table">
             <thead>
               <tr>
-                <th>Sz</th>
-                <th class="col-name">Name</th>
-                <th>Class</th>
-                <th>Grade</th>
-                <th>Cooling</th>
-                <th>Min Pwr</th>
-                <th>Max Pwr</th>
-                <th>EM Max</th>
-                <th>IR Max</th>
-                <th>Health</th>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('itemClass')">Class{{ sortIndicator('itemClass') }}</th>
+                <th class="sortable" (click)="toggleSort('grade')">Grade{{ sortIndicator('grade') }}</th>
+                <th class="sortable" (click)="toggleSort('coolingRate')">Cooling{{ sortIndicator('coolingRate') }}</th>
+                <th class="sortable" (click)="toggleSort('powerMin')">Min Pwr{{ sortIndicator('powerMin') }}</th>
+                <th class="sortable" (click)="toggleSort('powerMax')">Max Pwr{{ sortIndicator('powerMax') }}</th>
+                <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
+                <th class="sortable" (click)="toggleSort('irSignature')">IR Max{{ sortIndicator('irSignature') }}</th>
+                <th class="sortable" (click)="toggleSort('componentHp')">Health{{ sortIndicator('componentHp') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -344,18 +344,18 @@
           <table class="picker-table">
             <thead>
               <tr>
-                <th>Sz</th>
-                <th class="col-name">Name</th>
-                <th>Class</th>
-                <th>Grade</th>
-                <th>Max Speed</th>
-                <th>Efficiency</th>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('itemClass')">Class{{ sortIndicator('itemClass') }}</th>
+                <th class="sortable" (click)="toggleSort('grade')">Grade{{ sortIndicator('grade') }}</th>
+                <th class="sortable" (click)="toggleSort('speed')">Max Speed{{ sortIndicator('speed') }}</th>
+                <th class="sortable" (click)="toggleSort('fuelRate')">Efficiency{{ sortIndicator('fuelRate') }}</th>
                 <th>Max Dist</th>
-                <th>Spool Nav</th>
-                <th>Max Cooldown</th>
+                <th class="sortable" (click)="toggleSort('spoolTime')">Spool Nav{{ sortIndicator('spoolTime') }}</th>
+                <th class="sortable" (click)="toggleSort('cooldownTime')">Max Cooldown{{ sortIndicator('cooldownTime') }}</th>
                 <th>Power</th>
-                <th>EM Max</th>
-                <th>Health</th>
+                <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
+                <th class="sortable" (click)="toggleSort('hp')">Health{{ sortIndicator('hp') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -406,17 +406,17 @@
           <table class="picker-table">
             <thead>
               <tr>
-                <th>Sz</th>
-                <th class="col-name">Name</th>
-                <th>Class</th>
-                <th>Grade</th>
-                <th>Pwr Max</th>
-                <th>Dist Max Dmg</th>
-                <th>Dist Decay</th>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('itemClass')">Class{{ sortIndicator('itemClass') }}</th>
+                <th class="sortable" (click)="toggleSort('grade')">Grade{{ sortIndicator('grade') }}</th>
+                <th class="sortable" (click)="toggleSort('powerOutput')">Pwr Max{{ sortIndicator('powerOutput') }}</th>
+                <th class="sortable" (click)="toggleSort('distortionMax')">Dist Max Dmg{{ sortIndicator('distortionMax') }}</th>
+                <th class="sortable" (click)="toggleSort('distortionDecayRate')">Dist Decay{{ sortIndicator('distortionDecayRate') }}</th>
                 <th>Dist Recovery</th>
-                <th>EM/Seg</th>
+                <th class="sortable" (click)="toggleSort('emMax')">EM/Seg{{ sortIndicator('emMax') }}</th>
                 <th>EM Decay</th>
-                <th>Health</th>
+                <th class="sortable" (click)="toggleSort('componentHp')">Health{{ sortIndicator('componentHp') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -466,21 +466,21 @@
           <table class="picker-table">
             <thead>
               <tr>
-                <th>Sz</th>
-                <th class="col-name">Name</th>
-                <th>Class</th>
-                <th>Grade</th>
-                <th>Aim Min</th>
-                <th>Aim Max</th>
-                <th>Aim Buf</th>
-                <th>IR</th>
-                <th>EM</th>
-                <th>CS</th>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('itemClass')">Class{{ sortIndicator('itemClass') }}</th>
+                <th class="sortable" (click)="toggleSort('grade')">Grade{{ sortIndicator('grade') }}</th>
+                <th class="sortable" (click)="toggleSort('aimMin')">Aim Min{{ sortIndicator('aimMin') }}</th>
+                <th class="sortable" (click)="toggleSort('aimMax')">Aim Max{{ sortIndicator('aimMax') }}</th>
+                <th class="sortable" (click)="toggleSort('aimBuffer')">Aim Buf{{ sortIndicator('aimBuffer') }}</th>
+                <th class="sortable" (click)="toggleSort('irSensitivity')">IR{{ sortIndicator('irSensitivity') }}</th>
+                <th class="sortable" (click)="toggleSort('emSensitivity')">EM{{ sortIndicator('emSensitivity') }}</th>
+                <th class="sortable" (click)="toggleSort('csSensitivity')">CS{{ sortIndicator('csSensitivity') }}</th>
                 <th>RS</th>
                 <th>Min Pwr</th>
-                <th>Max Pwr</th>
-                <th>EM Max</th>
-                <th>Health</th>
+                <th class="sortable" (click)="toggleSort('powerDraw')">Max Pwr{{ sortIndicator('powerDraw') }}</th>
+                <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
+                <th class="sortable" (click)="toggleSort('componentHp')">Health{{ sortIndicator('componentHp') }}</th>
               </tr>
             </thead>
             <tbody>

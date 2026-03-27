@@ -609,10 +609,9 @@
         <!-- Right: Power Block + DPS Output + Details -->
         <div class="stats-column">
           <div class="ship-image-inset">
-            <img [src]="'ship-images/' + data.selectedShip()!.className.toLowerCase() + '.webp'"
+            <img [src]="shipImageSrc()"
                  [alt]="data.selectedShip()!.name"
-                 (error)="$any($event.target).style.display='none'"
-                 loading="lazy">
+                 (error)="onShipImageError($any($event.target))">
           </div>
           <app-power-bars />
           <app-dps-panel />

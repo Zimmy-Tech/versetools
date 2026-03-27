@@ -215,6 +215,23 @@ export class LoadoutViewComponent {
     return m ? (m / 1000).toFixed(0) + 't' : '—';
   });
 
+  shipImageSrc = computed(() => {
+    const cls = this.data.selectedShip()?.className ?? '';
+    // Try wiki .jpg first, then .webp, then .png (silhouette fallback)
+    return `ship-images/${cls}.jpg`;
+  });
+
+  onShipImageError(img: HTMLImageElement): void {
+    const cls = this.data.selectedShip()?.className ?? '';
+    if (img.src.endsWith('.jpg')) {
+      img.src = `ship-images/${cls.toLowerCase()}.webp`;
+    } else if (img.src.endsWith('.webp')) {
+      img.src = `ship-images/${cls}.png`;
+    } else {
+      img.style.display = 'none';
+    }
+  }
+
   /** Effective cargo: base + module cargoBonus (if any). */
   effectiveCargo = computed(() => {
     const base = this.data.selectedShip()?.cargoCapacity ?? 0;

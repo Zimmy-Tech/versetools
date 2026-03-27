@@ -1957,6 +1957,7 @@ def expand_ship_variants(ships, forge_dir, loc):
         "ORIG_300i": ["orig_315p", "orig_325a", "orig_350r"],
         "VNCL_Scythe": ["vncl_glaive"],
         "TMBL_Cyclone": ["TMBL_Cyclone_AA", "TMBL_Cyclone_MT", "TMBL_Cyclone_RC", "TMBL_Cyclone_RN", "TMBL_Cyclone_TR"],
+        "KRIG_P52_Merlin": ["krig_p72_archimedes"],
     }
     for base_cls, variant_list in MANUAL_VARIANTS.items():
         base_ship = expanded.get(base_cls)
@@ -3515,6 +3516,8 @@ def main(mode: str = "live"):
         "ORIG_300i":   {"hardpoint_tractor"},  # tractor turret only on 315p
         "orig_325a":   {"hardpoint_tractor"},
         "orig_350r":   {"hardpoint_tractor"},
+        "espr_talon":  {"hardpoint_missile_right", "hardpoint_missile_left"},  # missile racks only on Shrike
+        "crus_starlifter_c2": {"hardpoint_bridge_remote_turret"},  # Turret 6 only on M2
     }
     for ship_cls, excluded_ids in HP_EXCLUSIONS.items():
         if ship_cls in ships:
@@ -3522,6 +3525,42 @@ def main(mode: str = "live"):
                 hp for hp in ships[ship_cls].get("hardpoints", [])
                 if hp["id"].lower() not in {x.lower() for x in excluded_ids}
             ]
+
+    # Add wing weapon hardpoints for P-52 Merlin and P-72 Archimedes
+    # These come from wing sub-components, not the main entity XML
+    _wing_hp_template = {
+        "type": "Turret", "subtypes": "GunTurret", "minSize": 1, "maxSize": 1, "flags": "",
+        "allTypes": [{"type": "Turret", "subtypes": "GunTurret"}, {"type": "WeaponGun", "subtypes": "Gun"}],
+    }
+    _radar_hp = {"id": "hardpoint_radar", "label": "Radar", "type": "Radar", "subtypes": "",
+                  "minSize": 0, "maxSize": 0, "flags": "invisible", "allTypes": [{"type": "Radar", "subtypes": ""}]}
+    _ls_hp = {"id": "hardpoint_lifesupport", "label": "Life Support", "type": "LifeSupportGenerator", "subtypes": "",
+              "minSize": 0, "maxSize": 1, "flags": "invisible", "allTypes": [{"type": "LifeSupportGenerator", "subtypes": ""}]}
+    if "KRIG_P52_Merlin" in ships:
+        ships["KRIG_P52_Merlin"]["hardpoints"].extend([
+            {**_wing_hp_template, "id": "hardpoint_wing_left.hardpoint_weapon_gun_left_wing", "label": "Wing Gun - Left"},
+            {**_wing_hp_template, "id": "hardpoint_wing_right.hardpoint_weapon_gun_right_wing", "label": "Wing Gun - Right"},
+            dict(_radar_hp), dict(_ls_hp),
+        ])
+    if "krig_p72_archimedes" in ships:
+        ships["krig_p72_archimedes"]["hardpoints"].extend([
+            {**_wing_hp_template, "id": "hardpoint_wing_left.hardpoint_weapon_gun_left_wing", "label": "Wing Gun - Outer Left"},
+            {**_wing_hp_template, "id": "hardpoint_wing_left.hardpoint_weapon_gun_innerleft_wing", "label": "Wing Gun - Inner Left"},
+            {**_wing_hp_template, "id": "hardpoint_wing_right.hardpoint_weapon_gun_right_wing", "label": "Wing Gun - Outer Right"},
+            {**_wing_hp_template, "id": "hardpoint_wing_right.hardpoint_weapon_gun_innerright_wing", "label": "Wing Gun - Inner Right"},
+            dict(_radar_hp), dict(_ls_hp),
+        ])
+
+    # Add MIS-specific internal missile launchers (2x S5 bespoke racks, 10x S3 missiles each)
+    if "misc_freelancer_mis" in ships:
+        ships["misc_freelancer_mis"]["hardpoints"].extend([
+            {"id": "hardpoint_weapon_missilelauncher_left", "label": "Internal Launcher - Left",
+             "type": "MissileLauncher", "subtypes": "MissileRack", "minSize": 5, "maxSize": 5,
+             "flags": "$uneditable", "allTypes": [{"type": "MissileLauncher", "subtypes": "MissileRack"}]},
+            {"id": "hardpoint_weapon_missilelauncher_right", "label": "Internal Launcher - Right",
+             "type": "MissileLauncher", "subtypes": "MissileRack", "minSize": 5, "maxSize": 5,
+             "flags": "$uneditable", "allTypes": [{"type": "MissileLauncher", "subtypes": "MissileRack"}]},
+        ])
 
     # Hardpoint modifications for specific variants
     if "orig_325a" in ships:
@@ -3551,7 +3590,8 @@ def main(mode: str = "live"):
     # Manual cargo overrides for ships missing DCB cargo data
     CARGO_OVERRIDES = {"ORIG_300i": 8, "orig_315p": 12, "orig_325a": 4, "orig_350r": 0,
                        "rsi_aurora_mk2": 2,  # base cargo without module
-                       "argo_moth": 224}
+                       "argo_moth": 224,
+                       "ARGO_MOLE": 32}
     for ship_cls, scu in CARGO_OVERRIDES.items():
         if ship_cls in ships:
             ships[ship_cls]["cargoCapacity"] = scu
@@ -3616,6 +3656,16 @@ def main(mode: str = "live"):
             "accelFwd": 2.7, "accelRetro": 1.5, "accelStrafe": 1.5, "accelUp": 2.0, "accelDown": 2.0,
             "accelAbFwd": 4.1, "accelAbRetro": 1.8, "accelAbStrafe": 2.0, "accelAbUp": 2.6, "accelAbDown": 2.4,
             "accelTestedDate": "2026-03-26",
+        },
+        "ANVL_Hurricane": {
+            "accelFwd": 10, "accelRetro": 3.6, "accelStrafe": 7.5, "accelUp": 7.5, "accelDown": 4.5,
+            "accelAbFwd": 15.5, "accelAbRetro": 5.1, "accelAbStrafe": 10, "accelAbUp": 9.8, "accelAbDown": 6,
+            "accelTestedDate": "2026-03-27",
+        },
+        "ARGO_MOLE": {
+            "accelFwd": 4.9, "accelRetro": 3.4, "accelStrafe": 2.7, "accelUp": 3, "accelDown": 2.9,
+            "accelAbFwd": 6.9, "accelAbRetro": 4.8, "accelAbStrafe": 3.5, "accelAbUp": 4.2, "accelAbDown": 3.8,
+            "accelTestedDate": "2026-03-27",
         },
     }
     accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
