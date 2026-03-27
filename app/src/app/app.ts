@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { DataService } from './services/data.service';
 import { HeaderComponent, TabName } from './components/header/header';
 import { LoadoutViewComponent } from './components/loadout-view/loadout-view';
@@ -39,8 +40,36 @@ import { BlueprintFinderComponent } from './components/blueprint-finder/blueprin
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements OnInit, OnDestroy {
   activeTab = signal<TabName>('loadout');
+  updateAvailable = signal(false);
 
-  constructor(public data: DataService) {}
+  private versionCheckInterval: any;
+  private loadedVersion = '';
+
+  constructor(public data: DataService, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    // Fetch initial version (use data file's ETag/Last-Modified as version proxy)
+    this.http.get<{ v: string }>('version.json', { headers: { 'Cache-Control': 'no-cache' } })
+      .subscribe({ next: r => this.loadedVersion = r.v, error: () => {} });
+
+    // Poll every 5 minutes
+    this.versionCheckInterval = setInterval(() => {
+      this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
+        .subscribe({ next: r => {
+          if (this.loadedVersion && r.v !== this.loadedVersion) {
+            this.updateAvailable.set(true);
+          }
+        }, error: () => {} });
+    }, 5 * 60 * 1000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.versionCheckInterval);
+  }
+
+  refresh(): void {
+    window.location.reload();
+  }
 }

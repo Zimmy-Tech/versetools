@@ -1,4 +1,5 @@
 import { Component, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../services/data.service';
 
 interface AccelForm {
@@ -17,6 +18,9 @@ interface AccelForm {
   notes: string;
 }
 
+// Google Apps Script web app URL for submission data
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbysLOeNvKPDOB-CEq6X275KkUIo340FnbJLrecqiqol91WoITJZ2xIyBrTU9dpDhv47/exec';
+
 @Component({
   selector: 'app-submit-view',
   standalone: true,
@@ -24,7 +28,7 @@ interface AccelForm {
   styleUrl: './submit-view.scss',
 })
 export class SubmitViewComponent {
-  constructor(public data: DataService) {}
+  constructor(public data: DataService, private http: HttpClient) {}
 
   form = signal<AccelForm>({
     submitterName: '',
@@ -57,6 +61,9 @@ export class SubmitViewComponent {
     return f.submitterName.trim() !== '' && f.shipClassName !== '' && f.fwd !== '';
   });
 
+  submitting = signal(false);
+  submitError = signal('');
+
   submit(): void {
     const f = this.form();
     const entry = {
@@ -77,14 +84,34 @@ export class SubmitViewComponent {
       notes: f.notes.trim(),
     };
 
-    // Store locally for now
-    const existing = JSON.parse(localStorage.getItem('versedb_submissions') ?? '[]');
-    existing.push(entry);
-    localStorage.setItem('versedb_submissions', JSON.stringify(existing));
+    if (!SHEET_URL) {
+      // Fallback to localStorage if Google Sheet not configured
+      const existing = JSON.parse(localStorage.getItem('versetools_submissions') ?? '[]');
+      existing.push(entry);
+      localStorage.setItem('versetools_submissions', JSON.stringify(existing));
+      this.submitted.set(true);
+    } else {
+      this.submitting.set(true);
+      this.submitError.set('');
+      // POST to Google Apps Script — use no-cors fetch since Apps Script
+      // returns a redirect that browsers handle transparently
+      fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry),
+      }).then(() => {
+        this.submitted.set(true);
+        this.submitting.set(false);
+      }).catch(() => {
+        this.submitError.set('Submission failed — please try again');
+        this.submitting.set(false);
+      });
+    }
 
-    this.submitted.set(true);
     setTimeout(() => {
       this.submitted.set(false);
+      this.submitError.set('');
       this.form.set({
         submitterName: this.form().submitterName,
         shipClassName: '',

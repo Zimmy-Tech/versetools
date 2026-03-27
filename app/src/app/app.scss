@@ -18,3 +18,29 @@
   display: flex;
   overflow: hidden;
 }
+
+.update-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--bg);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 10px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(0, 200, 255, 0.3);
+  animation: toast-slide-up 0.3s ease-out;
+
+  &:hover { background: #00e0ff; }
+}
+
+@keyframes toast-slide-up {
+  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}

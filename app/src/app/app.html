@@ -21,4 +21,10 @@
       }
     </div>
   </div>
+
+  @if (updateAvailable()) {
+    <div class="update-toast" (click)="refresh()">
+      New data available — click to refresh
+    </div>
+  }
 </div>

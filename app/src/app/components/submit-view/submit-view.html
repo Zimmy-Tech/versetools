@@ -2,7 +2,7 @@
   <div class="submit-panel">
 
     <div class="panel-title">Submit Acceleration Data</div>
-    <div class="panel-sub">Help improve VerseDB by submitting in-game tested acceleration values.</div>
+    <div class="panel-sub">Help improve VerseTools by submitting in-game tested acceleration values.</div>
 
     <!-- Submitter name -->
     <div class="field-group">
@@ -82,13 +82,18 @@
     </div>
 
     <!-- Submit -->
-    <button class="submit-btn" [disabled]="!canSubmit()" (click)="submit()">
-      @if (submitted()) {
+    <button class="submit-btn" [disabled]="!canSubmit() || submitting()" (click)="submit()">
+      @if (submitting()) {
+        Submitting...
+      } @else if (submitted()) {
         Submitted
       } @else {
         Submit Data
       }
     </button>
+    @if (submitError()) {
+      <div class="submit-error">{{ submitError() }}</div>
+    }
 
   </div>
 </div>

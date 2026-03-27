@@ -1,5 +1,5 @@
 <header>
-  <div class="logo">Verse<span>DB</span></div>
+  <div class="logo">Verse<span>Tools</span></div>
 
   <nav class="nav-tabs">
     <button class="nav-tab" [class.active]="activeTab() === 'loadout'"
@@ -75,12 +75,15 @@
     }
 
     <!-- LIVE / PTU toggle -->
-    <div class="data-toggle">
+    <div class="data-toggle" [class.disabled]="!data.ptuEnabled()"
+         [title]="data.ptuEnabled() ? '' : (data.ptuLabel() || 'PTU not available')">
       <span class="toggle-label" [class.active]="data.dataMode() === 'live'">LIVE</span>
-      <div class="toggle-track" (click)="toggleDataMode()">
+      <div class="toggle-track" [class.disabled]="!data.ptuEnabled()"
+           (click)="data.ptuEnabled() && toggleDataMode()">
         <div class="toggle-thumb" [class.ptu]="data.dataMode() === 'ptu'"></div>
       </div>
-      <span class="toggle-label" [class.active]="data.dataMode() === 'ptu'">PTU</span>
+      <span class="toggle-label" [class.active]="data.dataMode() === 'ptu'"
+            [class.disabled]="!data.ptuEnabled()">PTU</span>
     </div>
   </div>
 </header>

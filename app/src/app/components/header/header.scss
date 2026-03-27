@@ -167,6 +167,7 @@ header {
   transition: color 0.2s;
 
   &.active { color: var(--accent); }
+  &.disabled { opacity: 0.3; }
 }
 
 .toggle-track {
@@ -180,6 +181,7 @@ header {
   transition: border-color 0.2s;
 
   &:hover { border-color: var(--accent2); }
+  &.disabled { opacity: 0.3; cursor: not-allowed; &:hover { border-color: var(--border2); } }
 }
 
 .toggle-thumb {

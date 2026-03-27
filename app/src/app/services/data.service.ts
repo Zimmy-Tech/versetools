@@ -17,13 +17,14 @@ export class DataService {
   thrusterPower = signal<number>(4);
   flightMode = signal<'scm' | 'nav'>('scm');
 
-  // Ground vehicles hidden until properly supported
+  // Ships hidden from picker (ground vehicles until properly supported, non-player ships)
   private readonly hiddenShips = new Set([
     'tmbl_cyclone', 'tmbl_cyclone_aa', 'tmbl_cyclone_mt', 'tmbl_cyclone_rc', 'tmbl_cyclone_rn', 'tmbl_cyclone_tr',
     'tmbl_nova', 'rsi_ursa_rover', 'rsi_lynx',
     'xian_nox', 'xian_nox_kue',
     'orig_x1', 'orig_x1_force', 'orig_x1_velocity',
     'mrai_pulse', 'mrai_pulse_lx',
+    'anvl_lightning_f8',  // F8A Lightning — not player-owned
   ]);
   readonly ships = computed(() =>
     (this.db()?.ships ?? []).filter(s => !this.hiddenShips.has(s.className.toLowerCase()))
@@ -68,7 +69,25 @@ export class DataService {
   /** Fires whenever dataMode changes — notifies components that secondary data (missions, crafting, changelog) should reload. */
   readonly modeVersion = signal(0);
 
+  /** PTU availability — loaded from config.json */
+  readonly ptuEnabled = signal(false);
+  readonly ptuLabel = signal('');
+
   constructor(private http: HttpClient) {
+    // Load PTU config
+    this.http.get<{ ptuEnabled: boolean; ptuLabel?: string }>('config.json', { headers: { 'Cache-Control': 'no-cache' } })
+      .subscribe({
+        next: cfg => {
+          this.ptuEnabled.set(cfg.ptuEnabled);
+          this.ptuLabel.set(cfg.ptuLabel ?? '');
+          // Force back to LIVE if PTU is disabled
+          if (!cfg.ptuEnabled && this.dataMode() === 'ptu') {
+            this.dataMode.set('live');
+          }
+        },
+        error: () => {},
+      });
+
     // React to dataMode changes: reload the main database
     effect(() => {
       const prefix = this.dataPrefix();
