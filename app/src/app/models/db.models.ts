@@ -53,6 +53,7 @@ export interface Ship {
   accelAbUp?: number;
   accelAbDown?: number;
   accelTestedDate?: string;
+  accelCheckedBy?: string;
   // Hull
   totalHp?: number;
   bodyHp?: number;

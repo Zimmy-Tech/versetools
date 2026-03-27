@@ -4,7 +4,7 @@
   <div class="main">
     <div class="content">
       @switch (activeTab()) {
-        @case ('loadout')    { <app-loadout-view /> }
+        @case ('loadout')    { <app-loadout-view (goToSubmit)="activeTab.set('submit')" /> }
         @case ('components') { <app-components-view /> }
         @case ('compare')    { <app-compare-view /> }
         @case ('finder')     { <app-component-finder /> }
@@ -17,10 +17,27 @@
         @case ('submit')    { <app-submit-view /> }
         @case ('mining')     { <app-mining-view /> }
         @case ('formulas')  { <app-formulas-view /> }
+        @case ('updates')   { <app-updates-view /> }
         @case ('changelog') { <app-changelog-view /> }
       }
     </div>
   </div>
+
+  @if (showWelcome()) {
+    <div class="welcome-overlay" (click)="dismissWelcome()"></div>
+    <div class="welcome-popup">
+      <div class="welcome-title">Welcome to VerseTools!</div>
+      <div class="welcome-body">
+        <p>This is version 1.0 of the app. We are working hard on new features,
+          and refining some missing formulas and info. Specifically for Missions
+          and FPS gear currently.</p>
+        <p>Please use the <strong>SUBMIT DATA</strong> feature if you'd like to contribute
+          information or feedback. We encourage community participation and welcome
+          feature requests and feedback.</p>
+      </div>
+      <button class="welcome-btn" (click)="dismissWelcome()">Got it</button>
+    </div>
+  }
 
   @if (updateAvailable()) {
     <div class="update-toast" (click)="refresh()">

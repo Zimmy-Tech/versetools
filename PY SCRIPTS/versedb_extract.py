@@ -3620,52 +3620,52 @@ def main(mode: str = "live"):
         "aegs_gladius": {
             "accelFwd": 12.6, "accelRetro": 2.7, "accelStrafe": 6.0, "accelUp": 9.2, "accelDown": 3.0,
             "accelAbFwd": 19.6, "accelAbRetro": 3.3, "accelAbStrafe": 11.9, "accelAbUp": 11.8, "accelAbDown": 3.9,
-            "accelTestedDate": "2026-03-24",
+            "accelTestedDate": "2026-03-24", "accelCheckedBy": "VerseTools Admin",
         },
         "anvl_hornet_f7cm_mk2": {
             "accelFwd": 9.7, "accelRetro": 3.1, "accelStrafe": 6.4, "accelUp": 6.8, "accelDown": 3.9,
             "accelAbFwd": 15.0, "accelAbRetro": 4.4, "accelAbStrafe": 8.6, "accelAbUp": 9.2, "accelAbDown": 5.3,
-            "accelTestedDate": "2026-03-24",
+            "accelTestedDate": "2026-03-24", "accelCheckedBy": "VerseTools Admin",
         },
         "rsi_aurora_mk2": {
             "accelFwd": 9.2, "accelRetro": 3.0, "accelStrafe": 5.2, "accelUp": 5.2, "accelDown": 4.0,
             "accelAbFwd": 15.3, "accelAbRetro": 3.4, "accelAbStrafe": 7.0, "accelAbUp": 6.8, "accelAbDown": 5.6,
-            "accelTestedDate": "2026-03-25",
+            "accelTestedDate": "2026-03-25", "accelCheckedBy": "VerseTools Admin",
         },
         "rsi_aurora_gs_se": {
             "accelFwd": 11.8, "accelRetro": 3.9, "accelStrafe": 7.1, "accelUp": 7.1, "accelDown": 5.6,
             "accelAbFwd": 16.5, "accelAbRetro": 5.1, "accelAbStrafe": 9.6, "accelAbUp": 9.3, "accelAbDown": 7.8,
-            "accelTestedDate": "2026-03-26",
+            "accelTestedDate": "2026-03-26", "accelCheckedBy": "VerseTools Admin",
         },
         "aegs_reclaimer": {
             "accelFwd": 2.0, "accelRetro": 1.5, "accelStrafe": 1.0, "accelUp": 2.0, "accelDown": 2.0,
             "accelAbFwd": 2.7, "accelAbRetro": 2.1, "accelAbStrafe": 1.3, "accelAbUp": 2.8, "accelAbDown": 2.6,
-            "accelTestedDate": "2026-03-26",
+            "accelTestedDate": "2026-03-26", "accelCheckedBy": "VerseTools Admin",
         },
         "anvl_asgard": {
             "accelFwd": 4.6, "accelRetro": 2.5, "accelStrafe": 3.5, "accelUp": 3.8, "accelDown": 3.8,
             "accelAbFwd": 6.9, "accelAbRetro": 3.6, "accelAbStrafe": 4.3, "accelAbUp": 5.0, "accelAbDown": 5.4,
-            "accelTestedDate": "2026-03-26",
+            "accelTestedDate": "2026-03-26", "accelCheckedBy": "VerseTools Admin",
         },
         "krig_l22_alpha_wolf": {
             "accelFwd": 13.9, "accelRetro": 4.7, "accelStrafe": 10.2, "accelUp": 10.2, "accelDown": 5.4,
             "accelAbFwd": 19.5, "accelAbRetro": 6.1, "accelAbStrafe": 13.7, "accelAbUp": 13.2, "accelAbDown": 7.6,
-            "accelTestedDate": "2026-03-26",
+            "accelTestedDate": "2026-03-26", "accelCheckedBy": "VerseTools Admin",
         },
         "rsi_polaris": {
             "accelFwd": 2.7, "accelRetro": 1.5, "accelStrafe": 1.5, "accelUp": 2.0, "accelDown": 2.0,
             "accelAbFwd": 4.1, "accelAbRetro": 1.8, "accelAbStrafe": 2.0, "accelAbUp": 2.6, "accelAbDown": 2.4,
-            "accelTestedDate": "2026-03-26",
+            "accelTestedDate": "2026-03-26", "accelCheckedBy": "VerseTools Admin",
         },
         "ANVL_Hurricane": {
             "accelFwd": 10, "accelRetro": 3.6, "accelStrafe": 7.5, "accelUp": 7.5, "accelDown": 4.5,
             "accelAbFwd": 15.5, "accelAbRetro": 5.1, "accelAbStrafe": 10, "accelAbUp": 9.8, "accelAbDown": 6,
-            "accelTestedDate": "2026-03-27",
+            "accelTestedDate": "2026-03-27", "accelCheckedBy": "VerseTools Admin",
         },
         "ARGO_MOLE": {
             "accelFwd": 4.9, "accelRetro": 3.4, "accelStrafe": 2.7, "accelUp": 3, "accelDown": 2.9,
             "accelAbFwd": 6.9, "accelAbRetro": 4.8, "accelAbStrafe": 3.5, "accelAbUp": 4.2, "accelAbDown": 3.8,
-            "accelTestedDate": "2026-03-27",
+            "accelTestedDate": "2026-03-27", "accelCheckedBy": "VerseTools Admin",
         },
     }
     accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
@@ -3685,6 +3685,7 @@ def main(mode: str = "live"):
             ship["accelAbUp"] = 0
             ship["accelAbDown"] = 0
             ship["accelTestedDate"] = ""
+            ship["accelCheckedBy"] = ""
 
     # 4. Components
     print("\n[4/6] Scanning components…")

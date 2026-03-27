@@ -178,6 +178,15 @@
                     <span class="fs-val">{{ data.selectedShip()!.accelTestedDate }}</span>
                   </div>
                 }
+                @if (data.selectedShip()!.accelCheckedBy) {
+                  <div class="flight-stat checked-by">
+                    <span class="fs-label">Checked by</span>
+                    <span class="fs-val">{{ data.selectedShip()!.accelCheckedBy }}</span>
+                  </div>
+                }
+                @if (needsAccelData()) {
+                  <button class="help-us-btn" (click)="goToSubmit.emit()">Help Us</button>
+                }
               </div>
             }
             </div><!-- /stats-block-body -->

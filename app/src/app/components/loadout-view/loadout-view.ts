@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, output } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { DataService } from '../../services/data.service';
 import { DpsPanelComponent } from '../dps-panel/dps-panel';
@@ -14,6 +14,16 @@ import { Hardpoint, Item } from '../../models/db.models';
   styleUrl: './loadout-view.scss',
 })
 export class LoadoutViewComponent {
+  goToSubmit = output<void>();
+
+  needsAccelData = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return false;
+    if (!ship.accelTestedDate) return true;
+    const tested = new Date(ship.accelTestedDate).getTime();
+    return (Date.now() - tested) > 90 * 24 * 60 * 60 * 1000;
+  });
+
   readonly utilityTypes = ['Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar', 'LifeSupportGenerator'];
 
   collapsedSections = signal<Set<string>>(new Set([

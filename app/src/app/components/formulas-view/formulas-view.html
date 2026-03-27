@@ -71,7 +71,7 @@ Min Block = 1                                       (if single band)</pre>
               <span class="tag">Life Support</span> 1 pip (always on)
               <span class="tag">Radar</span> max(1, round(Power Cost &times; Idle Consumption Fraction))
               <span class="tag">Quantum Drive</span> 0 pips (off at spawn)
-              <span class="tag">Tools</span> 1 pip per tool (always on)
+              <span class="tag">Tools</span> 1 pip per tool, togglable on/off (MOLE: 2 pips per turret)
               <span class="tag">Tractor</span> 2-pip block toggle
             </div>
           </div>
@@ -148,10 +148,24 @@ where:
           </div>
 
           <div class="formula-card">
-            <h3>Missile Alpha</h3>
-            <pre class="formula">Missile Alpha = sum( Per-Missile Damage )  for all equipped missiles</pre>
-            <p>Total one-volley damage from all missile racks. Uses the same per-projectile
-              damage extraction as guns.</p>
+            <h3>Weapon Penetration</h3>
+            <pre class="formula">Penetration Distance = how far the projectile penetrates after impact (meters)
+Penetration Radius   = min&ndash;max spread of the penetration cone (meters)
+
+All weapons have penetration values. Distortion and scatter weapons
+also have proximity detonation (separate min/max blast radius).</pre>
+            <p>Penetration values are extracted from each weapon's projectile record
+              in the game data. Higher values mean the projectile passes through more
+              material before stopping.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Missile Alpha &amp; Blast Radius</h3>
+            <pre class="formula">Missile Alpha  = sum( Per-Missile Damage )  for all equipped missiles
+Blast Radius   = Min Radius &ndash; Max Radius (meters) per missile</pre>
+            <p>Total one-volley damage from all missile racks. Each missile also has an
+              explosion radius defining the area of effect on detonation. Torpedoes
+              have significantly larger blast radii than standard missiles.</p>
           </div>
         </div>
       }
@@ -279,11 +293,15 @@ Boost Speed (Bwd) &mdash;  Afterburner reverse speed</pre>
           <div class="formula-card">
             <h3>Acceleration</h3>
             <pre class="formula">Directional: Forward, Retro, Strafe, Up, Down
-Afterburner: AB Forward, AB Retro, AB Strafe, AB Up, AB Down</pre>
-            <p>Acceleration values are community-tested where available. The theoretical
-              formula requires 3D thruster position vectors and orientation quaternions
-              that are not fully extractable from game files. Afterburner multipliers are
-              confirmed from the flight controller's afterburner definition.</p>
+Afterburner: AB Forward, AB Retro, AB Strafe, AB Up, AB Down
+
+Each ship displays:
+  Tested    = date the values were last verified in-game
+  Checked by = who verified or approved the data</pre>
+            <p>Acceleration values are community-tested and submitted via the Submit Data tab.
+              Submissions are reviewed before being published. Ships with missing or stale data
+              (older than 90 days) are flagged for re-testing. The "Help Us" button in the
+              loadout view links directly to the submission form.</p>
           </div>
         </div>
       }
@@ -313,6 +331,37 @@ Combined Max Power = round( Laser Max Power &times; Combined Power Mult )</pre>
   Total Stat = Laser Base Value + sum( Module Adjustment )  for all equipped modules</pre>
             <p>Module stats stack additively onto the laser's base values. Values are
               percentage adjustments (e.g., -35 = -35% instability reduction).</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Mineral Spawn Locations</h3>
+            <pre class="formula">Each location has three mining categories:
+  Ship Mining    &mdash;  asteroid deposits (Prospector, MOLE)
+  ROC Mining     &mdash;  surface deposits (ground vehicles)
+  Hand Mining    &mdash;  harvestable gems (on foot)
+
+Each category lists minerals with:
+  Mineral   = ore or gem type
+  Tier      = Common, Uncommon, Rare, Epic, Legendary
+  Chance %  = relative probability of spawning at that location</pre>
+            <p>47 locations across Stanton, Pyro, and Nyx systems are mapped with full
+              mineral distributions. The Mining tab lets you drill from system to
+              planetary body to see what spawns where.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Mineral Properties</h3>
+            <pre class="formula">Each mineral has intrinsic properties that affect mining difficulty:
+  Instability         = how volatile the rock is while mining
+  Resistance          = how hard the rock is to crack
+  Optimal Window      = size of the safe power zone
+  Window Variance     = randomness in the optimal window
+  Optimal Thinness    = how narrow the sweet spot is
+  Explosion Multiplier = damage if the rock detonates
+  Cluster Factor      = likelihood of finding grouped deposits</pre>
+            <p>These properties determine how carefully you need to manage laser power
+              when mining each mineral type. High instability + high resistance
+              minerals (like Quantainium) require precise power control.</p>
           </div>
         </div>
       }

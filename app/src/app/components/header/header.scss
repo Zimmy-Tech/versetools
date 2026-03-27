@@ -280,6 +280,13 @@ header {
   }
 }
 
+.lb-hint {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  font-style: italic;
+}
+
 .lb-store, .lb-load {
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px;

@@ -1,99 +1,179 @@
 <div class="submit-view">
-  <div class="submit-panel">
 
-    <div class="panel-title">Submit Acceleration Data</div>
-    <div class="panel-sub">Help improve VerseTools by submitting in-game tested acceleration values.</div>
+  <!-- Forms row -->
+  <div class="forms-row">
 
-    <!-- Submitter name -->
-    <div class="field-group">
-      <label class="field-label">Your Name</label>
-      <input class="field-input" type="text" placeholder="Callsign or handle"
-             [value]="form().submitterName"
-             (input)="updateField('submitterName', $any($event.target).value)" />
-    </div>
-
-    <!-- Ship picker -->
-    <div class="field-group">
-      <label class="field-label">Ship</label>
-      <select class="field-select" [value]="form().shipClassName"
-              (change)="updateField('shipClassName', $any($event.target).value)">
-        <option value="">— select ship —</option>
-        @for (s of shipOptions(); track s.className) {
-          <option [value]="s.className">{{ s.name }}</option>
-        }
-      </select>
-    </div>
-
-    <!-- Acceleration fields -->
-    <div class="accel-grid">
-      <div class="accel-header">
-        <span class="ah-axis"></span>
-        <span class="ah-label">Normal (G)</span>
-        <span class="ah-label">Boosted (G)</span>
+    <!-- Acceleration form -->
+    <div class="submit-panel">
+      <div class="panel-title">Submit Acceleration Data
+        <button class="help-toggle" (click)="showTestingGuide.set(!showTestingGuide())">{{ showTestingGuide() ? 'Hide Guide' : 'Testing Guide' }}</button>
       </div>
-
-      <div class="accel-row">
-        <span class="ar-axis">Forward</span>
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().fwd" (input)="updateField('fwd', $any($event.target).value)" />
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().fwdBoost" (input)="updateField('fwdBoost', $any($event.target).value)" />
-      </div>
-
-      <div class="accel-row">
-        <span class="ar-axis">Retro</span>
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().retro" (input)="updateField('retro', $any($event.target).value)" />
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().retroBoost" (input)="updateField('retroBoost', $any($event.target).value)" />
-      </div>
-
-      <div class="accel-row">
-        <span class="ar-axis">Left / Right</span>
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().strafe" (input)="updateField('strafe', $any($event.target).value)" />
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().strafeBoost" (input)="updateField('strafeBoost', $any($event.target).value)" />
-      </div>
-
-      <div class="accel-row">
-        <span class="ar-axis">Up</span>
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().up" (input)="updateField('up', $any($event.target).value)" />
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().upBoost" (input)="updateField('upBoost', $any($event.target).value)" />
-      </div>
-
-      <div class="accel-row">
-        <span class="ar-axis">Down</span>
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().down" (input)="updateField('down', $any($event.target).value)" />
-        <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
-               [value]="form().downBoost" (input)="updateField('downBoost', $any($event.target).value)" />
-      </div>
-    </div>
-
-    <!-- Notes -->
-    <div class="field-group">
-      <label class="field-label">Notes <span class="optional">(optional)</span></label>
-      <textarea class="field-textarea" rows="2" placeholder="Game version, conditions, etc."
-                [value]="form().notes"
-                (input)="updateField('notes', $any($event.target).value)"></textarea>
-    </div>
-
-    <!-- Submit -->
-    <button class="submit-btn" [disabled]="!canSubmit() || submitting()" (click)="submit()">
-      @if (submitting()) {
-        Submitting...
-      } @else if (submitted()) {
-        Submitted
-      } @else {
-        Submit Data
+      @if (showTestingGuide()) {
+        <div class="testing-guide">
+          <div class="tg-title">Acceleration Testing Instructions</div>
+          <ol class="tg-steps">
+            <li>Make sure you are fully in space, not near a gas cloud or in-atmosphere.</li>
+            <li>Use your <strong>keyboard only</strong> for this test.</li>
+            <li>Make sure <strong>G-Safe is off</strong> for all acceleration tests.</li>
+            <li>Be at a full stop, hit the direction (WASD, etc.) and record the <strong>unboosted maximum acceleration</strong> in each direction.</li>
+            <li>For boosted accelerations, come to a full stop, engage boost and hold the direction (WASD, etc.), and read the gauge fast &mdash; catch it at its <strong>highest value</strong>.</li>
+            <li>Repeat the test at least <strong>twice</strong> to validate the results.</li>
+          </ol>
+        </div>
       }
-    </button>
-    @if (submitError()) {
-      <div class="submit-error">{{ submitError() }}</div>
-    }
+      <div class="panel-sub">Help improve VerseTools by submitting in-game tested acceleration values.</div>
+
+      <div class="field-group">
+        <label class="field-label">Your Name</label>
+        <input class="field-input" type="text" placeholder="Callsign or handle"
+               [value]="form().submitterName"
+               (input)="updateField('submitterName', $any($event.target).value)" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Ship</label>
+        <select class="field-select" [value]="form().shipClassName"
+                (change)="updateField('shipClassName', $any($event.target).value)">
+          <option value="">— select ship —</option>
+          @for (s of shipOptions(); track s.className) {
+            <option [value]="s.className">{{ s.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="accel-grid">
+        <div class="accel-header">
+          <span class="ah-axis"></span>
+          <span class="ah-label">Normal (G)</span>
+          <span class="ah-label">Boosted (G)</span>
+        </div>
+        <div class="accel-row">
+          <span class="ar-axis">Forward</span>
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().fwd" (input)="updateField('fwd', $any($event.target).value)" />
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().fwdBoost" (input)="updateField('fwdBoost', $any($event.target).value)" />
+        </div>
+        <div class="accel-row">
+          <span class="ar-axis">Retro</span>
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().retro" (input)="updateField('retro', $any($event.target).value)" />
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().retroBoost" (input)="updateField('retroBoost', $any($event.target).value)" />
+        </div>
+        <div class="accel-row">
+          <span class="ar-axis">Left / Right</span>
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().strafe" (input)="updateField('strafe', $any($event.target).value)" />
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().strafeBoost" (input)="updateField('strafeBoost', $any($event.target).value)" />
+        </div>
+        <div class="accel-row">
+          <span class="ar-axis">Up</span>
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().up" (input)="updateField('up', $any($event.target).value)" />
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().upBoost" (input)="updateField('upBoost', $any($event.target).value)" />
+        </div>
+        <div class="accel-row">
+          <span class="ar-axis">Down</span>
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().down" (input)="updateField('down', $any($event.target).value)" />
+          <input class="field-input narrow" type="number" step="0.1" placeholder="0.0"
+                 [value]="form().downBoost" (input)="updateField('downBoost', $any($event.target).value)" />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Notes <span class="optional">(optional)</span></label>
+        <textarea class="field-textarea" rows="2" placeholder="Game version, conditions, etc."
+                  [value]="form().notes"
+                  (input)="updateField('notes', $any($event.target).value)"></textarea>
+      </div>
+
+      <button class="submit-btn" [disabled]="!canSubmit() || submitting()" (click)="submit()">
+        @if (submitting()) {
+          Submitting...
+        } @else if (submitted()) {
+          Submitted
+        } @else {
+          Submit Data
+        }
+      </button>
+      @if (submitError()) {
+        <div class="submit-error">{{ submitError() }}</div>
+      }
+    </div>
+
+    <!-- Feedback form -->
+    <div class="feedback-panel">
+      <div class="panel-title">Site Feedback</div>
+
+      <div class="field-group">
+        <label class="field-label">Type</label>
+        <select class="field-select" [value]="feedbackType()"
+                (change)="feedbackType.set($any($event.target).value)">
+          <option value="">— select type —</option>
+          <option value="Formulas">Formulas</option>
+          <option value="Missing Data">Missing Data</option>
+          <option value="Feature Request">Feature Request</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Your Feedback</label>
+        <textarea class="field-textarea" rows="7" placeholder="Describe the issue, suggestion, or correction..."
+                  [value]="feedbackText()"
+                  (input)="feedbackText.set($any($event.target).value)"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Name <span class="optional">(optional)</span></label>
+        <input class="field-input" type="text" placeholder="Callsign or handle"
+               [value]="feedbackName()"
+               (input)="feedbackName.set($any($event.target).value)" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Email <span class="optional">(optional)</span></label>
+        <input class="field-input" type="email" placeholder="For follow-up if needed"
+               [value]="feedbackEmail()"
+               (input)="feedbackEmail.set($any($event.target).value)" />
+      </div>
+
+      <button class="submit-btn" [disabled]="!feedbackType() || !feedbackText().trim() || feedbackSubmitting()"
+              (click)="submitFeedback()">
+        @if (feedbackSubmitting()) {
+          Submitting...
+        } @else if (feedbackSubmitted()) {
+          Thanks!
+        } @else {
+          Send Feedback
+        }
+      </button>
+    </div>
 
   </div>
+
+  <!-- Ships needing data -->
+  @if (shipsNeedingData().length) {
+    <div class="needs-testing">
+      <div class="nt-title">Ships Needing Acceleration Data</div>
+      <div class="nt-sub">{{ shipsNeedingData().length }} ships — click to select for submission</div>
+      <div class="nt-grid">
+        @for (s of shipsNeedingData(); track s.className) {
+          <div class="nt-card" [class.selected]="form().shipClassName === s.className"
+               (click)="selectShipForSubmit(s.className)">
+            <span class="nt-name">{{ s.name }}</span>
+            @if (s.accelTestedDate) {
+              <span class="nt-stale">{{ s.accelTestedDate }}</span>
+            } @else {
+              <span class="nt-missing">No data</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+
 </div>

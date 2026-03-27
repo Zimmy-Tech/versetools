@@ -344,10 +344,31 @@
   gap: 8px;
 }
 
-.tested-date {
+.tested-date, .checked-by {
   margin-top: 2px;
   opacity: 0.6;
   font-style: italic;
+}
+
+.help-us-btn {
+  margin-top: 4px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border: 1px solid var(--orange);
+  border-radius: 3px;
+  background: rgba(255, 140, 0, 0.1);
+  color: var(--orange);
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: rgba(255, 140, 0, 0.2);
+    color: #ffaa33;
+  }
 }
 
 .fs-slash {

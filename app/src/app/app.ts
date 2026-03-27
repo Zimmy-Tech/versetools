@@ -16,6 +16,7 @@ import { SubmitViewComponent } from './components/submit-view/submit-view';
 import { FormulasViewComponent } from './components/formulas-view/formulas-view';
 import { MiningViewComponent } from './components/mining-view/mining-view';
 import { BlueprintFinderComponent } from './components/blueprint-finder/blueprint-finder';
+import { UpdatesViewComponent } from './components/updates-view/updates-view';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,7 @@ import { BlueprintFinderComponent } from './components/blueprint-finder/blueprin
     FormulasViewComponent,
     MiningViewComponent,
     BlueprintFinderComponent,
+    UpdatesViewComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -43,6 +45,7 @@ import { BlueprintFinderComponent } from './components/blueprint-finder/blueprin
 export class App implements OnInit, OnDestroy {
   activeTab = signal<TabName>('loadout');
   updateAvailable = signal(false);
+  showWelcome = signal(false);
 
   private versionCheckInterval: any;
   private loadedVersion = '';
@@ -50,6 +53,10 @@ export class App implements OnInit, OnDestroy {
   constructor(public data: DataService, private http: HttpClient) {}
 
   ngOnInit(): void {
+    // Show welcome popup on first visit
+    if (!localStorage.getItem('versetools_welcomed')) {
+      this.showWelcome.set(true);
+    }
     // Fetch initial version (use data file's ETag/Last-Modified as version proxy)
     this.http.get<{ v: string }>('version.json', { headers: { 'Cache-Control': 'no-cache' } })
       .subscribe({ next: r => this.loadedVersion = r.v, error: () => {} });
@@ -67,6 +74,11 @@ export class App implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.versionCheckInterval);
+  }
+
+  dismissWelcome(): void {
+    localStorage.setItem('versetools_welcomed', '1');
+    this.showWelcome.set(false);
   }
 
   refresh(): void {

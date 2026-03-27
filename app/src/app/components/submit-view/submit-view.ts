@@ -42,10 +42,39 @@ export class SubmitViewComponent {
   });
 
   submitted = signal(false);
+  showTestingGuide = signal(true);
+
+  // Feedback form
+  feedbackType = signal('');
+  feedbackText = signal('');
+  feedbackName = signal('');
+  feedbackEmail = signal('');
+  feedbackSubmitting = signal(false);
+  feedbackSubmitted = signal(false);
 
   shipOptions = computed(() =>
     [...this.data.ships()].sort((a, b) => a.name.localeCompare(b.name))
   );
+
+  private readonly STALE_DAYS = 90;
+
+  shipsNeedingData = computed(() => {
+    const now = Date.now();
+    const cutoff = this.STALE_DAYS * 24 * 60 * 60 * 1000;
+    return this.data.ships()
+      .filter(s => {
+        if (!s.accelTestedDate) return true;
+        const tested = new Date(s.accelTestedDate).getTime();
+        return (now - tested) > cutoff;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
+  });
+
+  selectShipForSubmit(className: string): void {
+    this.updateField('shipClassName', className);
+    // Scroll to form
+    document.querySelector('.submit-panel')?.scrollIntoView({ behavior: 'smooth' });
+  }
 
   selectedShipName = computed(() => {
     const cls = this.form().shipClassName;
@@ -122,6 +151,38 @@ export class SubmitViewComponent {
         down: '', downBoost: '',
         notes: '',
       });
+    }, 2000);
+  }
+
+  submitFeedback(): void {
+    const entry = {
+      type: 'feedback',
+      feedbackType: this.feedbackType(),
+      feedbackText: this.feedbackText().trim(),
+      feedbackName: this.feedbackName().trim(),
+      feedbackEmail: this.feedbackEmail().trim(),
+      date: new Date().toISOString().slice(0, 10),
+    };
+
+    this.feedbackSubmitting.set(true);
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(entry),
+    }).then(() => {
+      this.feedbackSubmitted.set(true);
+      this.feedbackSubmitting.set(false);
+    }).catch(() => {
+      this.feedbackSubmitting.set(false);
+    });
+
+    setTimeout(() => {
+      this.feedbackSubmitted.set(false);
+      this.feedbackType.set('');
+      this.feedbackText.set('');
+      this.feedbackName.set('');
+      this.feedbackEmail.set('');
     }, 2000);
   }
 }

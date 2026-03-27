@@ -54,9 +54,9 @@
     </div>
 
     <!-- Remaining flat tabs -->
-    @for (tab of ['submit', 'formulas', 'changelog']; track tab) {
+    @for (tab of ['submit', 'formulas', 'updates', 'changelog']; track tab) {
       <button class="nav-tab" [class.active]="activeTab() === tab"
-              (click)="tabChange.emit($any(tab))">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : 'Changelog' }}</button>
+              (click)="tabChange.emit($any(tab))">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : tab === 'updates' ? 'Updates' : 'Changelog' }}</button>
     }
   </nav>
 
@@ -112,6 +112,7 @@
     </div>
     @if (data.selectedShip()) {
       <button class="lb-store" (click)="storeLoadout()">Store Loadout</button>
+      <span class="lb-hint">Stored Loadouts now have live comparison of damage output</span>
       @if (storedLoadouts().length > 0) {
         <div class="lb-dropdown-wrap">
           <button class="lb-load" (click)="toggleLoadoutDropdown()">

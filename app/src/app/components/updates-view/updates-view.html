@@ -1,0 +1,29 @@
+<div class="updates-shell">
+  <div class="body">
+    @for (update of updates; track update.version) {
+      <div class="update-block">
+        <div class="update-header">
+          <span class="update-version">Version {{ update.version }}</span>
+          <span class="update-date">{{ update.date }}</span>
+        </div>
+
+        @if (update.highlights.length) {
+          <div class="update-highlights">
+            @for (h of update.highlights; track h) {
+              <div class="highlight">{{ h }}</div>
+            }
+          </div>
+        }
+
+        <div class="update-list">
+          @for (f of update.features; track f) {
+            <div class="update-item">
+              <span class="update-bullet"></span>
+              <span class="update-text">{{ f }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

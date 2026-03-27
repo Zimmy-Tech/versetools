@@ -2,7 +2,7 @@ import { Component, output, input, signal, computed } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'submit' | 'formulas' | 'changelog';
+export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
 interface StoredLoadout {
   name: string;
