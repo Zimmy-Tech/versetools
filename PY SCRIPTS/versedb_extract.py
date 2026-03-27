@@ -3563,6 +3563,8 @@ def main(mode: str = "live"):
         "aegs_sabre_peregrine": {"hardpoint_weapon_left_nose", "hardpoint_weapon_right_nose",
                                  "hardpoint_weapon_left_wing", "hardpoint_weapon_right_wing",
                                  "hardpoint_weapon_missilerack_right", "hardpoint_weapon_missilerack_left"},
+        "aegs_sabre_firebird": {"hardpoint_weapon_left_nose", "hardpoint_weapon_right_nose",
+                                "hardpoint_weapon_missilerack_right", "hardpoint_weapon_missilerack_left"},
     }
     for ship_cls, excluded_ids in HP_EXCLUSIONS.items():
         if ship_cls in ships:
@@ -3606,6 +3608,13 @@ def main(mode: str = "live"):
              "type": "Module", "subtypes": "", "minSize": 1, "maxSize": 10,
              "flags": "", "allTypes": [{"type": "Module", "subtypes": ""}]},
         ])
+
+    # Add Sabre Firebird bespoke internal missile rack (24x S3 Thunderbolt III)
+    if "aegs_sabre_firebird" in ships:
+        ships["aegs_sabre_firebird"]["hardpoints"].append({
+            "id": "hardpoint_weapon_missilerack", "label": "Internal Missile Rack",
+            "type": "MissileLauncher", "subtypes": "MissileRack", "minSize": 6, "maxSize": 6,
+            "flags": "$uneditable", "allTypes": [{"type": "MissileLauncher", "subtypes": "MissileRack"}]})
 
     # Add MIS-specific internal missile launchers (2x S5 bespoke racks, 10x S3 missiles each)
     if "misc_freelancer_mis" in ships:

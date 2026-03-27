@@ -25,6 +25,7 @@ export class DataService {
     'orig_x1', 'orig_x1_force', 'orig_x1_velocity',
     'mrai_pulse', 'mrai_pulse_lx',
     'anvl_lightning_f8',  // F8A Lightning — not player-owned
+    'anvl_carrack_expedition',  // just a paintjob of the Carrack
   ]);
   readonly ships = computed(() =>
     (this.db()?.ships ?? []).filter(s => !this.hiddenShips.has(s.className.toLowerCase()))
