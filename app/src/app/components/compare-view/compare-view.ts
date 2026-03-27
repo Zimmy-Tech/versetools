@@ -46,6 +46,8 @@ export class CompareViewComponent {
       ['Distortion',    i => (i.damage?.distortion ?? 0) > 0 ? i.damage!.distortion!.toFixed(2) : '—', null, null],
       ['Speed',         i => (i.projectileSpeed ?? 0) > 0 ? i.projectileSpeed!.toFixed(0) + ' m/s' : '—', null, null],
       ['Range',         i => (i.range ?? 0) > 0 ? ((i.range! / 1000).toFixed(1) + ' km') : '—',  v => parseFloat(v) || 0, true],
+      ['Pen. Distance',   i => (i.penetrationDistance ?? 0) > 0 ? i.penetrationDistance!.toFixed(2) + 'm' : '—', v => parseFloat(v) || 0, true],
+      ['Pen. Radius',     i => (i.penetrationMaxRadius ?? 0) > 0 ? i.penetrationMinRadius!.toFixed(2) + '–' + i.penetrationMaxRadius!.toFixed(2) + 'm' : '—', v => parseFloat(v) || 0, true],
       ['Power Draw',    i => (i.powerDraw ?? 0) > 0 ? i.powerDraw!.toFixed(2) : '—',              v => parseFloat(v) || 0, false],
     ],
     Shield: [

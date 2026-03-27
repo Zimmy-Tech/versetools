@@ -1,0 +1,26 @@
+import { Component, signal } from '@angular/core';
+
+type Section = 'power' | 'weapons' | 'shields' | 'cooling' | 'flight' | 'mining' | 'radar' | 'cargo' | 'crafting' | 'missions';
+
+@Component({
+  selector: 'app-formulas-view',
+  standalone: true,
+  templateUrl: './formulas-view.html',
+  styleUrl: './formulas-view.scss',
+})
+export class FormulasViewComponent {
+  activeSection = signal<Section>('power');
+
+  readonly sections: { id: Section; label: string }[] = [
+    { id: 'power', label: 'Power System' },
+    { id: 'weapons', label: 'Weapons & DPS' },
+    { id: 'shields', label: 'Shields' },
+    { id: 'cooling', label: 'Cooling' },
+    { id: 'flight', label: 'Flight & Thrusters' },
+    { id: 'mining', label: 'Mining' },
+    { id: 'radar', label: 'Radar' },
+    { id: 'cargo', label: 'Cargo' },
+    { id: 'crafting', label: 'Crafting' },
+    { id: 'missions', label: 'Missions' },
+  ];
+}

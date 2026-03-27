@@ -184,6 +184,16 @@ export interface Item {
   // Heat/overheat (ballistic weapons)
   heatPerShot?: number;
   moduleSlots?: number;
+  // Penetration — all weapons
+  penetrationDistance?: number;
+  penetrationMinRadius?: number;
+  penetrationMaxRadius?: number;
+  // Detonation (proximity) params — distortion/scatter weapons
+  detonationMinRadius?: number;
+  detonationMaxRadius?: number;
+  // Explosion radius — missiles/torpedoes
+  explosionMinRadius?: number;
+  explosionMaxRadius?: number;
   // Mining laser stats
   optimalRange?: number;
   maxRange?: number;

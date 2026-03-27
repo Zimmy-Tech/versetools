@@ -1,0 +1,173 @@
+<div class="mining-shell">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <button class="bc-item" [class.active]="!selectedSystem()" (click)="selectedSystem.set(null); selectedLocation.set(null); selectedMineral.set(null)">Systems</button>
+    @if (selectedSystem()) {
+      <span class="bc-sep">/</span>
+      <button class="bc-item" [class.active]="selectedSystem() && !selectedLocation()" (click)="selectedLocation.set(null); selectedMineral.set(null)">{{ selectedSystem() }}</button>
+    }
+    @if (selectedLocation()) {
+      <span class="bc-sep">/</span>
+      <button class="bc-item" [class.active]="selectedLocation() && !selectedMineral()" (click)="selectedMineral.set(null)">{{ selectedLocation()!.location }}</button>
+    }
+    @if (selectedMineral()) {
+      <span class="bc-sep">/</span>
+      <span class="bc-item active">{{ selectedMineral()!.name }}</span>
+    }
+  </div>
+
+  <div class="body">
+
+    <!-- ═══════════ TIER 1: System Selection ═══════════ -->
+    @if (!selectedSystem()) {
+      <div class="grid-panel">
+        <h2>Select System</h2>
+        <div class="card-grid">
+          @for (sys of systems(); track sys) {
+            <button class="location-card system-card" (click)="selectSystem(sys)">
+              <span class="card-name">{{ sys }}</span>
+              <span class="card-sub">{{ bodies().length || '' }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- ═══════════ TIER 2: Planetary Bodies ═══════════ -->
+    @else if (!selectedLocation()) {
+      <div class="grid-panel">
+        <h2>{{ selectedSystem() }}</h2>
+        <div class="card-grid">
+          @for (loc of bodies(); track loc.id) {
+            <button class="location-card body-card" (click)="selectBody(loc)">
+              <span class="card-name">{{ loc.location }}</span>
+              <span class="card-sub">
+                @if (loc.mining['ship']) { <span class="method-tag">Ship</span> }
+                @if (loc.mining['roc']) { <span class="method-tag">ROC</span> }
+                @if (loc.mining['hand']) { <span class="method-tag">Hand</span> }
+              </span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- ═══════════ TIER 3: Location Minerals ═══════════ -->
+    @else if (!selectedMineral()) {
+      <div class="detail-panel">
+        <h2>{{ selectedLocation()!.location }}</h2>
+
+        @if (selectedLocation()!.mining['ship']; as ship) {
+          <div class="mining-group">
+            <h3>Ship Mining</h3>
+            <div class="mineral-table">
+              <div class="mt-header">
+                <span class="mt-name">Mineral</span>
+                <span class="mt-tier">Tier</span>
+                <span class="mt-pct">Chance</span>
+                <span class="mt-stat">Instab.</span>
+                <span class="mt-stat">Resist.</span>
+              </div>
+              @for (m of ship; track m.mineral) {
+                <div class="mt-row" (click)="selectMineral(m.mineral)">
+                  <span class="mt-name">{{ m.mineral }}</span>
+                  <span class="mt-tier" [class]="tierClass(m.tier)">{{ m.tier }}</span>
+                  <span class="mt-pct">{{ m.percent }}%</span>
+                  <span class="mt-stat">{{ m.instability ?? '—' }}</span>
+                  <span class="mt-stat">{{ m.resistance ?? '—' }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (selectedLocation()!.mining['roc']; as roc) {
+          <div class="mining-group">
+            <h3>ROC Mining</h3>
+            <div class="mineral-table">
+              <div class="mt-header">
+                <span class="mt-name">Mineral</span>
+                <span class="mt-tier">Tier</span>
+                <span class="mt-pct">Chance</span>
+                <span class="mt-stat">Instab.</span>
+                <span class="mt-stat">Resist.</span>
+              </div>
+              @for (m of roc; track m.mineral) {
+                <div class="mt-row" (click)="selectMineral(m.mineral)">
+                  <span class="mt-name">{{ m.mineral }}</span>
+                  <span class="mt-tier" [class]="tierClass(m.tier)">{{ m.tier }}</span>
+                  <span class="mt-pct">{{ m.percent }}%</span>
+                  <span class="mt-stat">{{ m.instability ?? '—' }}</span>
+                  <span class="mt-stat">{{ m.resistance ?? '—' }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (selectedLocation()!.mining['hand']; as hand) {
+          <div class="mining-group">
+            <h3>Hand Mining</h3>
+            <div class="mineral-table">
+              <div class="mt-header">
+                <span class="mt-name">Mineral</span>
+                <span class="mt-tier">Tier</span>
+                <span class="mt-pct">Chance</span>
+                <span class="mt-stat">Instab.</span>
+                <span class="mt-stat">Resist.</span>
+              </div>
+              @for (m of hand; track m.mineral) {
+                <div class="mt-row" (click)="selectMineral(m.mineral)">
+                  <span class="mt-name">{{ m.mineral }}</span>
+                  <span class="mt-tier" [class]="tierClass(m.tier)">{{ m.tier }}</span>
+                  <span class="mt-pct">{{ m.percent }}%</span>
+                  <span class="mt-stat">{{ m.instability ?? '—' }}</span>
+                  <span class="mt-stat">{{ m.resistance ?? '—' }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- ═══════════ TIER 4: Mineral Detail ═══════════ -->
+    @else {
+      <div class="detail-panel mineral-detail">
+        <h2>{{ selectedMineral()!.name }}</h2>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="stat-label">Instability</span>
+            <span class="stat-val">{{ selectedMineral()!.instability }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Resistance</span>
+            <span class="stat-val">{{ selectedMineral()!.resistance }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Optimal Window</span>
+            <span class="stat-val">{{ selectedMineral()!.optimalWindow }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Window Variance</span>
+            <span class="stat-val">{{ selectedMineral()!.optimalWindowRand }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Optimal Thinness</span>
+            <span class="stat-val">{{ selectedMineral()!.optimalThinness }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Explosion Multiplier</span>
+            <span class="stat-val">{{ selectedMineral()!.explosionMultiplier }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Cluster Factor</span>
+            <span class="stat-val">{{ selectedMineral()!.clusterFactor }}</span>
+          </div>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

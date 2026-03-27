@@ -12,6 +12,8 @@ import { ChangelogViewComponent } from './components/changelog-view/changelog-vi
 import { RankingsViewComponent } from './components/rankings-view/rankings-view';
 import { ArmorViewComponent } from './components/armor-view/armor-view';
 import { SubmitViewComponent } from './components/submit-view/submit-view';
+import { FormulasViewComponent } from './components/formulas-view/formulas-view';
+import { MiningViewComponent } from './components/mining-view/mining-view';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,8 @@ import { SubmitViewComponent } from './components/submit-view/submit-view';
     RankingsViewComponent,
     ArmorViewComponent,
     SubmitViewComponent,
+    FormulasViewComponent,
+    MiningViewComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

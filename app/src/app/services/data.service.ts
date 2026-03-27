@@ -464,10 +464,12 @@ export class DataService {
     const db = this.db();
     if (!db) return new Map<string, string>();
 
+    // Only weapon/mount/turret/missile types can be ship-exclusive.
+    // Standard system components (power plants, coolers, shields, QDs) are always
+    // universally swappable even if they only appear in one ship's default loadout.
     const equippableTypes = new Set([
       'WeaponGun', 'WeaponTachyon', 'WeaponMount', 'Turret', 'TurretBase',
       'MissileLauncher', 'BombLauncher', 'Missile',
-      'Shield', 'PowerPlant', 'Cooler', 'QuantumDrive',
       'WeaponMining', 'MiningModifier', 'ToolArm', 'UtilityTurret', 'SalvageHead', 'SalvageModifier',
     ]);
     const equippable = new Set(
@@ -584,8 +586,9 @@ export class DataService {
         if (this.VANGUARD_NOSE_ONLY.has(clsL)) return isVanguardNoseSlot;
         if (isVanguardNoseSlot) return false;
 
-        // Wolf hull weapons: only on Wolf ships
+        // Wolf hull weapons: only on Wolf ships, and Wolf weapon slots only show Wolf weapons
         if (this.WOLF_WEAPONS.has(clsL)) return isWolfShip;
+        if (isWolfShip && (acceptsGun || acceptsTurret) && i.type !== 'WeaponMount' && !this.WOLF_WEAPONS.has(clsL)) return false;
 
         // Ship-exclusive items: only show when that ship is selected
         if (exclusiveShip && exclusiveShip !== shipCls) return false;

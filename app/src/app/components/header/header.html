@@ -5,35 +5,48 @@
     <button class="nav-tab" [class.active]="activeTab() === 'loadout'"
             (click)="tabChange.emit('loadout')">Loadout</button>
 
-    <!-- Ship picker sits between Loadout and Cart, only on Loadout tab -->
-    @if (data.isLoaded() && activeTab() === 'loadout') {
-      <div class="ship-picker-wrap">
-        <input class="ship-picker-input" type="text"
-               [placeholder]="data.selectedShip()?.name ?? 'Select a ship...'"
-               [value]="searchQuery()"
-               (input)="onSearch($any($event.target).value)"
-               (focus)="openDropdown()"
-               (blur)="closeDropdown()">
-        @if (showDropdown() && filteredShips().length > 0) {
-          <div class="ship-picker-dropdown">
-            @for (ship of filteredShips(); track ship.className) {
-              <div class="ship-picker-option"
-                   [class.active]="data.selectedShip()?.className === ship.className"
-                   (mousedown)="selectShip(ship)">
-                <span class="spo-name">{{ ship.name }}</span>
-                <span class="spo-mfr">{{ ship.manufacturer }}</span>
-              </div>
-            }
-          </div>
-        }
-      </div>
-    }
+    <!-- Cart -->
+    <button class="nav-tab" [class.active]="activeTab() === 'cart'"
+            (click)="tabChange.emit('cart')">Cart@if (data.cartCount() > 0) {
+      <span class="cart-badge">{{ data.cartCount() }}</span>
+    }</button>
 
-    @for (tab of nonLoadoutTabs; track tab.id) {
-      <button class="nav-tab" [class.active]="activeTab() === tab.id"
-              (click)="tabChange.emit(tab.id)">{{ tab.label }}@if (tab.id === 'cart' && data.cartCount() > 0) {
-        <span class="cart-badge">{{ data.cartCount() }}</span>
-      }</button>
+    <!-- Ship Tools dropdown -->
+    <div class="nav-group" (blur)="closeGroups()" tabindex="-1">
+      <button class="nav-tab" [class.active]="isShipToolActive()"
+              (click)="toggleShipTools()">Ship Tools <span class="nav-arrow">{{ shipToolsOpen() ? '▾' : '▸' }}</span></button>
+      @if (shipToolsOpen()) {
+        <div class="nav-dropdown">
+          @for (tab of shipToolsTabs; track tab.id) {
+            <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
+                 (mousedown)="selectGroupTab(tab.id)">{{ tab.label }}</div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Missions -->
+    <button class="nav-tab" [class.active]="activeTab() === 'missions'"
+            (click)="tabChange.emit('missions')">Missions</button>
+
+    <!-- Industry Tools dropdown -->
+    <div class="nav-group" (blur)="closeGroups()" tabindex="-1">
+      <button class="nav-tab" [class.active]="isIndustryToolActive()"
+              (click)="toggleIndustryTools()">Industry Tools <span class="nav-arrow">{{ industryToolsOpen() ? '▾' : '▸' }}</span></button>
+      @if (industryToolsOpen()) {
+        <div class="nav-dropdown">
+          @for (tab of industryToolsTabs; track tab.id) {
+            <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
+                 (mousedown)="selectGroupTab(tab.id)">{{ tab.label }}</div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Remaining flat tabs -->
+    @for (tab of ['submit', 'formulas', 'changelog']; track tab) {
+      <button class="nav-tab" [class.active]="activeTab() === tab"
+              (click)="tabChange.emit($any(tab))">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : 'Changelog' }}</button>
     }
   </nav>
 
@@ -61,3 +74,51 @@
     </div>
   </div>
 </header>
+
+@if (activeTab() === 'loadout' && data.isLoaded()) {
+  <div class="loadout-bar">
+    <div class="ship-picker-wrap">
+      <input class="ship-picker-input" type="text"
+             [placeholder]="data.selectedShip()?.name ?? 'Select a ship...'"
+             [value]="searchQuery()"
+             (input)="onSearch($any($event.target).value)"
+             (focus)="openDropdown()"
+             (blur)="closeDropdown()">
+      @if (showDropdown() && filteredShips().length > 0) {
+        <div class="ship-picker-dropdown">
+          @for (ship of filteredShips(); track ship.className) {
+            <div class="ship-picker-option"
+                 [class.active]="data.selectedShip()?.className === ship.className"
+                 (mousedown)="selectShip(ship)">
+              <span class="spo-name">{{ ship.name }}</span>
+              <span class="spo-mfr">{{ ship.manufacturer }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+    @if (data.selectedShip()) {
+      <button class="lb-store" (click)="storeLoadout()">Store Loadout</button>
+      @if (storedLoadouts().length > 0) {
+        <div class="lb-dropdown-wrap">
+          <button class="lb-load" (click)="toggleLoadoutDropdown()">
+            Saved ({{ storedLoadouts().length }})
+            <span class="lb-arrow">{{ loadoutDropdownOpen() ? '▾' : '▸' }}</span>
+          </button>
+          @if (loadoutDropdownOpen()) {
+            <div class="lb-dropdown">
+              @for (lo of storedLoadouts(); track lo.timestamp; let i = $index) {
+                <div class="lb-option" (mousedown)="loadStoredLoadout(i)">
+                  <span class="lb-option-name">{{ lo.name }}</span>
+                  <span class="lb-option-ship">{{ lo.shipName }}</span>
+                  <button class="lb-delete" (mousedown)="deleteStoredLoadout(i, $event)" title="Delete">&#x2715;</button>
+                </div>
+              }
+              <div class="lb-clear" (mousedown)="clearStoredLoadouts()">Clear All</div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+}

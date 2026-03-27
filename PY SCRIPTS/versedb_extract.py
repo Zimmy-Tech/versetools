@@ -279,9 +279,15 @@ def extract_flight_stats(ship_class_name, forge_dir):
     ship_lower = ship_class_name.lower()
 
     # Try exact match first, then base variant (excludes blade/mm variants)
+    # Also try underscore-stripped match (e.g., alpha_wolf → alphawolf)
     fc_file = ctrl_dir / f"controller_flight_{ship_lower}.xml.xml"
     if not fc_file.exists():
         candidates = sorted(ctrl_dir.glob(f"controller_flight_{ship_lower}*.xml.xml"))
+        if not candidates:
+            # Fuzzy: strip underscores from ship name and match against all controller files
+            ship_no_uscore = ship_lower.replace('_', '')
+            candidates = [f for f in sorted(ctrl_dir.glob("controller_flight_*.xml.xml"))
+                          if f.stem.replace(".xml", "").replace("controller_flight_", "").replace('_', '').startswith(ship_no_uscore)]
         base = [f for f in candidates
                 if not any(x in f.stem for x in ("blade", "_mm_", "rework", "_pu_"))]
         fc_file = base[0] if base else (candidates[0] if candidates else None)
@@ -857,6 +863,10 @@ def parse_missile_projectile_item(root, class_name, loc):
     m = re.search(r'damage=["\']DamageInfo\[([0-9A-Fa-f]+)\]["\']', txt)
     if m:
         damage_info_idx = int(m.group(1), 16)
+    # Explosion radius from explosionParams
+    ep = root.find(".//explosionParams")
+    explosion_min_radius = safe_float(ep.get("minRadius", 0)) if ep is not None else 0.0
+    explosion_max_radius = safe_float(ep.get("maxRadius", 0)) if ep is not None else 0.0
     display = resolve_item_name(loc, class_name)
     return {
         "className":    class_name,
@@ -874,6 +884,8 @@ def parse_missile_projectile_item(root, class_name, loc):
         "lockRangeMin": lock_range_min,
         "lockRangeMax": lock_range_max,
         "acquisition":  acquisition,
+        "explosionMinRadius": round(explosion_min_radius, 1),
+        "explosionMaxRadius": round(explosion_max_radius, 1),
         "_damageInfoIdx": damage_info_idx,
         "alphaDamage":  0.0,
         "damage": {"physical": 0.0, "energy": 0.0, "distortion": 0.0,
@@ -1580,6 +1592,13 @@ def ammo_filename_key(xml_file):
     stem = re.sub(r'_ammo$', '', stem)
     return stem.lower()
 
+# Bespoke weapons whose ammo files use a different naming convention.
+# Maps weapon className (lowercase) → ammo key (as produced by ammo_filename_key).
+BESPOKE_AMMO_ALIASES = {
+    "krig_ballisticgatling_bespoke_s4": "krig_wolf_ballisticgatling_s4",
+    "krig_laserrepeater_bespoke_s4":   "krig_wolf_laserrepeater_s4",
+}
+
 def parse_ammo_params(forge_dir):
     """Parse ammo XML files, keyed by derived weapon class name prefix."""
     ammo_data = {}
@@ -1615,7 +1634,7 @@ def enrich_weapons(items, ammo_data):
         if item.get("type") not in ("WeaponGun", "WeaponTachyon", "WeaponMining"):
             continue
         key = item.get("className", "").lower()
-        data = ammo_data.get(key)
+        data = ammo_data.get(key) or ammo_data.get(BESPOKE_AMMO_ALIASES.get(key, ""))
         if not data:
             sorted_key = "_".join(sorted(key.split("_")))
             data = ammo_sorted.get(sorted_key)
@@ -1624,6 +1643,185 @@ def enrich_weapons(items, ammo_data):
             item["range"]           = data["range"]
             speed_enriched += 1
     print(f"  Enriched {speed_enriched} weapons with speed/range")
+
+def extract_mining_locations(forge_dir, dcb_path):
+    """Extract per-location mining mineral distributions from HarvestableProviderPreset XMLs + DCB."""
+    hpp_base = forge_dir / "harvestable" / "providerpresets"
+    if not hpp_base.exists():
+        print("  WARNING: harvestable/providerpresets not found")
+        return []
+
+    # Build HarvestablePreset GUID → name map from DCB
+    with open(dcb_path, "rb") as f:
+        d = f.read()
+    h = _dcb_parse_header(d)
+    hp_si = h["struct_by_name"].get("HarvestablePreset")
+    if hp_si is None:
+        print("  WARNING: HarvestablePreset struct not found in DCB")
+        return []
+
+    def _uuid_to_mixed_le(uuid_str):
+        clean = uuid_str.replace('-', '')
+        if len(clean) != 32: return None
+        try: b = bytes.fromhex(clean)
+        except ValueError: return None
+        return b[3::-1] + b[5:3:-1] + b[7:5:-1] + b[8:16]
+
+    hp_guid_to_name = {}
+    for ri in range(h["n_records"]):
+        rp = h["rec_start"] + ri * 32
+        if struct.unpack_from("<I", d, rp + 8)[0] != hp_si: continue
+        guid_raw = d[rp + 12: rp + 28]
+        try:
+            rname = h["blob"](struct.unpack_from("<I", d, rp)[0])
+            hp_guid_to_name[guid_raw] = rname.replace("HarvestablePreset.", "")
+        except: pass
+
+    # Location display name mapping
+    LOC_NAMES = {
+        "hpp_stanton1": "Hurston", "hpp_stanton1a": "Aberdeen", "hpp_stanton1b": "Arial",
+        "hpp_stanton1c": "Ita", "hpp_stanton1d": "Magda",
+        "hpp_stanton2a": "Cellin", "hpp_stanton2b": "Daymar", "hpp_stanton2c": "Yela",
+        "hpp_stanton2c_belt": "Yela Belt",
+        "hpp_stanton3a": "Calliope", "hpp_stanton3b": "Clio",
+        "hpp_stanton4": "microTech", "hpp_stanton4a": "Euterpe",
+        "hpp_stanton4b": "Lyria", "hpp_stanton4c": "Wala",
+        "hpp_aaronhalo": "Aaron Halo",
+        "hpp_lagrange_a": "Lagrange HUR-L1", "hpp_lagrange_b": "Lagrange HUR-L2",
+        "hpp_lagrange_c": "Lagrange CRU-L1", "hpp_lagrange_d": "Lagrange CRU-L5",
+        "hpp_lagrange_e": "Lagrange ARC-L1", "hpp_lagrange_f": "Lagrange MIC-L1",
+        "hpp_lagrange_g": "Lagrange MIC-L2", "hpp_lagrange_occupied": "Lagrange (Occupied)",
+        "hpp_pyro1": "Pyro I", "hpp_pyro2": "Pyro II", "hpp_pyro3": "Pyro III",
+        "hpp_pyro4": "Pyro IV", "hpp_pyro5a": "Pyro Va", "hpp_pyro5b": "Pyro Vb",
+        "hpp_pyro5c": "Pyro Vc", "hpp_pyro5d": "Pyro Vd", "hpp_pyro5e": "Pyro Ve",
+        "hpp_pyro5f": "Pyro Vf", "hpp_pyro6": "Pyro VI",
+        "hpp_nyx_keegerbelt": "Keeger Belt (Nyx)", "hpp_nyx_glaciemring": "Glaciem Ring (Nyx)",
+        "hpp_pyro_akirocluster": "Akiro Cluster", "hpp_pyro_deepspaceasteroids": "Pyro Deep Space",
+        "hpp_pyro_cool01": "Pyro Cool Zone 1", "hpp_pyro_cool02": "Pyro Cool Zone 2",
+        "hpp_pyro_warm01": "Pyro Warm Zone 1", "hpp_pyro_warm02": "Pyro Warm Zone 2",
+        "hpp_shipgraveyard_001": "Ship Graveyard",
+        "asteroidcluster_medium_yield": "Asteroid Cluster (Medium)",
+        "asteroidcluster_low_yield": "Asteroid Cluster (Low)",
+    }
+
+    # Clean preset name → mineral display name
+    def _mineral_name(preset):
+        n = preset
+        # Strip all known prefixes (may be stacked, e.g., "Mining_AsteroidCommon_Iron")
+        while True:
+            stripped = False
+            for pfx in ("Mining_", "FPSMining_", "GroundVehicleMining_", "GroundVehicle",
+                         "FPS", "Asteroid", "Common_", "Uncommon_", "Rare_",
+                         "Epic_", "Legendary_"):
+                if n.startswith(pfx):
+                    n = n[len(pfx):]
+                    stripped = True
+            if not stripped:
+                break
+        return n or preset
+
+    def _mineral_tier(preset):
+        p = preset.lower()
+        if "legendary" in p: return "Legendary"
+        if "epic" in p: return "Epic"
+        if "rare" in p: return "Rare"
+        if "uncommon" in p: return "Uncommon"
+        return "Common"
+
+    GROUP_LABELS = {
+        "SpaceShip_Mineables": "ship",
+        "GroundVehicle_Mineables": "roc",
+        "FPS_Mineables": "hand",
+    }
+
+    # Extract MineableElement properties (instability, resistance, etc.)
+    sdefs = h["struct_defs"]
+    me_si = h["struct_by_name"].get("MineableElement")
+    element_props = {}
+    if me_si and me_si in h["struct_data"]:
+        me_off2, me_cnt2 = h["struct_data"][me_si]
+        me_rs2 = sdefs[me_si][4]
+        for ri in range(h["n_records"]):
+            rp = h["rec_start"] + ri * 32
+            if struct.unpack_from("<I", d, rp + 8)[0] != me_si: continue
+            variant = struct.unpack_from("<H", d, rp + 28)[0]
+            try: rname = h["blob"](struct.unpack_from("<I", d, rp)[0])
+            except: continue
+            name = rname.split(".")[-1].replace("_Ore","").replace("_Raw","")
+            # Strip prefixes for consistency
+            for pfx in ("MinableElement_FPS_", "MinableElement_GroundVehicle_", "MinableElement_"):
+                if name.startswith(pfx): name = name[len(pfx):]
+            if "template" in name.lower() or "Test" in name: continue
+            inst = me_off2 + variant * me_rs2
+            element_props[name.lower()] = {
+                "name": name,
+                "instability": round(struct.unpack_from("<f", d, inst + 20)[0], 1),
+                "resistance": round(struct.unpack_from("<f", d, inst + 24)[0], 2),
+                "optimalWindow": round(struct.unpack_from("<f", d, inst + 28)[0], 2),
+                "optimalWindowRand": round(struct.unpack_from("<f", d, inst + 32)[0], 2),
+                "optimalThinness": round(struct.unpack_from("<f", d, inst + 36)[0], 2),
+                "explosionMultiplier": round(struct.unpack_from("<f", d, inst + 40)[0], 2),
+                "clusterFactor": round(struct.unpack_from("<f", d, inst + 44)[0], 2),
+            }
+        print(f"  Mineral element properties: {len(element_props)}")
+
+    results = []
+    for xml_file in sorted(hpp_base.rglob("*.xml.xml")):
+        root = ET.parse(xml_file).getroot()
+        hpp_name = xml_file.stem.replace(".xml", "")
+        location = LOC_NAMES.get(hpp_name.lower(), hpp_name)
+
+        mining = {}  # group → [{ mineral, tier, probability }]
+        for gel in root.iter("HarvestableElementGroup"):
+            gname = gel.get("groupName", "")
+            group_key = GROUP_LABELS.get(gname)
+            if not group_key: continue
+            entries = []
+            for eel in gel.iter("HarvestableElement"):
+                harv_uuid = eel.get("harvestable", "")
+                if not harv_uuid or harv_uuid == "null": continue
+                rel_prob = safe_float(eel.get("relativeProbability", 0))
+                dcb_guid = _uuid_to_mixed_le(harv_uuid)
+                if not dcb_guid: continue
+                hp_name = hp_guid_to_name.get(dcb_guid, "")
+                if not hp_name: continue
+                if not any(kw in hp_name for kw in ("Mining", "FPS", "GroundVehicle")): continue
+                entries.append({
+                    "mineral": _mineral_name(hp_name),
+                    "tier": _mineral_tier(hp_name),
+                    "probability": rel_prob,
+                })
+            if entries:
+                total = sum(e["probability"] for e in entries)
+                for e in entries:
+                    e["percent"] = round(e["probability"] / total * 100, 1) if total > 0 else 0
+                mining[group_key] = sorted(entries, key=lambda x: -x["probability"])
+
+        if mining:
+            # Determine system
+            system = "Stanton"
+            if "pyro" in hpp_name.lower(): system = "Pyro"
+            elif "nyx" in hpp_name.lower(): system = "Nyx"
+            results.append({
+                "id": hpp_name.lower(),
+                "location": location,
+                "system": system,
+                "mining": mining,
+            })
+
+    # Attach element stats to each mineral entry
+    for loc in results:
+        for group_key, entries in loc["mining"].items():
+            for e in entries:
+                mineral_lower = e["mineral"].lower()
+                props = element_props.get(mineral_lower)
+                if props:
+                    e["instability"] = props["instability"]
+                    e["resistance"] = props["resistance"]
+
+    print(f"  Mining locations extracted: {len(results)}")
+    return {"locations": results, "elements": list(element_props.values())}
+
 
 def compute_weapon_dps(items):
     """Compute DPS from alphaDamage (set by DCB) and fireRate (set by scan_components)."""
@@ -1783,10 +1981,19 @@ def enrich_ships_from_dcb(ships, forge_dir, loc):
         print(f"  WARNING: spaceships dir not found")
         return
 
+    # Build normalized lookup: strip underscores for fuzzy matching
+    # (handles cases like KRIG_L22_alpha_wolf ↔ krig_l22_alphawolf)
+    ship_keys_by_lower = {}
+    ship_keys_no_uscore = {}
+    for k in ships:
+        ship_keys_by_lower[k.lower()] = k
+        ship_keys_no_uscore[k.lower().replace('_', '')] = k
+
     enriched = 0
     for xml_file in spaceship_dir.glob("*.xml"):
         stem = xml_file.stem.replace(".xml", "")
-        matched = next((k for k in ships if k.lower() == stem.lower()), None)
+        matched = ship_keys_by_lower.get(stem.lower()) \
+                or ship_keys_no_uscore.get(stem.lower().replace('_', ''))
         if not matched:
             continue
         try:
@@ -2724,6 +2931,8 @@ def enrich_from_dcb(items, dcb_path, loc):
     print(f"  AmmoParams mapped: {len(ammo_to_bpp)//2} entries")
 
     # ── Build DamageInfo lookup ───────────────────────────────────────────────
+    pdt_si = si("ProjectileDetonationParams")
+
     def get_damage(bpp_idx):
         if bpp_si not in sd: return None
         b_off, b_cnt = sd[bpp_si]
@@ -2738,6 +2947,37 @@ def enrich_from_dcb(items, dcb_path, loc):
         v = struct.unpack_from("<6f",d,base)
         return {"physical":round(v[0],4),"energy":round(v[1],4),"distortion":round(v[2],4),
                 "thermal":round(v[3],4),"biochemical":round(v[4],4),"stun":round(v[5],4)}
+
+    def get_detonation(bpp_idx):
+        """Read ProjectileDetonationParams from BPP instance (pointer at +0/+4)."""
+        if not pdt_si or pdt_si not in sd or bpp_si not in sd: return None
+        b_off, b_cnt = sd[bpp_si]
+        b_rs = sdefs[bpp_si][4]
+        if bpp_idx >= b_cnt: return None
+        inst = b_off + bpp_idx * b_rs
+        ptr_si2 = u32at(inst); ptr_ii2 = u32at(inst + 4)
+        if ptr_si2 != pdt_si: return None
+        p_off, p_cnt = sd[pdt_si]
+        p_rs = sdefs[pdt_si][4]
+        if ptr_ii2 >= p_cnt: return None
+        pinst = p_off + ptr_ii2 * p_rs
+        return {
+            "minRadius": round(struct.unpack_from("<f", d, pinst + 20)[0], 2),
+            "maxRadius": round(struct.unpack_from("<f", d, pinst + 24)[0], 2),
+        }
+
+    def get_penetration(bpp_idx):
+        """Read penetration distance and radius from BPP instance (offsets +73/+77/+81)."""
+        if bpp_si not in sd: return None
+        b_off, b_cnt = sd[bpp_si]
+        b_rs = sdefs[bpp_si][4]
+        if bpp_idx >= b_cnt: return None
+        inst = b_off + bpp_idx * b_rs
+        dist = round(struct.unpack_from("<f", d, inst + 73)[0], 4)
+        min_r = round(struct.unpack_from("<f", d, inst + 77)[0], 4)
+        max_r = round(struct.unpack_from("<f", d, inst + 81)[0], 4)
+        if dist <= 0 and min_r <= 0 and max_r <= 0: return None
+        return {"distance": dist, "minRadius": min_r, "maxRadius": max_r}
 
     # ── Build fire-rate lookup keyed by AmmoParams key ────────────────────────
     # SWeaponRegenConsumerParams is referenced by weapon XML via GUID - we can't
@@ -2785,19 +3025,36 @@ def enrich_from_dcb(items, dcb_path, loc):
     for class_name, item in items.items():
         if item.get("type") not in ("WeaponGun", "WeaponTachyon"): continue
         key = class_name.lower()
-        bpp_idx = ammo_to_bpp.get(key) or ammo_to_bpp.get(key+"_ammo")
+        alias = BESPOKE_AMMO_ALIASES.get(key, "")
+        bpp_idx = ammo_to_bpp.get(key) or ammo_to_bpp.get(key+"_ammo") \
+               or ammo_to_bpp.get(alias) or ammo_to_bpp.get(alias+"_ammo")
         dmg = None
         if bpp_idx is not None:
             dmg = get_damage(bpp_idx)
         # Fallback to forge XML damageInfo for ballistic/distortion weapons
         if not dmg:
-            dmg = forge_ammo_damage.get(key) or forge_ammo_damage.get(key+"_ammo")
+            dmg = forge_ammo_damage.get(key) or forge_ammo_damage.get(key+"_ammo") \
+               or forge_ammo_damage.get(alias) or forge_ammo_damage.get(alias+"_ammo")
         if not dmg: continue
         item["damage"] = dmg
         item["alphaDamage"] = round(sum(dmg.values()), 4)
+        # Detonation params (proximity radius for distortion/scatter weapons)
+        if bpp_idx is not None:
+            det = get_detonation(bpp_idx)
+            if det and det["maxRadius"] > 0:
+                item["detonationMinRadius"] = det["minRadius"]
+                item["detonationMaxRadius"] = det["maxRadius"]
+            # Penetration distance and radius (all weapons)
+            pen = get_penetration(bpp_idx)
+            if pen:
+                item["penetrationDistance"] = pen["distance"]
+                item["penetrationMinRadius"] = pen["minRadius"]
+                item["penetrationMaxRadius"] = pen["maxRadius"]
         dmg_enriched += 1
 
-    print(f"  Weapons enriched with damage: {dmg_enriched}")
+    pen_count = sum(1 for i in items.values() if i.get("penetrationDistance"))
+    det_count = sum(1 for i in items.values() if i.get("detonationMaxRadius"))
+    print(f"  Weapons enriched with damage: {dmg_enriched} ({pen_count} with penetration, {det_count} with detonation)")
 
     # ── Enrich missile damage via DamageInfo index ────────────────────────────
     misl_enriched = 0
@@ -3293,7 +3550,8 @@ def main(mode: str = "live"):
 
     # Manual cargo overrides for ships missing DCB cargo data
     CARGO_OVERRIDES = {"ORIG_300i": 8, "orig_315p": 12, "orig_325a": 4, "orig_350r": 0,
-                       "rsi_aurora_mk2": 2}  # base cargo without module
+                       "rsi_aurora_mk2": 2,  # base cargo without module
+                       "argo_moth": 224}
     for ship_cls, scu in CARGO_OVERRIDES.items():
         if ship_cls in ships:
             ships[ship_cls]["cargoCapacity"] = scu
@@ -3404,6 +3662,10 @@ def main(mode: str = "live"):
         print(f"  WARNING: DCB not found at {DCB_FILE} — skipping damage/fireRate/DPS")
     compute_weapon_dps(items)
 
+    # 6b. Extract mining location data
+    print("\n[6b] Extracting mining locations…")
+    mining_locations = extract_mining_locations(FORGE_DIR, DCB_FILE)
+
     # 7. Write output
     print("\n[7/7] Writing output…")
     # Strip internal-only temp fields before serializing
@@ -3492,9 +3754,12 @@ def main(mode: str = "live"):
             "powerPlants":   count_type("PowerPlant"),
             "coolers":       count_type("Cooler"),
             "quantumDrives": count_type("QuantumDrive"),
+            "miningLocations": len(mining_locations.get("locations", [])),
         },
         "ships": ship_list,
         "items": item_list,
+        "miningLocations": mining_locations.get("locations", []),
+        "miningElements": mining_locations.get("elements", []),
     }
 
     # ── Generate changelog by diffing against previous extraction ──────────────

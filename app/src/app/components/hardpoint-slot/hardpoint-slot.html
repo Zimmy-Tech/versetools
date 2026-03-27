@@ -30,7 +30,9 @@
       <span class="fixed-badge">FIXED</span>
       <span>{{ currentItem()?.name ?? (typeLabel() + ' · Size ' + hardpoint().maxSize) }}</span>
     </div>
-    <div class="slot-stat muted">—</div>
+    @if (currentItem()?.type !== 'WeaponMount' && currentItem()?.type !== 'MissileLauncher' && currentItem()?.type !== 'BombLauncher') {
+      <div class="slot-stat muted">—</div>
+    }
   } @else if (isWeaponSlot()) {
 
     <!-- Weapon trigger row — compact card when weapon equipped -->
@@ -104,8 +106,8 @@
                   <td>{{ ammoForOption(opt) }}</td>
                   <td>{{ fmt(opt.dps) }}</td>
                   <td>{{ fmt(opt.alphaDamage, 1) }}</td>
-                  <td>—</td>
-                  <td>—</td>
+                  <td>{{ opt.penetrationDistance ? fmt(opt.penetrationDistance, 2) + 'm' : '—' }}</td>
+                  <td>{{ opt.penetrationMaxRadius ? fmt(opt.penetrationMinRadius, 2) + '–' + fmt(opt.penetrationMaxRadius, 2) + 'm' : '—' }}</td>
                   <td>{{ fmt(opt.fireRate) }}</td>
                   <td>{{ fmt(opt.projectileSpeed) }}</td>
                   <td>{{ fmt(opt.range) }}</td>

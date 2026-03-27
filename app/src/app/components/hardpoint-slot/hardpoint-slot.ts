@@ -171,6 +171,9 @@ export class HardpointSlotComponent {
     if (item.dps) stats.push({ key: 'DPS', val: item.dps.toFixed(1) });
     if (item.alphaDamage) stats.push({ key: 'ALPHA', val: item.alphaDamage.toFixed(1) });
 
+    if (item.penetrationDistance) stats.push({ key: 'PEN.D', val: item.penetrationDistance.toFixed(2) + 'm' });
+    if (item.penetrationMaxRadius) stats.push({ key: 'PEN.R', val: item.penetrationMinRadius?.toFixed(2) + '-' + item.penetrationMaxRadius.toFixed(2) + 'm' });
+
     if (item.isBallistic) {
       if (item.heatPerShot && item.maxHeat && item.fireRate) {
         const rounds = Math.floor(item.maxHeat / item.heatPerShot);
@@ -210,6 +213,7 @@ export class HardpointSlotComponent {
       const totalDmg = item.alphaDamage * (capacity || 1);
       stats.push({ key: 'DMG', val: totalDmg.toFixed(0) });
     }
+    if (item.explosionMaxRadius) stats.push({ key: 'BLAST', val: item.explosionMinRadius?.toFixed(0) + '-' + item.explosionMaxRadius.toFixed(0) + 'm' });
     if (item.lockTime) stats.push({ key: 'LOCK', val: item.lockTime.toFixed(1) + 's' });
     if (item.lockRangeMax) stats.push({ key: 'RNG', val: (item.lockRangeMax / 1000).toFixed(1) + 'km' });
 
@@ -335,6 +339,8 @@ export class HardpointSlotComponent {
       if (item.fireRate) rows.push({ label: 'Fire Rate', value: item.fireRate.toFixed(0) + ' rpm' });
       if (item.projectileSpeed) rows.push({ label: 'Velocity', value: item.projectileSpeed.toFixed(0) + ' m/s' });
       if (item.range) rows.push({ label: 'Range', value: item.range.toFixed(0) + 'm' });
+      if (item.penetrationDistance) rows.push({ label: 'Pen. Distance', value: item.penetrationDistance.toFixed(2) + 'm' });
+      if (item.penetrationMaxRadius) rows.push({ label: 'Pen. Radius', value: item.penetrationMinRadius?.toFixed(2) + '–' + item.penetrationMaxRadius.toFixed(2) + 'm' });
       if (item.isBallistic) {
         if (item.heatPerShot && item.maxHeat && item.fireRate) {
           const rounds = Math.floor(item.maxHeat / item.heatPerShot);
@@ -358,6 +364,7 @@ export class HardpointSlotComponent {
       }
     } else if (item.type === 'Missile') {
       if (item.alphaDamage) rows.push({ label: 'Damage', value: item.alphaDamage.toFixed(0) });
+      if (item.explosionMaxRadius) rows.push({ label: 'Blast Radius', value: item.explosionMinRadius?.toFixed(0) + '–' + item.explosionMaxRadius.toFixed(0) + 'm' });
       if (item.lockTime) rows.push({ label: 'Lock Time', value: item.lockTime.toFixed(1) + 's' });
       if (item.lockRangeMax) rows.push({ label: 'Lock Range', value: item.lockRangeMax.toFixed(0) + 'm' });
       if (item.speed) rows.push({ label: 'Speed', value: item.speed.toFixed(0) + ' m/s' });

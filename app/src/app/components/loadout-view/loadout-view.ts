@@ -206,8 +206,7 @@ export class LoadoutViewComponent {
     return ship.hardpoints.filter(hp =>
       !guns.includes(hp) && !missiles.includes(hp) && !utilities.includes(hp) &&
       !pdcs.includes(hp) && !modules.includes(hp) && !this.isPdc(hp) &&
-      !['Radar', 'Sensor', 'QuantumFuelTank'].includes(hp.type) &&
-      hp.flags !== 'invisible'
+      !['Radar', 'Sensor', 'QuantumFuelTank', 'Paints'].includes(hp.type)
     );
   });
 
