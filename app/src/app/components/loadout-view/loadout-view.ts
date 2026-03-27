@@ -88,7 +88,14 @@ export class LoadoutViewComponent {
     );
   });
 
-  pilotGunSlots = computed(() => this.gunSlots().filter(hp => !this.isCrewHardpoint(hp)));
+  pilotGunSlots = computed(() =>
+    this.gunSlots().filter(hp => !this.isCrewHardpoint(hp))
+      .sort((a, b) => {
+        const aRocket = a.id.toLowerCase().includes('rocket') ? 1 : 0;
+        const bRocket = b.id.toLowerCase().includes('rocket') ? 1 : 0;
+        return aRocket - bRocket;
+      })
+  );
   crewGunSlots  = computed(() => this.gunSlots().filter(hp =>  this.isCrewHardpoint(hp)));
 
   private isSalvageTurret(hp: Hardpoint): boolean {
@@ -340,6 +347,22 @@ export class LoadoutViewComponent {
         ...allKeys.filter(k => k.startsWith(prefix)),
         ...loadoutKeys.filter(k => k.startsWith(prefix)),
       ])];
+      // If a WeaponMount is equipped but has no child keys, generate a synthetic gun sub-slot
+      if (!childKeys.length && parentItem?.type === 'WeaponMount') {
+        const synthId = `${hp.id}.hardpoint_class_2`;
+        const gunSize = Math.max(1, hp.maxSize - 1);
+        slots[hp.id] = [{
+          id: synthId,
+          label: 'Gun 1',
+          type: 'WeaponGun',
+          subtypes: '',
+          minSize: 1,
+          maxSize: gunSize,
+          flags: '',
+          allTypes: [{ type: 'WeaponGun', subtypes: '' }],
+        }];
+        continue;
+      }
       if (!childKeys.length) continue;
       const leaves = childKeys.filter(k => !childKeys.some(k2 => k2.startsWith(k + '.')));
 

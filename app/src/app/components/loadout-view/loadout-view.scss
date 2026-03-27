@@ -350,6 +350,20 @@
   font-style: italic;
 }
 
+.no-hardpoints {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: center;
+  padding: 24px 12px;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
 .help-us-btn {
   margin-top: 4px;
   font-family: 'Rajdhani', sans-serif;

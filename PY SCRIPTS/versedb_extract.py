@@ -1304,6 +1304,14 @@ def parse_radar_item(root, class_name, loc):
     component_hp = safe_float(hp_el.get("Health", 0)) if hp_el is not None else 0.0
 
     display = resolve_item_name(loc, class_name)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
     return {
         "className":    class_name,
         "name":         display,
@@ -3536,6 +3544,13 @@ def main(mode: str = "live"):
         "orig_350r":   {"hardpoint_tractor"},
         "espr_talon":  {"hardpoint_missile_right", "hardpoint_missile_left"},  # missile racks only on Shrike
         "crus_starlifter_c2": {"hardpoint_bridge_remote_turret"},  # Turret 6 only on M2
+        "cnou_mustang_alpha": {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},  # rockets only on Delta
+        "cnou_mustang_beta":  {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},
+        "cnou_mustang_gamma": {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},
+        "cnou_mustang_omega": {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},
+        "aegs_sabre_peregrine": {"hardpoint_weapon_left_nose", "hardpoint_weapon_right_nose",
+                                 "hardpoint_weapon_left_wing", "hardpoint_weapon_right_wing",
+                                 "hardpoint_weapon_missilerack_right", "hardpoint_weapon_missilerack_left"},
     }
     for ship_cls, excluded_ids in HP_EXCLUSIONS.items():
         if ship_cls in ships:
@@ -3722,6 +3737,25 @@ def main(mode: str = "live"):
     print(f"  Total: {len(items)} components")
 
     # Module metadata enrichment
+    # Rocket pod stat overrides (damage from detonation, not extractable from standard ammo chain)
+    # Per-rocket: 150 physical damage, 60 RPM, 700 m/s, 2100m range, 3s lifetime
+    _rocket_dmg = {"physical": 150, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0}
+    _rocket_base = {"alphaDamage": 150, "damage": _rocket_dmg, "fireRate": 60, "projectileSpeed": 700, "range": 2100, "isBallistic": True, "dps": 150}
+    ROCKET_POD_OVERRIDES = {
+        "rpod_s1_hrst_6x_s1":   {**_rocket_base, "ammoCount": 12},
+        "rpod_s2_hrst_12x_s1":  {**_rocket_base, "ammoCount": 24},
+        "rpod_s3_hrst_18x_s1":  {**_rocket_base, "ammoCount": 36},
+        "rpod_s1_fski_3x_s3":   {**_rocket_base, "ammoCount": 6},
+        "rpod_s2_fski_6x_s3":   {**_rocket_base, "ammoCount": 12},
+        "rpod_s3_fski_9x_s3":   {**_rocket_base, "ammoCount": 18},
+        "rpod_s1_thcn_4x_s2":   {**_rocket_base, "ammoCount": 8},
+        "rpod_s2_thcn_8x_s2":   {**_rocket_base, "ammoCount": 16},
+        "rpod_s3_thcn_12x_s2":  {**_rocket_base, "ammoCount": 24},
+    }
+    for cls, overrides in ROCKET_POD_OVERRIDES.items():
+        if cls in items:
+            items[cls].update(overrides)
+
     MODULE_META = {
         "rsi_aurora_mk2_module_cargo":              {"cargoBonus": 6},
         "aegs_retaliator_module_front_cargo":       {"cargoBonus": 36},

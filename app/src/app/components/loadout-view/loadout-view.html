@@ -375,6 +375,10 @@
         <!-- Left: Weapons & Missiles (mining/salvage ships show tools first) -->
         <div class="hardpoints-scroll col-weapons">
 
+          @if (!pilotGunSlots().length && !crewGunSlots().length && !missileSlots().length && !miningSlots().length) {
+            <div class="no-hardpoints">No Equippable Hardpoints</div>
+          }
+
           <!-- Mining/Salvage (before weapons on mining/salvage ships) -->
           @if (isMiningShip() && miningSlots().length) {
             <div class="slot-group-label">Mining / Salvage <span class="collapse-btn" (click)="toggleSection('mining')">{{ isCollapsed('mining') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
