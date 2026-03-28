@@ -194,6 +194,25 @@ h3 {
 .mt-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mt-pct { text-align: right; }
 .mt-stat { text-align: right; color: var(--text2); }
+.mt-system { color: var(--text2); }
+.mt-method { display: flex; }
+
+/* Ore location table uses a different column layout */
+.ore-header, .ore-row {
+  grid-template-columns: 1fr 100px 70px 100px 70px;
+}
+
+.section-spacer { margin-top: 24px; }
+
+.ore-browse-card {
+  min-width: 200px;
+}
+
+.card-sub-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+}
 
 /* ── Tier Colors ─────────────────────────────────────── */
 

@@ -2,7 +2,13 @@
 
   <!-- Breadcrumb -->
   <div class="breadcrumb">
-    <button class="bc-item" [class.active]="!selectedSystem()" (click)="selectedSystem.set(null); selectedLocation.set(null); selectedMineral.set(null)">Systems</button>
+    <button class="bc-item" [class.active]="!selectedSystem() && !selectedOre()" (click)="resetToHome()">Mining</button>
+
+    @if (selectedOre()) {
+      <span class="bc-sep">/</span>
+      <span class="bc-item active">{{ selectedOre() }}</span>
+    }
+
     @if (selectedSystem()) {
       <span class="bc-sep">/</span>
       <button class="bc-item" [class.active]="selectedSystem() && !selectedLocation()" (click)="selectedLocation.set(null); selectedMineral.set(null)">{{ selectedSystem() }}</button>
@@ -19,23 +25,55 @@
 
   <div class="body">
 
-    <!-- ═══════════ TIER 1: System Selection ═══════════ -->
-    @if (!selectedSystem()) {
+    <!-- ═══════════ HOME: System + Ore Selection ═══════════ -->
+    @if (!selectedSystem() && !selectedOre()) {
       <div class="grid-panel">
         <h2>Select System</h2>
         <div class="card-grid">
           @for (sys of systems(); track sys) {
             <button class="location-card system-card" (click)="selectSystem(sys)">
               <span class="card-name">{{ sys }}</span>
-              <span class="card-sub">{{ bodies().length || '' }}</span>
+            </button>
+          }
+        </div>
+        <h2 class="section-spacer">Select Ore</h2>
+        <div class="card-grid">
+          @for (ore of allOres(); track ore) {
+            <button class="location-card ore-card" (click)="selectOre(ore)">
+              <span class="card-name">{{ ore }}</span>
             </button>
           }
         </div>
       </div>
     }
 
+    <!-- ═══════════ ORE LOCATIONS ═══════════ -->
+    @if (selectedOre()) {
+      <div class="detail-panel">
+        <h2>{{ selectedOre() }}</h2>
+        <div class="mineral-table">
+          <div class="mt-header ore-header">
+            <span class="mt-name">Location</span>
+            <span class="mt-system">System</span>
+            <span class="mt-method">Method</span>
+            <span class="mt-tier">Tier</span>
+            <span class="mt-pct">Chance</span>
+          </div>
+          @for (entry of oreLocations(); track entry.location + entry.method) {
+            <div class="mt-row ore-row">
+              <span class="mt-name">{{ entry.location }}</span>
+              <span class="mt-system">{{ entry.system }}</span>
+              <span class="mt-method"><span class="method-tag">{{ entry.method }}</span></span>
+              <span class="mt-tier" [class]="tierClass(entry.tier)">{{ entry.tier }}</span>
+              <span class="mt-pct">{{ entry.percent }}%</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
     <!-- ═══════════ TIER 2: Planetary Bodies ═══════════ -->
-    @else if (!selectedLocation()) {
+    @if (selectedSystem() && !selectedLocation()) {
       <div class="grid-panel">
         <h2>{{ selectedSystem() }}</h2>
         <div class="card-grid">
@@ -54,7 +92,7 @@
     }
 
     <!-- ═══════════ TIER 3: Location Minerals ═══════════ -->
-    @else if (!selectedMineral()) {
+    @if (selectedLocation() && !selectedMineral()) {
       <div class="detail-panel">
         <h2>{{ selectedLocation()!.location }}</h2>
 
@@ -133,7 +171,7 @@
     }
 
     <!-- ═══════════ TIER 4: Mineral Detail ═══════════ -->
-    @else {
+    @if (selectedMineral()) {
       <div class="detail-panel mineral-detail">
         <h2>{{ selectedMineral()!.name }}</h2>
         <div class="stat-grid">
