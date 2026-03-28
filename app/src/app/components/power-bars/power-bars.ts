@@ -232,6 +232,8 @@ export class PowerBarsComponent {
     }
     // Tools (mining lasers / salvage heads) = 1 cooling pip each
     demand += this.data.toolPower();
+    // Thrusters generate heat proportional to their pip allocation
+    demand += this.data.thrusterPower();
     return Math.round(demand * 10) / 10;
   });
 

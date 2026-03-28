@@ -103,19 +103,19 @@
         <div class="section-title">Signature</div>
         <div class="stat-block">
           @if (totalEM() > 0) {
-            <div class="stat-row" title="Electromagnetic signature from all powered components, scaled by ship armor EM modifier. Higher values make you easier to detect on radar.">
+            <div class="stat-row" title="Electromagnetic signature from all powered components (power plants, shields, coolers, QDs, weapons, life support), scaled by power pips and ship armor EM modifier. EM-seeking missiles track this value.">
               <span class="stat-label">EM</span>
               <span class="mono">{{ totalEM().toFixed(0) }}</span>
             </div>
           }
           @if (totalIR() > 0) {
-            <div class="stat-row" title="Infrared signature from all powered components, scaled by ship armor IR modifier. Higher values make you easier to detect on IR scanners.">
+            <div class="stat-row" title="Infrared signature from coolers, scaled by cooling load (demand/supply ratio), power pips, and ship armor IR modifier. Thruster heat is dynamic and not included. IR-seeking missiles track this value.">
               <span class="stat-label">IR</span>
               <span class="mono">{{ totalIR().toFixed(0) }}</span>
             </div>
           }
           @if (crossSection() !== undefined) {
-            <div class="stat-row" title="Physical cross-section modifier from ship armor. Affects how easily your ship is detected visually and by radar at range.">
+            <div class="stat-row" title="Cross-section modifier from ship armor. Scales the hull's physical profile for detection. CS-tracking missiles use this. Below 1.0 = stealth, above 1.0 = louder.">
               <span class="stat-label">Cross-Section</span>
               <span class="mono">{{ pct(crossSection()) }}</span>
             </div>

@@ -1,6 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips } from '../../models/db.models';
+import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, bandModAt, coolerSupply, componentCoolingDemand } from '../../models/db.models';
 
 @Component({
   selector: 'app-dps-panel',
@@ -311,15 +311,86 @@ export class DpsPanelComponent {
   });
 
 
-  // Signature — summed from powered-on components, multiplied by ship armor modifiers
+  // Signature — summed from powered-on components, scaled by power pips.
+  // Power plant EM scales with power utilization (totalPowerUsed / totalPowerOutput).
+  // Validated via Aurora SE cooler-swap test: predicted delta 2,230 vs game delta 2,200.
   totalEM = computed(() => {
-    const mult = this.data.selectedShip()?.signalEM ?? 1;
-    return this.equippedItems().reduce((s, i) => s + (i.emSignature ?? 0) + (i.emMax ?? 0), 0) * mult;
+    const ship = this.data.selectedShip();
+    if (!ship) return 0;
+    const loadout = this.data.loadout();
+    const alloc = this.data.powerAlloc();
+    const wpnPower = this.data.weaponsPower();
+    const powerOut = this.data.totalPowerOut();
+    const powerUsed = this.data.totalPowerUsed();
+    const utilization = powerOut > 0 ? Math.min(1, powerUsed / powerOut) : 0;
+    let em = 0;
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item) continue;
+      const sig = item.emSignature ?? item.emMax ?? 0;
+      if (sig <= 0) continue;
+      if (item.type === 'WeaponGun' || item.type === 'WeaponTachyon') {
+        // Weapons: on if weapons pool has power
+        if (wpnPower > 0) em += sig;
+      } else if (item.type === 'PowerPlant') {
+        // Power plants: EM scales with power utilization
+        em += sig * utilization;
+      } else {
+        // Shields, coolers, QDs, life support, radar: scale by power pips
+        const pips = alloc[hp.id] ?? 0;
+        em += sig * bandModAt(item, pips);
+      }
+    }
+    return em;
   });
 
   totalIR = computed(() => {
-    const mult = this.data.selectedShip()?.signalIR ?? 1;
-    return this.equippedItems().reduce((s, i) => s + (i.irSignature ?? 0), 0) * mult;
+    const ship = this.data.selectedShip();
+    if (!ship) return 0;
+    const mult = ship.signalIR ?? 1;
+    const loadout = this.data.loadout();
+    const alloc = this.data.powerAlloc();
+    // Sum nominal cooler IR at current pips, and compute weighted MCF of active coolers
+    let irMax = 0;
+    let mcfWeighted = 0;
+    let irTotal = 0;
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item || !item.irSignature) continue;
+      const pips = alloc[hp.id] ?? 0;
+      const contribution = item.irSignature * bandModAt(item, pips);
+      irMax += contribution;
+      if (contribution > 0) {
+        mcfWeighted += (item.minConsumptionFraction ?? 0.333) * contribution;
+        irTotal += contribution;
+      }
+    }
+    if (irMax <= 0) return 0;
+    const mcf = irTotal > 0 ? mcfWeighted / irTotal : 0.333;
+    // Cooling supply and demand — IR is the greater of idle (MCF) or actual load
+    let supply = 0;
+    let demand = 0;
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item) continue;
+      const pips = alloc[hp.id] ?? 0;
+      if (item.type === 'Cooler' && item.coolingRate) {
+        supply += coolerSupply(item, pips);
+      }
+      if (item.type === 'PowerPlant') {
+        demand += componentCoolingDemand(item, 1);
+      } else if (item.type === 'Shield' || item.type === 'Cooler' ||
+                 item.type === 'LifeSupportGenerator' || item.type === 'QuantumDrive' ||
+                 item.type === 'Radar') {
+        demand += componentCoolingDemand(item, pips);
+      }
+    }
+    demand += this.data.toolPower();
+    demand += this.data.thrusterPower();
+    // Normal operation: coolers idle at MCF. Overloaded: demand/supply takes over.
+    const loadRatio = supply > 0 ? Math.min(1, demand / supply) : 0;
+    const irFactor = Math.max(mcf, loadRatio);
+    return irMax * irFactor * mult;
   });
 
   crossSection = computed(() => this.data.selectedShip()?.signalCrossSection);

@@ -295,7 +295,7 @@ export function calcMaxPips(poolSize: number, allWeapons: Item[]): number {
  * Walks bands from highest to lowest, returning the modifier for the
  * highest band whose start <= pips. Returns 0 if pips is 0 (off).
  */
-function bandModAt(item: Item, pips: number): number {
+export function bandModAt(item: Item, pips: number): number {
   if (pips <= 0) return 0;
   const bands = item.powerBands ?? [];
   if (bands.length === 0) return 1;

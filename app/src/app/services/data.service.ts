@@ -61,7 +61,7 @@ export class DataService {
   );
 
   totalPowerUsed = computed(() =>
-    Object.values(this.powerAlloc()).reduce((sum, n) => sum + n, 0) + this.weaponsPower() + this.toolPower() + this.tractorPower()
+    Object.values(this.powerAlloc()).reduce((sum, n) => sum + n, 0) + this.weaponsPower() + this.thrusterPower() + this.toolPower() + this.tractorPower()
   );
 
   /** Base path prefix for the current data mode (e.g. 'live/' or 'ptu/'). */
