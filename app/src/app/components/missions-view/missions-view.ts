@@ -29,6 +29,8 @@ interface Mission {
   system?: string;
   activity?: string;
   blueprintRewards?: string[];
+  repReward?: number;
+  repPenalty?: number;
 }
 
 interface MissionGiver {
@@ -38,9 +40,10 @@ interface MissionGiver {
 }
 
 interface MissionData {
-  meta: { totalMissions: number; categories: Record<string, number>; missionGivers: number };
+  meta: { totalContracts: number; categories: Record<string, number>; missionGivers: number };
   missionGivers: Record<string, MissionGiver>;
-  missions: Mission[];
+  contracts: Mission[];
+  missions?: Mission[];  // legacy fallback
 }
 
 @Component({
@@ -165,7 +168,7 @@ export class MissionsViewComponent {
       this.data.modeVersion(); // track mode changes
       this.loaded.set(false);
       this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe(data => {
-        this.allMissions.set(data.missions);
+        this.allMissions.set(data.contracts ?? data.missions ?? []);
         this.missionGivers.set(data.missionGivers);
         this.loaded.set(true);
       });

@@ -407,7 +407,7 @@ export class DpsPanelComponent {
     const enrgDeflect = ship.armorDeflectEnrg ?? 0;
     if (physDeflect <= 0 && enrgDeflect <= 0) return null;
 
-    const allWeapons = this.data.items().filter(i => i.type === 'WeaponGun' && i.damage);
+    const allWeapons = this.data.items().filter(i => i.type === 'WeaponGun' && i.damage && !i.name.includes('PLACEHOLDER'));
 
     const buildList = (deflect: number, dmgType: 'physical' | 'energy') => {
       if (deflect <= 0) return [];
@@ -464,7 +464,7 @@ export class DpsPanelComponent {
     if (!ship) return { physical: [] as any[], energy: [] as any[], physDeflect: 0, enrgDeflect: 0 };
     const physDeflect = ship.armorDeflectPhys ?? 0;
     const enrgDeflect = ship.armorDeflectEnrg ?? 0;
-    const allWeapons = this.data.items().filter(i => i.type === 'WeaponGun' && i.damage);
+    const allWeapons = this.data.items().filter(i => i.type === 'WeaponGun' && i.damage && !i.name.includes('PLACEHOLDER'));
 
     const buildFull = (deflect: number, dmgType: 'physical' | 'energy') => {
       if (deflect <= 0) return [];

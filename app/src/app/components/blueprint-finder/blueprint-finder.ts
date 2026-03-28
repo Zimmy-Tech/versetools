@@ -25,7 +25,8 @@ interface Mission {
 }
 
 interface MissionData {
-  missions: Mission[];
+  contracts: Mission[];
+  missions?: Mission[];  // legacy fallback
 }
 
 interface BlueprintEntry {
@@ -152,7 +153,7 @@ export class BlueprintFinderComponent {
       this.data.modeVersion();
       this.loaded.set(false);
       this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe(d => {
-        this.allMissions.set(d.missions);
+        this.allMissions.set(d.contracts ?? d.missions ?? []);
         this.loaded.set(true);
       });
     });

@@ -1,8 +1,15 @@
 <div class="flight-perf">
-  <!-- Three columns -->
-  <div class="columns">
-    <!-- LEFT: Rankings list -->
-    <div class="col col-list">
+
+  <!-- Panel Nav -->
+  <div class="panel-nav">
+    <button class="panel-btn" [class.active]="activePanel() === 'rankings'" (click)="activePanel.set('rankings')">Rankings</button>
+    <button class="panel-btn" [class.active]="activePanel() === 'rotation'" (click)="activePanel.set('rotation')">Rotation Comparison</button>
+    <button class="panel-btn" [class.active]="activePanel() === 'acceleration'" (click)="activePanel.set('acceleration')">Acceleration Comparison</button>
+  </div>
+
+  <!-- Rankings Panel -->
+  @if (activePanel() === 'rankings') {
+    <div class="panel panel-rankings">
       <div class="filter-bar">
         <div class="sort-buttons">
           <span class="filter-label">ROT</span>
@@ -60,9 +67,11 @@
         }
       </div>
     </div>
+  }
 
-    <!-- CENTER: Rotation comparison -->
-    <div class="col col-radar">
+  <!-- Rotation Comparison Panel -->
+  @if (activePanel() === 'rotation') {
+    <div class="panel panel-radar">
       <div class="radar-box">
         <div class="radar-title-row">
           <div class="radar-title">ROTATION</div>
@@ -85,44 +94,49 @@
             </div>
           }
         </div>
-        <div class="radar-wrap">
-          <svg viewBox="0 0 300 300" class="radar-svg">
-            @for (ring of rotGrid; track $index) {
-              <polygon [attr.points]="ring" class="radar-ring" />
-            }
-            @for (spoke of rotSpokes; track $index) {
-              <line [attr.x1]="150" [attr.y1]="150" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
-            }
-            @for (poly of rotPolygons(); track $index) {
-              @if (poly) {
-                <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
-                         [attr.fill]="poly.color" class="radar-poly" />
+        <div class="radar-and-stats">
+          <div class="radar-wrap">
+            <svg viewBox="0 0 300 300" class="radar-svg">
+              @for (ring of rotGrid; track $index) {
+                <polygon [attr.points]="ring" class="radar-ring" />
+              }
+              @for (spoke of rotSpokes; track $index) {
+                <line [attr.x1]="150" [attr.y1]="150" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
+              }
+              @for (poly of rotPolygons(); track $index) {
+                @if (poly) {
+                  <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
+                           [attr.fill]="poly.color" class="radar-poly" />
+                }
+              }
+              @for (lbl of rotLabels; track $index) {
+                <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
+                      dominant-baseline="central" class="radar-label">{{ lbl.text }}</text>
+              }
+            </svg>
+          </div>
+          <div class="stats-cards">
+            @for (slot of rotSlots(); track $index) {
+              @if (slot) {
+                <div class="ship-stats-card" [style.border-color]="slotColors[$index]">
+                  <div class="stats-card-name" [style.color]="slotColors[$index]">{{ slot.name }}</div>
+                  <div class="stats-card-specs">
+                    <div class="jane-spec"><span class="jane-spec-k">Pitch</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.pitchBoosted ?? 0) : (slot.pitch ?? 0)) }}°/s</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">Yaw</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.yawBoosted ?? 0) : (slot.yaw ?? 0)) }}°/s</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">Roll</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.rollBoosted ?? 0) : (slot.roll ?? 0)) }}°/s</span></div>
+                  </div>
+                </div>
               }
             }
-            @for (lbl of rotLabels; track $index) {
-              <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
-                    dominant-baseline="central" class="radar-label">{{ lbl.text }}</text>
-            }
-          </svg>
+          </div>
         </div>
-        <!-- Ship stats in jane-spec style -->
-        @for (slot of rotSlots(); track $index) {
-          @if (slot) {
-            <div class="ship-stats-card" [style.border-color]="slotColors[$index]">
-              <div class="stats-card-name" [style.color]="slotColors[$index]">{{ slot.name }}</div>
-              <div class="stats-card-specs">
-                <div class="jane-spec"><span class="jane-spec-k">Pitch</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.pitchBoosted ?? 0) : (slot.pitch ?? 0)) }}°/s</span></div>
-                <div class="jane-spec"><span class="jane-spec-k">Yaw</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.yawBoosted ?? 0) : (slot.yaw ?? 0)) }}°/s</span></div>
-                <div class="jane-spec"><span class="jane-spec-k">Roll</span><span class="jane-spec-v">{{ fmtVal(rotBoosted() ? (slot.rollBoosted ?? 0) : (slot.roll ?? 0)) }}°/s</span></div>
-              </div>
-            </div>
-          }
-        }
       </div>
     </div>
+  }
 
-    <!-- RIGHT: Acceleration comparison -->
-    <div class="col col-radar">
+  <!-- Acceleration Comparison Panel -->
+  @if (activePanel() === 'acceleration') {
+    <div class="panel panel-radar">
       <div class="radar-box">
         <div class="radar-title-row">
           <div class="radar-title">ACCELERATION</div>
@@ -145,41 +159,46 @@
             </div>
           }
         </div>
-        <div class="radar-wrap">
-          <svg viewBox="0 0 300 300" class="radar-svg">
-            @for (ring of accelGrid; track $index) {
-              <polygon [attr.points]="ring" class="radar-ring" />
-            }
-            @for (spoke of accelSpokes; track $index) {
-              <line [attr.x1]="150" [attr.y1]="150" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
-            }
-            @for (poly of accelPolygons(); track $index) {
-              @if (poly) {
-                <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
-                         [attr.fill]="poly.color" class="radar-poly" />
+        <div class="radar-and-stats">
+          <div class="radar-wrap">
+            <svg viewBox="0 0 300 300" class="radar-svg">
+              @for (ring of accelGrid; track $index) {
+                <polygon [attr.points]="ring" class="radar-ring" />
+              }
+              @for (spoke of accelSpokes; track $index) {
+                <line [attr.x1]="150" [attr.y1]="150" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
+              }
+              @for (poly of accelPolygons(); track $index) {
+                @if (poly) {
+                  <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
+                           [attr.fill]="poly.color" class="radar-poly" />
+                }
+              }
+              @for (lbl of accelLabels; track $index) {
+                <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
+                      dominant-baseline="central" class="radar-label">{{ lbl.text }}</text>
+              }
+            </svg>
+          </div>
+          <div class="stats-cards">
+            @for (slot of accelSlots(); track $index) {
+              @if (slot) {
+                <div class="ship-stats-card" [style.border-color]="slotColors[$index]">
+                  <div class="stats-card-name" [style.color]="slotColors[$index]">{{ slot.name }}</div>
+                  <div class="stats-card-specs">
+                    <div class="jane-spec"><span class="jane-spec-k">Forward</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbFwd ?? 0) : (slot.accelFwd ?? 0)) }} G</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">Retro</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbRetro ?? 0) : (slot.accelRetro ?? 0)) }} G</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">Strafe</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbStrafe ?? 0) : (slot.accelStrafe ?? 0)) }} G</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">Up</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbUp ?? 0) : (slot.accelUp ?? 0)) }} G</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">Down</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbDown ?? 0) : (slot.accelDown ?? 0)) }} G</span></div>
+                  </div>
+                </div>
               }
             }
-            @for (lbl of accelLabels; track $index) {
-              <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
-                    dominant-baseline="central" class="radar-label">{{ lbl.text }}</text>
-            }
-          </svg>
+          </div>
         </div>
-        @for (slot of accelSlots(); track $index) {
-          @if (slot) {
-            <div class="ship-stats-card" [style.border-color]="slotColors[$index]">
-              <div class="stats-card-name" [style.color]="slotColors[$index]">{{ slot.name }}</div>
-              <div class="stats-card-specs">
-                <div class="jane-spec"><span class="jane-spec-k">Forward</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbFwd ?? 0) : (slot.accelFwd ?? 0)) }} G</span></div>
-                <div class="jane-spec"><span class="jane-spec-k">Retro</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbRetro ?? 0) : (slot.accelRetro ?? 0)) }} G</span></div>
-                <div class="jane-spec"><span class="jane-spec-k">Strafe</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbStrafe ?? 0) : (slot.accelStrafe ?? 0)) }} G</span></div>
-                <div class="jane-spec"><span class="jane-spec-k">Up</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbUp ?? 0) : (slot.accelUp ?? 0)) }} G</span></div>
-                <div class="jane-spec"><span class="jane-spec-k">Down</span><span class="jane-spec-v">{{ fmtVal(accelBoosted() ? (slot.accelAbDown ?? 0) : (slot.accelDown ?? 0)) }} G</span></div>
-              </div>
-            </div>
-          }
-        }
       </div>
     </div>
-  </div>
+  }
+
 </div>

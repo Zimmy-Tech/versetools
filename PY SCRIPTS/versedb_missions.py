@@ -291,6 +291,21 @@ def main():
                 pass
     print(f"  Loaded {len(scope_map)} scopes, {len(standing_map)} standings, {len(standing_display)} display names")
 
+    # Reputation reward amounts (success/failure rep values)
+    rep_reward_dir = FORGE_DIR / "reputation" / "rewards" / "missionrewards_reputation"
+    rep_reward_amounts = {}  # sorted GUID → int amount
+    if rep_reward_dir.exists():
+        for rf in rep_reward_dir.rglob("*.xml.xml"):
+            try:
+                rtxt = open(rf, encoding="utf-8").read()
+                rref = re.search(r'__ref="([^"]+)"', rtxt)
+                ramt = re.search(r'reputationAmount="([^"]+)"', rtxt)
+                if rref and ramt:
+                    rep_reward_amounts[guid_key(rref.group(1))] = int(ramt.group(1))
+            except Exception:
+                pass
+    print(f"  Loaded {len(rep_reward_amounts)} reputation reward amounts")
+
     # Blueprint pools
     print("\n[4/7] Building blueprint pool map...")
     bp_pool_dir = FORGE_DIR / "crafting" / "blueprintrewards" / "blueprintmissionpools"
@@ -379,6 +394,13 @@ def main():
             if gen_title and "~mission(" in gen_title:
                 gen_title = re.sub(r'~mission\(([^|)]+)(?:\|[^)]+)?\)', r'[\1]', gen_title)
 
+            # Extract handler-level reputationScope as fallback for contracts
+            gen_scope_m = re.search(r'ContractGeneratorHandler_Career[^>]*reputationScope="([^"]+)"', txt)
+            gen_scope = scope_map.get(guid_key(gen_scope_m.group(1)), "") if gen_scope_m else ""
+            # Clean up scope name: "reputationscope_assassination" -> "assassination"
+            if gen_scope.startswith("reputationscope_"):
+                gen_scope = gen_scope.replace("reputationscope_", "")
+
             def parse_contract_element(attrs, body, gen_name, parent_title=""):
                 """Parse a Contract, SubContract, or CareerContract element."""
                 if 'notForRelease="1"' in attrs:
@@ -398,7 +420,7 @@ def main():
                 if "~mission(" in title:
                     title = re.sub(r'~mission\(([^|)]+)(?:\|[^)]+)?\)', r'[\1]', title)
 
-                # Reputation prerequisites
+                # Reputation prerequisites — from ContractPrerequisite_Reputation elements
                 rep_reqs = []
                 for rm in re.finditer(r'ContractPrerequisite_Reputation[^/]*/>', body):
                     section = rm.group(0)
@@ -418,6 +440,26 @@ def main():
                         "minRank": min_display,
                         "maxRank": max_display,
                     })
+
+                # Also check minStanding/maxStanding on the element itself (CareerContract)
+                if not rep_reqs:
+                    attr_min = re.search(r'minStanding="([^"]+)"', attrs)
+                    attr_max = re.search(r'maxStanding="([^"]+)"', attrs)
+                    attr_scope = re.search(r'reputationScope="([^"]+)"', attrs)
+                    if attr_min and attr_max:
+                        scope_raw = scope_map.get(guid_key(attr_scope.group(1)), "") if attr_scope else ""
+                        if scope_raw.startswith("reputationscope_"):
+                            scope_raw = scope_raw.replace("reputationscope_", "")
+                        scope_key = scope_raw or gen_scope or "?"
+                        min_key = standing_map.get(guid_key(attr_min.group(1)), "?")
+                        max_key = standing_map.get(guid_key(attr_max.group(1)), "?")
+                        min_display = standing_display.get(min_key, min_key)
+                        max_display = standing_display.get(max_key, max_key)
+                        rep_reqs.append({
+                            "scope": scope_key,
+                            "minRank": min_display,
+                            "maxRank": max_display,
+                        })
 
                 # Mission flow — detect phases from variable names
                 phase_patterns = [
@@ -465,6 +507,24 @@ def main():
                 abandoned_cd = re.search(r'abandonedCooldownTime="([^"]+)"', combined)
                 time_limit = re.search(r'timeToComplete="([^"]+)"', combined)
 
+                # Reputation results — extract success/failure rep amounts
+                # Success: first Boolean=1, Failure: third Boolean=1
+                rep_success = 0
+                rep_failure = 0
+                for cr_m in re.finditer(
+                    r'<ContractResult_LegacyReputation>(.*?)</ContractResult_LegacyReputation>',
+                    body, re.S
+                ):
+                    cr_body = cr_m.group(1)
+                    booleans = re.findall(r'<Boolean>(\d)</Boolean>', cr_body)
+                    reward_m = re.search(r'reward="([^"]+)"', cr_body)
+                    if reward_m and len(booleans) >= 3:
+                        amt = rep_reward_amounts.get(guid_key(reward_m.group(1)), 0)
+                        if booleans[0] == '1':  # success
+                            rep_success = amt
+                        elif booleans[2] == '1':  # failure
+                            rep_failure = amt
+
                 entry = {
                     "className": debug_name,
                     "title": title,
@@ -477,6 +537,10 @@ def main():
                     "maxPlayers": 1,
                     "canShare": False,
                 }
+                if rep_success:
+                    entry["repReward"] = rep_success
+                if rep_failure:
+                    entry["repPenalty"] = rep_failure
                 if personal_cd:
                     entry["cooldownMin"] = int(float(personal_cd.group(1)))
                 if abandoned_cd:
@@ -612,11 +676,104 @@ def main():
     multi = sum(1 for m in missions if m.get("multiSystem"))
     print(f"  Filtered: {before} -> {len(missions)} unique ({multi} available in multiple systems)")
 
-    # Merge contracts into missions list
-    all_entries = missions + contracts
+    # Merge contracts into missions: if a contract title matches a mission title,
+    # merge blueprint rewards and any missing fields into the mission, then drop the contract.
+    mission_by_title = {}
+    for m in missions:
+        mission_by_title.setdefault(m["title"], []).append(m)
+
+    merged_bp = 0
+    merged_contracts = set()
+    for i, c in enumerate(contracts):
+        title = c.get("title", "")
+        if title in mission_by_title:
+            # Merge blueprint rewards into all matching missions
+            bp = c.get("blueprintRewards", [])
+            flow = c.get("missionFlow", [])
+            for m in mission_by_title[title]:
+                if bp and not m.get("blueprintRewards"):
+                    m["blueprintRewards"] = bp
+                    merged_bp += 1
+                if flow and not m.get("missionFlow"):
+                    m["missionFlow"] = flow
+                if c.get("repRequirements") and not m.get("repRequirements"):
+                    m["repRequirements"] = c["repRequirements"]
+                if c.get("repReward") and not m.get("repReward"):
+                    m["repReward"] = c["repReward"]
+                if c.get("repPenalty") and not m.get("repPenalty"):
+                    m["repPenalty"] = c["repPenalty"]
+            merged_contracts.add(i)
+
+    # Keep contracts that didn't merge into a mission
+    remaining_contracts = [c for i, c in enumerate(contracts) if i not in merged_contracts]
+    all_entries = missions + remaining_contracts
+    print(f"  Merged {merged_bp} blueprint rewards from contracts into missions")
+    print(f"  Dropped {len(merged_contracts)} duplicate contracts, kept {len(remaining_contracts)}")
 
     # Sort by category then reward
     all_entries.sort(key=lambda m: (m["category"], -(m.get("reward", 0))))
+
+    # ── Reputation ladders ───────────────────────────────────
+    print("\n[7/7] Extracting reputation ladders...")
+    scope_dir = FORGE_DIR / "reputation" / "scopes"
+    standing_base = FORGE_DIR / "reputation" / "standings"
+    rep_ladders = {}
+
+    # Build standing GUID -> info from ALL standing files (recursive)
+    all_standings = {}
+    if standing_base.exists():
+        for sf in standing_base.rglob("*.xml.xml"):
+            try:
+                stxt = open(sf, encoding="utf-8").read()
+                sref = re.search(r'__ref="([^"]+)"', stxt)
+                sdisplay = re.search(r'displayName="@([^"]+)"', stxt)
+                smin = re.search(r'minReputation="([^"]+)"', stxt)
+                sgated = re.search(r'gated="([^"]+)"', stxt)
+                if sref:
+                    gk = guid_key(sref.group(1))
+                    display = loc_lookup(loc, "@" + sdisplay.group(1)) if sdisplay else sf.stem
+                    all_standings[gk] = {
+                        "name": display,
+                        "minRep": int(smin.group(1)) if smin else 0,
+                        "gated": sgated.group(1) == "1" if sgated else False,
+                    }
+            except Exception:
+                pass
+
+    # Parse each scope's standing map
+    if scope_dir.exists():
+        for sf in scope_dir.glob("*.xml.xml"):
+            try:
+                stxt = open(sf, encoding="utf-8").read()
+                scope_name_m = re.search(r'scopeName="([^"]+)"', stxt)
+                display_m = re.search(r'displayName="@([^"]+)"', stxt)
+                ceiling_m = re.search(r'reputationCeiling="([^"]+)"', stxt)
+                if not scope_name_m:
+                    continue
+                scope_name = scope_name_m.group(1)
+                display = loc_lookup(loc, "@" + display_m.group(1)) if display_m else scope_name
+                ceiling = int(ceiling_m.group(1)) if ceiling_m else 0
+
+                # Extract standing references in order
+                refs = re.findall(r'<Reference>([^<]+)</Reference>', stxt)
+                ranks = []
+                for r in refs:
+                    gk = guid_key(r)
+                    info = all_standings.get(gk)
+                    if info:
+                        ranks.append(info)
+                ranks.sort(key=lambda x: x["minRep"])
+
+                if ranks:
+                    rep_ladders[scope_name.lower()] = {
+                        "name": scope_name,
+                        "displayName": display,
+                        "ceiling": ceiling,
+                        "ranks": ranks,
+                    }
+            except Exception:
+                pass
+    print(f"  Extracted {len(rep_ladders)} reputation ladders ({sum(len(l['ranks']) for l in rep_ladders.values())} total ranks)")
 
     # Stats
     categories = {}
@@ -625,15 +782,14 @@ def main():
 
     output = {
         "meta": {
-            "totalMissions": len(missions),
-            "totalContracts": len(contracts),
-            "totalEntries": len(all_entries),
+            "totalContracts": len(all_entries),
             "categories": categories,
             "missionGivers": len(givers),
         },
         "missionGivers": givers,
         "reputationRanks": standing_display,
-        "missions": all_entries,
+        "reputationLadders": rep_ladders,
+        "contracts": all_entries,
     }
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:

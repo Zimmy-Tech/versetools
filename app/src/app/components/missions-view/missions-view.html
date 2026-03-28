@@ -73,7 +73,7 @@
     @if (!hasActiveFilter()) {
       <div class="empty-state">
         <div class="empty-title">Mission Database</div>
-        <div class="empty-sub">{{ allMissions().length }} missions available. Use the filters above to search.</div>
+        <div class="empty-sub">{{ allMissions().length }} contracts available. Use the filters above to search.</div>
       </div>
     }
 
@@ -90,28 +90,13 @@
             </div>
           </div>
           <div class="mission-meta">
-            @if (m.giver) {
-              <span class="meta-item"><em>From</em> {{ m.giver }}</span>
-            }
             @if (m.lawful) {
               <span class="meta-tag lawful">LAWFUL</span>
             } @else {
               <span class="meta-tag unlawful">UNLAWFUL</span>
             }
-            @if (m.maxPlayers > 1) {
-              <span class="meta-item"><em>Players</em> {{ m.maxPlayers }}</span>
-            }
             @if (m.canShare) {
               <span class="meta-tag share">SHAREABLE</span>
-            }
-            @if (m.difficulty >= 0) {
-              <span class="meta-item"><em>Diff</em> {{ m.difficulty }}</span>
-            }
-            @if (m.onceOnly) {
-              <span class="meta-tag once">ONCE ONLY</span>
-            }
-            @if (m.prison) {
-              <span class="meta-tag prison">PRISON</span>
             }
             @if (m.multiSystem) {
               <span class="meta-tag multi">MULTI-SYSTEM</span>
@@ -122,37 +107,7 @@
             @if (m.activity) {
               <span class="meta-tag activity">{{ m.activity }}</span>
             }
-            @if (m.lifetimeMin) {
-              <span class="meta-item"><em>Life</em> {{ m.lifetimeMin }}m</span>
-            }
-            @if (m.respawnMin) {
-              <span class="meta-item"><em>Respawn</em> {{ m.respawnMin }}m</span>
-            }
-            @if (m.cooldownMin) {
-              <span class="meta-item"><em>CD</em> {{ m.cooldownMin }}m</span>
-            }
-            @if (m.timeLimitMin) {
-              <span class="meta-item"><em>Time</em> {{ m.timeLimitMin }}m</span>
-            }
           </div>
-          @if (m.repScopes?.length) {
-            <div class="mission-rep">
-              <em>Rep Reward</em>
-              @for (scope of m.repScopes; track scope) {
-                <span class="rep-scope">{{ scope }}</span>
-              }
-            </div>
-          }
-          @if (uniqueReqs(m); as reqs) {
-            @if (reqs.length) {
-              <div class="mission-rep">
-                @for (req of reqs; track req.scope) {
-                  <span class="rep-req"><em>Required Rep:</em> {{ req.minRank }}</span>
-                  <span class="rep-req max"><em>Max Rep:</em> {{ req.maxRank }}</span>
-                }
-              </div>
-            }
-          }
 
         </div>
       }
@@ -191,11 +146,13 @@
             @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
             @if (sm.abandonCooldownMin) { <div class="popout-stat"><span class="ps-label">Abandon CD</span><span class="ps-val">{{ sm.abandonCooldownMin }} min</span></div> }
             @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
+            @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Rep Reward</span><span class="ps-val rep-positive">+{{ sm.repReward }}</span></div> }
+            @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure Penalty</span><span class="ps-val rep-negative">{{ sm.repPenalty }}</span></div> }
           </div>
 
           @if (sm.repScopes?.length) {
             <div class="popout-section">
-              <div class="popout-section-title">Reputation Rewards</div>
+              <div class="popout-section-title">Reputation Scopes</div>
               <div class="popout-tags">
                 @for (scope of sm.repScopes; track scope) {
                   <span class="rep-scope">{{ scope }}</span>

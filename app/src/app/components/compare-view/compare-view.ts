@@ -25,7 +25,7 @@ export class CompareViewComponent {
   readonly slotColors = SLOT_COLORS;
 
   weaponItems = computed(() =>
-    this.data.items().filter(i => i.type === 'WeaponGun' && (i.dps ?? 0) > 0)
+    this.data.items().filter(i => i.type === 'WeaponGun' && (i.dps ?? 0) > 0 && !i.name.includes('PLACEHOLDER'))
       .sort((a, b) => (a.size ?? 0) - (b.size ?? 0) || a.name.localeCompare(b.name))
   );
 

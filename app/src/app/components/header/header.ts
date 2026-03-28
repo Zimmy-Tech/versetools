@@ -38,7 +38,7 @@ export class HeaderComponent {
   ];
 
   readonly missionsTabs: { id: TabName; label: string }[] = [
-    { id: 'missions', label: 'Missions' },
+    { id: 'missions', label: 'Contracts' },
     { id: 'blueprints', label: 'Blueprint Finder' },
   ];
 

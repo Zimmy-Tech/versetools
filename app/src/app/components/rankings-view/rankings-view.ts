@@ -20,6 +20,8 @@ interface RadarPoint { x: number; y: number; }
 const SLOT_COLORS = ['#00c8ff', '#4aff7a', '#ffaa4a'];
 const CX = 150, CY = 150, R = 110;
 
+type PanelMode = 'rankings' | 'rotation' | 'acceleration';
+
 @Component({
   selector: 'app-rankings-view',
   standalone: true,
@@ -28,6 +30,7 @@ const CX = 150, CY = 150, R = 110;
   styleUrl: './rankings-view.scss',
 })
 export class RankingsViewComponent {
+  activePanel = signal<PanelMode>('rankings');
   sortField = signal<SortField>('pitch');
   sizeFilter = signal('');
   searchQuery = signal('');
