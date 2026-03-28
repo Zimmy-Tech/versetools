@@ -39,7 +39,8 @@ export class DpsPanelComponent {
     if (hp.type === 'Turret') {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
       // gunNacelle = pilot-controlled weapon nacelle (e.g., Constellation nose guns)
-      return !!ct && !ct.includes('remote_turret') && !ct.includes('pilot') && !ct.includes('gunnacelle') && !ct.includes('gunnose');
+      // Note: 'copilotSeat' is crew, 'pilotSeat' is pilot — match exact token, not substring
+      return !!ct && !ct.includes('remote_turret') && ct !== 'pilotseat' && !ct.includes('gunnacelle') && !ct.includes('gunnose');
     }
     return false;
   }

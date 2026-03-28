@@ -2258,6 +2258,37 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
             pass
     print(f"  Default loadouts extracted: {enriched} ships")
 
+    # Normalize variant-suffixed loadout keys.
+    # Some variants (e.g., Zeus CL) use port names like "hardpoint_cooler_left_cl"
+    # in their loadout, but the shared vehicle XML has "hardpoint_cooler_left".
+    # Remap these so the frontend can match loadout keys to hardpoint IDs.
+    remapped_total = 0
+    for ship_cls, ship in ships.items():
+        dl = ship.get("defaultLoadout")
+        if not dl:
+            continue
+        hp_ids = {hp["id"].lower() for hp in ship.get("hardpoints", [])}
+        # Build suffix from the variant portion of the class name (e.g., "_cl", "_es")
+        # by finding keys that don't match any hardpoint but would if suffix stripped
+        parts = ship_cls.lower().rsplit("_", 1)
+        if len(parts) < 2:
+            continue
+        suffix = "_" + parts[1]  # e.g., "_cl"
+        remapped = {}
+        for key, val in list(dl.items()):
+            base_key = key.lower().split(".")[0]  # top-level port, ignore sub-slots
+            if base_key not in hp_ids and base_key.endswith(suffix):
+                new_key = key[:-(len(suffix))] + key[len(key) - len(suffix) + len(suffix):]
+                # Strip suffix from the top-level port portion only
+                new_key = key.replace(base_key, base_key[:-len(suffix)], 1)
+                remapped[key] = new_key
+        if remapped:
+            for old_key, new_key in remapped.items():
+                dl[new_key] = dl.pop(old_key)
+            remapped_total += len(remapped)
+    if remapped_total:
+        print(f"  Remapped {remapped_total} variant-suffixed loadout keys")
+
     # Fallback loadouts for ships with empty DCB data
     _300_BASE_LOADOUT = {
         "hardpoint_weapon_nose":             "mount_gimbal_s3",
@@ -3565,6 +3596,8 @@ def main(mode: str = "live"):
                                  "hardpoint_weapon_missilerack_right", "hardpoint_weapon_missilerack_left"},
         "aegs_sabre_firebird": {"hardpoint_weapon_left_nose", "hardpoint_weapon_right_nose",
                                 "hardpoint_weapon_missilerack_right", "hardpoint_weapon_missilerack_left"},
+        "rsi_zeus_es": {"hardpoint_tractor_beam", "hardpoint_bounty_turret_top", "hardpoint_passenger_turret_top"},
+        "rsi_zeus_cl": {"hardpoint_bounty_turret_top", "hardpoint_passenger_turret_top"},
     }
     for ship_cls, excluded_ids in HP_EXCLUSIONS.items():
         if ship_cls in ships:
