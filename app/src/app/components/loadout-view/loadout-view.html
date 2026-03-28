@@ -207,53 +207,63 @@
                   <span class="fs-label">Vital</span>
                   <span class="fs-val">{{ data.selectedShip()!.bodyHp }}</span>
                 </div>
+              </div>
+              <div class="flight-divider"></div>
+              <div class="flight-group">
+                <div class="flight-group-label">Armor</div>
                 @if (data.selectedShip()!.armorHp) {
                   <div class="flight-stat">
-                    <span class="fs-label">Armor</span>
+                    <span class="fs-label">HP</span>
                     <span class="fs-val">{{ data.selectedShip()!.armorHp }}</span>
                   </div>
                 }
-              </div>
-              @if (data.selectedShip()!.armorDeflectPhys) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">Armor Deflect</div>
+                @if (data.selectedShip()!.armorDeflectPhys) {
                   <div class="flight-stat">
-                    <span class="fs-label">Phys</span>
+                    <span class="fs-label">Deflect Phys</span>
                     <span class="fs-val">{{ data.selectedShip()!.armorDeflectPhys }}</span>
                   </div>
                   <div class="flight-stat">
-                    <span class="fs-label">Enrg</span>
+                    <span class="fs-label">Deflect Enrg</span>
                     <span class="fs-val">{{ data.selectedShip()!.armorDeflectEnrg }}</span>
                   </div>
-                </div>
-              }
+                }
+                @if (data.selectedShip()!.durabilityPhys !== undefined) {
+                  <div class="flight-stat">
+                    <span class="fs-label">Durability Phys</span>
+                    <span class="fs-val">{{ (data.selectedShip()!.durabilityPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityPhys! - 1) * 100).toFixed(0) }}%</span>
+                  </div>
+                  <div class="flight-stat">
+                    <span class="fs-label">Durability Enrg</span>
+                    <span class="fs-val">{{ (data.selectedShip()!.durabilityEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityEnrg! - 1) * 100).toFixed(0) }}%</span>
+                  </div>
+                }
+              </div>
               @if (data.selectedShip()!.hullDmgPhys !== undefined) {
                 <div class="flight-divider"></div>
                 <div class="flight-group">
-                  <div class="flight-group-label">Damage Durability</div>
+                  <div class="flight-group-label">Damage Modifiers</div>
                   <div class="flight-stat">
                     <span class="fs-label">Phys</span>
-                    <span class="fs-val">{{ ((1 - data.selectedShip()!.hullDmgPhys!) * 100).toFixed(0) }}%</span>
+                    <span class="fs-val">{{ (data.selectedShip()!.hullDmgPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgPhys! - 1) * 100).toFixed(0) }}%</span>
                   </div>
                   <div class="flight-stat">
                     <span class="fs-label">Enrg</span>
-                    <span class="fs-val">{{ ((1 - data.selectedShip()!.hullDmgEnrg!) * 100).toFixed(0) }}%</span>
+                    <span class="fs-val">{{ (data.selectedShip()!.hullDmgEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgEnrg! - 1) * 100).toFixed(0) }}%</span>
                   </div>
                   <div class="flight-stat">
                     <span class="fs-label">Dist</span>
-                    <span class="fs-val">{{ ((1 - data.selectedShip()!.hullDmgDist!) * 100).toFixed(0) }}%</span>
+                    <span class="fs-val">{{ (data.selectedShip()!.hullDmgDist! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgDist! - 1) * 100).toFixed(0) }}%</span>
                   </div>
                   @if (data.selectedShip()!.fusePenetrationMult !== undefined) {
                     <div class="flight-stat">
-                      <span class="fs-label">Fuse</span>
-                      <span class="fs-val">{{ ((1 - data.selectedShip()!.fusePenetrationMult!) * 100).toFixed(0) }}%</span>
+                      <span class="fs-label">Fuse Pen</span>
+                      <span class="fs-val">{{ (data.selectedShip()!.fusePenetrationMult! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.fusePenetrationMult! - 1) * 100).toFixed(0) }}%</span>
                     </div>
                   }
                   @if (data.selectedShip()!.componentPenetrationMult !== undefined) {
                     <div class="flight-stat">
-                      <span class="fs-label">Comp</span>
-                      <span class="fs-val">{{ ((1 - data.selectedShip()!.componentPenetrationMult!) * 100).toFixed(0) }}%</span>
+                      <span class="fs-label">Comp Pen</span>
+                      <span class="fs-val">{{ (data.selectedShip()!.componentPenetrationMult! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.componentPenetrationMult! - 1) * 100).toFixed(0) }}%</span>
                     </div>
                   }
                 </div>

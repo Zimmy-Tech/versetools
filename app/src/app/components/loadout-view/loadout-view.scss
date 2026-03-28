@@ -62,15 +62,20 @@
 
 .loadout-columns {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
   flex: 1;
   min-width: 0;
   overflow: auto;
 
-  .col-weapons { flex: 3 1 320px; min-width: 280px; }
-  .col-defense { flex: 2 1 240px; min-width: 220px; }
-  .col-systems { flex: 2 1 240px; min-width: 220px; }
+  .col-weapons { flex: 3; min-width: 0; }
+  .col-defense { flex: 2; min-width: 0; }
+  .col-systems { flex: 2; min-width: 0; }
+}
+
+@media (max-width: 1100px) {
+  .loadout-columns {
+    flex-direction: column;
+  }
 }
 
 .stats-column {

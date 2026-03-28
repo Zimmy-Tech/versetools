@@ -2531,6 +2531,7 @@ def enrich_armor_from_forge(ships, forge_dir, dcb_path=None):
         return
     # Collect DamageInfo refs for DCB lookup
     dmg_info_refs = {}  # ship className -> hex index
+    dmg_resist_refs = {}  # ship className -> hex index for DamageResistance
     enriched = 0
     for ship in ships.values():
         armor_cls = (ship.get("defaultLoadout") or {}).get("hardpoint_armor", "")
@@ -2567,6 +2568,10 @@ def enrich_armor_from_forge(ships, forge_dir, dcb_path=None):
                 m = re.search(r'damageMultiplier="DamageInfo\[([0-9A-Fa-f]+)\]"', txt)
                 if m:
                     dmg_info_refs[ship["className"]] = m.group(1)
+                # Extract DamageResistance reference for durability damage modifiers
+                m2 = re.search(r'DamageResistances="DamageResistance\[([0-9A-Fa-f]+)\]"', txt)
+                if m2:
+                    dmg_resist_refs[ship["className"]] = m2.group(1)
             hp_el = root.find(".//SHealthComponentParams")
             if hp_el is not None:
                 ship["armorHp"] = safe_float(hp_el.get("Health", 0))
@@ -2596,6 +2601,37 @@ def enrich_armor_from_forge(ships, forge_dir, dcb_path=None):
                 ship["hullDmgDist"] = round(dist, 2)
                 dmg_enriched += 1
             print(f"  Hull damage multipliers enriched: {dmg_enriched} ships")
+
+        # Read durability damage modifiers from DCB DamageResistance records
+        # Layout: 73 bytes per record
+        #   [0]   bool IgnoreMeleeDamage
+        #   [1]   f32 PhysicalResistance
+        #   [13]  f32 EnergyResistance
+        #   [17]  f32 DistortionResistance (slot A)
+        #   [21]  f32 DistortionResistance (slot B)
+        # Values are multipliers: <1 = damage reduced, >1 = damage amplified
+        dr_si = h["struct_by_name"].get("DamageResistance")
+        if dr_si is not None and dr_si in h["struct_data"] and dmg_resist_refs:
+            dr_off, dr_cnt = h["struct_data"][dr_si]
+            rec_size = 73
+            dr_enriched = 0
+            for cls_name, hex_idx in dmg_resist_refs.items():
+                idx = int(hex_idx, 16)
+                if idx >= dr_cnt:
+                    continue
+                base = dr_off + idx * rec_size
+                phys_r = struct.unpack_from("<f", dcb_d, base + 1)[0]
+                enrg_r = struct.unpack_from("<f", dcb_d, base + 13)[0]
+                # Distortion: check both slots, take the non-zero one
+                dist_a = struct.unpack_from("<f", dcb_d, base + 17)[0]
+                dist_b = struct.unpack_from("<f", dcb_d, base + 21)[0]
+                dist_r = dist_a if dist_a != 0 else dist_b
+                if cls_name in ships:
+                    ships[cls_name]["durabilityPhys"] = round(phys_r, 4)
+                    ships[cls_name]["durabilityEnrg"] = round(enrg_r, 4)
+                    ships[cls_name]["durabilityDist"] = round(dist_r, 4)
+                    dr_enriched += 1
+            print(f"  Durability damage modifiers enriched: {dr_enriched} ships")
 
 def enrich_salvage_buffs(ships, forge_dir):
     """Extract per-ship salvage hull buff values from salvage_buff_modifier XMLs."""

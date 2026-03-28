@@ -68,6 +68,9 @@ export interface Ship {
   hullDmgPhys?: number;
   hullDmgEnrg?: number;
   hullDmgDist?: number;
+  durabilityPhys?: number;
+  durabilityEnrg?: number;
+  durabilityDist?: number;
   signalEM?: number;
   signalCrossSection?: number;
   signalIR?: number;
