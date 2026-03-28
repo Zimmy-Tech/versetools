@@ -412,9 +412,100 @@
   &.rep-negative { color: var(--red); }
 }
 
+.popout-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.popout-tab {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { color: var(--text); }
+  &.active { color: var(--accent); border-bottom-color: var(--accent); }
+}
+
+.popout-empty {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  padding: 16px;
+  text-align: center;
+}
+
 .popout-section {
   border-top: 1px solid var(--border);
   padding-top: 8px;
+}
+
+// ── Reputation ladder ───────────────────────────────────
+
+.rep-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ladder-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 8px;
+  background: var(--bg3);
+  border-left: 3px solid transparent;
+  transition: all 0.1s;
+
+  &.active-rank {
+    border-left-color: var(--accent);
+    background: rgba(0, 200, 255, 0.06);
+  }
+
+  &.gated { opacity: 0.6; }
+}
+
+.ladder-rep {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  min-width: 50px;
+  text-align: right;
+}
+
+.ladder-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+
+.ladder-gated {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.ladder-ceiling {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  text-align: right;
+  padding: 4px 8px 0;
 }
 
 .popout-section-title {

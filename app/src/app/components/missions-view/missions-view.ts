@@ -39,9 +39,23 @@ interface MissionGiver {
   headquarters: string;
 }
 
+interface RepRank {
+  name: string;
+  minRep: number;
+  gated?: boolean;
+}
+
+interface RepLadder {
+  name: string;
+  displayName: string;
+  ceiling: number;
+  ranks: RepRank[];
+}
+
 interface MissionData {
   meta: { totalContracts: number; categories: Record<string, number>; missionGivers: number };
   missionGivers: Record<string, MissionGiver>;
+  reputationLadders?: Record<string, RepLadder>;
   contracts: Mission[];
   missions?: Mission[];  // legacy fallback
 }
@@ -55,6 +69,7 @@ interface MissionData {
 export class MissionsViewComponent {
   allMissions = signal<Mission[]>([]);
   private missionGivers = signal<Record<string, MissionGiver>>({});
+  private repLadders = signal<Record<string, RepLadder>>({});
   loaded = signal(false);
 
   searchQuery = signal('');
@@ -161,6 +176,7 @@ export class MissionsViewComponent {
 
   expandedId = signal<string | null>(null);
   selectedMission = signal<Mission | null>(null);
+  popoutTab = signal<'info' | 'reputation'>('info');
 
   constructor(private http: HttpClient, private data: DataService) {
     effect(() => {
@@ -170,6 +186,7 @@ export class MissionsViewComponent {
       this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe(data => {
         this.allMissions.set(data.contracts ?? data.missions ?? []);
         this.missionGivers.set(data.missionGivers);
+        this.repLadders.set(data.reputationLadders ?? {});
         this.loaded.set(true);
       });
     });
@@ -209,6 +226,37 @@ export class MissionsViewComponent {
     });
   }
 
+  getLadders(m: Mission): RepLadder[] {
+    const ladders = this.repLadders();
+    const scopes = m.repScopes ?? [];
+    // Also check repRequirements scope
+    const reqScopes = (m.repRequirements ?? []).map(r => r.scope).filter(s => s && s !== '?');
+    const allScopes = [...new Set([...scopes, ...reqScopes])];
+    const results: RepLadder[] = [];
+    for (const scope of allScopes) {
+      const ladder = ladders[scope.toLowerCase()];
+      if (ladder) results.push(ladder);
+    }
+    return results;
+  }
+
+  isActiveRank(m: Mission, ladder: RepLadder, rank: RepRank): boolean {
+    const reqs = m.repRequirements ?? [];
+    for (const req of reqs) {
+      const minIdx = ladder.ranks.findIndex(r => r.name === req.minRank);
+      const maxIdx = ladder.ranks.findIndex(r => r.name === req.maxRank);
+      const rankIdx = ladder.ranks.indexOf(rank);
+      if (minIdx >= 0 && maxIdx >= 0 && rankIdx >= minIdx && rankIdx <= maxIdx) return true;
+    }
+    return false;
+  }
+
+  fmtRep(n: number): string {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+    if (n >= 1_000) return (n / 1_000).toFixed(0) + 'k';
+    return n.toString();
+  }
+
   fmtReward(n: number): string {
     if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'm';
     if (n >= 1_000) return (n / 1_000).toFixed(1) + 'k';
@@ -221,6 +269,7 @@ export class MissionsViewComponent {
 
   selectMission(m: Mission, e: MouseEvent): void {
     e.stopPropagation();
+    this.popoutTab.set('info');
     this.selectedMission.set(this.selectedMission()?.className === m.className ? null : m);
   }
 

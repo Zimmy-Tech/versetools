@@ -121,87 +121,131 @@
           <div class="popout-title">{{ sm.title }}</div>
           <span class="popout-close" (click)="closePopout()">✕</span>
         </div>
+        <!-- Tab Nav -->
+        <div class="popout-tabs">
+          <button class="popout-tab" [class.active]="popoutTab() === 'info'" (click)="popoutTab.set('info')">Main Info</button>
+          <button class="popout-tab" [class.active]="popoutTab() === 'reputation'" (click)="popoutTab.set('reputation')">Reputation</button>
+        </div>
+
         <div class="popout-body">
-          <div class="popout-meta">
-            <span class="popout-cat">{{ sm.category }}</span>
-            @if (sm.lawful) {
-              <span class="meta-tag lawful">LAWFUL</span>
-            } @else {
-              <span class="meta-tag unlawful">UNLAWFUL</span>
-            }
-            @if (sm.system) { <span class="meta-item"><em>System</em> {{ sm.system }}</span> }
-            @if (sm.activity) { <span class="meta-tag activity">{{ sm.activity }}</span> }
-            @if (sm.multiSystem) { <span class="meta-tag multi">MULTI-SYSTEM</span> }
-          </div>
 
-          <div class="popout-stats">
-            <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
-            @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
-            @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
-            @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
-            @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
-            @if (sm.lifetimeMin) { <div class="popout-stat"><span class="ps-label">Lifetime</span><span class="ps-val">{{ sm.lifetimeMin }} min</span></div> }
-            @if (sm.respawnMin) { <div class="popout-stat"><span class="ps-label">Respawn</span><span class="ps-val">{{ sm.respawnMin }} min</span></div> }
-            @if (sm.timeLimitMin) { <div class="popout-stat"><span class="ps-label">Time Limit</span><span class="ps-val">{{ sm.timeLimitMin }} min</span></div> }
-            @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
-            @if (sm.abandonCooldownMin) { <div class="popout-stat"><span class="ps-label">Abandon CD</span><span class="ps-val">{{ sm.abandonCooldownMin }} min</span></div> }
-            @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
-            @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Rep Reward</span><span class="ps-val rep-positive">+{{ sm.repReward }}</span></div> }
-            @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure Penalty</span><span class="ps-val rep-negative">{{ sm.repPenalty }}</span></div> }
-          </div>
-
-          @if (sm.repScopes?.length) {
-            <div class="popout-section">
-              <div class="popout-section-title">Reputation Scopes</div>
-              <div class="popout-tags">
-                @for (scope of sm.repScopes; track scope) {
-                  <span class="rep-scope">{{ scope }}</span>
-                }
-              </div>
+          <!-- ═══ Main Info Tab ═══ -->
+          @if (popoutTab() === 'info') {
+            <div class="popout-meta">
+              <span class="popout-cat">{{ sm.category }}</span>
+              @if (sm.lawful) {
+                <span class="meta-tag lawful">LAWFUL</span>
+              } @else {
+                <span class="meta-tag unlawful">UNLAWFUL</span>
+              }
+              @if (sm.system) { <span class="meta-item"><em>System</em> {{ sm.system }}</span> }
+              @if (sm.activity) { <span class="meta-tag activity">{{ sm.activity }}</span> }
+              @if (sm.multiSystem) { <span class="meta-tag multi">MULTI-SYSTEM</span> }
             </div>
-          }
 
-          @if (uniqueReqs(sm); as reqs) {
-            @if (reqs.length) {
+            <div class="popout-stats">
+              <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
+              @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
+              @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
+              @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
+              @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
+              @if (sm.lifetimeMin) { <div class="popout-stat"><span class="ps-label">Lifetime</span><span class="ps-val">{{ sm.lifetimeMin }} min</span></div> }
+              @if (sm.respawnMin) { <div class="popout-stat"><span class="ps-label">Respawn</span><span class="ps-val">{{ sm.respawnMin }} min</span></div> }
+              @if (sm.timeLimitMin) { <div class="popout-stat"><span class="ps-label">Time Limit</span><span class="ps-val">{{ sm.timeLimitMin }} min</span></div> }
+              @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
+              @if (sm.abandonCooldownMin) { <div class="popout-stat"><span class="ps-label">Abandon CD</span><span class="ps-val">{{ sm.abandonCooldownMin }} min</span></div> }
+              @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
+              @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Rep Reward</span><span class="ps-val rep-positive">+{{ sm.repReward }}</span></div> }
+              @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure Penalty</span><span class="ps-val rep-negative">{{ sm.repPenalty }}</span></div> }
+            </div>
+
+            @if (sm.missionFlow?.length) {
               <div class="popout-section">
-                <div class="popout-section-title">Reputation Requirements</div>
-                @for (req of reqs; track req.scope) {
-                  <div class="popout-stat"><span class="ps-label">Scope</span><span class="ps-val">{{ fmtScope(req.scope) }}</span></div>
-                  <div class="popout-stat"><span class="ps-label">Required Rep</span><span class="ps-val rep-min">{{ req.minRank }}</span></div>
-                  <div class="popout-stat"><span class="ps-label">Max Rep</span><span class="ps-val rep-max">{{ req.maxRank }}</span></div>
-                }
+                <div class="popout-section-title">Mission Flow</div>
+                <div class="mission-flow">
+                  @for (phase of sm.missionFlow; track $index) {
+                    <div class="flow-step" [class.sub-step]="phase.startsWith('  ')">{{ phase.trim() }}</div>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (sm.blueprintRewards?.length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Blueprint Rewards</div>
+                <div class="popout-tags">
+                  @for (bp of sm.blueprintRewards; track bp) {
+                    <span class="bp-tag">{{ bp }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (sm.description) {
+              <div class="popout-section">
+                <div class="popout-section-title">Description</div>
+                <div class="popout-desc">{{ cleanDesc(sm.description) }}</div>
               </div>
             }
           }
 
-          @if (sm.missionFlow?.length) {
-            <div class="popout-section">
-              <div class="popout-section-title">Mission Flow</div>
-              <div class="mission-flow">
-                @for (phase of sm.missionFlow; track $index) {
-                  <div class="flow-step" [class.sub-step]="phase.startsWith('  ')">{{ phase.trim() }}</div>
-                }
+          <!-- ═══ Reputation Tab ═══ -->
+          @if (popoutTab() === 'reputation') {
+            @if (sm.repScopes?.length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Reputation Scopes</div>
+                <div class="popout-tags">
+                  @for (scope of sm.repScopes; track scope) {
+                    <span class="rep-scope">{{ scope }}</span>
+                  }
+                </div>
               </div>
-            </div>
+            }
+
+            @if (uniqueReqs(sm); as reqs) {
+              @if (reqs.length) {
+                <div class="popout-section">
+                  <div class="popout-section-title">Requirements</div>
+                  @for (req of reqs; track req.scope) {
+                    <div class="popout-stat"><span class="ps-label">Scope</span><span class="ps-val">{{ fmtScope(req.scope) }}</span></div>
+                    <div class="popout-stat"><span class="ps-label">Required Rep</span><span class="ps-val rep-min">{{ req.minRank }}</span></div>
+                    <div class="popout-stat"><span class="ps-label">Max Rep</span><span class="ps-val rep-max">{{ req.maxRank }}</span></div>
+                  }
+                </div>
+              }
+            }
+
+            @if (sm.repReward || sm.repPenalty) {
+              <div class="popout-section">
+                <div class="popout-section-title">Rewards / Penalties</div>
+                @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Success</span><span class="ps-val rep-positive">+{{ sm.repReward }} rep</span></div> }
+                @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure</span><span class="ps-val rep-negative">{{ sm.repPenalty }} rep</span></div> }
+              </div>
+            }
+
+            @for (ladder of getLadders(sm); track ladder.name) {
+              <div class="popout-section">
+                <div class="popout-section-title">{{ ladder.displayName }} Ranks</div>
+                <div class="rep-ladder">
+                  @for (rank of ladder.ranks; track rank.minRep) {
+                    <div class="ladder-row"
+                         [class.active-rank]="isActiveRank(sm, ladder, rank)"
+                         [class.gated]="rank.gated">
+                      <span class="ladder-rep">{{ fmtRep(rank.minRep) }}</span>
+                      <span class="ladder-name">{{ rank.name }}</span>
+                      @if (rank.gated) { <span class="ladder-gated">GATED</span> }
+                    </div>
+                  }
+                  <div class="ladder-ceiling">Ceiling: {{ fmtRep(ladder.ceiling) }}</div>
+                </div>
+              </div>
+            }
+
+            @if (!sm.repScopes?.length && !getLadders(sm).length) {
+              <div class="popout-empty">No reputation data available for this contract.</div>
+            }
           }
 
-          @if (sm.blueprintRewards?.length) {
-            <div class="popout-section">
-              <div class="popout-section-title">Blueprint Rewards</div>
-              <div class="popout-tags">
-                @for (bp of sm.blueprintRewards; track bp) {
-                  <span class="bp-tag">{{ bp }}</span>
-                }
-              </div>
-            </div>
-          }
-
-          @if (sm.description) {
-            <div class="popout-section">
-              <div class="popout-section-title">Description</div>
-              <div class="popout-desc">{{ cleanDesc(sm.description) }}</div>
-            </div>
-          }
         </div>
       </div>
     }

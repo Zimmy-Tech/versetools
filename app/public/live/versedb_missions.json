@@ -1120,98 +1120,8 @@
           "gated": false
         },
         {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -9500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -9000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -8500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -8000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -7500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -7000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -6500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -6000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -5500,
-          "gated": false
-        },
-        {
           "name": "Disliked",
           "minRep": -5000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -4500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -4000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -3500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -3000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -2500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -2000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -1500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -1000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -500,
           "gated": false
         },
         {
@@ -1220,98 +1130,8 @@
           "gated": true
         },
         {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 1000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 1500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 2000,
-          "gated": false
-        },
-        {
           "name": "Liked",
           "minRep": 2500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 3000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 3500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 4000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 4500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 5000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 5500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 6500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 6500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 7000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 7500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 8000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 8500,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 9000,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 9500,
           "gated": false
         },
         {
@@ -1675,11 +1495,6 @@
       "ceiling": 640000,
       "ranks": [
         {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -1000,
-          "gated": false
-        },
-        {
           "name": "RacingRep_Ground_Rank0",
           "minRep": 0,
           "gated": true
@@ -1850,33 +1665,6 @@
         {
           "name": "Rank I",
           "minRep": 1000,
-          "gated": false
-        }
-      ]
-    },
-    "npc_fired": {
-      "name": "NPC_Fired",
-      "displayName": "<= PLACEHOLDER =>",
-      "ceiling": 50,
-      "ranks": [
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -150,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -100,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": -50,
-          "gated": false
-        },
-        {
-          "name": "<= PLACEHOLDER =>",
-          "minRep": 0,
           "gated": false
         }
       ]

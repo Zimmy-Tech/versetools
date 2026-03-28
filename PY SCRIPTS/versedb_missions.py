@@ -762,6 +762,7 @@ def main():
                     info = all_standings.get(gk)
                     if info:
                         ranks.append(info)
+                ranks = [r for r in ranks if "PLACEHOLDER" not in r["name"]]
                 ranks.sort(key=lambda x: x["minRep"])
 
                 if ranks:
