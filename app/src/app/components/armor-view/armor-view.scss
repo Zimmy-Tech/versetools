@@ -12,7 +12,7 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  max-width: 500px;
+  max-width: 900px;
 }
 
 // ── Filter bar ───────────────────────────────────────────
@@ -201,8 +201,51 @@
 
 .armor-icon {
   font-weight: 700;
-  &.pen { color: var(--green); }
-  &.def { color: var(--red); }
+  &.pen { color: var(--green); }   // penetrates = good for attacker
+  &.def { color: var(--red); }     // deflected = bad for attacker
+}
+
+// ── Two-column layout ───────────────────────────────────
+
+.armor-explainer {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  padding: 8px 10px;
+  background: rgba(0, 200, 255, 0.04);
+  border-left: 2px solid var(--accent2);
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.armor-columns-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.armor-col-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.armor-col-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+
+  &.penetrates { color: var(--green); }
+  &.deflected { color: var(--red); }
 }
 
 // ── Empty state ──────────────────────────────────────────

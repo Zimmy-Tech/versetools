@@ -410,7 +410,7 @@ export class DpsPanelComponent {
 
     const buildList = (deflect: number, dmgType: 'physical' | 'energy') => {
       if (deflect <= 0) return [];
-      const relevant = allWeapons.filter(w => (w.damage![dmgType] ?? 0) > 0);
+      const relevant = allWeapons.filter(w => (w.damage![dmgType] ?? 0) >= 1);
 
       // Pinned weapons
       const pinned = new Set<string>();
@@ -468,7 +468,7 @@ export class DpsPanelComponent {
     const buildFull = (deflect: number, dmgType: 'physical' | 'energy') => {
       if (deflect <= 0) return [];
       return allWeapons
-        .filter(w => (w.damage![dmgType] ?? 0) > 0)
+        .filter(w => (w.damage![dmgType] ?? 0) >= 1)
         .map(w => ({
           name: w.name,
           size: w.size ?? 0,

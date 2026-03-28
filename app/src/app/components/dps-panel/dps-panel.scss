@@ -281,3 +281,44 @@
   gap: 3px;
   padding: 0 4px;
 }
+
+.armor-popout {
+  width: 700px;
+}
+
+.armor-explainer {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  background: rgba(0, 200, 255, 0.04);
+  border-left: 2px solid var(--accent2);
+  line-height: 1.5;
+}
+
+.armor-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.armor-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.armor-col-header {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+
+  &.deflected { color: var(--green); }
+  &.penetrates { color: var(--red); }
+}

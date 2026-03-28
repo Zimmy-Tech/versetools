@@ -168,39 +168,78 @@
 <!-- Armor Detail Popout -->
 @if (showArmorDetail()) {
   <div class="popout-overlay" (click)="showArmorDetail.set(false)"></div>
-  <div class="popout-panel">
+  <div class="popout-panel armor-popout">
     <div class="popout-header">
       <span class="popout-title">Armor Check — {{ data.selectedShip()?.name }}</span>
       <span class="popout-close" (click)="showArmorDetail.set(false)">&times;</span>
     </div>
     <div class="popout-body">
+      <div class="armor-explainer">Weapons below your armor's deflect value are stopped (damage reduced to zero). Weapons above it penetrate and deal full damage.</div>
       @if (armorDetailList(); as dl) {
         @if (dl.physical.length > 0) {
           <div class="popout-section-title">Physical — Deflect: {{ dl.physDeflect }}</div>
-          <div class="armor-detail-list">
-            @for (w of dl.physical; track w.name) {
-              <div class="stat-row">
-                <span class="stat-label">
-                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
-                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
-                </span>
-                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
-              </div>
-            }
+          <div class="armor-columns">
+            <div class="armor-col">
+              <div class="armor-col-header deflected">Deflected</div>
+              @for (w of dl.physical; track w.name) {
+                @if (!w.penetrates) {
+                  <div class="stat-row">
+                    <span class="stat-label">
+                      <span class="armor-icon pen">&#x2713;</span>
+                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                    </span>
+                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+                  </div>
+                }
+              }
+            </div>
+            <div class="armor-col">
+              <div class="armor-col-header penetrates">Penetrates</div>
+              @for (w of dl.physical; track w.name) {
+                @if (w.penetrates) {
+                  <div class="stat-row">
+                    <span class="stat-label">
+                      <span class="armor-icon def">&#x2717;</span>
+                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                    </span>
+                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+                  </div>
+                }
+              }
+            </div>
           </div>
         }
         @if (dl.energy.length > 0) {
           <div class="popout-section-title" [style.margin-top]="dl.physical.length > 0 ? '16px' : '0'">Energy — Deflect: {{ dl.enrgDeflect }}</div>
-          <div class="armor-detail-list">
-            @for (w of dl.energy; track w.name) {
-              <div class="stat-row">
-                <span class="stat-label">
-                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
-                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
-                </span>
-                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
-              </div>
-            }
+          <div class="armor-columns">
+            <div class="armor-col">
+              <div class="armor-col-header deflected">Deflected</div>
+              @for (w of dl.energy; track w.name) {
+                @if (!w.penetrates) {
+                  <div class="stat-row">
+                    <span class="stat-label">
+                      <span class="armor-icon pen">&#x2713;</span>
+                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                    </span>
+                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+                  </div>
+                }
+              }
+            </div>
+            <div class="armor-col">
+              <div class="armor-col-header penetrates">Penetrates</div>
+              @for (w of dl.energy; track w.name) {
+                @if (w.penetrates) {
+                  <div class="stat-row">
+                    <span class="stat-label">
+                      <span class="armor-icon def">&#x2717;</span>
+                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+                    </span>
+                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+                  </div>
+                }
+              }
+            </div>
           </div>
         }
       }

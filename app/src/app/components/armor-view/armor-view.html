@@ -16,6 +16,8 @@
     </select>
   </div>
 
+  <div class="armor-explainer">Weapons below a ship's armor deflect value are stopped (damage reduced to zero). Weapons above it penetrate and deal full damage.</div>
+
   @if (activeWeapon(); as w) {
     <!-- Weapon info -->
     <div class="weapon-info">
@@ -32,32 +34,70 @@
       }
     </div>
 
-    <!-- Nearby ships -->
-    <div class="ship-list-wrap">
-      <table class="ship-table">
-        <thead>
-          <tr>
-            <th class="th-status"></th>
-            <th>Ship</th>
-            <th class="th-deflect">Deflect</th>
-            <th class="th-diff">Margin</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (row of nearbyShips(); track row.ship.className) {
-            <tr [class.row-deflected]="row.deflected" [class.row-penetrated]="!row.deflected">
-              <td class="cell-status">
-                <span class="armor-icon" [class.pen]="!row.deflected" [class.def]="row.deflected">{{ row.deflected ? '\u2717' : '\u2713' }}</span>
-              </td>
-              <td class="cell-ship">{{ row.ship.name }}</td>
-              <td class="cell-deflect">{{ row.deflect }}</td>
-              <td class="cell-diff" [class.positive]="row.deflected" [class.negative]="!row.deflected">
-                {{ row.deflected ? '+' : '' }}{{ (row.deflect - (w.damage![dmgType()] ?? 0)).toFixed(1) }}
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    <!-- Ship columns: Deflected | Penetrated -->
+    <div class="armor-columns-wrap">
+      <div class="armor-col-wrap">
+        <div class="armor-col-title penetrates">Penetrates</div>
+        <div class="ship-list-wrap">
+          <table class="ship-table">
+            <thead>
+              <tr>
+                <th class="th-status"></th>
+                <th>Ship</th>
+                <th class="th-deflect">Deflect</th>
+                <th class="th-diff">Margin</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of nearbyShips(); track row.ship.className) {
+                @if (!row.deflected) {
+                  <tr class="row-penetrated">
+                    <td class="cell-status">
+                      <span class="armor-icon pen">&#x2713;</span>
+                    </td>
+                    <td class="cell-ship">{{ row.ship.name }}</td>
+                    <td class="cell-deflect">{{ row.deflect }}</td>
+                    <td class="cell-diff negative">
+                      {{ (row.deflect - (w.damage![dmgType()] ?? 0)).toFixed(1) }}
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="armor-col-wrap">
+        <div class="armor-col-title deflected">Deflected</div>
+        <div class="ship-list-wrap">
+          <table class="ship-table">
+            <thead>
+              <tr>
+                <th class="th-status"></th>
+                <th>Ship</th>
+                <th class="th-deflect">Deflect</th>
+                <th class="th-diff">Margin</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of nearbyShips(); track row.ship.className) {
+                @if (row.deflected) {
+                  <tr class="row-deflected">
+                    <td class="cell-status">
+                      <span class="armor-icon def">&#x2717;</span>
+                    </td>
+                    <td class="cell-ship">{{ row.ship.name }}</td>
+                    <td class="cell-deflect">{{ row.deflect }}</td>
+                    <td class="cell-diff positive">
+                      +{{ (row.deflect - (w.damage![dmgType()] ?? 0)).toFixed(1) }}
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   } @else {
     <div class="empty-state">
