@@ -3810,6 +3810,15 @@ def main(mode: str = "live"):
         item.pop("_damageInfoIdx", None)
         item.pop("_miningModRefs", None)
         item.pop("_miningDpsRef", None)
+    # Display-name overrides (localization corrections)
+    DISPLAY_NAME_FIXES = {
+        "Havoc Scattergun Sharkmouth Edition": "Havoc Sharkmouth Edition",
+        "Hellion Scattergun Sharkmouth Edition": "Hellion Sharkmouth Edition",
+        "Predator Scattergun Sharkmouth Edition": "Predator Sharkmouth Edition",
+    }
+    for item in items.values():
+        if item.get("name") in DISPLAY_NAME_FIXES:
+            item["name"] = DISPLAY_NAME_FIXES[item["name"]]
     SKIP_SHIPS = {
         "AEGS_Idris_FW_25", "RSI_Bengal",               # capitals — no usable loadout data
         "EA_destructable_probe", "Low_Poly_Ship",        # not real ships
