@@ -216,6 +216,7 @@
   &.prison { color: #b07ae8; border: 1px solid rgba(176, 122, 232, 0.3); }
   &.multi { color: #4adfff; border: 1px solid rgba(74, 223, 255, 0.3); }
   &.activity { color: #7ae8a0; border: 1px solid rgba(122, 232, 160, 0.3); }
+  &.system { color: var(--text2); border: 1px solid var(--border2); }
 }
 
 .mission-rep {
