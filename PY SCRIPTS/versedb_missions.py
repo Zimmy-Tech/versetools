@@ -525,6 +525,18 @@ def main():
                         elif booleans[2] == '1':  # failure
                             rep_failure = amt
 
+                # Extract rep scopes from contractResultReputationAmounts
+                result_scopes = set()
+                for rs_m in re.finditer(r'reputationScope="([^"]+)"', body):
+                    scope_name = scope_map.get(guid_key(rs_m.group(1)), "")
+                    if scope_name and scope_name.startswith("reputationscope_"):
+                        scope_name = scope_name.replace("reputationscope_", "")
+                    if scope_name:
+                        result_scopes.add(scope_name)
+                # Also include handler-level scope
+                if gen_scope:
+                    result_scopes.add(gen_scope)
+
                 entry = {
                     "className": debug_name,
                     "title": title,
@@ -537,6 +549,8 @@ def main():
                     "maxPlayers": 1,
                     "canShare": False,
                 }
+                if result_scopes:
+                    entry["repScopes"] = sorted(result_scopes)
                 if rep_success:
                     entry["repReward"] = rep_success
                 if rep_failure:
@@ -698,10 +712,18 @@ def main():
                     m["missionFlow"] = flow
                 if c.get("repRequirements") and not m.get("repRequirements"):
                     m["repRequirements"] = c["repRequirements"]
-                if c.get("repReward") and not m.get("repReward"):
-                    m["repReward"] = c["repReward"]
-                if c.get("repPenalty") and not m.get("repPenalty"):
-                    m["repPenalty"] = c["repPenalty"]
+                # Match rep values by className similarity (boss vs specific, etc.)
+                # If classNames share a keyword pattern, prefer that match
+                c_cls = c.get("className", "").lower()
+                m_cls = m.get("className", "").lower()
+                cls_match = any(kw in c_cls and kw in m_cls
+                                for kw in ["boss", "specific", "elite", "standard", "hard", "easy"])
+                if c.get("repReward"):
+                    if cls_match or not m.get("repReward"):
+                        m["repReward"] = c["repReward"]
+                if c.get("repPenalty"):
+                    if cls_match or not m.get("repPenalty"):
+                        m["repPenalty"] = c["repPenalty"]
             merged_contracts.add(i)
 
     # Keep contracts that didn't merge into a mission
@@ -709,6 +731,11 @@ def main():
     all_entries = missions + remaining_contracts
     print(f"  Merged {merged_bp} blueprint rewards from contracts into missions")
     print(f"  Dropped {len(merged_contracts)} duplicate contracts, kept {len(remaining_contracts)}")
+
+    # Flag boss contracts
+    for m in all_entries:
+        if "boss" in m.get("className", "").lower():
+            m["boss"] = True
 
     # Sort by category then reward
     all_entries.sort(key=lambda m: (m["category"], -(m.get("reward", 0))))

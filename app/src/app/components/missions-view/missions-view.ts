@@ -31,6 +31,7 @@ interface Mission {
   blueprintRewards?: string[];
   repReward?: number;
   repPenalty?: number;
+  boss?: boolean;
 }
 
 interface MissionGiver {

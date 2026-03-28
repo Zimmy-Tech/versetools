@@ -90,6 +90,9 @@
             </div>
           </div>
           <div class="mission-meta">
+            @if (m.boss) {
+              <span class="meta-tag boss">BOSS</span>
+            }
             @if (m.lawful) {
               <span class="meta-tag lawful">LAWFUL</span>
             } @else {
@@ -133,6 +136,9 @@
           @if (popoutTab() === 'info') {
             <div class="popout-meta">
               <span class="popout-cat">{{ sm.category }}</span>
+              @if (sm.boss) {
+                <span class="meta-tag boss">BOSS</span>
+              }
               @if (sm.lawful) {
                 <span class="meta-tag lawful">LAWFUL</span>
               } @else {
