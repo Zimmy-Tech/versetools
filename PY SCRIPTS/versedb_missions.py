@@ -297,6 +297,25 @@ def main():
     bp_pool_map = {}  # sorted GUID → pool name
     bp_pool_items = {}  # pool name → [resolved item names]
     if bp_pool_dir.exists():
+        # Build scitem displayName lookup: class_name → localized display name
+        # Used as fallback when direct loc key lookup fails for blueprints
+        scitem_display = {}  # class_name → display name
+        scitem_base = FORGE_DIR / "entities" / "scitem"
+        if scitem_base.exists():
+            for sf in scitem_base.rglob("*.xml.xml"):
+                try:
+                    stxt = open(sf, encoding="utf-8").read()
+                    dm = re.search(r'SCItemPurchasableParams[^>]*displayName="@([^"]+)"', stxt)
+                    if dm:
+                        loc_key = dm.group(1).lower()
+                        resolved = loc.get(loc_key, "")
+                        if resolved and resolved != "@LOC_UNINITIALIZED":
+                            cls = sf.stem.replace(".xml", "")
+                            scitem_display[cls] = resolved
+                except Exception:
+                    pass
+            print(f"  Built scitem display name cache: {len(scitem_display)} items")
+
         # Build craft blueprint GUID → display name
         craft_dir = FORGE_DIR / "crafting" / "blueprints"
         craft_names = {}  # sorted GUID → display name
@@ -309,7 +328,8 @@ def main():
                         raw = cf.stem.replace(".xml", "").replace("bp_craft_", "")
                         # Try localization: item_Name + rawname (no separator) or item_Name_ + rawname
                         display = (loc.get(f"item_name{raw}".lower(), "") or
-                                   loc.get(f"item_name_{raw}".lower(), ""))
+                                   loc.get(f"item_name_{raw}".lower(), "") or
+                                   scitem_display.get(raw, ""))
                         craft_names[guid_key(cref.group(1))] = display or raw
                 except Exception:
                     pass

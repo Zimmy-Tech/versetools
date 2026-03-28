@@ -49,18 +49,18 @@ export class BlueprintFinderComponent {
   setFilter = signal('');
 
   readonly armorSets = [
-    'Antium', 'Testudo', 'Geist', 'Palatino', 'Corbel', 'Monde', 'Artimex',
-    'Morozov-SH', 'Inquisitor', 'Aril', 'Strata', 'DustUp', 'Calico',
-    'Defiance', 'Aves', 'Arden-SL', 'ORC-mkV', 'Citadel', 'Lynx',
-    'TrueDef-Pro', 'Venture', 'Piecemeal',
+    'Antium', 'Arden-SL', 'Aril', 'Artimex', 'Aves', 'Calico', 'Carnifex',
+    'Citadel', 'Corbel', 'Defiance', 'Dust', 'DustUp', 'Geist', 'Inquisitor',
+    'Lynx', 'Monde', 'Morozov-SH', 'ORC-mkV', 'PAB-1', 'Palatino',
+    'Pembroke', 'Piecemeal', 'Strata', 'Testudo', 'TrueDef-Pro', 'Venture',
   ];
 
   readonly weaponSets = [
     'A03', 'Arclight', 'Arrowhead', 'Atzkav', 'BR-2', 'C54', 'Coda',
     'Custodian', 'Deadrig', 'Devastator', 'F55', 'FS-9', 'Fresnel',
-    'Gallant', 'Karna', 'Killshot', 'Lumin', 'P8-SC', 'Prism',
-    'Pulse', 'Pulverizer', 'Quartz', 'R97', 'Ravager', 'S71',
-    'Scalpel', 'Tripledown', 'Yubarev', 'Zenith',
+    'Gallant', 'Karna', 'Killshot', 'Lumin', 'P6-LR', 'P8-SC',
+    'Parallax', 'Prism', 'Pulse', 'Pulverizer', 'Quartz', 'R97',
+    'Ravager-212', 'S71', 'Scalpel', 'Tripledown', 'Yubarev', 'Zenith',
   ];
 
   toggleSet(set: string): void {
