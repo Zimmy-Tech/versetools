@@ -27,7 +27,7 @@
 
           <div class="formula-card">
             <h3>Total Power Used</h3>
-            <pre class="formula">Total Power Used = sum( Component Pips ) + Weapon Pips + Tool Pips + Tractor Pips</pre>
+            <pre class="formula">Total Power Used = sum( Component Pips ) + Weapon Pips + Thruster Pips + Tool Pips + Tractor Pips</pre>
             <p>Cannot exceed Total Power Output. The UI clamps allocation changes to keep
               usage within budget.</p>
           </div>
@@ -226,6 +226,119 @@ Absorption: fraction of damage applied to shield vs hull</pre>
         </div>
       }
 
+      <!-- ═══════════════════ SIGNATURES ═══════════════════ -->
+      @case ('signatures') {
+        <div class="section">
+          <h2>Signatures (EM / IR / CS)</h2>
+          <p class="intro">Ship signatures determine detectability by sensors and missile locks.
+            Three types: Electromagnetic (EM), Infrared (IR), and Cross-Section (CS).
+            Validated against in-game values and spviewer across 4 ships.</p>
+
+          <div class="formula-card">
+            <h3>Electromagnetic (EM) Signature</h3>
+            <pre class="formula">EM = sum( Component EM )
+
+  Power Plants:  emMax &times; ( Total Power Used / Total Power Output )
+  Weapons:       emSignature   (if weapon pool > 0, else 0)
+  Others:        emMax &times; Band Modifier at Current Pips
+    (Shields, Coolers, QD, Life Support, Radar)</pre>
+            <p>Power plant EM scales with power utilization &mdash; freeing pips reduces plant signature.
+              Validated via Aurora SE cooler-swap test (predicted delta 2,230 vs game delta 2,200).
+              The ship armor signalEM multiplier does NOT apply to the displayed total.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Infrared (IR) Signature</h3>
+            <pre class="formula">IR = irMax &times; max( MCF, Demand / Supply ) &times; Armor signalIR
+
+where:
+  irMax    = sum( Cooler irSignature &times; Band Modifier )  for active coolers
+  MCF      = weighted average of active coolers' Min Consumption Fraction
+  Demand   = total cooling demand (all components + thrusters)
+  Supply   = total cooling supply (all coolers at current pips)</pre>
+            <p>At normal load, coolers idle at their MCF fraction (e.g., 0.333 for Bracer coolers).
+              When overloaded (one cooler off), the demand/supply ratio takes over and IR spikes.
+              Unlike EM, the armor IR multiplier IS applied to the displayed value.
+              Thrusters contribute to cooling demand (~1 unit per pip) despite having 0 static IR.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Cross-Section (CS)</h3>
+            <pre class="formula">CS = Hull Silhouette Area &times; Global CS Factor (10) &times; Armor signalCrossSection
+
+Directional: Front, Side, Top silhouette areas (m&sup2;)
+Computed from the ship's 3D mesh (SDF projection), not stored in data files.</pre>
+            <p>CS is purely geometry-based &mdash; no component contributes to it.
+              The game displays the largest axis (typically top view). CS values
+              cannot be extracted from the DCB; they require mesh data.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Stealth Components</h3>
+            <div class="connections">
+              <span class="tag">TYDT</span> Stealth coolers (lowest IR/EM) and stealth power plants
+              <span class="tag">RACO</span> Stealth quantum drive (Drift: 7,500 vs 18,000 standard S1)
+              <span class="tag">ASAS</span> Stealth shields (Obscura/Umbra: 500 EM vs 750+ standard)
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ═══════════════════ ARMOR ═══════════════════ -->
+      @case ('armor') {
+        <div class="section">
+          <h2>Armor</h2>
+          <p class="intro">Ship armor provides HP, damage deflection, and damage/durability
+            modifiers. Armor is a fixed property of each ship hull &mdash; not swappable.</p>
+
+          <div class="formula-card">
+            <h3>Armor Deflection</h3>
+            <pre class="formula">If Weapon Alpha &lt;= Armor Deflect Value  &rarr;  Damage = 0  (deflected)
+If Weapon Alpha &gt;  Armor Deflect Value  &rarr;  Full damage passes through
+
+Separate deflect thresholds for Physical and Energy damage.</pre>
+            <p>Weapons below the deflect threshold deal zero damage. The Armor Check panel
+              shows which weapons penetrate and which are stopped, with the 6 closest
+              weapons to the threshold highlighted.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Damage Modifiers</h3>
+            <pre class="formula">Effective Damage = Incoming Damage &times; Hull Damage Multiplier
+
+  Multiplier &lt; 1.0  &rarr;  damage reduced  (e.g., 0.75 = -25%)
+  Multiplier = 1.0  &rarr;  neutral
+  Multiplier &gt; 1.0  &rarr;  damage amplified
+
+Per-type: Physical, Energy, Distortion</pre>
+            <p>These modifiers come from the ship armor's DamageInfo record.
+              Most ships take reduced physical damage but amplified energy damage.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Durability Modifiers</h3>
+            <pre class="formula">Armor HP Damage = Incoming Damage &times; Durability Multiplier
+
+Per-type: Physical, Energy (from DamageResistance record)
+
+Example (Gladius): Physical -19%, Energy +21%
+  Armor takes 19% less physical damage but 21% more energy damage to its HP pool.</pre>
+            <p>Separate from hull damage modifiers &mdash; these affect how fast the armor
+              itself degrades. Extracted from the DCB DamageResistance struct (73-byte records).</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Penetration Multipliers</h3>
+            <pre class="formula">Fuse Penetration   = chance of projectile reaching internal fuses
+Component Penetration = chance of hitting internal components
+
+Values are multipliers (0.0 = fully protected, 1.0 = no protection)</pre>
+            <p>These determine how vulnerable a ship's internal systems are to damage
+              that passes through the armor. Lower values = better protection.</p>
+          </div>
+        </div>
+      }
+
       <!-- ═══════════════════ COOLING ═══════════════════ -->
       @case ('cooling') {
         <div class="section">
@@ -249,6 +362,7 @@ if Pips = 0  &rarr;  Supply = 0</pre>
 Radar / Quantum Drive:    Demand = Allocated Pips              [linear with pips]
 Shield / Cooler / Life Support:
                           Demand = Power Cost &times; Band Modifier at Current Pips
+Thrusters:                Demand = Thruster Pips               [~1 unit per pip]
 Tools:                    Demand = 1 per tool                  [always on]</pre>
             <p>Different component types compute demand differently. Power plants have
               fixed demand based on output. Most others scale with their band modifier.</p>
@@ -459,44 +573,61 @@ missions award each blueprint.</pre>
         </div>
       }
 
-      <!-- ═══════════════════ MISSIONS ═══════════════════ -->
-      @case ('missions') {
+      <!-- ═══════════════════ CONTRACTS ═══════════════════ -->
+      @case ('contracts') {
         <div class="section">
-          <h2>Missions</h2>
-          <p class="intro">Mission Data is crowd sourced, and is a Work in Progress.</p>
+          <h2>Contracts</h2>
+          <p class="intro">Contract data is extracted from both the mission broker system (legacy)
+            and the contract generator system (current). Matching entries are merged, with
+            blueprint rewards and rep data flowing from contract generators into mission broker entries.</p>
+
+          <div class="formula-card">
+            <h3>Reputation Ladders</h3>
+            <pre class="formula">Each reputation scope defines a progression ladder:
+  Scope      = category (e.g., Assassination, Bounty Hunting, Security)
+  Ranks      = ordered tiers with minReputation thresholds
+  Ceiling    = maximum reputation value for the scope
+  Gated      = some ranks require manual unlock (e.g., initial application)
+
+38 scopes extracted with 224 total ranks across all ladders.</pre>
+            <p>Reputation thresholds are extracted from standing records in the DCB.
+              Each contract's detail view shows the applicable ladder with the
+              required rank range highlighted.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Rep Rewards &amp; Penalties</h3>
+            <pre class="formula">Success:  + Rep Amount   (e.g., +500 for Vaughn assassination)
+Failure:  - Rep Amount   (e.g., -250 for failed assassination)
+
+54 reputation reward tiers extracted from forge XMLs.
+Amounts range from -640,000 to +64,000.</pre>
+            <p>Each contract has success and failure reputation results. The success result
+              fires when the first Boolean in the result pattern is 1; failure when the third is 1.
+              Reward GUIDs are resolved against SReputationRewardAmount records.</p>
+          </div>
 
           <div class="formula-card">
             <h3>Contract Cooldowns</h3>
             <pre class="formula">Completion Cooldown = time before the contract can be retaken (minutes)
 Abandon Cooldown    = time before an abandoned contract reappears (minutes)</pre>
             <p>Each contract has two independent cooldown timers. The completion cooldown
-              applies after successfully finishing the mission; the abandon cooldown applies
+              applies after successfully finishing the contract; the abandon cooldown applies
               if the player drops it.</p>
           </div>
 
           <div class="formula-card">
-            <h3>Chain Prerequisites</h3>
-            <pre class="formula">A mission may require completing specific prior missions.
-Work in Progress.</pre>
-            <p>Chain missions require completing earlier missions in the sequence.
-              Prerequisite identifiers are mapped to display names during extraction.</p>
-          </div>
-
-          <div class="formula-card status-wip">
-            <h3>Reward Calculation</h3>
-            <pre class="formula">Work in Progress.
-Known inputs: base reward, difficulty tier, reputation scope.
-Suspected modifiers: standing level, risk factor, location.</pre>
-            <p>The exact reward formula has not been fully decoded. Displayed reward
-              values are currently extracted as static values where available.</p>
-          </div>
-
-          <div class="formula-card status-wip">
-            <h3>Standing Requirements</h3>
-            <pre class="formula">Standing tiers: Applicant, Rank I &ndash; VI
-Work in Progress.</pre>
-            <p>Reputation/standing gates are defined per-contract but the numeric
-              thresholds for each tier are not yet fully extracted.</p>
+            <h3>Data Merge Pipeline</h3>
+            <pre class="formula">1. Parse mission broker entries (legacy system, have rewards/locations)
+2. Parse contract generator entries (new system, have blueprints/rep data)
+3. Deduplicate missions by title + category + reward
+4. Merge contracts into missions by title match:
+   - Blueprint rewards flow from contract &rarr; mission
+   - Rep requirements, rewards, penalties flow from contract &rarr; mission
+5. Drop matched contracts, keep unmatched as standalone entries</pre>
+            <p>This merge ensures that legacy missions get enriched with the newer
+              contract generator data (blueprints, standing requirements, rep amounts)
+              without creating duplicate entries.</p>
           </div>
         </div>
       }
