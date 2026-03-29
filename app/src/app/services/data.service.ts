@@ -703,9 +703,19 @@ export class DataService {
         if (exclusiveShip && exclusiveShip !== shipCls) return false;
 
         // Port-tag filtering: if hardpoint has portTags and item has itemTags,
-        // at least one itemTag must match a portTag
-        if (hpPortTagSet && i.itemTags && i.itemTags.length > 0) {
-          if (!i.itemTags.some(t => hpPortTagSet.has(t.toLowerCase()))) return false;
+        // at least one itemTag must match a portTag.
+        // For FlightController slots, items WITHOUT tags are also excluded
+        // (each blade is ship-specific).
+        if (hpPortTagSet) {
+          if (i.itemTags && i.itemTags.length > 0) {
+            if (!i.itemTags.some(t => hpPortTagSet.has(t.toLowerCase()))) return false;
+          } else if (i.type === 'FlightController') {
+            return false;  // no matching tags → wrong ship
+          }
+        }
+        // Filter internal flight controller variants (_mm_ = master mode test)
+        if (i.type === 'FlightController' && clsL.includes('_mm_')) {
+          return false;
         }
 
         if (acceptsGun    && i.type === 'WeaponMount' && !hp.id.includes('.')) return true;

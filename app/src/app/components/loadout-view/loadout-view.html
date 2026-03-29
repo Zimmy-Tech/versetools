@@ -57,24 +57,24 @@
           <div class="stats-block block-flight">
             <div class="stats-block-title">Flight Data</div>
             <div class="stats-block-body">
-            @if (data.selectedShip()!.scmSpeed || data.selectedShip()!.accelFwd) {
+            @if (flightScmSpeed() || data.selectedShip()!.accelFwd) {
               <div class="flight-group">
                 <div class="flight-group-label">Speed (m/s)</div>
                 <div class="flight-stat">
                   <span class="fs-label">SCM</span>
-                  <span class="fs-val">{{ data.selectedShip()!.scmSpeed }}</span>
+                  <span class="fs-val">{{ flightScmSpeed() }}</span>
                 </div>
                 <div class="flight-stat">
                   <span class="fs-label">NAV</span>
-                  <span class="fs-val">{{ data.selectedShip()!.navSpeed }}</span>
+                  <span class="fs-val">{{ flightNavSpeed() }}</span>
                 </div>
                 <div class="flight-stat">
                   <span class="fs-label">AB Fwd</span>
-                  <span class="fs-val accent">{{ data.selectedShip()!.boostSpeedFwd }}</span>
+                  <span class="fs-val accent">{{ flightBoostFwd() }}</span>
                 </div>
                 <div class="flight-stat">
                   <span class="fs-label">AB Bwd</span>
-                  <span class="fs-val">{{ data.selectedShip()!.boostSpeedBwd }}</span>
+                  <span class="fs-val">{{ flightBoostBwd() }}</span>
                 </div>
               </div>
               <div class="flight-divider"></div>
@@ -635,6 +635,13 @@
             <div class="slot-group-label">Coolers <span class="collapse-btn" (click)="toggleSection('coolers')">{{ isCollapsed('coolers') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of coolerSlots(); track hp.id) {
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('coolers')" />
+            }
+          }
+
+          @if (bladeSlots().length) {
+            <div class="slot-group-label">Flight Controller <span class="collapse-btn" (click)="toggleSection('blade')">{{ isCollapsed('blade') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of bladeSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('blade')" />
             }
           }
 

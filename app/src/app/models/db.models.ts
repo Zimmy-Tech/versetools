@@ -184,6 +184,17 @@ export interface Item {
   chargeTime?: number;
   distortionDamage?: number;
   empRadius?: number;
+  // FlightController (blade)
+  scmSpeed?: number;
+  navSpeed?: number;
+  boostSpeedFwd?: number;
+  boostSpeedBwd?: number;
+  pitch?: number;
+  yaw?: number;
+  roll?: number;
+  pitchBoosted?: number;
+  yawBoosted?: number;
+  rollBoosted?: number;
   // Power segments (Shields, Coolers, QDs)
   powerMin?: number;
   powerMax?: number;

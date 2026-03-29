@@ -157,6 +157,8 @@ export class HardpointSlotComponent {
         return { classCode: 'EMP-S' + (item.size ?? '?'), primaryVal: (item.distortionDamage ?? 0).toFixed(0), primaryUnit: 'DMG', meta };
       case 'QuantumInterdictionGenerator':
         return { classCode: 'QED-S' + (item.size ?? '?'), primaryVal: (item.powerDraw ?? 0).toString(), primaryUnit: 'SEG', meta };
+      case 'FlightController':
+        return { classCode: 'BLADE', primaryVal: (item.scmSpeed ?? 0).toFixed(0), primaryUnit: 'm/s SCM', meta };
       default:
         return null;
     }
@@ -510,6 +512,13 @@ export class HardpointSlotComponent {
       if (item.cooldownTime) rows.push({ label: 'Cooldown', value: f(item.cooldownTime, 1)! + 's' });
     } else if (item.type === 'QuantumInterdictionGenerator') {
       if (item.powerDraw) rows.push({ label: 'Power Draw', value: item.powerDraw + ' seg' });
+    } else if (item.type === 'FlightController') {
+      if (item.scmSpeed) rows.push({ label: 'SCM Speed', value: f(item.scmSpeed)! + ' m/s' });
+      if (item.navSpeed) rows.push({ label: 'NAV Speed', value: f(item.navSpeed)! + ' m/s' });
+      if (item.boostSpeedFwd) rows.push({ label: 'Boost Fwd', value: f(item.boostSpeedFwd)! + ' m/s' });
+      if (item.pitch) rows.push({ label: 'Pitch', value: f(item.pitch, 1)! + '°/s' });
+      if (item.yaw) rows.push({ label: 'Yaw', value: f(item.yaw, 1)! + '°/s' });
+      if (item.roll) rows.push({ label: 'Roll', value: f(item.roll, 1)! + '°/s' });
     } else if (item.type === 'SalvageModifier' && item.salvageSpeed) {
       const ship = this.data.selectedShip();
       const hs = ship?.salvageSpeedMult ?? 1;

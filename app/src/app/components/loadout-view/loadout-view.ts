@@ -24,7 +24,7 @@ export class LoadoutViewComponent {
     return (Date.now() - tested) > 90 * 24 * 60 * 60 * 1000;
   });
 
-  readonly utilityTypes = ['Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar', 'LifeSupportGenerator'];
+  readonly utilityTypes = ['Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar', 'LifeSupportGenerator', 'FlightController'];
 
   collapsedSections = signal<Set<string>>(new Set([
     'pilot-guns', 'crew-guns', 'missiles', 'mining', 'power', 'pdc', 'tractor', 'coolers', 'modules',
@@ -615,14 +615,33 @@ export class LoadoutViewComponent {
   excessShieldSlots = computed(() => this.shieldSlots().slice(2));
   ppSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'PowerPlant'));
   coolerSlots = computed(() => this.utilitySlots().filter(hp => hp.type === 'Cooler'));
+  bladeSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'FlightController'));
   qdSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'QuantumDrive'));
   radarSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'Radar'));
   lsSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'LifeSupportGenerator'));
 
+  /** The currently equipped flight controller (blade) item. */
+  equippedBlade = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return null;
+    const loadout = this.data.loadout();
+    for (const hp of ship.hardpoints) {
+      if (hp.type === 'FlightController') {
+        const item = loadout[hp.id];
+        if (item) return item;
+      }
+    }
+    return null;
+  });
+
+  /** Flight stats sourced from the equipped blade (falls back to ship for accel/boost data). */
+  flightScmSpeed = computed(() => this.equippedBlade()?.scmSpeed ?? this.data.selectedShip()?.scmSpeed);
+  flightNavSpeed = computed(() => this.equippedBlade()?.navSpeed ?? this.data.selectedShip()?.navSpeed);
+  flightBoostFwd = computed(() => this.equippedBlade()?.boostSpeedFwd ?? this.data.selectedShip()?.boostSpeedFwd);
+  flightBoostBwd = computed(() => this.data.selectedShip()?.boostSpeedBwd);
+
   // Thruster-power-scaled rotation values.
   // thrusterMult = 0 at bar 1 (min), 1 at bar max (full).
-  // Boosted at bar i = pitch + thrusterMult × (pitchBoosted - pitch)
-  // Non-boosted at bar i = boostedAtPower × (pitch / pitchBoosted)
   private thrusterMult = computed(() => {
     const ship = this.data.selectedShip();
     const maxBars = ship?.thrusterPowerBars ?? 0;
@@ -639,16 +658,19 @@ export class LoadoutViewComponent {
   }
 
   pitchRot = computed(() => {
+    const blade = this.equippedBlade();
     const s = this.data.selectedShip();
-    return this.rotAtPower(s?.pitch, s?.pitchBoosted);
+    return this.rotAtPower(blade?.pitch ?? s?.pitch, blade?.pitchBoosted ?? s?.pitchBoosted);
   });
   yawRot = computed(() => {
+    const blade = this.equippedBlade();
     const s = this.data.selectedShip();
-    return this.rotAtPower(s?.yaw, s?.yawBoosted);
+    return this.rotAtPower(blade?.yaw ?? s?.yaw, blade?.yawBoosted ?? s?.yawBoosted);
   });
   rollRot = computed(() => {
+    const blade = this.equippedBlade();
     const s = this.data.selectedShip();
-    return this.rotAtPower(s?.roll, s?.rollBoosted);
+    return this.rotAtPower(blade?.roll ?? s?.roll, blade?.rollBoosted ?? s?.rollBoosted);
   });
 
   constructor(public data: DataService) {}

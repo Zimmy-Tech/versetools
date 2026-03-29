@@ -21,7 +21,7 @@
       <span class="fixed-badge">FIXED</span>
       <span>{{ currentItem()?.name ?? (typeLabel() + ' · Size ' + hardpoint().maxSize) }}</span>
     </div>
-    @if (currentItem() && currentItem()!.type !== 'WeaponMount' && currentItem()!.type !== 'MissileLauncher' && currentItem()!.type !== 'BombLauncher' && currentItem()!.type !== 'Turret' && currentItem()!.type !== 'TurretBase' && currentItem()!.type !== 'ToolArm' && currentItem()!.type !== 'UtilityTurret' && currentItem()!.type !== 'EMP' && currentItem()!.type !== 'QuantumInterdictionGenerator' && currentItem()!.type !== 'TractorBeam') {
+    @if (currentItem() && currentItem()!.type !== 'WeaponMount' && currentItem()!.type !== 'MissileLauncher' && currentItem()!.type !== 'BombLauncher' && currentItem()!.type !== 'Turret' && currentItem()!.type !== 'TurretBase' && currentItem()!.type !== 'ToolArm' && currentItem()!.type !== 'UtilityTurret' && currentItem()!.type !== 'EMP' && currentItem()!.type !== 'QuantumInterdictionGenerator' && currentItem()!.type !== 'TractorBeam' && currentItem()!.type !== 'FlightController') {
       <div class="slot-stat muted">—</div>
     }
   } @else if (isWeaponSlot()) {

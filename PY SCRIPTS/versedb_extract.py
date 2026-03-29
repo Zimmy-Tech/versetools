@@ -288,6 +288,17 @@ def extract_flight_stats(ship_class_name, forge_dir):
             ship_no_uscore = ship_lower.replace('_', '')
             candidates = [f for f in sorted(ctrl_dir.glob("controller_flight_*.xml.xml"))
                           if f.stem.replace(".xml", "").replace("controller_flight_", "").replace('_', '').startswith(ship_no_uscore)]
+        # If no candidates, try progressively shorter prefixes (strip variant suffixes)
+        if not candidates:
+            parts = ship_lower.split('_')
+            for end in range(len(parts) - 1, 1, -1):
+                prefix = '_'.join(parts[:end])
+                candidates = sorted(ctrl_dir.glob(f"controller_flight_{prefix}.xml.xml"))
+                if candidates:
+                    break
+                candidates = sorted(ctrl_dir.glob(f"controller_flight_{prefix}*.xml.xml"))
+                if candidates:
+                    break
         base = [f for f in candidates
                 if not any(x in f.stem for x in ("blade", "_mm_", "rework", "_pu_"))]
         fc_file = base[0] if base else (candidates[0] if candidates else None)
@@ -298,7 +309,11 @@ def extract_flight_stats(ship_class_name, forge_dir):
         root = ET.parse(fc_file).getroot()
     except Exception:
         return {}
+    return _parse_flight_stats_from_root(root)
 
+
+def _parse_flight_stats_from_root(root):
+    """Extract IFCS flight stats from a parsed flight controller XML root."""
     ifcs = root.find(".//IFCSParams")
     if ifcs is None:
         return {}
@@ -441,7 +456,7 @@ KEEP_TYPES = {
     "WeaponGun", "WeaponTachyon", "WeaponMining", "TractorBeam", "MissileLauncher",
     "BombLauncher", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler", "LifeSupportGenerator",
     "QuantumDrive", "Radar", "Sensor", "QuantumFuelTank", "MiningModifier", "ToolArm", "UtilityTurret", "SalvageHead", "SalvageModifier",
-    "EMP", "QuantumInterdictionGenerator", "Module",
+    "EMP", "QuantumInterdictionGenerator", "Module", "FlightController",
 }
 
 def parse_vehicle_xml(xml_path, loc):
@@ -513,9 +528,14 @@ def parse_vehicle_xml(xml_path, loc):
 
         flags = item_port.get("flags", "")
 
-        # Skip invisible+uneditable (internal systems)
+        # Skip invisible+uneditable (internal systems) — except FlightController
         if "uneditable" in flags and "invisible" in flags:
-            continue
+            types_el_peek = item_port.find("Types")
+            is_fc = types_el_peek is not None and any(
+                t.get("type") == "FlightController" for t in types_el_peek.findall("Type")
+            )
+            if not is_fc:
+                continue
 
         min_size = safe_int(item_port.get("minSize") or item_port.get("minsize", 0))
         max_size = safe_int(item_port.get("maxSize") or item_port.get("maxsize", 0))
@@ -1391,6 +1411,109 @@ def parse_qed_item(root, class_name, loc):
     }
 
 
+def parse_blade_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "FlightController":
+        return None
+    display = resolve_item_name(loc, class_name)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+    # Extract Tags from AttachDef for port-tag matching
+    ad = root.find(".//AttachDef")
+    tags_str = ad.get("Tags", "") if ad is not None else ""
+    item_tags = [t.strip() for t in tags_str.split() if t.strip()] if tags_str else []
+
+    result = {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "FlightController",
+        "size":         info["size"],
+        "grade":        info["grade"],
+    }
+    if item_tags:
+        result["itemTags"] = item_tags
+    # Embed flight stats directly on the item
+    stats = _parse_flight_stats_from_root(root)
+    if stats:
+        result.update(stats)
+    # Apply blade modifiers (SIFCSModifiersLegacy) if present
+    ifcs = root.find(".//IFCSParams")
+    if ifcs is not None:
+        mod_guid = ifcs.get("modifiersLegacy", "")
+        if mod_guid and mod_guid != "null":
+            _apply_blade_modifiers(result, mod_guid)
+    return result
+
+
+# Blade modifier definitions (from SIFCSModifiersLegacy forge XMLs)
+# PHB (handling): slower speeds, better rotation
+# TSB (speed): faster speeds, worse rotation
+_BLADE_MODIFIERS = {
+    # PHB — flightblade_hnd.xml
+    "6cb04e5d-3037-259a-1b6b-04c2a25662ad": {
+        "numbers": [-8, -10, -10, -25],  # scm, nav, boostFwd, boostBwd (additive)
+        "rotAdd": [1, 2, 1],  # pitch, roll, yaw (additive to base rotation)
+        "rotScale": [1.01, 0.99, 1.01],  # pitch, roll, yaw (scalar for boosted)
+    },
+    # Also match the reversed-endian form
+    "259a3037-6cb0-4e5d-ad62-56a2c2046b1b": {
+        "numbers": [-8, -10, -10, -25],
+        "rotAdd": [1, 2, 1],
+        "rotScale": [1.01, 0.99, 1.01],
+    },
+    # TSB — flightblade_spd.xml
+    "924f496f-2fca-46cb-b425-2310d485a9b8": {
+        "numbers": [8, 10, 10, 25],  # scm, nav, boostFwd, boostBwd (additive)
+        "rotAdd": [-1, -2, -1],  # pitch, roll, yaw
+        "rotScale": [0.99, 1.01, 0.99],
+    },
+    "46cb2fca-924f-496f-b8a9-85d4102325b4": {
+        "numbers": [8, 10, 10, 25],
+        "rotAdd": [-1, -2, -1],
+        "rotScale": [0.99, 1.01, 0.99],
+    },
+}
+
+def _apply_blade_modifiers(item, mod_guid):
+    """Apply SIFCSModifiersLegacy additive/scalar modifiers to flight stats."""
+    mod = _BLADE_MODIFIERS.get(mod_guid)
+    if not mod:
+        return
+    nums = mod["numbers"]
+    # Additive speed modifiers
+    if "scmSpeed" in item:
+        item["scmSpeed"] = round(item["scmSpeed"] + nums[0], 1)
+    if "navSpeed" in item:
+        item["navSpeed"] = round(item["navSpeed"] + nums[1], 1)
+    if "boostSpeedFwd" in item:
+        item["boostSpeedFwd"] = round(item["boostSpeedFwd"] + nums[2], 1)
+    if "boostSpeedBwd" in item:
+        item["boostSpeedBwd"] = round(item["boostSpeedBwd"] + nums[3], 1)
+    # Additive rotation modifiers (pitch=x, roll=y, yaw=z)
+    rot_add = mod["rotAdd"]
+    if "pitch" in item:
+        item["pitch"] = round(item["pitch"] + rot_add[0], 1)
+    if "roll" in item:
+        item["roll"] = round(item["roll"] + rot_add[1], 1)
+    if "yaw" in item:
+        item["yaw"] = round(item["yaw"] + rot_add[2], 1)
+    # Scalar boosted rotation
+    rot_scale = mod["rotScale"]
+    if "pitchBoosted" in item:
+        item["pitchBoosted"] = round(item["pitchBoosted"] * rot_scale[0], 1)
+    if "rollBoosted" in item:
+        item["rollBoosted"] = round(item["rollBoosted"] * rot_scale[1], 1)
+    if "yawBoosted" in item:
+        item["yawBoosted"] = round(item["yawBoosted"] * rot_scale[2], 1)
+
+
 def parse_radar_item(root, class_name, loc):
     info = parse_attachdef(root)
     if not info or info["type"] != "Radar":
@@ -1726,6 +1849,26 @@ def scan_components(forge_dir, loc):
             except Exception:
                 pass
         print(f"    {folder_name}: {count} items")
+
+    # Flight blades (and standard controllers): in the controller folder
+    # Skip internal variants: _mm_ (master mode), _rework, _pu_ (AI)
+    _BLADE_SKIP = re.compile(r'_mm_|_rework|_pu_ai|_pu_pirate')
+    blade_dir = ships_dir / "controller"
+    if blade_dir.exists():
+        count = 0
+        for xml_file in blade_dir.glob("controller_flight_*.xml.xml"):
+            class_name = xml_file.stem.replace(".xml", "")
+            if class_name in items or _BLADE_SKIP.search(class_name):
+                continue
+            try:
+                root = ET.parse(xml_file).getroot()
+                parsed = parse_blade_item(root, class_name, loc)
+                if parsed:
+                    items[class_name] = parsed
+                    count += 1
+            except Exception:
+                pass
+        print(f"    flight blades: {count} items")
 
     return items
 
@@ -4175,6 +4318,47 @@ def main(mode: str = "live"):
     # 6b. Extract mining location data
     print("\n[6b] Extracting mining locations…")
     mining_locations = extract_mining_locations(FORGE_DIR, DCB_FILE)
+
+    # Ships missing FC hardpoint in vehicle XML but having a flight controller item
+    _MISSING_FC_HP = ["ANVL_Paladin"]
+    for ship_cls in _MISSING_FC_HP:
+        if ship_cls in ships:
+            s = ships[ship_cls]
+            if not any(hp["type"] == "FlightController" for hp in s.get("hardpoints", [])):
+                s["hardpoints"].append({
+                    "id": "hardpoint_controller_flight", "label": "Flight Controller",
+                    "type": "FlightController", "subtypes": "", "minSize": 1, "maxSize": 1,
+                    "flags": "invisible uneditable",
+                    "allTypes": [{"type": "FlightController", "subtypes": ""}],
+                })
+                s.setdefault("defaultLoadout", {})["hardpoint_controller_flight"] = f"controller_flight_{ship_cls.lower()}"
+
+    # Auto-assign default flight controller for ships with FC hardpoints but no default
+    fc_assigned = 0
+    for ship_cls, ship in ships.items():
+        for hp in ship.get("hardpoints", []):
+            if hp["type"] != "FlightController":
+                continue
+            dl = ship.setdefault("defaultLoadout", {})
+            hp_key = hp["id"].lower()
+            existing = dl.get(hp_key, "")
+            if existing and existing in items:
+                break
+            # Try matching controller by ship className with progressive prefix shortening
+            ship_lower = ship_cls.lower()
+            parts = ship_lower.split("_")
+            matched = None
+            for end in range(len(parts), 1, -1):
+                prefix = "_".join(parts[:end])
+                candidate = f"controller_flight_{prefix}"
+                if candidate in items and items[candidate].get("type") == "FlightController":
+                    matched = candidate
+                    break
+            if matched:
+                dl[hp_key] = matched
+                fc_assigned += 1
+            break
+    print(f"  Auto-assigned {fc_assigned} flight controller defaults")
 
     # 7. Write output
     print("\n[7/7] Writing output…")
