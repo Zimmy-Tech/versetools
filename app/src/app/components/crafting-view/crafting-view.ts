@@ -87,7 +87,7 @@ export class CraftingViewComponent {
   private allMissions = signal<any[]>([]);
   expandedMission = signal<string | null>(null);
 
-  /** Missions that reward the selected recipe's blueprint. */
+  /** Missions that reward the selected recipe's blueprint (exact match only). */
   rewardingMissions = computed(() => {
     const sr = this.selectedRecipe();
     if (!sr) return [];
