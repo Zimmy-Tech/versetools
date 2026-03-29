@@ -477,13 +477,11 @@ export class HardpointSlotComponent {
       const pips = this.data.powerAlloc()[this.hardpoint().id] ?? 0;
       const maxPips = item.powerDraw ?? 1;
       const pipFrac = maxPips > 0 ? Math.min(pips / maxPips, 1) : 1;
-      // Lock range scales between aimMin (at min power) and aimMax (at max power)
       if (item.aimMin != null && item.aimMax != null) {
-        const lockRange = Math.round(item.aimMin + (item.aimMax - item.aimMin) * pipFrac);
-        rows.push({ label: 'Lock Range', value: lockRange + 'm', cls: 'accent' });
-        rows.push({ label: 'Range (min/max)', value: item.aimMin.toFixed(0) + ' / ' + item.aimMax.toFixed(0) + 'm' });
+        rows.push({ label: 'Aim Min', value: item.aimMin.toFixed(0) + 'm' });
+        rows.push({ label: 'Aim Max', value: item.aimMax.toFixed(0) + 'm' });
       }
-      if (item.aimBuffer) rows.push({ label: 'Lock Buffer', value: item.aimBuffer.toFixed(0) + 'm' });
+      if (item.aimBuffer) rows.push({ label: 'Aim Buffer', value: item.aimBuffer.toFixed(0) + 'm' });
       if (item.irSensitivity) rows.push({ label: 'IR Sens', value: (item.irSensitivity * 100).toFixed(0) + '%' });
       if (item.emSensitivity) rows.push({ label: 'EM Sens', value: (item.emSensitivity * 100).toFixed(0) + '%' });
       if (item.csSensitivity) rows.push({ label: 'CS Sens', value: (item.csSensitivity * 100).toFixed(0) + '%' });
