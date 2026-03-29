@@ -726,10 +726,14 @@ export class DataService {
               const shipWords = shipCls.toLowerCase().split('_').filter(w => w.length > 3);
               if (!shipWords.some(w => clsL.includes(w))) return false;
             }
-            // Filter front/rear modules to matching bays
-            const hpPos = hp.id.toLowerCase().includes('front') ? 'front' : hp.id.toLowerCase().includes('rear') ? 'rear' : '';
+            // Filter front/rear and left/right modules to matching bays
+            const hpId = hp.id.toLowerCase();
+            const hpPos = hpId.includes('front') ? 'front' : hpId.includes('rear') ? 'rear' : '';
             const itemPos = clsL.includes('front') ? 'front' : clsL.includes('rear') ? 'rear' : '';
             if (hpPos && itemPos && hpPos !== itemPos) return false;
+            const hpSide = hpId.includes('left') ? 'left' : hpId.includes('right') ? 'right' : '';
+            const itemSide = clsL.includes('left') ? 'left' : clsL.includes('right') ? 'right' : '';
+            if (hpSide && itemSide && hpSide !== itemSide) return false;
           }
           return i.type === hp.type;
         }

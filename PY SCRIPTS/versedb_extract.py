@@ -441,7 +441,7 @@ KEEP_TYPES = {
     "WeaponGun", "WeaponTachyon", "WeaponMining", "TractorBeam", "MissileLauncher",
     "BombLauncher", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler", "LifeSupportGenerator",
     "QuantumDrive", "Radar", "Sensor", "QuantumFuelTank", "MiningModifier", "ToolArm", "UtilityTurret", "SalvageHead", "SalvageModifier",
-    "EMP", "QuantumInterdictionGenerator",
+    "EMP", "QuantumInterdictionGenerator", "Module",
 }
 
 def parse_vehicle_xml(xml_path, loc):
@@ -502,6 +502,8 @@ def parse_vehicle_xml(xml_path, loc):
     # Collect hardpoints
     hardpoints = []
     seen_ids = set()
+
+    skipped_parts = {}  # name → hp_entry for Parts with skipPart=1
 
     for part in root.iter("Part"):
         part_name = part.get("name", "")
@@ -573,7 +575,12 @@ def parse_vehicle_xml(xml_path, loc):
             hp_entry["controllerTag"] = controller_tag
         if port_tags:
             hp_entry["portTags"] = port_tags
-        hardpoints.append(hp_entry)
+
+        # Parts with skipPart=1 are disabled by default (can be re-enabled by modifications)
+        if part.get("skipPart") == "1":
+            skipped_parts[hp_id.lower()] = hp_entry
+        else:
+            hardpoints.append(hp_entry)
 
     if not hardpoints:
         return None
@@ -647,6 +654,8 @@ def parse_vehicle_xml(xml_path, loc):
         "_modifications":   modifications,
         # modId → {tag, hpName, typeIdx} for applying modifications to hardpoints
         "_idToHp":          id_to_hp,
+        # Parts with skipPart=1 that can be re-enabled by modifications
+        "_skippedParts":    skipped_parts,
     }
 
 # ── Component parsers ──────────────────────────────────────────────────────────
@@ -2042,7 +2051,7 @@ def expand_ship_variants(ships, forge_dir, loc):
         r'_piano|_emerald|_indestructible|_dunlevy|_stealth|_exec|_hijacked|'
         r'_collector|_cleanair|_shop|_display|_invis|_civ_def|_salvage|_xenothreat|'
         r'_fleetweek|_restoration|_ninetails|_nt_qig|_blacjac|_crusader|_qig$|'
-        r'_sec$|_hurstondynamics|_tutorial|_medivac|_derelict|_wreck|_boarded|'
+        r'_sec$|_hurstondynamics|_tutorial|_derelict|_wreck|_boarded|'
         r'_teach$|_showdown$|_bis\d|_gamemaster|_invictus|_bombless|_s3bombs|'
         r'_nointerior|_nodebris|_citizencon|_drug|_shipshowdown|_shipboarded|'
         r'_tier_|_plat$|_fw_\d|_ai_|_nocargo|_halfcargo|_override|_spawn$|'
@@ -2098,6 +2107,7 @@ def expand_ship_variants(ships, forge_dir, loc):
         "VNCL_Scythe": ["vncl_glaive"],
         "TMBL_Cyclone": ["TMBL_Cyclone_AA", "TMBL_Cyclone_MT", "TMBL_Cyclone_RC", "TMBL_Cyclone_RN", "TMBL_Cyclone_TR"],
         "KRIG_P52_Merlin": ["krig_p72_archimedes"],
+        "rsi_apollo_medivac": ["rsi_hermes"],  # Hermes uses Apollo vehicle XML with modification="Hermes"
     }
     for base_cls, variant_list in MANUAL_VARIANTS.items():
         base_ship = expanded.get(base_cls)
@@ -2134,10 +2144,26 @@ def _apply_vehicle_modification(ship, mod_name):
         prop = elem["name"].lower()
         value = elem["value"]
         info = id_to_hp.get(id_ref)
+
         if not info:
             continue
         hp_name = info.get("hpName", "").lower()
         hp = hp_by_name.get(hp_name)
+
+        # Non-hardpoint changes (structural Parts like hull body)
+        if prop == "damagemax" and not hp:
+            ship["bodyHp"] = safe_float(value)
+            continue
+
+        # Re-enable a previously skipped Part (must check before the hp guard)
+        if prop == "skippart" and value == "0" and not hp:
+            skipped = ship.get("_skippedParts", {})
+            if hp_name in skipped:
+                restored = skipped.pop(hp_name)
+                ship["hardpoints"].append(restored)
+                hp_by_name[hp_name] = restored
+            continue
+
         if not hp:
             continue
 
@@ -2171,6 +2197,17 @@ def _apply_vehicle_modification(ship, mod_name):
             hp["minSize"] = safe_int(value)
         elif prop in ("maxsize", "maxSize"):
             hp["maxSize"] = safe_int(value)
+        elif prop == "skippart" and value == "1":
+            # Remove this hardpoint from the ship
+            ship["hardpoints"] = [h for h in ship["hardpoints"] if h["id"].lower() != hp_name]
+            hp_by_name.pop(hp_name, None)
+        elif prop == "skippart" and value == "0":
+            # Re-enable a previously skipped Part
+            skipped = ship.get("_skippedParts", {})
+            if hp_name in skipped and hp_name not in hp_by_name:
+                restored = skipped.pop(hp_name)
+                ship["hardpoints"].append(restored)
+                hp_by_name[hp_name] = restored
         elif prop == "damagemax":
             # Hull HP change — apply to ship level
             ship["totalHp"] = safe_float(value)
@@ -3886,12 +3923,14 @@ def main(mode: str = "live"):
         })
         per.setdefault("defaultLoadout", {})["hardpoint_lifesupport"] = "lfsp_tydt_s03_comfortairmax"
 
-    # Zeus CL: tractor beam arm should display as a tractor turret, not a mining tool
-    if "rsi_zeus_cl" in ships:
-        for hp in ships["rsi_zeus_cl"]["hardpoints"]:
-            if hp["id"].lower() == "hardpoint_tractor_beam":
-                hp["type"] = "Turret"
-                hp["allTypes"] = [{"type": "Turret", "subtypes": ""}]
+    # Tractor beam arms should display as tractor turrets, not mining tools
+    for tcls, tid in [("rsi_zeus_cl", "hardpoint_tractor_beam"),
+                       ("rsi_hermes", "hardpoint_remote_tractor_turret")]:
+        if tcls in ships:
+            for hp in ships[tcls]["hardpoints"]:
+                if hp["id"].lower() == tid:
+                    hp["type"] = "Turret"
+                    hp["allTypes"] = [{"type": "Turret", "subtypes": ""}]
 
     # Scorpius Antares: "Interdiction" modification adds QED to modPart_Spine2
     # Both EMP and QED are locked (not swappable) on the Antares
