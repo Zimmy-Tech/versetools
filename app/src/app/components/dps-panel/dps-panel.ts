@@ -385,19 +385,17 @@ export class DpsPanelComponent {
       if (item.type === 'Cooler' && item.coolingRate) {
         supply += coolerSupply(item, pips);
       }
-      if (item.type === 'PowerPlant') {
-        demand += componentCoolingDemand(item, 1);
-      } else if (item.type === 'Shield' || item.type === 'Cooler' ||
+      if (item.type === 'Shield' || item.type === 'Cooler' ||
                  item.type === 'LifeSupportGenerator' || item.type === 'QuantumDrive' ||
                  item.type === 'Radar') {
-        demand += componentCoolingDemand(item, pips);
+        demand += pips;
       }
     }
-    const RATIO = 2.5;
-    demand += this.data.weaponsPower() * RATIO;
-    demand += this.data.toolPower() * RATIO;
-    demand += this.data.tractorPower() * RATIO;
-    demand += this.data.thrusterPower() * RATIO;
+    demand += this.data.weaponsPower();
+    demand += this.data.toolPower();
+    demand += this.data.tractorPower();
+    demand += this.data.thrusterPower();
+    demand += supply * 0.12; // PP idle heat fraction
     // Normal operation: coolers idle at MCF. Overloaded: demand/supply takes over.
     const loadRatio = supply > 0 ? Math.min(1, demand / supply) : 0;
     const irFactor = Math.max(mcf, loadRatio);

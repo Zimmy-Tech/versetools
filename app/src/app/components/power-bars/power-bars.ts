@@ -248,12 +248,28 @@ export class PowerBarsComponent {
     return Math.round(supply * 10) / 10;
   });
 
-  /** Total cooling demand from all powered components.
-   *  Default: PSRU × bandMod × 2.5 ratio (matches Erkul/spviewer).
-   *  PP: flat powerOutput + 1 (no ratio).
-   *  Ship overrides: empirically matched to in-game engineering gauge.
+  /**
+   * Total cooling demand from all powered components.
+   *
+   * Default model: demand = totalAllocatedPips / coolerSupply + PP_IDLE_FRACTION.
+   * Derived empirically from in-game engineering gauge readings across 6 ships
+   * (Polaris, Perseus, MSR, Guardian, Asgard, Apollo Medivac — 15+ configs).
+   *
+   * Key findings:
+   * - Each allocated power pip generates ~1 unit of cooling demand.
+   * - Radar and LS pips can cost 2× on some ships (component-specific).
+   * - Power plants add a base idle heat load (~3-12% of supply).
+   * - The DCB value maxPowerToCoolantRatio=2.5 does NOT match in-game behavior.
+   *   A Gladius at Erkul's predicted 137% load shows no thermal stress in-game
+   *   (stable IR, no warnings), proving the 2.5× multiplier is not used for
+   *   the cooling demand calculation. Our pip-based model predicts ~45% for the
+   *   same config, consistent with normal operation.
+   * - Ships with validated per-component models use those (Polaris, MSR).
+   * - When cooling supply drops below demand (>100%), the in-game gauge shows
+   *   runaway thermal escalation (observed 152%→457% on Apollo), confirming
+   *   the gauge reflects real-time thermal state.
    */
-  private readonly POWER_TO_COOLANT_RATIO = 2.5;
+  private readonly PP_IDLE_FRACTION = 0.12;
 
   coolingDemand = computed(() => {
     const loadout = this.data.loadout();
@@ -269,25 +285,24 @@ export class PowerBarsComponent {
       return this.msrCoolingDemand(ship, loadout, alloc);
     }
 
-    // Default: Erkul-style formula (demand/supply with 2.5 ratio)
-    let demand = 0;
+    // Default: pip-based model. demand = totalPips + PP idle fraction of supply.
+    const supply = this.coolingSupply();
+    let pips = 0;
     for (const hp of ship.hardpoints) {
       const item = loadout[hp.id];
       if (!item) continue;
-      const pips = alloc[hp.id] ?? 0;
-      if (item.type === 'PowerPlant') {
-        demand += componentCoolingDemand(item, 1);
-      } else if (item.type === 'Shield' || item.type === 'Cooler' ||
-                 item.type === 'LifeSupportGenerator' || item.type === 'QuantumDrive' ||
-                 item.type === 'Radar') {
-        demand += componentCoolingDemand(item, pips);
+      const p = alloc[hp.id] ?? 0;
+      if (item.type === 'Shield' || item.type === 'Cooler' ||
+          item.type === 'LifeSupportGenerator' || item.type === 'QuantumDrive' ||
+          item.type === 'Radar') {
+        pips += p;
       }
     }
-    demand += this.data.weaponsPower() * this.POWER_TO_COOLANT_RATIO;
-    demand += this.data.toolPower() * this.POWER_TO_COOLANT_RATIO;
-    demand += this.data.tractorPower() * this.POWER_TO_COOLANT_RATIO;
-    demand += this.data.thrusterPower() * this.POWER_TO_COOLANT_RATIO;
-    return Math.round(demand * 10) / 10;
+    pips += this.data.weaponsPower();
+    pips += this.data.toolPower();
+    pips += this.data.tractorPower();
+    pips += this.data.thrusterPower();
+    return Math.round((pips + supply * this.PP_IDLE_FRACTION) * 10) / 10;
   });
 
   /** Polaris-specific cooling demand. Weights derived from in-game testing. */

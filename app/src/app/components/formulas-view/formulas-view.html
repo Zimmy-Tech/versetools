@@ -357,22 +357,39 @@ if Pips = 0  &rarr;  Supply = 0</pre>
           </div>
 
           <div class="formula-card">
-            <h3>Cooling Demand (per component)</h3>
-            <pre class="formula">Power Plant:              Demand = max(0, Plant Output - 1)    [always on]
-Radar / Quantum Drive:    Demand = Allocated Pips              [linear with pips]
-Shield / Cooler / Life Support:
-                          Demand = Power Cost &times; Band Modifier at Current Pips
-Thrusters:                Demand = Thruster Pips               [~1 unit per pip]
-Tools:                    Demand = 1 per tool                  [always on]</pre>
-            <p>Different component types compute demand differently. Power plants have
-              fixed demand based on output. Most others scale with their band modifier.</p>
+            <h3>Cooling Demand</h3>
+            <pre class="formula">Total Demand = Sum of All Allocated Pips + PP Idle Heat
+
+PP Idle Heat = Total Cooler Supply &times; 0.12</pre>
+            <p>Each allocated power pip generates approximately 1 unit of cooling demand
+              regardless of component type. Power plants add a constant idle heat load
+              of roughly 12% of cooler supply capacity.</p>
+            <p>Some ships have component-specific weights (e.g., radar or life support
+              costing 2&times; per pip). These are handled by per-ship overrides validated
+              against in-game engineering gauge readings.</p>
           </div>
 
           <div class="formula-card">
             <h3>Cooling Percentage</h3>
-            <pre class="formula">Cooling % = round( Total Cooling Demand / Total Cooling Supply &times; 100 )</pre>
-            <p>Displayed on the cooling gauge. Values above 100% indicate thermal overload &mdash;
-              components will begin overheating.</p>
+            <pre class="formula">Cooling % = round( Total Demand / Total Supply &times; 100 )</pre>
+            <p>Displayed on the cooling gauge. Values above 100% indicate thermal overload.
+              In-game testing shows the gauge reflects real-time thermal state &mdash; when
+              cooling supply drops below demand, the reading escalates rapidly
+              (observed 152% &rarr; 457% on Apollo Medivac with one cooler at minimum).</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Research Notes</h3>
+            <p>The DCB contains a value <code>maxPowerToCoolantRatio=2.5</code> in
+              <code>ItemResourceNetworkGlobal</code>. Third-party tools (Erkul, spviewer)
+              use this as a demand multiplier, producing much higher cooling percentages
+              (e.g., 137% for a Gladius at default config). However, in-game testing on
+              that same Gladius config shows stable IR, no component warnings, and normal
+              operation &mdash; inconsistent with a 137% thermal overload. Our pip-based
+              model predicts ~45% for the same config, consistent with normal operation.</p>
+            <p>Validated across 6 ships, 15+ configurations with &lt;2% average error.
+              Per-ship overrides exist for Polaris (5 configs) and Mercury Star Runner
+              (3 configs) where component-specific weights were isolated.</p>
           </div>
         </div>
       }

@@ -578,6 +578,56 @@ def parse_vehicle_xml(xml_path, loc):
     if not hardpoints:
         return None
 
+    # ── Parse Modifications section ──
+    # Build id → {element_tag, parent_hardpoint_name} map.
+    # The id attr can be on ItemPort, Type, Connection, ControllerDef, or Part.
+    # We need to know which hardpoint each id belongs to and what element type it's on.
+    id_to_hp = {}  # modId → {"tag": element_tag, "hpName": hardpoint_name, "typeIdx": index}
+
+    # Walk the entire XML tree and map every element with an id attribute
+    # to the hardpoint name it belongs to (the nearest ancestor Part with class=ItemPort).
+    def _find_hp_name(elem_with_id):
+        """Walk up from an element to find the owning hardpoint Part name."""
+        # The id may be on the ItemPort itself, a Type, Connection, or ControllerDef.
+        # We need to find the Part[@class='ItemPort'] that contains it.
+        # Since ElementTree doesn't support parent traversal, we use the parent_map.
+        node = elem_with_id
+        while node is not None:
+            if node.tag == "Part" and node.get("class") == "ItemPort":
+                return node.get("name", "")
+            node = parent_map.get(node)
+        return ""
+
+    parent_map = {child: parent for parent in root.iter() for child in parent}
+
+    for elem in root.iter():
+        eid = elem.get("id", "")
+        if not eid:
+            continue
+        hp_name = _find_hp_name(elem)
+        entry = {"tag": elem.tag, "hpName": hp_name}
+        # For Type elements, track the index within the Types list
+        if elem.tag == "Type":
+            parent = parent_map.get(elem)
+            if parent is not None and parent.tag == "Types":
+                entry["typeIdx"] = list(parent).index(elem)
+        id_to_hp[eid] = entry
+
+    modifications = {}
+    for mod_el in root.findall(".//Modification"):
+        mod_name = mod_el.get("name", "").strip()
+        if not mod_name:
+            continue
+        elems = []
+        for elem in mod_el.findall(".//Elem"):
+            elems.append({
+                "idRef": elem.get("idRef", ""),
+                "name":  elem.get("name", ""),
+                "value": elem.get("value", ""),
+            })
+        if elems:
+            modifications[mod_name] = elems
+
     return {
         "className":        class_name,
         "name":             display_name,
@@ -593,6 +643,10 @@ def parse_vehicle_xml(xml_path, loc):
         "totalHp":          round(total_hp, 0),
         "bodyHp":           round(body_hp, 0),
         "vitalParts":       {k: round(v, 0) for k, v in vital_parts.items() if k.lower() != "body"},
+        # Vehicle XML modifications (keyed by modification name)
+        "_modifications":   modifications,
+        # modId → {tag, hpName, typeIdx} for applying modifications to hardpoints
+        "_idToHp":          id_to_hp,
     }
 
 # ── Component parsers ──────────────────────────────────────────────────────────
@@ -2062,6 +2116,67 @@ def expand_ship_variants(ships, forge_dir, loc):
     return expanded
 
 
+def _apply_vehicle_modification(ship, mod_name):
+    """
+    Apply a named vehicle XML modification to a ship's hardpoints.
+    Reads from ship['_modifications'] and ship['_idToHp'] (set by parse_vehicle_xml).
+    Supports: type, flags, minSize/maxSize, subtypes changes on hardpoints.
+    """
+    mods = ship.get("_modifications", {})
+    id_to_hp = ship.get("_idToHp", {})
+    if mod_name not in mods:
+        return
+    elems = mods[mod_name]
+    hp_by_name = {hp["id"].lower(): hp for hp in ship.get("hardpoints", [])}
+
+    for elem in elems:
+        id_ref = elem["idRef"]
+        prop = elem["name"].lower()
+        value = elem["value"]
+        info = id_to_hp.get(id_ref)
+        if not info:
+            continue
+        hp_name = info.get("hpName", "").lower()
+        hp = hp_by_name.get(hp_name)
+        if not hp:
+            continue
+
+        tag = info.get("tag", "")
+        if tag == "Type" and prop == "type":
+            # Change a hardpoint's type (e.g., Misc → QuantumInterdictionGenerator)
+            type_idx = info.get("typeIdx", 0)
+            all_types = hp.get("allTypes", [])
+            if type_idx < len(all_types):
+                all_types[type_idx]["type"] = value
+            # Update primary type if it's the first Type element
+            if type_idx == 0:
+                hp["type"] = value
+        elif tag == "Type" and prop in ("subtypes", "subtype"):
+            type_idx = info.get("typeIdx", 0)
+            all_types = hp.get("allTypes", [])
+            if type_idx < len(all_types):
+                all_types[type_idx]["subtypes"] = value
+            if type_idx == 0:
+                hp["subtypes"] = value
+        elif tag == "ItemPort" and prop == "flags":
+            hp["flags"] = value
+        elif tag == "ItemPort" and prop in ("minsize", "minSize"):
+            hp["minSize"] = safe_int(value)
+        elif tag == "ItemPort" and prop in ("maxsize", "maxSize"):
+            hp["maxSize"] = safe_int(value)
+        elif prop == "flags":
+            # flags can be set on non-ItemPort elements too (e.g., Part)
+            hp["flags"] = value
+        elif prop in ("minsize", "minSize"):
+            hp["minSize"] = safe_int(value)
+        elif prop in ("maxsize", "maxSize"):
+            hp["maxSize"] = safe_int(value)
+        elif prop == "damagemax":
+            # Hull HP change — apply to ship level
+            ship["totalHp"] = safe_float(value)
+            ship["bodyHp"] = safe_float(value)
+
+
 def enrich_ships_from_dcb(ships, forge_dir, loc):
     spaceship_dir = forge_dir / "entities" / "spaceships"
     if not spaceship_dir.exists():
@@ -2095,6 +2210,11 @@ def enrich_ships_from_dcb(ships, forge_dir, loc):
             loc_key = f"vehicle_name{stem.lower()}"
             if loc_key in loc:
                 ship["name"] = loc[loc_key]
+
+            # Apply vehicle XML modifications for this variant
+            mod_name = vc.get("modification", "").strip()
+            if mod_name:
+                _apply_vehicle_modification(ship, mod_name)
 
             # Bounding box dimensions (forge XML: x=width, y=length, z=height)
             bbox = root.find(".//maxBoundingBoxSize")
