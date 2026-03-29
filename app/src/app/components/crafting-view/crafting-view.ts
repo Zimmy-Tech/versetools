@@ -56,10 +56,11 @@ export class CraftingViewComponent {
   readonly pageSize = 100;
 
   readonly armorSets = [
-    'ADP', 'Antium', 'Argus', 'Artimex', 'Balor HCH', 'CBH-3', 'Corbel',
-    'Defiance', 'DustUp', 'G-2', 'Geist', 'Inquisitor', 'Monde', 'Morozov-SH',
-    'ORC-mkV', 'ORC-mkX', 'PAB-1', 'Palatino', 'Strata', 'Testudo', 'TrueDef-Pro',
-    'Calico', 'Citadel', 'Lynx', 'Venture', 'Aves', 'Aril', 'Arden-SL',
+    'ADP', 'Antium', 'Argus', 'Arden-SL', 'Aril', 'Artimex', 'Aves',
+    'Balor HCH', 'CBH-3', 'Calico', 'Citadel', 'Corbel', 'Defiance', 'DustUp',
+    'G-2', 'Geist', 'Inquisitor', 'Lynx', 'Monde', 'Morozov-SH',
+    'ORC-mkV', 'ORC-mkX', 'Overlord', 'PAB-1', 'Palatino', 'Strata',
+    'Testudo', 'TrueDef-Pro', 'Venture',
   ];
 
   readonly weaponPistols = ['Arclight', 'Coda', 'LH86', 'Pulse', 'Tripledown', 'Yubarev'];

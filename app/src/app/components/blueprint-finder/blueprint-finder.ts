@@ -52,7 +52,7 @@ export class BlueprintFinderComponent {
   readonly armorSets = [
     'Antium', 'Arden-SL', 'Aril', 'Artimex', 'Aves', 'Calico', 'Carnifex',
     'Citadel', 'Corbel', 'Defiance', 'Dust', 'DustUp', 'Geist', 'Inquisitor',
-    'Lynx', 'Monde', 'Morozov-SH', 'ORC-mkV', 'PAB-1', 'Palatino',
+    'Lynx', 'Monde', 'Morozov-SH', 'ORC-mkV', 'Overlord', 'PAB-1', 'Palatino',
     'Pembroke', 'Piecemeal', 'Strata', 'Testudo', 'TrueDef-Pro', 'Venture',
   ];
 
