@@ -14,9 +14,14 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+import struct
+import uuid
+
 _DATA_MODE = os.environ.get("VERSEDB_DATA_MODE", "live")
+_DATA_SUFFIX = {"live": "47", "ptu": "48"}.get(_DATA_MODE, "47")
 FORGE_DIR = Path(__file__).parent / f"../SC FILES/sc_data_forge_{_DATA_MODE}/libs/foundry/records"
 GLOBAL_INI = Path(__file__).parent / f"../SC FILES/sc_data_xml_{_DATA_MODE}/Data/Localization/english/global.ini"
+DCB_FILE = Path(__file__).parent / f"../SC FILES/sc_data_{_DATA_SUFFIX}/Data/Game2.dcb"
 OUTPUT_FILE = Path(__file__).parent / "versedb_missions.json"
 APP_FILE = Path(__file__).parent / "../app/public" / _DATA_MODE / "versedb_missions.json"
 
@@ -122,6 +127,157 @@ def infer_category(path_str, class_name):
 def guid_key(g):
     """Normalize GUID for matching (SC uses mixed-endian byte orders)."""
     return "".join(sorted(g.replace("-", "").lower()))
+
+def build_entity_guid_map(dcb_path):
+    """
+    Build a GUID → className map from the DCB entity table.
+    Entry layout: GUID(16) + u32×4, where u32[2] (offset +24) is a text offset
+    to the entity's forge path.
+    """
+    if not dcb_path.exists():
+        print(f"  WARNING: DCB not found at {dcb_path}")
+        return {}
+    sys.path.insert(0, str(Path(__file__).parent))
+    from versedb_extract import _dcb_parse_header
+    with open(dcb_path, 'rb') as f:
+        d = f.read()
+    h = _dcb_parse_header(d)
+    text_start = h['text_start']
+    rec_start = h['rec_start']
+    n_records = h['n_records']
+
+    def read_text(offset):
+        try:
+            pos = text_start + offset
+            end = d.index(b'\x00', pos, pos + 500)
+            s = d[pos:end].decode('utf-8', errors='replace')
+            return s if len(s) > 3 and s.isprintable() else None
+        except:
+            return None
+
+    guid_map = {}
+    for i in range(n_records):
+        entry_off = rec_start + i * 32
+        if entry_off + 32 > len(d):
+            break
+        # Entry layout: u32(+0) + u32_path(+4) + u32(+8) + GUID(+12) + u32(+28)
+        path_off = struct.unpack_from('<I', d, entry_off + 4)[0]
+        path = read_text(path_off)
+        if not path or 'spaceships/' not in path:
+            continue
+        guid_bytes = d[entry_off + 12:entry_off + 28]
+        try:
+            g = str(uuid.UUID(bytes_le=guid_bytes))
+        except:
+            continue
+        cn = path.split('/')[-1].replace('.xml', '')
+        guid_map[g] = cn
+    return guid_map
+
+
+def parse_ai_wave_pools(forge_dir, guid_map, loc):
+    """
+    Parse AI wave collection files to build difficulty-tier → ship list maps.
+    Returns dict: wave_name → list of player-facing ship names.
+    """
+    wave_dir = forge_dir / "aiwavecollection" / "pu" / "mission" / "ai_bounty"
+    if not wave_dir.exists():
+        return {}
+
+    # AI variant suffix patterns to strip for display
+    _AI_SUFFIXES = re.compile(
+        r'_pu_ai_\w+|_ai_\w+|_unmanned_\w+|_def$|_scattergun$|_ea_ai_\w+|'
+        r'_collector_\w+|_military$|_stealth$|_tier_\d+',
+        re.I
+    )
+    # Filter out event/non-combat ships that shouldn't appear in enemy pools
+    _POOL_BLACKLIST = {'rsi_bengal', 'javelin', 'idris', 'reclaimer', 'hull_c', 'hull_d', 'hull_e'}
+
+    # Map className to display name using localization
+    def ship_display_name(cn):
+        # Strip AI suffixes
+        clean = _AI_SUFFIXES.sub('', cn)
+        # Try localization
+        loc_key = f"vehicle_name{clean.lower()}"
+        name = loc.get(loc_key)
+        if name:
+            return name
+        # Fallback: title-case the className
+        return clean.replace('_', ' ').title()
+
+    pools = {}
+    for f in sorted(wave_dir.glob("*.xml.xml")):
+        try:
+            root = ET.parse(f).getroot()
+        except:
+            continue
+        wave_name = f.stem.replace(".xml", "")
+        ships = set()
+        for member in root.findall(".//AIWaveMember"):
+            g = member.get("entityClassDefinition", "")
+            cn = guid_map.get(g)
+            if cn:
+                clean = _AI_SUFFIXES.sub('', cn).lower()
+                if any(bl in clean for bl in _POOL_BLACKLIST):
+                    continue
+                display = ship_display_name(cn)
+                ships.add(display)
+        if ships:
+            pools[wave_name] = sorted(ships)
+    return pools
+
+
+def match_enemy_pool(class_name, wave_pools):
+    """
+    Match a bounty mission to its enemy pool based on className patterns.
+    Returns a list of ship names or None.
+    """
+    cn = class_name.lower()
+
+    # Arlington gang special case
+    if "family" in cn:
+        return wave_pools.get("bounty_family_goons")
+
+    # Infer difficulty and system from className
+    difficulty = ""
+    for suffix in ["_super", "_vhard", "_veryhard", "_hard", "_medium", "_easy", "_veasy", "_veryeasy", "_intro"]:
+        if suffix in cn:
+            difficulty = suffix.strip("_")
+            break
+
+    system = ""
+    for s in ["stanton1", "stanton2", "stanton3", "stanton4", "pyro1", "pyro2", "pyro3", "pyro4", "pyro5", "nyx"]:
+        if s in cn:
+            system = s
+            break
+
+    # Map difficulty to wave name patterns
+    diff_map = {
+        "intro": "easy", "veasy": "easy", "veryeasy": "easy", "easy": "easy",
+        "medium": "medium", "hard": "hard", "vhard": "hard",
+        "veryhard": "hard", "super": "hard",
+    }
+    wave_diff = diff_map.get(difficulty, "")
+    if not wave_diff:
+        return None
+
+    # Try system-specific wave first, then generic
+    candidates = []
+    if system:
+        candidates.append(f"bounty_wave_{wave_diff}_{system}")
+    candidates.append(f"bounty_wave_{wave_diff}_stanton")
+
+    # For target ships, also check target-specific waves
+    if "group" in cn:
+        if system:
+            candidates.insert(0, f"bounty_wave_{wave_diff}_{system}_target")
+        candidates.insert(1, f"bounty_wave_{wave_diff}_stanton_target")
+
+    for candidate in candidates:
+        if candidate in wave_pools:
+            return wave_pools[candidate]
+    return None
+
 
 def parse_mission(xml_path, loc, scope_map=None):
     """Parse a single mission broker XML file."""
@@ -286,11 +442,18 @@ def main():
     print("=" * 60)
 
     # Localization
-    print("\n[1/3] Loading localization...")
+    print("\n[1/4] Loading localization...")
     loc = load_localization(GLOBAL_INI)
 
+    # Entity GUID map + AI wave pools
+    print("\n[2/4] Building entity GUID map and enemy pools...")
+    guid_map = build_entity_guid_map(DCB_FILE)
+    print(f"  {len(guid_map)} spaceship entity GUIDs mapped")
+    wave_pools = parse_ai_wave_pools(FORGE_DIR, guid_map, loc)
+    print(f"  {len(wave_pools)} AI wave pools parsed")
+
     # Mission givers
-    print("\n[2/3] Parsing mission givers...")
+    print("\n[3/8] Parsing mission givers...")
     giver_dir = FORGE_DIR / "missiongiver"
     givers = {}
     if giver_dir.exists():
@@ -731,6 +894,17 @@ def main():
             m["giver"] = re.sub(r'~mission\(([^|)]+)(?:\|[^)]+)?\)', r'[\1]', m["giver"])
         if m.get("description") and "~mission(" in m["description"]:
             m["description"] = re.sub(r'~mission\(([^|)]+)(?:\|[^)]+)?\)', r'[\1]', m["description"])
+
+    # Match enemy pools to bounty missions
+    pool_count = 0
+    for m in missions:
+        cn = m.get("className", "")
+        if "bounty" in cn.lower():
+            pool = match_enemy_pool(cn, wave_pools)
+            if pool:
+                m["enemyPool"] = pool
+                pool_count += 1
+    print(f"  Matched enemy pools to {pool_count} bounty missions")
 
     # Substitute known template variables into titles
     for m in missions:

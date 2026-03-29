@@ -34,6 +34,7 @@ interface Mission {
   boss?: boolean;
   contractor?: string;
   danger?: string;
+  enemyPool?: string[];
 }
 
 interface MissionGiver {

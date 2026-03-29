@@ -184,6 +184,17 @@
               </div>
             }
 
+            @if (sm.enemyPool?.length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Enemy Ships</div>
+                <div class="popout-tags">
+                  @for (ship of sm.enemyPool; track ship) {
+                    <span class="pool-tag">{{ ship }}</span>
+                  }
+                </div>
+              </div>
+            }
+
             @if (sm.blueprintRewards?.length) {
               <div class="popout-section">
                 <div class="popout-section-title">Blueprint Rewards</div>

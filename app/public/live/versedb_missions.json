@@ -1927,6 +1927,10 @@
       "activity": "Ship",
       "contractor": "Northrock Service Group",
       "danger": "Extreme",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "RSI Constellation Andromeda"
+      ],
       "multiSystem": true
     },
     {
@@ -1949,7 +1953,11 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Eckhart Security",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "RSI Constellation Andromeda"
+      ]
     },
     {
       "className": "pu_bounty_pve_group_northrock_veryhard",
@@ -1974,6 +1982,12 @@
       "activity": "Ship",
       "contractor": "Northrock Service Group",
       "danger": "Very High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ],
       "multiSystem": true
     },
     {
@@ -1996,7 +2010,11 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Eckhart Security",
-      "danger": "Very High"
+      "danger": "Very High",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "RSI Constellation Andromeda"
+      ]
     },
     {
       "className": "pu_assassination_pve_vaughn_stanton_1_super",
@@ -2043,6 +2061,13 @@
       ],
       "activity": "Ship",
       "contractor": "Arlington Gang",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "MISC Freelancer MIS"
+      ],
       "missionFlow": [
         "Destroy Targets"
       ],
@@ -2224,6 +2249,10 @@
       "activity": "Ship",
       "contractor": "Northrock Service Group",
       "danger": "High",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "RSI Constellation Andromeda"
+      ],
       "multiSystem": true
     },
     {
@@ -2246,7 +2275,11 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Eckhart Security",
-      "danger": "High"
+      "danger": "High",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "RSI Constellation Andromeda"
+      ]
     },
     {
       "className": "pu_assassination_pve_vaughn_stanton_2_vhard",
@@ -2699,6 +2732,10 @@
       "activity": "Ship",
       "contractor": "Northrock Service Group",
       "danger": "Medium",
+      "enemyPool": [
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ],
       "multiSystem": true
     },
     {
@@ -2725,6 +2762,9 @@
       "activity": "Ship",
       "contractor": "Northrock Service Group",
       "danger": "Low",
+      "enemyPool": [
+        "C.O. Mustang Delta"
+      ],
       "multiSystem": true
     },
     {
@@ -2770,7 +2810,11 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Eckhart Security",
-      "danger": "Medium"
+      "danger": "Medium",
+      "enemyPool": [
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton4_mtpro_super",
@@ -2795,7 +2839,13 @@
       "system": "microTech",
       "activity": "Ship",
       "contractor": "MT Protection Services",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ]
     },
     {
       "className": "pu_pvp_bounty_stanton_northrock_general_intro",
@@ -2894,7 +2944,13 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Hurston Security",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton3_blacjac_super",
@@ -2919,7 +2975,13 @@
       "system": "ArcCorp",
       "activity": "Ship",
       "contractor": "BlacJac Security",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton2_crusec_super",
@@ -2944,7 +3006,13 @@
       "system": "Crusader",
       "activity": "Ship",
       "contractor": "Crusader Security",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_fps_pve_hursec_bounty",
@@ -3106,6 +3174,12 @@
       "activity": "Ship",
       "contractor": "Rough & Ready",
       "danger": "High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ],
       "multiSystem": true
     },
     {
@@ -3214,6 +3288,13 @@
       ],
       "activity": "Ship",
       "contractor": "Arlington Gang",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "MISC Freelancer MIS"
+      ],
       "missionFlow": [
         "Destroy Targets"
       ],
@@ -3243,7 +3324,13 @@
       "system": "Crusader",
       "activity": "Ship",
       "contractor": "Crusader Security",
-      "danger": "Very High"
+      "danger": "Very High",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton1_hursec_vhard",
@@ -3268,7 +3355,13 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Hurston Security",
-      "danger": "Very High"
+      "danger": "Very High",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton3_blacjac_vhard",
@@ -3293,7 +3386,13 @@
       "system": "ArcCorp",
       "activity": "Ship",
       "contractor": "BlacJac Security",
-      "danger": "Very High"
+      "danger": "Very High",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton4_mtpro_vhard",
@@ -3318,7 +3417,13 @@
       "system": "microTech",
       "activity": "Ship",
       "contractor": "MT Protection Services",
-      "danger": "Very High"
+      "danger": "Very High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ]
     },
     {
       "className": "pu_assassination_pve_vaughn_stanton_1_medium",
@@ -3364,7 +3469,10 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Eckhart Security",
-      "danger": "Low"
+      "danger": "Low",
+      "enemyPool": [
+        "C.O. Mustang Delta"
+      ]
     },
     {
       "className": "pu_bounty_pve_pyro_xenothreat_vs_headhunters_pyro3_hard",
@@ -3389,6 +3497,12 @@
       "activity": "Ship",
       "contractor": "Headhunters",
       "danger": "High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ],
       "multiSystem": true
     },
     {
@@ -3434,6 +3548,12 @@
       "activity": "Ship",
       "contractor": "Headhunters",
       "danger": "High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ],
       "multiSystem": true
     },
     {
@@ -3479,6 +3599,13 @@
       "activity": "Ship",
       "contractor": "Rough & Ready",
       "danger": "Medium",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor",
+        "RSI Constellation Andromeda"
+      ],
       "multiSystem": true
     },
     {
@@ -3545,6 +3672,13 @@
       ],
       "activity": "Ship",
       "contractor": "Arlington Gang",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "MISC Freelancer MIS"
+      ],
       "missionFlow": [
         "Destroy Targets"
       ],
@@ -3571,6 +3705,9 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Eckhart Security",
+      "enemyPool": [
+        "C.O. Mustang Delta"
+      ],
       "multiSystem": true
     },
     {
@@ -3637,6 +3774,13 @@
       "activity": "Ship",
       "contractor": "Headhunters",
       "danger": "Medium",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor",
+        "RSI Constellation Andromeda"
+      ],
       "multiSystem": true
     },
     {
@@ -3662,6 +3806,13 @@
       "activity": "Ship",
       "contractor": "Headhunters",
       "danger": "Medium",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor",
+        "RSI Constellation Andromeda"
+      ],
       "multiSystem": true
     },
     {
@@ -3685,6 +3836,13 @@
       ],
       "activity": "Ship",
       "contractor": "Arlington Gang",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "MISC Freelancer MIS"
+      ],
       "missionFlow": [
         "Destroy Targets"
       ],
@@ -3756,7 +3914,13 @@
       "system": "ArcCorp",
       "activity": "Ship",
       "contractor": "BlacJac Security",
-      "danger": "High"
+      "danger": "High",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton4_mtpro_hard",
@@ -3781,7 +3945,13 @@
       "system": "microTech",
       "activity": "Ship",
       "contractor": "MT Protection Services",
-      "danger": "High"
+      "danger": "High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton2_crusec_hard",
@@ -3806,7 +3976,13 @@
       "system": "Crusader",
       "activity": "Ship",
       "contractor": "Crusader Security",
-      "danger": "High"
+      "danger": "High",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton1_hursec_hard",
@@ -3831,7 +4007,13 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Hurston Security",
-      "danger": "High"
+      "danger": "High",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_family_02",
@@ -3854,6 +4036,13 @@
       ],
       "activity": "Ship",
       "contractor": "Arlington Gang",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "MISC Freelancer MIS"
+      ],
       "missionFlow": [
         "Destroy Targets"
       ],
@@ -4010,6 +4199,12 @@
       "activity": "Ship",
       "contractor": "Rough & Ready",
       "danger": "High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ],
       "multiSystem": true
     },
     {
@@ -4035,6 +4230,12 @@
       "activity": "Ship",
       "contractor": "Headhunters",
       "danger": "High",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black"
+      ],
       "multiSystem": true
     },
     {
@@ -4150,7 +4351,13 @@
       "system": "ArcCorp",
       "activity": "Ship",
       "contractor": "BlacJac Security",
-      "danger": "Medium"
+      "danger": "Medium",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton4_mtpro_medium",
@@ -4175,7 +4382,14 @@
       "system": "microTech",
       "activity": "Ship",
       "contractor": "MT Protection Services",
-      "danger": "Medium"
+      "danger": "Medium",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor",
+        "RSI Constellation Andromeda"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton2_crusec_medium",
@@ -4200,7 +4414,13 @@
       "system": "Crusader",
       "activity": "Ship",
       "contractor": "Crusader Security",
-      "danger": "Medium"
+      "danger": "Medium",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton1_hursec_medium",
@@ -4225,7 +4445,13 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Hurston Security",
-      "danger": "Medium"
+      "danger": "Medium",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_family_01",
@@ -4248,6 +4474,13 @@
       ],
       "activity": "Ship",
       "contractor": "Arlington Gang",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "MISC Freelancer MIS"
+      ],
       "multiSystem": true,
       "missionFlow": [
         "Destroy Targets"
@@ -4278,6 +4511,13 @@
       "activity": "Ship",
       "contractor": "Headhunters",
       "danger": "Medium",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor",
+        "RSI Constellation Andromeda"
+      ],
       "multiSystem": true
     },
     {
@@ -4299,6 +4539,13 @@
       "activity": "Ship",
       "contractor": "Rough & Ready",
       "danger": "Medium",
+      "enemyPool": [
+        "Anvil Valkyrie",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "Origin M50 Interceptor",
+        "RSI Constellation Andromeda"
+      ],
       "multiSystem": true
     },
     {
@@ -4321,7 +4568,14 @@
         "affinity"
       ],
       "activity": "Ship",
-      "contractor": "Arlington Gang"
+      "contractor": "Arlington Gang",
+      "enemyPool": [
+        "Aegis Hammerhead",
+        "C.O. Mustang Delta",
+        "Drake Buccaneer",
+        "Drake Cutlass Black",
+        "MISC Freelancer MIS"
+      ]
     },
     {
       "className": "pu_certificationmission_pve_medium",
@@ -4521,7 +4775,11 @@
       "system": "Crusader",
       "activity": "Ship",
       "contractor": "Crusader Security",
-      "danger": "Low"
+      "danger": "Low",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton4_mtpro_easy",
@@ -4595,7 +4853,11 @@
       "system": "ArcCorp",
       "activity": "Ship",
       "contractor": "BlacJac Security",
-      "danger": "Low"
+      "danger": "Low",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton3_blacjac",
@@ -4644,7 +4906,11 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Hurston Security",
-      "danger": "Low"
+      "danger": "Low",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_removeclaimjumpers_pyro_headhunters_pyro2",
@@ -4967,7 +5233,11 @@
       "system": "Crusader",
       "activity": "Ship",
       "contractor": "Crusader Security",
-      "danger": "Low"
+      "danger": "Low",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton1_hursec_veasy",
@@ -4991,7 +5261,11 @@
       ],
       "system": "Hurston",
       "activity": "Ship",
-      "contractor": "Hurston Security"
+      "contractor": "Hurston Security",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton1_hursec_intro",
@@ -5017,7 +5291,11 @@
       "system": "Hurston",
       "activity": "Ship",
       "contractor": "Hurston Security",
-      "danger": "Low"
+      "danger": "Low",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton3_blacjac_rehiring",
@@ -5090,7 +5368,11 @@
       ],
       "system": "ArcCorp",
       "activity": "Ship",
-      "contractor": "BlacJac Security"
+      "contractor": "BlacJac Security",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton2_crusec_veasy",
@@ -5114,7 +5396,11 @@
       ],
       "system": "Crusader",
       "activity": "Ship",
-      "contractor": "Crusader Security"
+      "contractor": "Crusader Security",
+      "enemyPool": [
+        "C.O. Mustang Delta",
+        "Origin M50 Interceptor"
+      ]
     },
     {
       "className": "pu_bounty_pve_stanton1_hursec_rehiring",
