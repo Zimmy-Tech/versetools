@@ -12,6 +12,7 @@ _SC = Path(__file__).resolve().parent.parent / "SC FILES"
 _DATA_MODE = os.environ.get("VERSEDB_DATA_MODE", "live")
 DCB_FILE = _SC / f"sc_data_{_DATA_MODE}" / "Data" / "Game2.dcb"
 LOC_FILE = _SC / f"sc_data_xml_{_DATA_MODE}" / "Data" / "Localization" / "english" / "global.ini"
+FORGE_DIR = _SC / f"sc_data_forge_{_DATA_MODE}" / "libs" / "foundry" / "records"
 
 # Clean up entity class names to display names
 RESOURCE_RENAMES = {
@@ -161,6 +162,24 @@ def parse_dcb():
             return loc[key + ",p"]
         return key_raw
 
+    # Build scitem display name cache for fallback name resolution
+    scitem_display = {}
+    scitem_base = FORGE_DIR / "entities" / "scitem"
+    if scitem_base.exists():
+        for sf in scitem_base.rglob("*.xml.xml"):
+            try:
+                stxt = open(sf, encoding="utf-8").read()
+                dm = re.search(r'SCItemPurchasableParams[^>]*displayName="@([^"]+)"', stxt)
+                if dm:
+                    loc_key = dm.group(1).lower()
+                    resolved = loc.get(loc_key, "")
+                    if resolved and resolved != "@LOC_UNINITIALIZED":
+                        cls = sf.stem.replace(".xml", "")
+                        scitem_display[cls] = resolved
+            except Exception:
+                pass
+        print(f"  Built scitem display name cache: {len(scitem_display)} items")
+
     def resolve_item_name(class_name):
         """Resolve an entity class name to a display name via localization."""
         cn = class_name.lower()
@@ -175,6 +194,9 @@ def parse_dcb():
                 key = prefix + shorter
                 if key in loc:
                     return loc[key]
+        # Fallback: check SCItemPurchasableParams displayName cache
+        if class_name in scitem_display:
+            return scitem_display[class_name]
         return class_name
 
     # ── Generic struct reader ──
