@@ -12,6 +12,7 @@
         <div class="pb-grid" [style.height.px]="maxHeight() * 12">
           @for (col of columns(); track col.id) {
             <div class="pb-col" [class.restricted]="col.restricted" [class.placeholder]="col.placeholder"
+                 [style.width.px]="colWidth()"
                  [title]="col.placeholder ? col.label + ' (not yet available)' : col.label">
 
               <!-- Spacer to bottom-align all bars -->
@@ -64,6 +65,7 @@
         <div class="pb-label-row">
           @for (col of columns(); track col.id) {
             <div class="pb-label" [class.placeholder]="col.placeholder" [title]="col.label"
+                 [style.width.px]="colWidth()"
                  (click)="togglePower(col, $event)">
               @if (iconFor(col)) {
                 <img [src]="iconFor(col)!" [alt]="col.label" class="pb-icon"

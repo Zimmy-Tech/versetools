@@ -42,6 +42,13 @@ export class DataService {
     ).map(([, i]) => i as Item)
   );
 
+  /** All weapons including PDCs — for weapon power pool max pip calculation. */
+  allWeaponsIncludingPdc = computed(() =>
+    Object.values(this.loadout()).filter(
+      i => i !== null && (i.type === 'WeaponGun' || i.type === 'WeaponTachyon')
+    ) as Item[]
+  );
+
   totalPowerOut = computed(() => {
     const loadout = this.loadout();
     return Object.values(loadout)
@@ -355,9 +362,9 @@ export class DataService {
   /** Clamp all power allocations to fit within total power plant output. */
   private clampWeaponsPower(): void {
     const poolSize = this.selectedShip()?.weaponPowerPoolSize ?? 0;
-    // Clamp weapon pips to maxPips
+    // Clamp weapon pips to maxPips (includes PDC power draw)
     if (poolSize > 0) {
-      const maxPips = calcMaxPips(poolSize, this.allLoadoutWeapons());
+      const maxPips = calcMaxPips(poolSize, this.allWeaponsIncludingPdc());
       if (this.weaponsPower() > maxPips) {
         this.weaponsPower.set(maxPips);
       }
@@ -549,7 +556,7 @@ export class DataService {
   setWeaponsPower(n: number): void {
     if (this.flightMode() === 'nav') return;
     const poolSize = this.selectedShip()?.weaponPowerPoolSize ?? 0;
-    const maxPips = calcMaxPips(poolSize, this.allLoadoutWeapons());
+    const maxPips = calcMaxPips(poolSize, this.allWeaponsIncludingPdc());
     const totalOut = this.totalPowerOut();
     const headroom = totalOut - (this.totalPowerUsed() - this.weaponsPower());
     this.weaponsPower.set(Math.max(0, Math.min(n, maxPips, headroom)));

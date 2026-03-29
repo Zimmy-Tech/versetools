@@ -449,7 +449,7 @@ export class LoadoutViewComponent {
             subtypes: '',
             minSize: weaponLock ? slotSize : (isGimbal && isGun ? Math.max(1, slotSize - 1) : slotSize),
             maxSize: slotSize,
-            flags: weaponLock ? `weaponLock:${weaponLock}` : '',
+            flags: weaponLock ? `weaponLock:${weaponLock}` : (isTractor && hp.flags?.includes('uneditable') ? '$uneditable' : ''),
             allTypes: [{ type: slotType, subtypes: '' }],
           });
         }

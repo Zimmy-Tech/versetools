@@ -153,6 +153,10 @@ export class HardpointSlotComponent {
       }
       case 'LifeSupportGenerator':
         return { classCode: 'LSG-' + (item.size ?? '?'), primaryVal: (item.componentHp ?? 0).toString(), primaryUnit: 'HP', meta };
+      case 'EMP':
+        return { classCode: 'EMP-S' + (item.size ?? '?'), primaryVal: (item.distortionDamage ?? 0).toFixed(0), primaryUnit: 'DMG', meta };
+      case 'QuantumInterdictionGenerator':
+        return { classCode: 'QED-S' + (item.size ?? '?'), primaryVal: (item.powerDraw ?? 0).toString(), primaryUnit: 'SEG', meta };
       default:
         return null;
     }
@@ -499,6 +503,13 @@ export class HardpointSlotComponent {
         if (item.distortionDecayRate) rows.push({ label: 'Dist Decay Rate', value: f(item.distortionDecayRate)! });
         if (item.distortionDecayDelay) rows.push({ label: 'Dist Decay Delay', value: item.distortionDecayDelay.toFixed(1) + 's' });
       }
+    } else if (item.type === 'EMP') {
+      if (item.distortionDamage) rows.push({ label: 'Distortion Dmg', value: f(item.distortionDamage)! });
+      if (item.empRadius) rows.push({ label: 'EMP Radius', value: f(item.empRadius)! + 'm' });
+      if (item.chargeTime) rows.push({ label: 'Charge Time', value: f(item.chargeTime, 1)! + 's' });
+      if (item.cooldownTime) rows.push({ label: 'Cooldown', value: f(item.cooldownTime, 1)! + 's' });
+    } else if (item.type === 'QuantumInterdictionGenerator') {
+      if (item.powerDraw) rows.push({ label: 'Power Draw', value: item.powerDraw + ' seg' });
     } else if (item.type === 'SalvageModifier' && item.salvageSpeed) {
       const ship = this.data.selectedShip();
       const hs = ship?.salvageSpeedMult ?? 1;

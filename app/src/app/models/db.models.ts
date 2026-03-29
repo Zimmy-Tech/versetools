@@ -180,6 +180,10 @@ export interface Item {
   calDelay?: number;
   fuelRate?: number;
   splineSpeed?: number;
+  // EMP
+  chargeTime?: number;
+  distortionDamage?: number;
+  empRadius?: number;
   // Power segments (Shields, Coolers, QDs)
   powerMin?: number;
   powerMax?: number;
@@ -320,19 +324,24 @@ export function coolerSupply(cooler: Item, pips: number): number {
 }
 
 /**
+ * Global maxPowerToCoolantRatio from ItemResourceNetworkGlobal.
+ * Cooling demand = power consumed × this ratio for all non-PP components.
+ */
+const POWER_TO_COOLANT_RATIO = 2.5;
+
+/**
  * Calculate cooling demand from a component at its current pip allocation.
- * For shields/coolers/life support: demand = powerDraw × band_modifier × MCF (at min), scaling to powerDraw at max
- * For power plants: demand = powerOutput - 1 (always at max, no pip control)
- * Linear interpolation: at N pips, demand = powerDraw × bandMod(N) (simplified)
+ * Each component's cooling demand = power_consumed × maxPowerToCoolantRatio (2.5).
+ * Power plants: flat demand = powerOutput (no ratio, bands disabled).
  */
 export function componentCoolingDemand(item: Item, pips: number): number {
   if (pips <= 0) return 0;
+  // Power plants: flat demand = powerOutput + 1 (base segment offset, no ratio)
+  if (item.type === 'PowerPlant') return (item.powerOutput ?? 0) + 1;
   const psru = item.powerDraw ?? 0;
   if (psru <= 0) return 0;
-  // Power plants: fixed demand = powerOutput - 1
-  if (item.type === 'PowerPlant') return Math.max(0, (item.powerOutput ?? 0) - 1);
-  // Radar/QD: pips = powerDraw, demand scales linearly with allocated pips
-  if (item.type === 'Radar' || item.type === 'QuantumDrive') return pips;
-  // Shields/Coolers/LS: PSRU × band_modifier at current pips
-  return psru * bandModAt(item, pips);
+  // Radar/QD: pips = power consumed directly
+  if (item.type === 'Radar' || item.type === 'QuantumDrive') return pips * POWER_TO_COOLANT_RATIO;
+  // Shields/Coolers/LS: PSRU × band_modifier × ratio
+  return psru * bandModAt(item, pips) * POWER_TO_COOLANT_RATIO;
 }

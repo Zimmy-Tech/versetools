@@ -1,6 +1,6 @@
 import { Component, computed } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { Item, calcMaxPips, coolerSupply, componentCoolingDemand } from '../../models/db.models';
+import { Item, calcMaxPips, coolerSupply, componentCoolingDemand, bandModAt } from '../../models/db.models';
 
 interface PowerBarCol {
   id: string;
@@ -32,9 +32,9 @@ export class PowerBarsComponent {
     const mode    = this.data.flightMode();
     const cols: PowerBarCol[] = [];
 
-    // Weapons — pool max depends on loadout total power draw
+    // Weapons — max pips capped by ceil(total weapon power draw including PDCs)
     const poolSize = ship.weaponPowerPoolSize ?? 0;
-    const wpnsMax = poolSize > 0 ? calcMaxPips(poolSize, this.data.allLoadoutWeapons()) : 0;
+    const wpnsMax = poolSize > 0 ? calcMaxPips(poolSize, this.data.allWeaponsIncludingPdc()) : 0;
     if (poolSize > 0) {
       cols.push({
         id: '__weapons__', label: 'WPNS',
@@ -173,7 +173,7 @@ export class PowerBarsComponent {
         const cMin = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
         cols.push({
           id: hp.id, label: `CL${ci++}`,
-          max: item.powerMax!, powerMin: cMin,
+          max: Math.max(1, (item.powerMax ?? 0) - 1), powerMin: cMin,
           alloc: alloc[hp.id] ?? 0,
           restricted: false, placeholder: false, item,
         });
@@ -214,6 +214,17 @@ export class PowerBarsComponent {
     Math.max(1, ...this.columns().map(c => c.max))
   );
 
+  /** Dynamic column width — shrinks when many columns to fit available space. */
+  colWidth = computed(() => {
+    const cols = this.columns().length;
+    if (cols <= 0) return 28;
+    // Available width ≈ stats column (280px) minus toggle (45px) and padding (24px) = ~211px
+    // Each column needs width + 3px gap
+    const available = 211;
+    const w = Math.floor((available - (cols - 1) * 3) / cols);
+    return Math.max(14, Math.min(28, w));
+  });
+
   /** Percentage of cooling supply used by demand. >100% = overloaded. */
   coolingPct = computed(() => {
     const supply = this.coolingSupply();
@@ -237,32 +248,113 @@ export class PowerBarsComponent {
     return Math.round(supply * 10) / 10;
   });
 
-  /** Total cooling demand from all powered components. */
+  /** Total cooling demand from all powered components.
+   *  Default: totalAllocatedPips + PP_output × 0.305.
+   *  Validated against Perseus in-game (2 configs, <1% error).
+   *  Polaris: empirically derived per-component weights (5 configs, 0% error).
+   */
+  private readonly PP_COOLING_FACTOR = 0.305;
+
   coolingDemand = computed(() => {
     const loadout = this.data.loadout();
     const alloc = this.data.powerAlloc();
     const ship = this.data.selectedShip();
     if (!ship) return 0;
+
+    // Ship-specific empirically validated cooling models
+    if (ship.className === 'RSI_Polaris') {
+      return this.polarisCoolingDemand(ship, loadout, alloc);
+    }
+    if (ship.className === 'CRUS_Star_Runner') {
+      return this.msrCoolingDemand(ship, loadout, alloc);
+    }
+
     let demand = 0;
+    // Power plants: output × PP_COOLING_FACTOR
     for (const hp of ship.hardpoints) {
       const item = loadout[hp.id];
       if (!item) continue;
       const pips = alloc[hp.id] ?? 0;
       if (item.type === 'PowerPlant') {
-        // Power plants always demand cooling when equipped
-        demand += componentCoolingDemand(item, 1);
+        demand += (item.powerOutput ?? 0) * this.PP_COOLING_FACTOR;
       } else if (item.type === 'Shield' || item.type === 'Cooler' ||
                  item.type === 'LifeSupportGenerator' || item.type === 'QuantumDrive' ||
                  item.type === 'Radar') {
-        demand += componentCoolingDemand(item, pips);
+        demand += pips;
       }
     }
-    // Tools (mining lasers / salvage heads) = 1 cooling pip each
+    // Weapons, tools, thrusters: pips
+    demand += this.data.weaponsPower();
     demand += this.data.toolPower();
-    // Thrusters generate heat proportional to their pip allocation
+    demand += this.data.tractorPower();
     demand += this.data.thrusterPower();
     return Math.round(demand * 10) / 10;
   });
+
+  /** Polaris-specific cooling demand. Weights derived from in-game testing. */
+  private polarisCoolingDemand(
+    ship: any, loadout: Record<string, Item>, alloc: Record<string, number>
+  ): number {
+    const BASE = 9.12;           // PP idle cooling
+    const W_WPN = 1.04;          // per weapon pip
+    const W_THRU = 0.615;        // per thruster pip
+    const W_TOOL = 1.04;         // per tractor/tool pip
+    const RADAR_A = 0.641;       // radar linear term
+    const RADAR_B = 0.0834;      // radar quadratic term
+
+    let demand = BASE;
+    demand += this.data.weaponsPower() * W_WPN;
+    demand += this.data.thrusterPower() * W_THRU;
+    demand += this.data.toolPower() * W_TOOL;
+    demand += this.data.tractorPower() * W_TOOL;
+
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item) continue;
+      const pips = alloc[hp.id] ?? 0;
+      if (pips <= 0) continue;
+      if (item.type === 'Shield' || item.type === 'Cooler' ||
+          item.type === 'LifeSupportGenerator') {
+        // PSRU × bandMod
+        demand += (item.powerDraw ?? 0) * bandModAt(item, pips);
+      } else if (item.type === 'Radar') {
+        // Non-linear: a×pips + b×pips²
+        demand += RADAR_A * pips + RADAR_B * pips * pips;
+      }
+    }
+    return Math.round(demand * 10) / 10;
+  }
+
+  /** Mercury Star Runner cooling demand. Weights derived from in-game testing (3 configs, 0% error). */
+  private msrCoolingDemand(
+    ship: any, loadout: Record<string, Item>, alloc: Record<string, number>
+  ): number {
+    const BASE = 6.227;
+    const W_WPN = 0.82;
+    const W_THRU = 0.82;           // estimated (= weapon weight, not independently tested)
+    const W_TOOL = 0.82;
+    const W_RADAR = 1.913;
+
+    let demand = BASE;
+    demand += this.data.weaponsPower() * W_WPN;
+    demand += this.data.thrusterPower() * W_THRU;
+    demand += this.data.toolPower() * W_TOOL;
+    demand += this.data.tractorPower() * W_TOOL;
+
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item) continue;
+      const pips = alloc[hp.id] ?? 0;
+      if (pips <= 0) continue;
+      if (item.type === 'Shield' || item.type === 'Cooler' ||
+          item.type === 'LifeSupportGenerator') {
+        demand += pips;
+      } else if (item.type === 'Radar') {
+        demand += pips * W_RADAR;
+      }
+    }
+    return Math.round(demand * 10) / 10;
+  }
 
   range(n: number): number[] {
     return Array.from({ length: n }, (_, i) => i);

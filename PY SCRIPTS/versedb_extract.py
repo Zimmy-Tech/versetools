@@ -1272,6 +1272,62 @@ def parse_salvagehead_item(root, class_name, loc):
     }
 
 
+def parse_emp_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "EMP":
+        return None
+    display = resolve_item_name(loc, class_name)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+    emp = root.find(".//SCItemEMPParams")
+    return {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "EMP",
+        "size":         info["size"],
+        "grade":        info["grade"],
+        "chargeTime":   round(safe_float(emp.get("chargeTime", 0)), 1) if emp is not None else 0,
+        "cooldownTime": round(safe_float(emp.get("cooldownTime", 0)), 1) if emp is not None else 0,
+        "distortionDamage": round(safe_float(emp.get("distortionDamage", 0)), 0) if emp is not None else 0,
+        "empRadius":    round(safe_float(emp.get("empRadius", 0)), 0) if emp is not None else 0,
+    }
+
+
+def parse_qed_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "QuantumInterdictionGenerator":
+        return None
+    display = resolve_item_name(loc, class_name)
+    loc_el = root.find(".//Localization")
+    if loc_el is not None:
+        loc_ref = loc_el.get("Name", "")
+        if loc_ref.startswith("@"):
+            key = loc_ref[1:].lower()
+            v = loc.get(key)
+            if v and not v.startswith("@") and len(v) > 2:
+                display = v
+    qed = root.find(".//SCItemQuantumInterdictionGeneratorParams")
+    cooling = parse_cooling_demand(root)
+    return {
+        "className":    class_name,
+        "name":         display,
+        "manufacturer": mfr_from_classname(class_name),
+        "type":         "QuantumInterdictionGenerator",
+        "size":         info["size"],
+        "grade":        info["grade"],
+        "psruRef":      cooling["psruRef"],
+        "basePowerDrawFraction": round(safe_float(qed.get("basePowerDrawFraction", 0)), 2) if qed is not None else 0,
+        **parse_power_ranges(root),
+    }
+
+
 def parse_radar_item(root, class_name, loc):
     info = parse_attachdef(root)
     if not info or info["type"] != "Radar":
@@ -1573,6 +1629,9 @@ FOLDER_PARSERS = {
     "utility/salvage/salvagehead": parse_salvagehead_item,
     "utility/salvage/salvagemodifiers": parse_miningarm_item,  # reuse generic parser
     "module":            parse_module_item,
+    "weapons/emp":       parse_emp_item,
+    "weapons/qig":       parse_qed_item,
+    "quantumenforcementdevice": parse_qed_item,
 }
 
 def scan_components(forge_dir, loc):
@@ -3297,6 +3356,7 @@ def enrich_from_dcb(items, dcb_path, loc):
                 wpn_pwr_enriched += 1
         print(f"  Weapons enriched with DCB power draw: {wpn_pwr_enriched}")
 
+
     # ── Enrich mining lasers with max power from DamageInfo ──
     di_si_mining = h["struct_by_name"].get("DamageInfo")
     if di_si_mining and di_si_mining in sd:
@@ -3438,7 +3498,7 @@ def enrich_from_dcb(items, dcb_path, loc):
 
         # Also enrich shields with power consumption (bars needed to turn on)
         # Enrich shields, coolers, and life support with PSRU power draw
-        psru_enriched = {"Shield": 0, "Cooler": 0, "LifeSupportGenerator": 0, "Radar": 0}
+        psru_enriched = {"Shield": 0, "Cooler": 0, "LifeSupportGenerator": 0, "Radar": 0, "QuantumInterdictionGenerator": 0}
         for item in items.values():
             if item.get("type") not in psru_enriched: continue
             ref = item.pop("psruRef", "")
@@ -3634,7 +3694,8 @@ def main(mode: str = "live"):
         "aegs_sabre_firebird": {"hardpoint_weapon_left_nose", "hardpoint_weapon_right_nose",
                                 "hardpoint_weapon_missilerack_right", "hardpoint_weapon_missilerack_left"},
         "rsi_zeus_es": {"hardpoint_tractor_beam", "hardpoint_bounty_turret_top", "hardpoint_passenger_turret_top"},
-        "rsi_zeus_cl": {"hardpoint_bounty_turret_top", "hardpoint_passenger_turret_top"},
+        "rsi_zeus_cl": {"hardpoint_bounty_turret_top", "hardpoint_passenger_turret_top",
+                        "hardpoint_bounty_emp", "hardpoint_bounty_quantum_damp"},
         "aegs_avenger_stalker": {"hardpoint_weapon_emp"},
         "aegs_avenger_titan": {"hardpoint_weapon_emp"},
         "aegs_avenger_titan_renegade": {"hardpoint_weapon_emp"},
@@ -3649,6 +3710,55 @@ def main(mode: str = "live"):
                 hp for hp in ships[ship_cls].get("hardpoints", [])
                 if hp["id"].lower() not in {x.lower() for x in excluded_ids}
             ]
+
+    # Polaris: top remote missile turret entity not extracted — remap to missile rack directly
+    if "RSI_Polaris" in ships:
+        pol = ships["RSI_Polaris"]
+        dl = pol.setdefault("defaultLoadout", {})
+        # Promote missile rack to the turret hardpoint level
+        old_prefix = "hardpoint_turret_remote_top.hardpoint_missile"
+        new_prefix = "hardpoint_turret_remote_top"
+        # Replace turret entity with missile rack
+        dl[new_prefix] = dl.pop(old_prefix, dl.get(new_prefix, ""))
+        # Re-key missile sub-slots: remove the .hardpoint_missile intermediate
+        rekeyed = {}
+        for k, v in list(dl.items()):
+            if k.startswith(old_prefix + "."):
+                new_key = new_prefix + k[len(old_prefix):]
+                rekeyed[new_key] = v
+                del dl[k]
+        dl.update(rekeyed)
+
+    # Perseus: LS hardpoint is in forge entity XML but missing from vehicle XML
+    if "rsi_perseus" in ships:
+        per = ships["rsi_perseus"]
+        per["hardpoints"].append({
+            "id": "hardpoint_lifesupport", "label": "Life Support", "type": "LifeSupportGenerator",
+            "subtypes": "", "minSize": 3, "maxSize": 3, "flags": "",
+            "allTypes": [{"type": "LifeSupportGenerator", "subtypes": ""}],
+        })
+        per.setdefault("defaultLoadout", {})["hardpoint_lifesupport"] = "lfsp_tydt_s03_comfortairmax"
+
+    # Zeus CL: tractor beam arm should display as a tractor turret, not a mining tool
+    if "rsi_zeus_cl" in ships:
+        for hp in ships["rsi_zeus_cl"]["hardpoints"]:
+            if hp["id"].lower() == "hardpoint_tractor_beam":
+                hp["type"] = "Turret"
+                hp["allTypes"] = [{"type": "Turret", "subtypes": ""}]
+
+    # Scorpius Antares: "Interdiction" modification adds QED to modPart_Spine2
+    # Both EMP and QED are locked (not swappable) on the Antares
+    if "rsi_scorpius_antares" in ships:
+        ant = ships["rsi_scorpius_antares"]
+        ant["hardpoints"].append({
+            "id": "hardpoint_qed", "label": "QED", "type": "QuantumInterdictionGenerator",
+            "subtypes": "", "minSize": 3, "maxSize": 3, "flags": "$uneditable",
+            "allTypes": [{"type": "QuantumInterdictionGenerator", "subtypes": ""}],
+        })
+        ant.setdefault("defaultLoadout", {})["hardpoint_qed"] = "qed_rsi_s03_scorpius"
+        for hp in ant["hardpoints"]:
+            if hp["id"] == "hardpoint_EMP":
+                hp["flags"] = "$uneditable"
 
     # Add wing weapon hardpoints for P-52 Merlin and P-72 Archimedes
     # These come from wing sub-components, not the main entity XML
