@@ -429,10 +429,11 @@ export class DataService {
 
   setPowerAlloc(hpId: string, n: number, item: Item | null): void {
     if (this.isFlightRestricted(item)) return;
-    // Radar/QD: actual max = powerDraw (PSRU), not powerMax (from bands)
+    // Radar/QD: actual max = powerDraw (SRU), not powerMax (from bands)
+    // Others: max = powerMax - 1 (base segment offset)
     const max = (item?.type === 'Radar' || item?.type === 'QuantumDrive')
       ? (item?.powerDraw ?? item?.powerMax ?? 0)
-      : (item?.powerMax ?? 0);
+      : Math.max(1, (item?.powerMax ?? 0) - 1);
     const current = this.powerAlloc()[hpId] ?? 0;
     const totalOut = this.totalPowerOut();
     const headroom = totalOut - (this.totalPowerUsed() - current);
@@ -550,7 +551,9 @@ export class DataService {
 
   setThrusterPower(n: number): void {
     const maxBars = this.selectedShip()?.thrusterPowerBars ?? 4;
-    this.thrusterPower.set(Math.max(1, Math.min(n, maxBars)));
+    const totalOut = this.totalPowerOut();
+    const headroom = totalOut - (this.totalPowerUsed() - this.thrusterPower());
+    this.thrusterPower.set(Math.max(1, Math.min(n, maxBars, headroom)));
   }
 
   setWeaponsPower(n: number): void {

@@ -86,7 +86,7 @@ export class PowerBarsComponent {
         const qMin = item.powerDraw ?? item.powerMin ?? 1;
         cols.push({
           id: hp.id, label: 'QD',
-          max: Math.max(qMin, item.powerMax!), powerMin: qMin,
+          max: qMin, powerMin: qMin,
           alloc: alloc[hp.id] ?? 0,
           restricted: mode === 'scm', placeholder: false, item,
         });
