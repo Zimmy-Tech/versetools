@@ -80,6 +80,23 @@ export class CraftingViewComponent {
   addQty = signal(1);
   readonly Math = Math;
 
+  // Popout tab: 'crafting' or 'missions'
+  popoutTab = signal<'crafting' | 'missions'>('crafting');
+
+  // Mission data for blueprint source lookup
+  private allMissions = signal<any[]>([]);
+  selectedMission = signal<any | null>(null);
+
+  /** Missions that reward the selected recipe's blueprint. */
+  rewardingMissions = computed(() => {
+    const sr = this.selectedRecipe();
+    if (!sr) return [];
+    const name = sr.itemName;
+    return this.allMissions().filter(m =>
+      m.blueprintRewards?.some((bp: string) => bp === name)
+    );
+  });
+
   // Quality sliders: resource name → quality value (0–1000)
   qualityValues = signal<Record<string, number>>({});
 
@@ -197,6 +214,9 @@ export class CraftingViewComponent {
         this.allRecipes.set(recipes);
         this.loaded.set(true);
       });
+      this.http.get<any>(`${prefix}versedb_missions.json`).subscribe(data => {
+        this.allMissions.set(data.contracts ?? data.missions ?? []);
+      });
     });
   }
 
@@ -211,6 +231,8 @@ export class CraftingViewComponent {
     } else {
       this.selectedRecipe.set(r);
       this.addQty.set(1);
+      this.popoutTab.set('crafting');
+      this.selectedMission.set(null);
       // Initialize quality sliders at midpoint for all ingredients
       const qv: Record<string, number> = {};
       for (const ing of r.ingredients) {

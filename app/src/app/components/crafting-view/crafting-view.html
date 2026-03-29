@@ -205,7 +205,13 @@
           <div class="popout-title">{{ sr.itemName }}</div>
           <span class="popout-close" (click)="closePopout()">&#10005;</span>
         </div>
-        <div class="popout-body">
+        <div class="popout-tabs">
+          <button class="popout-tab" [class.active]="popoutTab() === 'crafting'" (click)="popoutTab.set('crafting')">Crafting</button>
+          <button class="popout-tab" [class.active]="popoutTab() === 'missions'" (click)="popoutTab.set('missions')">
+            Sources ({{ rewardingMissions().length }})
+          </button>
+        </div>
+        <div class="popout-body" [style.display]="popoutTab() === 'crafting' ? '' : 'none'">
 
           <div class="popout-meta">
             <span class="po-cat">{{ sr.category }}</span>
@@ -346,6 +352,77 @@
           </div>
 
         </div>
+
+        <!-- Missions (Sources) tab -->
+        @if (popoutTab() === 'missions') {
+          <div class="popout-body missions-body">
+            @if (rewardingMissions().length === 0) {
+              <div class="no-missions">No contracts found that reward this blueprint.</div>
+            } @else {
+              <div class="mission-source-list">
+                @for (m of rewardingMissions(); track m.className) {
+                  <div class="mission-source-row" (click)="selectedMission.set(m)">
+                    <div class="ms-title">{{ m.title }}</div>
+                    <div class="ms-meta">
+                      @if (m.contractor) { <span class="ms-tag contractor">{{ m.contractor }}</span> }
+                      @if (m.danger) { <span class="ms-tag danger">{{ m.danger }}</span> }
+                      @if (m.system) { <span class="ms-tag system">{{ m.system }}</span> }
+                      @if (m.activity) { <span class="ms-tag activity">{{ m.activity }}</span> }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Mission detail popup (overlays within crafting popout) -->
+        @if (selectedMission(); as sm) {
+          <div class="mission-detail-overlay" (click)="selectedMission.set(null)"></div>
+          <div class="mission-detail-panel">
+            <div class="popout-header">
+              <div class="popout-title">{{ sm.title }}</div>
+              <span class="popout-close" (click)="selectedMission.set(null)">&#10005;</span>
+            </div>
+            <div class="popout-body">
+              <div class="popout-meta">
+                @if (sm.contractor) { <span class="ms-tag contractor">{{ sm.contractor }}</span> }
+                @if (sm.danger) { <span class="ms-tag danger">{{ sm.danger }}</span> }
+                @if (sm.system) { <span class="ms-tag system">{{ sm.system }}</span> }
+                @if (sm.activity) { <span class="ms-tag activity">{{ sm.activity }}</span> }
+                @if (sm.lawful) { <span class="ms-tag lawful">LAWFUL</span> }
+                @else { <span class="ms-tag unlawful">UNLAWFUL</span> }
+              </div>
+              @if (sm.reward) {
+                <div class="po-stats">
+                  <div class="po-stat"><span class="po-label">Reward</span><span class="po-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
+                </div>
+              }
+              @if (sm.repReward) {
+                <div class="po-stats">
+                  <div class="po-stat"><span class="po-label">Rep Reward</span><span class="po-val">+{{ sm.repReward }}</span></div>
+                </div>
+              }
+              @if (sm.enemyPool?.length) {
+                <div class="po-section">
+                  <div class="po-section-title">Enemy Ships</div>
+                  <div class="ms-tag-list">
+                    @for (ship of sm.enemyPool; track ship) {
+                      <span class="ms-tag danger">{{ ship }}</span>
+                    }
+                  </div>
+                </div>
+              }
+              @if (sm.description) {
+                <div class="po-section">
+                  <div class="po-section-title">Description</div>
+                  <div class="popout-desc">{{ sm.description }}</div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
       </div>
     }
 
