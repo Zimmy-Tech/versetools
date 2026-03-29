@@ -391,6 +391,27 @@ PP Idle Heat = Total Cooler Supply &times; 0.12</pre>
               Per-ship overrides exist for Polaris (5 configs) and Mercury Star Runner
               (3 configs) where component-specific weights were isolated.</p>
           </div>
+
+          <div class="formula-card">
+            <h3>Cooling System Theory</h3>
+            <p>The in-game engineering cooling gauge appears to display real-time thermal
+              state rather than a static demand/supply ratio.</p>
+            <p>In the normal operating range (below 100%), the gauge approximates a
+              steady-state equilibrium where cooling supply meets demand. Each allocated
+              power pip generates roughly 1 unit of thermal load, power plants contribute
+              a baseline idle heat (~12% of cooler capacity), and certain components &mdash;
+              particularly some radar and life support models &mdash; generate
+              disproportionately more heat per pip than others.</p>
+            <p>Above 100%, the system enters thermal runaway: insufficient cooling causes
+              heat to accumulate, which increases component thermal output, which further
+              overwhelms the cooling system. This was observed in testing on an Apollo
+              Medivac &mdash; reducing to a single cooler at minimum power caused the gauge
+              to climb continuously from 152% to 457% over a short period, confirming the
+              gauge reflects a live simulation, not a fixed calculation.</p>
+            <p>The gauge is essentially a thermometer, not a calculator. Our formulas
+              approximate the steady-state equilibrium point that the gauge settles at
+              during normal operation.</p>
+          </div>
         </div>
       }
 
