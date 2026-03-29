@@ -44,8 +44,10 @@
   }
 
   @if (updateAvailable()) {
-    <div class="update-toast" (click)="refresh()">
-      New data available — click to refresh
+    <div class="update-overlay"></div>
+    <div class="update-toast">
+      <span>A new update is available for VerseTools!</span>
+      <button class="update-btn" (click)="refresh()">Got it!</button>
     </div>
   }
 </div>

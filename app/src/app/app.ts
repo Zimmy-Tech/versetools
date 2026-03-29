@@ -1,5 +1,7 @@
 import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { filter } from 'rxjs/operators';
 import { DataService } from './services/data.service';
 import { HeaderComponent, TabName } from './components/header/header';
 import { LoadoutViewComponent } from './components/loadout-view/loadout-view';
@@ -50,7 +52,7 @@ export class App implements OnInit, OnDestroy {
   private versionCheckInterval: any;
   private loadedVersion = '';
 
-  constructor(public data: DataService, private http: HttpClient) {}
+  constructor(public data: DataService, private http: HttpClient, private swUpdate: SwUpdate) {}
 
   ngOnInit(): void {
     // Show welcome popup on first visit
@@ -61,7 +63,7 @@ export class App implements OnInit, OnDestroy {
     this.http.get<{ v: string }>('version.json', { headers: { 'Cache-Control': 'no-cache' } })
       .subscribe({ next: r => this.loadedVersion = r.v, error: () => {} });
 
-    // Poll every 5 minutes
+    // Poll every 5 minutes for data version changes
     this.versionCheckInterval = setInterval(() => {
       this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
         .subscribe({ next: r => {
@@ -70,6 +72,13 @@ export class App implements OnInit, OnDestroy {
           }
         }, error: () => {} });
     }, 5 * 60 * 1000);
+
+    // Service Worker update detection (production only)
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates.pipe(
+        filter((e): e is VersionReadyEvent => e.type === 'VERSION_READY')
+      ).subscribe(() => this.updateAvailable.set(true));
+    }
   }
 
   ngOnDestroy(): void {
