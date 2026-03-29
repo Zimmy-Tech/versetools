@@ -110,6 +110,12 @@
             @if (m.activity) {
               <span class="meta-tag activity">{{ m.activity }}</span>
             }
+            @if (m.contractor) {
+              <span class="meta-tag contractor">{{ m.contractor }}</span>
+            }
+            @if (m.danger) {
+              <span class="meta-tag danger">{{ m.danger }}</span>
+            }
           </div>
 
         </div>
@@ -146,6 +152,8 @@
               }
               @if (sm.system) { <span class="meta-item"><em>System</em> {{ sm.system }}</span> }
               @if (sm.activity) { <span class="meta-tag activity">{{ sm.activity }}</span> }
+              @if (sm.contractor) { <span class="meta-tag contractor">{{ sm.contractor }}</span> }
+              @if (sm.danger) { <span class="meta-tag danger">{{ sm.danger }}</span> }
               @if (sm.multiSystem) { <span class="meta-tag multi">MULTI-SYSTEM</span> }
             </div>
 

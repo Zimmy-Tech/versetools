@@ -32,6 +32,8 @@ interface Mission {
   repReward?: number;
   repPenalty?: number;
   boss?: boolean;
+  contractor?: string;
+  danger?: string;
 }
 
 interface MissionGiver {

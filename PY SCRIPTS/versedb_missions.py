@@ -221,7 +221,64 @@ def parse_mission(xml_path, loc, scope_map=None):
     if activity:
         result["activity"] = activity
 
+    # Contractor and danger level (inferred from className patterns)
+    contractor = _resolve_contractor(class_name, loc)
+    if contractor:
+        result["contractor"] = contractor
+    danger = _infer_danger(class_name)
+    if danger:
+        result["danger"] = danger
+
     return result
+
+
+# ── Contractor resolution from className patterns + localization ──
+
+_CONTRACTOR_PATTERNS = {
+    "hursec":              "Hurston Security",
+    "crusec":              "Crusader Security",
+    "blacjac":             "BlacJac Security",
+    "northrock":           "Northrock Service Group",
+    "eckhart":             "Eckhart Security",
+    "headhunter":          "Headhunters",
+    "bountyhuntersguild":  "Bounty Hunters Guild",
+    "bhg_":                "Bounty Hunters Guild",
+    "mtpro":               "MT Protection Services",
+    "thecouncil":          "The Council",
+    "xenothreat":          "XenoThreat",
+    "roughandready":       "Rough & Ready",
+    "hexpenetrator":       "Hex Penetrator",
+    "intersec":            "InterSec",
+    "family":              "Arlington Gang",
+    "vaughn":              "Vaughn",
+    "pacheco":             "Tecia Pacheco",
+}
+
+def _resolve_contractor(class_name, loc):
+    cn = class_name.lower()
+    for pattern, display in _CONTRACTOR_PATTERNS.items():
+        if pattern in cn:
+            return display
+    return None
+
+_DANGER_KEYWORDS = [
+    # Order matters — check longer patterns first
+    ("_veryhard", "Very High"),
+    ("_veryeasy", "Very Low"),
+    ("_super", "Extreme"),
+    ("_intro", "Low"),
+    ("_easy", "Low"),
+    ("_medium", "Medium"),
+    ("_hard", "High"),
+    ("_vhard", "Very High"),
+]
+
+def _infer_danger(class_name):
+    cn = class_name.lower()
+    for suffix, level in _DANGER_KEYWORDS:
+        if suffix in cn:
+            return level
+    return None
 
 def main():
     print("=" * 60)
@@ -573,6 +630,13 @@ def main():
                 activity = infer_activity(debug_name, gen_name)
                 if activity:
                     entry["activity"] = activity
+                # Contractor and danger (inferred from className/generator)
+                contractor = _resolve_contractor(debug_name, loc) or _resolve_contractor(gen_name, loc)
+                if contractor:
+                    entry["contractor"] = contractor
+                danger = _infer_danger(debug_name)
+                if danger:
+                    entry["danger"] = danger
                 # Blueprint pool rewards — resolve to item names
                 bp_guids = re.findall(r'blueprintPool="([^"]+)"', body)
                 all_items = []
@@ -667,6 +731,15 @@ def main():
             m["giver"] = re.sub(r'~mission\(([^|)]+)(?:\|[^)]+)?\)', r'[\1]', m["giver"])
         if m.get("description") and "~mission(" in m["description"]:
             m["description"] = re.sub(r'~mission\(([^|)]+)(?:\|[^)]+)?\)', r'[\1]', m["description"])
+
+    # Substitute known template variables into titles
+    for m in missions:
+        title = m.get("title", "")
+        if "[Contractor]" in title and m.get("contractor"):
+            title = title.replace("[Contractor]", m["contractor"])
+        if "[Danger]" in title and m.get("danger"):
+            title = title.replace("[Danger]", m["danger"])
+        m["title"] = title
 
     # Deduplicate: same title + category + reward = same mission (different locations)
     # Mark duplicates with "multiSystem" flag
