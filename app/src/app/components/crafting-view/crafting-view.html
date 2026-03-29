@@ -361,65 +361,47 @@
             } @else {
               <div class="mission-source-list">
                 @for (m of rewardingMissions(); track m.className) {
-                  <div class="mission-source-row" (click)="selectedMission.set(m)">
-                    <div class="ms-title">{{ m.title }}</div>
+                  <div class="mission-source-row" [class.expanded]="expandedMission() === m.className">
+                    <div class="ms-header" (click)="expandedMission.set(expandedMission() === m.className ? null : m.className)">
+                      <div class="ms-title">{{ m.title }}</div>
+                      <span class="ms-toggle">{{ expandedMission() === m.className ? '−' : '+' }}</span>
+                    </div>
                     <div class="ms-meta">
                       @if (m.contractor) { <span class="ms-tag contractor">{{ m.contractor }}</span> }
                       @if (m.danger) { <span class="ms-tag danger">{{ m.danger }}</span> }
                       @if (m.system) { <span class="ms-tag system">{{ m.system }}</span> }
                       @if (m.activity) { <span class="ms-tag activity">{{ m.activity }}</span> }
                     </div>
+                    @if (expandedMission() === m.className) {
+                      <div class="ms-detail">
+                        @if (m.reward) {
+                          <div class="ms-stat"><span class="ms-label">Reward</span><span class="ms-val accent">{{ m.reward.toLocaleString('en-US') }} {{ m.currency }}</span></div>
+                        }
+                        @if (m.repReward) {
+                          <div class="ms-stat"><span class="ms-label">Rep Reward</span><span class="ms-val">+{{ m.repReward }}</span></div>
+                        }
+                        @if (m.repScopes?.length) {
+                          <div class="ms-stat"><span class="ms-label">Rep Scope</span><span class="ms-val">{{ m.repScopes.join(', ') }}</span></div>
+                        }
+                        @if (m.enemyPool?.length) {
+                          <div class="ms-ships">
+                            <span class="ms-label">Enemy Ships</span>
+                            <div class="ms-tag-list">
+                              @for (ship of m.enemyPool; track ship) {
+                                <span class="ms-tag danger">{{ ship }}</span>
+                              }
+                            </div>
+                          </div>
+                        }
+                        @if (m.description) {
+                          <div class="ms-desc">{{ m.description }}</div>
+                        }
+                      </div>
+                    }
                   </div>
                 }
               </div>
             }
-          </div>
-        }
-
-        <!-- Mission detail popup (overlays within crafting popout) -->
-        @if (selectedMission(); as sm) {
-          <div class="mission-detail-overlay" (click)="selectedMission.set(null)"></div>
-          <div class="mission-detail-panel">
-            <div class="popout-header">
-              <div class="popout-title">{{ sm.title }}</div>
-              <span class="popout-close" (click)="selectedMission.set(null)">&#10005;</span>
-            </div>
-            <div class="popout-body">
-              <div class="popout-meta">
-                @if (sm.contractor) { <span class="ms-tag contractor">{{ sm.contractor }}</span> }
-                @if (sm.danger) { <span class="ms-tag danger">{{ sm.danger }}</span> }
-                @if (sm.system) { <span class="ms-tag system">{{ sm.system }}</span> }
-                @if (sm.activity) { <span class="ms-tag activity">{{ sm.activity }}</span> }
-                @if (sm.lawful) { <span class="ms-tag lawful">LAWFUL</span> }
-                @else { <span class="ms-tag unlawful">UNLAWFUL</span> }
-              </div>
-              @if (sm.reward) {
-                <div class="po-stats">
-                  <div class="po-stat"><span class="po-label">Reward</span><span class="po-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
-                </div>
-              }
-              @if (sm.repReward) {
-                <div class="po-stats">
-                  <div class="po-stat"><span class="po-label">Rep Reward</span><span class="po-val">+{{ sm.repReward }}</span></div>
-                </div>
-              }
-              @if (sm.enemyPool?.length) {
-                <div class="po-section">
-                  <div class="po-section-title">Enemy Ships</div>
-                  <div class="ms-tag-list">
-                    @for (ship of sm.enemyPool; track ship) {
-                      <span class="ms-tag danger">{{ ship }}</span>
-                    }
-                  </div>
-                </div>
-              }
-              @if (sm.description) {
-                <div class="po-section">
-                  <div class="po-section-title">Description</div>
-                  <div class="popout-desc">{{ sm.description }}</div>
-                </div>
-              }
-            </div>
           </div>
         }
 

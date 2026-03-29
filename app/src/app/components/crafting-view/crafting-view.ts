@@ -85,7 +85,7 @@ export class CraftingViewComponent {
 
   // Mission data for blueprint source lookup
   private allMissions = signal<any[]>([]);
-  selectedMission = signal<any | null>(null);
+  expandedMission = signal<string | null>(null);
 
   /** Missions that reward the selected recipe's blueprint. */
   rewardingMissions = computed(() => {
@@ -232,7 +232,7 @@ export class CraftingViewComponent {
       this.selectedRecipe.set(r);
       this.addQty.set(1);
       this.popoutTab.set('crafting');
-      this.selectedMission.set(null);
+      this.expandedMission.set(null);
       // Initialize quality sliders at midpoint for all ingredients
       const qv: Record<string, number> = {};
       for (const ing of r.ingredients) {
