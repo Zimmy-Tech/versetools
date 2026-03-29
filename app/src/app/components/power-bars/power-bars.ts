@@ -260,7 +260,7 @@ export class PowerBarsComponent {
    * - Radar and LS pips can cost 2× on some ships (component-specific).
    * - Power plants add a base idle heat load (~3-12% of supply).
    * - The DCB value maxPowerToCoolantRatio=2.5 does NOT match in-game behavior.
-   *   A Gladius at Erkul's predicted 137% load shows no thermal stress in-game
+   *   A Gladius at the third-party predicted 137% load shows no thermal stress in-game
    *   (stable IR, no warnings), proving the 2.5× multiplier is not used for
    *   the cooling demand calculation. Our pip-based model predicts ~45% for the
    *   same config, consistent with normal operation.

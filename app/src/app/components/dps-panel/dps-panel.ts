@@ -297,7 +297,7 @@ export class DpsPanelComponent {
   });
 
   // Linear model: totalRegen scales as (allocatedPips / maxPips) across the
-  // combined shield pool.  Matches spviewer; needs in-game validation at
+  // combined shield pool.  Needs in-game validation at
   // non-max pip levels.
   shieldRegenRate = computed(() => {
     const alloc = this.data.powerAlloc();
