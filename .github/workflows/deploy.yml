@@ -29,7 +29,7 @@ jobs:
           cache: npm
           cache-dependency-path: app/package-lock.json
 
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npx ng build --configuration production
 
       - uses: actions/upload-pages-artifact@v3
