@@ -22,7 +22,8 @@
         "files": [
           "/ship-images/**",
           "/power-icons/**",
-          "/**/*.json"
+          "/**/versedb_*.json",
+          "/**/config.json"
         ]
       }
     }
