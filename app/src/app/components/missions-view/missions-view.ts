@@ -237,7 +237,12 @@ export class MissionsViewComponent {
     const allScopes = [...new Set([...scopes, ...reqScopes])];
     const results: RepLadder[] = [];
     for (const scope of allScopes) {
-      const ladder = ladders[scope.toLowerCase()];
+      const key = scope.toLowerCase();
+      const ladder = ladders[key]
+        // Scope names and ladder keys use different prefixes in some cases
+        ?? ladders[key.replace('bounty_', 'bountyhunter_')]
+        ?? ladders[key.replace('racing_shiptimetrial', 'racingship')]
+        ?? ladders[key.replace('factionreputationscope', 'factionreputation')];
       if (ladder) results.push(ladder);
     }
     return results;
