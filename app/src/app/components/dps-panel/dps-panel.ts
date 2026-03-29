@@ -21,6 +21,11 @@ export class DpsPanelComponent {
     );
   }
 
+  // Ship-specific hardpoints that are pilot-controlled despite having turret/remote tags
+  private readonly FORCE_PILOT_HARDPOINTS: Record<string, Set<string>> = {
+    'aegs_redeemer': new Set(['hardpoint_turret_remote_front']),
+  };
+
   // TurretBase is always crew-operated (has its own manned seat).
   //
   // Turret hardpoints use controllerTag to determine pilot vs crew:
@@ -35,6 +40,8 @@ export class DpsPanelComponent {
   //   hardpoint_turret_manned_rear/front → TurretBase, controllerTag=manned_*  → crew ✓
   private isTurretHardpoint(hp: Hardpoint | undefined): boolean {
     if (!hp) return false;
+    const shipCls = this.data.selectedShip()?.className?.toLowerCase() ?? '';
+    if (this.FORCE_PILOT_HARDPOINTS[shipCls]?.has(hp.id.toLowerCase())) return false;
     if (hp.type === 'TurretBase') return true;
     if (hp.type === 'Turret') {
       const ct = hp.controllerTag?.toLowerCase() ?? '';

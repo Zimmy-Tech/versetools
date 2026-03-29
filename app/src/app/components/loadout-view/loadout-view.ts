@@ -43,7 +43,16 @@ export class LoadoutViewComponent {
     });
   }
 
+  // Ship-specific hardpoints that are pilot-controlled despite their controllerTag
+  private readonly FORCE_PILOT_HARDPOINTS: Record<string, Set<string>> = {
+    'aegs_redeemer': new Set(['hardpoint_turret_remote_front']),
+  };
+
   private isCrewHardpoint(hp: Hardpoint): boolean {
+    // Check ship-specific pilot overrides first
+    const shipCls = this.data.selectedShip()?.className?.toLowerCase() ?? '';
+    if (this.FORCE_PILOT_HARDPOINTS[shipCls]?.has(hp.id.toLowerCase())) return false;
+
     if (hp.type === 'TurretBase') return true;
     if (hp.type === 'Turret') {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
@@ -67,12 +76,25 @@ export class LoadoutViewComponent {
     if (!ship) return [];
     return ship.hardpoints.filter(hp => {
       if (hp.type === 'MissileLauncher' || hp.type === 'BombLauncher') return false;
+      if (hp.type === 'EMP' || hp.type === 'QuantumInterdictionGenerator') return false;
       if (this.isPdc(hp)) return false;
       if (this.isSalvageTurret(hp)) return false;
       if (this.isTractorTurret(hp)) return false;
       return hp.type === 'WeaponGun' || hp.type === 'Turret' || hp.type === 'TurretBase' ||
         hp.allTypes?.some(t => t.type === 'WeaponGun' || t.type === 'Turret' || t.type === 'TurretBase');
     });
+  });
+
+  empSlots = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return [];
+    return ship.hardpoints.filter(hp => hp.type === 'EMP');
+  });
+
+  qedSlots = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return [];
+    return ship.hardpoints.filter(hp => hp.type === 'QuantumInterdictionGenerator');
   });
 
   tractorSlots = computed(() => {

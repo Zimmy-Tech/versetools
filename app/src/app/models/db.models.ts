@@ -282,7 +282,7 @@ export function calcWeaponAmmo(weapon: Item, pips: number, poolSize: number, all
   const sumPower = allWeapons.reduce((s, w) => s + (w?.powerDraw ?? 0), 0);
   if (sumPower <= 0) return weapon.ammoCount ?? null;
   const effBase = (weapon.maxAmmoLoad ?? 75) * ammoLoadMultiplier;
-  const cap = Math.floor(effBase);
+  const cap = Math.ceil(effBase);
   const raw = pips * effBase / sumPower;
   return Math.min(Math.round(raw), cap);
 }

@@ -4720,7 +4720,7 @@
     },
     {
       "className": "ksar_armor_light_helmet_01_01_01",
-      "itemName": "ksar_armor_light_helmet_01_01_01",
+      "itemName": "Microid Battle Suit Helmet",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -5134,7 +5134,7 @@
     },
     {
       "className": "srvl_armor_heavy_core_01_01_01",
-      "itemName": "srvl_armor_heavy_core_01_01_01",
+      "itemName": "Overlord Core Supernova",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -5250,7 +5250,7 @@
     },
     {
       "className": "cds_armor_light_core_01_01_01",
-      "itemName": "cds_armor_light_core_01_01_01",
+      "itemName": "Field Recon Suit Core",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -5300,7 +5300,7 @@
     },
     {
       "className": "cds_legacy_armor_heavy_core_01_01_01",
-      "itemName": "cds_legacy_armor_heavy_core_01_01_01",
+      "itemName": "ADP Core",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -5450,7 +5450,7 @@
     },
     {
       "className": "cds_armor_heavy_core_01_01_01",
-      "itemName": "cds_armor_heavy_core_01_01_01",
+      "itemName": "ADP-mk4 Core Woodland",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -5980,7 +5980,7 @@
     },
     {
       "className": "cds_armor_medium_arms_01_01_01",
-      "itemName": "cds_armor_medium_arms_01_01_01",
+      "itemName": "ORC-mkX Arms Woodland",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -6162,7 +6162,7 @@
     },
     {
       "className": "cds_armor_heavy_arms_01_01_01",
-      "itemName": "cds_armor_heavy_arms_01_01_01",
+      "itemName": "ADP-mk4 Arms Woodland",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -6278,7 +6278,7 @@
     },
     {
       "className": "cds_armor_light_arms_01_01_01",
-      "itemName": "cds_armor_light_arms_01_01_01",
+      "itemName": "Field Recon Suit Arms",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -6460,7 +6460,7 @@
     },
     {
       "className": "srvl_armor_heavy_arms_01_01_01",
-      "itemName": "srvl_armor_heavy_arms_01_01_01",
+      "itemName": "Overlord Arms Supernova",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -6560,7 +6560,7 @@
     },
     {
       "className": "cds_legacy_armor_heavy_legs_01_01_01",
-      "itemName": "cds_legacy_armor_heavy_legs_01_01_01",
+      "itemName": "ADP Legs Woodland",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -6660,7 +6660,7 @@
     },
     {
       "className": "cds_armor_light_legs_01_01_01",
-      "itemName": "cds_armor_light_legs_01_01_01",
+      "itemName": "Field Recon Suit Legs",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -6892,7 +6892,7 @@
     },
     {
       "className": "cds_armor_medium_legs_01_01_01",
-      "itemName": "cds_armor_medium_legs_01_01_01",
+      "itemName": "ORC-mkX Legs Woodland",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -7090,7 +7090,7 @@
     },
     {
       "className": "srvl_armor_heavy_legs_01_01_01",
-      "itemName": "srvl_armor_heavy_legs_01_01_01",
+      "itemName": "Overlord Legs Supernova",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -7206,7 +7206,7 @@
     },
     {
       "className": "cds_armor_heavy_legs_01_01_01",
-      "itemName": "cds_armor_heavy_legs_01_01_01",
+      "itemName": "ADP-mk4 Legs Woodland",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -7588,7 +7588,7 @@
     },
     {
       "className": "ksar_armor_light_core_01_01_01",
-      "itemName": "ksar_armor_light_core_01_01_01",
+      "itemName": "Microid Battle Suit Core",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -7754,7 +7754,7 @@
     },
     {
       "className": "ksar_armor_light_arms_01_01_01",
-      "itemName": "ksar_armor_light_arms_01_01_01",
+      "itemName": "Microid Battle Suit Arms",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -8746,7 +8746,7 @@
     },
     {
       "className": "clda_env_armor_heavy_suit_01_01_01",
-      "itemName": "clda_env_armor_heavy_suit_01_01_01",
+      "itemName": "Novikov Exploration Suit",
       "category": "FPSArmours",
       "subtype": "Other",
       "tier": 0,
@@ -9360,7 +9360,7 @@
     },
     {
       "className": "cds_undersuit_01_01_01",
-      "itemName": "cds_undersuit_01_01_01",
+      "itemName": "TCS-4 Undersuit",
       "category": "FPSArmours",
       "subtype": "Undersuit",
       "tier": 0,
@@ -9900,7 +9900,7 @@
     },
     {
       "className": "cds_armor_light_helmet_01_01_01",
-      "itemName": "cds_armor_light_helmet_01_01_01",
+      "itemName": "Field Recon Suit Helmet",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -10000,7 +10000,7 @@
     },
     {
       "className": "cds_armor_heavy_helmet_01_01_01",
-      "itemName": "cds_armor_heavy_helmet_01_01_01",
+      "itemName": "ADP-mk4 Helmet Woodland",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -10116,7 +10116,7 @@
     },
     {
       "className": "cds_legacy_armor_heavy_helmet_01_01_01",
-      "itemName": "cds_legacy_armor_heavy_helmet_01_01_01",
+      "itemName": "Balor HCH Helmet",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -10216,7 +10216,7 @@
     },
     {
       "className": "srvl_armor_heavy_helmet_01_01_01",
-      "itemName": "srvl_armor_heavy_helmet_01_01_01",
+      "itemName": "Overlord Helmet Supernova",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -10266,7 +10266,7 @@
     },
     {
       "className": "cds_armor_medium_helmet_01_01_01",
-      "itemName": "cds_armor_medium_helmet_01_01_01",
+      "itemName": "ORC-mkX Helmet Woodland",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -10398,7 +10398,7 @@
     },
     {
       "className": "doom_armor_medium_helmet_02_01_01",
-      "itemName": "doom_armor_medium_helmet_02_01_01",
+      "itemName": "The Butcher Helmet",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -11818,7 +11818,7 @@
     },
     {
       "className": "ksar_armor_light_legs_01_01_01",
-      "itemName": "ksar_armor_light_legs_01_01_01",
+      "itemName": "Microid Battle Suit Legs",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -12879,7 +12879,7 @@
     },
     {
       "className": "clda_env_armor_heavy_helmet_01_01_01",
-      "itemName": "clda_env_armor_heavy_helmet_01_01_01",
+      "itemName": "Novikov Helmet",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -24677,7 +24677,7 @@
     },
     {
       "className": "qrt_specialist_medium_arms_01_9tails_01",
-      "itemName": "qrt_specialist_medium_arms_01_9tails_01",
+      "itemName": "Artimex Arms (Modified)",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -27317,7 +27317,7 @@
     },
     {
       "className": "rrs_specialist_heavy_core_01_9tails_01",
-      "itemName": "rrs_specialist_heavy_core_01_9tails_01",
+      "itemName": "Morozov-SH Core (Modified)",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -29165,7 +29165,7 @@
     },
     {
       "className": "rrs_specialist_heavy_arms_01_9tails_01",
-      "itemName": "rrs_specialist_heavy_arms_01_9tails_01",
+      "itemName": "Morozov-SH Arms (Modified)",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -29513,7 +29513,7 @@
     },
     {
       "className": "slaver_armor_heavy_core_01_9tails_01",
-      "itemName": "slaver_armor_heavy_core_01_9tails_01",
+      "itemName": "Defiance Core (Modified)",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -30539,7 +30539,7 @@
     },
     {
       "className": "outlaw_legacy_armor_heavy_core_01_9tails_01",
-      "itemName": "outlaw_legacy_armor_heavy_core_01_9tails_01",
+      "itemName": "Citadel Core (Modified)",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -31853,7 +31853,7 @@
     },
     {
       "className": "cds_legacy_armor_heavy_core_01_9tails_01",
-      "itemName": "cds_legacy_armor_heavy_core_01_9tails_01",
+      "itemName": "ADP Core (Modified)",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -32303,7 +32303,7 @@
     },
     {
       "className": "cds_legacy_armor_medium_core_01_9tails_01",
-      "itemName": "cds_legacy_armor_medium_core_01_9tails_01",
+      "itemName": "ORC-mkV Core (Modified)",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -35885,7 +35885,7 @@
     },
     {
       "className": "cds_legacy_armor_heavy_arms_01_9tails_01",
-      "itemName": "cds_legacy_armor_heavy_arms_01_9tails_01",
+      "itemName": "ADP Arms (Modified)",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -37913,7 +37913,7 @@
     },
     {
       "className": "cds_armor_medium_arms_01_9tails_01",
-      "itemName": "cds_armor_medium_arms_01_9tails_01",
+      "itemName": "ORC-mkX Arms (Modified)",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -38177,7 +38177,7 @@
     },
     {
       "className": "outlaw_legacy_armor_heavy_arms_01_9tails_01",
-      "itemName": "outlaw_legacy_armor_heavy_arms_01_9tails_01",
+      "itemName": "Citadel Arms (Modified)",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -38559,7 +38559,7 @@
     },
     {
       "className": "slaver_armor_heavy_arms_01_9tails_01",
-      "itemName": "slaver_armor_heavy_arms_01_9tails_01",
+      "itemName": "Defiance Arms (Modified)",
       "category": "FPSArmours",
       "subtype": "Arms",
       "tier": 0,
@@ -41509,7 +41509,7 @@
     },
     {
       "className": "slaver_armor_heavy_legs_01_9tails_01",
-      "itemName": "slaver_armor_heavy_legs_01_9tails_01",
+      "itemName": "Defiance Legs (Modified)",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -41609,7 +41609,7 @@
     },
     {
       "className": "slaver_armor_medium_legs_01_01_13",
-      "itemName": "slaver_armor_medium_legs_01_01_13",
+      "itemName": "DustUp Legs Desert",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -44155,7 +44155,7 @@
     },
     {
       "className": "cds_legacy_armor_medium_legs_01_9tails_01",
-      "itemName": "cds_legacy_armor_medium_legs_01_9tails_01",
+      "itemName": "ORC-mkV Legs (Modified)",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -47315,7 +47315,7 @@
     },
     {
       "className": "rrs_specialist_heavy_legs_01_9tails_01",
-      "itemName": "rrs_specialist_heavy_legs_01_9tails_01",
+      "itemName": "Morozov-SH Legs (Modified)",
       "category": "FPSArmours",
       "subtype": "Legs",
       "tier": 0,
@@ -55641,7 +55641,7 @@
     },
     {
       "className": "slaver_armor_heavy_helmet_01_9tails_01",
-      "itemName": "slaver_armor_heavy_helmet_01_9tails_01",
+      "itemName": "Defiance Helmet (Modified)",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -62165,7 +62165,7 @@
     },
     {
       "className": "qrt_specialist_medium_core_01_9tails_01",
-      "itemName": "qrt_specialist_medium_core_01_9tails_01",
+      "itemName": "Artimex Core",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,

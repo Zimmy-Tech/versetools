@@ -441,6 +441,7 @@ KEEP_TYPES = {
     "WeaponGun", "WeaponTachyon", "WeaponMining", "TractorBeam", "MissileLauncher",
     "BombLauncher", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler", "LifeSupportGenerator",
     "QuantumDrive", "Radar", "Sensor", "QuantumFuelTank", "MiningModifier", "ToolArm", "UtilityTurret", "SalvageHead", "SalvageModifier",
+    "EMP", "QuantumInterdictionGenerator",
 }
 
 def parse_vehicle_xml(xml_path, loc):
@@ -3634,6 +3635,13 @@ def main(mode: str = "live"):
                                 "hardpoint_weapon_missilerack_right", "hardpoint_weapon_missilerack_left"},
         "rsi_zeus_es": {"hardpoint_tractor_beam", "hardpoint_bounty_turret_top", "hardpoint_passenger_turret_top"},
         "rsi_zeus_cl": {"hardpoint_bounty_turret_top", "hardpoint_passenger_turret_top"},
+        "aegs_avenger_stalker": {"hardpoint_weapon_emp"},
+        "aegs_avenger_titan": {"hardpoint_weapon_emp"},
+        "aegs_avenger_titan_renegade": {"hardpoint_weapon_emp"},
+        "aegs_vanguard": {"hardpoint_weapon_emp"},
+        "aegs_vanguard_harbinger": {"hardpoint_weapon_emp"},
+        "aegs_vanguard_hoplite": {"hardpoint_weapon_emp"},
+        "rsi_scorpius_antares": {"hardpoint_remote_turret", "hardpoint_turret_missile_camera"},
     }
     for ship_cls, excluded_ids in HP_EXCLUSIONS.items():
         if ship_cls in ships:

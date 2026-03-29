@@ -1,37 +1,13 @@
 {
   "meta": {
-    "generatedAt": "2026-03-26T01:44:22.093464+00:00",
-    "entries": 2
+    "generatedAt": "2026-03-29T09:09:12.440396+00:00",
+    "entries": 1
   },
   "changelog": [
     {
-      "fromVersion": "4.7.0-ptu.11494258",
-      "toVersion": "4.7.0-public.11518367",
-      "date": "2026-03-26",
-      "changes": [],
-      "added": [
-        {
-          "category": "ship",
-          "className": "rsi_aurora_gs_se",
-          "name": "RSI Aurora Mk I SE"
-        },
-        {
-          "category": "ship",
-          "className": "rsi_aurora_mk2",
-          "name": "RSI Aurora Mk II"
-        },
-        {
-          "category": "missilelauncher",
-          "className": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
-          "name": "Mrck S01 Rsi Aurora Mk2 Combat Module Rack"
-        }
-      ],
-      "removed": []
-    },
-    {
       "fromVersion": "4.7.0-public.11518367",
       "toVersion": "4.7.0-ptu.11494258",
-      "date": "2026-03-26",
+      "date": "2026-03-29",
       "changes": [],
       "added": [],
       "removed": [
@@ -44,11 +20,6 @@
           "category": "ship",
           "className": "rsi_aurora_mk2",
           "name": "RSI Aurora Mk II"
-        },
-        {
-          "category": "missilelauncher",
-          "className": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
-          "name": "Mrck S01 Rsi Aurora Mk2 Combat Module Rack"
         }
       ]
     }

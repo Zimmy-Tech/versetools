@@ -180,6 +180,33 @@ export class PowerBarsComponent {
       }
     }
 
+    // EMP — 1 pip toggle per device
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (item?.type === 'EMP') {
+        cols.push({
+          id: hp.id, label: 'EMP',
+          max: 1, powerMin: 1,
+          alloc: alloc[hp.id] ?? 0,
+          restricted: false, placeholder: false, item,
+        });
+      }
+    }
+
+    // QED (Quantum Enforcement Device) — 3-pip merged block
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (item?.type === 'QuantumInterdictionGenerator') {
+        const qedMax = item.powerDraw ?? 3;
+        cols.push({
+          id: hp.id, label: 'QED',
+          max: qedMax, powerMin: qedMax,
+          alloc: alloc[hp.id] ?? 0,
+          restricted: false, placeholder: false, item,
+        });
+      }
+    }
+
     return cols;
   });
 
@@ -256,6 +283,8 @@ export class PowerBarsComponent {
     'TRAC': 'trac',
     'RADR': 'radar',
     'LS':   'ls',
+    'EMP':  'emp',
+    'QED':  'qed',
   };
 
   iconFor(col: PowerBarCol): string | null {

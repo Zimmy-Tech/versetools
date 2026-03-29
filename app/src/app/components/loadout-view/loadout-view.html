@@ -458,6 +458,22 @@
             }
           }
 
+          <!-- EMP -->
+          @if (empSlots().length) {
+            <div class="slot-group-label">EMP <span class="collapse-btn" (click)="toggleSection('emp')">{{ isCollapsed('emp') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of empSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('emp')" />
+            }
+          }
+
+          <!-- QED (Quantum Enforcement Device) -->
+          @if (qedSlots().length) {
+            <div class="slot-group-label">QED <span class="collapse-btn" (click)="toggleSection('qed')">{{ isCollapsed('qed') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of qedSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qed')" />
+            }
+          }
+
           @if (moduleSlots().length) {
             <div class="slot-group-label">Modules <span class="collapse-btn" (click)="toggleSection('modules')">{{ isCollapsed('modules') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of moduleSlots(); track hp.id) {
@@ -536,6 +552,7 @@
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('pdc')" />
             }
           }
+
 
           <!-- Test Component Block (UI testbed) — hidden for now -->
           @if (false && data.selectedShip()) {

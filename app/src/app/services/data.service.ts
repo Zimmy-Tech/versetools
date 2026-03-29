@@ -235,6 +235,12 @@ export class DataService {
       } else if (item.type === 'QuantumDrive') {
         // QD: OFF at spawn
         allocInit[hpId] = 0;
+      } else if (item.type === 'EMP') {
+        // EMP: OFF at spawn
+        allocInit[hpId] = 0;
+      } else if (item.type === 'QuantumInterdictionGenerator') {
+        // QED: OFF at spawn
+        allocInit[hpId] = 0;
       } else if (item.powerBands?.length) {
         allocInit[hpId] = item.powerMin ?? 1;
       }
