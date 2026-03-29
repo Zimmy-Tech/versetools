@@ -3711,6 +3711,33 @@ def main(mode: str = "live"):
                 if hp["id"].lower() not in {x.lower() for x in excluded_ids}
             ]
 
+    # Guardian / Guardian MX: quantum damp hardpoint only exists on the QI variant
+    for gcls in ("mrai_guardian", "mrai_guardian_mx"):
+        if gcls in ships:
+            ships[gcls]["hardpoints"] = [
+                hp for hp in ships[gcls].get("hardpoints", [])
+                if hp["id"].lower() != "hardpoint_quantum_damp"
+            ]
+
+    # Guardian (all variants): LS hardpoint in forge entity XML but missing from vehicle XML
+    for gcls in ("mrai_guardian", "mrai_guardian_mx", "mrai_guardian_qi"):
+        if gcls in ships:
+            g = ships[gcls]
+            if not any(hp["id"].lower() == "hardpoint_lifesupport" for hp in g["hardpoints"]):
+                g["hardpoints"].append({
+                    "id": "hardpoint_lifesupport", "label": "Life Support",
+                    "type": "LifeSupportGenerator", "subtypes": "",
+                    "minSize": 1, "maxSize": 1, "flags": "",
+                    "allTypes": [{"type": "LifeSupportGenerator", "subtypes": ""}],
+                })
+                g.setdefault("defaultLoadout", {})["hardpoint_lifesupport"] = "lfsp_tydt_s01_comfortair"
+
+    # Avenger Titan Renegade: wing sub-slots have missiles instead of guns in DCB loadout
+    if "aegs_avenger_titan_renegade" in ships:
+        ren_dl = ships["aegs_avenger_titan_renegade"].setdefault("defaultLoadout", {})
+        ren_dl["hardpoint_weapon_gun_class1_left_wing.hardpoint_class_2"] = "amrs_lasercannon_s3"
+        ren_dl["hardpoint_weapon_gun_class1_right_wing.hardpoint_class_2"] = "amrs_lasercannon_s3"
+
     # Polaris: top remote missile turret entity not extracted — remap to missile rack directly
     if "RSI_Polaris" in ships:
         pol = ships["RSI_Polaris"]
