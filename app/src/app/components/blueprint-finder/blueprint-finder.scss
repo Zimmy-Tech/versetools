@@ -243,23 +243,35 @@
 
 .bpm-row {
   display: grid;
-  grid-template-columns: 1fr 90px 60px 24px;
+  grid-template-columns: 1fr auto 90px 60px;
   align-items: center;
   padding: 3px 10px;
   gap: 6px;
   font-family: 'Share Tech Mono', monospace;
   font-size: 12px;
-  color: var(--text);
   border-bottom: 1px solid rgba(255,255,255,0.02);
+
+  &.lawful { color: var(--green); }
+  &.unlawful { color: var(--red); }
 }
 
 .bpm-title-link {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--accent);
+  color: inherit;
   cursor: pointer;
   &:hover { text-decoration: underline; }
+}
+
+.bpm-system {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  border: 1px solid var(--border2);
+  padding: 0 4px;
+  white-space: nowrap;
 }
 
 .bpm-cat {

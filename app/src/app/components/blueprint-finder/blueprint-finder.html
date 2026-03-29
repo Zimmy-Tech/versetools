@@ -58,11 +58,11 @@
               @if (expandedBp() === bp.name) {
                 <div class="bp-missions">
                   @for (m of bp.missions; track m.className) {
-                    <div class="bpm-row">
+                    <div class="bpm-row" [class.lawful]="m.lawful" [class.unlawful]="!m.lawful">
                       <span class="bpm-title-link" (click)="openMission(m, $event)">{{ m.title }}</span>
+                      @if (m.system) { <span class="bpm-system">{{ m.system }}</span> }
                       <span class="bpm-cat">{{ m.category }}</span>
                       <span class="bpm-reward">{{ fmtReward(m.reward) }}</span>
-                      <span class="bpm-law" [class.lawful]="m.lawful" [class.unlawful]="!m.lawful">{{ m.lawful ? 'L' : 'U' }}</span>
                     </div>
                   }
                 </div>
