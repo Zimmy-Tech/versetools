@@ -657,7 +657,7 @@
             <div class="slot-group-label">Modules <span class="collapse-btn" (click)="toggleSection('modules')">{{ isCollapsed('modules') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of moduleSlots(); track hp.id) {
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('modules')" />
-              @if (!isCollapsed('modules') && subSlotsMap()[hp.id]; as subs) {
+              @if (!isCollapsed('modules') && unpromotedSubSlotsForModules()[hp.id]; as subs) {
                 @for (sub of subs; track sub.id) {
                   <div class="sub-slot-indent">
                     <app-hardpoint-slot [hardpoint]="sub"

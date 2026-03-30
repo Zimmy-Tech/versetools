@@ -364,6 +364,14 @@ export class DpsPanelComponent {
         em += sig * bandModAt(item, pips);
       }
     }
+    // Include module sub-slot components (dotted keys)
+    for (const [key, item] of Object.entries(loadout)) {
+      if (!key.includes('.') || !item) continue;
+      const sig = item.emSignature ?? item.emMax ?? 0;
+      if (sig <= 0) continue;
+      const pips = alloc[key] ?? 0;
+      em += sig * bandModAt(item, pips);
+    }
     return em;
   });
 
@@ -377,16 +385,20 @@ export class DpsPanelComponent {
     let irMax = 0;
     let mcfWeighted = 0;
     let irTotal = 0;
-    for (const hp of ship.hardpoints) {
-      const item = loadout[hp.id];
-      if (!item || !item.irSignature) continue;
-      const pips = alloc[hp.id] ?? 0;
+    const processIR = (key: string, item: Item | null) => {
+      if (!item || !item.irSignature) return;
+      const pips = alloc[key] ?? 0;
       const contribution = item.irSignature * bandModAt(item, pips);
       irMax += contribution;
       if (contribution > 0) {
         mcfWeighted += (item.minConsumptionFraction ?? 0.333) * contribution;
         irTotal += contribution;
       }
+    };
+    for (const hp of ship.hardpoints) processIR(hp.id, loadout[hp.id]);
+    // Include module sub-slot components (dotted keys)
+    for (const [key, item] of Object.entries(loadout)) {
+      if (key.includes('.')) processIR(key, item);
     }
     if (irMax <= 0) return 0;
     const mcf = irTotal > 0 ? mcfWeighted / irTotal : 0.333;

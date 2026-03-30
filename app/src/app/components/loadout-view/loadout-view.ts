@@ -319,16 +319,8 @@ export class LoadoutViewComponent {
     });
   });
 
-  missileSlots = computed(() => {
-    const ship = this.data.selectedShip();
-    if (!ship) return [];
-    const lo = ship.defaultLoadout ?? {};
-    // Only show missile hardpoints that have a default loadout entry
-    return ship.hardpoints.filter(hp =>
-      (hp.type === 'MissileLauncher' || hp.type === 'BombLauncher') &&
-      lo[hp.id.toLowerCase()]
-    );
-  });
+  /** Missile slots including module-promoted entries. */
+  missileSlots = computed(() => this.allMissileSlots());
 
   utilitySlots = computed(() => {
     const ship = this.data.selectedShip();
@@ -340,7 +332,7 @@ export class LoadoutViewComponent {
     const ship = this.data.selectedShip();
     if (!ship) return [];
     const guns = this.gunSlots();
-    const missiles = this.missileSlots();
+    const missiles = this.baseMissileSlots();
     const utilities = this.utilitySlots();
     const pdcs = this.pdcSlots();
     const modules = this.moduleSlots();
@@ -710,10 +702,61 @@ export class LoadoutViewComponent {
   subSlotsMap    = computed(() => this._subSlotData().slots);
   rackLeafIdsMap = computed(() => this._subSlotData().rackLeafs);
 
-  // Type-specific system slot groups
-  shieldSlots = computed(() => this.utilitySlots().filter(hp => hp.type === 'Shield'));
-  primaryShieldSlots = computed(() => this.shieldSlots().slice(0, 2));
-  excessShieldSlots = computed(() => this.shieldSlots().slice(2));
+  // ── Module sub-slot promotion ──────────────────────
+  private readonly PROMOTABLE_TYPES = new Set(['Shield', 'Missile', 'MissileLauncher', 'BombLauncher']);
+
+  /** Module sub-slots that should be promoted to their logical sections. */
+  promotedModuleSubSlots = computed(() => {
+    const subs = this.subSlotsMap();
+    const modules = this.moduleSlots();
+    const promoted: Hardpoint[] = [];
+    for (const modHp of modules) {
+      for (const child of subs[modHp.id] ?? []) {
+        if (this.PROMOTABLE_TYPES.has(child.type)) {
+          promoted.push({ ...child, sourceModuleHpId: modHp.id });
+        }
+      }
+    }
+    return promoted;
+  });
+
+  /** Module sub-slots minus promoted ones — for the Modules section display. */
+  unpromotedSubSlotsForModules = computed(() => {
+    const subs = this.subSlotsMap();
+    const modules = this.moduleSlots();
+    const result: Record<string, Hardpoint[]> = {};
+    for (const modHp of modules) {
+      const remaining = (subs[modHp.id] ?? []).filter(c => !this.PROMOTABLE_TYPES.has(c.type));
+      if (remaining.length) result[modHp.id] = remaining;
+    }
+    return result;
+  });
+
+  // Type-specific system slot groups (with module promotion)
+  private baseShieldSlots = computed(() => this.utilitySlots().filter(hp => hp.type === 'Shield'));
+  allShieldSlots = computed(() => [
+    ...this.baseShieldSlots(),
+    ...this.promotedModuleSubSlots().filter(hp => hp.type === 'Shield'),
+  ]);
+  /** Shield slots including module-promoted entries. */
+  shieldSlots = computed(() => this.allShieldSlots());
+  primaryShieldSlots = computed(() => this.allShieldSlots().slice(0, 2));
+  excessShieldSlots = computed(() => this.allShieldSlots().slice(2));
+
+  private baseMissileSlots = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return [];
+    const lo = ship.defaultLoadout ?? {};
+    return ship.hardpoints.filter(hp =>
+      (hp.type === 'MissileLauncher' || hp.type === 'BombLauncher') && lo[hp.id.toLowerCase()]
+    );
+  });
+  allMissileSlots = computed(() => [
+    ...this.baseMissileSlots(),
+    ...this.promotedModuleSubSlots().filter(hp =>
+      hp.type === 'Missile' || hp.type === 'MissileLauncher' || hp.type === 'BombLauncher'
+    ),
+  ]);
   ppSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'PowerPlant'));
   coolerSlots = computed(() => this.utilitySlots().filter(hp => hp.type === 'Cooler'));
   bladeSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'FlightController'));

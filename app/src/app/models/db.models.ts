@@ -14,6 +14,7 @@ export interface Hardpoint {
   allTypes: HardpointAllType[];
   controllerTag?: string;
   portTags?: string;
+  sourceModuleHpId?: string;
 }
 
 export interface Ship {

@@ -57,6 +57,14 @@ export class PowerBarsComponent {
     const shieldSlots = ship.hardpoints
       .filter(hp => loadout[hp.id]?.type === 'Shield' && (loadout[hp.id].powerMax ?? 0) > 0)
       .map(hp => ({ hpId: hp.id, item: loadout[hp.id] }));
+    // Include module sub-slot shields (dotted keys like "module_slot.shield_port")
+    for (const [key, item] of Object.entries(loadout)) {
+      if (item?.type === 'Shield' && key.includes('.') && (item.powerMax ?? 0) > 0) {
+        if (!shieldSlots.some(s => s.hpId === key)) {
+          shieldSlots.push({ hpId: key, item });
+        }
+      }
+    }
     const primaryShields = shieldSlots.slice(0, 2);
     if (primaryShields.length > 0) {
       const totalMax = primaryShields.reduce((s, sl) => s + Math.max(1, (sl.item.powerMax ?? 0) - 1), 0);
@@ -294,6 +302,19 @@ export class PowerBarsComponent {
       const item = loadout[hp.id];
       if (!item) continue;
       const p = alloc[hp.id] ?? 0;
+      if (p <= 0) continue;
+      switch (item.type) {
+        case 'Shield':               demand += p * C.W_SHIELD; break;
+        case 'Cooler':               demand += p * C.W_COOL;   break;
+        case 'LifeSupportGenerator':  demand += p * C.W_LS;     break;
+        case 'QuantumDrive':         demand += p * C.W_QD;     break;
+        case 'Radar':                demand += p * C.W_RADAR;  break;
+      }
+    }
+    // Include module sub-slot components (dotted keys not in ship.hardpoints)
+    for (const [key, item] of Object.entries(loadout)) {
+      if (!key.includes('.') || !item) continue;
+      const p = alloc[key] ?? 0;
       if (p <= 0) continue;
       switch (item.type) {
         case 'Shield':               demand += p * C.W_SHIELD; break;
