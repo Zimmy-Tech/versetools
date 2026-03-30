@@ -734,10 +734,17 @@
   <!-- Bulk Equip Modal -->
   @if (bulkEquipOpen()) {
     <div class="popout-overlay" (click)="closeBulkEquip()"></div>
+    <!-- overlay closes on click, but items don't auto-close -->
     <div class="bulk-equip-panel">
       <div class="bulk-header">
-        <span class="bulk-title">Bulk Equip Weapons</span>
+        <span class="bulk-title">Bulk Equip</span>
         <span class="popout-close" (click)="closeBulkEquip()">&#x2715;</span>
+      </div>
+      <div class="bulk-tabs">
+        <button class="bulk-tab" [class.active]="bulkEquipTab() === 'guns'"
+                (click)="switchBulkTab('guns')">Guns</button>
+        <button class="bulk-tab" [class.active]="bulkEquipTab() === 'missiles'"
+                (click)="switchBulkTab('missiles')">Missiles</button>
       </div>
       <div class="bulk-controls">
         <div class="bulk-sizes">
@@ -746,20 +753,25 @@
                     (click)="bulkEquipSize.set(sz); bulkEquipSearch.set('')">S{{ sz }}</button>
           }
         </div>
-        <input class="bulk-search" type="text" placeholder="Search weapons..."
+        <input class="bulk-search" type="text" [placeholder]="bulkEquipTab() === 'guns' ? 'Search weapons...' : 'Search missiles...'"
                [value]="bulkEquipSearch()"
                (input)="bulkEquipSearch.set($any($event.target).value)">
       </div>
       <div class="bulk-list">
         @for (opt of bulkEquipOptions(); track opt.className) {
-          <div class="bulk-option" (click)="applyBulkEquip(opt)">
+          <div class="bulk-option" [class.applied]="bulkLastApplied() === opt.className" (click)="applyBulkEquip(opt)">
             <span class="bulk-opt-name">{{ opt.name }}</span>
-            <span class="bulk-opt-dps">{{ (opt.dps ?? 0).toFixed(0) }} DPS</span>
-            <span class="bulk-opt-type">{{ opt.isBallistic ? 'BALLISTIC' : 'ENERGY' }}</span>
+            @if (bulkEquipTab() === 'guns') {
+              <span class="bulk-opt-dps">{{ (opt.dps ?? 0).toFixed(0) }} DPS</span>
+              <span class="bulk-opt-type">{{ opt.isBallistic ? 'BALLISTIC' : 'ENERGY' }}</span>
+            } @else {
+              <span class="bulk-opt-dps">{{ (opt.alphaDamage ?? 0).toFixed(0) }} DMG</span>
+              <span class="bulk-opt-type">{{ opt.subType ?? '' }}</span>
+            }
           </div>
         }
         @if (!bulkEquipOptions().length) {
-          <div class="bulk-empty">No weapons found for this size</div>
+          <div class="bulk-empty">No {{ bulkEquipTab() === 'guns' ? 'weapons' : 'missiles' }} found for this size</div>
         }
       </div>
     </div>

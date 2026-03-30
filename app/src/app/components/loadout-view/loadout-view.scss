@@ -1005,7 +1005,7 @@
   transform: translate(-50%, -50%);
   width: 480px;
   max-width: 90%;
-  max-height: 70vh;
+  height: 70vh;
   background: var(--bg2);
   border: 2px solid var(--border);
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
@@ -1031,6 +1031,28 @@
   color: var(--text);
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+.bulk-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+.bulk-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { color: var(--text); }
+  &.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
 }
 
 .bulk-controls {
@@ -1091,6 +1113,7 @@
   cursor: pointer;
   transition: background 0.1s;
   &:hover { background: rgba(255, 255, 255, 0.04); }
+  &.applied { background: rgba(74, 255, 122, 0.08); border-left: 3px solid var(--accent); }
 }
 
 .bulk-opt-name {

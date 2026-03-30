@@ -28,11 +28,12 @@ export class LoadoutViewComponent {
 
   // ── Bulk Equip ────────────────────────────────────
   bulkEquipOpen = signal(false);
+  bulkEquipTab = signal<'guns' | 'missiles'>('guns');
   bulkEquipSearch = signal('');
   bulkEquipSize = signal<number | null>(null);
 
   /** Available gun sizes across all weapon sub-slots. */
-  bulkEquipSizes = computed(() => {
+  bulkGunSizes = computed(() => {
     const subs = this.subSlotsMap();
     const sizes = new Set<number>();
     for (const children of Object.values(subs)) {
@@ -43,46 +44,81 @@ export class LoadoutViewComponent {
     return [...sizes].sort((a, b) => a - b);
   });
 
-  /** Weapons available for the selected bulk equip size. */
+  /** Available missile sizes across all missile sub-slots. */
+  bulkMissileSizes = computed(() => {
+    const subs = this.subSlotsMap();
+    const sizes = new Set<number>();
+    for (const children of Object.values(subs)) {
+      for (const child of children) {
+        if (child.type === 'Missile' && child.maxSize) sizes.add(child.maxSize);
+      }
+    }
+    return [...sizes].sort((a, b) => a - b);
+  });
+
+  /** Sizes for the active tab. */
+  bulkEquipSizes = computed(() =>
+    this.bulkEquipTab() === 'guns' ? this.bulkGunSizes() : this.bulkMissileSizes()
+  );
+
+  /** Items available for the selected bulk equip tab + size. */
   bulkEquipOptions = computed(() => {
     const size = this.bulkEquipSize();
     if (!size) return [];
+    const tab = this.bulkEquipTab();
     const q = this.bulkEquipSearch().toLowerCase().trim();
-    // Reuse the slot filter from DataService — build a fake hardpoint for size matching
-    let opts = this.data.items().filter(i =>
-      (i.type === 'WeaponGun' || i.type === 'WeaponTachyon') &&
-      i.size === size
-    );
+    let opts: Item[];
+    if (tab === 'guns') {
+      opts = this.data.items().filter(i =>
+        (i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && i.size === size
+      );
+    } else {
+      opts = this.data.items().filter(i => i.type === 'Missile' && i.size === size);
+    }
     if (q) {
       opts = opts.filter(o =>
         o.name.toLowerCase().includes(q) ||
         (o.manufacturer ?? '').toLowerCase().includes(q)
       );
     }
-    return opts.sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0));
+    return tab === 'guns'
+      ? opts.sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))
+      : opts.sort((a, b) => (b.alphaDamage ?? 0) - (a.alphaDamage ?? 0));
   });
 
   openBulkEquip(): void {
-    const sizes = this.bulkEquipSizes();
+    this.bulkEquipTab.set('guns');
+    const sizes = this.bulkGunSizes();
     this.bulkEquipSize.set(sizes.length ? sizes[0] : null);
     this.bulkEquipSearch.set('');
     this.bulkEquipOpen.set(true);
+  }
+
+  switchBulkTab(tab: 'guns' | 'missiles'): void {
+    this.bulkEquipTab.set(tab);
+    this.bulkEquipSearch.set('');
+    const sizes = tab === 'guns' ? this.bulkGunSizes() : this.bulkMissileSizes();
+    this.bulkEquipSize.set(sizes.length ? sizes[0] : null);
   }
 
   closeBulkEquip(): void {
     this.bulkEquipOpen.set(false);
   }
 
-  applyBulkEquip(weapon: Item): void {
+  bulkLastApplied = signal('');
+
+  applyBulkEquip(item: Item): void {
+    const tab = this.bulkEquipTab();
     const subs = this.subSlotsMap();
+    const targetType = tab === 'guns' ? 'WeaponGun' : 'Missile';
     for (const children of Object.values(subs)) {
       for (const child of children) {
-        if (child.type === 'WeaponGun' && child.maxSize === weapon.size) {
-          this.data.setLoadoutItem(child.id, weapon);
+        if (child.type === targetType && child.maxSize === item.size) {
+          this.data.setLoadoutItem(child.id, item);
         }
       }
     }
-    this.bulkEquipOpen.set(false);
+    this.bulkLastApplied.set(item.className);
   }
 
   collapsedSections = signal<Set<string>>(new Set([
