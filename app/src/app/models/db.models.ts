@@ -327,11 +327,17 @@ export function bandModAt(item: Item, pips: number): number {
 
 /**
  * Calculate cooling supply from a single cooler at its current pip allocation.
- * supply = coolingRate × band_modifier
+ * supply = coolingRate × pips × bandMod(pips) / maxPips
+ *
+ * The band modifier represents efficiency at a given power level, while
+ * pips/maxPips represents the fraction of power the cooler is receiving.
+ * Total output = rate × efficiency × power_fraction.
+ * Validated against Aurora MR II (8 configs) and Guardian MX (5 configs).
  */
 export function coolerSupply(cooler: Item, pips: number): number {
   if (!cooler.coolingRate || pips <= 0) return 0;
-  return cooler.coolingRate * bandModAt(cooler, pips);
+  const maxPips = Math.max(1, (cooler.powerMax ?? 1) - 1);
+  return cooler.coolingRate * pips * bandModAt(cooler, pips) / maxPips;
 }
 
 /**

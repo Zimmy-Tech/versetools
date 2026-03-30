@@ -251,25 +251,28 @@ export class PowerBarsComponent {
   /**
    * Total cooling demand from all powered components.
    *
-   * Default model: demand = totalAllocatedPips / coolerSupply + PP_IDLE_FRACTION.
-   * Derived empirically from in-game engineering gauge readings across 6 ships
-   * (Polaris, Perseus, MSR, Guardian, Asgard, Apollo Medivac — 15+ configs).
+   * Weighted-pip model: demand = Σ(pips × weight_per_type) + PP_IDLE_BASE.
+   * Derived from in-game engineering gauge on Aurora MR II (9 configs, 0% error)
+   * and validated on Guardian MX (5 configs, ±1% error).
    *
-   * Key findings:
-   * - Each allocated power pip generates ~1 unit of cooling demand.
-   * - Radar and LS pips can cost 2× on some ships (component-specific).
-   * - Power plants add a base idle heat load (~3-12% of supply).
-   * - The DCB value maxPowerToCoolantRatio=2.5 does NOT match in-game behavior.
-   *   A Gladius at the third-party predicted 137% load shows no thermal stress in-game
-   *   (stable IR, no warnings), proving the 2.5× multiplier is not used for
-   *   the cooling demand calculation. Our pip-based model predicts ~45% for the
-   *   same config, consistent with normal operation.
-   * - Ships with validated per-component models use those (Polaris, MSR).
-   * - When cooling supply drops below demand (>100%), the in-game gauge shows
-   *   runaway thermal escalation (observed 152%→457% on Apollo), confirming
-   *   the gauge reflects real-time thermal state.
+   * Per-component cooling demand weights (heat per pip):
+   *   Radar:       ~2.0    Shields:     ~1.71
+   *   LS:          ~1.87   Weapons:     ~1.28
+   *   Thrusters:   ~1.28   Coolers:     ~1.0
+   *   QD:          ~1.0
+   *
+   * PP idle base is a small constant (~0.6) that varies by power plant.
+   * Ships with validated per-component models (Polaris, MSR) use those.
    */
-  private readonly PP_IDLE_FRACTION = 0.12;
+  private static readonly W_RADAR  = 1.92;
+  private static readonly W_SHIELD = 1.71;
+  private static readonly W_LS     = 1.87;
+  private static readonly W_WPN    = 1.28;
+  private static readonly W_THRU   = 1.28;
+  private static readonly W_COOL   = 1.0;
+  private static readonly W_QD     = 1.0;
+  private static readonly W_TOOL   = 1.28;
+  private static readonly PP_IDLE  = 0.6;
 
   coolingDemand = computed(() => {
     const loadout = this.data.loadout();
@@ -285,24 +288,26 @@ export class PowerBarsComponent {
       return this.msrCoolingDemand(ship, loadout, alloc);
     }
 
-    // Default: pip-based model. demand = totalPips + PP idle fraction of supply.
-    const supply = this.coolingSupply();
-    let pips = 0;
+    const C = PowerBarsComponent;
+    let demand = C.PP_IDLE;
     for (const hp of ship.hardpoints) {
       const item = loadout[hp.id];
       if (!item) continue;
       const p = alloc[hp.id] ?? 0;
-      if (item.type === 'Shield' || item.type === 'Cooler' ||
-          item.type === 'LifeSupportGenerator' || item.type === 'QuantumDrive' ||
-          item.type === 'Radar') {
-        pips += p;
+      if (p <= 0) continue;
+      switch (item.type) {
+        case 'Shield':               demand += p * C.W_SHIELD; break;
+        case 'Cooler':               demand += p * C.W_COOL;   break;
+        case 'LifeSupportGenerator':  demand += p * C.W_LS;     break;
+        case 'QuantumDrive':         demand += p * C.W_QD;     break;
+        case 'Radar':                demand += p * C.W_RADAR;  break;
       }
     }
-    pips += this.data.weaponsPower();
-    pips += this.data.toolPower();
-    pips += this.data.tractorPower();
-    pips += this.data.thrusterPower();
-    return Math.round((pips + supply * this.PP_IDLE_FRACTION) * 10) / 10;
+    demand += this.data.weaponsPower() * C.W_WPN;
+    demand += this.data.toolPower() * C.W_TOOL;
+    demand += this.data.tractorPower() * C.W_TOOL;
+    demand += this.data.thrusterPower() * C.W_THRU;
+    return Math.round(demand * 10) / 10;
   });
 
   /** Polaris-specific cooling demand. Weights derived from in-game testing. */
