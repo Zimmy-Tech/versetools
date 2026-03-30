@@ -176,6 +176,16 @@
   letter-spacing: 1px;
 }
 
+.reward-val.estimated { opacity: 0.7; }
+
+.est-tag {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  color: var(--text3);
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
 .mission-meta {
   display: flex;
   gap: 8px;
@@ -218,6 +228,8 @@
   &.activity { color: #7ae8a0; border: 1px solid rgba(122, 232, 160, 0.3); }
   &.system { color: var(--text2); border: 1px solid var(--border2); }
   &.boss { color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); background: rgba(255, 204, 0, 0.08); }
+  &.unique { color: #e0c060; border: 1px solid rgba(224, 192, 96, 0.3); }
+  &.chain { color: #60c8ff; border: 1px solid rgba(96, 200, 255, 0.3); }
   &.contractor { color: #c0a0ff; border: 1px solid rgba(192, 160, 255, 0.3); }
   &.danger { color: #ff8844; border: 1px solid rgba(255, 136, 68, 0.3); }
 }
@@ -263,6 +275,19 @@
   color: #ff8844;
   padding: 1px 5px;
   border: 1px solid rgba(255, 136, 68, 0.3);
+}
+
+.chain-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #60c8ff;
+  padding: 1px 5px;
+  border: 1px solid rgba(96, 200, 255, 0.3);
+  cursor: pointer;
+  &:hover {
+    background: rgba(96, 200, 255, 0.12);
+    color: #90ddff;
+  }
 }
 
 .rep-req {

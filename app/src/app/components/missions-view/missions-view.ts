@@ -35,6 +35,10 @@ interface Mission {
   contractor?: string;
   danger?: string;
   enemyPool?: string[];
+  requiresCompletion?: string[];
+  unlocks?: string[];
+  isChain?: boolean;
+  rewardEstimated?: boolean;
 }
 
 interface MissionGiver {
@@ -84,6 +88,7 @@ export class MissionsViewComponent {
   repScopeFilter = signal('');
   sortBy = signal<'reward' | 'title' | 'category'>('reward');
   blueprintFilter = signal(false);
+  chainFilter = signal(false);
   blueprintNameFilter = signal('');
   page = signal(1);
   readonly pageSize = 20;
@@ -124,7 +129,7 @@ export class MissionsViewComponent {
     return this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
            this.activityFilter() !== '' || this.repScopeFilter() !== '' ||
-           this.blueprintFilter() || this.blueprintNameFilter() !== '';
+           this.blueprintFilter() || this.chainFilter() || this.blueprintNameFilter() !== '';
   });
 
   private allFiltered = computed(() => {
@@ -137,6 +142,7 @@ export class MissionsViewComponent {
     const act = this.activityFilter();
     const rep = this.repScopeFilter();
     const bp = this.blueprintFilter();
+    const chain = this.chainFilter();
     const bpName = this.blueprintNameFilter();
     const sort = this.sortBy();
 
@@ -149,6 +155,7 @@ export class MissionsViewComponent {
     if (act) missions = missions.filter(m => m.activity === act);
     if (bpName) missions = missions.filter(m => m.blueprintRewards?.includes(bpName));
     else if (bp) missions = missions.filter(m => m.blueprintRewards?.length);
+    if (chain) missions = missions.filter(m => m.isChain);
     if (rep) missions = missions.filter(m =>
       m.repScopes?.includes(rep) ||
       m.repRequirements?.some(r => r.scope === rep) ||
@@ -284,6 +291,15 @@ export class MissionsViewComponent {
 
   closePopout(): void {
     this.selectedMission.set(null);
+  }
+
+  navigateToMission(title: string, e: MouseEvent): void {
+    e.stopPropagation();
+    const target = this.allMissions().find(m => m.title === title);
+    if (target) {
+      this.popoutTab.set('info');
+      this.selectedMission.set(target);
+    }
   }
 
   cleanDesc(desc: string): string {

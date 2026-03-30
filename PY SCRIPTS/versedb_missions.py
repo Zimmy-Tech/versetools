@@ -342,6 +342,10 @@ def parse_mission(xml_path, loc, scope_map=None):
 
     category = infer_category(str(xml_path), class_name)
 
+    # Chain: mission's own GUID and required mission GUIDs
+    mission_ref = root.get("__ref", "")
+    req_refs = [ref.text for ref in root.findall(".//requiredMissions/Reference") if ref.text]
+
     result = {
         "className": class_name,
         "title": title,
@@ -353,6 +357,11 @@ def parse_mission(xml_path, loc, scope_map=None):
         "maxPlayers": max_players,
         "canShare": can_share,
     }
+
+    if mission_ref:
+        result["_ref"] = mission_ref
+    if req_refs:
+        result["_requiredRefs"] = req_refs
 
     if description:
         result["description"] = description
@@ -436,6 +445,107 @@ def _infer_danger(class_name):
             return level
     return None
 
+# ── Estimated reward calculation from ContractDifficulty ──
+
+# Per-score UEC rate table (reverse-engineered from known payouts).
+# Formula: payout ≈ round_250(timeToComplete × Σ(weight_i × V(score_i)))
+# Geometric progression ~1.36× per level, anchored at V(4)=3660.
+_SCORE_VALUES = {
+    1: 1450, 2: 1970, 3: 2645, 4: 3660, 5: 4751, 6: 6665, 7: 9005,
+}
+
+def build_contract_difficulty_table(dcb_path):
+    """
+    Read ContractDifficulty and ContractDifficultyProfile from the DCB.
+    Returns a dict: hex_index (e.g. '0838') → {profile_weights, scores, score_values}.
+    """
+    if not dcb_path.exists():
+        return {}
+    sys.path.insert(0, str(Path(__file__).parent))
+    from versedb_extract import _dcb_parse_header
+    with open(dcb_path, 'rb') as f:
+        d = f.read()
+    h = _dcb_parse_header(d)
+    blob_text = h.get('blob_text')
+    if not blob_text:
+        return {}
+
+    # Read profiles (ContractDifficultyProfile, struct index from name lookup)
+    profile_idx = h['struct_by_name'].get('ContractDifficultyProfile')
+    difficulty_idx = h['struct_by_name'].get('ContractDifficulty')
+    if profile_idx is None or difficulty_idx is None:
+        return {}
+
+    # Profile data: rec_size=16, 4 floats (mechSkill, mentalLoad, riskOfLoss, gameKnowledge weights)
+    sdp_info = h['struct_data'].get(profile_idx)
+    profiles = {}
+    if sdp_info:
+        for i in range(sdp_info[1]):
+            off = sdp_info[0] + i * 16
+            profiles[i] = struct.unpack_from('<4f', d, off)
+
+    # Difficulty data: rec_size=36
+    # Layout: profile_index(u32) + GUID(16) + 4×score_text_offset(u32)
+    sd_info = h['struct_data'].get(difficulty_idx)
+    if not sd_info:
+        return {}
+    data_off, count = sd_info
+
+    table = {}
+    for i in range(count):
+        off = data_off + i * 36
+        pi = struct.unpack_from('<I', d, off)[0]
+        if pi >= len(profiles) and pi != 0xFFFFFFFF:
+            continue
+        weights = profiles.get(pi, (0.25, 0.25, 0.25, 0.25))
+        scores = []
+        for j in range(4):
+            val = struct.unpack_from('<I', d, off + 20 + j * 4)[0]
+            try:
+                name = blob_text(val)
+                score = int(name.rsplit('_', 1)[-1])
+            except Exception:
+                score = 4  # fallback
+            scores.append(score)
+
+        hex_key = f"{i:04X}"
+        table[hex_key] = {
+            "weights": weights,
+            "scores": scores,
+        }
+    return table
+
+
+def estimate_reward(difficulty_table, diff_ref, time_to_complete):
+    """
+    Estimate UEC payout from a ContractDifficulty reference and timeToComplete.
+    Returns (estimated_reward, True) or (0, False) if can't compute.
+    """
+    if not diff_ref or not time_to_complete or diff_ref == 'null':
+        return 0, False
+    # Extract hex index from "ContractDifficulty[XXXX]"
+    m = re.match(r'ContractDifficulty\[([0-9A-Fa-f]+)\]', diff_ref)
+    if not m:
+        return 0, False
+    hex_key = m.group(1).upper()
+    entry = difficulty_table.get(hex_key)
+    if not entry:
+        return 0, False
+
+    weights = entry['weights']
+    scores = entry['scores']
+    try:
+        t = float(time_to_complete)
+    except (ValueError, TypeError):
+        return 0, False
+    if t <= 0:
+        return 0, False
+
+    weighted_value = sum(w * _SCORE_VALUES.get(s, 3660) for w, s in zip(weights, scores))
+    raw = t * weighted_value
+    estimated = round(raw / 250) * 250
+    return max(estimated, 250), True
+
 def main():
     print("=" * 60)
     print("VerseDB Mission Extractor")
@@ -445,12 +555,14 @@ def main():
     print("\n[1/4] Loading localization...")
     loc = load_localization(GLOBAL_INI)
 
-    # Entity GUID map + AI wave pools
-    print("\n[2/4] Building entity GUID map and enemy pools...")
+    # Entity GUID map + AI wave pools + difficulty table
+    print("\n[2/4] Building entity GUID map, enemy pools, and difficulty table...")
     guid_map = build_entity_guid_map(DCB_FILE)
     print(f"  {len(guid_map)} spaceship entity GUIDs mapped")
     wave_pools = parse_ai_wave_pools(FORGE_DIR, guid_map, loc)
     print(f"  {len(wave_pools)} AI wave pools parsed")
+    difficulty_table = build_contract_difficulty_table(DCB_FILE)
+    print(f"  {len(difficulty_table)} ContractDifficulty entries loaded")
 
     # Mission givers
     print("\n[3/8] Parsing mission givers...")
@@ -757,18 +869,45 @@ def main():
                 if gen_scope:
                     result_scopes.add(gen_scope)
 
+                # Chain: required completion tags (prerequisites)
+                req_tags = re.findall(
+                    r'<requiredCompletedContractTags>.*?<Reference>([^<]+)</Reference>.*?</requiredCompletedContractTags>',
+                    body, re.S
+                )
+                # Chain: granted completion tags (on success)
+                grant_tags = re.findall(r'ContractResult_CompletionTag[^>]*tag="([^"]+)"', body)
+                # onceOnly flag
+                once_only = 'onceOnly="1"' in attrs
+
+                # Estimated reward from ContractDifficulty
+                # The difficulty and timeToComplete are on contractResults element
+                combined = attrs + body
+                diff_ref_m = re.search(r'difficulty="(ContractDifficulty\[[^\]]+\])"', combined)
+                time_m2 = re.search(r'timeToComplete="([^"]+)"', combined)
+                diff_ref = diff_ref_m.group(1) if diff_ref_m else None
+                ttc = time_m2.group(1) if time_m2 else None
+                est_reward, is_estimated = estimate_reward(difficulty_table, diff_ref, ttc)
+
                 entry = {
                     "className": debug_name,
                     "title": title,
                     "category": "Contract",
                     "generator": gen_name,
-                    "reward": 0,
+                    "reward": est_reward if is_estimated else 0,
                     "currency": "UEC",
                     "lawful": True,
                     "difficulty": -1,
                     "maxPlayers": 1,
                     "canShare": False,
                 }
+                if is_estimated:
+                    entry["rewardEstimated"] = True
+                if req_tags:
+                    entry["_reqTags"] = req_tags
+                if grant_tags:
+                    entry["_grantTags"] = grant_tags
+                if once_only:
+                    entry["onceOnly"] = True
                 if result_scopes:
                     entry["repScopes"] = sorted(result_scopes)
                 if rep_success:
@@ -868,7 +1007,13 @@ def main():
             c["activity"] = c.get("activity") or "Salvage"
             fixed_titles += 1
 
-    print(f"  Parsed {len(contracts)} contracts ({sum(1 for c in contracts if c.get('repRequirements'))} with rep requirements, {fixed_titles} titles fixed)")
+    # Filter out expired/inactive event contracts
+    _HIDDEN_GENERATORS = {"2025content", "cleanair", "gobling_generator"}
+    before_filter = len(contracts)
+    contracts = [c for c in contracts if c.get("generator", "") not in _HIDDEN_GENERATORS]
+    hidden = before_filter - len(contracts)
+
+    print(f"  Parsed {before_filter} contracts ({sum(1 for c in contracts if c.get('repRequirements'))} with rep requirements, {fixed_titles} titles fixed, {hidden} hidden event contracts)")
 
     # Missions (from mission broker system)
     print("\n[6/7] Parsing missions...")
@@ -978,6 +1123,80 @@ def main():
     all_entries = missions + remaining_contracts
     print(f"  Merged {merged_bp} blueprint rewards from contracts into missions")
     print(f"  Dropped {len(merged_contracts)} duplicate contracts, kept {len(remaining_contracts)}")
+
+    # ── Chain resolution ────────────────────────────────────
+    print("\n  Resolving contract chains...")
+
+    # 1. Mission broker chains: __ref GUID → title, and requiredMissions refs
+    mission_ref_map = {}  # __ref GUID → title
+    ref_required_by = {}  # __ref GUID → [titles of missions that require it]
+    for m in all_entries:
+        ref = m.get("_ref")
+        if ref:
+            mission_ref_map[ref] = m["title"]
+    for m in all_entries:
+        for ref in m.get("_requiredRefs", []):
+            ref_required_by.setdefault(ref, []).append(m["title"])
+
+    # 2. Contract tag chains: tag GUID → granting contract title, tag GUID → [requiring titles]
+    tag_granted_by = {}   # tag GUID → title of contract that grants it
+    tag_required_by = {}  # tag GUID → [titles of contracts that require it]
+    for c in all_entries:
+        for tag in c.get("_grantTags", []):
+            tag_granted_by[tag] = c["title"]
+    for c in all_entries:
+        for tag in c.get("_reqTags", []):
+            tag_required_by.setdefault(tag, []).append(c["title"])
+
+    # 3. Resolve into requiresCompletion / unlocks
+    chain_count = 0
+    for m in all_entries:
+        requires = []
+        unlocks = []
+
+        # Mission broker: requiredMissions refs → titles
+        for ref in m.get("_requiredRefs", []):
+            title = mission_ref_map.get(ref)
+            if title and title not in requires:
+                requires.append(title)
+
+        # Mission broker: this mission's __ref is required by others
+        ref = m.get("_ref")
+        if ref and ref in ref_required_by:
+            for t in ref_required_by[ref]:
+                if t not in unlocks and t != m["title"]:
+                    unlocks.append(t)
+
+        # Contract tags: required tags → granting contract titles
+        for tag in m.get("_reqTags", []):
+            title = tag_granted_by.get(tag)
+            if title and title not in requires and title != m["title"]:
+                requires.append(title)
+
+        # Contract tags: granted tags → requiring contract titles
+        for tag in m.get("_grantTags", []):
+            if tag in tag_required_by:
+                for t in tag_required_by[tag]:
+                    if t not in unlocks and t != m["title"]:
+                        unlocks.append(t)
+
+        if requires:
+            m["requiresCompletion"] = requires
+        if unlocks:
+            m["unlocks"] = unlocks
+        if requires or unlocks:
+            m["isChain"] = True
+            chain_count += 1
+
+    # Clean up internal fields
+    for m in all_entries:
+        m.pop("_ref", None)
+        m.pop("_requiredRefs", None)
+        m.pop("_reqTags", None)
+        m.pop("_grantTags", None)
+
+    print(f"  {chain_count} missions/contracts have chain links")
+    print(f"  {len(mission_ref_map)} mission refs mapped, {len(tag_granted_by)} completion tags mapped")
 
     # Flag boss contracts
     for m in all_entries:

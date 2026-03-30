@@ -54,6 +54,9 @@
       <button class="filter-btn-bp" [class.active]="blueprintFilter()"
               (click)="blueprintFilter.set(!blueprintFilter()); resetPage()">Blueprints</button>
 
+      <button class="filter-btn-bp" [class.active]="chainFilter()"
+              (click)="chainFilter.set(!chainFilter()); resetPage()">Chains</button>
+
       <span class="filter-label">Sort</span>
       <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
         <option value="reward">Reward (high)</option>
@@ -85,8 +88,8 @@
             <div class="mission-cat">{{ m.category }}</div>
             <div class="mission-title">{{ m.title }}</div>
             <div class="mission-reward">
-              <span class="reward-val">{{ fmtReward(m.reward) }}</span>
-              <span class="reward-unit">{{ m.currency }}</span>
+              <span class="reward-val" [class.estimated]="m.rewardEstimated">{{ fmtReward(m.reward) }}</span>
+              <span class="reward-unit">{{ m.currency }}@if (m.rewardEstimated) { <span class="est-tag">(est)</span>}</span>
             </div>
           </div>
           <div class="mission-meta">
@@ -97,6 +100,12 @@
               <span class="meta-tag lawful">LAWFUL</span>
             } @else {
               <span class="meta-tag unlawful">UNLAWFUL</span>
+            }
+            @if (m.onceOnly) {
+              <span class="meta-tag unique">UNIQUE</span>
+            }
+            @if (m.isChain) {
+              <span class="meta-tag chain">CHAIN</span>
             }
             @if (m.canShare) {
               <span class="meta-tag share">SHAREABLE</span>
@@ -158,7 +167,7 @@
             </div>
 
             <div class="popout-stats">
-              <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
+              <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}@if (sm.rewardEstimated) { <span class="est-tag">(est)</span>}</span></div>
               @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
               @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
               @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
@@ -190,6 +199,28 @@
                 <div class="popout-tags">
                   @for (ship of sm.enemyPool; track ship) {
                     <span class="pool-tag">{{ ship }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (sm.requiresCompletion?.length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Requires Completion</div>
+                <div class="popout-tags">
+                  @for (req of sm.requiresCompletion; track req) {
+                    <span class="chain-tag" (click)="navigateToMission(req, $event)">{{ req }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (sm.unlocks?.length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Unlocks</div>
+                <div class="popout-tags">
+                  @for (u of sm.unlocks; track u) {
+                    <span class="chain-tag" (click)="navigateToMission(u, $event)">{{ u }}</span>
                   }
                 </div>
               </div>
