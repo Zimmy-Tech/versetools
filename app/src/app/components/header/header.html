@@ -90,6 +90,8 @@
 
 @if (activeTab() === 'loadout' && data.isLoaded()) {
   <div class="loadout-bar">
+    <button class="bulk-equip-btn" (click)="data.bulkEquipRequested.set(true)">BULK EQUIP</button>
+    <button class="mil-a-btn" (click)="data.milARequested.set(true)">MILITARY A</button>
     <div class="ship-picker-wrap">
       <input class="ship-picker-input" type="text"
              [placeholder]="data.selectedShip()?.name ?? 'Select a ship...'"

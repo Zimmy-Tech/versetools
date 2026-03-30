@@ -42,6 +42,12 @@ export class DataService {
     ).map(([, i]) => i as Item)
   );
 
+  /** Trigger to open bulk equip modal from header bar. */
+  bulkEquipRequested = signal(false);
+
+  /** Trigger to apply Military A loadout from header bar. */
+  milARequested = signal(false);
+
   /** Gimbal mode: 'lock' = full fire rate, 'gimbal' = 0.85× fire rate. */
   gimbalMode = signal<'lock' | 'gimbal'>('lock');
   readonly GIMBAL_FIRE_RATE_MULT = 0.85;

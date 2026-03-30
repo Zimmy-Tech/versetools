@@ -1,4 +1,4 @@
-import { Component, computed, signal, output } from '@angular/core';
+import { Component, computed, signal, output, effect } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { DataService } from '../../services/data.service';
 import { DpsPanelComponent } from '../dps-panel/dps-panel';
@@ -85,6 +85,63 @@ export class LoadoutViewComponent {
       ? opts.sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))
       : opts.sort((a, b) => (b.alphaDamage ?? 0) - (a.alphaDamage ?? 0));
   });
+
+  private bulkEquipWatcher = effect(() => {
+    if (this.data.bulkEquipRequested()) {
+      this.data.bulkEquipRequested.set(false);
+      this.openBulkEquip();
+    }
+  });
+
+  private milAWatcher = effect(() => {
+    if (this.data.milARequested()) {
+      this.data.milARequested.set(false);
+      this.applyMilitaryA();
+    }
+  });
+
+  /** Apply Military Grade A components to all compatible slots. */
+  private applyMilitaryA(): void {
+    const ship = this.data.selectedShip();
+    if (!ship) return;
+    const items = this.data.items();
+
+    // Build lookup: type → size → best Military A item
+    const milA = new Map<string, Map<number, Item>>();
+    const targetTypes = ['Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar'];
+
+    for (const item of items) {
+      if (!targetTypes.includes(item.type)) continue;
+      if (item.grade !== 'A' || item.itemClass !== 'Military') continue;
+      const size = item.size ?? 0;
+      if (!milA.has(item.type)) milA.set(item.type, new Map());
+      const bySize = milA.get(item.type)!;
+      const existing = bySize.get(size);
+      if (!existing || this.milAPrimaryStat(item) > this.milAPrimaryStat(existing)) {
+        bySize.set(size, item);
+      }
+    }
+
+    // Apply to each component hardpoint
+    for (const hp of ship.hardpoints) {
+      const bySize = milA.get(hp.type);
+      if (!bySize) continue;
+      const best = bySize.get(hp.maxSize);
+      if (best) this.data.setLoadoutItem(hp.id, best);
+    }
+  }
+
+  /** Primary stat used to pick the best Military A item when multiple exist. */
+  private milAPrimaryStat(item: Item): number {
+    switch (item.type) {
+      case 'Shield': return item.hp ?? 0;
+      case 'PowerPlant': return item.powerOutput ?? 0;
+      case 'Cooler': return item.coolingRate ?? 0;
+      case 'QuantumDrive': return item.speed ?? 0;
+      case 'Radar': return item.aimMax ?? 0;
+      default: return 0;
+    }
+  }
 
   openBulkEquip(): void {
     this.bulkEquipTab.set('guns');

@@ -398,14 +398,6 @@
         <!-- Left: Weapons & Missiles (mining/salvage ships show tools first) -->
         <div class="hardpoints-scroll col-weapons">
 
-          @if (bulkEquipSizes().length) {
-            <div class="bulk-equip-bar">
-              <span class="bulk-equip-line"></span>
-              <button class="bulk-equip-btn" (click)="openBulkEquip()">BULK EQUIP</button>
-              <span class="bulk-equip-line"></span>
-            </div>
-          }
-
           @if (!pilotGunSlots().length && !crewGunSlots().length && !missileSlots().length && !miningSlots().length) {
             <div class="no-hardpoints">No Equippable Hardpoints</div>
           }
