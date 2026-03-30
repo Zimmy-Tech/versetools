@@ -557,6 +557,11 @@ export class HardpointSlotComponent {
         this.pickerTop.set(rect.bottom + 'px');
       }
       this.pickerLeft.set(rect.left + 'px');
+      setTimeout(() => {
+        const input = (this.elRef.nativeElement as HTMLElement)
+          .querySelector('.picker-search') as HTMLInputElement;
+        input?.focus();
+      });
     }
   }
 
