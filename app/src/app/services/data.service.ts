@@ -594,9 +594,15 @@ export class DataService {
       }
     }
 
+    const itemByCls = new Map(db.items.map(i => [i.className.toLowerCase(), i]));
     const exclusive = new Map<string, string>();
-    for (const [cls, ships] of appearsIn)
-      if (ships.length === 1) exclusive.set(cls, ships[0]);
+    for (const [cls, ships] of appearsIn) {
+      if (ships.length !== 1) continue;
+      // Items sold in shops are universal — don't mark them exclusive
+      const item = itemByCls.get(cls);
+      if (item?.shopPrices?.length) continue;
+      exclusive.set(cls, ships[0]);
+    }
     return exclusive;
   });
 
