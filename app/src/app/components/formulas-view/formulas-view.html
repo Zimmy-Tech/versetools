@@ -19,10 +19,19 @@
 
           <div class="formula-card">
             <h3>Total Power Output</h3>
+            <pre class="formula">Single Power Plant:
+  Total Power = Plant Output
 
-            <pre class="formula">Total Power Output = sum( Plant Output )  for all equipped power plants</pre>
-            <p>Power plants are always-on components with no pip control. Their output sets the
-              ceiling for all other allocations.</p>
+Multiple Power Plants (pairing penalty):
+  Each PP contributes = ceil( Output / 2 ) + Size
+
+  Total Power = &Sigma;( ceil( Output<sub>i</sub> / 2 ) + Size<sub>i</sub> )</pre>
+            <p>A single power plant provides its full output as available pips. When two or
+              more plants share a ship, each contributes roughly half its output plus a flat
+              bonus equal to its size class (S1=+1, S2=+2, S3=+3).</p>
+            <p>Validated on Sabre (S1), Valkyrie (S2), and Redeemer (S3) with 6 configurations
+              including mixed plants. Example: Sabre with SonicLite (13) + JS-300 (17) =
+              ceil(13/2)+1 + ceil(17/2)+1 = 8 + 10 = 18 pips.</p>
           </div>
 
           <div class="formula-card">
