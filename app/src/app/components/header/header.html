@@ -1,5 +1,5 @@
 <header>
-  <div class="logo">Verse<span>Tools</span></div>
+  <div class="logo" (click)="tabChange.emit('loadout')">Verse<span>Tools</span></div>
 
   <nav class="nav-tabs">
     <button class="nav-tab" [class.active]="activeTab() === 'loadout'"
