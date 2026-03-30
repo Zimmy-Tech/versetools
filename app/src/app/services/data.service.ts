@@ -42,6 +42,10 @@ export class DataService {
     ).map(([, i]) => i as Item)
   );
 
+  /** Gimbal mode: 'lock' = full fire rate, 'gimbal' = 0.85× fire rate. */
+  gimbalMode = signal<'lock' | 'gimbal'>('lock');
+  readonly GIMBAL_FIRE_RATE_MULT = 0.85;
+
   /** All weapons including PDCs — for weapon power pool max pip calculation. */
   allWeaponsIncludingPdc = computed(() =>
     Object.values(this.loadout()).filter(

@@ -215,7 +215,13 @@ export class LoadoutViewComponent {
   moduleSlots = computed(() => {
     const ship = this.data.selectedShip();
     if (!ship) return [];
-    return ship.hardpoints.filter(hp => hp.type === 'Module');
+    const seen = new Set<string>();
+    return ship.hardpoints.filter(hp => {
+      if (hp.type !== 'Module') return false;
+      if (seen.has(hp.id)) return false;
+      seen.add(hp.id);
+      return true;
+    });
   });
 
   missileSlots = computed(() => {

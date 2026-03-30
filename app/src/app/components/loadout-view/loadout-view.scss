@@ -468,8 +468,6 @@
   padding-right: 4px;
   min-width: 0;
 
-  &:first-child { --label-w: 200px; }
-  &:last-child  { --label-w: 100px; }
 }
 
 .sys-stats {
@@ -519,8 +517,20 @@
 
 .sub-slot-indent {
   padding-left: 18px;
-  border-left: 2px solid var(--border);
   margin-left: 6px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 18px;
+    width: 12px;
+    border-left: 2px solid var(--border);
+    border-bottom: 2px solid var(--border);
+    border-bottom-left-radius: 4px;
+  }
 }
 
 .slot-group-label {

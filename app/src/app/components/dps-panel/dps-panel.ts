@@ -10,20 +10,19 @@ import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, bandModAt, coolerSupply, 
   styleUrl: './dps-panel.scss',
 })
 export class DpsPanelComponent {
-  /** Gimbal mode: 'lock' = fixed (full fire rate), 'gimbal' = gimbal/precision/auto (0.85× fire rate). */
-  gimbalMode = signal<'lock' | 'gimbal'>('lock');
-  private readonly GIMBAL_FIRE_RATE_MULT = 0.85;
+  /** Gimbal mode — shared via DataService so Jane's cards also react. */
+  get gimbalMode() { return this.data.gimbalMode; }
 
   /** Get effective fire rate for a weapon, accounting for gimbal mode penalty. */
   private effectiveFireRate(w: Item): number {
     const base = w.fireRate ?? 0;
-    return this.gimbalMode() === 'gimbal' ? base * this.GIMBAL_FIRE_RATE_MULT : base;
+    return this.gimbalMode() === 'gimbal' ? base * this.data.GIMBAL_FIRE_RATE_MULT : base;
   }
 
   /** Get effective DPS for a weapon, accounting for gimbal mode penalty. */
   private effectiveDPS(w: Item): number {
     const base = w.dps ?? 0;
-    return this.gimbalMode() === 'gimbal' ? base * this.GIMBAL_FIRE_RATE_MULT : base;
+    return this.gimbalMode() === 'gimbal' ? base * this.data.GIMBAL_FIRE_RATE_MULT : base;
   }
 
   private loadoutEntries = computed(() => Object.entries(this.data.loadout()));

@@ -125,7 +125,8 @@ export class HardpointSlotComponent {
         let dmgType = 'ENERGY';
         if (item.isBallistic) dmgType = 'BALLISTIC';
         else if (dmg.distortion > 0) dmgType = 'DISTORTION';
-        return { classCode: dmgType.slice(0, 4) + '-S' + (item.size ?? '?'), primaryVal: (item.dps ?? 0).toFixed(0), primaryUnit: 'DPS', meta };
+        const gMult = this.data.gimbalMode() === 'gimbal' ? this.data.GIMBAL_FIRE_RATE_MULT : 1;
+        return { classCode: dmgType.slice(0, 4) + '-S' + (item.size ?? '?'), primaryVal: ((item.dps ?? 0) * gMult).toFixed(0), primaryUnit: 'DPS', meta };
       }
       case 'Missile':
         return { classCode: 'MSL-S' + (item.size ?? '?'), primaryVal: (item.alphaDamage ?? 0).toFixed(0), primaryUnit: 'DMG', meta };
@@ -179,8 +180,9 @@ export class HardpointSlotComponent {
     if (item.isBallistic) dmgType = 'BALLISTIC';
     else if ((dmg as any).distortion > 0) dmgType = 'DISTORTION';
 
+    const gMult = this.data.gimbalMode() === 'gimbal' ? this.data.GIMBAL_FIRE_RATE_MULT : 1;
     const stats: { key: string; val: string; cls?: string }[] = [];
-    if (item.dps) stats.push({ key: 'DPS', val: item.dps.toFixed(1) });
+    if (item.dps) stats.push({ key: 'DPS', val: (item.dps * gMult).toFixed(1) });
     if (item.alphaDamage) stats.push({ key: 'ALPHA', val: item.alphaDamage.toFixed(1) });
 
     if (item.penetrationDistance) stats.push({ key: 'PEN.D', val: item.penetrationDistance.toFixed(2) + 'm' });
