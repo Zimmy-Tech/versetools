@@ -665,7 +665,7 @@ export class LoadoutViewComponent {
           const firstLeaf = missileLeaves[0];
           moduleSubs.push({
             id: firstLeaf,
-            label: `Torpedoes ×${missileLeaves.length}`,
+            label: `${missileSize >= 5 ? 'Torpedoes' : 'Missiles'} ×${missileLeaves.length}`,
             type: 'Missile',
             subtypes: '',
             minSize: missileSize,
