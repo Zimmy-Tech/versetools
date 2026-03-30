@@ -10,6 +10,22 @@ import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, bandModAt, coolerSupply, 
   styleUrl: './dps-panel.scss',
 })
 export class DpsPanelComponent {
+  /** Gimbal mode: 'lock' = fixed (full fire rate), 'gimbal' = gimbal/precision/auto (0.85× fire rate). */
+  gimbalMode = signal<'lock' | 'gimbal'>('lock');
+  private readonly GIMBAL_FIRE_RATE_MULT = 0.85;
+
+  /** Get effective fire rate for a weapon, accounting for gimbal mode penalty. */
+  private effectiveFireRate(w: Item): number {
+    const base = w.fireRate ?? 0;
+    return this.gimbalMode() === 'gimbal' ? base * this.GIMBAL_FIRE_RATE_MULT : base;
+  }
+
+  /** Get effective DPS for a weapon, accounting for gimbal mode penalty. */
+  private effectiveDPS(w: Item): number {
+    const base = w.dps ?? 0;
+    return this.gimbalMode() === 'gimbal' ? base * this.GIMBAL_FIRE_RATE_MULT : base;
+  }
+
   private loadoutEntries = computed(() => Object.entries(this.data.loadout()));
   private equippedItems  = computed(() => this.loadoutEntries().map(([, item]) => item));
   private shipHardpoints  = computed(() => this.data.selectedShip()?.hardpoints ?? []);
@@ -103,7 +119,7 @@ export class DpsPanelComponent {
     if (weapon.isBallistic || !weapon.fireRate) return 1;
     // Cap effective bars at maxRestockCount — no further gain beyond it.
     const N = Math.min(weaponBars, this.ENERGY_MAX_RESTOCK);
-    const f = weapon.fireRate; // RPM
+    const f = this.effectiveFireRate(weapon); // RPM with gimbal penalty
     // 300 = (maxAmmoLoad/maxRestockCount) × maxRegenPerSec × 60 = (75/3) × 15
     return (300 * N) / (300 * N + f);
   }
@@ -126,7 +142,7 @@ export class DpsPanelComponent {
 
     for (const w of weapons) {
       const alpha = w.alphaDamage ?? 0;
-      const rpm = w.fireRate ?? 0;
+      const rpm = this.effectiveFireRate(w);
       if (alpha <= 0 || rpm <= 0) continue;
       const rps = rpm / 60;
 
@@ -168,7 +184,7 @@ export class DpsPanelComponent {
 
     for (const w of weapons) {
       const alpha = w.alphaDamage ?? 0;
-      const rpm = w.fireRate ?? 0;
+      const rpm = this.effectiveFireRate(w);
       if (alpha <= 0 || rpm <= 0) continue;
       const rps = rpm / 60;
 
@@ -218,7 +234,7 @@ export class DpsPanelComponent {
 
   pilotBurstDPS = computed(() => {
     if (!this.weaponsLive()) return 0;
-    return this.directWeapons().reduce((s, w) => s + (w.dps ?? 0), 0);
+    return this.directWeapons().reduce((s, w) => s + this.effectiveDPS(w), 0);
   });
   pilotBurst = computed(() => {
     if (!this.weaponsLive()) return { damage: 0, time: 0 };
@@ -235,7 +251,7 @@ export class DpsPanelComponent {
 
   crewBurstDPS = computed(() => {
     if (!this.weaponsLive()) return 0;
-    return this.turretWeapons().reduce((s, w) => s + (w.dps ?? 0), 0);
+    return this.turretWeapons().reduce((s, w) => s + this.effectiveDPS(w), 0);
   });
   crewBurst = computed(() => {
     if (!this.weaponsLive()) return { damage: 0, time: 0 };

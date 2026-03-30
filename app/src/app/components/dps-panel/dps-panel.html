@@ -4,28 +4,25 @@
 
     <!-- DPS Output -->
     <div>
-      <div class="section-title">DPS Output <span class="hover-hint">Hover for Info</span></div>
+      <div class="section-title">DPS Output <span class="hover-hint">Hover for Info</span>
+        <span class="gimbal-toggle" title="Gimbal/Precision/Auto modes reduce fire rate by 15%. Lock mode fires at full rate.">
+          <button class="gimbal-btn" [class.active]="gimbalMode() === 'lock'" (click)="gimbalMode.set('lock')">LOCK</button>
+          <button class="gimbal-btn" [class.active]="gimbalMode() === 'gimbal'" (click)="gimbalMode.set('gimbal')">PRE/AUTO/GIMBAL</button>
+        </span>
+      </div>
       <div class="stat-block">
         @if (pilotBurstDPS() > 0 || pilotDPS() > 0) {
           <div class="stat-row" title="All weapons firing simultaneously at maximum fire rate. Does not account for ammo depletion or overheat.">
             <span class="stat-label">Pilot Peak DPS</span>
             <span class="mono">{{ pilotBurstDPS().toFixed(0) }}</span>
           </div>
-          <div class="stat-row" title="Total burst damage divided by time to exhaust the longest-firing weapon. Accounts for weapons running out at different times.">
-            <span class="stat-label">Pilot Burst DPS</span>
-            <span class="mono">{{ pilotBurst().time > 0 ? (pilotBurst().damage / pilotBurst().time).toFixed(0) : '0' }}</span>
-          </div>
           <div class="stat-row" title="Average damage per second over a 10-second window. Energy weapons fire then regen (no regen while firing). Ballistic weapons cycle through overheat and cooldown.">
             <span class="stat-label">Pilot DPS (10s)</span>
             <span class="mono">{{ pilotDPS().toFixed(0) }}</span>
           </div>
-          <div class="stat-row" title="Total damage dealt before all weapons are forced to stop. Energy weapons exhaust their ammo pool, ballistic weapons overheat.">
-            <span class="stat-label">Pilot Burst Damage</span>
-            <span class="mono">{{ pilotBurst().damage.toFixed(0) }}</span>
-          </div>
           @if (pilotBurst().time > 0) {
-            <div class="stat-row" title="Time until the last weapon finishes its burst. Weapons fire in parallel — this is the longest individual burst.">
-              <span class="stat-label">Burst Time</span>
+            <div class="stat-row" title="How long you can hold the trigger before all weapons are forced to stop (ammo depleted or overheated). Measured from the longest-firing weapon.">
+              <span class="stat-label">Max Trigger Time</span>
               <span class="mono">{{ pilotBurst().time.toFixed(1) }}s</span>
             </div>
           }
@@ -45,21 +42,13 @@
             <span class="stat-label">Crew Peak DPS</span>
             <span class="mono">{{ crewBurstDPS().toFixed(0) }}</span>
           </div>
-          <div class="stat-row" title="Total crew burst damage divided by time to exhaust the longest-firing turret weapon.">
-            <span class="stat-label">Crew Burst DPS</span>
-            <span class="mono">{{ crewBurst().time > 0 ? (crewBurst().damage / crewBurst().time).toFixed(0) : '0' }}</span>
-          </div>
           <div class="stat-row" title="Average crew turret damage per second over a 10-second window. Accounts for energy regen cycles and ballistic overheat.">
             <span class="stat-label">Crew DPS (10s)</span>
             <span class="mono">{{ crewDPS().toFixed(0) }}</span>
           </div>
-          <div class="stat-row" title="Total crew turret damage before all weapons are forced to stop.">
-            <span class="stat-label">Crew Burst Damage</span>
-            <span class="mono">{{ crewBurst().damage.toFixed(0) }}</span>
-          </div>
           @if (crewBurst().time > 0) {
-            <div class="stat-row" title="Time until the last crew turret weapon finishes its burst.">
-              <span class="stat-label">Burst Time</span>
+            <div class="stat-row" title="How long crew can hold the trigger before all turret weapons are forced to stop.">
+              <span class="stat-label">Max Trigger Time</span>
               <span class="mono">{{ crewBurst().time.toFixed(1) }}s</span>
             </div>
           }
