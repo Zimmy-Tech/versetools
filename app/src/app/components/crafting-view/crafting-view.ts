@@ -224,6 +224,15 @@ export class CraftingViewComponent {
   prevPage(): void { if (this.page() > 1) this.page.update(p => p - 1); }
   nextPage(): void { if (this.page() < this.totalPages()) this.page.update(p => p + 1); }
 
+  clearFilters(): void {
+    this.searchQuery.set('');
+    this.categoryFilter.set('');
+    this.subtypeFilter.set('');
+    this.resourceFilter.set('');
+    this.setFilter.set('');
+    this.page.set(1);
+  }
+
   selectRecipe(r: CraftingRecipe, e: MouseEvent): void {
     e.stopPropagation();
     if (this.selectedRecipe()?.className === r.className) {

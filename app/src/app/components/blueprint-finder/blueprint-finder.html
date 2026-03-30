@@ -8,8 +8,26 @@
 
     <div class="bp-layout">
 
-      <!-- Sidebar -->
+      <!-- Sidebar: search + filters + item sets -->
       <div class="bp-sidebar">
+        <div class="filter-group">
+          <span class="filter-label">Search</span>
+          <input class="filter-input" type="text" placeholder="Search blueprints..."
+                 [value]="searchQuery()"
+                 (input)="searchQuery.set($any($event.target).value)">
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Type</span>
+          <select class="filter-select" (change)="typeFilter.set($any($event.target).value)">
+            @for (t of types(); track t) {
+              <option [value]="t">{{ t || 'All' }}</option>
+            }
+          </select>
+        </div>
+
+        <span class="bp-count">{{ filtered().length }} blueprints</span>
+
         <div class="sb-section">
           <span class="sb-label">Armor Sets</span>
           <div class="sb-buttons">
@@ -33,17 +51,6 @@
 
       <!-- Main content -->
       <div class="bp-main">
-        <div class="bp-search-bar">
-          <input class="bp-search" type="text" placeholder="Search blueprints..."
-                 [value]="searchQuery()"
-                 (input)="searchQuery.set($any($event.target).value)">
-          <select class="bp-type-select" (change)="typeFilter.set($any($event.target).value)">
-            @for (t of types(); track t) {
-              <option [value]="t">{{ t || 'All Types' }}</option>
-            }
-          </select>
-          <span class="bp-count">{{ filtered().length }} blueprints</span>
-        </div>
 
         <div class="bp-list">
           @for (bp of filtered(); track bp.name) {

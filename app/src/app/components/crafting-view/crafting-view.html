@@ -8,8 +8,62 @@
 
     <div class="crafting-layout">
 
-    <!-- Sidebar -->
+    <!-- Sidebar: search + filters + item sets -->
     <div class="craft-sidebar">
+      <div class="filter-group">
+        <span class="filter-label">Search</span>
+        <input class="filter-input" type="text" placeholder="item name, resource..."
+               [value]="searchQuery()"
+               (input)="searchQuery.set($any($event.target).value); resetPage()">
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Category</span>
+        <select class="filter-select" (change)="categoryFilter.set($any($event.target).value); subtypeFilter.set(''); resetPage()">
+          @for (cat of categories(); track cat) {
+            <option [value]="cat">{{ cat || 'All' }}</option>
+          }
+        </select>
+      </div>
+
+      @if (subtypes().length > 1) {
+        <div class="filter-group">
+          <span class="filter-label">Type</span>
+          <select class="filter-select" (change)="subtypeFilter.set($any($event.target).value); resetPage()">
+            @for (sub of subtypes(); track sub) {
+              <option [value]="sub">{{ sub || 'All' }}</option>
+            }
+          </select>
+        </div>
+      }
+
+      <div class="filter-group">
+        <span class="filter-label">Resource</span>
+        <select class="filter-select" (change)="resourceFilter.set($any($event.target).value); resetPage()">
+          @for (res of resources(); track res) {
+            <option [value]="res">{{ res || 'All' }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Sort</span>
+        <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
+          <option value="name">Name (A-Z)</option>
+          <option value="time">Craft Time</option>
+          <option value="ingredients">Ingredients</option>
+        </select>
+      </div>
+
+      @if (hasActiveFilter()) {
+        <button class="filter-clear" (click)="clearFilters()">Clear Filters</button>
+        <div class="pager">
+          <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
+          <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
+          <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
+        </div>
+      }
+
       <div class="sb-section">
         <span class="sb-label">Armor Sets</span>
         <div class="sb-buttons">
@@ -79,52 +133,6 @@
     <div class="craft-main">
 
     <div class="crafting-instructions">Pick an item to see the Crafting UI which includes sliders for the materials quality and the effects of quality materials. Adding items to your Materials List will open a tally window for bulk gathering requirements.</div>
-
-    <!-- Filter bar -->
-    <div class="filter-bar">
-      <span class="filter-label">Search</span>
-      <input class="filter-input" type="text" placeholder="item name, resource..."
-             [value]="searchQuery()"
-             (input)="searchQuery.set($any($event.target).value); resetPage()">
-
-      <span class="filter-label">Category</span>
-      <select class="filter-select" (change)="categoryFilter.set($any($event.target).value); subtypeFilter.set(''); resetPage()">
-        @for (cat of categories(); track cat) {
-          <option [value]="cat">{{ cat || 'All' }}</option>
-        }
-      </select>
-
-      @if (subtypes().length > 1) {
-        <span class="filter-label">Type</span>
-        <select class="filter-select" (change)="subtypeFilter.set($any($event.target).value); resetPage()">
-          @for (sub of subtypes(); track sub) {
-            <option [value]="sub">{{ sub || 'All' }}</option>
-          }
-        </select>
-      }
-
-      <span class="filter-label">Resource</span>
-      <select class="filter-select" (change)="resourceFilter.set($any($event.target).value); resetPage()">
-        @for (res of resources(); track res) {
-          <option [value]="res">{{ res || 'All' }}</option>
-        }
-      </select>
-
-      <span class="filter-label">Sort</span>
-      <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
-        <option value="name">Name (A-Z)</option>
-        <option value="time">Craft Time</option>
-        <option value="ingredients">Ingredients</option>
-      </select>
-
-      @if (hasActiveFilter()) {
-        <div class="pager">
-          <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
-          <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
-          <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
-        </div>
-      }
-    </div>
 
     @if (!hasActiveFilter()) {
       <div class="empty-state">

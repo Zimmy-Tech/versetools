@@ -85,13 +85,13 @@ export class MissionsViewComponent {
   lawfulFilter = signal<'' | 'lawful' | 'unlawful'>('');
   systemFilter = signal('');
   activityFilter = signal('');
-  repScopeFilter = signal('');
+  contractorFilter = signal('');
   sortBy = signal<'reward' | 'title' | 'category'>('reward');
   blueprintFilter = signal(false);
   chainFilter = signal(false);
   blueprintNameFilter = signal('');
   page = signal(1);
-  readonly pageSize = 20;
+  readonly pageSize = 50;
 
   categories = computed(() => {
     const cats = new Set(this.allMissions().map(m => m.category));
@@ -108,13 +108,9 @@ export class MissionsViewComponent {
     return ['', ...Array.from(act).sort()];
   });
 
-  repScopes = computed(() => {
-    const scopes = new Set<string>();
-    for (const m of this.allMissions()) {
-      for (const s of m.repScopes ?? []) scopes.add(s);
-      for (const r of m.repRequirements ?? []) scopes.add(r.scope);
-    }
-    return ['', ...Array.from(scopes).sort()];
+  contractors = computed(() => {
+    const ct = new Set(this.allMissions().map(m => m.contractor).filter(Boolean));
+    return ['', ...Array.from(ct).sort()];
   });
 
   blueprintNames = computed(() => {
@@ -128,7 +124,7 @@ export class MissionsViewComponent {
   hasActiveFilter = computed(() => {
     return this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
-           this.activityFilter() !== '' || this.repScopeFilter() !== '' ||
+           this.activityFilter() !== '' || this.contractorFilter() !== '' ||
            this.blueprintFilter() || this.chainFilter() || this.blueprintNameFilter() !== '';
   });
 
@@ -140,7 +136,7 @@ export class MissionsViewComponent {
     const law = this.lawfulFilter();
     const sys = this.systemFilter();
     const act = this.activityFilter();
-    const rep = this.repScopeFilter();
+    const ct = this.contractorFilter();
     const bp = this.blueprintFilter();
     const chain = this.chainFilter();
     const bpName = this.blueprintNameFilter();
@@ -156,11 +152,7 @@ export class MissionsViewComponent {
     if (bpName) missions = missions.filter(m => m.blueprintRewards?.includes(bpName));
     else if (bp) missions = missions.filter(m => m.blueprintRewards?.length);
     if (chain) missions = missions.filter(m => m.isChain);
-    if (rep) missions = missions.filter(m =>
-      m.repScopes?.includes(rep) ||
-      m.repRequirements?.some(r => r.scope === rep) ||
-      (rep === 'wikelo' && m.generator === 'thecollector')
-    );
+    if (ct) missions = missions.filter(m => m.contractor === ct);
     if (search) {
       missions = missions.filter(m =>
         m.title.toLowerCase().includes(search) ||
@@ -215,15 +207,45 @@ export class MissionsViewComponent {
     this.page.set(1);
   }
 
+  clearFilters(): void {
+    this.searchQuery.set('');
+    this.categoryFilter.set('');
+    this.lawfulFilter.set('');
+    this.systemFilter.set('');
+    this.activityFilter.set('');
+    this.contractorFilter.set('');
+    this.blueprintFilter.set(false);
+    this.chainFilter.set(false);
+    this.blueprintNameFilter.set('');
+    this.page.set(1);
+  }
+
   private readonly SCOPE_DISPLAY: Record<string, string> = {
-    'shipcombat_headhunters': 'Ship Combat (Headhunters)',
-    'factionreputationscope': 'Faction Standing',
     'affinity': 'NPC Affinity',
+    'assassination': 'Assassination',
+    'bounty': 'Bounty Hunting',
+    'bounty_bountyhuntersguild': 'Bounty Hunters Guild',
+    'courier': 'Courier',
+    'emergency': 'Emergency Support',
+    'factionreputationscope': 'Faction Standing',
+    'handyman_citizensforpyro': 'Hired Muscle (CFP)',
+    'hauling': 'Hauling',
+    'hiredmuscle': 'Hired Muscle',
+    'racing_shiptimetrial': 'Racing (Ship)',
+    'security': 'Security',
+    'shipcombat_headhunters': 'Ship Combat (Headhunters)',
+    'technician': 'Technician',
     'wikelo': 'Barter & Trade',
   };
 
+  private readonly SCOPE_HIDDEN = new Set(['npc_reliability']);
+
   fmtScope(scope: string): string {
     return this.SCOPE_DISPLAY[scope] ?? scope;
+  }
+
+  visibleScopes(m: Mission): string[] {
+    return (m.repScopes ?? []).filter(s => !this.SCOPE_HIDDEN.has(s));
   }
 
   uniqueReqs(m: Mission): { scope: string; minRank: string; maxRank: string }[] {

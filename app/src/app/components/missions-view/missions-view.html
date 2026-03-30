@@ -6,65 +6,80 @@
     </div>
   } @else {
 
-    <!-- Filter bar -->
+    <!-- Filter sidebar / bar -->
     <div class="filter-bar">
-      <span class="filter-label">Search</span>
-      <input class="filter-input" type="text" placeholder="title, giver, description..."
-             [value]="searchQuery()"
-             (input)="searchQuery.set($any($event.target).value); resetPage()">
+      <div class="filter-group">
+        <span class="filter-label">Search</span>
+        <input class="filter-input" type="text" placeholder="title, giver, description..."
+               [value]="searchQuery()"
+               (input)="searchQuery.set($any($event.target).value); resetPage()">
+      </div>
 
-      <span class="filter-label">Category</span>
-      <select class="filter-select" (change)="categoryFilter.set($any($event.target).value)">
-        @for (cat of categories(); track cat) {
-          <option [value]="cat">{{ cat || 'All' }}</option>
-        }
-      </select>
+      <div class="filter-group">
+        <span class="filter-label">Category</span>
+        <select class="filter-select" (change)="categoryFilter.set($any($event.target).value)">
+          @for (cat of categories(); track cat) {
+            <option [value]="cat">{{ cat || 'All' }}</option>
+          }
+        </select>
+      </div>
 
-      <span class="filter-label">Lawful</span>
-      <select class="filter-select" (change)="lawfulFilter.set($any($event.target).value); resetPage()">
-        <option value="">All</option>
-        <option value="lawful">Lawful</option>
-        <option value="unlawful">Unlawful</option>
-      </select>
+      <div class="filter-group">
+        <span class="filter-label">Lawful</span>
+        <select class="filter-select" (change)="lawfulFilter.set($any($event.target).value); resetPage()">
+          <option value="">All</option>
+          <option value="lawful">Lawful</option>
+          <option value="unlawful">Unlawful</option>
+        </select>
+      </div>
 
-      <span class="filter-label">System</span>
-      <select class="filter-select" (change)="systemFilter.set($any($event.target).value); resetPage()">
-        @for (sys of systems(); track sys) {
-          <option [value]="sys">{{ sys || 'All' }}</option>
-        }
-      </select>
+      <div class="filter-group">
+        <span class="filter-label">System</span>
+        <select class="filter-select" (change)="systemFilter.set($any($event.target).value); resetPage()">
+          @for (sys of systems(); track sys) {
+            <option [value]="sys">{{ sys || 'All' }}</option>
+          }
+        </select>
+      </div>
 
-      <span class="filter-label">Activity</span>
-      <select class="filter-select" (change)="activityFilter.set($any($event.target).value); resetPage()">
-        @for (act of activities(); track act) {
-          <option [value]="act">{{ act || 'All' }}</option>
-        }
-      </select>
+      <div class="filter-group">
+        <span class="filter-label">Activity</span>
+        <select class="filter-select" (change)="activityFilter.set($any($event.target).value); resetPage()">
+          @for (act of activities(); track act) {
+            <option [value]="act">{{ act || 'All' }}</option>
+          }
+        </select>
+      </div>
 
-      <span class="filter-label">Faction</span>
-      <select class="filter-select" (change)="repScopeFilter.set($any($event.target).value); resetPage()">
-        @for (scope of repScopes(); track scope) {
-          <option [value]="scope">{{ scope ? fmtScope(scope) : 'All' }}</option>
-        }
-      </select>
+      <div class="filter-group">
+        <span class="filter-label">Contractor</span>
+        <select class="filter-select" (change)="contractorFilter.set($any($event.target).value); resetPage()">
+          @for (ct of contractors(); track ct) {
+            <option [value]="ct">{{ ct || 'All' }}</option>
+          }
+        </select>
+      </div>
 
-      <button class="filter-btn-bp" [class.active]="repScopeFilter() === 'wikelo'"
-              (click)="repScopeFilter.set(repScopeFilter() === 'wikelo' ? '' : 'wikelo'); resetPage()">Wikelo</button>
+      <div class="filter-group">
+        <span class="filter-label">Sort</span>
+        <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
+          <option value="reward">Reward (high)</option>
+          <option value="title">Title (A-Z)</option>
+          <option value="category">Category</option>
+        </select>
+      </div>
 
-      <button class="filter-btn-bp" [class.active]="blueprintFilter()"
-              (click)="blueprintFilter.set(!blueprintFilter()); resetPage()">Blueprints</button>
-
-      <button class="filter-btn-bp" [class.active]="chainFilter()"
-              (click)="chainFilter.set(!chainFilter()); resetPage()">Chains</button>
-
-      <span class="filter-label">Sort</span>
-      <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
-        <option value="reward">Reward (high)</option>
-        <option value="title">Title (A-Z)</option>
-        <option value="category">Category</option>
-      </select>
+      <div class="filter-toggles">
+        <button class="filter-btn-bp" [class.active]="contractorFilter() === 'Wikelo Emporium'"
+                (click)="contractorFilter.set(contractorFilter() === 'Wikelo Emporium' ? '' : 'Wikelo Emporium'); resetPage()">Wikelo</button>
+        <button class="filter-btn-bp" [class.active]="blueprintFilter()"
+                (click)="blueprintFilter.set(!blueprintFilter()); resetPage()">Blueprints</button>
+        <button class="filter-btn-bp" [class.active]="chainFilter()"
+                (click)="chainFilter.set(!chainFilter()); resetPage()">Chains</button>
+      </div>
 
       @if (hasActiveFilter()) {
+        <button class="filter-clear" (click)="clearFilters()">Clear Filters</button>
         <div class="pager">
           <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
           <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
@@ -73,10 +88,11 @@
       }
     </div>
 
+    <div class="missions-content">
     @if (!hasActiveFilter()) {
       <div class="empty-state">
         <div class="empty-title">Mission Database</div>
-        <div class="empty-sub">{{ allMissions().length }} contracts available. Use the filters above to search.</div>
+        <div class="empty-sub">{{ allMissions().length }} contracts available. Use the filters to search.</div>
       </div>
     }
 
@@ -129,6 +145,7 @@
 
         </div>
       }
+    </div>
     </div>
 
     <!-- Popout detail panel -->
@@ -247,12 +264,18 @@
 
           <!-- ═══ Reputation Tab ═══ -->
           @if (popoutTab() === 'reputation') {
-            @if (sm.repScopes?.length) {
+            @if (sm.contractor) {
               <div class="popout-section">
-                <div class="popout-section-title">Reputation Scopes</div>
+                <div class="popout-section-title">Contractor</div>
+                <div class="popout-stat"><span class="ps-label">Faction</span><span class="ps-val">{{ sm.contractor }}</span></div>
+              </div>
+            }
+            @if (visibleScopes(sm).length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Reputation Earned</div>
                 <div class="popout-tags">
-                  @for (scope of sm.repScopes; track scope) {
-                    <span class="rep-scope">{{ scope }}</span>
+                  @for (scope of visibleScopes(sm); track scope) {
+                    <span class="rep-scope">{{ fmtScope(scope) }}</span>
                   }
                 </div>
               </div>

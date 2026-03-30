@@ -414,9 +414,10 @@ _CONTRACTOR_PATTERNS = {
     "roughandready":       "Rough & Ready",
     "hexpenetrator":       "Hex Penetrator",
     "intersec":            "InterSec",
-    "family":              "Arlington Gang",
+    "pve_family":          "Arlington Gang",
     "vaughn":              "Vaughn",
     "pacheco":             "Tecia Pacheco",
+    "ling_":               "Ling Family Hauling",
 }
 
 def _resolve_contractor(class_name, loc):
@@ -1013,7 +1014,39 @@ def main():
     contracts = [c for c in contracts if c.get("generator", "") not in _HIDDEN_GENERATORS]
     hidden = before_filter - len(contracts)
 
-    print(f"  Parsed {before_filter} contracts ({sum(1 for c in contracts if c.get('repRequirements'))} with rep requirements, {fixed_titles} titles fixed, {hidden} hidden event contracts)")
+    # Resolve contractors from generator names (prefix matching)
+    _GENERATOR_CONTRACTORS = {
+        "citizensforprosperity": "Citizens For Prosperity",
+        "cfp_":                  "Citizens For Prosperity",
+        "redwind":               "Red Wind Linehaul",
+        "adagio":                "Adagio Holdings",
+        "hockrowagency":         "Hockrow Agency",
+        "foxwellenforcement":    "Foxwell Enforcement",
+        "shubin":                "Shubin Interstellar",
+        "covalex":               "Covalex",
+        "rayari":                "Rayari Incorporated",
+        "ftl_courier":           "FTL Courier",
+        "ftl_":                  "FTL Courier",
+        "deadsaints":            "Dead Saints",
+        "klescher":              "Klescher Rehabilitation Facilities",
+        "lingfamily":            "Ling Family Hauling",
+        "bitzeros":              "Bit Zeros",
+        "thecollector":          "Wikelo Emporium",
+        "highpointwilderness":   "Civilian Defense Force",
+        "tarpits":               "Tar Pits",
+    }
+    gen_resolved = 0
+    for c in contracts:
+        if c.get("contractor"):
+            continue
+        gen = c.get("generator", "").lower()
+        for prefix, name in _GENERATOR_CONTRACTORS.items():
+            if gen.startswith(prefix):
+                c["contractor"] = name
+                gen_resolved += 1
+                break
+
+    print(f"  Parsed {before_filter} contracts ({sum(1 for c in contracts if c.get('repRequirements'))} with rep requirements, {fixed_titles} titles fixed, {hidden} hidden event, {gen_resolved} contractors resolved)")
 
     # Missions (from mission broker system)
     print("\n[6/7] Parsing missions...")
