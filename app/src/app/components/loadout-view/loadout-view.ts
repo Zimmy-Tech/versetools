@@ -26,6 +26,65 @@ export class LoadoutViewComponent {
 
   readonly utilityTypes = ['Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar', 'LifeSupportGenerator', 'FlightController'];
 
+  // ── Bulk Equip ────────────────────────────────────
+  bulkEquipOpen = signal(false);
+  bulkEquipSearch = signal('');
+  bulkEquipSize = signal<number | null>(null);
+
+  /** Available gun sizes across all weapon sub-slots. */
+  bulkEquipSizes = computed(() => {
+    const subs = this.subSlotsMap();
+    const sizes = new Set<number>();
+    for (const children of Object.values(subs)) {
+      for (const child of children) {
+        if (child.type === 'WeaponGun' && child.maxSize) sizes.add(child.maxSize);
+      }
+    }
+    return [...sizes].sort((a, b) => a - b);
+  });
+
+  /** Weapons available for the selected bulk equip size. */
+  bulkEquipOptions = computed(() => {
+    const size = this.bulkEquipSize();
+    if (!size) return [];
+    const q = this.bulkEquipSearch().toLowerCase().trim();
+    // Reuse the slot filter from DataService — build a fake hardpoint for size matching
+    let opts = this.data.items().filter(i =>
+      (i.type === 'WeaponGun' || i.type === 'WeaponTachyon') &&
+      i.size === size
+    );
+    if (q) {
+      opts = opts.filter(o =>
+        o.name.toLowerCase().includes(q) ||
+        (o.manufacturer ?? '').toLowerCase().includes(q)
+      );
+    }
+    return opts.sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0));
+  });
+
+  openBulkEquip(): void {
+    const sizes = this.bulkEquipSizes();
+    this.bulkEquipSize.set(sizes.length ? sizes[0] : null);
+    this.bulkEquipSearch.set('');
+    this.bulkEquipOpen.set(true);
+  }
+
+  closeBulkEquip(): void {
+    this.bulkEquipOpen.set(false);
+  }
+
+  applyBulkEquip(weapon: Item): void {
+    const subs = this.subSlotsMap();
+    for (const children of Object.values(subs)) {
+      for (const child of children) {
+        if (child.type === 'WeaponGun' && child.maxSize === weapon.size) {
+          this.data.setLoadoutItem(child.id, weapon);
+        }
+      }
+    }
+    this.bulkEquipOpen.set(false);
+  }
+
   collapsedSections = signal<Set<string>>(new Set([
     'pilot-guns', 'crew-guns', 'missiles', 'mining', 'power', 'pdc', 'tractor', 'coolers', 'modules',
   ]));

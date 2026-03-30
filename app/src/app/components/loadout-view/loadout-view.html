@@ -398,6 +398,14 @@
         <!-- Left: Weapons & Missiles (mining/salvage ships show tools first) -->
         <div class="hardpoints-scroll col-weapons">
 
+          @if (bulkEquipSizes().length) {
+            <div class="bulk-equip-bar">
+              <span class="bulk-equip-line"></span>
+              <button class="bulk-equip-btn" (click)="openBulkEquip()">BULK EQUIP</button>
+              <span class="bulk-equip-line"></span>
+            </div>
+          }
+
           @if (!pilotGunSlots().length && !crewGunSlots().length && !missileSlots().length && !miningSlots().length) {
             <div class="no-hardpoints">No Equippable Hardpoints</div>
           }
@@ -719,6 +727,40 @@
             </tr>
           }
         </table>
+      </div>
+    </div>
+  }
+
+  <!-- Bulk Equip Modal -->
+  @if (bulkEquipOpen()) {
+    <div class="popout-overlay" (click)="closeBulkEquip()"></div>
+    <div class="bulk-equip-panel">
+      <div class="bulk-header">
+        <span class="bulk-title">Bulk Equip Weapons</span>
+        <span class="popout-close" (click)="closeBulkEquip()">&#x2715;</span>
+      </div>
+      <div class="bulk-controls">
+        <div class="bulk-sizes">
+          @for (sz of bulkEquipSizes(); track sz) {
+            <button class="bulk-size-btn" [class.active]="bulkEquipSize() === sz"
+                    (click)="bulkEquipSize.set(sz); bulkEquipSearch.set('')">S{{ sz }}</button>
+          }
+        </div>
+        <input class="bulk-search" type="text" placeholder="Search weapons..."
+               [value]="bulkEquipSearch()"
+               (input)="bulkEquipSearch.set($any($event.target).value)">
+      </div>
+      <div class="bulk-list">
+        @for (opt of bulkEquipOptions(); track opt.className) {
+          <div class="bulk-option" (click)="applyBulkEquip(opt)">
+            <span class="bulk-opt-name">{{ opt.name }}</span>
+            <span class="bulk-opt-dps">{{ (opt.dps ?? 0).toFixed(0) }} DPS</span>
+            <span class="bulk-opt-type">{{ opt.isBallistic ? 'BALLISTIC' : 'ENERGY' }}</span>
+          </div>
+        }
+        @if (!bulkEquipOptions().length) {
+          <div class="bulk-empty">No weapons found for this size</div>
+        }
       </div>
     </div>
   }

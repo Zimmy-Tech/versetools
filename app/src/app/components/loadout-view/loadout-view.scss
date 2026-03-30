@@ -561,6 +561,7 @@
     &:hover { color: var(--accent); border-color: var(--accent2); }
   }
 
+
   &.excess-label {
     color: var(--text3);
     opacity: 0.7;
@@ -994,4 +995,162 @@
 .cmp-sep {
   color: var(--border2);
   font-size: 10px;
+}
+
+/* ── Bulk Equip Modal ────────────────────────── */
+.bulk-equip-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  max-width: 90%;
+  max-height: 70vh;
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  z-index: 901;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.bulk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 2px solid var(--border);
+  background: var(--bg3);
+}
+
+.bulk-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.bulk-controls {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+
+.bulk-sizes {
+  display: flex;
+  gap: 4px;
+}
+
+.bulk-size-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text3);
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { color: var(--text); border-color: var(--text3); }
+  &.active { color: var(--accent); border-color: var(--accent); background: rgba(74, 255, 122, 0.08); }
+}
+
+.bulk-search {
+  flex: 1;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 5px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  &::placeholder { color: var(--text3); }
+  &:focus { border-color: var(--accent2); }
+}
+
+.bulk-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+}
+
+.bulk-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.1s;
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+}
+
+.bulk-opt-name {
+  flex: 1;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.bulk-opt-dps {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.bulk-opt-type {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+  min-width: 60px;
+  text-align: right;
+}
+
+.bulk-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+}
+
+/* ── Bulk Equip Bar ──────────────────────────── */
+.bulk-equip-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.bulk-equip-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.bulk-equip-btn {
+  font-size: 11px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 3px 12px;
+  border: 1px solid var(--accent2);
+  background: rgba(74, 255, 122, 0.06);
+  white-space: nowrap;
+  transition: all 0.15s;
+  &:hover { background: rgba(74, 255, 122, 0.15); border-color: var(--accent); }
 }
