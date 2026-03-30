@@ -403,9 +403,9 @@ PP Idle Base &asymp; 0.6 (varies slightly by power plant)</pre>
             <h3>Research Notes</h3>
             <p>The game files contain <code>maxPowerToCoolantRatio=2.5</code> in
               <code>ItemResourceNetworkGlobal</code>. Third-party tools
-              use this as a demand multiplier, producing much higher cooling percentages
-              (e.g., 137% for a Gladius at default config). In-game testing on that same
-              config shows stable IR and normal operation, disproving the 2.5&times; multiplier.</p>
+              use this as a demand multiplier, in some cases producing much higher cooling
+              percentages. In-game testing shows stable IR and normal operation at configs
+              where the 2.5&times; multiplier would predict overload, disproving its use.</p>
             <p>The corrected supply formula (rate &times; pips &times; bandMod / maxPips) was
               discovered through cooler toggle tests &mdash; at reduced pips, the game applies
               BOTH the band efficiency penalty AND a linear power fraction, not just one.
