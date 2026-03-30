@@ -50,7 +50,7 @@
 
 .sb-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -283,7 +283,7 @@
 }
 
 .rc-time {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 12px;
   color: var(--text3);
   white-space: nowrap;
@@ -304,7 +304,7 @@
   align-items: baseline;
   gap: 6px;
   padding: 2px 8px;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 13px;
   border-left: 2px solid var(--border);
 
@@ -408,7 +408,7 @@
 }
 
 .po-class {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 12px;
   color: var(--text3);
 }
@@ -437,7 +437,7 @@
 }
 
 .po-val {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 15px;
   color: var(--text);
   &.accent { color: var(--accent); }
@@ -512,17 +512,17 @@
 }
 
 .po-mat-name {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 14px;
   color: var(--text);
   flex: 1;
 }
 
 .po-mat-qty {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 14px;
   color: var(--text);
-  font-weight: 700;
+  font-weight: 600;
   flex-shrink: 0;
 }
 
@@ -555,7 +555,7 @@
 }
 
 .qr-name {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 12px;
   color: var(--text2);
   width: 100px;
@@ -594,7 +594,7 @@
 }
 
 .qr-val {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 12px;
   color: var(--accent);
   width: 36px;
@@ -632,13 +632,13 @@
 }
 
 .qr-prop {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 13px;
   color: var(--text);
 }
 
 .qr-combined {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 14px;
   font-weight: 700;
 
@@ -655,7 +655,7 @@
 }
 
 .qr-contrib {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 10px;
   color: var(--text3);
 
@@ -688,7 +688,7 @@
 }
 
 .qty-display {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 15px;
   color: var(--text);
   width: 28px;
@@ -771,7 +771,7 @@
 }
 
 .tally-item-name {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 13px;
   color: var(--text2);
   overflow: hidden;
@@ -828,13 +828,13 @@
 }
 
 .tally-res {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 13px;
   color: var(--text2);
 }
 
 .tally-qty {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 13px;
   color: var(--text);
   font-weight: 700;
@@ -941,7 +941,7 @@
 
 .ms-val {
   color: var(--text);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
   font-size: 12px;
   &.accent { color: var(--accent); }
 }
