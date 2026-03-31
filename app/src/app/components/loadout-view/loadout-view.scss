@@ -465,9 +465,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-right: 4px;
+  padding-right: 10px;
   min-width: 0;
-
 }
 
 .sys-stats {
@@ -571,9 +570,22 @@
 }
 
 .excess-shield {
-  opacity: 0.6;
-  border-left: 2px solid rgba(0, 200, 255, 0.3);
+  border-left: 2px solid rgba(0, 200, 255, 0.15);
   padding-left: 4px;
+
+  ::ng-deep .slot-label { color: var(--border); }
+  ::ng-deep .weapon-trigger {
+    background: var(--bg);
+    border-color: var(--border);
+    border-style: dashed;
+  }
+  ::ng-deep .trigger-name { color: var(--text3); }
+  ::ng-deep .jane-card-slot {
+    border-color: var(--border);
+    border-style: dashed;
+  }
+  ::ng-deep .jane-primary-val { color: var(--text3); }
+  ::ng-deep .jane-spec-v { color: var(--text3); }
 }
 
 .focus-overlay {

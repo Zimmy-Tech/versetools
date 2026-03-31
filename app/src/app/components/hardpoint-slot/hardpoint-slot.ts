@@ -286,8 +286,11 @@ export class HardpointSlotComponent {
   pickerOpen       = signal(false);
   pickerSearch     = signal('');
   pickerSizeFilter = signal<number | null>(null);
-  pickerTop        = signal('0px');
-  pickerLeft       = signal('0px');
+  pickerTop        = signal<string | null>('0px');
+  pickerBottom     = signal<string | null>(null);
+  pickerLeft       = signal<string | null>('0px');
+  pickerRight      = signal<string | null>(null);
+  pickerMaxH       = signal('70vh');
   pickerSortKey    = signal<string>('');
   pickerSortAsc    = signal(true);
 
@@ -561,25 +564,55 @@ export class HardpointSlotComponent {
 
   togglePicker(e: MouseEvent) {
     e.stopPropagation();
+    // Capture scroll positions before toggling to prevent jump
+    const scrollParent = (this.elRef.nativeElement as HTMLElement).closest('.hardpoints-scroll, .col-defense, .col-systems, .col-weapons');
+    const savedScroll = scrollParent?.scrollTop ?? 0;
+
     this.pickerOpen.update(v => !v);
     if (this.pickerOpen()) {
       this.pickerSearch.set('');
       this.pickerSizeFilter.set(null);
-      const trigger = (e.currentTarget as HTMLElement) ?? this.elRef.nativeElement;
+      const trigger = (e.target as HTMLElement)?.closest('.weapon-trigger, .cmp-trigger, .slot-select') as HTMLElement
+                      ?? (e.currentTarget as HTMLElement)
+                      ?? this.elRef.nativeElement;
       const rect = trigger.getBoundingClientRect();
-      const maxH = window.innerHeight * 0.7;
-      const spaceBelow = window.innerHeight - rect.bottom;
-      if (spaceBelow < maxH && rect.top > spaceBelow) {
-        // Open upward
-        this.pickerTop.set(Math.max(4, rect.top - maxH) + 'px');
+      const spaceBelow = window.innerHeight - rect.bottom - 8;
+      const spaceAbove = rect.top - 8;
+      const minUsable = 200;
+
+      if (spaceBelow >= minUsable) {
+        // Open below
+        this.pickerTop.set(rect.bottom + 'px');
+        this.pickerBottom.set(null);
+        this.pickerMaxH.set(spaceBelow + 'px');
+      } else if (spaceAbove > spaceBelow) {
+        // Open above — anchor bottom edge to trigger top
+        this.pickerTop.set(null);
+        this.pickerBottom.set((window.innerHeight - rect.top) + 'px');
+        this.pickerMaxH.set(Math.min(spaceAbove, window.innerHeight * 0.7) + 'px');
       } else {
         this.pickerTop.set(rect.bottom + 'px');
+        this.pickerBottom.set(null);
+        this.pickerMaxH.set(Math.max(150, spaceBelow) + 'px');
       }
-      this.pickerLeft.set(rect.left + 'px');
+      const hpType = this.hardpoint().type;
+      const rightAlignTypes = new Set(['Cooler', 'PowerPlant', 'FlightController', 'QuantumDrive', 'LifeSupportGenerator', 'Radar']);
+      if (rightAlignTypes.has(hpType)) {
+        // Right-align — picker grows leftward
+        this.pickerLeft.set(null);
+        this.pickerRight.set((window.innerWidth - rect.right) + 'px');
+      } else {
+        this.pickerLeft.set(rect.left + 'px');
+        this.pickerRight.set(null);
+      }
       setTimeout(() => {
+        // Restore scroll — the picker DOM insertion can cause auto-scroll
+        if (scrollParent) scrollParent.scrollTop = savedScroll;
         const input = (this.elRef.nativeElement as HTMLElement)
           .querySelector('.picker-search') as HTMLInputElement;
-        input?.focus();
+        input?.focus({ preventScroll: true });
+        // Restore again after focus in case it triggered a scroll
+        if (scrollParent) scrollParent.scrollTop = savedScroll;
       });
     }
   }

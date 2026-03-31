@@ -513,13 +513,6 @@
             }
           }
 
-          @if (ppSlots().length) {
-            <div class="slot-group-label">Power Plant <span class="collapse-btn" (click)="toggleSection('power')">{{ isCollapsed('power') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
-            @for (hp of ppSlots(); track hp.id) {
-              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('power')" />
-            }
-          }
-
           @if (tractorSlots().length) {
             <div class="slot-group-label">Tractor Beam <span class="collapse-btn" (click)="toggleSection('tractor')">{{ isCollapsed('tractor') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of tractorSlots(); track hp.id) {
@@ -638,6 +631,20 @@
             }
           }
 
+          @if (ppSlots().length) {
+            <div class="slot-group-label">Power Plant <span class="collapse-btn" (click)="toggleSection('power')">{{ isCollapsed('power') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of ppSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('power')" />
+            }
+          }
+
+          @if (radarSlots().length) {
+            <div class="slot-group-label">Radar <span class="collapse-btn" (click)="toggleSection('radar')">{{ isCollapsed('radar') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of radarSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('radar')" />
+            }
+          }
+
           @if (bladeSlots().length) {
             <div class="slot-group-label">Flight Controller <span class="collapse-btn" (click)="toggleSection('blade')">{{ isCollapsed('blade') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of bladeSlots(); track hp.id) {
@@ -667,12 +674,6 @@
             }
           }
 
-          @if (radarSlots().length) {
-            <div class="slot-group-label">Radar <span class="collapse-btn" (click)="toggleSection('radar')">{{ isCollapsed('radar') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
-            @for (hp of radarSlots(); track hp.id) {
-              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('radar')" />
-            }
-          }
 
           @if (lsSlots().length) {
             <div class="slot-group-label">Life Support <span class="collapse-btn" (click)="toggleSection('ls')">{{ isCollapsed('ls') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>

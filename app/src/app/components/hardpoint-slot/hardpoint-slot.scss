@@ -3,6 +3,7 @@
   flex-direction: column;
   background: transparent;
   transition: border-color 0.15s;
+  overflow-anchor: none;
 }
 
 .slot-label {

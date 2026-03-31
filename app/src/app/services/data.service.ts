@@ -674,6 +674,10 @@ export class DataService {
     'krig_ballisticgatling_s2',        // Tigerstrike T-19P (Merlin-only)
     'rpod_s2_fski_6x_s3',             // Yebira II (ship-locked rocket pod)
     'behr_ballisticgatling_hornet_bespoke', // TMSB-5 Gatling (Hornet ball turret only)
+    // Cyclone vehicle-locked racks
+    'mrck_s03_tmbl_dual_s02_cyclone_mt_left',  // Cyclone MT left rack
+    'mrck_s03_tmbl_dual_s02_cyclone_mt_right', // Cyclone MT right rack
+    'mrck_s02_behr_single_s02_cyclone_aa',     // Cyclone AA rack
     // Internal/turret variants (duplicates with reduced stats)
     'hrst_laserrepeater_s4_turret',    // Attrition-4 turret variant
     'klwe_laserrepeater_s5_turret',    // CF-557 turret variant
