@@ -39,16 +39,16 @@ jobs:
           TITLE=$(printf '%s' "$TITLE" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read())[1:-1])')
           DESCRIPTION=$(printf '%s' "$DESCRIPTION" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read())[1:-1])')
 
-          PAYLOAD=$(python3 -c "
-          import json, datetime
+          PAYLOAD=$(TITLE="$TITLE" DESCRIPTION="$DESCRIPTION" python3 -c "
+          import json, datetime, os
           embed = {
-              'title': '$TITLE',
+              'title': os.environ['TITLE'],
               'url': 'https://zimmy-tech.github.io/versetools/',
               'color': 5814783,
               'footer': {'text': 'VerseTools'},
               'timestamp': datetime.datetime.utcnow().isoformat() + 'Z'
           }
-          desc = '$DESCRIPTION'
+          desc = os.environ['DESCRIPTION']
           if desc:
               embed['description'] = desc
           print(json.dumps({'embeds': [embed]}))
