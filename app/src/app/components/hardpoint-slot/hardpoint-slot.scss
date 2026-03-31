@@ -8,7 +8,7 @@
 
 .slot-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -24,7 +24,7 @@
 }
 
 .slot-size-tag {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--border2);
   font-family: 'Rajdhani', sans-serif;
   font-weight: 700;
@@ -33,7 +33,7 @@
 /* ── Non-weapon slots: 3-col grid ─────────────────── */
 .slot-fixed {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text2);
   padding: 8px 10px;
   background: var(--bg2);
@@ -45,7 +45,7 @@
 
 .fixed-badge {
   color: var(--text3);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   font-family: 'Rajdhani', sans-serif;
   font-weight: 700;
@@ -54,14 +54,14 @@
 .ls-stat {
   margin-left: auto;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text);
   white-space: nowrap;
 }
 
 .ls-stat-label {
   color: var(--text3);
-  font-size: 11px;
+  font-size: 13px;
   font-family: 'Rajdhani', sans-serif;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -79,7 +79,7 @@
   color: var(--text);
   padding: 8px 10px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   width: 100%;
   outline: none;
   cursor: pointer;
@@ -90,7 +90,7 @@
 
 .slot-stat {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text3);
   padding: 8px 10px;
   text-align: right;
@@ -145,7 +145,7 @@
 .trigger-name {
   flex: 1;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -154,23 +154,32 @@
 
 .trigger-stat {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--accent);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .trigger-arrow {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text3);
   flex-shrink: 0;
+}
+
+.trigger-stat-muted {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .pwr-btn {
   background: none;
   border: 1px solid var(--border);
   color: var(--accent);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1;
   padding: 1px 5px;
   cursor: pointer;
@@ -212,7 +221,7 @@
   color: var(--text);
   padding: 6px 12px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   outline: none;
   box-sizing: border-box;
 
@@ -234,7 +243,7 @@
   border: 1px solid var(--border);
   color: var(--text2);
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
   padding: 2px 8px;
@@ -274,7 +283,7 @@
 
 .is-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -285,7 +294,7 @@
 
 .is-val {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text2);
   text-align: right;
   width: 10ch;
@@ -318,7 +327,7 @@
 }
 .pwr-restricted {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -327,7 +336,7 @@
 }
 .pwr-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--text3);
@@ -343,7 +352,7 @@
   height: 16px;
   border-radius: 2px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -370,7 +379,7 @@
 }
 .pwr-pct {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--accent);
   min-width: 32px;
   text-align: right;
@@ -384,7 +393,7 @@
   min-width: 100%;
   border-collapse: collapse;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
 
   thead {
     position: sticky;
@@ -397,7 +406,7 @@
     padding: 4px 8px;
     color: var(--text3);
     font-family: 'Rajdhani', sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -467,7 +476,7 @@
     align-items: center;
     padding: 0 8px;
     color: var(--text3);
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .focus-btn {
@@ -493,7 +502,7 @@
   background: var(--bg3);
   border-right: 2px solid var(--accent2);
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 1px;
@@ -508,7 +517,7 @@
 .cmp-trigger .cmp-name,
 .cmp-card-slot .cmp-name {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 2px;
@@ -517,7 +526,7 @@
 .cmp-trigger .cmp-count,
 .cmp-card-slot .cmp-count {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--accent);
   margin-left: 4px;
@@ -525,7 +534,7 @@
 
 .cmp-trigger .cmp-type,
 .cmp-card-slot .cmp-type {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--accent2);
@@ -539,14 +548,14 @@
   justify-content: flex-end;
   gap: 2px 12px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text2);
 }
 
 .cmp-trigger .cmp-sep,
 .cmp-card-slot .cmp-sep {
   color: var(--accent2);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .cmp-trigger .cmp-kv.warn,
@@ -560,7 +569,7 @@
 .cmp-card-slot .cmp-kv em {
   font-style: normal;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--text3);
@@ -570,7 +579,7 @@
 .cmp-trigger .cmp-sep,
 .cmp-card-slot .cmp-sep {
   color: var(--border2);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 /* ── Jane's Spec Card (component detail display) ──── */
@@ -586,7 +595,7 @@
   gap: 12px;
   padding: 2px 10px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text3);
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -610,7 +619,7 @@
 
 .jane-card-slot .jane-primary-val {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
@@ -618,7 +627,7 @@
 
 .jane-card-slot .jane-primary-unit {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text3);
   letter-spacing: 1px;
 }
@@ -644,7 +653,7 @@
 
 .jane-card-slot .jane-spec-k {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -653,7 +662,7 @@
 
 .jane-card-slot .jane-spec-v {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text);
 
   &.warn { color: #ff6b6b; }
@@ -669,7 +678,7 @@
 }
 
 .shop-icon {
-  font-size: 14px;
+  font-size: 16px;
   color: #ff4444;
   &.yes { color: #4aff7a; }
 }

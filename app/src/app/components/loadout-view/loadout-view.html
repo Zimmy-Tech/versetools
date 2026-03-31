@@ -507,7 +507,7 @@
               <div class="slot-group-label excess-label">Excess Shields <span>(HP pool only)</span></div>
               @for (hp of excessShieldSlots(); track hp.id) {
                 <div class="excess-shield">
-                  <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('shields')" />
+                  <app-hardpoint-slot [hardpoint]="hp" [collapsed]="true" />
                 </div>
               }
             }

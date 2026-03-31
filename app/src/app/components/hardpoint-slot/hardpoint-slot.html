@@ -119,6 +119,9 @@
     <div class="weapon-trigger" (click)="togglePicker($event)">
       @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
       <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      @if (collapsed() && currentItem()?.hp) {
+        <span class="trigger-stat-muted">{{ currentItem()!.hp!.toLocaleString() }} HP</span>
+      }
       <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
     </div>
 
