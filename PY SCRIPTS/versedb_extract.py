@@ -3397,6 +3397,7 @@ def enrich_from_dcb(items, dcb_path, loc):
 
     # ── Build DamageInfo lookup ───────────────────────────────────────────────
     pdt_si = si("ProjectileDetonationParams")
+    ep_si = si("ExplosionParams")
 
     def get_damage(bpp_idx):
         if bpp_si not in sd: return None
@@ -3430,6 +3431,29 @@ def enrich_from_dcb(items, dcb_path, loc):
             "minRadius": round(struct.unpack_from("<f", d, pinst + 20)[0], 2),
             "maxRadius": round(struct.unpack_from("<f", d, pinst + 24)[0], 2),
         }
+
+    def get_explosion_damage(bpp_idx):
+        """Read explosion damage for distortion weapons.
+        The explosion DamageInfo is consistently at bullet_DI_index - 1."""
+        if bpp_si not in sd or di_si not in sd: return None
+        b_off, b_cnt = sd[bpp_si]
+        b_rs = sdefs[bpp_si][4]
+        if bpp_idx >= b_cnt: return None
+        inst = b_off + bpp_idx * b_rs
+        # Bullet DamageInfo pointer at bytes 16-23
+        ptr_si2 = u32at(inst + 16); bullet_di = u32at(inst + 20)
+        if ptr_si2 != di_si: return None
+        # Explosion DamageInfo is at index - 1
+        exp_di = bullet_di - 1
+        di_off2, di_cnt2 = sd[di_si]
+        if exp_di < 0 or exp_di >= di_cnt2: return None
+        base = di_off2 + exp_di * 24
+        v = struct.unpack_from("<6f", d, base)
+        total = sum(v)
+        if total > 0.01:
+            return {"physical":round(v[0],4),"energy":round(v[1],4),"distortion":round(v[2],4),
+                    "thermal":round(v[3],4),"biochemical":round(v[4],4),"stun":round(v[5],4)}
+        return None
 
     def get_penetration(bpp_idx):
         """Read penetration distance and radius from BPP instance (offsets +73/+77/+81)."""
@@ -3496,6 +3520,11 @@ def enrich_from_dcb(items, dcb_path, loc):
         dmg = None
         if bpp_idx is not None:
             dmg = get_damage(bpp_idx)
+            # If bullet damage is near-zero, check explosion damage (distortion weapons)
+            if dmg and sum(dmg.values()) < 0.01 and bpp_idx is not None:
+                exp_dmg = get_explosion_damage(bpp_idx)
+                if exp_dmg:
+                    dmg = exp_dmg
         # Fallback to forge XML damageInfo for ballistic/distortion weapons
         if not dmg:
             dmg = forge_ammo_damage.get(key) or forge_ammo_damage.get(key+"_ammo") \
