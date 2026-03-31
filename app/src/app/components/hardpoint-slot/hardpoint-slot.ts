@@ -61,6 +61,10 @@ export class HardpointSlotComponent {
     this.options().some(o => o.type === 'LifeSupportGenerator')
   );
 
+  isMiningLaserSlot = computed(() =>
+    this.options().some(o => o.type === 'WeaponMining')
+  );
+
   isMiningModSlot = computed(() =>
     this.hardpoint().type === 'MiningModifier' ||
     this.options().some(o => o.type === 'MiningModifier')

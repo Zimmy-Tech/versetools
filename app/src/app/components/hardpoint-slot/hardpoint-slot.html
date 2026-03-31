@@ -563,6 +563,56 @@
       </div>
     }
 
+  } @else if (isMiningLaserSlot()) {
+
+    <!-- Mining Laser trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-stat">{{ currentItem()?.miningMaxPower ? (currentItem()!.miningMaxPower ?? 0).toFixed(0) + ' PWR' : '' }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Mining Laser picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search mining lasers..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th class="sortable col-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
+                <th class="sortable" (click)="toggleSort('miningMaxPower')">Power{{ sortIndicator('miningMaxPower') }}</th>
+                <th class="sortable" (click)="toggleSort('throttleMin')">Throttle{{ sortIndicator('throttleMin') }}</th>
+                <th>Grade</th>
+                <th>Class</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="6">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr class="picker-row" [class.active]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>S{{ opt.size }}</td>
+                  <td>{{ opt.miningMaxPower ?? '—' }}</td>
+                  <td>{{ opt.throttleMin ? (opt.throttleMin * 100).toFixed(0) + '%' : '—' }}</td>
+                  <td>{{ opt.grade ?? '—' }}</td>
+                  <td>{{ opt.itemClass ?? '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
   } @else {
     <!-- Simple select for non-weapon slots -->
     <select class="slot-select" (change)="onChange($any($event.target).value)">
