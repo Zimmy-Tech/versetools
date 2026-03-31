@@ -1,0 +1,42 @@
+<div class="sig-view">
+  <div class="sig-header">
+    <div class="sig-title">Mining Signatures</div>
+    <div class="sig-subtitle">Signal strength per rock by mineral type. Columns represent number of rocks at a location.</div>
+    <div class="sig-filters">
+      <button class="filter-btn" [class.active]="rarityFilter() === ''" (click)="rarityFilter.set('')">All</button>
+      @for (r of ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary']; track r) {
+        <button class="filter-btn" [class.active]="rarityFilter() === r"
+                [class]="'filter-btn ' + rarityClass(r)" (click)="rarityFilter.set(r)">{{ r }}</button>
+      }
+    </div>
+    <div class="sig-note">Data sourced from community testing. Values marked — are unconfirmed.</div>
+  </div>
+
+  <div class="sig-table-wrap">
+    <table class="sig-table">
+      <thead>
+        <tr>
+          <th class="col-name">Mineral</th>
+          <th class="col-rarity">Rarity</th>
+          <th class="col-sig">1 Rock</th>
+          <th class="col-sig">2 Rocks</th>
+          <th class="col-sig">3 Rocks</th>
+          <th class="col-sig">4 Rocks</th>
+          <th class="col-sig">5 Rocks</th>
+          <th class="col-sig">6 Rocks</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of filtered(); track m.name) {
+          <tr>
+            <td class="col-name" [class]="rarityClass(m.rarity)">{{ m.name }}</td>
+            <td class="col-rarity" [class]="rarityClass(m.rarity)">{{ m.rarity }}</td>
+            @for (s of m.signals; track $index) {
+              <td class="col-sig">{{ fmt(s) }}</td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -42,7 +42,7 @@
     <!-- Industry Tools dropdown -->
     <div class="nav-group">
       <button class="nav-tab" [class.active]="isIndustryToolActive()"
-              (click)="toggleIndustryTools()">Industry Tools <span class="nav-arrow">{{ industryToolsOpen() ? '▾' : '▸' }}</span></button>
+              (click)="toggleIndustryTools()">Mining/Crafting <span class="nav-arrow">{{ industryToolsOpen() ? '▾' : '▸' }}</span></button>
       @if (industryToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of industryToolsTabs; track tab.id) {

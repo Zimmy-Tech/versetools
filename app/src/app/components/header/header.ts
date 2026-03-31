@@ -2,7 +2,7 @@ import { Component, output, input, signal, computed, HostListener, ElementRef } 
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'submit' | 'formulas' | 'updates' | 'changelog';
+export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
 interface StoredLoadout {
   name: string;
@@ -43,7 +43,8 @@ export class HeaderComponent {
   ];
 
   readonly industryToolsTabs: { id: TabName; label: string }[] = [
-    { id: 'mining', label: 'Mining' },
+    { id: 'mining', label: 'Mining Ore Locations' },
+    { id: 'miningSignatures', label: 'Mining Signatures' },
     { id: 'crafting', label: 'Crafting' },
   ];
 

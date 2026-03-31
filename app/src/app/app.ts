@@ -17,6 +17,7 @@ import { ArmorViewComponent } from './components/armor-view/armor-view';
 import { SubmitViewComponent } from './components/submit-view/submit-view';
 import { FormulasViewComponent } from './components/formulas-view/formulas-view';
 import { MiningViewComponent } from './components/mining-view/mining-view';
+import { MiningSignaturesComponent } from './components/mining-signatures/mining-signatures';
 import { BlueprintFinderComponent } from './components/blueprint-finder/blueprint-finder';
 import { UpdatesViewComponent } from './components/updates-view/updates-view';
 
@@ -38,6 +39,7 @@ import { UpdatesViewComponent } from './components/updates-view/updates-view';
     SubmitViewComponent,
     FormulasViewComponent,
     MiningViewComponent,
+    MiningSignaturesComponent,
     BlueprintFinderComponent,
     UpdatesViewComponent,
   ],
