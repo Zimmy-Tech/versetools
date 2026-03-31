@@ -70,7 +70,8 @@ export class LoadoutViewComponent {
     let opts: Item[];
     if (tab === 'guns') {
       opts = this.data.items().filter(i =>
-        (i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && i.size === size
+        (i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && i.size === size &&
+        (i.dps ?? 0) > 0
       );
     } else {
       opts = this.data.items().filter(i => i.type === 'Missile' && i.size === size);
