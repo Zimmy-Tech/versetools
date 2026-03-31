@@ -60,6 +60,7 @@ header {
     border-color: var(--accent2);
     background: rgba(0, 200, 255, 0.06);
   }
+  &.discord-tab { text-decoration: none; }
 }
 
 /* ── Nav group dropdowns ─────────────────────────── */

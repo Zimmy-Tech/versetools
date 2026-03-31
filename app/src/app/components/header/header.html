@@ -58,6 +58,7 @@
       <button class="nav-tab" [class.active]="activeTab() === tab"
               (click)="tabChange.emit($any(tab))">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : tab === 'updates' ? 'Updates' : 'Changelog' }}</button>
     }
+    <a class="nav-tab discord-tab" href="https://discord.gg/JSreWj6m6t" target="_blank" rel="noopener">Discord</a>
   </nav>
 
   <div class="header-right">
