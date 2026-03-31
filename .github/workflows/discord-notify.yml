@@ -1,0 +1,68 @@
+name: Discord Update Notification
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Post to Discord
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          TITLE=$(git log -1 --pretty=%s)
+
+          # Get body, strip Co-Authored-By and blank lines at end
+          BODY=$(git log -1 --pretty=%b | sed '/^Co-Authored-By:/d' | sed -e :a -e '/^\n*$/{$d;N;ba}')
+
+          # If a custom discord message file exists, use that instead
+          if [ -f ".discord-message" ]; then
+            TITLE=$(head -1 .discord-message)
+            BODY=$(tail -n +2 .discord-message)
+          fi
+
+          # Build description from body lines, prefix with bullet if not already
+          if [ -n "$BODY" ]; then
+            DESCRIPTION=$(echo "$BODY" | while IFS= read -r line; do
+              if [ -n "$line" ]; then
+                case "$line" in
+                  -\ *|*\ *) echo "$line" ;;
+                  *) echo "- $line" ;;
+                esac
+              fi
+            done)
+          else
+            DESCRIPTION=""
+          fi
+
+          # Escape for JSON
+          TITLE=$(printf '%s' "$TITLE" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read())[1:-1])')
+          DESCRIPTION=$(printf '%s' "$DESCRIPTION" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read())[1:-1])')
+
+          PAYLOAD=$(python3 -c "
+          import json, datetime
+          embed = {
+              'title': '$TITLE',
+              'url': 'https://zimmy-tech.github.io/versetools/',
+              'color': 5814783,
+              'footer': {'text': 'VerseTools'},
+              'timestamp': datetime.datetime.utcnow().isoformat() + 'Z'
+          }
+          desc = '$DESCRIPTION'
+          if desc:
+              embed['description'] = desc
+          print(json.dumps({'embeds': [embed]}))
+          ")
+
+          curl -sf -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_URL"
+
+          # Clean up custom message file if it was used
+          if [ -f ".discord-message" ]; then
+            echo "Custom discord message was used"
+          fi

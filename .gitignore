@@ -22,3 +22,6 @@ app/.angular/
 
 # Python venv
 venv/
+
+# Custom Discord notification (used by CI, stays local)
+.discord-message
