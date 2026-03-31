@@ -624,13 +624,6 @@
         <!-- Right: Coolers, QD, Radar, LS -->
         <div class="hardpoints-scroll col-systems">
 
-          @if (coolerSlots().length) {
-            <div class="slot-group-label">Coolers <span class="collapse-btn" (click)="toggleSection('coolers')">{{ isCollapsed('coolers') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
-            @for (hp of coolerSlots(); track hp.id) {
-              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('coolers')" />
-            }
-          }
-
           @if (ppSlots().length) {
             <div class="slot-group-label">Power Plant <span class="collapse-btn" (click)="toggleSection('power')">{{ isCollapsed('power') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of ppSlots(); track hp.id) {
@@ -645,10 +638,17 @@
             }
           }
 
-          @if (bladeSlots().length) {
-            <div class="slot-group-label">Flight Controller <span class="collapse-btn" (click)="toggleSection('blade')">{{ isCollapsed('blade') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
-            @for (hp of bladeSlots(); track hp.id) {
-              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('blade')" />
+          @if (qdSlots().length) {
+            <div class="slot-group-label">Quantum Drive <span class="collapse-btn" (click)="toggleSection('qd')">{{ isCollapsed('qd') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of qdSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
+            }
+          }
+
+          @if (coolerSlots().length) {
+            <div class="slot-group-label">Coolers <span class="collapse-btn" (click)="toggleSection('coolers')">{{ isCollapsed('coolers') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of coolerSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('coolers')" />
             }
           }
 
@@ -667,13 +667,12 @@
             }
           }
 
-          @if (qdSlots().length) {
-            <div class="slot-group-label">Quantum Drive <span class="collapse-btn" (click)="toggleSection('qd')">{{ isCollapsed('qd') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
-            @for (hp of qdSlots(); track hp.id) {
-              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
+          @if (bladeSlots().length) {
+            <div class="slot-group-label">Flight Controller <span class="collapse-btn" (click)="toggleSection('blade')">{{ isCollapsed('blade') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of bladeSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('blade')" />
             }
           }
-
 
           @if (lsSlots().length) {
             <div class="slot-group-label">Life Support <span class="collapse-btn" (click)="toggleSection('ls')">{{ isCollapsed('ls') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
