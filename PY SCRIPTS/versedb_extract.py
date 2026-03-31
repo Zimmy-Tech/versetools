@@ -3598,6 +3598,31 @@ def enrich_from_dcb(items, dcb_path, loc):
                     for el in root.iter("SWeaponActionFireSingleParams"):
                         rpm = safe_float(el.get("fireRate", 0))
                         if rpm > 0: break
+                # Pattern 4: charged fire action (tachyon/singe cannons, mass drivers)
+                # Total cycle = chargeTime + cooldownTime + innerFireDelay
+                # Inner fire rate is per-weapon, stored in DCB struct (not in forge XML).
+                # Validated against SPViewer:
+                #   Singe S1-S3: inner=89  → S2=24.8, S3=18.9 RPM
+                #   KLWE Sledge S1-S3: inner=30  → S2=17.1, S3=13.3 RPM
+                #   APAR Strife S2: inner=60  → 17.1 RPM
+                CHARGED_INNER_RATES = {
+                    "tachyoncannon": 89.0,   # Singe (Banu)
+                    "klwe_massdriver": 30.0,  # Sledge (Klaus & Werner)
+                    "apar_massdriver": 60.0,  # Strife (Apocalypse Arms)
+                }
+                if rpm == 0:
+                    for el in root.iter("SWeaponActionFireChargedParams"):
+                        charge = safe_float(el.get("chargeTime", 0))
+                        cooldown = safe_float(el.get("cooldownTime", 0))
+                        if charge > 0:
+                            inner = 89.0  # default
+                            for prefix, rate in CHARGED_INNER_RATES.items():
+                                if prefix in class_name.lower():
+                                    inner = rate
+                                    break
+                            cycle = charge + cooldown + 60.0 / inner
+                            rpm = round(60.0 / cycle, 1)
+                            break
                 if rpm > 0:
                     item["fireRate"] = round(rpm, 1)
                     alpha = item.get("alphaDamage", 0)

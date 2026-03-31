@@ -186,7 +186,7 @@ export class LoadoutViewComponent {
   }
 
   collapsedSections = signal<Set<string>>(new Set([
-    'pilot-guns', 'crew-guns', 'missiles', 'mining', 'power', 'pdc', 'tractor', 'coolers', 'modules',
+    'pilot-guns', 'crew-guns', 'missiles', 'mining', 'power', 'pdc', 'tractor', 'coolers', 'modules', 'ls',
   ]));
 
   isCollapsed(section: string): boolean {
