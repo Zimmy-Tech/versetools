@@ -1978,10 +1978,9 @@ def extract_mining_locations(forge_dir, dcb_path):
         "hpp_stanton4": "microTech", "hpp_stanton4a": "Euterpe",
         "hpp_stanton4b": "Lyria", "hpp_stanton4c": "Wala",
         "hpp_aaronhalo": "Aaron Halo",
-        "hpp_lagrange_a": "Lagrange HUR-L1", "hpp_lagrange_b": "Lagrange HUR-L2",
-        "hpp_lagrange_c": "Lagrange CRU-L1", "hpp_lagrange_d": "Lagrange CRU-L5",
-        "hpp_lagrange_e": "Lagrange ARC-L1", "hpp_lagrange_f": "Lagrange MIC-L1",
-        "hpp_lagrange_g": "Lagrange MIC-L2", "hpp_lagrange_occupied": "Lagrange (Occupied)",
+        # Lagrange presets are shared profiles mapped to multiple points.
+        # Mapping validated against community mining data.
+        "hpp_lagrange_occupied": "Lagrange (Occupied)",
         "hpp_pyro1": "Pyro I", "hpp_pyro2": "Pyro II", "hpp_pyro3": "Pyro III",
         "hpp_pyro4": "Pyro IV", "hpp_pyro5a": "Pyro Va", "hpp_pyro5b": "Pyro Vb",
         "hpp_pyro5c": "Pyro Vc", "hpp_pyro5d": "Pyro Vd", "hpp_pyro5e": "Pyro Ve",
@@ -2099,6 +2098,33 @@ def extract_mining_locations(forge_dir, dcb_path):
                 "system": system,
                 "mining": mining,
             })
+
+    # Expand Lagrange presets into individual points.
+    # Each preset is a shared mineral profile used by multiple Lagrange points.
+    LAGRANGE_EXPANSION = {
+        "hpp_lagrange_a": ["HUR-L1", "HUR-L4"],
+        "hpp_lagrange_b": ["ARC-L5", "CRU-L4", "MIC-L3"],
+        "hpp_lagrange_c": ["HUR-L5", "MIC-L1", "MIC-L5"],
+        "hpp_lagrange_d": ["ARC-L3", "CRU-L5", "MIC-L4"],
+        "hpp_lagrange_e": ["CRU-L1", "HUR-L3"],
+        "hpp_lagrange_f": ["ARC-L1", "ARC-L2", "ARC-L4", "HUR-L2"],
+        "hpp_lagrange_g": ["CRU-L2", "CRU-L3"],
+        "hpp_lagrange_occupied": ["MIC-L2"],
+    }
+    expanded = []
+    for loc in results:
+        points = LAGRANGE_EXPANSION.get(loc["id"])
+        if points:
+            for pt in points:
+                expanded.append({
+                    "id": f"lagrange_{pt.lower().replace('-', '')}",
+                    "location": pt,
+                    "system": "Stanton",
+                    "mining": loc["mining"],
+                })
+        else:
+            expanded.append(loc)
+    results = expanded
 
     # Attach element stats to each mineral entry
     for loc in results:
