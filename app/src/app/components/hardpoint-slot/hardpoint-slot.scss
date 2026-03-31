@@ -660,3 +660,15 @@
   &.enrg { color: #e8c44a; }
   &.dist { color: #a78bfa; }
 }
+
+/* ── Shop availability indicator ──── */
+.col-shop {
+  width: 36px;
+  text-align: center;
+}
+
+.shop-icon {
+  font-size: 14px;
+  color: #ff4444;
+  &.yes { color: #4aff7a; }
+}

@@ -79,6 +79,7 @@
                 <th class="sortable" (click)="toggleSort('emSignature')">EM{{ sortIndicator('emSignature') }}</th>
                 <th>Overheat</th>
                 <th class="sortable" (click)="toggleSort('componentHp')">HP{{ sortIndicator('componentHp') }}</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -104,6 +105,7 @@
                   <td>{{ fmt(opt.emSignature) }}</td>
                   <td>—</td>
                   <td>{{ fmt(opt.componentHp) }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -147,6 +149,7 @@
                 <th>Max Pwr</th>
                 <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
                 <th>Health</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -170,6 +173,7 @@
                   <td>—</td>
                   <td>{{ fmt(opt.emMax) }}</td>
                   <td>{{ fmt(opt.componentHp) }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -223,6 +227,7 @@
                 <th class="sortable" (click)="toggleSort('lockRangeMin')">Lock Min Dst{{ sortIndicator('lockRangeMin') }}</th>
                 <th class="sortable" (click)="toggleSort('lockRangeMax')">Lock Max Dst{{ sortIndicator('lockRangeMax') }}</th>
                 <th>Health</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -245,6 +250,7 @@
                   <td>{{ fmt(opt.lockRangeMin) }}m</td>
                   <td>{{ fmt(opt.lockRangeMax) }}m</td>
                   <td>—</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -284,6 +290,7 @@
                 <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
                 <th class="sortable" (click)="toggleSort('irSignature')">IR Max{{ sortIndicator('irSignature') }}</th>
                 <th class="sortable" (click)="toggleSort('componentHp')">Health{{ sortIndicator('componentHp') }}</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -303,6 +310,7 @@
                   <td>{{ fmt(opt.emMax) }}</td>
                   <td>{{ fmt(opt.irSignature) }}</td>
                   <td>{{ fmt(opt.componentHp) }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -344,6 +352,7 @@
                 <th>Power</th>
                 <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
                 <th class="sortable" (click)="toggleSort('hp')">Health{{ sortIndicator('hp') }}</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -365,6 +374,7 @@
                   <td>—</td>
                   <td>{{ fmt(opt.emMax) }}</td>
                   <td>{{ fmt(opt.hp) }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -405,6 +415,7 @@
                 <th class="sortable" (click)="toggleSort('emMax')">EM/Seg{{ sortIndicator('emMax') }}</th>
                 <th>EM Decay</th>
                 <th class="sortable" (click)="toggleSort('componentHp')">Health{{ sortIndicator('componentHp') }}</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -425,6 +436,7 @@
                   <td>{{ fmt(opt.emMax) }}</td>
                   <td>{{ fmt(opt.emDecayRate, 2) }}</td>
                   <td>{{ fmt(opt.componentHp) }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -469,6 +481,7 @@
                 <th class="sortable" (click)="toggleSort('powerDraw')">Max Pwr{{ sortIndicator('powerDraw') }}</th>
                 <th class="sortable" (click)="toggleSort('emMax')">EM Max{{ sortIndicator('emMax') }}</th>
                 <th class="sortable" (click)="toggleSort('componentHp')">Health{{ sortIndicator('componentHp') }}</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -493,6 +506,7 @@
                   <td>{{ fmt(opt.powerDraw) }}</td>
                   <td>{{ fmt(opt.emMax) }}</td>
                   <td>{{ fmt(opt.componentHp) }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -535,6 +549,7 @@
                 <th>Inert</th>
                 <th>Overchg</th>
                 <th>Power</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -555,6 +570,56 @@
                   <td>{{ fmtMod(opt.miningInertMaterials) }}</td>
                   <td>{{ fmtMod(opt.miningOvercharge) }}</td>
                   <td>{{ opt.miningPowerMult ? ((opt.miningPowerMult - 1) * 100 > 0 ? '+' : '') + ((opt.miningPowerMult - 1) * 100).toFixed(0) + '%' : '—' }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isBladeSlot()) {
+
+    <!-- Flight Controller (Blade) trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-stat">{{ currentItem()?.scmSpeed ? currentItem()!.scmSpeed!.toFixed(0) + ' m/s' : '' }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Flight Controller picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.left]="pickerLeft()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search blades..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th class="sortable col-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('scmSpeed')">SCM{{ sortIndicator('scmSpeed') }}</th>
+                <th class="sortable" (click)="toggleSort('navSpeed')">NAV{{ sortIndicator('navSpeed') }}</th>
+                <th class="sortable" (click)="toggleSort('pitch')">Pitch{{ sortIndicator('pitch') }}</th>
+                <th class="sortable" (click)="toggleSort('yaw')">Yaw{{ sortIndicator('yaw') }}</th>
+                <th class="sortable" (click)="toggleSort('roll')">Roll{{ sortIndicator('roll') }}</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr class="picker-row" [class.active]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.scmSpeed?.toFixed(0) ?? '—' }}</td>
+                  <td>{{ opt.navSpeed?.toFixed(0) ?? '—' }}</td>
+                  <td>{{ opt.pitch?.toFixed(0) ?? '—' }}°/s</td>
+                  <td>{{ opt.yaw?.toFixed(0) ?? '—' }}°/s</td>
+                  <td>{{ opt.roll?.toFixed(0) ?? '—' }}°/s</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>
@@ -590,6 +655,7 @@
                 <th class="sortable" (click)="toggleSort('throttleMin')">Throttle{{ sortIndicator('throttleMin') }}</th>
                 <th>Grade</th>
                 <th>Class</th>
+              <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
@@ -605,6 +671,7 @@
                   <td>{{ opt.throttleMin ? (opt.throttleMin * 100).toFixed(0) + '%' : '—' }}</td>
                   <td>{{ opt.grade ?? '—' }}</td>
                   <td>{{ opt.itemClass ?? '—' }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }
             </tbody>

@@ -857,7 +857,7 @@ def parse_weapon_item(root, class_name, loc):
     throttle_min = safe_float(m_tmin.group(1)) if m_tmin else None
     # DamageInfo refs — used to read max power from DCB
     dps_refs = re.findall(r'damagePerSecond="DamageInfo\[([0-9A-Fa-f]+)\]"', txt)
-    mining_dps_ref = dps_refs[-1] if dps_refs else None  # last ref = max power mode
+    mining_dps_ref = dps_refs[0] if dps_refs else None  # first ref = fracture beam (mining power)
 
     return {
         "className":      class_name,
@@ -1313,14 +1313,13 @@ def parse_miningarm_item(root, class_name, loc):
         charges = re.search(r'charges="(\d+)"', txt)
         if charges:
             result["charges"] = int(charges.group(1))
-        # Active modules: extract damageMultiplier (power boost) from first showInUI=1 phase
-        if "active" in class_name.lower():
-            dms = [(float(m.group(1)), m.start()) for m in re.finditer(r'damageMultiplier="([^"]+)"', txt) if float(m.group(1)) != 1.0]
-            for dm_val, pos in dms:
-                ctx = txt[max(0, pos - 300):pos]
-                if 'showInUI="1"' in ctx:
-                    result["miningPowerMult"] = round(dm_val, 2)
-                    break
+        # Extract damageMultiplier (power boost) from first showInUI=1 phase
+        dms = [(float(m.group(1)), m.start()) for m in re.finditer(r'damageMultiplier="([^"]+)"', txt) if float(m.group(1)) != 1.0]
+        for dm_val, pos in dms:
+            ctx = txt[max(0, pos - 300):pos]
+            if 'showInUI="1"' in ctx:
+                result["miningPowerMult"] = round(dm_val, 2)
+                break
     # Salvage modifier stats (scraper/tractor tools)
     if item_type == "SalvageModifier":
         txt = ET.tostring(root, encoding='unicode')

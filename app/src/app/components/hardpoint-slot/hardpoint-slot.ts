@@ -65,6 +65,10 @@ export class HardpointSlotComponent {
     this.options().some(o => o.type === 'WeaponMining')
   );
 
+  isBladeSlot = computed(() =>
+    this.options().some(o => o.type === 'FlightController')
+  );
+
   isMiningModSlot = computed(() =>
     this.hardpoint().type === 'MiningModifier' ||
     this.options().some(o => o.type === 'MiningModifier')
@@ -152,6 +156,8 @@ export class HardpointSlotComponent {
       }
       case 'WeaponMining':
         return { classCode: 'MNG-' + (item.size ?? '?'), primaryVal: (item.miningMaxPower ?? 0).toFixed(0), primaryUnit: 'PWR', meta };
+      case 'MiningModifier':
+        return { classCode: 'MOD-' + (item.size ?? '?'), primaryVal: item.subType === 'Active' ? 'ACTIVE' : 'PASSIVE', primaryUnit: item.charges ? item.charges + ' CHG' : '', meta };
       case 'SalvageHead':
         return { classCode: 'SLV-' + (item.size ?? '?'), primaryVal: 'S' + (item.size ?? '?'), primaryUnit: 'HEAD', meta };
       case 'SalvageModifier': {
@@ -559,7 +565,8 @@ export class HardpointSlotComponent {
     if (this.pickerOpen()) {
       this.pickerSearch.set('');
       this.pickerSizeFilter.set(null);
-      const rect = (this.elRef.nativeElement as HTMLElement).getBoundingClientRect();
+      const trigger = (e.currentTarget as HTMLElement) ?? this.elRef.nativeElement;
+      const rect = trigger.getBoundingClientRect();
       const maxH = window.innerHeight * 0.7;
       const spaceBelow = window.innerHeight - rect.bottom;
       if (spaceBelow < maxH && rect.top > spaceBelow) {

@@ -670,6 +670,10 @@ export class DataService {
     'rpod_s1_thcn_4x_s2',         // Liberator
     'rpod_s2_thcn_8x_s2',         // Liberator Prime
     'rpod_s3_thcn_12x_s2',        // Liberator Ultra
+    // Ship-locked weapons
+    'krig_ballisticgatling_s2',        // Tigerstrike T-19P (Merlin-only)
+    'rpod_s2_fski_6x_s3',             // Yebira II (ship-locked rocket pod)
+    'behr_ballisticgatling_hornet_bespoke', // TMSB-5 Gatling (Hornet ball turret only)
     // Internal/turret variants (duplicates with reduced stats)
     'hrst_laserrepeater_s4_turret',    // Attrition-4 turret variant
     'klwe_laserrepeater_s5_turret',    // CF-557 turret variant
@@ -832,6 +836,7 @@ export class DataService {
 
     for (const [slotId, item] of Object.entries(loadout)) {
       if (!this.PURCHASABLE_TYPES.has(item.type)) continue;
+      if (!item.shopPrices?.length) continue;  // not purchasable in-game
       const defaultCls = defaults[slotId.toLowerCase()];
       if (defaultCls && item.className.toLowerCase() === defaultCls.toLowerCase()) continue;
       // Non-stock item — add to cart

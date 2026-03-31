@@ -27,6 +27,10 @@ SHOP_RENAMES = {
     "New Deal Crusader": "New Deal Orison",
 }
 
+def normalize_name(name):
+    """Normalize quotes and whitespace for matching."""
+    return name.replace("\u201c", '"').replace("\u201d", '"').replace("\u2018", "'").replace("\u2019", "'").strip().lower()
+
 
 def fetch_json(url):
     try:
@@ -68,7 +72,7 @@ def main():
                 continue
             shop = entry.get("terminal_name", "")
             shop = SHOP_RENAMES.get(shop, shop)
-            uex_ships.setdefault(name.lower(), []).append({
+            uex_ships.setdefault(normalize_name(name), []).append({
                 "price": entry["price_buy"],
                 "shop": shop,
             })
@@ -77,10 +81,10 @@ def main():
         for ship in ships:
             ship.pop("shopPrices", None)  # clear old prices
             ship_name = ship.get("name", "").strip()
-            entries = uex_ships.get(ship_name.lower())
+            entries = uex_ships.get(normalize_name(ship_name))
             if not entries:
                 short = ship_name.split(" ", 1)[-1] if " " in ship_name else ship_name
-                entries = uex_ships.get(short.lower())
+                entries = uex_ships.get(normalize_name(short))
             if entries:
                 ship["shopPrices"] = entries
                 matched += 1
@@ -99,7 +103,7 @@ def main():
                 continue
             shop = entry.get("terminal_name", "")
             shop = SHOP_RENAMES.get(shop, shop)
-            uex_items.setdefault(name.lower(), []).append({
+            uex_items.setdefault(normalize_name(name), []).append({
                 "price": entry["price_buy"],
                 "shop": shop,
             })
@@ -108,11 +112,11 @@ def main():
         for item in items:
             item.pop("shopPrices", None)  # clear old prices
             item_name = item.get("name", "").strip()
-            entries = uex_items.get(item_name.lower())
+            entries = uex_items.get(normalize_name(item_name))
             if not entries:
                 sub = item.get("subType", "")
                 if sub:
-                    entries = uex_items.get(f"{item_name} {sub}".lower())
+                    entries = uex_items.get(normalize_name(f"{item_name} {sub}"))
             if entries:
                 item["shopPrices"] = entries
                 matched += 1
