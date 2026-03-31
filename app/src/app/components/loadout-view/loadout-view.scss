@@ -66,6 +66,7 @@
   flex: 1;
   min-width: 0;
   overflow: auto;
+  overflow-anchor: none;
 
   .col-weapons { flex: 3; min-width: 0; }
   .col-defense { flex: 2; min-width: 0; }
@@ -467,6 +468,7 @@
   gap: 6px;
   padding-right: 10px;
   min-width: 0;
+  overflow-anchor: none;
 }
 
 .sys-stats {
