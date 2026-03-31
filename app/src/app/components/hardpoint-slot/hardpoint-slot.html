@@ -696,9 +696,6 @@
     <div class="weapon-trigger" (click)="togglePicker($event)">
       @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
       <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
-      @if (currentItem()?.capacity) {
-        <span class="trigger-stat">{{ currentItem()!.capacity }}× S{{ currentItem()!.missileSize }}</span>
-      }
       <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
     </div>
 
