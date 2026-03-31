@@ -454,7 +454,7 @@ SKIP_TYPES = {
 
 KEEP_TYPES = {
     "WeaponGun", "WeaponTachyon", "WeaponMining", "TractorBeam", "MissileLauncher",
-    "BombLauncher", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler", "LifeSupportGenerator",
+    "BombLauncher", "Bomb", "Turret", "TurretBase", "Shield", "PowerPlant", "Cooler", "LifeSupportGenerator",
     "QuantumDrive", "Radar", "Sensor", "QuantumFuelTank", "MiningModifier", "ToolArm", "UtilityTurret", "SalvageHead", "SalvageModifier",
     "EMP", "QuantumInterdictionGenerator", "Module", "FlightController",
 }
@@ -528,13 +528,13 @@ def parse_vehicle_xml(xml_path, loc):
 
         flags = item_port.get("flags", "")
 
-        # Skip invisible+uneditable (internal systems) — except FlightController
+        # Skip invisible+uneditable (internal systems) — except FlightController and BombLauncher
         if "uneditable" in flags and "invisible" in flags:
             types_el_peek = item_port.find("Types")
-            is_fc = types_el_peek is not None and any(
-                t.get("type") == "FlightController" for t in types_el_peek.findall("Type")
+            is_allowed = types_el_peek is not None and any(
+                t.get("type") in ("FlightController", "BombLauncher") for t in types_el_peek.findall("Type")
             )
-            if not is_fc:
+            if not is_allowed:
                 continue
 
         min_size = safe_int(item_port.get("minSize") or item_port.get("minsize", 0))
@@ -557,6 +557,10 @@ def parse_vehicle_xml(xml_path, loc):
             continue
 
         primary_type = port_types[0]["type"]
+        # Reclassify Misc ports as Turret when the hardpoint name indicates a turret
+        if primary_type == "Misc" and "turret" in part_name.lower():
+            port_types = [{"type": "Turret", "subtypes": ""}]
+            primary_type = "Turret"
         if primary_type not in KEEP_TYPES:
             if not any(pt["type"] in KEEP_TYPES for pt in port_types):
                 continue
@@ -918,8 +922,9 @@ def parse_missile_rack_item(root, class_name, loc):
 
 def parse_missile_projectile_item(root, class_name, loc):
     info = parse_attachdef(root)
-    if not info or info["type"] != "Missile":
+    if not info or info["type"] not in ("Missile", "Bomb"):
         return None
+    is_bomb = info["type"] == "Bomb"
     # Guidance type from Tags (IR, EM, CS)
     tags = info.get("tags", "") or (root.find(".//AttachDef") or root).get("Tags", "")
     guidance = ""
@@ -956,8 +961,8 @@ def parse_missile_projectile_item(root, class_name, loc):
         "className":    class_name,
         "name":         display,
         "manufacturer": mfr_from_classname(class_name),
-        "type":         "Missile",
-        "subType":      guidance,
+        "type":         "Bomb" if is_bomb else "Missile",
+        "subType":      "Bomb" if is_bomb else guidance,
         "size":         info["size"],
         "grade":        info["grade"],
         "projectileSpeed": round(speed, 0),
@@ -1807,6 +1812,7 @@ FOLDER_PARSERS = {
     "radar":             parse_radar_item,
     "quantumdrive":      parse_quantumdrive_item,
     "missile_racks":     parse_missile_rack_item,
+    "bombcompartments":  parse_missile_rack_item,
     "weapons/missiles":  parse_missile_projectile_item,
     "weapon_mounts":     parse_weapon_mount_item,
     "turret":            parse_weapon_mount_item,
@@ -3581,7 +3587,7 @@ def enrich_from_dcb(items, dcb_path, loc):
     if di_si and di_si in sd:
         di_off, di_cnt = sd[di_si]
         for item in items.values():
-            if item.get("type") != "Missile": continue
+            if item.get("type") not in ("Missile", "Bomb"): continue
             idx = item.get("_damageInfoIdx", -1)
             if idx < 0 or idx >= di_cnt: continue
             base = di_off + idx * 24

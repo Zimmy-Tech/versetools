@@ -62,7 +62,7 @@ export class DpsPanelComponent {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
       // gunNacelle = pilot-controlled weapon nacelle (e.g., Constellation nose guns)
       // Note: 'copilotSeat' is crew, 'pilotSeat' is pilot — match exact token, not substring
-      return !!ct && !ct.includes('remote_turret') && ct !== 'pilotseat' && !ct.includes('gunnacelle') && !ct.includes('gunnose');
+      return !!ct && !ct.includes('remote_turret') && !ct.startsWith('pilotseat') && !ct.includes('gunnacelle') && !ct.includes('gunnose');
     }
     return false;
   }
@@ -94,6 +94,7 @@ export class DpsPanelComponent {
   );
 
   missiles = computed(() => this.equippedItems().filter(i => i.type === 'Missile'));
+  bombs = computed(() => this.equippedItems().filter(i => i.type === 'Bomb'));
 
   // Weapons can fire at all only when power > 0 (or there is no power pool).
   private weaponsLive = computed(() => {
@@ -266,6 +267,7 @@ export class DpsPanelComponent {
   });
 
   totalMissileDmg = computed(() => this.missiles().reduce((s, m) => s + (m.alphaDamage ?? 0), 0));
+  totalBombDmg = computed(() => this.bombs().reduce((s, b) => s + (b.alphaDamage ?? 0), 0));
 
   /** Ammo + regen timer at current weapon pips for each energy weapon. */
   pilotWeaponAmmo = computed(() => {

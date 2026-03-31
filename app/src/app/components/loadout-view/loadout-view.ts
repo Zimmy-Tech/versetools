@@ -217,7 +217,7 @@ export class LoadoutViewComponent {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
       // gunNacelle = pilot-controlled weapon nacelle (e.g., Constellation nose guns)
       // Note: 'copilotSeat' is crew, 'pilotSeat' is pilot — match exact token, not substring
-      return !!ct && !ct.includes('remote_turret') && ct !== 'pilotseat' && !ct.includes('gunnacelle') && !ct.includes('gunnose');
+      return !!ct && !ct.includes('remote_turret') && !ct.startsWith('pilotseat') && !ct.includes('gunnacelle') && !ct.includes('gunnose');
     }
     return false;
   }
@@ -234,6 +234,7 @@ export class LoadoutViewComponent {
     const ship = this.data.selectedShip();
     if (!ship) return [];
     const missileHpIds = new Set(this.baseMissileSlots().map(hp => hp.id));
+    const lo = ship.defaultLoadout ?? {};
     return ship.hardpoints.filter(hp => {
       if (hp.type === 'MissileLauncher' || hp.type === 'BombLauncher') return false;
       if (hp.type === 'EMP' || hp.type === 'QuantumInterdictionGenerator') return false;
@@ -242,6 +243,9 @@ export class LoadoutViewComponent {
       if (this.isTractorTurret(hp)) return false;
       if (missileHpIds.has(hp.id)) return false;
       if (hp.controllerTag?.toLowerCase() === 'torpedoseat') return false;
+      if (hp.id.toLowerCase().includes('turret_cap')) return false;
+      // Skip variant-only turrets with no loadout (e.g., A2 turrets on shared M2/C2 XML)
+      if (hp.type === 'Turret' && !lo[hp.id.toLowerCase()]) return false;
       return hp.type === 'WeaponGun' || hp.type === 'Turret' || hp.type === 'TurretBase' ||
         hp.allTypes?.some(t => t.type === 'WeaponGun' || t.type === 'Turret' || t.type === 'TurretBase');
     });
@@ -554,12 +558,13 @@ export class LoadoutViewComponent {
         const missileLeaves = leaves.filter(leaf => {
           const cls = defaultLoadout[leaf];
           const item = items.find(i => i.className.toLowerCase() === cls.toLowerCase());
-          return item?.type === 'Missile';
+          return item?.type === 'Missile' || item?.type === 'Bomb';
         });
         if (!missileLeaves.length) continue;
         // Derive size and capacity from the currently equipped rack, falling back to default loadout
         const equippedRack = (parentItem?.type === 'MissileLauncher' || parentItem?.type === 'BombLauncher')
           ? parentItem : null;
+        const isBombRack = parentItem?.type === 'BombLauncher';
         const slotSize = equippedRack?.missileSize
           ?? items.find(i => i.className.toLowerCase() === (defaultLoadout[missileLeaves[0]] ?? '').toLowerCase())?.size
           ?? hp.maxSize;
@@ -568,8 +573,8 @@ export class LoadoutViewComponent {
         const firstLeaf = activeLeaves[0];
         slots[hp.id] = [{
           id: firstLeaf,
-          label: `Missiles ×${capacity}`,
-          type: 'Missile',
+          label: isBombRack ? `Bombs ×${capacity}` : `Missiles ×${capacity}`,
+          type: isBombRack ? 'Bomb' : 'Missile',
           subtypes: '',
           minSize: slotSize,
           maxSize: slotSize,

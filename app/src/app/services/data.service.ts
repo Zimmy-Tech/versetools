@@ -214,7 +214,7 @@ export class DataService {
           }
         }
         const item = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
-        if (item && (item.type === 'WeaponGun' || item.type === 'Missile' || item.type === 'WeaponMining' || item.type === 'SalvageHead' || item.type === 'SalvageModifier' || item.type === 'TractorBeam')) newLoadout[dotKey] = item;
+        if (item && (item.type === 'WeaponGun' || item.type === 'Missile' || item.type === 'Bomb' || item.type === 'WeaponMining' || item.type === 'SalvageHead' || item.type === 'SalvageModifier' || item.type === 'TractorBeam')) newLoadout[dotKey] = item;
       }
 
       // PDC turrets: replace turret item with the actual weapon directly

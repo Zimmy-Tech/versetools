@@ -37,6 +37,12 @@
             <span class="mono">{{ totalMissileDmg().toFixed(0) }} dmg</span>
           </div>
         }
+        @if (totalBombDmg() > 0) {
+          <div class="stat-row" title="Total damage from all equipped bombs.">
+            <span class="stat-label">Bombs</span>
+            <span class="mono">{{ totalBombDmg().toFixed(0) }} dmg</span>
+          </div>
+        }
         @if (crewBurstDPS() > 0 || crewDPS() > 0) {
           <div class="stat-row" title="All crew turret weapons firing simultaneously at maximum fire rate. Does not account for ammo depletion or overheat.">
             <span class="stat-label">Crew Peak DPS</span>
