@@ -233,12 +233,15 @@ export class LoadoutViewComponent {
   gunSlots = computed(() => {
     const ship = this.data.selectedShip();
     if (!ship) return [];
+    const missileHpIds = new Set(this.baseMissileSlots().map(hp => hp.id));
     return ship.hardpoints.filter(hp => {
       if (hp.type === 'MissileLauncher' || hp.type === 'BombLauncher') return false;
       if (hp.type === 'EMP' || hp.type === 'QuantumInterdictionGenerator') return false;
       if (this.isPdc(hp)) return false;
       if (this.isSalvageTurret(hp)) return false;
       if (this.isTractorTurret(hp)) return false;
+      if (missileHpIds.has(hp.id)) return false;
+      if (hp.controllerTag?.toLowerCase() === 'torpedoseat') return false;
       return hp.type === 'WeaponGun' || hp.type === 'Turret' || hp.type === 'TurretBase' ||
         hp.allTypes?.some(t => t.type === 'WeaponGun' || t.type === 'Turret' || t.type === 'TurretBase');
     });
@@ -811,9 +814,18 @@ export class LoadoutViewComponent {
     const ship = this.data.selectedShip();
     if (!ship) return [];
     const lo = ship.defaultLoadout ?? {};
-    return ship.hardpoints.filter(hp =>
-      (hp.type === 'MissileLauncher' || hp.type === 'BombLauncher') && lo[hp.id.toLowerCase()]
-    );
+    return ship.hardpoints.filter(hp => {
+      if ((hp.type === 'MissileLauncher' || hp.type === 'BombLauncher') && lo[hp.id.toLowerCase()]) return true;
+      // Turret hardpoints whose default item is a missile rack (e.g., Polaris remote turret)
+      if (hp.type === 'Turret') {
+        const cls = lo[hp.id.toLowerCase()];
+        if (cls) {
+          const item = this.data.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
+          if (item?.type === 'MissileLauncher') return true;
+        }
+      }
+      return false;
+    });
   });
   allMissileSlots = computed(() => [
     ...this.baseMissileSlots(),
