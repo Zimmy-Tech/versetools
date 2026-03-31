@@ -48,6 +48,10 @@ export class HardpointSlotComponent {
     this.options().some(o => o.type === 'Missile')
   );
 
+  isMissileRackSlot = computed(() =>
+    this.options().some(o => o.type === 'MissileLauncher')
+  );
+
   isPowerPlantSlot = computed(() =>
     this.options().some(o => o.type === 'PowerPlant')
   );
@@ -76,7 +80,7 @@ export class HardpointSlotComponent {
 
   private readonly HIDE_LABEL_TYPES = new Set([
     'Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar', 'LifeSupportGenerator',
-    'WeaponGun', 'WeaponTachyon', 'TractorBeam',
+    'WeaponGun', 'WeaponTachyon', 'TractorBeam', 'Missile', 'Bomb',
   ]);
   hideLabel = computed(() => this.HIDE_LABEL_TYPES.has(this.hardpoint().type));
 
@@ -222,7 +226,9 @@ export class HardpointSlotComponent {
       if (ammo != null) {
         stats.push({ key: 'AMMO', val: `${ammo} (${displayPips}/${maxPips})` });
       }
-      const regenRPS = item.maxRegenPerSec ?? 15;
+      const sumPower = allWeapons.reduce((s, w) => s + (w.powerDraw ?? 0), 0);
+      const baseRegen = item.maxRegenPerSec ?? 15;
+      const regenRPS = sumPower > 0 ? Math.min(displayPips * baseRegen / sumPower, baseRegen) : baseRegen;
       const regenTime = (item.regenCooldown ?? 0.25) + (ammo ?? 0) / regenRPS;
       stats.push({ key: 'REGEN', val: regenTime.toFixed(1) + 's' });
     }
@@ -426,7 +432,9 @@ export class HardpointSlotComponent {
         const mult = this.data.selectedShip()?.ammoLoadMultiplier ?? 1;
         const ammo = calcWeaponAmmo(item, displayPips, poolSize, allWeapons, mult);
         if (ammo != null) rows.push({ label: 'Ammo', value: `${ammo} (${displayPips}/${maxPips} pips)` });
-        const regenRPS = item.maxRegenPerSec ?? 15;
+        const sumPwr = allWeapons.reduce((s, w) => s + (w.powerDraw ?? 0), 0);
+        const baseRgn = item.maxRegenPerSec ?? 15;
+        const regenRPS = sumPwr > 0 ? Math.min(displayPips * baseRgn / sumPwr, baseRgn) : baseRgn;
         const regenTime = (item.regenCooldown ?? 0.25) + (ammo ?? 0) / regenRPS;
         rows.push({ label: 'Regen', value: regenTime.toFixed(1) + 's' });
       }

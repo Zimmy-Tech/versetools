@@ -31,6 +31,15 @@
         <div class="cmp-info">
           <div class="cmp-name">{{ wc.name }} <span class="cmp-type">{{ wc.dmgType }}</span></div>
         </div>
+        @if (wc.stats.length) {
+          <div class="cmp-stats-right">
+            @for (s of wc.stats; track s.key) {
+              @if (s.key === 'DPS' || s.key === 'AMMO' || s.key === 'REGEN') {
+                <span class="cmp-stat" [class]="s.cls ?? ''"><span class="cmp-stat-k">{{ s.key }}</span> {{ s.val }}</span>
+              }
+            }
+          </div>
+        }
         <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
       </div>
     } @else {
@@ -193,6 +202,15 @@
         <div class="cmp-info">
           <div class="cmp-name">{{ mc.name }} @if (mc.count > 1) { <span class="cmp-count">x{{ mc.count }}</span> } <span class="cmp-type">{{ mc.acqType }}</span></div>
         </div>
+        @if (mc.stats.length) {
+          <div class="cmp-stats-right">
+            @for (s of mc.stats; track s.key) {
+              @if (s.key === 'DMG') {
+                <span class="cmp-stat"><span class="cmp-stat-k">{{ s.key }}</span> {{ s.val }}</span>
+              }
+            }
+          </div>
+        }
         <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
       </div>
     } @else {
@@ -663,6 +681,56 @@
                   <td>{{ opt.throttleMin ? (opt.throttleMin * 100).toFixed(0) + '%' : '—' }}</td>
                   <td>{{ opt.grade ?? '—' }}</td>
                   <td>{{ opt.itemClass ?? '—' }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isMissileRackSlot()) {
+
+    <!-- Missile Rack trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      @if (currentItem()?.capacity) {
+        <span class="trigger-stat">{{ currentItem()!.capacity }}× S{{ currentItem()!.missileSize }}</span>
+      }
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    <!-- Missile Rack picker -->
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search missile racks..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th class="sortable" (click)="toggleSort('size')">Sz{{ sortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('capacity')">Count{{ sortIndicator('capacity') }}</th>
+                <th class="sortable" (click)="toggleSort('missileSize')">Msl Sz{{ sortIndicator('missileSize') }}</th>
+                <th class="col-shop" title="Purchasable in-game">Shop</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="5">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>{{ opt.capacity ?? '—' }}</td>
+                  <td>S{{ opt.missileSize ?? '—' }}</td>
                   <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }

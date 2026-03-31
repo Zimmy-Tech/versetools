@@ -555,21 +555,30 @@ export class LoadoutViewComponent {
       const leaves = childKeys.filter(k => !childKeys.some(k2 => k2.startsWith(k + '.')));
 
       if (isRack) {
-        // Collect all missile leaf keys
+        // Collect all missile leaf keys from default + current loadout
         const missileLeaves = leaves.filter(leaf => {
-          const cls = defaultLoadout[leaf];
+          const cls = defaultLoadout[leaf] ?? currentLoadout[leaf]?.className;
+          if (!cls) return false;
           const item = items.find(i => i.className.toLowerCase() === cls.toLowerCase());
           return item?.type === 'Missile' || item?.type === 'Bomb';
         });
-        if (!missileLeaves.length) continue;
         // Derive size and capacity from the currently equipped rack, falling back to default loadout
         const equippedRack = (parentItem?.type === 'MissileLauncher' || parentItem?.type === 'BombLauncher')
           ? parentItem : null;
         const isBombRack = parentItem?.type === 'BombLauncher';
+        const capacity  = equippedRack?.capacity ?? missileLeaves.length;
+        // If rack capacity exceeds known leaves, generate synthetic attach keys
+        if (capacity > missileLeaves.length) {
+          const basePrefix = hp.id.toLowerCase();
+          for (let n = missileLeaves.length + 1; n <= capacity; n++) {
+            const padded = String(n).padStart(2, '0');
+            missileLeaves.push(`${basePrefix}.missile_${padded}_attach`);
+          }
+        }
+        if (!missileLeaves.length) continue;
         const slotSize = equippedRack?.missileSize
           ?? items.find(i => i.className.toLowerCase() === (defaultLoadout[missileLeaves[0]] ?? '').toLowerCase())?.size
           ?? hp.maxSize;
-        const capacity  = equippedRack?.capacity ?? missileLeaves.length;
         const activeLeaves = missileLeaves.slice(0, capacity);
         const firstLeaf = activeLeaves[0];
         slots[hp.id] = [{

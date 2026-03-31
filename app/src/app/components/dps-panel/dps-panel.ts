@@ -168,7 +168,7 @@ export class DpsPanelComponent {
    *
    * Energy: fire at full rate until ammo exhausted (ammo drains at rps - regenRPS),
    *   then wait regenCooldown, then fire at regen rate for remainder.
-   *   maxRegenPerSec is per-weapon (constant, not pip-dependent).
+   *   regenRate = pips × maxRegenPerSec / sumPower (scales with pip allocation).
    *
    * Ballistic: fire until overheat, cooldown, fire again if time remains.
    */
@@ -209,7 +209,10 @@ export class DpsPanelComponent {
         const ammo = calcWeaponAmmo(w, pips, poolSize, allWeapons, mult);
         if (ammo == null || ammo <= 0) continue;
         // Regen does NOT happen while firing — it's a burst → stop → regen cycle
-        const regenRPS = w.maxRegenPerSec ?? 15;
+        // Regen rate scales with pips, capped at maxRegenPerSec
+        const sumPower = allWeapons.reduce((s, x) => s + (x.powerDraw ?? 0), 0);
+        const baseRegen = w.maxRegenPerSec ?? 15;
+        const regenRPS = sumPower > 0 ? Math.min(pips * baseRegen / sumPower, baseRegen) : baseRegen;
         const regenCooldown = w.regenCooldown ?? 0.25;
         const maxAmmo = w.maxAmmoLoad ?? 75;
 
@@ -279,7 +282,9 @@ export class DpsPanelComponent {
       .filter(w => !w.isBallistic && w.costPerBullet)
       .map(w => {
         const ammo = calcWeaponAmmo(w, pips, poolSize, allWeapons, mult);
-        const regenRPS = w.maxRegenPerSec ?? 15;
+        const sumPower = allWeapons.reduce((s, x) => s + (x.powerDraw ?? 0), 0);
+        const baseRegen = w.maxRegenPerSec ?? 15;
+        const regenRPS = sumPower > 0 ? Math.min(pips * baseRegen / sumPower, baseRegen) : baseRegen;
         const maxAmmo = w.maxAmmoLoad ?? 75;
         const regenTime = (w.regenCooldown ?? 0.25) + maxAmmo / regenRPS;
         return { name: w.name, ammo, regenTime: Math.round(regenTime * 10) / 10 };

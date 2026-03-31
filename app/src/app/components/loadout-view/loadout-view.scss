@@ -516,6 +516,25 @@
   margin: 3px 0;
 }
 
+// De-emphasize parent hardpoint when it has sub-slots beneath it
+app-hardpoint-slot:has(+ .sub-slot-indent) {
+  ::ng-deep .cmp-trigger, ::ng-deep .weapon-trigger, ::ng-deep .slot-select {
+    padding: 3px 10px;
+  }
+  ::ng-deep .cmp-name, ::ng-deep .trigger-name {
+    font-size: 14px;
+    color: var(--text3);
+  }
+  ::ng-deep .cmp-tag {
+    font-size: 12px;
+    padding: 1px 5px;
+  }
+  ::ng-deep .slot-select {
+    font-size: 13px;
+    color: var(--text3);
+  }
+}
+
 .sub-slot-indent {
   padding-left: 18px;
   margin-left: 6px;

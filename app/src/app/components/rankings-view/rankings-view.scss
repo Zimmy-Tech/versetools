@@ -26,14 +26,14 @@
 
 .panel-btn {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text3);
   background: var(--bg3);
   border: 1px solid var(--border2);
-  padding: 6px 16px;
+  padding: 8px 20px;
   cursor: pointer;
   transition: all 0.15s;
 
@@ -52,7 +52,7 @@
 }
 
 .panel-rankings {
-  max-width: 700px;
+  max-width: 900px;
   align-self: center;
   width: 100%;
 }
@@ -74,8 +74,8 @@
 .stats-cards {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 200px;
+  gap: 10px;
+  min-width: 240px;
 }
 
 // ── Legacy column classes (kept for rankings list) ──────
@@ -118,9 +118,9 @@
   background: var(--bg3);
   border: 1px solid var(--border2);
   color: var(--text3);
-  padding: 3px 10px;
+  padding: 4px 12px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
@@ -130,53 +130,53 @@
 }
 
 .boost-toggle {
-  display: flex; align-items: center; gap: 4px;
-  font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; gap: 5px;
+  font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700;
   letter-spacing: 1px; color: var(--text3); cursor: pointer; text-transform: uppercase;
-  input { cursor: pointer; accent-color: var(--accent); width: 13px; height: 13px; }
+  input { cursor: pointer; accent-color: var(--accent); width: 15px; height: 15px; }
   &:has(input:checked) span { color: var(--accent); }
 }
 
 .filter-sep { width: 1px; height: 18px; background: var(--border); margin: 0 2px; }
 
 .filter-label {
-  font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 700;
+  font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700;
   letter-spacing: 1.5px; color: var(--text3); text-transform: uppercase; white-space: nowrap;
 }
 
 .filter-select, .filter-input {
   background: var(--bg3); border: 1px solid var(--border2); color: var(--text);
-  padding: 3px 6px; font-family: 'Share Tech Mono', monospace; font-size: 11px;
+  padding: 4px 8px; font-family: 'Share Tech Mono', monospace; font-size: 13px;
   outline: none; cursor: pointer;
   &:focus { border-color: var(--accent2); }
 }
 
-.filter-input { width: 80px; }
+.filter-input { width: 100px; }
 
 .count-badge {
-  font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text3);
-  background: var(--bg3); padding: 1px 5px; border-radius: 10px; margin-left: auto;
+  font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--text3);
+  background: var(--bg3); padding: 2px 7px; border-radius: 10px; margin-left: auto;
 }
 
 // ── Rankings list ────────────────────────────────────────
 
 .ranking-header {
-  display: flex; align-items: center; padding: 6px 10px;
+  display: flex; align-items: center; padding: 8px 12px;
   background: var(--bg2); border-bottom: 1px solid var(--border);
-  font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 700;
+  font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700;
   letter-spacing: 1.5px; color: var(--text3); text-transform: uppercase;
   flex-shrink: 0;
 }
 
-.rh-rank  { width: 28px; text-align: center; }
+.rh-rank  { width: 36px; text-align: center; }
 .rh-name  { flex: 1; }
-.rh-bar   { width: 100px; padding-left: 6px; }
-.rh-val   { width: 42px; text-align: right; }
+.rh-bar   { width: 140px; padding-left: 8px; }
+.rh-val   { width: 56px; text-align: right; }
 
 .ranking-list { flex: 1; min-height: 0; overflow-y: auto; }
 
 .ranking-row {
-  display: flex; align-items: center; padding: 3px 10px;
+  display: flex; align-items: center; padding: 5px 12px;
   border-bottom: 1px solid var(--bg3); transition: background 0.1s;
   &:hover { background: var(--bg2); }
   &.top3 { background: rgba(0, 200, 255, 0.04); }
@@ -184,20 +184,20 @@
 }
 
 .row-rank {
-  width: 28px; text-align: center;
-  font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 700; color: var(--text3);
+  width: 36px; text-align: center;
+  font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: var(--text3);
   .top3 > & { color: var(--accent); }
 }
 
 .row-name {
   flex: 1;
-  font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 600; color: var(--text);
+  font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 600; color: var(--text);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.row-bar { width: 100px; padding: 0 6px; }
+.row-bar { width: 140px; padding: 0 8px; }
 
-.bar-track { height: 12px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.bar-track { height: 14px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
 
 .bar-fill {
   height: 100%; border-radius: 2px; transition: width 0.25s ease;
@@ -208,8 +208,8 @@
 }
 
 .row-val {
-  width: 42px; text-align: right;
-  font-family: 'Share Tech Mono', monospace; font-size: 11px; font-weight: 600; color: var(--text);
+  width: 56px; text-align: right;
+  font-family: 'Share Tech Mono', monospace; font-size: 14px; font-weight: 600; color: var(--text);
   .top3 > & { color: var(--accent); }
 }
 
@@ -218,8 +218,8 @@
 .radar-box {
   background: var(--bg2);
   border: 1px solid var(--border);
-  padding: 16px 24px;
-  max-width: 800px;
+  padding: 20px 28px;
+  max-width: 900px;
   width: 100%;
 }
 
@@ -231,7 +231,7 @@
 }
 
 .radar-title {
-  font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700;
+  font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700;
   letter-spacing: 2px; color: var(--accent); text-transform: uppercase;
 }
 
@@ -243,13 +243,13 @@
 .picker-select {
   flex: 1; min-width: 0;
   background: var(--bg3); border: 1px solid var(--border2); color: var(--text);
-  padding: 4px 8px; font-family: 'Share Tech Mono', monospace; font-size: 13px;
+  padding: 6px 10px; font-family: 'Share Tech Mono', monospace; font-size: 15px;
   outline: none; cursor: pointer;
   &:focus { border-color: var(--accent2); }
 }
 
 .radar-wrap { display: flex; justify-content: center; }
-.radar-svg { width: 100%; max-width: 360px; }
+.radar-svg { width: 100%; max-width: 420px; }
 
 .radar-ring { fill: none; stroke: var(--border); stroke-width: 0.5; }
 .radar-spoke { stroke: var(--border); stroke-width: 0.5; }
@@ -261,7 +261,7 @@
 }
 
 .radar-label {
-  font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700;
+  font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700;
   fill: var(--text2); text-transform: uppercase; letter-spacing: 1px;
 }
 
@@ -275,7 +275,7 @@
 
 .stats-card-name {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -292,14 +292,14 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 1px 0;
+  padding: 3px 0;
   border-bottom: 1px dotted rgba(255,255,255,0.06);
   &:last-child { border-bottom: none; }
 }
 
 .jane-spec-k {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -308,6 +308,6 @@
 
 .jane-spec-v {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
+  font-size: 17px;
   color: var(--text);
 }
