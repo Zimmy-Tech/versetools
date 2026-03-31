@@ -21,12 +21,6 @@ jobs:
           # Get body, strip Co-Authored-By and blank lines at end
           BODY=$(git log -1 --pretty=%b | sed '/^Co-Authored-By:/d' | sed -e :a -e '/^\n*$/{$d;N;ba}')
 
-          # If a custom discord message file exists, use that instead
-          if [ -f ".discord-message" ]; then
-            TITLE=$(head -1 .discord-message)
-            BODY=$(tail -n +2 .discord-message)
-          fi
-
           # Build description from body lines, prefix with bullet if not already
           if [ -n "$BODY" ]; then
             DESCRIPTION=$(echo "$BODY" | while IFS= read -r line; do
@@ -61,8 +55,3 @@ jobs:
           ")
 
           curl -sf -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_URL"
-
-          # Clean up custom message file if it was used
-          if [ -f ".discord-message" ]; then
-            echo "Custom discord message was used"
-          fi
