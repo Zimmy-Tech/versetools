@@ -81,7 +81,7 @@ def _read_game_version() -> str:
         p4     = data.get("RequestedP4ChangeNum", "")
         m = re.search(r"(\d+\.\d+\.\d+)", branch)
         ver = m.group(1) if m else data.get("Version", "unknown")
-        tag_label = "ptu" if DATA_MODE == "ptu" else tag
+        tag_label = DATA_MODE  # "live" or "ptu" — matches launcher display
         return f"{ver}-{tag_label}.{p4}" if p4 else ver
     except Exception:
         return "unknown"
@@ -141,6 +141,11 @@ def _run_p4k_extraction() -> None:
             print(f"    ERROR: {result.stderr[:200]}")
     else:
         print(f"  ERROR: {dcb_path} not found after extraction")
+
+    # Write build version marker so we can detect stale extractions
+    marker = dcb_dir / ".build_version"
+    marker.write_text(GAME_VERSION)
+    print(f"  Build marker written: {GAME_VERSION}")
 
 # ── Localization ───────────────────────────────────────────────────────────────
 
@@ -4011,8 +4016,24 @@ def main(mode: str = "live"):
     print(f"VerseDB Extractor — Star Citizen Data Pipeline [{DATA_MODE.upper()}]")
     print("=" * 60)
 
-    # Step 0: Extract from p4k if intermediate dirs don't exist yet
+    # Step 0: Extract from p4k if intermediate dirs are missing or stale
     need_extract = not VEHICLE_XML_DIR.exists() or not FORGE_DIR.exists() or not DCB_FILE.exists()
+    if not need_extract:
+        # Check if extracted data matches current build
+        marker = _SC / f"sc_data_{DATA_MODE}" / ".build_version"
+        if marker.exists():
+            extracted_version = marker.read_text().strip()
+            if extracted_version != GAME_VERSION:
+                print(f"\n  Build changed: {extracted_version} → {GAME_VERSION}")
+                print(f"  Clearing stale intermediate dirs…")
+                for suffix in (f"sc_data_xml_{DATA_MODE}", f"sc_data_{DATA_MODE}", f"sc_data_forge_{DATA_MODE}"):
+                    stale_dir = _SC / suffix
+                    if stale_dir.exists():
+                        shutil.rmtree(stale_dir)
+                need_extract = True
+        else:
+            # No marker — legacy dirs, re-extract to be safe
+            need_extract = True
     if need_extract:
         print(f"\n[0] Extracting from {DATA_MODE.upper()} p4k…")
         _run_p4k_extraction()

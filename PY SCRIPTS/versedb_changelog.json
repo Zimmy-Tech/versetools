@@ -1,9 +1,66 @@
 {
   "meta": {
-    "generatedAt": "2026-03-31T06:26:22.565188+00:00",
-    "entries": 3
+    "generatedAt": "2026-03-31T16:05:33.549960+00:00",
+    "entries": 6
   },
   "changelog": [
+    {
+      "fromVersion": "4.7.0-live.11545720",
+      "toVersion": "4.7.0-ptu.11494258",
+      "date": "2026-03-31",
+      "changes": [],
+      "added": [],
+      "removed": [
+        {
+          "category": "ship",
+          "className": "rsi_aurora_gs_se",
+          "name": "RSI Aurora Mk I SE"
+        },
+        {
+          "category": "ship",
+          "className": "rsi_aurora_mk2",
+          "name": "RSI Aurora Mk II"
+        }
+      ]
+    },
+    {
+      "fromVersion": "4.7.0-ptu.11494258",
+      "toVersion": "4.7.0-live.11545720",
+      "date": "2026-03-31",
+      "changes": [],
+      "added": [
+        {
+          "category": "ship",
+          "className": "rsi_aurora_gs_se",
+          "name": "RSI Aurora Mk I SE"
+        },
+        {
+          "category": "ship",
+          "className": "rsi_aurora_mk2",
+          "name": "RSI Aurora Mk II"
+        }
+      ],
+      "removed": []
+    },
+    {
+      "fromVersion": "4.7.0-public.11545720",
+      "toVersion": "4.7.0-ptu.11494258",
+      "date": "2026-03-31",
+      "changes": [],
+      "added": [],
+      "removed": [
+        {
+          "category": "ship",
+          "className": "rsi_aurora_gs_se",
+          "name": "RSI Aurora Mk I SE"
+        },
+        {
+          "category": "ship",
+          "className": "rsi_aurora_mk2",
+          "name": "RSI Aurora Mk II"
+        }
+      ]
+    },
     {
       "fromVersion": "4.7.0-ptu.11494258",
       "toVersion": "4.7.0-public.11545720",

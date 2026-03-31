@@ -38,7 +38,7 @@ export class LoadoutViewComponent {
     const sizes = new Set<number>();
     for (const children of Object.values(subs)) {
       for (const child of children) {
-        if (child.type === 'WeaponGun' && child.maxSize) sizes.add(child.maxSize);
+        if (child.type === 'WeaponGun' && child.maxSize && !child.portTags) sizes.add(child.maxSize);
       }
     }
     return [...sizes].sort((a, b) => a - b);
@@ -177,7 +177,8 @@ export class LoadoutViewComponent {
     const targetType = tab === 'guns' ? 'WeaponGun' : 'Missile';
     for (const children of Object.values(subs)) {
       for (const child of children) {
-        if (child.type === targetType && child.maxSize === item.size && !this.isSlotLocked(child)) {
+        if (child.type === targetType && child.maxSize === item.size && !this.isSlotLocked(child)
+            && !child.portTags) {
           this.data.setLoadoutItem(child.id, item);
         }
       }
@@ -616,6 +617,7 @@ export class LoadoutViewComponent {
             maxSize: slotSize,
             flags: weaponLock ? `weaponLock:${weaponLock}` : (isTractor && hp.flags?.includes('uneditable') ? '$uneditable' : ''),
             allTypes: [{ type: slotType, subtypes: '' }],
+            ...(hp.portTags ? { portTags: hp.portTags } : {}),
           });
         }
 

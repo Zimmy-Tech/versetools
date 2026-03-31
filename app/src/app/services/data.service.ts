@@ -641,7 +641,9 @@ export class DataService {
     'behr_lasercannon_vng_s2',
     'behr_laserrepeater_vng_s2',
     'behr_ballisticcannon_vng_s2',
+    'behr_ballisticrepeater_vng_s2',
     'behr_distortionrepeater_vng_s2',
+    'behr_distortioncannon_vng_s2',
   ]);
 
   // Wolf hull weapons: only on L-21/L-22 Wolf ships, swappable between both
