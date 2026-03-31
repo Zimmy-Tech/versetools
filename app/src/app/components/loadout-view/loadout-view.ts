@@ -122,8 +122,9 @@ export class LoadoutViewComponent {
       }
     }
 
-    // Apply to each component hardpoint
+    // Apply to each component hardpoint (skip locked slots)
     for (const hp of ship.hardpoints) {
+      if (this.isSlotLocked(hp)) continue;
       const bySize = milA.get(hp.type);
       if (!bySize) continue;
       const best = bySize.get(hp.maxSize);
@@ -164,13 +165,18 @@ export class LoadoutViewComponent {
 
   bulkLastApplied = signal('');
 
+  private isSlotLocked(hp: Hardpoint): boolean {
+    const flags = hp.flags ?? '';
+    return flags.includes('uneditable') || flags.includes('$uneditable');
+  }
+
   applyBulkEquip(item: Item): void {
     const tab = this.bulkEquipTab();
     const subs = this.subSlotsMap();
     const targetType = tab === 'guns' ? 'WeaponGun' : 'Missile';
     for (const children of Object.values(subs)) {
       for (const child of children) {
-        if (child.type === targetType && child.maxSize === item.size) {
+        if (child.type === targetType && child.maxSize === item.size && !this.isSlotLocked(child)) {
           this.data.setLoadoutItem(child.id, item);
         }
       }
