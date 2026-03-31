@@ -49,6 +49,14 @@
   to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
+.welcome-logo {
+  display: block;
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin: 0 auto 8px;
+}
+
 .welcome-title {
   font-family: 'Rajdhani', sans-serif;
   font-size: 22px;
