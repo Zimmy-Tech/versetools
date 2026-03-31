@@ -676,6 +676,12 @@ export class DataService {
     'behr_ballisticgatling_hornet_bespoke', // TMSB-5 Gatling (Hornet ball turret only)
     // Internal shield variants
     'shld_godi_s01_allstop_scitem_resistgasclouds', // AllStop gas cloud variant (not in-game)
+    // Internal QD variants
+    'qdrv_acas_s01_foxfire',   // Foxfire (not in-game)
+    'qdrv_acas_s01_lightfire', // Lightfire (not in-game)
+    // Internal weapon variants (non-zero DPS but not real items)
+    'banu_energyrepeater_s2',      // CF-227 Badger clone (0 DPS)
+    'klwe_laserrepeater_pdc_s2',   // CF-227 Badger PDC variant (0 DPS)
     // Cyclone vehicle-locked racks
     'mrck_s03_tmbl_dual_s02_cyclone_mt_left',  // Cyclone MT left rack
     'mrck_s03_tmbl_dual_s02_cyclone_mt_right', // Cyclone MT right rack
