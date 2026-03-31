@@ -663,6 +663,11 @@ export class DataService {
     'rpod_s1_thcn_4x_s2',         // Liberator
     'rpod_s2_thcn_8x_s2',         // Liberator Prime
     'rpod_s3_thcn_12x_s2',        // Liberator Ultra
+    // Internal/turret variants (0 DPS duplicates)
+    'klwe_laserrepeater_s5_turret',    // CF-557 turret variant
+    'klwe_laserrepeater_s5_idris_m',   // CF-557 Idris variant
+    'klwe_laserrepeater_s5_lowpoly',   // CF-557 low-poly variant
+    'bengal_turret_ballisticcannon_s8', // Slayer Cannon (Bengal turret, wrong size)
   ]);
 
   getOptionsForSlot(hp: { id: string; minSize: number; maxSize: number; type: string; flags?: string; portTags?: string; allTypes: { type: string }[] }): Item[] {
@@ -716,6 +721,8 @@ export class DataService {
 
         const clsL = i.className.toLowerCase();
         if (this.PICKER_BLACKLIST.has(clsL)) return false;
+        // Filter out 0-DPS weapon variants (turret/lowpoly/dummy internals)
+        if ((i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && (i.dps ?? 0) <= 0) return false;
         const nameL = (i.name ?? '').toLowerCase();
         if (nameL.includes('placeholder') || nameL.includes('template')) return false;
         const exclusiveShip = exclusive.get(clsL);
