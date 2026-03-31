@@ -190,6 +190,13 @@ export class DataService {
           newLoadout[hp.id] = item;
         }
       }
+      // Top-level defaults not in ship.hardpoints (e.g., LifeSupport on some ships)
+      const hpIds = new Set(ship.hardpoints.map(hp => hp.id.toLowerCase()));
+      for (const [key, cls] of Object.entries(ship.defaultLoadout)) {
+        if (key.includes('.') || hpIds.has(key.toLowerCase())) continue;
+        const item = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
+        if (item && !newLoadout[key]) newLoadout[key] = item;
+      }
       // Sub-slots (dot-notation keys whose values are weapons or missiles)
       for (const [dotKey, cls] of Object.entries(ship.defaultLoadout)) {
         if (!dotKey.includes('.')) continue;
@@ -663,10 +670,13 @@ export class DataService {
     'rpod_s1_thcn_4x_s2',         // Liberator
     'rpod_s2_thcn_8x_s2',         // Liberator Prime
     'rpod_s3_thcn_12x_s2',        // Liberator Ultra
-    // Internal/turret variants (0 DPS duplicates)
+    // Internal/turret variants (duplicates with reduced stats)
+    'hrst_laserrepeater_s4_turret',    // Attrition-4 turret variant
     'klwe_laserrepeater_s5_turret',    // CF-557 turret variant
     'klwe_laserrepeater_s5_idris_m',   // CF-557 Idris variant
     'klwe_laserrepeater_s5_lowpoly',   // CF-557 low-poly variant
+    'behr_lasercannon_s6_turret',      // M7A turret variant
+    'behr_lasercannon_s7_turret',      // M9A turret variant
     'bengal_turret_ballisticcannon_s8', // Slayer Cannon (Bengal turret, wrong size)
   ]);
 

@@ -151,7 +151,7 @@ export class PowerBarsComponent {
       });
     }
 
-    // Life Support
+    // Life Support — check hardpoints first, then scan loadout for LS not in hardpoints
     for (const hp of ship.hardpoints) {
       const item = loadout[hp.id];
       if (item?.type === 'LifeSupportGenerator' && (item.powerMax ?? 0) > 0) {
@@ -165,11 +165,25 @@ export class PowerBarsComponent {
       }
     }
     if (!cols.some(c => c.label === 'LS')) {
-      cols.push({
-        id: '__ls__', label: 'LS',
-        max: 2, powerMin: 1, alloc: 0,
-        restricted: false, placeholder: true, item: null,
-      });
+      // Scan loadout for LS items not in ship.hardpoints (e.g., from defaultLoadout)
+      const lsEntry = Object.entries(loadout).find(([, item]) =>
+        item?.type === 'LifeSupportGenerator' && (item.powerMax ?? 0) > 0
+      );
+      if (lsEntry) {
+        const [lsKey, lsItem] = lsEntry;
+        cols.push({
+          id: lsKey, label: 'LS',
+          max: Math.max(1, (lsItem!.powerMax ?? 0) - 1), powerMin: 1,
+          alloc: alloc[lsKey] ?? 0,
+          restricted: false, placeholder: false, item: lsItem,
+        });
+      } else {
+        cols.push({
+          id: '__ls__', label: 'LS',
+          max: 1, powerMin: 1, alloc: 0,
+          restricted: false, placeholder: true, item: null,
+        });
+      }
     }
 
     // Coolers — one bar per slot

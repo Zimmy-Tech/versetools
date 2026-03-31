@@ -139,8 +139,12 @@ export class HardpointSlotComponent {
       case 'QuantumDrive':
         return { classCode: 'QDR-' + (item.size ?? '?'), primaryVal: item.speed ? ((item.speed / 1e3).toFixed(0)) : '—', primaryUnit: 'Mm/s', meta };
       case 'Radar': {
-        const _alloc = this.data.powerAlloc();
-        return { classCode: 'RDR-' + (item.size ?? '?'), primaryVal: (item.aimMax ?? 0).toFixed(0), primaryUnit: 'm AIM', meta };
+        const alloc = this.data.powerAlloc();
+        const pips = alloc[this.hardpoint().id] ?? 0;
+        const maxPips = Math.max(1, item.powerDraw ?? 1);
+        const frac = Math.min(pips / maxPips, 1);
+        const lockRange = (item.aimMin ?? 0) + ((item.aimMax ?? 0) - (item.aimMin ?? 0)) * frac;
+        return { classCode: 'RDR-' + (item.size ?? '?'), primaryVal: lockRange.toFixed(0), primaryUnit: 'm LOCK', meta };
       }
       case 'WeaponMining':
         return { classCode: 'MNG-' + (item.size ?? '?'), primaryVal: (item.miningMaxPower ?? 0).toFixed(0), primaryUnit: 'PWR', meta };
@@ -483,9 +487,11 @@ export class HardpointSlotComponent {
       if (item.charges && item.charges > 1) rows.push({ label: 'Charges', value: item.charges.toString() });
     } else if (item.type === 'Radar') {
       const pips = this.data.powerAlloc()[this.hardpoint().id] ?? 0;
-      const maxPips = item.powerDraw ?? 1;
-      const pipFrac = maxPips > 0 ? Math.min(pips / maxPips, 1) : 1;
+      const maxPips = Math.max(1, item.powerDraw ?? 1);
+      const pipFrac = Math.min(pips / maxPips, 1);
       if (item.aimMin != null && item.aimMax != null) {
+        const lockRange = item.aimMin + (item.aimMax - item.aimMin) * pipFrac;
+        rows.push({ label: 'Lock Range', value: lockRange.toFixed(0) + 'm' });
         rows.push({ label: 'Aim Min', value: item.aimMin.toFixed(0) + 'm' });
         rows.push({ label: 'Aim Max', value: item.aimMax.toFixed(0) + 'm' });
       }

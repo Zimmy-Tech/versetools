@@ -825,7 +825,22 @@ export class LoadoutViewComponent {
   bladeSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'FlightController'));
   qdSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'QuantumDrive'));
   radarSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'Radar'));
-  lsSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'LifeSupportGenerator'));
+  lsSlots     = computed(() => {
+    const base = this.utilitySlots().filter(hp => hp.type === 'LifeSupportGenerator');
+    if (base.length) return base;
+    // Fallback: scan loadout for LS items not in ship.hardpoints
+    const loadout = this.data.loadout();
+    for (const [key, item] of Object.entries(loadout)) {
+      if (item?.type === 'LifeSupportGenerator' && !key.includes('.')) {
+        return [{
+          id: key, label: 'Life Support', type: 'LifeSupportGenerator',
+          subtypes: '', minSize: item.size ?? 1, maxSize: item.size ?? 1,
+          flags: '', allTypes: [{ type: 'LifeSupportGenerator', subtypes: '' }],
+        }];
+      }
+    }
+    return [];
+  });
 
   /** The currently equipped flight controller (blade) item. */
   equippedBlade = computed(() => {
