@@ -434,7 +434,7 @@ export class HardpointSlotComponent {
       if (item.alphaDamage) rows.push({ label: 'Damage', value: item.alphaDamage.toFixed(0) });
       if (item.explosionMaxRadius) rows.push({ label: 'Blast Radius', value: item.explosionMinRadius?.toFixed(0) + '–' + item.explosionMaxRadius.toFixed(0) + 'm' });
       if (item.lockTime) rows.push({ label: 'Lock Time', value: item.lockTime.toFixed(1) + 's' });
-      if (item.lockRangeMax) rows.push({ label: 'Lock Range', value: item.lockRangeMax.toFixed(0) + 'm' });
+      if (item.lockRangeMax) rows.push({ label: 'Current AIM Range', value: item.lockRangeMax.toFixed(0) + 'm' });
       if (item.speed) rows.push({ label: 'Speed', value: item.speed.toFixed(0) + ' m/s' });
       const dmg = item.damage ?? {} as any;
       if (dmg.physical > 0 || dmg.energy > 0 || dmg.distortion > 0) {
@@ -504,7 +504,7 @@ export class HardpointSlotComponent {
       const pipFrac = Math.min(pips / maxPips, 1);
       if (item.aimMin != null && item.aimMax != null) {
         const lockRange = item.aimMin + (item.aimMax - item.aimMin) * pipFrac;
-        rows.push({ label: 'Lock Range', value: lockRange.toFixed(0) + 'm' });
+        rows.push({ label: 'Current AIM Range', value: lockRange.toFixed(0) + 'm' });
         rows.push({ label: 'Aim Min', value: item.aimMin.toFixed(0) + 'm' });
         rows.push({ label: 'Aim Max', value: item.aimMax.toFixed(0) + 'm' });
       }
