@@ -674,6 +674,8 @@ export class DataService {
     'krig_ballisticgatling_s2',        // Tigerstrike T-19P (Merlin-only)
     'rpod_s2_fski_6x_s3',             // Yebira II (ship-locked rocket pod)
     'behr_ballisticgatling_hornet_bespoke', // TMSB-5 Gatling (Hornet ball turret only)
+    // Internal shield variants
+    'shld_godi_s01_allstop_scitem_resistgasclouds', // AllStop gas cloud variant (not in-game)
     // Cyclone vehicle-locked racks
     'mrck_s03_tmbl_dual_s02_cyclone_mt_left',  // Cyclone MT left rack
     'mrck_s03_tmbl_dual_s02_cyclone_mt_right', // Cyclone MT right rack
