@@ -54,6 +54,13 @@ export class App implements OnInit, OnDestroy {
 
   constructor(public data: DataService, private http: HttpClient, private swUpdate: SwUpdate) {}
 
+  private notifyUpdate(newVersion?: string): void {
+    if (this.updateAvailable()) return; // already showing — don't fire again
+    this.updateAvailable.set(true);
+    clearInterval(this.versionCheckInterval); // stop polling once detected
+    if (newVersion) localStorage.setItem('versetools_update_acked', newVersion);
+  }
+
   ngOnInit(): void {
     // Show welcome popup on first visit
     if (!localStorage.getItem('versetools_welcomed')) {
@@ -61,14 +68,22 @@ export class App implements OnInit, OnDestroy {
     }
     // Fetch initial version (use data file's ETag/Last-Modified as version proxy)
     this.http.get<{ v: string }>('version.json', { headers: { 'Cache-Control': 'no-cache' } })
-      .subscribe({ next: r => this.loadedVersion = r.v, error: () => {} });
+      .subscribe({ next: r => {
+        this.loadedVersion = r.v;
+        // Clear ack if we've loaded the version we already acknowledged
+        const acked = localStorage.getItem('versetools_update_acked');
+        if (acked && acked === r.v) localStorage.removeItem('versetools_update_acked');
+      }, error: () => {} });
 
     // Poll every 5 minutes for data version changes
     this.versionCheckInterval = setInterval(() => {
       this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
         .subscribe({ next: r => {
           if (this.loadedVersion && r.v !== this.loadedVersion) {
-            this.updateAvailable.set(true);
+            // Don't re-notify if user already acked this version before reload
+            const acked = localStorage.getItem('versetools_update_acked');
+            if (acked === r.v) return;
+            this.notifyUpdate(r.v);
           }
         }, error: () => {} });
     }, 5 * 60 * 1000);
@@ -77,7 +92,7 @@ export class App implements OnInit, OnDestroy {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.pipe(
         filter((e): e is VersionReadyEvent => e.type === 'VERSION_READY')
-      ).subscribe(() => this.updateAvailable.set(true));
+      ).subscribe(() => this.notifyUpdate());
     }
   }
 
