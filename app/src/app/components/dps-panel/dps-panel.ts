@@ -348,6 +348,28 @@ export class DpsPanelComponent {
     return regen > 0 ? hp / regen : 0;
   });
 
+  shieldFaceType = computed(() => this.data.selectedShip()?.shieldFaceType ?? 'Bubble');
+
+  // Shield resists from primary shields (first 2) — averaged
+  shieldResists = computed(() => {
+    const entries = this.primaryShieldEntries();
+    if (entries.length === 0) return null;
+    let physMin = 0, physMax = 0, enrgMin = 0, enrgMax = 0, distMin = 0, distMax = 0;
+    for (const { item } of entries) {
+      physMin += item.resistPhysMin ?? 0;
+      physMax += item.resistPhysMax ?? 0;
+      enrgMin += item.resistEnrgMin ?? 0;
+      enrgMax += item.resistEnrgMax ?? 0;
+      distMin += item.resistDistMin ?? 0;
+      distMax += item.resistDistMax ?? 0;
+    }
+    const n = entries.length;
+    return {
+      physMin: physMin / n, physMax: physMax / n,
+      enrgMin: enrgMin / n, enrgMax: enrgMax / n,
+      distMin: distMin / n, distMax: distMax / n,
+    };
+  });
 
   // Signature — summed from powered-on components, scaled by power pips.
   // Power plant EM scales with power utilization (totalPowerUsed / totalPowerOutput).

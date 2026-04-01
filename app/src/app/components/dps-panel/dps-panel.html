@@ -88,6 +88,24 @@
               <span class="mono">{{ shieldRegenTime().toFixed(1) }}s</span>
             </div>
           }
+          <div class="stat-row" title="Bubble = single shield face. Quadrant = 4 directional faces (front/back/left/right).">
+            <span class="stat-label">Face Type</span>
+            <span class="mono">{{ shieldFaceType() }}</span>
+          </div>
+          @if (shieldResists(); as r) {
+            <div class="stat-row" title="Physical damage resistance range (min at low power, max at full power). Negative = takes more damage.">
+              <span class="stat-label">Phys Resist</span>
+              <span class="mono">{{ (r.physMin * 100).toFixed(0) }}% – {{ (r.physMax * 100).toFixed(0) }}%</span>
+            </div>
+            <div class="stat-row" title="Energy damage resistance range. Negative = takes more damage.">
+              <span class="stat-label">Enrg Resist</span>
+              <span class="mono">{{ (r.enrgMin * 100).toFixed(0) }}% – {{ (r.enrgMax * 100).toFixed(0) }}%</span>
+            </div>
+            <div class="stat-row" title="Distortion damage resistance range.">
+              <span class="stat-label">Dist Resist</span>
+              <span class="mono">{{ (r.distMin * 100).toFixed(0) }}% – {{ (r.distMax * 100).toFixed(0) }}%</span>
+            </div>
+          }
         </div>
       </div>
     }

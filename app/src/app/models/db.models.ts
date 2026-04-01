@@ -83,6 +83,7 @@ export interface Ship {
   cargoCapacity?: number;
   cmDecoys?: number;
   cmNoise?: number;
+  shieldFaceType?: string;
   oreCapacity?: number;
   salvageSpeedMult?: number;
   salvageRadiusMult?: number;

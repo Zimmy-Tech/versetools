@@ -3469,6 +3469,42 @@ def enrich_countermeasures(ships, forge_dir):
     print(f"  Countermeasures enriched: {enriched} ships")
 
 
+def enrich_shield_face_type(ships, forge_dir):
+    """Extract shield FaceType (Bubble/Quadrant) from per-ship shield controller entities."""
+    ctrl_dir = forge_dir / "entities" / "scitem" / "ships" / "controller"
+    if not ctrl_dir.exists():
+        return
+    enriched = 0
+    for ship_cls, ship in ships.items():
+        # Try common naming patterns for the shield controller
+        cn = ship_cls.lower()
+        candidates = [
+            f"controller_shield_{cn}.xml.xml",
+            f"controller_shield_{cn.replace('_', '')}.xml.xml",
+        ]
+        for cand in candidates:
+            path = ctrl_dir / cand
+            if path.exists():
+                try:
+                    content = path.read_text(errors="replace")
+                    m = re.search(r'FaceType="(\w+)"', content)
+                    if m:
+                        ship["shieldFaceType"] = m.group(1)  # "Bubble" or "Quadrant"
+                        enriched += 1
+                except Exception:
+                    pass
+                break
+        if "shieldFaceType" not in ship:
+            # Infer from shield size: S1/S2 = Bubble, S3+ = Quadrant
+            shield_hps = [hp for hp in ship.get("hardpoints", []) if hp.get("type") == "Shield"]
+            if shield_hps:
+                max_shield_size = max(hp.get("maxSize", 1) for hp in shield_hps)
+                ship["shieldFaceType"] = "Quadrant" if max_shield_size >= 3 else "Bubble"
+            else:
+                ship["shieldFaceType"] = "Bubble"
+    print(f"  Shield face type enriched: {enriched} ships (from forge)")
+
+
 def enrich_fuel_capacity(ships, forge_dir, dcb_path=None):
     """Extract hydrogen and quantum fuel tank capacities per ship."""
     tank_dir = forge_dir / "entities" / "scitem" / "ships" / "fueltanks"
@@ -4497,6 +4533,7 @@ def main(mode: str = "live"):
             ships[ship_cls]["cargoCapacity"] = scu
 
     enrich_countermeasures(ships, FORGE_DIR)
+    enrich_shield_face_type(ships, FORGE_DIR)
     enrich_fuel_capacity(ships, FORGE_DIR, DCB_FILE)
     for ship in ships.values():
         ship["size"] = classify_size(ship)
