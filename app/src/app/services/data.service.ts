@@ -31,6 +31,11 @@ export class DataService {
     (this.db()?.ships ?? []).filter(s => !this.hiddenShips.has(s.className.toLowerCase()))
   );
   readonly items = computed(() => this.db()?.items ?? []);
+  readonly itemMap = computed(() => {
+    const map = new Map<string, Item>();
+    for (const i of this.items()) map.set(i.className.toLowerCase(), i);
+    return map;
+  });
   readonly isLoaded = computed(() => this.db() !== null);
 
   /** All weapons (energy + ballistic) currently in the loadout, for ammo pool calculation.
