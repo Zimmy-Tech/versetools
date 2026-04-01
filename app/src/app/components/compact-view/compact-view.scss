@@ -1,13 +1,13 @@
 :host {
-  display: flex;
+  display: block;
   width: 100%;
-  justify-content: center;
 }
 
 .compact-shell {
   width: 100%;
   max-width: 420px;
-  padding: 10px 10px 80px;
+  margin: 0 auto;
+  padding: 10px 10px 100px;
   display: flex;
   flex-direction: column;
   gap: 8px;

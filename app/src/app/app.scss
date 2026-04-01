@@ -19,18 +19,16 @@
   overflow: hidden;
 }
 
-/* Compact mode: unlock scrolling for mobile */
+/* Compact mode: header stays fixed, content scrolls */
 .app-shell.compact-mode {
-  height: auto;
-  min-height: 100vh;
-  overflow: visible;
-
   .main {
-    overflow: visible;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .content {
     overflow: visible;
+    display: block;
   }
 }
 
