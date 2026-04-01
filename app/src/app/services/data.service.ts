@@ -713,6 +713,7 @@ export class DataService {
     'behr_lasercannon_s7_turret',      // M9A turret variant
     'bengal_turret_ballisticcannon_s8', // Slayer Cannon (Bengal turret, wrong size)
     'behr_laserrepeater_s10',          // GVSR S10 (security network turret, not player-equippable)
+    'espr_prowler_remote_turret_s5',   // Prowler bespoke turret (not cross-equippable)
     // Polaris-specific torpedo racks (bespoke, not cross-equippable)
     'mrck_s10_rsi_polaris_torpedo_rb',
     'mrck_s10_rsi_polaris_torpedo_rt',
