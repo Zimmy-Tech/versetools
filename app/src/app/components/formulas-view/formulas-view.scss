@@ -210,3 +210,37 @@ h3 {
   padding: 1px 7px;
   margin-right: 4px;
 }
+
+@media (max-width: 767px) {
+  .section {
+    max-width: 100%;
+  }
+
+  .body {
+    padding: 12px 10px 30px;
+  }
+
+  .nav-bar {
+    padding: 8px 10px;
+    gap: 3px;
+  }
+
+  .nav-btn {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .formula-card {
+    padding: 10px;
+  }
+
+  .formula {
+    font-size: 11px;
+    padding: 6px 8px;
+    overflow-x: auto;
+  }
+
+  h2 { font-size: 16px; }
+  h3 { font-size: 13px; }
+}

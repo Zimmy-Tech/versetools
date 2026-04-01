@@ -262,3 +262,61 @@
   font-size: 12px;
   color: var(--text3);
 }
+
+@media (max-width: 767px) {
+  :host {
+    overflow: visible;
+    padding: 10px;
+  }
+
+  .armor-damage {
+    overflow: visible;
+  }
+
+  .armor-columns-wrap {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .armor-col-wrap {
+    overflow: visible;
+  }
+
+  .ship-list-wrap {
+    overflow-x: auto;
+  }
+
+  .ship-table {
+    font-size: 11px;
+    min-width: 500px;
+  }
+
+  .ship-table th { padding: 5px 6px; font-size: 11px; }
+  .ship-table td { padding: 4px 6px; }
+
+  .filter-bar {
+    padding: 6px 8px;
+    gap: 6px;
+  }
+
+  .filter-select {
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  .weapon-picker { min-width: 0; width: 100%; }
+
+  .size-btn {
+    min-height: 40px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  .weapon-info {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .weapon-info-name { font-size: 16px; }
+}

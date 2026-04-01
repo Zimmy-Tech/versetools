@@ -198,3 +198,34 @@
   font-size: 13px;
   color: var(--text3);
 }
+
+@media (max-width: 767px) {
+  :host { overflow: visible; }
+
+  .compare-view {
+    padding: 10px;
+    gap: 10px;
+    overflow: visible;
+    max-width: 100%;
+  }
+
+  .compare-table-wrap {
+    padding: 6px;
+    overflow-x: auto;
+  }
+
+  .compare-table {
+    font-size: 12px;
+    min-width: 500px;
+
+    th { padding: 6px 8px; font-size: 13px; }
+    td { padding: 5px 8px; }
+  }
+
+  .radar-wrap { padding: 10px; }
+
+  .radar-svg {
+    width: 240px;
+    height: 240px;
+  }
+}

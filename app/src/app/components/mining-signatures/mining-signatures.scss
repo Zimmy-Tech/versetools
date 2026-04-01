@@ -144,3 +144,43 @@
 .rarity-rare       { color: var(--accent); }
 .rarity-epic       { color: var(--purple); }
 .rarity-legendary  { color: var(--gold); }
+
+@media (max-width: 767px) {
+  .sig-header {
+    padding: 12px 10px 10px;
+  }
+
+  .sig-title { font-size: 18px; }
+  .sig-subtitle { font-size: 12px; }
+
+  .sig-filters {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .filter-btn {
+    min-height: 40px;
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .sig-table-wrap {
+    padding: 0 10px 14px;
+    overflow-x: auto;
+  }
+
+  .sig-table {
+    font-size: 12px;
+    min-width: 600px;
+    max-width: none;
+  }
+
+  .sig-table th {
+    font-size: 11px;
+    padding: 6px 6px;
+  }
+
+  .sig-table td {
+    padding: 5px 6px;
+  }
+}

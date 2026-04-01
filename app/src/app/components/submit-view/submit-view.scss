@@ -315,3 +315,58 @@ input[type="number"] { -moz-appearance: textfield; }
   color: var(--red);
   flex-shrink: 0;
 }
+
+@media (max-width: 767px) {
+  :host { overflow: visible; }
+
+  .submit-view {
+    padding: 10px;
+    gap: 12px;
+    overflow: visible;
+  }
+
+  .forms-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .submit-panel {
+    width: 100%;
+    padding: 12px 14px;
+  }
+
+  .feedback-panel {
+    width: 100%;
+    padding: 12px 14px;
+  }
+
+  .accel-header, .accel-row {
+    grid-template-columns: 70px 1fr 1fr;
+    gap: 4px;
+  }
+
+  .field-input, .field-select, .field-textarea {
+    min-height: 40px;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    min-height: 44px;
+    width: 100%;
+    align-self: stretch;
+    font-size: 15px;
+  }
+
+  .needs-testing {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .nt-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .nt-card {
+    min-height: 40px;
+  }
+}

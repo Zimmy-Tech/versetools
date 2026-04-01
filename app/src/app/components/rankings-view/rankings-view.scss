@@ -311,3 +311,82 @@
   font-size: 17px;
   color: var(--text);
 }
+
+// ── Mobile ─────────────────────────────────────────────
+
+@media (max-width: 767px) {
+  :host { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .flight-perf { overflow: visible; }
+
+  // Panel nav: smaller buttons, wrap
+  .panel-nav {
+    flex-wrap: wrap;
+    padding: 6px 8px;
+    gap: 4px;
+  }
+  .panel-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+  }
+
+  // Filter bar: wrap onto multiple lines, bigger touch targets
+  .filter-bar {
+    padding: 8px;
+    gap: 4px;
+  }
+  .sort-buttons { flex-wrap: wrap; gap: 2px; }
+  .sort-btn {
+    font-size: 12px;
+    padding: 6px 8px;
+    min-height: 36px;
+  }
+  .filter-sep { display: none; }
+  .filter-label { font-size: 11px; width: 100%; }
+  .filter-select, .filter-input {
+    font-size: 14px;
+    padding: 8px;
+    min-height: 40px;
+  }
+  .filter-input { width: 100%; flex: 1; }
+  .boost-toggle {
+    font-size: 13px;
+    input { width: 18px; height: 18px; }
+  }
+
+  // Rankings panel: full width
+  .panel-rankings { max-width: 100%; }
+  .panel { overflow: visible; }
+
+  // Rankings header + rows: hide bar, compact layout
+  .rh-bar, .row-bar { display: none; }
+  .rh-rank { width: 28px; }
+  .rh-val { width: 50px; }
+  .ranking-header { padding: 6px 8px; font-size: 12px; }
+  .ranking-list { overflow: visible; }
+  .ranking-row {
+    padding: 8px;
+    min-height: 40px;
+  }
+  .row-rank { width: 28px; font-size: 14px; }
+  .row-name { font-size: 14px; }
+  .row-val { width: 50px; font-size: 13px; }
+
+  // Radar panels
+  .panel-radar { padding: 8px; overflow: visible; }
+  .radar-box {
+    padding: 12px;
+    max-width: 100%;
+  }
+  .radar-title { font-size: 16px; }
+  .radar-and-stats { flex-direction: column; align-items: center; gap: 12px; }
+  .radar-svg { max-width: 280px; }
+  .stats-cards { min-width: 0; width: 100%; }
+  .picker-select { font-size: 13px; padding: 8px; min-height: 40px; }
+  .ship-stats-card { padding: 6px 0 6px 8px; }
+  .stats-card-name { font-size: 15px; }
+  .jane-spec-k { font-size: 13px; }
+  .jane-spec-v { font-size: 15px; }
+}
