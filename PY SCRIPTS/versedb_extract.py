@@ -4327,6 +4327,17 @@ def main(mode: str = "live"):
                 if hp["id"].lower() not in {x.lower() for x in excluded_ids}
             ]
 
+    # Hornet Mk I: nose turret is bespoke (not swappable) — mark as uneditable
+    _hornet_mk1_lock_nose = [
+        "anvl_hornet_f7c", "anvl_hornet_f7c_wildfire",
+        "anvl_hornet_f7cr", "anvl_hornet_f7cs",
+    ]
+    for hcls in _hornet_mk1_lock_nose:
+        if hcls in ships:
+            for hp in ships[hcls].get("hardpoints", []):
+                if hp["id"].lower() == "hardpoint_class_4_nose":
+                    hp["flags"] = "$uneditable"
+
     # Talon: missile hardpoints exist in entity XML but not in base vehicle XML
     if "espr_talon" in ships:
         talon = ships["espr_talon"]
