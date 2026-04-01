@@ -1,6 +1,7 @@
 import { Component, input, computed, signal, HostListener, ElementRef } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, componentCoolingDemand } from '../../models/db.models';
+import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, componentCoolingDemand, weaponDisplayType } from '../../models/db.models';
+
 
 @Component({
   selector: 'app-hardpoint-slot',
@@ -37,6 +38,8 @@ export class HardpointSlotComponent {
   isRadarSlot = computed(() =>
     this.options().some(o => o.type === 'Radar')
   );
+
+  weaponType(item: Item): string { return weaponDisplayType(item); }
 
   fmtRadarMinPwr(opt: Item): string {
     const pd = opt.powerDraw ?? 0;

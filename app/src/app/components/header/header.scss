@@ -158,6 +158,12 @@ header {
   &.discord { color: var(--text2); }
 }
 
+.mobile-loadout-bar {
+  padding: 6px 8px;
+  .ship-picker-wrap { width: 100%; }
+  .ship-picker-input { width: 100%; min-height: 40px; font-size: 15px; box-sizing: border-box; }
+}
+
 /* ── Nav group dropdowns ─────────────────────────── */
 
 .nav-group {

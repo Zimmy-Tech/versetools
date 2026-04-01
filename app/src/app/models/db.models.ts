@@ -293,6 +293,32 @@ export interface VerseDb {
  * Formula: ammo(N) = min(round(N × effBase / sumPower), cap)
  * effBase = maxAmmoLoad × ammoLoadMultiplier (from ship engineering buff)
  */
+/** Derive a human-readable weapon type from className (e.g. "Laser Repeater", "Ballistic Cannon"). */
+export function weaponDisplayType(item: Item): string {
+  const cn = item.className.toLowerCase();
+  if (cn.includes('tachyon')) return 'Tachyon Cannon';
+  if (cn.includes('laserbeam') || cn.includes('laser_beam')) return 'Laser Beam';
+  if (cn.includes('lasergatling')) return 'Laser Gatling';
+  if (cn.includes('laserrepeater')) return 'Laser Repeater';
+  if (cn.includes('lasercannon')) return 'Laser Cannon';
+  if (cn.includes('ballisticgatling')) return 'Ballistic Gatling';
+  if (cn.includes('ballisticrepeater')) return 'Ballistic Repeater';
+  if (cn.includes('ballisticcannon')) return 'Ballistic Cannon';
+  if (cn.includes('distortionrepeater')) return 'Distortion Repeater';
+  if (cn.includes('distortioncannon')) return 'Distortion Cannon';
+  if (cn.includes('neutronrepeater')) return 'Neutron Repeater';
+  if (cn.includes('neutroncannon')) return 'Neutron Cannon';
+  if (cn.includes('plasmacannon') || cn.includes('plasma_cannon')) return 'Plasma Cannon';
+  if (cn.includes('plasmagun')) return 'Plasma Gun';
+  if (cn.includes('massdriver')) return 'Mass Driver';
+  if (cn.includes('scattergun') || cn.includes('aagun')) return 'Scattergun';
+  if (cn.includes('rpod_')) return 'Rocket Pod';
+  if (cn.includes('energyrepeater')) return 'Energy Repeater';
+  if (cn.includes('energycannon')) return 'Energy Cannon';
+  if (item.isBallistic) return 'Ballistic';
+  return 'Energy';
+}
+
 export function calcWeaponAmmo(weapon: Item, pips: number, poolSize: number, allWeapons: Item[], ammoLoadMultiplier = 1): number | null {
   if (!weapon || weapon.isBallistic) return weapon?.ammoCount ?? null;
   if (!weapon.powerDraw) return weapon?.ammoCount ?? null;

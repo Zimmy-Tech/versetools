@@ -129,6 +129,32 @@
   </div>
 }
 
+<!-- Mobile: compact ship picker only -->
+@if (isOnLoadout() && data.isLoaded() && isMobile()) {
+  <div class="loadout-bar mobile-loadout-bar">
+    <div class="ship-picker-wrap">
+      <input class="ship-picker-input" type="text"
+             [placeholder]="data.selectedShip()?.name ?? 'Select a ship...'"
+             [value]="searchQuery()"
+             (input)="onSearch($any($event.target).value)"
+             (focus)="openDropdown()"
+             (blur)="closeDropdown()">
+      @if (showDropdown() && filteredShips().length > 0) {
+        <div class="ship-picker-dropdown">
+          @for (ship of filteredShips(); track ship.className) {
+            <div class="ship-picker-option"
+                 [class.active]="data.selectedShip()?.className === ship.className"
+                 (mousedown)="selectShip(ship)">
+              <span class="spo-name">{{ ship.name }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- Desktop: full loadout bar -->
 @if (isOnLoadout() && data.isLoaded() && !isMobile()) {
   <div class="loadout-bar">
     <button class="bulk-equip-btn" (click)="data.bulkEquipRequested.set(true)">BULK EQUIP</button>

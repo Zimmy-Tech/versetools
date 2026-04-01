@@ -116,7 +116,7 @@
                     (click)="selectOption(opt.className, $event)">
                   <td>S{{ opt.size }}</td>
                   <td class="col-name">{{ opt.name }}</td>
-                  <td>{{ opt.subType ?? '—' }}</td>
+                  <td>{{ weaponType(opt) }}</td>
                   <td>{{ ammoForOption(opt) }}</td>
                   <td>{{ fmt(opt.dps) }}</td>
                   <td>{{ fmt(opt.alphaDamage, 1) }}</td>
