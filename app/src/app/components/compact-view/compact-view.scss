@@ -87,47 +87,69 @@
   margin-top: 2px;
 }
 
-/* ── Stat pills ──────────────────────────── */
+/* ── HUD Gauges ──────────────────────────── */
 
-.clean-pills {
+.cv-gauges {
   display: flex;
+  justify-content: center;
   gap: 6px;
-  padding: 10px 12px;
+  padding: 10px 8px;
 }
 
-.clean-pill {
-  flex: 1;
-  min-width: 0;
+.cv-gauge {
+  position: relative;
+  width: 80px;
+  height: 80px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+}
+
+.gauge-track {
+  fill: none;
+  stroke: rgba(255,255,255,0.06);
+  stroke-width: 3;
+}
+
+.gauge-fill {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.5s ease;
+  .gauge-red & { stroke: #ff4444; filter: drop-shadow(0 0 3px rgba(255,68,68,0.4)); }
+  .gauge-blue & { stroke: var(--accent); filter: drop-shadow(0 0 3px rgba(0,200,255,0.4)); }
+  .gauge-amber & { stroke: #f0a500; filter: drop-shadow(0 0 3px rgba(240,165,0,0.4)); }
+}
+
+.gauge-data {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 4px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg3);
+  justify-content: center;
 }
 
-.pill-red   { border-color: rgba(255,68,68,0.25); }
-.pill-blue  { border-color: rgba(0,200,255,0.25); }
-.pill-amber { border-color: rgba(240,165,0,0.25); }
-
-.pill-val {
+.gauge-val {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
-  .pill-red &   { color: #ff6666; }
-  .pill-blue &  { color: var(--accent); }
-  .pill-amber & { color: #f0a500; }
+  line-height: 1.1;
+  .gauge-red & { color: #ff6666; }
+  .gauge-blue & { color: var(--accent); }
+  .gauge-amber & { color: #f0a500; }
 }
 
-.pill-lbl {
+.gauge-lbl {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   color: var(--text3);
   text-transform: uppercase;
-  margin-top: 1px;
 }
 
 /* ── Tabs ────────────────────────────────── */
@@ -483,6 +505,9 @@
   &.shield { background: linear-gradient(90deg, #006699, #00ccff); }
   &.hull { background: linear-gradient(90deg, #a07800, #f0a500); }
   &.armor { background: linear-gradient(90deg, #806000, #c09000); opacity: 0.7; }
+  &.scm { background: linear-gradient(90deg, #006633, #00e676); }
+  &.boost { background: linear-gradient(90deg, #00994d, #44ff99); opacity: 0.6; }
+  &.nav { background: linear-gradient(90deg, #004d2e, #00cc66); opacity: 0.35; }
 }
 
 .cv-ehp-legend {
@@ -501,6 +526,9 @@
   &.shield { color: var(--accent); }
   &.hull { color: #f0a500; }
   &.armor { color: #c09000; }
+  &.scm { color: #00e676; }
+  &.boost { color: #44ff99; }
+  &.nav { color: #00cc66; }
 }
 
 .cv-ehp-total {
@@ -509,6 +537,269 @@
   font-weight: 700;
   color: var(--text);
   margin-left: auto;
+}
+
+/* ── Dual blocks (rotation + accel) ──────── */
+
+.cv-dual-blocks {
+  display: flex;
+  gap: 6px;
+  padding: 6px 12px;
+}
+
+.cv-block {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.cv-block-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cv-mini-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+}
+
+.cv-mini-k {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+  min-width: 22px;
+  text-align: right;
+}
+
+.cv-mini-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(0,200,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  &.accel { background: rgba(0,230,118,0.08); }
+}
+
+.cv-mini-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+  &.accel { background: #00e676; }
+}
+
+.cv-mini-v {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text2);
+  min-width: 24px;
+  text-align: right;
+}
+
+/* ── Speed segmented bar ─────────────────── */
+
+.cv-speed-bar-wrap {
+  padding: 6px 14px 10px;
+}
+
+.cv-speed-labels {
+  position: relative;
+  height: 16px;
+  margin-bottom: 4px;
+}
+
+.cv-speed-lbl {
+  position: absolute;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  &.scm { color: var(--accent); }
+  &.boost { color: #ff6666; }
+  &.nav { color: #00e676; right: 0; left: auto !important; transform: none; }
+}
+
+.cv-speed-segments {
+  display: flex;
+  gap: 2px;
+  height: 16px;
+}
+
+.cv-speed-seg {
+  flex: 1;
+  border-radius: 2px;
+  transition: background 0.2s;
+  &.scm { background: var(--accent); }
+  &.boost { background: #ff4444; }
+  &.nav { background: #00e676; }
+}
+
+/* ── Armor Deflect Concepts ───────────────── */
+
+.concept-showcase { padding: 8px 0; }
+.concept-box {
+  margin: 8px 12px;
+  padding: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.concept-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ── Shield Regen Concepts ────────────────── */
+
+/* Concept 1: Timeline */
+.regen-timeline { margin-bottom: 8px; }
+.rt-name { font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 600; color: var(--text2); }
+.rt-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; margin: 3px 0 2px; border: 1px solid var(--border); }
+.rt-seg {
+  transition: flex 0.3s;
+  &.delay { background: repeating-linear-gradient(135deg, rgba(255,68,68,0.2), rgba(255,68,68,0.2) 3px, transparent 3px, transparent 6px); }
+  &.regen { background: linear-gradient(90deg, #006699, #00ccff); }
+}
+.rt-labels { display: flex; justify-content: space-between; }
+.rt-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; &.delay { color: #ff6666; } &.regen { color: var(--accent); } }
+.regen-timeline.compact { margin-bottom: 4px; }
+.regen-timeline.compact .rt-bar { height: 8px; border-radius: 4px; margin: 2px 0 1px; }
+.regen-timeline.compact .rt-labels { gap: 4px; }
+.regen-timeline.compact .rt-label { font-size: 8px; }
+
+/* Concept 2: Shield Fill */
+.shield-fill-wrap { display: flex; justify-content: center; gap: 20px; }
+.shield-fill-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.shield-fill-svg { width: 50px; height: 60px; }
+.sf-outline { fill: none; stroke: rgba(0,200,255,0.2); stroke-width: 1.5; }
+.sf-fill { fill: rgba(0,200,255,0.25); }
+.sf-data { text-align: center; }
+.sf-rate { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--accent); display: block; }
+.sf-time { font-family: 'Rajdhani', sans-serif; font-size: 9px; color: var(--text3); letter-spacing: 1px; }
+
+/* Concept 3: Regen Stats Block */
+.regen-block-wrap { display: flex; flex-direction: column; gap: 8px; }
+.regen-block { padding: 6px; background: rgba(0,200,255,0.03); border: 1px solid rgba(0,200,255,0.1); border-radius: 6px; }
+.rb-name { font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
+.rb-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.rb-stat { display: flex; flex-direction: column; align-items: center; }
+.rb-val { font-family: 'Share Tech Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text); &.blue { color: var(--accent); } &.warn { color: #ff6666; } }
+.rb-k { font-family: 'Rajdhani', sans-serif; font-size: 8px; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
+.rb-bar { height: 4px; border-radius: 2px; background: rgba(0,200,255,0.1); margin-top: 4px; overflow: hidden; }
+.rb-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+
+/* 1. Shield Icons */
+.concept-shields { display: flex; justify-content: center; gap: 24px; }
+.shield-icon-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.shield-icon { width: 40px; height: 48px; transition: opacity 0.3s; }
+.shield-icon.phys path { fill: none; stroke: #f0a500; stroke-width: 2; }
+.shield-icon.enrg path { fill: none; stroke: var(--accent); stroke-width: 2; }
+.shield-icon-val { font-family: 'Share Tech Mono', monospace; font-size: 14px; font-weight: 700; color: var(--text); }
+.shield-icon-lbl { font-family: 'Rajdhani', sans-serif; font-size: 9px; font-weight: 700; color: var(--text3); letter-spacing: 1px; }
+
+/* 2. Ricochet */
+.concept-ricochet-wrap { display: flex; justify-content: center; gap: 16px; }
+.ricochet-pair { display: flex; flex-direction: column; align-items: center; }
+.ricochet-svg { width: 120px; height: 50px; }
+.rico-incoming { stroke: rgba(255,255,255,0.3); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.rico-deflect { stroke-width: 2; &.phys { stroke: #f0a500; } &.enrg { stroke: var(--accent); } }
+.rico-surface { stroke: rgba(255,255,255,0.15); stroke-width: 2; }
+.rico-spark { &.phys { fill: #f0a500; } &.enrg { fill: var(--accent); } }
+.rico-val { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+/* 3. Absorption Bars */
+.absorb-bars { display: flex; flex-direction: column; gap: 6px; }
+.absorb-row { display: flex; align-items: center; gap: 6px; }
+.absorb-k { font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 700; color: var(--text3); min-width: 30px; text-align: right; letter-spacing: 1px; }
+.absorb-track { flex: 1; height: 14px; display: flex; border-radius: 7px; overflow: hidden; border: 1px solid var(--border); }
+.absorb-deflected {
+  height: 100%; transition: width 0.3s;
+  &.phys { background: linear-gradient(90deg, #a07800, #f0a500); }
+  &.enrg { background: linear-gradient(90deg, #006699, #00ccff); }
+}
+.absorb-penetrates {
+  height: 100%;
+  background: repeating-linear-gradient(135deg, transparent, transparent 3px, rgba(255,68,68,0.15) 3px, rgba(255,68,68,0.15) 6px);
+}
+.absorb-v { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text2); min-width: 30px; }
+.absorb-row.compact { gap: 4px; }
+.absorb-row.compact .absorb-track { height: 8px; border-radius: 4px; }
+.absorb-row.compact .absorb-k { font-size: 9px; min-width: 26px; }
+.absorb-row.compact .absorb-v { font-size: 10px; min-width: 20px; }
+
+/* 4. Armor Plate */
+.plate-wrap { display: flex; flex-direction: column; gap: 8px; }
+.plate-row { display: flex; align-items: center; gap: 6px; }
+.plate-lbl { font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 700; color: var(--text3); min-width: 30px; text-align: right; letter-spacing: 1px; }
+.plate-vis { flex: 1; display: flex; align-items: center; height: 24px; }
+.plate-sparks { font-size: 10px; color: #ff6666; margin-right: 4px; }
+.plate-slab {
+  height: 100%; min-width: 10px; border-radius: 3px; transition: width 0.3s;
+  &.phys { background: linear-gradient(180deg, #c09000, #806000); border: 1px solid #f0a500; }
+  &.enrg { background: linear-gradient(180deg, #006699, #004466); border: 1px solid var(--accent); }
+}
+.plate-arrow { font-size: 12px; color: rgba(255,255,255,0.15); margin-left: 4px; }
+.plate-val { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text2); min-width: 30px; }
+
+/* 5. Half Gauges */
+.half-gauge-wrap { display: flex; justify-content: center; gap: 20px; }
+.half-gauge { position: relative; width: 80px; height: 55px; }
+.half-gauge svg { width: 100%; height: 100%; }
+.hg-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 4; stroke-linecap: round; }
+.hg-fill {
+  fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dasharray 0.5s;
+  &.phys { stroke: #f0a500; filter: drop-shadow(0 0 3px rgba(240,165,0,0.4)); }
+  &.enrg { stroke: var(--accent); filter: drop-shadow(0 0 3px rgba(0,200,255,0.4)); }
+}
+.hg-data { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; }
+.hg-val { font-family: 'Share Tech Mono', monospace; font-size: 13px; font-weight: 700; display: block;
+  &.phys { color: #f0a500; } &.enrg { color: var(--accent); }
+}
+.hg-lbl { font-family: 'Rajdhani', sans-serif; font-size: 8px; font-weight: 700; color: var(--text3); letter-spacing: 1.5px; }
+
+.cv-boost-toggle {
+  display: flex;
+  justify-content: center;
+  padding: 4px 12px 8px;
+}
+
+.cv-boost-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 24px;
+  min-height: 40px;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  &:hover { color: var(--text); border-color: var(--accent2); }
+  &.active { color: #00e676; border-color: #00e676; background: rgba(0,230,118,0.08); }
 }
 
 /* ── Acceleration / Rotation gauge bars ──── */

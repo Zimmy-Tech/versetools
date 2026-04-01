@@ -18,7 +18,8 @@ export class CompactViewComponent implements OnInit, OnDestroy {
 
   searchQuery = signal('');
   showDropdown = signal(false);
-  activeSection = signal<'overview' | 'weapons' | 'systems' | 'defensive' | 'power'>('overview');
+  activeSection = signal<'overview' | 'weapons' | 'systems' | 'power'>('overview');
+  boostedMode = signal(false);
   selectedShip = signal<Ship | null>(null);
 
   constructor(public data: DataService) {
@@ -44,15 +45,26 @@ export class CompactViewComponent implements OnInit, OnDestroy {
     this.selectedShip.set(ship);
     this.searchQuery.set('');
     this.showDropdown.set(false);
+    this.compactLoadout.set({});
+    this.openPicker.set(null);
+    this.pickerSearch.set('');
+    this.boostedMode.set(false);
+    this.activeSection.set('overview');
   }
 
   // ── Data helpers ──────────────────────────────────
 
   private findItems(ship: Ship, type: string): Item[] {
     const dl = ship.defaultLoadout ?? {};
+    const overrides = this.compactLoadout();
     const items = this.data.items();
     const result: Item[] = [];
-    for (const cls of Object.values(dl)) {
+    // Build merged loadout: overrides take precedence
+    const merged: Record<string, string> = { ...dl };
+    for (const [k, v] of Object.entries(overrides)) {
+      merged[k] = v;
+    }
+    for (const cls of Object.values(merged)) {
       const item = items.find(i => i.className.toLowerCase() === cls.toLowerCase());
       if (item && item.type === type) result.push(item);
     }
@@ -144,6 +156,57 @@ export class CompactViewComponent implements OnInit, OnDestroy {
   }
 
   sumCount = (acc: number, m: { count: number }) => acc + m.count;
+
+  // Size-class maximums for gauge scaling
+  getClassMax(ship: Ship): { dps: number; shield: number; hull: number; armor: number } {
+    const sizeClass = ship.size ?? 'medium';
+    const ships = this.data.ships().filter(s => s.size === sizeClass);
+    let maxDps = 0, maxShield = 0, maxHull = 0, maxArmor = 0;
+    for (const s of ships) {
+      const dps = this.getTotalDPS(s);
+      const shield = this.getTotalShieldHP(s);
+      if (dps > maxDps) maxDps = dps;
+      if (shield > maxShield) maxShield = shield;
+      if ((s.bodyHp ?? 0) > maxHull) maxHull = s.bodyHp ?? 0;
+      if ((s.armorHp ?? 0) > maxArmor) maxArmor = s.armorHp ?? 0;
+    }
+    return { dps: maxDps || 1, shield: maxShield || 1, hull: maxHull || 1, armor: maxArmor || 1 };
+  }
+
+  getShieldItem(ship: Ship, index: number): Item | null {
+    const shields = this.findItems(ship, 'Shield');
+    return shields[index] ?? null;
+  }
+
+  getHalfGaugeArc(pct: number): string {
+    const arcLength = Math.PI * 35; // semi-circle with r=35
+    const filled = arcLength * Math.min(pct / 100, 1);
+    return `${filled} ${arcLength}`;
+  }
+
+  getGaugeArc(value: number, max: number): string {
+    const circumference = 2 * Math.PI * 34; // r=34
+    const pct = Math.min(value / max, 1);
+    const filled = circumference * pct;
+    const gap = circumference - filled;
+    return `${filled} ${gap}`;
+  }
+
+  getSpeedSegments(ship: Ship): { zone: string }[] {
+    const nav = ship.navSpeed ?? 1;
+    const scm = ship.scmSpeed ?? 0;
+    const boost = ship.boostSpeedFwd ?? 0;
+    const total = 30; // number of segments
+    const segments: { zone: string }[] = [];
+    for (let i = 0; i < total; i++) {
+      const pct = (i + 1) / total;
+      const speed = pct * nav;
+      if (speed <= scm) segments.push({ zone: 'scm' });
+      else if (speed <= boost) segments.push({ zone: 'boost' });
+      else segments.push({ zone: 'nav' });
+    }
+    return segments;
+  }
 
   /** Build structured weapon slots: parent mount + child weapons */
   getWeaponSlots(ship: Ship): { hpId: string; hpSize: number; hpLabel: string; parent: Item | null; guns: { key: string; item: Item }[] }[] {
@@ -285,5 +348,12 @@ export class CompactViewComponent implements OnInit, OnDestroy {
   fmt(val: number | null | undefined, decimals = 0): string {
     if (val == null) return '—';
     return decimals > 0 ? val.toFixed(decimals) : val.toLocaleString();
+  }
+
+  fmtCompact(val: number | null | undefined): string {
+    if (val == null) return '—';
+    if (val >= 1_000_000) return (val / 1_000_000).toFixed(2) + 'm';
+    if (val >= 10_000) return (val / 1_000).toFixed(1) + 'k';
+    return val.toLocaleString();
   }
 }

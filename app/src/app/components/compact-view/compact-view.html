@@ -22,12 +22,36 @@
       <div class="clean-ship-sub">{{ s.manufacturer }} &middot; {{ (s.size ?? '').toUpperCase() }} &middot; {{ s.role }}</div>
     </div>
 
-    <!-- Stat pills -->
-    <div class="clean-pills">
-      <div class="clean-pill pill-red"><span class="pill-val">{{ getTotalDPS(s) }}</span><span class="pill-lbl">DPS</span></div>
-      <div class="clean-pill pill-blue"><span class="pill-val">{{ fmt(getTotalShieldHP(s)) }}</span><span class="pill-lbl">Shield</span></div>
-      <div class="clean-pill pill-amber"><span class="pill-val">{{ fmt(s.bodyHp) }}</span><span class="pill-lbl">Hull</span></div>
-      <div class="clean-pill pill-amber"><span class="pill-val">{{ fmt(s.armorHp) }}</span><span class="pill-lbl">Armor</span></div>
+    <!-- HUD Gauges -->
+    <div class="cv-gauges">
+      <div class="cv-gauge gauge-red">
+        <svg viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="34" class="gauge-track"/>
+          <circle cx="40" cy="40" r="34" class="gauge-fill" [style.stroke-dasharray]="getGaugeArc(getTotalDPS(s), getClassMax(s).dps)" stroke-dashoffset="0"/>
+        </svg>
+        <div class="gauge-data"><span class="gauge-val">{{ fmtCompact(getTotalDPS(s)) }}</span><span class="gauge-lbl">DPS</span></div>
+      </div>
+      <div class="cv-gauge gauge-blue">
+        <svg viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="34" class="gauge-track"/>
+          <circle cx="40" cy="40" r="34" class="gauge-fill" [style.stroke-dasharray]="getGaugeArc(getTotalShieldHP(s), getClassMax(s).shield)" stroke-dashoffset="0"/>
+        </svg>
+        <div class="gauge-data"><span class="gauge-val">{{ fmtCompact(getTotalShieldHP(s)) }}</span><span class="gauge-lbl">SHIELD</span></div>
+      </div>
+      <div class="cv-gauge gauge-amber">
+        <svg viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="34" class="gauge-track"/>
+          <circle cx="40" cy="40" r="34" class="gauge-fill" [style.stroke-dasharray]="getGaugeArc(s.bodyHp ?? 0, getClassMax(s).hull)" stroke-dashoffset="0"/>
+        </svg>
+        <div class="gauge-data"><span class="gauge-val">{{ fmtCompact(s.bodyHp) }}</span><span class="gauge-lbl">HULL</span></div>
+      </div>
+      <div class="cv-gauge gauge-amber">
+        <svg viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="34" class="gauge-track"/>
+          <circle cx="40" cy="40" r="34" class="gauge-fill" [style.stroke-dasharray]="getGaugeArc(s.armorHp ?? 0, getClassMax(s).armor)" stroke-dashoffset="0"/>
+        </svg>
+        <div class="gauge-data"><span class="gauge-val">{{ fmtCompact(s.armorHp) }}</span><span class="gauge-lbl">ARMOR</span></div>
+      </div>
     </div>
 
     <!-- Tab bar -->
@@ -35,7 +59,6 @@
       <button class="clean-tab" [class.active]="activeSection() === 'overview'" (click)="activeSection.set('overview')">Overview</button>
       <button class="clean-tab" [class.active]="activeSection() === 'weapons'" (click)="activeSection.set('weapons')">Weapons</button>
       <button class="clean-tab" [class.active]="activeSection() === 'systems'" (click)="activeSection.set('systems')">Systems</button>
-      <button class="clean-tab" [class.active]="activeSection() === 'defensive'" (click)="activeSection.set('defensive')">Defensive</button>
       <button class="clean-tab" [class.active]="activeSection() === 'power'" (click)="activeSection.set('power')">Power</button>
     </div>
 
@@ -90,48 +113,87 @@
         <div class="clean-section-title">Survivability</div>
         <div class="cv-ehp-bar">
           <div class="cv-ehp-seg shield" [style.flex]="getTotalShieldHP(s)"></div>
-          <div class="cv-ehp-seg hull" [style.flex]="s.bodyHp ?? 0"></div>
           <div class="cv-ehp-seg armor" [style.flex]="s.armorHp ?? 0"></div>
+          <div class="cv-ehp-seg hull" [style.flex]="s.bodyHp ?? 0"></div>
         </div>
         <div class="cv-ehp-legend">
           <span class="cv-ehp-label shield">Shield {{ fmt(getTotalShieldHP(s)) }}</span>
-          <span class="cv-ehp-label hull">Hull {{ fmt(s.bodyHp) }}</span>
           <span class="cv-ehp-label armor">Armor {{ fmt(s.armorHp) }}</span>
+          <span class="cv-ehp-label hull">Hull {{ fmt(s.bodyHp) }}</span>
           <span class="cv-ehp-total">EHP {{ fmt(getTotalEHP(s)) }}</span>
         </div>
-        <div class="clean-grid" style="margin-top:4px">
-          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(getShieldRegen(s)) }}/s</span><span class="clean-stat-k">Shld Regen</span></div>
-          <div class="clean-stat"><span class="clean-stat-v">{{ s.cmDecoys ?? 0 }}</span><span class="clean-stat-k">Decoys</span></div>
-          <div class="clean-stat"><span class="clean-stat-v">{{ s.cmNoise ?? 0 }}</span><span class="clean-stat-k">Noise</span></div>
-        </div>
-
-        <!-- Speed -->
-        <div class="clean-section-title">Speed</div>
-        <div class="clean-grid">
-          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.scmSpeed) }}</span><span class="clean-stat-k">SCM</span></div>
-          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.navSpeed) }}</span><span class="clean-stat-k">NAV</span></div>
-          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.boostSpeedFwd) }}</span><span class="clean-stat-k">Boost</span></div>
-        </div>
-
-        <!-- Acceleration — horizontal gauge bars -->
-        @if (s.accelFwd) {
-          <div class="clean-section-title">Acceleration</div>
-          <div class="cv-accel-bars">
-            <div class="cv-accel-row"><span class="cv-accel-k">FWD</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelFwd ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbFwd ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelFwd,1) }} / {{ fmt(s.accelAbFwd,1) }}G</span></div>
-            <div class="cv-accel-row"><span class="cv-accel-k">RET</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelRetro ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbRetro ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelRetro,1) }} / {{ fmt(s.accelAbRetro,1) }}G</span></div>
-            <div class="cv-accel-row"><span class="cv-accel-k">STR</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelStrafe ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbStrafe ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelStrafe,1) }} / {{ fmt(s.accelAbStrafe,1) }}G</span></div>
-            <div class="cv-accel-row"><span class="cv-accel-k">UP</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelUp ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbUp ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelUp,1) }} / {{ fmt(s.accelAbUp,1) }}G</span></div>
-            <div class="cv-accel-row"><span class="cv-accel-k">DN</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelDown ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbDown ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelDown,1) }} / {{ fmt(s.accelAbDown,1) }}G</span></div>
+        <div class="cv-dual-blocks" style="margin-top:4px">
+          <div class="cv-block">
+            <div class="cv-block-title">ARMOR DEFLECT</div>
+            <div class="absorb-row compact">
+              <span class="absorb-k">PHYS</span>
+              <div class="absorb-track">
+                <div class="absorb-deflected phys" [style.width.%]="Math.min((s.armorDeflectPhys ?? 0) / 50 * 100, 100)"></div>
+              </div>
+              <span class="absorb-v">{{ fmt(s.armorDeflectPhys) }}</span>
+            </div>
+            <div class="absorb-row compact">
+              <span class="absorb-k">ENRG</span>
+              <div class="absorb-track">
+                <div class="absorb-deflected enrg" [style.width.%]="Math.min((s.armorDeflectEnrg ?? 0) / 50 * 100, 100)"></div>
+              </div>
+              <span class="absorb-v">{{ fmt(s.armorDeflectEnrg) }}</span>
+            </div>
           </div>
-          <div class="cv-accel-legend"><span class="cv-accel-leg-normal"></span> Normal <span class="cv-accel-leg-boost"></span> Afterburner</div>
-        }
+          <div class="cv-block">
+            <div class="cv-block-title">SHIELD RECOVERY</div>
+            @for (sh of getShields(s); track $index) {
+              <div class="regen-timeline compact">
+                <div class="rt-bar">
+                  <div class="rt-seg delay" [style.flex]="getShieldItem(s, $index)?.damagedRegenDelay ?? 5"></div>
+                  <div class="rt-seg regen" [style.flex]="getShieldItem(s, $index)?.hp ? (getShieldItem(s, $index)!.hp! / (getShieldItem(s, $index)!.regenRate || 1)) : 10"></div>
+                </div>
+                <div class="rt-labels">
+                  <span class="rt-label delay">{{ getShieldItem(s, $index)?.damagedRegenDelay?.toFixed(1) }}s</span>
+                  <span class="rt-label regen">{{ shieldFullRegen(getShieldItem(s, $index)!) }}s</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
 
-        <!-- Rotation -->
-        <div class="clean-section-title">Rotation</div>
-        <div class="cv-accel-bars">
-          <div class="cv-accel-row"><span class="cv-accel-k">PIT</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.pitch ?? 0) / 250 * 100"></div>@if (s.pitchBoosted) {<div class="cv-accel-fill boost" [style.width.%]="(s.pitchBoosted ?? 0) / 250 * 100"></div>}</div><span class="cv-accel-v">{{ fmt(s.pitch,1) }}{{ s.pitchBoosted ? ' / ' + fmt(s.pitchBoosted,1) : '' }}&deg;/s</span></div>
-          <div class="cv-accel-row"><span class="cv-accel-k">YAW</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.yaw ?? 0) / 250 * 100"></div>@if (s.yawBoosted) {<div class="cv-accel-fill boost" [style.width.%]="(s.yawBoosted ?? 0) / 250 * 100"></div>}</div><span class="cv-accel-v">{{ fmt(s.yaw,1) }}{{ s.yawBoosted ? ' / ' + fmt(s.yawBoosted,1) : '' }}&deg;/s</span></div>
-          <div class="cv-accel-row"><span class="cv-accel-k">ROL</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.roll ?? 0) / 250 * 100"></div>@if (s.rollBoosted) {<div class="cv-accel-fill boost" [style.width.%]="(s.rollBoosted ?? 0) / 250 * 100"></div>}</div><span class="cv-accel-v">{{ fmt(s.roll,1) }}{{ s.rollBoosted ? ' / ' + fmt(s.rollBoosted,1) : '' }}&deg;/s</span></div>
+        <!-- Speed segmented bar -->
+        <div class="clean-section-title">Speed</div>
+        <div class="cv-speed-bar-wrap">
+          <div class="cv-speed-labels">
+            <span class="cv-speed-lbl scm" [style.left.%]="((s.scmSpeed ?? 0) / (s.navSpeed ?? 1)) * 100">SCM {{ fmt(s.scmSpeed) }}</span>
+            <span class="cv-speed-lbl boost" [style.left.%]="((s.boostSpeedFwd ?? 0) / (s.navSpeed ?? 1)) * 100">BOOST {{ fmt(s.boostSpeedFwd) }}</span>
+            <span class="cv-speed-lbl nav">NAV {{ fmt(s.navSpeed) }}</span>
+          </div>
+          <div class="cv-speed-segments">
+            @for (seg of getSpeedSegments(s); track $index) {
+              <div class="cv-speed-seg" [class]="'cv-speed-seg ' + seg.zone"></div>
+            }
+          </div>
+        </div>
+
+        <!-- Rotation + Acceleration side by side -->
+        <div class="clean-section-title">Maneuverability</div>
+        <div class="cv-dual-blocks">
+          <!-- Rotation block -->
+          <div class="cv-block">
+            <div class="cv-block-title">ROTATION (deg/s)</div>
+            <div class="cv-mini-row"><span class="cv-mini-k">PIT</span><div class="cv-mini-bar"><div class="cv-mini-fill" [style.width.%]="(boostedMode() ? (s.pitchBoosted ?? s.pitch ?? 0) : (s.pitch ?? 0)) / 250 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? (s.pitchBoosted ?? s.pitch) : s.pitch, 1) }}</span></div>
+            <div class="cv-mini-row"><span class="cv-mini-k">YAW</span><div class="cv-mini-bar"><div class="cv-mini-fill" [style.width.%]="(boostedMode() ? (s.yawBoosted ?? s.yaw ?? 0) : (s.yaw ?? 0)) / 250 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? (s.yawBoosted ?? s.yaw) : s.yaw, 1) }}</span></div>
+            <div class="cv-mini-row"><span class="cv-mini-k">ROL</span><div class="cv-mini-bar"><div class="cv-mini-fill" [style.width.%]="(boostedMode() ? (s.rollBoosted ?? s.roll ?? 0) : (s.roll ?? 0)) / 250 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? (s.rollBoosted ?? s.roll) : s.roll, 1) }}</span></div>
+          </div>
+          <!-- Acceleration block -->
+          <div class="cv-block">
+            <div class="cv-block-title">ACCEL (G)</div>
+            <div class="cv-mini-row"><span class="cv-mini-k">FWD</span><div class="cv-mini-bar accel"><div class="cv-mini-fill accel" [style.width.%]="(boostedMode() ? (s.accelAbFwd ?? 0) : (s.accelFwd ?? 0)) / 25 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? s.accelAbFwd : s.accelFwd, 1) }}</span></div>
+            <div class="cv-mini-row"><span class="cv-mini-k">RET</span><div class="cv-mini-bar accel"><div class="cv-mini-fill accel" [style.width.%]="(boostedMode() ? (s.accelAbRetro ?? 0) : (s.accelRetro ?? 0)) / 25 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? s.accelAbRetro : s.accelRetro, 1) }}</span></div>
+            <div class="cv-mini-row"><span class="cv-mini-k">STR</span><div class="cv-mini-bar accel"><div class="cv-mini-fill accel" [style.width.%]="(boostedMode() ? (s.accelAbStrafe ?? 0) : (s.accelStrafe ?? 0)) / 25 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? s.accelAbStrafe : s.accelStrafe, 1) }}</span></div>
+            <div class="cv-mini-row"><span class="cv-mini-k">UP</span><div class="cv-mini-bar accel"><div class="cv-mini-fill accel" [style.width.%]="(boostedMode() ? (s.accelAbUp ?? 0) : (s.accelUp ?? 0)) / 25 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? s.accelAbUp : s.accelUp, 1) }}</span></div>
+            <div class="cv-mini-row"><span class="cv-mini-k">DN</span><div class="cv-mini-bar accel"><div class="cv-mini-fill accel" [style.width.%]="(boostedMode() ? (s.accelAbDown ?? 0) : (s.accelDown ?? 0)) / 25 * 100"></div></div><span class="cv-mini-v">{{ fmt(boostedMode() ? s.accelAbDown : s.accelDown, 1) }}</span></div>
+          </div>
+        </div>
+        <div class="cv-boost-toggle" (click)="boostedMode.set(!boostedMode())">
+          <span class="cv-boost-btn" [class.active]="boostedMode()">{{ boostedMode() ? 'AFTERBURNER' : 'NORMAL' }}</span>
         </div>
 
         <!-- Ship Info -->
@@ -354,10 +416,8 @@
             </div>
           }
         }
-      }
 
-      <!-- ═══ DEFENSIVE ═══ -->
-      @if (activeSection() === 'defensive') {
+        <!-- Shields -->
         <div class="clean-section-title">Shields</div>
         @for (hpKey of getHardpointKeys(s, 'Shield'); track hpKey; let i = $index) {
           @if (getEquipped(s, hpKey, 'Shield'); as sh) {
@@ -395,6 +455,8 @@
       }
 
     </div>
+
+
   </div>
   }
 </div>
