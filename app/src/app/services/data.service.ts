@@ -624,10 +624,18 @@ export class DataService {
       }
     }
 
+    // Items that are cross-equippable across ship variants (not exclusive to one)
+    const NEVER_EXCLUSIVE = new Set([
+      'klwe_massdriver_s10',          // Destroyer Mass Driver (Idris M/P)
+      'hrst_laserbeam_bespoke',       // Exodus-10 Laser Beam (Idris M/P)
+      'mrck_s10_aegs_idris_nose_s12_torpedo', // Hammerfall Torpedo (Idris M/P)
+    ]);
+
     const itemByCls = new Map(db.items.map(i => [i.className.toLowerCase(), i]));
     const exclusive = new Map<string, string>();
     for (const [cls, ships] of appearsIn) {
       if (ships.length !== 1) continue;
+      if (NEVER_EXCLUSIVE.has(cls)) continue;
       // Items sold in shops are universal — don't mark them exclusive
       const item = itemByCls.get(cls);
       if (item?.shopPrices?.length) continue;
@@ -696,6 +704,17 @@ export class DataService {
     'behr_lasercannon_s6_turret',      // M7A turret variant
     'behr_lasercannon_s7_turret',      // M9A turret variant
     'bengal_turret_ballisticcannon_s8', // Slayer Cannon (Bengal turret, wrong size)
+    'behr_laserrepeater_s10',          // GVSR S10 (security network turret, not player-equippable)
+    // Polaris-specific torpedo racks (bespoke, not cross-equippable)
+    'mrck_s10_rsi_polaris_torpedo_rb',
+    'mrck_s10_rsi_polaris_torpedo_rt',
+    'mrck_s10_rsi_polaris_right',
+    'mrck_s10_rsi_polaris_torpedo',
+    'mrck_s10_rsi_polaris_torpedo_lb',
+    'mrck_s10_rsi_polaris_left',
+    'mrck_s10_rsi_polaris_torpedo_cylinder_right_inner',
+    'mrck_s10_rsi_polaris_torpedo_lt',
+    'mrck_s10_rsi_polaris_torpedo_left',
   ]);
 
   getOptionsForSlot(hp: { id: string; minSize: number; maxSize: number; type: string; flags?: string; portTags?: string; allTypes: { type: string }[] }): Item[] {
@@ -735,7 +754,8 @@ export class DataService {
     const acceptsGun     = hp.type === 'WeaponGun' || allTypes.includes('WeaponGun');
     const acceptsTurret  = hp.type === 'Turret' || hp.type === 'TurretBase' ||
                            allTypes.includes('Turret') || allTypes.includes('TurretBase');
-    const acceptsRack    = hp.type === 'MissileLauncher' || hp.type === 'BombLauncher';
+    const acceptsRack    = hp.type === 'MissileLauncher' || hp.type === 'BombLauncher' ||
+                           allTypes.includes('MissileLauncher') || allTypes.includes('BombLauncher');
     const acceptsMissile = hp.type === 'Missile';
     const acceptsMining  = hp.type === 'WeaponMining' || allTypes.includes('WeaponMining');
     const acceptsMiningMod = hp.type === 'MiningModifier' || allTypes.includes('MiningModifier');
@@ -749,6 +769,8 @@ export class DataService {
 
         const clsL = i.className.toLowerCase();
         if (this.PICKER_BLACKLIST.has(clsL)) return false;
+        // Filter out turret-internal weapon variants (lower stats, not player-equippable)
+        if ((i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && clsL.endsWith('_turret')) return false;
         // Filter out 0-DPS weapon variants (turret/lowpoly/dummy internals)
         if ((i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && (i.dps ?? 0) <= 0) return false;
         const nameL = (i.name ?? '').toLowerCase();

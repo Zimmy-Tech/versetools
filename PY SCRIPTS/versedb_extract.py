@@ -1713,6 +1713,8 @@ def parse_weapon_mount_item(root, class_name, loc):
     # Key: turret className (lower), Value: weapon className that must be equipped.
     TURRET_WEAPON_LOCK = {
         "anvl_hornet_f7cm_mk2_ball_turret_bespoke": "behr_ballisticgatling_hornet_bespoke",
+        "mount_gimbal_s8_perseus":        "rsi_perseus_ballisticcannon_b_s8",
+        "mount_gimbal_s8_perseus_bottom": "rsi_perseus_ballisticcannon_b_s8",
     }
 
     # Extract ship-specific item tags (tags containing '_', strip '$' prefix).
@@ -1748,6 +1750,9 @@ def parse_weapon_mount_item(root, class_name, loc):
         "size":         info["size"],
         "grade":        info["grade"],
     }
+    weapon_lock = TURRET_WEAPON_LOCK.get(class_name.lower())
+    if weapon_lock:
+        result["weaponLock"] = weapon_lock
     if item_tags:
         result["itemTags"] = item_tags
     return result
@@ -2235,7 +2240,7 @@ def expand_ship_variants(ships, forge_dir, loc):
         r'_nointerior|_nodebris|_citizencon|_drug|_shipshowdown|_shipboarded|'
         r'_tier_|_plat$|_fw_\d|_ai_|_nocargo|_halfcargo|_override|_spawn$|'
         r'_utility$|_civilian$|_stunt|_temp$|_crewless|_mission_|_swarm$|'
-        r'_psec$|_advocacy$|_low_poly|_dropship'
+        r'_psec$|_advocacy$|_low_poly|_dropship|_pu$'
     )
 
     expanded = {}
@@ -4088,7 +4093,8 @@ def main(mode: str = "live"):
         "ORIG_300i":   {"hardpoint_tractor"},  # tractor turret only on 315p
         "orig_325a":   {"hardpoint_tractor"},
         "orig_350r":   {"hardpoint_tractor"},
-        "espr_talon":  {"hardpoint_missile_right", "hardpoint_missile_left"},  # missile racks only on Shrike
+        "espr_talon":        {"hardpoint_leg_blankingplate_right", "hardpoint_leg_blankingplate_left"},  # blankingplate racks only on Shrike
+        "espr_talon_shrike": {"hardpoint_missile_right", "hardpoint_missile_left"},  # S3 missile racks only on Talon
         "crus_starlifter_c2": {"hardpoint_bridge_remote_turret"},  # Turret 6 only on M2
         "cnou_mustang_alpha": {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},  # rockets only on Delta
         "cnou_mustang_beta":  {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},
@@ -4109,6 +4115,10 @@ def main(mode: str = "live"):
         "aegs_vanguard_harbinger": {"hardpoint_weapon_emp"},
         "aegs_vanguard_hoplite": {"hardpoint_weapon_emp"},
         "rsi_scorpius_antares": {"hardpoint_remote_turret", "hardpoint_turret_missile_camera"},
+        "aegs_idris_m": {"hardpoint_camera_turret_lower", "hardpoint_camera_turret_upper",
+                         "hardpoint_rear_turret_tail", "hardpoint_rear_turret_tail_cap"},
+        "aegs_idris_p": {"hardpoint_camera_turret_lower", "hardpoint_camera_turret_upper",
+                         "hardpoint_rear_turret_tail_cap"},
     }
     for ship_cls, excluded_ids in HP_EXCLUSIONS.items():
         if ship_cls in ships:
@@ -4116,6 +4126,19 @@ def main(mode: str = "live"):
                 hp for hp in ships[ship_cls].get("hardpoints", [])
                 if hp["id"].lower() not in {x.lower() for x in excluded_ids}
             ]
+
+    # Talon: missile hardpoints exist in entity XML but not in base vehicle XML
+    if "espr_talon" in ships:
+        talon = ships["espr_talon"]
+        for side in ("left", "right"):
+            hp_id = f"hardpoint_missile_{side}"
+            if not any(hp["id"].lower() == hp_id for hp in talon["hardpoints"]):
+                talon["hardpoints"].append({
+                    "id": hp_id, "label": f"Missile Rack - {side.title()}",
+                    "type": "MissileLauncher", "subtypes": "MissileRack",
+                    "minSize": 3, "maxSize": 3, "flags": "",
+                    "allTypes": [{"type": "MissileLauncher", "subtypes": "MissileRack"}],
+                })
 
     # Guardian / Guardian MX: quantum damp hardpoint only exists on the QI variant
     for gcls in ("mrai_guardian", "mrai_guardian_mx"):
@@ -4137,6 +4160,32 @@ def main(mode: str = "live"):
                     "allTypes": [{"type": "LifeSupportGenerator", "subtypes": ""}],
                 })
                 g.setdefault("defaultLoadout", {})["hardpoint_lifesupport"] = "lfsp_tydt_s01_comfortair"
+
+    # Idris M/P: nose railgun hardpoint accepts WeaponGun and MissileLauncher (torpedo)
+    for idris_cls in ("aegs_idris_m", "aegs_idris_p"):
+        if idris_cls in ships:
+            for hp in ships[idris_cls].get("hardpoints", []):
+                if hp["id"] == "hardpoint_nose_railgun":
+                    hp["allTypes"] = [
+                        {"type": "WeaponGun", "subtypes": "Gun"},
+                        {"type": "MissileLauncher", "subtypes": "MissileRack"},
+                    ]
+                    break
+
+    # Idris M/P: add Hammerfall torpedo default loadout keys so missiles populate when equipped
+    for idris_cls in ("aegs_idris_m", "aegs_idris_p"):
+        if idris_cls in ships:
+            dl = ships[idris_cls].setdefault("defaultLoadout", {})
+            for n in range(1, 21):  # 20 torpedoes
+                key = f"hardpoint_nose_railgun.missile_{n:02d}_attach"
+                if key not in dl:
+                    dl[key] = "misl_s12_cs_taln_calamity"
+
+    # Idris-P: nose weapon not in DCB loadout — equip Exodus-10 Laser Beam
+    if "aegs_idris_p" in ships:
+        idris_p_dl = ships["aegs_idris_p"].setdefault("defaultLoadout", {})
+        if "hardpoint_nose_railgun" not in idris_p_dl:
+            idris_p_dl["hardpoint_nose_railgun"] = "hrst_laserbeam_bespoke"
 
     # Avenger Titan Renegade: wing sub-slots have missiles instead of guns in DCB loadout
     if "aegs_avenger_titan_renegade" in ships:
@@ -4354,6 +4403,26 @@ def main(mode: str = "live"):
             "accelAbFwd": 6.9, "accelAbRetro": 4.8, "accelAbStrafe": 3.5, "accelAbUp": 4.2, "accelAbDown": 3.8,
             "accelTestedDate": "2026-03-27", "accelCheckedBy": "VerseTools Admin",
         },
+        "AEGS_Eclipse": {
+            "accelFwd": 10.5, "accelRetro": 4.5, "accelStrafe": 6.5, "accelUp": 6.5, "accelDown": 3.5,
+            "accelAbFwd": 15.7, "accelAbRetro": 6.3, "accelAbStrafe": 8.8, "accelAbUp": 8.4, "accelAbDown": 4.9,
+            "accelTestedDate": "2026-04-01", "accelCheckedBy": "Zimmy",
+        },
+        "aegs_sabre_comet": {
+            "accelFwd": 11.9, "accelRetro": 4.2, "accelStrafe": 8.4, "accelUp": 8.9, "accelDown": 4.7,
+            "accelAbFwd": 18.5, "accelAbRetro": 5.8, "accelAbStrafe": 11.4, "accelAbUp": 11.6, "accelAbDown": 6.3,
+            "accelTestedDate": "2026-04-01", "accelCheckedBy": "Zimmy",
+        },
+        "aegs_sabre": {
+            "accelFwd": 11.9, "accelRetro": 4.2, "accelStrafe": 8.4, "accelUp": 8.9, "accelDown": 4.7,
+            "accelAbFwd": 18.5, "accelAbRetro": 5.8, "accelAbStrafe": 11.4, "accelAbUp": 11.6, "accelAbDown": 6.3,
+            "accelTestedDate": "2026-04-01", "accelCheckedBy": "Zimmy",
+        },
+        "aegs_sabre_firebird": {
+            "accelFwd": 14.6, "accelRetro": 3.4, "accelStrafe": 4.3, "accelUp": 5.8, "accelDown": 3.4,
+            "accelAbFwd": 24.8, "accelAbRetro": 4.4, "accelAbStrafe": 5.9, "accelAbUp": 7.9, "accelAbDown": 4.6,
+            "accelTestedDate": "2026-04-01", "accelCheckedBy": "Zimmy",
+        },
     }
     accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
     for ship in ships.values():
@@ -4398,6 +4467,26 @@ def main(mode: str = "live"):
     for cls, overrides in ROCKET_POD_OVERRIDES.items():
         if cls in items:
             items[cls].update(overrides)
+
+    # Beam weapon overrides (damage not extractable from standard ammo chain)
+    BEAM_OVERRIDES = {
+        "hrst_laserbeam_bespoke": {
+            "damage": {"physical": 0, "energy": 15000, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
+            "alphaDamage": 15000, "dps": 15000, "fireRate": 60,
+            "penetrationDistance": 29.4, "penetrationMinRadius": 1.47, "penetrationMaxRadius": 2.94,
+        },
+    }
+    for cls, overrides in BEAM_OVERRIDES.items():
+        if cls in items:
+            items[cls].update(overrides)
+
+    # Name overrides for items with auto-generated names
+    NAME_OVERRIDES = {
+        "mrck_s10_aegs_idris_nose_s12_torpedo": 'HMF-T12 "Hammerfall" Torpedo Launcher',
+    }
+    for cls, name in NAME_OVERRIDES.items():
+        if cls in items:
+            items[cls]["name"] = name
 
     MODULE_META = {
         "rsi_aurora_mk2_module_cargo":              {"cargoBonus": 6},
@@ -4484,6 +4573,7 @@ def main(mode: str = "live"):
             item["name"] = DISPLAY_NAME_FIXES[item["name"]]
     SKIP_SHIPS = {
         "AEGS_Idris_FW_25", "RSI_Bengal",               # capitals — no usable loadout data
+        "aegs_idris_m_pu",                               # NPC PU variant of Idris-M
         "EA_destructable_probe", "Low_Poly_Ship",        # not real ships
         "probe_turret_1_a", "probe_comms_1_a",           # probes / turret entities
     }
