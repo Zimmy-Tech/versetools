@@ -2,15 +2,12 @@
   display: flex;
   width: 100%;
   justify-content: center;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .compact-shell {
   width: 100%;
   max-width: 420px;
-  padding: 10px;
-  padding-bottom: 80px;
+  padding: 10px 10px 80px;
   display: flex;
   flex-direction: column;
   gap: 8px;

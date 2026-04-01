@@ -19,6 +19,21 @@
   overflow: hidden;
 }
 
+/* Compact mode: unlock scrolling for mobile */
+.app-shell.compact-mode {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+
+  .main {
+    overflow: visible;
+  }
+
+  .content {
+    overflow: visible;
+  }
+}
+
 .welcome-overlay {
   position: fixed;
   inset: 0;
