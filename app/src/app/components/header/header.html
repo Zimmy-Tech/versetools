@@ -1,13 +1,13 @@
 <header>
-  <div class="logo" (click)="tabChange.emit('loadout')">Verse<span>Tools</span></div>
+  <div class="logo" (click)="navigateTo('loadout')">Verse<span>Tools</span></div>
 
   <nav class="nav-tabs">
-    <button class="nav-tab" [class.active]="activeTab() === 'loadout'"
-            (click)="tabChange.emit('loadout')">Loadout</button>
+    <button class="nav-tab" [class.active]="isTabActive('loadout')"
+            (click)="navigateTo('loadout')">Loadout</button>
 
     <!-- Cart -->
-    <button class="nav-tab" [class.active]="activeTab() === 'cart'"
-            (click)="tabChange.emit('cart')">Cart@if (data.cartCount() > 0) {
+    <button class="nav-tab" [class.active]="isTabActive('cart')"
+            (click)="navigateTo('cart')">Cart@if (data.cartCount() > 0) {
       <span class="cart-badge">{{ data.cartCount() }}</span>
     }</button>
 
@@ -18,8 +18,8 @@
       @if (shipToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of shipToolsTabs; track tab.id) {
-            <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
-                 (click)="selectGroupTab(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
+                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
@@ -32,22 +32,22 @@
       @if (missionsOpen()) {
         <div class="nav-dropdown">
           @for (tab of missionsTabs; track tab.id) {
-            <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
-                 (click)="selectGroupTab(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
+                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
     </div>
 
-    <!-- Industry Tools dropdown -->
+    <!-- Mining/Crafting dropdown -->
     <div class="nav-group">
       <button class="nav-tab" [class.active]="isIndustryToolActive()"
               (click)="toggleIndustryTools()">Mining/Crafting <span class="nav-arrow">{{ industryToolsOpen() ? '▾' : '▸' }}</span></button>
       @if (industryToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of industryToolsTabs; track tab.id) {
-            <div class="nav-drop-item" [class.active]="activeTab() === tab.id"
-                 (click)="selectGroupTab(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
+                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
@@ -55,8 +55,8 @@
 
     <!-- Remaining flat tabs -->
     @for (tab of ['submit', 'formulas', 'updates', 'changelog']; track tab) {
-      <button class="nav-tab" [class.active]="activeTab() === tab"
-              (click)="tabChange.emit($any(tab))">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : tab === 'updates' ? 'Updates' : 'Changelog' }}</button>
+      <button class="nav-tab" [class.active]="isTabActive(tab)"
+              (click)="navigateTo(tab)">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : tab === 'updates' ? 'Updates' : 'Changelog' }}</button>
     }
     <a class="nav-tab discord-tab" href="https://discord.gg/JSreWj6m6t" target="_blank" rel="noopener">Discord</a>
   </nav>
@@ -89,7 +89,7 @@
   </div>
 </header>
 
-@if (activeTab() === 'loadout' && data.isLoaded()) {
+@if (isOnLoadout() && data.isLoaded()) {
   <div class="loadout-bar">
     <button class="bulk-equip-btn" (click)="data.bulkEquipRequested.set(true)">BULK EQUIP</button>
     <button class="mil-a-btn" (click)="data.milARequested.set(true)">MILITARY A</button>

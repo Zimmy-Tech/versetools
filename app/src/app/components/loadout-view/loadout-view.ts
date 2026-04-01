@@ -1,4 +1,5 @@
-import { Component, computed, signal, output, effect } from '@angular/core';
+import { Component, computed, signal, effect, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
 import { DataService } from '../../services/data.service';
 import { DpsPanelComponent } from '../dps-panel/dps-panel';
@@ -14,7 +15,9 @@ import { Hardpoint, Item } from '../../models/db.models';
   styleUrl: './loadout-view.scss',
 })
 export class LoadoutViewComponent {
-  goToSubmit = output<void>();
+  goToSubmit(): void {
+    this.router.navigate(['/submit']);
+  }
 
   needsAccelData = computed(() => {
     const ship = this.data.selectedShip();
@@ -924,6 +927,7 @@ export class LoadoutViewComponent {
     return this.rotAtPower(blade?.roll ?? s?.roll, blade?.rollBoosted ?? s?.rollBoosted);
   });
 
+  private router = inject(Router);
   constructor(public data: DataService) {}
 
   signalPct(val: number | undefined): string {

@@ -1,26 +1,9 @@
 <div class="app-shell">
-  <app-header [activeTab]="activeTab()" (tabChange)="activeTab.set($event)" />
+  <app-header />
 
   <div class="main">
     <div class="content">
-      @switch (activeTab()) {
-        @case ('loadout')    { <app-loadout-view (goToSubmit)="activeTab.set('submit')" /> }
-        <!-- @case ('components') { <app-components-view /> } -->
-        @case ('compare')    { <app-compare-view /> }
-        @case ('finder')     { <app-component-finder /> }
-        @case ('cart')        { <app-cart-view /> }
-        @case ('missions')   { <app-missions-view /> }
-        @case ('blueprints') { <app-blueprint-finder /> }
-        @case ('crafting')   { <app-crafting-view /> }
-        @case ('rankings')  { <app-rankings-view /> }
-        @case ('armor')     { <app-armor-view /> }
-        @case ('submit')    { <app-submit-view /> }
-        @case ('mining')     { <app-mining-view /> }
-        @case ('miningSignatures') { <app-mining-signatures /> }
-        @case ('formulas')  { <app-formulas-view /> }
-        @case ('updates')   { <app-updates-view /> }
-        @case ('changelog') { <app-changelog-view /> }
-      }
+      <router-outlet />
     </div>
   </div>
 

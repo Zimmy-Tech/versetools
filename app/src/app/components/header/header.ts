@@ -1,14 +1,25 @@
-import { Component, output, input, signal, computed, HostListener, ElementRef } from '@angular/core';
+import { Component, signal, computed, HostListener, OnInit, OnDestroy, inject } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
 export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
+// Map tab IDs to route paths
+const TAB_ROUTES: Record<string, string> = {
+  miningSignatures: 'mining-signatures',
+};
+
+function tabToRoute(id: string): string {
+  return TAB_ROUTES[id] ?? id;
+}
+
 interface StoredLoadout {
   name: string;
   shipClassName: string;
   shipName: string;
-  /** Maps slotId → item className */
   items: Record<string, string>;
   powerAlloc: Record<string, number>;
   weaponsPower: number;
@@ -26,9 +37,20 @@ const STORAGE_KEY = 'versedb_loadouts';
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class HeaderComponent {
-  activeTab = input.required<TabName>();
-  tabChange = output<TabName>();
+export class HeaderComponent implements OnInit, OnDestroy {
+  private routerSub?: Subscription;
+  private _router = inject(Router);
+  currentUrl = signal(this._router.url);
+
+  ngOnInit(): void {
+    this.routerSub = this._router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd)
+    ).subscribe(e => this.currentUrl.set(e.urlAfterRedirects));
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
+  }
 
   readonly shipToolsTabs: { id: TabName; label: string }[] = [
     { id: 'rankings', label: 'Flight Performance' },
@@ -52,9 +74,18 @@ export class HeaderComponent {
   missionsOpen = signal(false);
   industryToolsOpen = signal(false);
 
-  isShipToolActive = computed(() => this.shipToolsTabs.some(t => t.id === this.activeTab()));
-  isMissionsActive = computed(() => this.missionsTabs.some(t => t.id === this.activeTab()));
-  isIndustryToolActive = computed(() => this.industryToolsTabs.some(t => t.id === this.activeTab()));
+  isTabActive(id: string): boolean {
+    return this.currentUrl() === '/' + tabToRoute(id);
+  }
+
+  isShipToolActive = computed(() => { this.currentUrl(); return this.shipToolsTabs.some(t => this.isTabActive(t.id)); });
+  isMissionsActive = computed(() => { this.currentUrl(); return this.missionsTabs.some(t => this.isTabActive(t.id)); });
+  isIndustryToolActive = computed(() => { this.currentUrl(); return this.industryToolsTabs.some(t => this.isTabActive(t.id)); });
+
+  isOnLoadout(): boolean {
+    const url = this.currentUrl();
+    return url === '/' || url === '/loadout';
+  }
 
   private closeAllGroups(): void {
     this.shipToolsOpen.set(false);
@@ -76,14 +107,13 @@ export class HeaderComponent {
     this.closeAllGroups();
     this.industryToolsOpen.set(open);
   }
-  selectGroupTab(id: TabName): void {
-    this.tabChange.emit(id);
+  navigateTo(id: string): void {
+    this._router.navigate(['/' + tabToRoute(id)]);
     this.closeAllGroups();
   }
 
   @HostListener('document:click', ['$event'])
   onDocClick(e: MouseEvent): void {
-    // Close dropdowns when clicking outside nav-group elements
     const target = e.target as HTMLElement;
     if (!target.closest('.nav-group')) {
       this.closeAllGroups();
@@ -149,7 +179,6 @@ export class HeaderComponent {
     for (const [slotId, item] of Object.entries(loadout)) {
       if (item) items[slotId] = item.className;
     }
-    // Compute peak DPS and total alpha from all guns in loadout
     let peakDps = 0;
     let totalAlpha = 0;
     for (const item of Object.values(loadout)) {
@@ -181,9 +210,7 @@ export class HeaderComponent {
     if (!stored) return;
     const ship = this.data.ships().find(s => s.className === stored.shipClassName);
     if (!ship) return;
-    // Select ship first (resets loadout to defaults)
     this.data.selectShip(ship);
-    // Rebuild loadout from stored classNames
     const allItems = this.data.items();
     const rebuilt: Record<string, Item> = {};
     for (const [slotId, cls] of Object.entries(stored.items)) {
