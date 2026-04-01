@@ -198,7 +198,7 @@
             <div class="stats-block-body">
             @if (data.selectedShip()!.totalHp) {
               <div class="flight-group">
-                <div class="flight-group-label">Hull (HP)</div>
+                <div class="flight-group-label">Hull (HP) <button class="hull-tree-btn" (click)="hullTreeOpen.set(true)">&#9776; PARTS</button></div>
                 <div class="flight-stat">
                   <span class="fs-label">Total</span>
                   <span class="fs-val">{{ data.selectedShip()!.totalHp }}</span>
@@ -766,6 +766,41 @@
           <div class="bulk-empty">No {{ bulkEquipTab() === 'guns' ? 'weapons' : 'missiles' }} found for this size</div>
         }
       </div>
+    </div>
+  }
+
+  <!-- Hull Parts Tree -->
+  @if (hullTreeOpen() && data.selectedShip(); as ship) {
+    <div class="focus-overlay" (click)="hullTreeOpen.set(false)"></div>
+    <div class="hull-tree-panel">
+      <div class="hull-tree-header">
+        <span class="hull-tree-title">{{ ship.name }} — Structure</span>
+        <span class="hull-tree-close" (click)="hullTreeOpen.set(false)">&#x2715;</span>
+      </div>
+
+      <!-- Legend -->
+      <div class="hull-tree-legend">
+        <span class="htl-item"><span class="ht-icon vital">&#10022;</span> Vital</span>
+        <span class="htl-item"><span class="ht-icon secondary">&#9900;</span> Secondary</span>
+        <span class="htl-item"><span class="ht-icon breakable">&#8644;</span> Breakable</span>
+        <span class="htl-item"><span class="ht-icon sub">&#8866;</span> SubPart</span>
+        <span class="htl-item"><span class="ht-icon thruster">&#8759;</span> Thruster</span>
+      </div>
+
+      <!-- Tree -->
+      <div class="hull-tree-body">
+        @if (getVitalPartsList(ship).length) {
+          @for (entry of getVitalPartsList(ship); track entry.name) {
+            <div class="ht-row" [class]="'depth-' + entry.depth">
+              <span class="ht-icon" [class]="entry.category">{{ entry.icon }}</span>
+              <span class="ht-name">{{ entry.name }}</span>
+              <span class="ht-hp">{{ entry.hp.toLocaleString() }} HP</span>
+            </div>
+          }
+        }
+      </div>
+
+      <div class="hull-tree-footer" (click)="hullTreeOpen.set(false)">CLOSE</div>
     </div>
   }
 }

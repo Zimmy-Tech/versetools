@@ -496,24 +496,145 @@ def parse_vehicle_xml(xml_path, loc):
             flight_spool_delay = safe_float(v)
             break
 
-    # Hull HP: sum of all Part.damageMax; body HP is the "Body" part
+    # Hull HP: build full parts tree with hierarchy
     total_hp = 0.0
     body_hp = 0.0
-    vital_parts = {}
-    for part in root.iter("Part"):
-        dm = part.get("damageMax")
-        if not dm:
-            continue
-        hp_val = safe_float(dm)
-        total_hp += hp_val
-        name = part.get("name", "")
-        if name.lower() == "body":
-            body_hp = hp_val
-        # Collect named structural parts (skip sub-flaps etc.)
-        if name and "_Flap" not in name and "_Tip" not in name:
+    vital_parts = {}  # flat compat dict
+    hull_parts_tree = []  # full tree: [{name, hp, category, children: [...]}]
+
+    def _classify_part(name, cls, hp, depth, part_el, is_vital):
+        nl = name.lower()
+        if "thruster" in nl:
+            return "thruster"
+        if is_vital:
+            return "vital"
+        # Direct children of vital part are secondary structural parts
+        if depth == 1:
+            return "secondary"
+        # Deeper parts: breakable if they have detach data, sub otherwise
+        has_detach = part_el is not None and part_el.get("detachRatio") is not None
+        if has_detach:
+            return "breakable"
+        return "sub"
+
+    def _walk_parts(parent_el, depth=0):
+        nodes = []
+        for part in parent_el.findall("Part"):
+            name = part.get("name", "")
+            cls = part.get("class", "")
+            dm = part.get("damageMax")
+
+            # Check for thruster ItemPorts — look up HP from default loadout
+            is_thruster_port = (cls == "ItemPort" and "thruster" in name.lower()
+                               and name.lower().startswith("hardpoint_thruster"))
+            thruster_hp = 0
+            if is_thruster_port:
+                # Match hardpoint name to cached thruster entity by pattern
+                # e.g. hardpoint_thruster_main_left → {ship}_thruster_main
+                hp_suffix = name.lower().replace("hardpoint_thruster_", "")
+                # Strip directional suffixes for matching
+                for strip in ("_left", "_right", "_top", "_bottom", "_side",
+                              "_front_left_top", "_front_left_side",
+                              "_front_right_top", "_front_right_side"):
+                    if hp_suffix.endswith(strip.replace("_", "")):
+                        hp_suffix = hp_suffix[:len(hp_suffix)-len(strip.replace("_",""))]
+                        break
+                # Try matching against cache keys
+                cn_lower = class_name.lower()
+                for thr_name, thr_hp in _thruster_hp_cache.items():
+                    # e.g. aegs_gladius_thruster_main matches hardpoint_thruster_main_left
+                    thr_suffix = thr_name.replace(cn_lower + "_thruster_", "")
+                    if hp_suffix.startswith(thr_suffix) or thr_suffix.startswith(hp_suffix):
+                        thruster_hp = thr_hp
+                        break
+                # Also try exact loadout match
+                if thruster_hp == 0:
+                    thruster_cls = default_loadout_raw.get(name, "")
+                    if thruster_cls and thruster_cls.lower() in _thruster_hp_cache:
+                        thruster_hp = _thruster_hp_cache[thruster_cls.lower()]
+
+            hp_val = safe_float(dm) if dm else thruster_hp
+            if hp_val <= 0 and not is_thruster_port:
+                # No HP — recurse into children but don't create a node
+                children_el = part.find("Parts")
+                if children_el is not None:
+                    nodes.extend(_walk_parts(children_el, depth))
+                nodes.extend(_walk_parts(part, depth))
+                continue
+
+            if hp_val > 0:
+                nonlocal total_hp
+                total_hp += hp_val if not is_thruster_port else 0  # thrusters don't count toward hull total
+
+            # Detect vital part: matches body_hp or has id=modPart_body
+            pid = part.get("id", "")
+            is_vital = (pid == "modPart_body" or
+                        (depth == 0 and hp_val > 0 and hp_val == body_hp) or
+                        (depth == 0 and name.lower() == "body"))
+            category = "thruster" if is_thruster_port else _classify_part(name, cls, hp_val, depth, part, is_vital)
+
+            # Recurse into children
+            children = []
+            children_el = part.find("Parts")
+            if children_el is not None:
+                children.extend(_walk_parts(children_el, depth + 1))
+            children.extend(_walk_parts(part, depth + 1))
+
+            node = {"name": name, "hp": round(hp_val), "category": category, "children": children}
+            nodes.append(node)
+
+            # Flat compat
             vital_parts[name] = hp_val
 
-    # If no explicit "body" part, use the largest HP part as vital
+        return nodes
+
+    # Build thruster HP cache from forge entities for this ship
+    _thruster_hp_cache = {}
+    _thruster_forge_dir = _SC / f"sc_data_forge_{DATA_MODE}/libs/foundry/records/entities/scitem/ships/thrusters"
+    if _thruster_forge_dir.exists():
+        cn_lower = class_name.lower()
+        for tf in _thruster_forge_dir.glob(f"{cn_lower}_thruster_*.xml.xml"):
+            try:
+                _content = tf.read_text(errors="replace")
+                _m = re.search(r'SHealthComponentParams[^>]*Health="([^"]+)"', _content)
+                if _m:
+                    _thruster_hp_cache[tf.stem.replace(".xml", "")] = safe_float(_m.group(1))
+            except Exception:
+                pass
+
+    # Map hardpoint names to thruster entity names via the DCB default loadout
+    default_loadout_raw = {}
+    for dl_el in root.iter("SEntityComponentDefaultLoadout"):
+        for item_el in dl_el.iter("SItemPortLoadoutManualParams"):
+            port = item_el.get("itemPortName", "")
+            ent = item_el.get("entityClassName", "")
+            if port and ent:
+                default_loadout_raw[port] = ent
+
+    root_parts = root.find(".//Parts")
+
+    # Pre-scan: find body_hp
+    # 1. Look for modPart_body or name="body" anywhere in the tree
+    # 2. If not found, use the first/largest damageMax part that has children with damageMax
+    if root_parts is not None:
+        for part in root.iter("Part"):
+            pid = part.get("id", "")
+            dm = part.get("damageMax")
+            if dm and (pid == "modPart_body" or part.get("name", "").lower() == "body"):
+                body_hp = safe_float(dm)
+                break
+        if body_hp == 0:
+            # Fallback: largest damageMax part at the first nesting level
+            for part in root.iter("Part"):
+                dm = part.get("damageMax")
+                if dm:
+                    hp_val = safe_float(dm)
+                    if hp_val > body_hp:
+                        body_hp = hp_val
+
+    if root_parts is not None:
+        hull_parts_tree = _walk_parts(root_parts)
+
     if body_hp == 0 and vital_parts:
         body_hp = max(vital_parts.values())
 
@@ -679,6 +800,7 @@ def parse_vehicle_xml(xml_path, loc):
         "totalHp":          round(total_hp, 0),
         "bodyHp":           round(body_hp, 0),
         "vitalParts":       {k: round(v, 0) for k, v in vital_parts.items() if k.lower() != "body"},
+        "hullPartsTree":    hull_parts_tree,
         # Vehicle XML modifications (keyed by modification name)
         "_modifications":   modifications,
         # modId → {tag, hpName, typeIdx} for applying modifications to hardpoints
@@ -2658,6 +2780,35 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
         except Exception:
             pass
     print(f"  Default loadouts extracted: {enriched} ships")
+
+    # Enrich thruster HP in hull parts tree using the now-available default loadout
+    _thruster_forge_dir = _SC / f"sc_data_forge_{DATA_MODE}/libs/foundry/records/entities/scitem/ships/thrusters"
+    _thruster_hp_global = {}  # cache: entity_class -> HP
+
+    def _enrich_thruster_hp(nodes, dl):
+        for node in nodes:
+            if node.get("category") == "thruster" and node.get("hp", 0) == 0:
+                hp_name = node["name"]
+                thruster_cls = dl.get(hp_name, "")
+                if thruster_cls:
+                    tcl = thruster_cls.lower()
+                    if tcl not in _thruster_hp_global:
+                        forge_path = _thruster_forge_dir / f"{thruster_cls}.xml.xml"
+                        if forge_path.exists():
+                            try:
+                                content = forge_path.read_text(errors="replace")
+                                m = re.search(r'SHealthComponentParams[^>]*Health="([^"]+)"', content)
+                                _thruster_hp_global[tcl] = safe_float(m.group(1)) if m else 0
+                            except Exception:
+                                _thruster_hp_global[tcl] = 0
+                        else:
+                            _thruster_hp_global[tcl] = 0
+                    node["hp"] = round(_thruster_hp_global[tcl])
+            _enrich_thruster_hp(node.get("children", []), dl)
+
+    for ship in ships.values():
+        if ship.get("hullPartsTree") and ship.get("defaultLoadout"):
+            _enrich_thruster_hp(ship["hullPartsTree"], ship["defaultLoadout"])
 
     # Normalize variant-suffixed loadout keys.
     # Some variants (e.g., Zeus CL) use port names like "hardpoint_cooler_left_cl"

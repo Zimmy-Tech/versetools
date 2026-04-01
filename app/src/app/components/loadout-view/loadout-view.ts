@@ -5,7 +5,7 @@ import { DataService } from '../../services/data.service';
 import { DpsPanelComponent } from '../dps-panel/dps-panel';
 import { HardpointSlotComponent } from '../hardpoint-slot/hardpoint-slot';
 import { PowerBarsComponent } from '../power-bars/power-bars';
-import { Hardpoint, Item } from '../../models/db.models';
+import { Hardpoint, Item, Ship } from '../../models/db.models';
 
 @Component({
   selector: 'app-loadout-view',
@@ -15,6 +15,33 @@ import { Hardpoint, Item } from '../../models/db.models';
   styleUrl: './loadout-view.scss',
 })
 export class LoadoutViewComponent {
+  hullTreeOpen = signal(false);
+
+  private readonly CATEGORY_ICONS: Record<string, string> = {
+    vital: '✦', secondary: '◌', breakable: '⇄', sub: '⊢', thruster: '∷',
+  };
+
+  getVitalPartsList(ship: Ship): { name: string; hp: number; depth: number; category: string; icon: string }[] {
+    const tree = (ship as any).hullPartsTree;
+    if (tree?.length) {
+      const result: { name: string; hp: number; depth: number; category: string; icon: string }[] = [];
+      const flatten = (nodes: any[], depth: number) => {
+        for (const n of nodes) {
+          const name = (n.name ?? '').replace(/hardpoint_/gi, '').replace(/_/g, ' ');
+          const cat = n.category ?? 'breakable';
+          result.push({ name, hp: n.hp ?? 0, depth, category: cat, icon: this.CATEGORY_ICONS[cat] ?? '⊢' });
+          if (n.children?.length) flatten(n.children, depth + 1);
+        }
+      };
+      flatten(tree, 0);
+      return result;
+    }
+    // Fallback to flat vitalParts
+    return Object.entries(ship.vitalParts ?? {}).map(([k, v]) => ({
+      name: k.replace(/_/g, ' '), hp: v as number, depth: 1, category: 'breakable', icon: '⇄',
+    }));
+  }
+
   goToSubmit(): void {
     this.router.navigate(['/submit']);
   }
