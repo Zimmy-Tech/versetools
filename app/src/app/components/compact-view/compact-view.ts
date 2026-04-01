@@ -370,6 +370,46 @@ export class CompactViewComponent implements OnInit, OnDestroy {
 
   sumCount = (acc: number, m: { count: number }) => acc + m.count;
 
+  /** Detailed missile data for ordnance visualizations */
+  getMissileDetails(s: Ship): { name: string; size: number; count: number; alpha: number; acq: string; speed: number; lockTime: number; lockMax: number; totalAlpha: number }[] {
+    const msls = [...(this.itemsByType().get('Missile') ?? [])];
+    const grouped = new Map<string, { name: string; size: number; count: number; alpha: number; acq: string; speed: number; lockTime: number; lockMax: number }>();
+    for (const m of msls) {
+      if (grouped.has(m.name)) grouped.get(m.name)!.count++;
+      else grouped.set(m.name, {
+        name: m.name, size: m.size ?? 0, count: 1,
+        alpha: m.alphaDamage ?? 0,
+        acq: (m.acquisition ?? m.subType ?? '').toUpperCase(),
+        speed: m.projectileSpeed ?? 0,
+        lockTime: m.lockTime ?? 0,
+        lockMax: m.lockRangeMax ?? 0,
+      });
+    }
+    return [...grouped.values()].map(g => ({ ...g, totalAlpha: g.alpha * g.count })).sort((a, b) => b.totalAlpha - a.totalAlpha);
+  }
+
+  getTotalMissileAlpha(s: Ship): number {
+    return this.getMissileDetails(s).reduce((sum, m) => sum + m.totalAlpha, 0);
+  }
+
+  getTotalMissileCount(s: Ship): number {
+    return this.getMissileDetails(s).reduce((sum, m) => sum + m.count, 0);
+  }
+
+  acqColor(acq: string): string {
+    if (acq.includes('INFRARED') || acq.includes('IR')) return '#ff6666';
+    if (acq.includes('ELECTRO') || acq.includes('EM')) return 'var(--accent)';
+    if (acq.includes('CROSS') || acq.includes('CS')) return '#f0a500';
+    return 'var(--text3)';
+  }
+
+  acqShort(acq: string): string {
+    if (acq.includes('INFRARED')) return 'IR';
+    if (acq.includes('ELECTRO')) return 'EM';
+    if (acq.includes('CROSS')) return 'CS';
+    return acq.substring(0, 2);
+  }
+
   fmt(val: number | null | undefined, decimals = 0): string {
     if (val == null) return '—';
     return decimals > 0 ? val.toFixed(decimals) : val.toLocaleString();

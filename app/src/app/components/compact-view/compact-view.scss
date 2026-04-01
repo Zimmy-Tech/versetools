@@ -777,6 +777,80 @@
 }
 .hg-lbl { font-family: 'Rajdhani', sans-serif; font-size: 8px; font-weight: 700; color: var(--text3); letter-spacing: 1.5px; }
 
+/* ── Ordnance Concepts ────────────────────── */
+
+/* Ordnance combo (salvo dots + info) */
+.ord-combo-row { display: flex; align-items: center; gap: 8px; padding: 6px 14px; }
+.ord-combo-dots { display: flex; flex-wrap: wrap; gap: 3px; min-width: 50px; }
+.ord-combo-info { flex: 1; }
+.ord-combo-top { display: flex; align-items: center; gap: 5px; }
+.ord-combo-acq { font-family: 'Share Tech Mono', monospace; font-size: 10px; font-weight: 700; }
+.ord-combo-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ord-combo-qty { font-family: 'Share Tech Mono', monospace; font-size: 12px; font-weight: 700; color: var(--accent); }
+.ord-combo-dmg { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text3); }
+
+.ord-summary {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 6px 14px;
+  margin: 4px 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.ord-summary-stat { display: flex; flex-direction: column; align-items: center; }
+.ord-summary-val { font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: 700; color: var(--text); }
+.ord-summary-lbl { font-family: 'Rajdhani', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; color: var(--text3); text-transform: uppercase; }
+
+/* 1. Salvo Grid */
+.ord-salvo { padding: 4px 0; }
+.ord-salvo-group { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.ord-salvo-dots { display: flex; flex-wrap: wrap; gap: 3px; min-width: 60px; }
+.ord-dot { border-radius: 3px; opacity: 0.8; transition: all 0.2s; }
+.ord-salvo-info { flex: 1; }
+.ord-salvo-name { font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 600; color: var(--text); display: block; }
+.ord-salvo-meta { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text3); }
+.ord-salvo-total { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text2); text-align: center; padding: 6px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; }
+
+/* 2. Strike Capacity */
+.ord-strike { padding: 4px 0; }
+.ord-strike-bar { display: flex; height: 20px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+.ord-strike-seg { transition: flex 0.3s; opacity: 0.8; }
+.ord-strike-legend { display: flex; justify-content: center; gap: 10px; padding: 4px 0; flex-wrap: wrap; }
+.ord-strike-lbl { font-family: 'Share Tech Mono', monospace; font-size: 10px; }
+.ord-strike-total { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text2); text-align: center; }
+
+/* 3. Missile Cards */
+.ord-cards { display: flex; flex-direction: column; gap: 4px; }
+.ord-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.ord-card-top { display: flex; align-items: center; gap: 6px; }
+.ord-card-acq { font-family: 'Share Tech Mono', monospace; font-size: 11px; font-weight: 700; min-width: 20px; }
+.ord-card-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+.ord-card-qty { font-family: 'Share Tech Mono', monospace; font-size: 12px; font-weight: 700; color: var(--accent); }
+.ord-card-stats {
+  display: flex;
+  gap: 8px;
+  margin-top: 3px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+}
+
+/* 4. Lock Envelope */
+.ord-envelope { padding: 4px 0; }
+.ord-env-row { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
+.ord-env-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; font-weight: 700; min-width: 36px; }
+.ord-env-track { flex: 1; height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.ord-env-fill { height: 100%; border-radius: 4px; opacity: 0.7; transition: width 0.3s; }
+.ord-env-val { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text3); min-width: 40px; text-align: right; }
+
 .cv-boost-toggle {
   display: flex;
   justify-content: center;

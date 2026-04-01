@@ -98,13 +98,49 @@
         }
 
         <!-- Ordnance -->
-        @if (getMissiles(s).length) {
+        @if (getMissileDetails(s).length) {
           <div class="clean-section-title">Ordnance</div>
-          <div class="clean-grid">
-            <div class="clean-stat"><span class="clean-stat-v" style="color:#ff6666">{{ fmt(getMissileTotalAlpha(s)) }}</span><span class="clean-stat-k">Msl Alpha</span></div>
-            <div class="clean-stat"><span class="clean-stat-v">{{ getMissiles(s).reduce(sumCount, 0) }}</span><span class="clean-stat-k">Count</span></div>
-            @if (getMissileLockRange(s); as lr) {
-              <div class="clean-stat"><span class="clean-stat-v">{{ (lr.max / 1000).toFixed(1) }}km</span><span class="clean-stat-k">Lock Max</span></div>
+
+          <!-- Salvo grid + info per missile type -->
+          @for (m of getMissileDetails(s); track m.name) {
+            <div class="ord-combo-row">
+              <div class="ord-combo-dots">
+                @for (dot of [].constructor(m.count); track $index) {
+                  <div class="ord-dot" [style.background]="acqColor(m.acq)" [style.width.px]="8 + m.size * 3" [style.height.px]="8 + m.size * 3"></div>
+                }
+              </div>
+              <div class="ord-combo-info">
+                <div class="ord-combo-top">
+                  <span class="ord-combo-acq" [style.color]="acqColor(m.acq)">{{ acqShort(m.acq) }}</span>
+                  <span class="ord-combo-name">{{ m.name }}</span>
+                  <span class="ord-combo-qty">×{{ m.count }}</span>
+                </div>
+                <span class="ord-combo-dmg">{{ m.totalAlpha.toLocaleString() }} dmg</span>
+              </div>
+            </div>
+          }
+
+          <div class="ord-summary">
+            <div class="ord-summary-stat">
+              <span class="ord-summary-val" style="color:#ff6666">{{ fmtCompact(getTotalMissileAlpha(s)) }}</span>
+              <span class="ord-summary-lbl">SALVO DMG</span>
+            </div>
+            <div class="ord-summary-stat">
+              <span class="ord-summary-val">{{ getTotalMissileCount(s) }}</span>
+              <span class="ord-summary-lbl">MISSILES</span>
+            </div>
+          </div>
+
+          <!-- Lock envelope -->
+          <div style="padding: 4px 14px;">
+            @for (m of getMissileDetails(s); track m.name) {
+              <div class="ord-env-row">
+                <span class="ord-env-label" [style.color]="acqColor(m.acq)">{{ acqShort(m.acq) }} S{{ m.size }}</span>
+                <div class="ord-env-track">
+                  <div class="ord-env-fill" [style.width.%]="m.lockMax / 300" [style.background]="acqColor(m.acq)"></div>
+                </div>
+                <span class="ord-env-val">{{ (m.lockMax / 1000).toFixed(1) }}km</span>
+              </div>
             }
           </div>
         }
@@ -458,5 +494,7 @@
 
 
   </div>
+
+
   }
 </div>
