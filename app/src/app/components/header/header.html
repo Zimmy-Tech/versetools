@@ -1,8 +1,8 @@
-<header [class.mobile-header]="isMobileCompact()">
+<header [class.mobile-header]="isMobile()">
   <div class="logo" (click)="navigateTo('loadout')">Verse<span>Tools</span></div>
 
-  <!-- Mobile hamburger (compact route only) -->
-  @if (isMobileCompact()) {
+  <!-- Mobile hamburger (narrow viewport) -->
+  @if (isMobile()) {
     <button class="hamburger-btn" (click)="hamburgerOpen.set(!hamburgerOpen())">
       <span class="hamburger-line" [class.open]="hamburgerOpen()"></span>
       <span class="hamburger-line" [class.open]="hamburgerOpen()"></span>
@@ -10,7 +10,7 @@
     </button>
   }
 
-  <nav class="nav-tabs" [class.mobile-hidden]="isMobileCompact()">
+  <nav class="nav-tabs" [class.mobile-hidden]="isMobile()">
     <button class="nav-tab" [class.active]="isTabActive('loadout')"
             (click)="navigateTo('loadout')">Loadout</button>
 
@@ -101,7 +101,7 @@
 </header>
 
 <!-- Mobile slide-out nav (compact mode only) -->
-@if (isMobileCompact() && hamburgerOpen()) {
+@if (isMobile() && hamburgerOpen()) {
   <div class="mobile-overlay" (click)="hamburgerOpen.set(false)"></div>
   <div class="mobile-nav">
     <div class="mobile-nav-title">NAVIGATE</div>
@@ -129,7 +129,7 @@
   </div>
 }
 
-@if (isOnLoadout() && data.isLoaded()) {
+@if (isOnLoadout() && data.isLoaded() && !isMobile()) {
   <div class="loadout-bar">
     <button class="bulk-equip-btn" (click)="data.bulkEquipRequested.set(true)">BULK EQUIP</button>
     <button class="mil-a-btn" (click)="data.milARequested.set(true)">MILITARY A</button>

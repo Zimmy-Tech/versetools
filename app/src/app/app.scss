@@ -32,6 +32,21 @@
   }
 }
 
+/* Mobile: allow content to scroll on all pages */
+@media (max-width: 767px) {
+  .app-shell {
+    .main {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .content {
+      overflow: visible;
+      display: block;
+    }
+  }
+}
+
 .welcome-overlay {
   position: fixed;
   inset: 0;
