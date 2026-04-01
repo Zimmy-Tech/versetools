@@ -779,15 +779,18 @@
 
 /* ── Ordnance Concepts ────────────────────── */
 
-/* Ordnance combo (salvo dots + info) */
-.ord-combo-row { display: flex; align-items: center; gap: 8px; padding: 6px 14px; }
-.ord-combo-dots { display: flex; flex-wrap: wrap; gap: 3px; min-width: 50px; }
-.ord-combo-info { flex: 1; }
-.ord-combo-top { display: flex; align-items: center; gap: 5px; }
-.ord-combo-acq { font-family: 'Share Tech Mono', monospace; font-size: 10px; font-weight: 700; }
-.ord-combo-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ord-combo-qty { font-family: 'Share Tech Mono', monospace; font-size: 12px; font-weight: 700; color: var(--accent); }
-.ord-combo-dmg { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text3); }
+/* Ordnance single-line rows */
+.ord-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+.ord-line-acq { font-family: 'Share Tech Mono', monospace; font-size: 10px; font-weight: 700; min-width: 18px; }
+.ord-line-name { font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 600; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ord-line-qty { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--accent); }
+.ord-line-dmg { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text2); flex-shrink: 0; }
 
 .ord-summary {
   display: flex;

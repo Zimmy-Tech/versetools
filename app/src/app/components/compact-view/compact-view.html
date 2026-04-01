@@ -101,25 +101,6 @@
         @if (getMissileDetails(s).length) {
           <div class="clean-section-title">Ordnance</div>
 
-          <!-- Salvo grid + info per missile type -->
-          @for (m of getMissileDetails(s); track m.name) {
-            <div class="ord-combo-row">
-              <div class="ord-combo-dots">
-                @for (dot of [].constructor(m.count); track $index) {
-                  <div class="ord-dot" [style.background]="acqColor(m.acq)" [style.width.px]="8 + m.size * 3" [style.height.px]="8 + m.size * 3"></div>
-                }
-              </div>
-              <div class="ord-combo-info">
-                <div class="ord-combo-top">
-                  <span class="ord-combo-acq" [style.color]="acqColor(m.acq)">{{ acqShort(m.acq) }}</span>
-                  <span class="ord-combo-name">{{ m.name }}</span>
-                  <span class="ord-combo-qty">×{{ m.count }}</span>
-                </div>
-                <span class="ord-combo-dmg">{{ m.totalAlpha.toLocaleString() }} dmg</span>
-              </div>
-            </div>
-          }
-
           <div class="ord-summary">
             <div class="ord-summary-stat">
               <span class="ord-summary-val" style="color:#ff6666">{{ fmtCompact(getTotalMissileAlpha(s)) }}</span>
@@ -130,6 +111,14 @@
               <span class="ord-summary-lbl">MISSILES</span>
             </div>
           </div>
+
+          @for (m of getMissileDetails(s); track m.name) {
+            <div class="ord-line">
+              <span class="ord-line-acq" [style.color]="acqColor(m.acq)">{{ acqShort(m.acq) }}</span>
+              <span class="ord-line-name">{{ m.name }} <span class="ord-line-qty">x{{ m.count }}</span></span>
+              <span class="ord-line-dmg">{{ m.totalAlpha.toLocaleString() }}</span>
+            </div>
+          }
 
           <!-- Lock envelope -->
           <div style="padding: 4px 14px;">
