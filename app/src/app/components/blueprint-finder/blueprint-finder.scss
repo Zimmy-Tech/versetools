@@ -467,3 +467,83 @@
   padding: 1px 6px;
   border-radius: 2px;
 }
+
+/* ── Mobile ─────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .bp-layout {
+    flex-direction: column;
+    gap: 0;
+    padding: 0 8px;
+    margin: 8px 0;
+    overflow: visible;
+  }
+
+  .bp-sidebar {
+    width: 100%;
+    min-width: 0;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 8px;
+    gap: 8px;
+    overflow: visible;
+  }
+
+  .sb-buttons { gap: 4px; }
+  .sb-btn { padding: 4px 8px; font-size: 13px; min-height: 36px; }
+
+  .filter-input, .filter-select {
+    font-size: 14px;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+
+  .bp-main { overflow: visible; }
+
+  .bp-list {
+    grid-template-columns: 1fr;
+    padding: 8px 4px 60px;
+    overflow: visible;
+  }
+
+  .bp-card {
+    border-radius: 6px;
+  }
+
+  .bp-header {
+    padding: 10px 12px;
+    min-height: 44px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .bp-name { font-size: 14px; white-space: normal; }
+  .bp-type { font-size: 10px; }
+  .bp-mission-count { font-size: 11px; }
+
+  .bpm-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    padding: 8px 12px;
+    min-height: 44px;
+  }
+
+  .bpm-title-link {
+    white-space: normal;
+    font-size: 13px;
+  }
+
+  .bpm-system, .bpm-cat, .bpm-reward {
+    font-size: 11px;
+  }
+
+  .bpm-reward { text-align: left; }
+
+  .popout-panel {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .popout-title { font-size: 15px; }
+  .popout-close { padding: 8px 12px; font-size: 20px; }
+}

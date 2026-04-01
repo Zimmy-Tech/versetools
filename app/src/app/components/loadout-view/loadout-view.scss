@@ -1203,3 +1203,70 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
   transition: all 0.15s;
   &:hover { background: rgba(74, 255, 122, 0.15); border-color: var(--accent); }
 }
+
+@media (max-width: 767px) {
+  :host { overflow: visible; }
+
+  .loadout-builder {
+    overflow: visible;
+  }
+
+  .loadout-main {
+    flex-direction: column;
+    padding: 8px;
+    gap: 8px;
+    overflow: visible;
+  }
+
+  .ship-side-panel {
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .loadout-right {
+    overflow: visible;
+  }
+
+  .three-columns {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .loadout-columns {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .stats-column {
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .hardpoints-scroll {
+    padding-right: 0;
+  }
+
+  .focus-popout {
+    width: 95vw;
+    max-height: 90vh;
+  }
+
+  .bulk-equip-panel {
+    width: 95%;
+    max-width: 95%;
+  }
+
+  .loadout-controls {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .btn-cart-add, .btn-reset {
+    min-height: 40px;
+    padding: 6px 12px;
+  }
+
+  .slot-group-label { font-size: 14px; }
+}

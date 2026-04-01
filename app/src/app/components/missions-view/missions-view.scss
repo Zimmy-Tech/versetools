@@ -676,3 +676,81 @@
   color: var(--text3);
   margin-top: 4px;
 }
+
+@media (max-width: 767px) {
+  :host { overflow: visible; }
+
+  .missions-view {
+    flex-direction: column;
+    padding: 10px;
+    gap: 8px;
+    overflow: visible;
+  }
+
+  .filter-bar {
+    width: 100%;
+    min-width: 0;
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px 10px;
+  }
+
+  .filter-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .filter-select, .filter-input {
+    width: auto;
+    min-height: 40px;
+    font-size: 14px;
+  }
+
+  .filter-clear {
+    width: auto;
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  .filter-btn-bp {
+    min-height: 40px;
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .mission-list {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-header {
+    padding: 8px 10px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .mission-title { font-size: 15px; }
+  .reward-val { font-size: 15px; }
+
+  .mission-meta {
+    padding: 0 10px 6px;
+    gap: 6px;
+  }
+
+  .popout-panel {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .popout-tab {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .pager-btn {
+    min-height: 40px;
+    padding: 6px 12px;
+  }
+}

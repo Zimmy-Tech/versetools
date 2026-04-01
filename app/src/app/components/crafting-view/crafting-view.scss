@@ -984,3 +984,81 @@
   &.unlawful { color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.3); }
 }
 
+@media (max-width: 767px) {
+  :host { overflow: visible; }
+
+  .crafting-layout {
+    flex-direction: column;
+    padding: 0 10px;
+    gap: 8px;
+    overflow: visible;
+  }
+
+  .craft-sidebar {
+    width: 100%;
+    min-width: 0;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    padding: 8px;
+  }
+
+  .craft-main {
+    overflow: visible;
+  }
+
+  .recipe-area {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .recipe-list {
+    grid-template-columns: 1fr;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .tally-panel {
+    width: 100%;
+    order: -1;
+  }
+
+  .filter-select, .filter-input {
+    min-height: 40px;
+    font-size: 14px;
+  }
+
+  .sb-btn {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .filter-clear {
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  .pager-btn {
+    min-height: 40px;
+    padding: 6px 12px;
+  }
+
+  .popout-panel {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .qty-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .add-materials-btn {
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .rc-name { font-size: 15px; }
+}
+

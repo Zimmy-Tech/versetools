@@ -260,3 +260,54 @@ h3 {
   font-size: 18px;
   color: var(--text);
 }
+
+@media (max-width: 767px) {
+  .body {
+    padding: 12px 10px 30px;
+  }
+
+  .grid-panel, .detail-panel {
+    max-width: 100%;
+  }
+
+  .card-grid {
+    gap: 6px;
+  }
+
+  .location-card {
+    min-width: 0;
+    flex: 1 1 140px;
+    padding: 10px 8px;
+  }
+
+  .card-grid .location-card {
+    min-width: 0;
+  }
+
+  .mt-header, .mt-row {
+    grid-template-columns: 1fr 70px 50px 50px 50px;
+    gap: 4px;
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+
+  .ore-header, .ore-row {
+    grid-template-columns: 1fr 70px 50px 70px 50px;
+  }
+
+  .mt-header {
+    font-size: 9px;
+  }
+
+  h2 { font-size: 16px; }
+
+  .stat-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 6px;
+  }
+
+  .stat-card { padding: 8px; }
+  .stat-val { font-size: 16px; }
+
+  .ore-browse-card { min-width: 0; }
+}

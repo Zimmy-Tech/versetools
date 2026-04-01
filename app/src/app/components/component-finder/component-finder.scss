@@ -225,3 +225,36 @@
   font-size: 14px;
   color: var(--text3);
 }
+
+@media (max-width: 767px) {
+  :host { overflow: visible; }
+
+  .finder-view {
+    padding: 10px;
+    gap: 10px;
+    overflow: visible;
+    max-width: 100%;
+  }
+
+  .filter-bar {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .filter-input {
+    width: 100%;
+    min-height: 40px;
+    font-size: 14px;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-results { max-height: 250px; }
+
+  .search-result-row {
+    padding: 10px 12px;
+    min-height: 44px;
+  }
+}

@@ -97,3 +97,31 @@
   color: var(--text);
   line-height: 1.5;
 }
+
+@media (max-width: 767px) {
+  .body {
+    padding: 14px 10px 30px;
+  }
+
+  .update-block {
+    max-width: 100%;
+    margin-bottom: 18px;
+  }
+
+  .update-header {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+  }
+
+  .update-version { font-size: 18px; }
+  .update-date { font-size: 12px; }
+
+  .highlight {
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+
+  .update-text { font-size: 12px; }
+}

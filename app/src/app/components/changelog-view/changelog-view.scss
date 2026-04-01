@@ -203,3 +203,44 @@
   &.buffed { color: #4aff7a; }
   &.nerfed { color: #ff6b6b; }
 }
+
+@media (max-width: 767px) {
+  :host { overflow: visible; }
+
+  .changelog-view {
+    padding: 10px;
+    gap: 8px;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .version-bar {
+    flex-wrap: wrap;
+    padding: 6px 10px;
+    gap: 6px;
+  }
+
+  .version-select {
+    min-height: 40px;
+    font-size: 14px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .field-name { margin-bottom: 2px; }
+
+  .field-old, .field-arrow, .field-new {
+    text-align: left;
+    display: inline;
+  }
+
+  .change-card { padding: 6px 8px; }
+  .change-name { font-size: 14px; }
+
+  .changelog-body { padding-right: 0; }
+}
