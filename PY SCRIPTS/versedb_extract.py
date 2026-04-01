@@ -4115,6 +4115,19 @@ def main(mode: str = "live"):
         "aegs_vanguard_harbinger": {"hardpoint_weapon_emp"},
         "aegs_vanguard_hoplite": {"hardpoint_weapon_emp"},
         "rsi_scorpius_antares": {"hardpoint_remote_turret", "hardpoint_turret_missile_camera"},
+        "rsi_perseus": {
+            "hardpoint_turret_torpedo_camera",
+            "hardpoint_torpedo_storage_left_01", "hardpoint_torpedo_storage_left_02",
+            "hardpoint_torpedo_storage_left_03", "hardpoint_torpedo_storage_left_04",
+            "hardpoint_torpedo_storage_left_05", "hardpoint_torpedo_storage_left_06",
+            "hardpoint_torpedo_storage_left_07", "hardpoint_torpedo_storage_left_08",
+            "hardpoint_torpedo_storage_left_09", "hardpoint_torpedo_storage_left_10",
+            "hardpoint_torpedo_storage_right_01", "hardpoint_torpedo_storage_right_02",
+            "hardpoint_torpedo_storage_right_03", "hardpoint_torpedo_storage_right_04",
+            "hardpoint_torpedo_storage_right_05", "hardpoint_torpedo_storage_right_06",
+            "hardpoint_torpedo_storage_right_07", "hardpoint_torpedo_storage_right_08",
+            "hardpoint_torpedo_storage_right_09", "hardpoint_torpedo_storage_right_10",
+        },
         "aegs_idris_m": {"hardpoint_camera_turret_lower", "hardpoint_camera_turret_upper",
                          "hardpoint_rear_turret_tail", "hardpoint_rear_turret_tail_cap"},
         "aegs_idris_p": {"hardpoint_camera_turret_lower", "hardpoint_camera_turret_upper",
@@ -4483,6 +4496,8 @@ def main(mode: str = "live"):
     # Name overrides for items with auto-generated names
     NAME_OVERRIDES = {
         "mrck_s10_aegs_idris_nose_s12_torpedo": 'HMF-T12 "Hammerfall" Torpedo Launcher',
+        "mrck_s05_rsi_perseus_torpedo_l": "5105 Torpedo Rack",
+        "mrck_s05_rsi_perseus_torpedo_r": "5105 Torpedo Rack",
     }
     for cls, name in NAME_OVERRIDES.items():
         if cls in items:
