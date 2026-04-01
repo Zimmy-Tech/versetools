@@ -4387,6 +4387,22 @@ def main(mode: str = "live"):
         if "hardpoint_nose_railgun" not in idris_p_dl:
             idris_p_dl["hardpoint_nose_railgun"] = "hrst_laserbeam_bespoke"
 
+    # Hornet Mk I variants: nose turret loadout missing from DCB
+    # The class_4_nose hardpoint should have the nose turret with 2× S1 laser repeaters
+    _hornet_mk1_nose = {
+        "hardpoint_class_4_nose": "anvl_hornet_f7c_nose_turret",
+        "hardpoint_class_4_nose.hardpoint_class_1_left": "klwe_laserrepeater_s1",
+        "hardpoint_class_4_nose.hardpoint_class_1_right": "klwe_laserrepeater_s1",
+    }
+    for hcls in ("anvl_hornet_f7c", "anvl_hornet_f7c_wildfire",
+                 "anvl_hornet_f7cr", "anvl_hornet_f7cs",
+                 "anvl_hornet_f7c_mk2", "anvl_hornet_f7cr_mk2", "anvl_hornet_f7cs_mk2"):
+        if hcls in ships:
+            dl = ships[hcls].setdefault("defaultLoadout", {})
+            for k, v in _hornet_mk1_nose.items():
+                if k not in dl:
+                    dl[k] = v
+
     # Avenger Titan Renegade: wing sub-slots have missiles instead of guns in DCB loadout
     if "aegs_avenger_titan_renegade" in ships:
         ren_dl = ships["aegs_avenger_titan_renegade"].setdefault("defaultLoadout", {})
@@ -4777,6 +4793,7 @@ def main(mode: str = "live"):
     SKIP_SHIPS = {
         "AEGS_Idris_FW_25", "RSI_Bengal",               # capitals — no usable loadout data
         "aegs_idris_m_pu",                               # NPC PU variant of Idris-M
+        "ANVL_Hornet_F7A_MK1",                           # NPC F7A variant (no loadout)
         "EA_destructable_probe", "Low_Poly_Ship",        # not real ships
         "probe_turret_1_a", "probe_comms_1_a",           # probes / turret entities
     }
