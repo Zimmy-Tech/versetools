@@ -73,6 +73,9 @@
     @if (totalShieldHP() > 0) {
       <div>
         <div class="section-title">Shields</div>
+        <div class="stat-row" style="justify-content: center; padding: 2px 0 4px;">
+          <span class="stat-label" style="color: var(--gold); font-size: 9px; letter-spacing: 1.5px;">RESISTS EST — IN-GAME TEST IN PROGRESS</span>
+        </div>
         <div class="stat-block">
           <div class="stat-row" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
             <span class="stat-label">Total HP Pool</span>
@@ -93,17 +96,17 @@
             <span class="mono">{{ shieldFaceType() }}</span>
           </div>
           @if (shieldResists(); as r) {
-            <div class="stat-row" title="Physical damage resistance range (min at low power, max at full power). Negative = takes more damage.">
-              <span class="stat-label">Phys Resist</span>
-              <span class="mono">{{ (r.physMin * 100).toFixed(0) }}% – {{ (r.physMax * 100).toFixed(0) }}%</span>
+            <div class="stat-row" title="Physical: shield takes this % of incoming damage. Remaining bleeds through to hull.">
+              <span class="stat-label">Phys → Shield</span>
+              <span class="mono">{{ (r.physToShield * 100).toFixed(0) }}% dmg, {{ (r.physToHull * 100).toFixed(0) }}% bleeds to hull</span>
             </div>
-            <div class="stat-row" title="Energy damage resistance range. Negative = takes more damage.">
-              <span class="stat-label">Enrg Resist</span>
-              <span class="mono">{{ (r.enrgMin * 100).toFixed(0) }}% – {{ (r.enrgMax * 100).toFixed(0) }}%</span>
+            <div class="stat-row" title="Energy: shield takes this % of incoming damage (>100% = amplified). No bleedthrough.">
+              <span class="stat-label">Enrg → Shield</span>
+              <span class="mono">{{ (r.enrgToShield * 100).toFixed(0) }}% dmg, {{ (r.enrgToHull * 100).toFixed(0) }}% bleeds to hull</span>
             </div>
-            <div class="stat-row" title="Distortion damage resistance range.">
-              <span class="stat-label">Dist Resist</span>
-              <span class="mono">{{ (r.distMin * 100).toFixed(0) }}% – {{ (r.distMax * 100).toFixed(0) }}%</span>
+            <div class="stat-row" title="Distortion: shield takes this % of incoming damage. No bleedthrough.">
+              <span class="stat-label">Dist → Shield</span>
+              <span class="mono">{{ (r.distToShield * 100).toFixed(0) }}% dmg, {{ (r.distToHull * 100).toFixed(0) }}% bleeds to hull</span>
             </div>
           }
         </div>

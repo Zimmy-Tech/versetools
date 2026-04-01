@@ -350,24 +350,39 @@ export class DpsPanelComponent {
 
   shieldFaceType = computed(() => this.data.selectedShip()?.shieldFaceType ?? 'Bubble');
 
-  // Shield resists from primary shields (first 2) — averaged
+  // Shield resists/absorption at current power pip allocation (averaged across primary shields)
   shieldResists = computed(() => {
     const entries = this.primaryShieldEntries();
+    const alloc = this.data.powerAlloc();
     if (entries.length === 0) return null;
-    let physMin = 0, physMax = 0, enrgMin = 0, enrgMax = 0, distMin = 0, distMax = 0;
-    for (const { item } of entries) {
-      physMin += item.resistPhysMin ?? 0;
-      physMax += item.resistPhysMax ?? 0;
-      enrgMin += item.resistEnrgMin ?? 0;
-      enrgMax += item.resistEnrgMax ?? 0;
-      distMin += item.resistDistMin ?? 0;
-      distMax += item.resistDistMax ?? 0;
+
+    let resistPhys = 0, resistEnrg = 0, resistDist = 0;
+    let absPhys = 0, absEnrg = 0, absDist = 0;
+
+    for (const { hpId, item } of entries) {
+      const pips = alloc[hpId] ?? 0;
+      const maxPips = Math.max(1, (item.powerMax ?? 2) - 1);
+      const t = maxPips > 0 ? Math.min(pips / maxPips, 1) : 1;  // 0 = min, 1 = max
+
+      resistPhys += (item.resistPhysMin ?? 0) + ((item.resistPhysMax ?? 0) - (item.resistPhysMin ?? 0)) * t;
+      resistEnrg += (item.resistEnrgMin ?? 0) + ((item.resistEnrgMax ?? 0) - (item.resistEnrgMin ?? 0)) * t;
+      resistDist += (item.resistDistMin ?? 0) + ((item.resistDistMax ?? 0) - (item.resistDistMin ?? 0)) * t;
+      absPhys += (item.absPhysMin ?? 0) + ((item.absPhysMax ?? 0) - (item.absPhysMin ?? 0)) * t;
+      absEnrg += (item.absEnrgMin ?? 0) + ((item.absEnrgMax ?? 0) - (item.absEnrgMin ?? 0)) * t;
+      absDist += (item.absDistMin ?? 0) + ((item.absDistMax ?? 0) - (item.absDistMin ?? 0)) * t;
     }
+
     const n = entries.length;
     return {
-      physMin: physMin / n, physMax: physMax / n,
-      enrgMin: enrgMin / n, enrgMax: enrgMax / n,
-      distMin: distMin / n, distMax: distMax / n,
+      resistPhys: resistPhys / n, resistEnrg: resistEnrg / n, resistDist: resistDist / n,
+      absPhys: absPhys / n, absEnrg: absEnrg / n, absDist: absDist / n,
+      // Effective damage multipliers: how much of 100 incoming reaches shield / hull
+      physToShield: (1 - resistPhys / n),        // damage multiplier on shield
+      physToHull: (1 - absPhys / n),              // bleedthrough fraction
+      enrgToShield: (1 - resistEnrg / n),
+      enrgToHull: (1 - absEnrg / n),
+      distToShield: (1 - resistDist / n),
+      distToHull: (1 - absDist / n),
     };
   });
 
