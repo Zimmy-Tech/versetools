@@ -32,6 +32,7 @@ jobs:
       - run: npm ci --legacy-peer-deps
       - run: bash prebuild.sh
       - run: npx ng build --configuration production --base-href /versetools/
+      - run: cp dist/versedb-app/browser/index.html dist/versedb-app/browser/404.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
