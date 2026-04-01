@@ -15,6 +15,23 @@
       <span class="trigger-stat">{{ slotStat() }}</span>
     </div>
 
+  } @else if (isLocked() && weaponCompact(); as wc) {
+    <div class="cmp-trigger locked">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <div class="cmp-tag">{{ wc.size }}</div>
+      <div class="cmp-info">
+        <div class="cmp-name">{{ wc.name }} <span class="cmp-type">{{ wc.dmgType }}</span></div>
+      </div>
+      @if (wc.stats.length) {
+        <div class="cmp-stats-right">
+          @for (s of wc.stats; track s.key) {
+            @if (s.key === 'DPS' || s.key === 'AMMO' || s.key === 'REGEN' || s.key === 'SHOTS' || s.key === 'OH' || s.key === 'COOL') {
+              <span class="cmp-stat" [class]="s.cls ?? ''"><span class="cmp-stat-k">{{ s.key }}</span> {{ s.val }}</span>
+            }
+          }
+        </div>
+      }
+    </div>
   } @else if (isLocked()) {
     <div class="slot-fixed">
       @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
@@ -34,7 +51,7 @@
         @if (wc.stats.length) {
           <div class="cmp-stats-right">
             @for (s of wc.stats; track s.key) {
-              @if (s.key === 'DPS' || s.key === 'AMMO' || s.key === 'REGEN') {
+              @if (s.key === 'DPS' || s.key === 'AMMO' || s.key === 'REGEN' || s.key === 'SHOTS' || s.key === 'OH' || s.key === 'COOL') {
                 <span class="cmp-stat" [class]="s.cls ?? ''"><span class="cmp-stat-k">{{ s.key }}</span> {{ s.val }}</span>
               }
             }

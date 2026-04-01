@@ -209,6 +209,7 @@ export class HardpointSlotComponent {
     if (item.isBallistic) {
       if (item.heatPerShot && item.maxHeat && item.fireRate) {
         const rounds = Math.floor(item.maxHeat / item.heatPerShot);
+        stats.push({ key: 'SHOTS', val: rounds.toString() });
         const time = rounds / (item.fireRate / 60);
         stats.push({ key: 'OH', val: time.toFixed(1) + 's', cls: 'warn' });
         if (item.overheatCooldown) {

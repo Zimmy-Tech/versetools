@@ -148,8 +148,12 @@ export class DpsPanelComponent {
 
       let rounds: number;
       if (w.isBallistic) {
-        if (!w.heatPerShot || !w.maxHeat || w.heatPerShot <= 0) continue;
-        rounds = Math.floor(w.maxHeat / w.heatPerShot);
+        if (w.heatPerShot && w.maxHeat && w.heatPerShot > 0) {
+          rounds = Math.floor(w.maxHeat / w.heatPerShot);
+        } else {
+          // No overheat data — treat as unlimited (magazine-fed, e.g. Deadbolt cannons)
+          rounds = w.ammoCount ?? Math.ceil(10 * (rpm / 60));
+        }
       } else {
         const ammo = calcWeaponAmmo(w, pips, poolSize, allWeapons, mult);
         if (ammo == null || ammo <= 0) continue;
@@ -189,21 +193,25 @@ export class DpsPanelComponent {
       const rps = rpm / 60;
 
       if (w.isBallistic) {
-        if (!w.heatPerShot || !w.maxHeat || w.heatPerShot <= 0) continue;
-        const rounds = Math.floor(w.maxHeat / w.heatPerShot);
-        const burstTime = rounds / rps;
-        const cooldown = w.overheatCooldown ?? 0;
-        const cycleTime = burstTime + cooldown;
-        const burstDmg = rounds * alpha;
+        if (w.heatPerShot && w.maxHeat && w.heatPerShot > 0) {
+          const rounds = Math.floor(w.maxHeat / w.heatPerShot);
+          const burstTime = rounds / rps;
+          const cooldown = w.overheatCooldown ?? 0;
+          const cycleTime = burstTime + cooldown;
+          const burstDmg = rounds * alpha;
 
-        if (burstTime >= W) {
-          total += W * rps * alpha;
-        } else if (cycleTime <= 0) {
-          total += burstDmg;
+          if (burstTime >= W) {
+            total += W * rps * alpha;
+          } else if (cycleTime <= 0) {
+            total += burstDmg;
+          } else {
+            const fullCycles = Math.floor(W / cycleTime);
+            const remaining = W - fullCycles * cycleTime;
+            total += fullCycles * burstDmg + Math.min(remaining, burstTime) * rps * alpha;
+          }
         } else {
-          const fullCycles = Math.floor(W / cycleTime);
-          const remaining = W - fullCycles * cycleTime;
-          total += fullCycles * burstDmg + Math.min(remaining, burstTime) * rps * alpha;
+          // No overheat — fires continuously for full window (e.g. Deadbolt cannons)
+          total += W * rps * alpha;
         }
       } else {
         const ammo = calcWeaponAmmo(w, pips, poolSize, allWeapons, mult);
