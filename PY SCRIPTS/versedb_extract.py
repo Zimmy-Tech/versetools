@@ -4707,6 +4707,59 @@ def main(mode: str = "live"):
         if cls in items:
             items[cls]["name"] = name
 
+    # Auto-clean ugly auto-generated names (title-cased classNames with no localization)
+    _MFR_MAP = {
+        "aegs": "Aegis", "anvl": "Anvil", "rsi": "RSI", "crus": "Crusader", "misc": "MISC",
+        "orig": "Origin", "drak": "Drake", "behr": "Behring", "gats": "Gatling Arms",
+        "klwe": "Klaus & Werner", "espr": "Esperia", "krig": "Kruger", "cnou": "C.O.",
+        "taln": "Talisman", "vncl": "Vanduul", "argo": "ARGO", "mrai": "Mirai",
+        "godi": "Godelius", "seco": "Seal Corp", "lplt": "Lightning Power",
+        "wlop": "Wei-Tek", "grnp": "Greycat", "tmbl": "Tumbril", "fski": "FIRESTORM",
+    }
+    _TYPE_MAP = {
+        "shld": "Shield", "powr": "Power Plant", "cool": "Cooler", "qdrv": "Quantum Drive",
+        "radr": "Radar", "lfsp": "Life Support", "mrck": "Missile Rack",
+        "bmbrck": "Bomb Rack", "gmrck": "Gimbal Missile Rack",
+    }
+    _SIZE_RE = re.compile(r'[_]s0*(\d+)(?:[_]|$)', re.IGNORECASE)
+
+    def _auto_clean_name(cls_name, item):
+        """Generate a readable name from className when localization failed."""
+        name = item.get("name", "")
+        itype = item.get("type", "")
+
+        # Detect auto-generated: starts with type prefix like "Shld " or "Mrck "
+        prefix_lower = cls_name.split("_")[0].lower()
+        is_ugly = prefix_lower in _TYPE_MAP and name.replace(" ", "_").lower().startswith(prefix_lower)
+        if not is_ugly:
+            return name  # already localized
+
+        parts = cls_name.lower().split("_")
+        # Extract type
+        type_label = _TYPE_MAP.get(parts[0], itype)
+        # Extract manufacturer
+        mfr = ""
+        for p in parts[1:]:
+            if p in _MFR_MAP:
+                mfr = _MFR_MAP[p]
+                break
+        # Extract size
+        size_match = _SIZE_RE.search(cls_name)
+        size = f"S{size_match.group(1)}" if size_match else ""
+        # Build name
+        if mfr and size:
+            return f"{mfr} {size} {type_label}"
+        elif mfr:
+            return f"{mfr} {type_label}"
+        elif size:
+            return f"{size} {type_label}"
+        return name  # give up
+
+    for cls, item in items.items():
+        cleaned = _auto_clean_name(cls, item)
+        if cleaned != item.get("name"):
+            item["name"] = cleaned
+
     MODULE_META = {
         "rsi_aurora_mk2_module_cargo":              {"cargoBonus": 6},
         "aegs_retaliator_module_front_cargo":       {"cargoBonus": 36},
