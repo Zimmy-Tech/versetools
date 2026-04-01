@@ -61,6 +61,101 @@ header {
     background: rgba(0, 200, 255, 0.06);
   }
   &.discord-tab { text-decoration: none; }
+  &.beta-tab { color: var(--gold); &.active { color: var(--gold); border-color: var(--gold); background: rgba(240, 165, 0, 0.06); } }
+}
+
+/* ── Mobile compact mode ────────────────────────── */
+
+.mobile-header {
+  .nav-tabs { display: none; }
+  .header-right { display: none; }
+}
+
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 1px;
+  transition: all 0.2s ease;
+  &.open:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+  &.open:nth-child(2) { opacity: 0; }
+  &.open:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+}
+
+.nav-tabs.mobile-hidden { display: none; }
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 998;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  max-width: 80vw;
+  height: 100vh;
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  z-index: 999;
+  overflow-y: auto;
+  padding: 16px 0;
+  animation: mobile-slide-in 0.2s ease-out;
+}
+
+@keyframes mobile-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.mobile-nav-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  padding: 12px 20px 4px;
+}
+
+.mobile-nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 20px;
+  min-height: 44px;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+
+  &:hover, &:active { background: rgba(0,200,255,0.04); color: var(--text); }
+  &.active { color: var(--accent); border-left-color: var(--accent); background: rgba(0,200,255,0.06); }
+  &.discord { color: var(--text2); }
 }
 
 /* ── Nav group dropdowns ─────────────────────────── */

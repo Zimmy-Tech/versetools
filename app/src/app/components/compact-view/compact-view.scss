@@ -1,0 +1,592 @@
+:host {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.compact-shell {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Ship picker ─────────────────────────── */
+
+.compact-picker { position: relative; }
+
+.compact-search {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  box-sizing: border-box;
+  &:focus { border-color: var(--accent2); }
+}
+
+.compact-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.compact-option {
+  padding: 8px 12px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  color: var(--text2);
+  cursor: pointer;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  &:hover { background: var(--bg2); color: var(--text); }
+}
+
+/* ── Clean Card ──────────────────────────── */
+
+.clean-card {
+  background: var(--bg2);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.clean-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.clean-ship-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.clean-ship-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* ── Stat pills ──────────────────────────── */
+
+.clean-pills {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+}
+
+.clean-pill {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+.pill-red   { border-color: rgba(255,68,68,0.25); }
+.pill-blue  { border-color: rgba(0,200,255,0.25); }
+.pill-amber { border-color: rgba(240,165,0,0.25); }
+
+.pill-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  .pill-red &   { color: #ff6666; }
+  .pill-blue &  { color: var(--accent); }
+  .pill-amber & { color: #f0a500; }
+}
+
+.pill-lbl {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+/* ── Tabs ────────────────────────────────── */
+
+.clean-tabs {
+  display: flex;
+  padding: 0 6px;
+  gap: 2px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+.clean-tab {
+  flex: 1;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  &:hover { color: var(--text); }
+  &.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(0,200,255,0.04); }
+}
+
+/* ── Content ─────────────────────────────── */
+
+.clean-content { min-height: 360px; padding: 4px 0; }
+
+/* ── Section titles ──────────────────────── */
+
+.clean-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 10px 16px 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Item rows ───────────────────────────── */
+
+.clean-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--bg3);
+  transition: background 0.1s;
+  &:active { background: var(--bg3); }
+}
+
+.clean-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(0,200,255,0.08);
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,200,255,0.15);
+  min-width: 28px;
+  text-align: center;
+}
+
+.clean-item-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clean-item-qty {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.clean-item-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+
+.clean-chip {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  &.chip-blue  { color: var(--accent); background: rgba(0,200,255,0.1); }
+  &.chip-amber { color: #f0a500; background: rgba(240,165,0,0.1); }
+  &.chip-red   { color: #ff6666; background: rgba(255,68,68,0.1); }
+  &.chip-dim   { color: var(--text3); background: rgba(255,255,255,0.04); }
+}
+
+/* ── Stats grid ──────────────────────────── */
+
+.clean-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 6px 12px;
+}
+
+.clean-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  background: var(--bg3);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.clean-stat-v {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  &.accent-txt { color: var(--accent); }
+  &.warn-txt { color: #ff6666; }
+}
+
+.clean-stat-k {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── Pickable items ──────────────────────── */
+
+/* ── Parent / child slot hierarchy ────────── */
+
+.clean-item.parent-slot {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-height: 36px;
+  background: var(--bg3);
+}
+
+.parent-name {
+  font-size: 13px !important;
+  color: var(--text3) !important;
+}
+
+.clean-item.indented {
+  padding-left: 32px;
+}
+
+.compact-picker-panel.indented {
+  margin-left: 24px;
+}
+
+.clean-item.pickable {
+  cursor: pointer;
+  &:hover { background: rgba(0,200,255,0.04); }
+}
+
+.clean-item-arrow {
+  font-size: 12px;
+  color: var(--text3);
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+/* ── Compact picker panels ───────────────── */
+
+.compact-picker-panel {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+  margin: 0 8px 8px;
+  overflow: hidden;
+}
+
+.compact-picker-search {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+  &:focus { background: rgba(0,200,255,0.03); }
+}
+
+.compact-picker-list {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.compact-picker-header {
+  display: flex;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.cph-name {
+  flex: 1;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.cph-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-transform: uppercase;
+  min-width: 48px;
+  text-align: right;
+}
+
+.compact-picker-row {
+  display: flex;
+  gap: 4px;
+  padding: 8px 10px;
+  min-height: 40px;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  transition: background 0.1s;
+  &:hover { background: rgba(0,200,255,0.06); }
+  &.selected { background: rgba(0,200,255,0.1); border-left: 3px solid var(--accent); }
+  &:active { background: rgba(0,200,255,0.1); }
+}
+
+.cpr-name {
+  flex: 1;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  min-width: 48px;
+  text-align: right;
+}
+
+/* ── Velocity chart ──────────────────────── */
+
+.cv-vel-chart { padding: 6px 14px; }
+
+.cv-vel-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.cv-vel-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  min-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cv-vel-track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg3);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.cv-vel-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.cv-vel-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  min-width: 55px;
+  text-align: right;
+}
+
+.cv-vel-summary {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding: 4px 0;
+  margin-top: 2px;
+  border-radius: 6px;
+  &.ok { color: #00e676; background: rgba(0,230,118,0.08); }
+  &.warn { color: #ff6666; background: rgba(255,68,68,0.08); }
+}
+
+/* ── EHP stacked bar ─────────────────────── */
+
+.cv-ehp-bar {
+  display: flex;
+  height: 18px;
+  margin: 6px 14px 4px;
+  border-radius: 9px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.cv-ehp-seg {
+  transition: flex 0.3s ease;
+  &.shield { background: linear-gradient(90deg, #006699, #00ccff); }
+  &.hull { background: linear-gradient(90deg, #a07800, #f0a500); }
+  &.armor { background: linear-gradient(90deg, #806000, #c09000); opacity: 0.7; }
+}
+
+.cv-ehp-legend {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 14px;
+  flex-wrap: wrap;
+}
+
+.cv-ehp-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  &.shield { color: var(--accent); }
+  &.hull { color: #f0a500; }
+  &.armor { color: #c09000; }
+}
+
+.cv-ehp-total {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text);
+  margin-left: auto;
+}
+
+/* ── Acceleration / Rotation gauge bars ──── */
+
+.cv-accel-bars { padding: 4px 14px; }
+
+.cv-accel-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.cv-accel-k {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+  min-width: 26px;
+  text-align: right;
+}
+
+.cv-accel-track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg3);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.cv-accel-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+  &.normal { background: #00e676; z-index: 1; }
+  &.boost { background: rgba(0,230,118,0.25); z-index: 0; }
+}
+
+.cv-accel-v {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  min-width: 75px;
+  text-align: right;
+}
+
+.cv-accel-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 2px 14px 4px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+}
+
+.cv-accel-leg-normal {
+  width: 10px;
+  height: 6px;
+  border-radius: 3px;
+  background: #00e676;
+}
+
+.cv-accel-leg-boost {
+  width: 10px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(0,230,118,0.25);
+}

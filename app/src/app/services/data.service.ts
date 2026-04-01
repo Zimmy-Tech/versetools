@@ -42,6 +42,9 @@ export class DataService {
     ).map(([, i]) => i as Item)
   );
 
+  /** Whether the compact UI route is active (enables mobile header). */
+  compactMode = signal(false);
+
   /** Trigger to open bulk equip modal from header bar. */
   bulkEquipRequested = signal(false);
 

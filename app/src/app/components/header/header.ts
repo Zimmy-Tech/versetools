@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'submit' | 'formulas' | 'updates' | 'changelog';
+export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
@@ -41,11 +41,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private routerSub?: Subscription;
   private _router = inject(Router);
   currentUrl = signal(this._router.url);
+  isMobile = signal(window.innerWidth < 768);
+  hamburgerOpen = signal(false);
+
+  /** True when compact route + narrow viewport */
+  isMobileCompact = computed(() => this.data.compactMode() && this.isMobile());
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.isMobile.set(window.innerWidth < 768);
+  }
 
   ngOnInit(): void {
     this.routerSub = this._router.events.pipe(
       filter((e): e is NavigationEnd => e instanceof NavigationEnd)
-    ).subscribe(e => this.currentUrl.set(e.urlAfterRedirects));
+    ).subscribe(e => {
+      this.currentUrl.set(e.urlAfterRedirects);
+      this.hamburgerOpen.set(false);
+    });
   }
 
   ngOnDestroy(): void {
@@ -110,6 +123,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateTo(id: string): void {
     this._router.navigate(['/' + tabToRoute(id)]);
     this.closeAllGroups();
+    this.hamburgerOpen.set(false);
   }
 
   @HostListener('document:click', ['$event'])

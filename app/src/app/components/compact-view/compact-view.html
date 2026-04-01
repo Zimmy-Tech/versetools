@@ -1,0 +1,400 @@
+<div class="compact-shell">
+
+  <!-- Ship picker -->
+  <div class="compact-picker">
+    <input class="compact-search" type="text" [placeholder]="selectedShip()?.name ?? 'Select a ship...'" [value]="searchQuery()"
+           (input)="searchQuery.set($any($event.target).value); showDropdown.set(true)" (focus)="showDropdown.set(true)" (blur)="showDropdown.set(false)">
+    @if (showDropdown() && filteredShips().length) {
+      <div class="compact-dropdown">
+        @for (s of filteredShips(); track s.className) {
+          <div class="compact-option" (mousedown)="selectShip(s)">{{ s.name }}</div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (selectedShip(); as s) {
+  <div class="clean-card">
+
+    <!-- Header -->
+    <div class="clean-header">
+      <div class="clean-ship-name">{{ s.name }}</div>
+      <div class="clean-ship-sub">{{ s.manufacturer }} &middot; {{ (s.size ?? '').toUpperCase() }} &middot; {{ s.role }}</div>
+    </div>
+
+    <!-- Stat pills -->
+    <div class="clean-pills">
+      <div class="clean-pill pill-red"><span class="pill-val">{{ getTotalDPS(s) }}</span><span class="pill-lbl">DPS</span></div>
+      <div class="clean-pill pill-blue"><span class="pill-val">{{ fmt(getTotalShieldHP(s)) }}</span><span class="pill-lbl">Shield</span></div>
+      <div class="clean-pill pill-amber"><span class="pill-val">{{ fmt(s.bodyHp) }}</span><span class="pill-lbl">Hull</span></div>
+      <div class="clean-pill pill-amber"><span class="pill-val">{{ fmt(s.armorHp) }}</span><span class="pill-lbl">Armor</span></div>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="clean-tabs">
+      <button class="clean-tab" [class.active]="activeSection() === 'overview'" (click)="activeSection.set('overview')">Overview</button>
+      <button class="clean-tab" [class.active]="activeSection() === 'weapons'" (click)="activeSection.set('weapons')">Weapons</button>
+      <button class="clean-tab" [class.active]="activeSection() === 'systems'" (click)="activeSection.set('systems')">Systems</button>
+      <button class="clean-tab" [class.active]="activeSection() === 'defensive'" (click)="activeSection.set('defensive')">Defensive</button>
+      <button class="clean-tab" [class.active]="activeSection() === 'power'" (click)="activeSection.set('power')">Power</button>
+    </div>
+
+    <div class="clean-content">
+
+      <!-- ═══ OVERVIEW ═══ -->
+      @if (activeSection() === 'overview') {
+        <!-- Firepower -->
+        <div class="clean-section-title">Firepower</div>
+        <div class="clean-grid">
+          <div class="clean-stat"><span class="clean-stat-v accent-txt">{{ getTotalDPS(s) }}</span><span class="clean-stat-k">Total DPS</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ getTotalAlpha(s) }}</span><span class="clean-stat-k">Alpha</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ s.weaponPowerPoolSize ?? 0 }}</span><span class="clean-stat-k">Wpn Pips</span></div>
+        </div>
+
+        <!-- Weapon velocity bars -->
+        @if (getWeapons(s).length) {
+          <div class="cv-vel-chart">
+            @for (w of getWeapons(s); track w.name) {
+              <div class="cv-vel-row">
+                <span class="cv-vel-name">{{ w.name }}</span>
+                <div class="cv-vel-track">
+                  <div class="cv-vel-fill" [style.width.%]="getVelocityRange(s) ? ((getWeaponSpeed(w.name, s) / getVelocityRange(s)!.max) * 100) : 0"></div>
+                </div>
+                <span class="cv-vel-val">{{ getWeaponSpeed(w.name, s) }} m/s</span>
+              </div>
+            }
+            @if (getVelocityRange(s); as vel) {
+              <div class="cv-vel-summary {{ vel.max - vel.min > 200 ? 'warn' : 'ok' }}">
+                Velocity delta: {{ vel.max - vel.min }} m/s {{ vel.max - vel.min > 200 ? '— convergence issue' : '— good convergence' }}
+              </div>
+            }
+          </div>
+        }
+        @if (getEffectiveRange(s); as effRange) {
+          <div class="clean-item"><span class="clean-item-name">Effective Range</span><span class="clean-item-val">{{ fmt(effRange) }}m</span></div>
+        }
+
+        <!-- Ordnance -->
+        @if (getMissiles(s).length) {
+          <div class="clean-section-title">Ordnance</div>
+          <div class="clean-grid">
+            <div class="clean-stat"><span class="clean-stat-v" style="color:#ff6666">{{ fmt(getMissileTotalAlpha(s)) }}</span><span class="clean-stat-k">Msl Alpha</span></div>
+            <div class="clean-stat"><span class="clean-stat-v">{{ getMissiles(s).reduce(sumCount, 0) }}</span><span class="clean-stat-k">Count</span></div>
+            @if (getMissileLockRange(s); as lr) {
+              <div class="clean-stat"><span class="clean-stat-v">{{ (lr.max / 1000).toFixed(1) }}km</span><span class="clean-stat-k">Lock Max</span></div>
+            }
+          </div>
+        }
+
+        <!-- Survivability — stacked EHP bar -->
+        <div class="clean-section-title">Survivability</div>
+        <div class="cv-ehp-bar">
+          <div class="cv-ehp-seg shield" [style.flex]="getTotalShieldHP(s)"></div>
+          <div class="cv-ehp-seg hull" [style.flex]="s.bodyHp ?? 0"></div>
+          <div class="cv-ehp-seg armor" [style.flex]="s.armorHp ?? 0"></div>
+        </div>
+        <div class="cv-ehp-legend">
+          <span class="cv-ehp-label shield">Shield {{ fmt(getTotalShieldHP(s)) }}</span>
+          <span class="cv-ehp-label hull">Hull {{ fmt(s.bodyHp) }}</span>
+          <span class="cv-ehp-label armor">Armor {{ fmt(s.armorHp) }}</span>
+          <span class="cv-ehp-total">EHP {{ fmt(getTotalEHP(s)) }}</span>
+        </div>
+        <div class="clean-grid" style="margin-top:4px">
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(getShieldRegen(s)) }}/s</span><span class="clean-stat-k">Shld Regen</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ s.cmDecoys ?? 0 }}</span><span class="clean-stat-k">Decoys</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ s.cmNoise ?? 0 }}</span><span class="clean-stat-k">Noise</span></div>
+        </div>
+
+        <!-- Speed -->
+        <div class="clean-section-title">Speed</div>
+        <div class="clean-grid">
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.scmSpeed) }}</span><span class="clean-stat-k">SCM</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.navSpeed) }}</span><span class="clean-stat-k">NAV</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.boostSpeedFwd) }}</span><span class="clean-stat-k">Boost</span></div>
+        </div>
+
+        <!-- Acceleration — horizontal gauge bars -->
+        @if (s.accelFwd) {
+          <div class="clean-section-title">Acceleration</div>
+          <div class="cv-accel-bars">
+            <div class="cv-accel-row"><span class="cv-accel-k">FWD</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelFwd ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbFwd ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelFwd,1) }} / {{ fmt(s.accelAbFwd,1) }}G</span></div>
+            <div class="cv-accel-row"><span class="cv-accel-k">RET</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelRetro ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbRetro ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelRetro,1) }} / {{ fmt(s.accelAbRetro,1) }}G</span></div>
+            <div class="cv-accel-row"><span class="cv-accel-k">STR</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelStrafe ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbStrafe ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelStrafe,1) }} / {{ fmt(s.accelAbStrafe,1) }}G</span></div>
+            <div class="cv-accel-row"><span class="cv-accel-k">UP</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelUp ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbUp ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelUp,1) }} / {{ fmt(s.accelAbUp,1) }}G</span></div>
+            <div class="cv-accel-row"><span class="cv-accel-k">DN</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.accelDown ?? 0) / 25 * 100"></div><div class="cv-accel-fill boost" [style.width.%]="(s.accelAbDown ?? 0) / 25 * 100"></div></div><span class="cv-accel-v">{{ fmt(s.accelDown,1) }} / {{ fmt(s.accelAbDown,1) }}G</span></div>
+          </div>
+          <div class="cv-accel-legend"><span class="cv-accel-leg-normal"></span> Normal <span class="cv-accel-leg-boost"></span> Afterburner</div>
+        }
+
+        <!-- Rotation -->
+        <div class="clean-section-title">Rotation</div>
+        <div class="cv-accel-bars">
+          <div class="cv-accel-row"><span class="cv-accel-k">PIT</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.pitch ?? 0) / 250 * 100"></div>@if (s.pitchBoosted) {<div class="cv-accel-fill boost" [style.width.%]="(s.pitchBoosted ?? 0) / 250 * 100"></div>}</div><span class="cv-accel-v">{{ fmt(s.pitch,1) }}{{ s.pitchBoosted ? ' / ' + fmt(s.pitchBoosted,1) : '' }}&deg;/s</span></div>
+          <div class="cv-accel-row"><span class="cv-accel-k">YAW</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.yaw ?? 0) / 250 * 100"></div>@if (s.yawBoosted) {<div class="cv-accel-fill boost" [style.width.%]="(s.yawBoosted ?? 0) / 250 * 100"></div>}</div><span class="cv-accel-v">{{ fmt(s.yaw,1) }}{{ s.yawBoosted ? ' / ' + fmt(s.yawBoosted,1) : '' }}&deg;/s</span></div>
+          <div class="cv-accel-row"><span class="cv-accel-k">ROL</span><div class="cv-accel-track"><div class="cv-accel-fill normal" [style.width.%]="(s.roll ?? 0) / 250 * 100"></div>@if (s.rollBoosted) {<div class="cv-accel-fill boost" [style.width.%]="(s.rollBoosted ?? 0) / 250 * 100"></div>}</div><span class="cv-accel-v">{{ fmt(s.roll,1) }}{{ s.rollBoosted ? ' / ' + fmt(s.rollBoosted,1) : '' }}&deg;/s</span></div>
+        </div>
+
+        <!-- Ship Info -->
+        <div class="clean-section-title">Ship Info</div>
+        <div class="clean-grid">
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.mass) }}</span><span class="clean-stat-k">Mass (kg)</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ s.crew }}</span><span class="clean-stat-k">Crew</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ s.cargoCapacity ?? 0 }}</span><span class="clean-stat-k">Cargo</span></div>
+        </div>
+        <div class="clean-grid">
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.hydrogenFuelCapacity, 1) }}</span><span class="clean-stat-k">H2 Fuel</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.quantumFuelCapacity, 1) }}</span><span class="clean-stat-k">QT Fuel</span></div>
+          <div class="clean-stat"><span class="clean-stat-v">{{ fmt(s.dimLength, 1) }}m</span><span class="clean-stat-k">Length</span></div>
+        </div>
+      }
+
+      <!-- ═══ WEAPONS ═══ -->
+      @if (activeSection() === 'weapons') {
+        <div class="clean-section-title">Weapons</div>
+        @for (slot of getWeaponSlots(s); track slot.hpId) {
+          <!-- Parent mount/gimbal -->
+          @if (slot.parent) {
+            <div class="clean-item parent-slot pickable" (click)="togglePicker('mount_' + slot.hpId)">
+              <span class="clean-badge">S{{ slot.hpSize }}</span>
+              <span class="clean-item-name parent-name">{{ slot.parent.name }}</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'mount_' + slot.hpId ? '▾' : '▸' }}</span>
+            </div>
+            @if (openPicker() === 'mount_' + slot.hpId) {
+              <div class="compact-picker-panel">
+                <input class="compact-picker-search" type="text" placeholder="Search mounts..." [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)" autofocus>
+                <div class="compact-picker-list">
+                  <div class="compact-picker-header">
+                    <span class="cph-name">Name</span><span class="cph-val">Size</span>
+                  </div>
+                  @for (opt of getMountOptions(slot.hpSize); track opt.className) {
+                    <div class="compact-picker-row" [class.selected]="opt.className === slot.parent!.className" (click)="setCompactItem(slot.hpId, opt)">
+                      <span class="cpr-name">{{ opt.name }}</span>
+                      <span class="cpr-val">S{{ opt.size }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+          <!-- Child weapons -->
+          @for (gun of slot.guns; track gun.key) {
+            <div class="clean-item sub-slot pickable" [class.indented]="slot.parent" (click)="togglePicker('gun_' + gun.key)">
+              <span class="clean-badge">S{{ gun.item.size }}</span>
+              <span class="clean-item-name">{{ gun.item.name }}</span>
+              <span class="clean-chip {{ gun.item.isBallistic ? 'chip-amber' : 'chip-blue' }}">{{ gun.item.isBallistic ? 'BAL' : 'NRG' }}</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'gun_' + gun.key ? '▾' : '▸' }}</span>
+            </div>
+            @if (openPicker() === 'gun_' + gun.key) {
+              <div class="compact-picker-panel" [class.indented]="slot.parent">
+                <input class="compact-picker-search" type="text" placeholder="Search weapons..." [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)" autofocus>
+                <div class="compact-picker-list">
+                  <div class="compact-picker-header">
+                    <span class="cph-name">Name</span><span class="cph-val">DPS</span><span class="cph-val">Alpha</span><span class="cph-val">Vel</span>
+                  </div>
+                  @for (opt of getWeaponOptions(gun.item.size ?? 1); track opt.className) {
+                    <div class="compact-picker-row" [class.selected]="opt.className === gun.item.className" (click)="setCompactItem(gun.key, opt)">
+                      <span class="cpr-name">{{ opt.name }}</span>
+                      <span class="cpr-val">{{ opt.dps?.toFixed(0) }}</span>
+                      <span class="cpr-val">{{ opt.alphaDamage?.toFixed(0) }}</span>
+                      <span class="cpr-val">{{ fmt(opt.projectileSpeed) }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+
+        <!-- Missiles -->
+        @if (getMissiles(s).length) {
+          <div class="clean-section-title">Missiles</div>
+          @for (m of getMissiles(s); track m.name) {
+            <div class="clean-item">
+              <span class="clean-badge">S{{ m.size }}</span>
+              <span class="clean-item-name">{{ m.name }}</span>
+              @if (m.count > 1) { <span class="clean-item-qty">&times;{{ m.count }}</span> }
+              <span class="clean-chip chip-red">MSL</span>
+            </div>
+          }
+        }
+      }
+
+      <!-- ═══ SYSTEMS ═══ -->
+      @if (activeSection() === 'systems') {
+
+        <!-- Quantum Drive -->
+        <div class="clean-section-title">Quantum Drive</div>
+        @for (hpKey of getHardpointKeys(s, 'QuantumDrive'); track hpKey) {
+          @if (getEquipped(s, hpKey, 'QuantumDrive'); as q) {
+            <div class="clean-item pickable" (click)="togglePicker('qd_' + hpKey)">
+              <span class="clean-badge">S{{ q.size }}</span>
+              <span class="clean-item-name">{{ q.name }}</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'qd_' + hpKey ? '▾' : '▸' }}</span>
+            </div>
+            @if (openPicker() === 'qd_' + hpKey) {
+              <div class="compact-picker-panel">
+                <input class="compact-picker-search" type="text" placeholder="Search QDs..." [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)" autofocus>
+                <div class="compact-picker-list">
+                  <div class="compact-picker-header">
+                    <span class="cph-name">Name</span><span class="cph-val">Speed</span><span class="cph-val">Spool</span><span class="cph-val">Fuel</span>
+                  </div>
+                  @for (opt of getPickerOptions('QuantumDrive', q.size ?? 1); track opt.className) {
+                    <div class="compact-picker-row" [class.selected]="opt.className === q.className" (click)="setCompactItem(hpKey, opt)">
+                      <span class="cpr-name">{{ opt.name }}</span>
+                      <span class="cpr-val">{{ fmt(opt.speed) }}</span>
+                      <span class="cpr-val">{{ fmt(opt.spoolTime, 1) }}s</span>
+                      <span class="cpr-val">{{ opt.fuelRate?.toFixed(4) }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+
+        <!-- Power Plants -->
+        <div class="clean-section-title">Power Plants</div>
+        @for (hpKey of getHardpointKeys(s, 'PowerPlant'); track hpKey; let i = $index) {
+          @if (getEquipped(s, hpKey, 'PowerPlant'); as pp) {
+            <div class="clean-item pickable" (click)="togglePicker('pp_' + hpKey)">
+              <span class="clean-badge">S{{ pp.size }}</span>
+              <span class="clean-item-name">{{ pp.name }}</span>
+              <span class="clean-item-val">{{ fmt(pp.powerOutput) }}</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'pp_' + hpKey ? '▾' : '▸' }}</span>
+            </div>
+            @if (openPicker() === 'pp_' + hpKey) {
+              <div class="compact-picker-panel">
+                <input class="compact-picker-search" type="text" placeholder="Search power plants..." [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)" autofocus>
+                <div class="compact-picker-list">
+                  <div class="compact-picker-header">
+                    <span class="cph-name">Name</span><span class="cph-val">Output</span><span class="cph-val">Grade</span>
+                  </div>
+                  @for (opt of getPickerOptions('PowerPlant', pp.size ?? 1); track opt.className) {
+                    <div class="compact-picker-row" [class.selected]="opt.className === pp.className" (click)="setCompactItem(hpKey, opt)">
+                      <span class="cpr-name">{{ opt.name }}</span>
+                      <span class="cpr-val">{{ fmt(opt.powerOutput) }}</span>
+                      <span class="cpr-val">{{ opt.grade }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+
+        <!-- Coolers -->
+        <div class="clean-section-title">Coolers</div>
+        @for (hpKey of getHardpointKeys(s, 'Cooler'); track hpKey; let i = $index) {
+          @if (getEquipped(s, hpKey, 'Cooler'); as c) {
+            <div class="clean-item pickable" (click)="togglePicker('cool_' + hpKey)">
+              <span class="clean-badge">S{{ c.size }}</span>
+              <span class="clean-item-name">{{ c.name }}</span>
+              <span class="clean-item-val">{{ fmt(c.coolingRate) }}</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'cool_' + hpKey ? '▾' : '▸' }}</span>
+            </div>
+            @if (openPicker() === 'cool_' + hpKey) {
+              <div class="compact-picker-panel">
+                <input class="compact-picker-search" type="text" placeholder="Search coolers..." [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)" autofocus>
+                <div class="compact-picker-list">
+                  <div class="compact-picker-header">
+                    <span class="cph-name">Name</span><span class="cph-val">Rate</span><span class="cph-val">Grade</span>
+                  </div>
+                  @for (opt of getPickerOptions('Cooler', c.size ?? 1); track opt.className) {
+                    <div class="compact-picker-row" [class.selected]="opt.className === c.className" (click)="setCompactItem(hpKey, opt)">
+                      <span class="cpr-name">{{ opt.name }}</span>
+                      <span class="cpr-val">{{ fmt(opt.coolingRate) }}</span>
+                      <span class="cpr-val">{{ opt.grade }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+
+        <!-- Radar -->
+        @for (hpKey of getHardpointKeys(s, 'Radar'); track hpKey) {
+          @if (getEquipped(s, hpKey, 'Radar'); as r) {
+            <div class="clean-section-title">Radar</div>
+            <div class="clean-item pickable" (click)="togglePicker('radar_' + hpKey)">
+              <span class="clean-badge">S{{ r.size }}</span>
+              <span class="clean-item-name">{{ r.name }}</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'radar_' + hpKey ? '▾' : '▸' }}</span>
+            </div>
+            @if (openPicker() === 'radar_' + hpKey) {
+              <div class="compact-picker-panel">
+                <input class="compact-picker-search" type="text" placeholder="Search radars..." [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)" autofocus>
+                <div class="compact-picker-list">
+                  <div class="compact-picker-header">
+                    <span class="cph-name">Name</span><span class="cph-val">MinP</span><span class="cph-val">MaxP</span><span class="cph-val">AimMin</span><span class="cph-val">AimMax</span>
+                  </div>
+                  @for (opt of getPickerOptions('Radar', r.size ?? 1); track opt.className) {
+                    <div class="compact-picker-row" [class.selected]="opt.className === r.className" (click)="setCompactItem(hpKey, opt)">
+                      <span class="cpr-name">{{ opt.name }}</span>
+                      <span class="cpr-val">{{ fmtRadarMinPwr(opt) }}</span>
+                      <span class="cpr-val">{{ opt.powerDraw ?? '—' }}</span>
+                      <span class="cpr-val">{{ fmt(opt.aimMin) }}</span>
+                      <span class="cpr-val">{{ fmt(opt.aimMax) }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+
+        <!-- Flight Blade -->
+        @for (hpKey of getHardpointKeys(s, 'FlightController'); track hpKey) {
+          @if (getEquipped(s, hpKey, 'FlightController'); as fb) {
+            <div class="clean-section-title">Flight Blade</div>
+            <div class="clean-item pickable" (click)="togglePicker('blade_' + hpKey)">
+              <span class="clean-badge">S{{ fb.size }}</span>
+              <span class="clean-item-name">{{ fb.name }}</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'blade_' + hpKey ? '▾' : '▸' }}</span>
+            </div>
+          }
+        }
+      }
+
+      <!-- ═══ DEFENSIVE ═══ -->
+      @if (activeSection() === 'defensive') {
+        <div class="clean-section-title">Shields</div>
+        @for (hpKey of getHardpointKeys(s, 'Shield'); track hpKey; let i = $index) {
+          @if (getEquipped(s, hpKey, 'Shield'); as sh) {
+            <div class="clean-item pickable" (click)="togglePicker('shld_' + hpKey)">
+              <span class="clean-badge">S{{ sh.size }}</span>
+              <span class="clean-item-name">{{ sh.name }}</span>
+              <span class="clean-item-val">{{ fmt(sh.hp) }} HP</span>
+              <span class="clean-item-arrow">{{ openPicker() === 'shld_' + hpKey ? '▾' : '▸' }}</span>
+            </div>
+            @if (openPicker() === 'shld_' + hpKey) {
+              <div class="compact-picker-panel">
+                <input class="compact-picker-search" type="text" placeholder="Search shields..." [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)" autofocus>
+                <div class="compact-picker-list">
+                  <div class="compact-picker-header">
+                    <span class="cph-name">Name</span><span class="cph-val">HP</span><span class="cph-val">Full Regen</span><span class="cph-val">DmgDly</span>
+                  </div>
+                  @for (opt of getPickerOptions('Shield', sh.size ?? 1); track opt.className) {
+                    <div class="compact-picker-row" [class.selected]="opt.className === sh.className" (click)="setCompactItem(hpKey, opt)">
+                      <span class="cpr-name">{{ opt.name }}</span>
+                      <span class="cpr-val">{{ fmt(opt.hp) }}</span>
+                      <span class="cpr-val">{{ shieldFullRegen(opt) }}s</span>
+                      <span class="cpr-val">{{ opt.damagedRegenDelay?.toFixed(1) }}s</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        }
+      }
+
+      <!-- ═══ POWER ═══ -->
+      @if (activeSection() === 'power') {
+        <app-power-bars />
+      }
+
+    </div>
+  </div>
+  }
+</div>

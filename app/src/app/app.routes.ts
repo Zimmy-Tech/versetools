@@ -12,6 +12,7 @@ import { SubmitViewComponent } from './components/submit-view/submit-view';
 import { FormulasViewComponent } from './components/formulas-view/formulas-view';
 import { MiningViewComponent } from './components/mining-view/mining-view';
 import { MiningSignaturesComponent } from './components/mining-signatures/mining-signatures';
+import { CompactViewComponent } from './components/compact-view/compact-view';
 import { UpdatesViewComponent } from './components/updates-view/updates-view';
 import { ChangelogViewComponent } from './components/changelog-view/changelog-view';
 
@@ -29,6 +30,7 @@ export const routes: Routes = [
   { path: 'formulas',           component: FormulasViewComponent },
   { path: 'mining',             component: MiningViewComponent },
   { path: 'mining-signatures',  component: MiningSignaturesComponent },
+  { path: 'compact',            component: CompactViewComponent },
   { path: 'updates',            component: UpdatesViewComponent },
   { path: 'changelog',          component: ChangelogViewComponent },
   { path: '',                    redirectTo: 'loadout', pathMatch: 'full' },

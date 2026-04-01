@@ -1,7 +1,16 @@
-<header>
+<header [class.mobile-header]="isMobileCompact()">
   <div class="logo" (click)="navigateTo('loadout')">Verse<span>Tools</span></div>
 
-  <nav class="nav-tabs">
+  <!-- Mobile hamburger (compact route only) -->
+  @if (isMobileCompact()) {
+    <button class="hamburger-btn" (click)="hamburgerOpen.set(!hamburgerOpen())">
+      <span class="hamburger-line" [class.open]="hamburgerOpen()"></span>
+      <span class="hamburger-line" [class.open]="hamburgerOpen()"></span>
+      <span class="hamburger-line" [class.open]="hamburgerOpen()"></span>
+    </button>
+  }
+
+  <nav class="nav-tabs" [class.mobile-hidden]="isMobileCompact()">
     <button class="nav-tab" [class.active]="isTabActive('loadout')"
             (click)="navigateTo('loadout')">Loadout</button>
 
@@ -59,6 +68,8 @@
               (click)="navigateTo(tab)">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : tab === 'updates' ? 'Updates' : 'Changelog' }}</button>
     }
     <a class="nav-tab discord-tab" href="https://discord.gg/JSreWj6m6t" target="_blank" rel="noopener">Discord</a>
+    <button class="nav-tab beta-tab" [class.active]="isTabActive('compact')"
+            (click)="navigateTo('compact')">COMPACT UI - EARLY ALPHA</button>
   </nav>
 
   <div class="header-right">
@@ -88,6 +99,35 @@
     </div>
   </div>
 </header>
+
+<!-- Mobile slide-out nav (compact mode only) -->
+@if (isMobileCompact() && hamburgerOpen()) {
+  <div class="mobile-overlay" (click)="hamburgerOpen.set(false)"></div>
+  <div class="mobile-nav">
+    <div class="mobile-nav-title">NAVIGATE</div>
+    <button class="mobile-nav-item" [class.active]="isTabActive('compact')" (click)="navigateTo('compact')">Compact UI</button>
+    <button class="mobile-nav-item" [class.active]="isTabActive('loadout')" (click)="navigateTo('loadout')">Loadout</button>
+    <button class="mobile-nav-item" [class.active]="isTabActive('cart')" (click)="navigateTo('cart')">Cart</button>
+    <div class="mobile-nav-title">SHIP TOOLS</div>
+    @for (tab of shipToolsTabs; track tab.id) {
+      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+    }
+    <div class="mobile-nav-title">MISSIONS</div>
+    @for (tab of missionsTabs; track tab.id) {
+      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+    }
+    <div class="mobile-nav-title">MINING / CRAFTING</div>
+    @for (tab of industryToolsTabs; track tab.id) {
+      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+    }
+    <div class="mobile-nav-title">MORE</div>
+    <button class="mobile-nav-item" [class.active]="isTabActive('submit')" (click)="navigateTo('submit')">Submit Data</button>
+    <button class="mobile-nav-item" [class.active]="isTabActive('formulas')" (click)="navigateTo('formulas')">Formulas</button>
+    <button class="mobile-nav-item" [class.active]="isTabActive('updates')" (click)="navigateTo('updates')">Updates</button>
+    <button class="mobile-nav-item" [class.active]="isTabActive('changelog')" (click)="navigateTo('changelog')">Changelog</button>
+    <a class="mobile-nav-item discord" href="https://discord.gg/JSreWj6m6t" target="_blank" rel="noopener">Discord</a>
+  </div>
+}
 
 @if (isOnLoadout() && data.isLoaded()) {
   <div class="loadout-bar">
