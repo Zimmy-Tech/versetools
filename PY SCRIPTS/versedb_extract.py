@@ -5107,44 +5107,15 @@ def main(mode: str = "live"):
     ship_list = [s for s in ships.values() if s["className"] not in SKIP_SHIPS]
     item_list = list(items.values())
 
-    # ── Preserve ships/items from previous extraction that are missing now ────
-    # Ships only ever get added, never removed. If a ship existed before but
-    # wasn't found in this extraction (XML missing, variant rename, etc.), keep
-    # it with its last-known data and mark it stale.
-    # Ships that were previously stale but now extracted successfully get cleared.
-    from datetime import datetime, timezone
-    for s in ship_list:
-        s.pop("_stale", None)
-        s.pop("_staleDate", None)
-    for i in item_list:
-        i.pop("_stale", None)
-        i.pop("_staleDate", None)
-    if OUTPUT_FILE.exists():
-        try:
-            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-                prev = json.load(f)
-            new_ship_keys = {s["className"] for s in ship_list}
-            new_item_keys = {i["className"] for i in item_list}
-            preserved_ships = 0
-            preserved_items = 0
-            for prev_ship in prev.get("ships", []):
-                if prev_ship["className"] not in new_ship_keys and prev_ship["className"] not in SKIP_SHIPS:
-                    if not prev_ship.get("_stale"):
-                        prev_ship["_stale"] = True
-                        prev_ship["_staleDate"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-                    ship_list.append(prev_ship)
-                    preserved_ships += 1
-            for prev_item in prev.get("items", []):
-                if prev_item["className"] not in new_item_keys:
-                    if not prev_item.get("_stale"):
-                        prev_item["_stale"] = True
-                        prev_item["_staleDate"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-                    item_list.append(prev_item)
-                    preserved_items += 1
-            if preserved_ships or preserved_items:
-                print(f"  Preserved from previous: {preserved_ships} ships, {preserved_items} items (marked stale)")
-        except Exception as e:
-            print(f"  Warning: could not load previous data for preservation: {e}")
+    # ── Baseline diff & merge ────────────────────────────────────────────────
+    # Compare scrape against saved baseline. Auto-accept stat changes,
+    # prompt for structural changes (hardpoint add/remove, ship add/remove).
+    from versedb_baseline_diff import run_baseline_update
+    ship_list, item_list = run_baseline_update(
+        ship_list, item_list, GAME_VERSION,
+        mining_locations=mining_locations.get("locations", []),
+        mining_elements=mining_locations.get("elements", []),
+    )
 
     def count_type(t):
         return sum(1 for i in item_list if i.get("type") == t)
