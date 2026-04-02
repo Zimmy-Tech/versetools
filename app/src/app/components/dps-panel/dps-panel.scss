@@ -102,6 +102,66 @@
 .enrg-fill { background: var(--enrg); }
 .dist-fill { background: var(--dist); }
 
+.dps-hero {
+  text-align: center;
+  padding: 12px 10px 10px;
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.06) 0%, rgba(0, 0, 0, 0.15) 100%);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--accent);
+  margin-bottom: 6px;
+  cursor: help;
+}
+
+.dps-hero-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(0, 200, 255, 0.25);
+}
+
+.dps-hero-label {
+  display: block;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.shield-hero {
+  text-align: center;
+  padding: 12px 10px 10px;
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--phys);
+  margin-bottom: 6px;
+  cursor: help;
+}
+
+.shield-hero-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--phys);
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(68, 136, 255, 0.25);
+}
+
+.shield-hero-label {
+  display: block;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
 .mono { font-family: 'Share Tech Mono', monospace; }
 
 .no-weapons {
@@ -150,9 +210,10 @@
 }
 
 .stat-block {
-  padding: 8px 10px;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
+  padding: 8px 10px 8px 12px;
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   display: flex;
   flex-direction: column;
   gap: 6px;

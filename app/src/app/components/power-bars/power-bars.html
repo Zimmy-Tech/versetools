@@ -86,9 +86,14 @@
     }
 
     @if (coolingSupply() > 0) {
-      <div class="pb-cooling" [class.deficit]="coolingDemand() > coolingSupply()">
-        <span class="pb-cooling-label">Cooling Supply Usage</span>
-        <span class="pb-cooling-values">{{ coolingPct() }}%</span>
+      <div class="pb-cooling-gauge" [class.deficit]="coolingPct() > 100">
+        <span class="pb-cooling-label">COOLING</span>
+        <div class="pb-gauge-track">
+          @for (seg of coolingSegments(); track $index) {
+            <div class="pb-gauge-seg" [class.filled]="seg" [class.over]="coolingPct() > 100"></div>
+          }
+        </div>
+        <span class="pb-cooling-val">{{ coolingPct() }}%</span>
       </div>
     }
   </div>

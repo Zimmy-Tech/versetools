@@ -10,14 +10,16 @@
           <button class="gimbal-btn" [class.active]="gimbalMode() === 'gimbal'" (click)="gimbalMode.set('gimbal')">PRE/AUTO/GIMBAL</button>
         </span>
       </div>
+      @if (pilotBurstDPS() > 0) {
+        <div class="dps-hero" title="All weapons firing simultaneously at maximum fire rate.">
+          <span class="dps-hero-val">{{ pilotBurstDPS().toFixed(0) }}</span>
+          <span class="dps-hero-label">PEAK DPS</span>
+        </div>
+      }
       <div class="stat-block">
         @if (pilotBurstDPS() > 0 || pilotDPS() > 0) {
-          <div class="stat-row" title="All weapons firing simultaneously at maximum fire rate. Does not account for ammo depletion or overheat.">
-            <span class="stat-label">Pilot Peak DPS</span>
-            <span class="mono">{{ pilotBurstDPS().toFixed(0) }}</span>
-          </div>
           <div class="stat-row" title="Average damage per second over a 10-second window. Energy weapons fire then regen (no regen while firing). Ballistic weapons cycle through overheat and cooldown.">
-            <span class="stat-label">Pilot DPS (10s)</span>
+            <span class="stat-label">Pilot Sustained (10s)</span>
             <span class="mono">{{ pilotDPS().toFixed(0) }}</span>
           </div>
           @if (pilotBurst().time > 0) {
@@ -72,15 +74,14 @@
     <!-- Shield HP -->
     @if (totalShieldHP() > 0) {
       <div>
-        <div class="section-title">Shields</div>
-        <div class="stat-row" style="justify-content: center; padding: 2px 0 4px;">
-          <span class="stat-label" style="color: var(--gold); font-size: 9px; letter-spacing: 1.5px;">RESIST MATH CONFIRMED IN-GAME</span>
+        <div class="section-title">Shields
+          <span class="stat-label" style="color: var(--gold); font-size: 9px; letter-spacing: 1.5px; margin-left: auto;">RESIST MATH CONFIRMED IN-GAME</span>
+        </div>
+        <div class="shield-hero" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
+          <span class="shield-hero-val">{{ totalShieldHP().toFixed(0) }}</span>
+          <span class="shield-hero-label">SHIELD HP</span>
         </div>
         <div class="stat-block">
-          <div class="stat-row" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
-            <span class="stat-label">Total HP Pool</span>
-            <span class="mono">{{ totalShieldHP().toFixed(0) }}</span>
-          </div>
           <div class="stat-row" title="Combined regen rate from primary shields (first 2) at current power pip allocation. Scaled by power band modifiers.">
             <span class="stat-label">Regen Rate</span>
             <span class="mono">{{ shieldRegenRate().toFixed(0) }}/s</span>
