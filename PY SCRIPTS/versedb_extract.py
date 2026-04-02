@@ -4941,6 +4941,10 @@ def main(mode: str = "live"):
         "mrck_s10_aegs_idris_nose_s12_torpedo": 'HMF-T12 "Hammerfall" Torpedo Launcher',
         "mrck_s05_rsi_perseus_torpedo_l": "5105 Torpedo Rack",
         "mrck_s05_rsi_perseus_torpedo_r": "5105 Torpedo Rack",
+        "qdrv_acas_s01_foxfire_scitem": "FoxFire Quantum Drive",
+        "qdrv_acas_s01_lightfire_scitem": "LightFire Quantum Drive",
+        "shld_banu_s02_placeholder_scitem": "Sukoran Shield",
+        "shld_rsi_s04_polaris_scitem": "Glacis Shield",
     }
     for cls, name in NAME_OVERRIDES.items():
         if cls in items:
@@ -5105,6 +5109,83 @@ def main(mode: str = "live"):
         else:
             seen_names[name] = cls
     ship_list = [s for s in ships.values() if s["className"] not in SKIP_SHIPS]
+
+    # ── Deduplicate ship-specific gimbal mounts ──────────────────────────────
+    # Many ships have their own gimbal variant (e.g., mount_gimbal_s3_perseus)
+    # that is functionally identical to the canonical (mount_gimbal_s3).
+    # Remap defaultLoadout references to the canonical and drop the dupes.
+    GIMBAL_REMAP = {
+        "mount_gimbal_s2_vncl_blade":              "mount_gimbal_s2",
+        "mount_gimbal_s2_vng_s2":                  "mount_gimbal_s2",
+        "mount_gimbal_s3_perseus":                 "mount_gimbal_s3",
+        "mount_gimbal_s3_perseus_bottom":          "mount_gimbal_s3",
+        "mount_gimbal_s3_perseus_bottom_left":     "mount_gimbal_s3",
+        "mount_gimbal_s3_perseus_right":           "mount_gimbal_s3",
+        "mount_gimbal_s3_polaris":                 "mount_gimbal_s3",
+        "mount_gimbal_s3_vncl_blade":              "mount_gimbal_s3",
+        "mount_gimbal_s4_crus_intrepid":           "mount_gimbal_s4",
+        "mount_gimbal_s4_paladin_turret":          "mount_gimbal_s4",
+        "mount_gimbal_s4_polaris":                 "mount_gimbal_s4",
+        "mount_gimbal_s4_vncl_stinger":            "mount_gimbal_s4",
+        "mount_gimbal_s5_rsi_meteor":              "mount_gimbal_s5_invsi",
+        "mount_gimbal_s6_polaris":                 "mount_gimbal_s6",
+        "mount_gimbal_s6_polaris_right":           "mount_gimbal_s6",
+        "mount_gimbal_s8_perseus_bottom":          "mount_gimbal_s8_perseus",
+    }
+    for ship in ship_list:
+        dl = ship.get("defaultLoadout", {})
+        for key, val in list(dl.items()):
+            if val in GIMBAL_REMAP:
+                dl[key] = GIMBAL_REMAP[val]
+    for dupe_cls in GIMBAL_REMAP:
+        items.pop(dupe_cls, None)
+    print(f"  Deduplicated {len(GIMBAL_REMAP)} ship-specific gimbal variants")
+
+    # ── Tag-lock bespoke ship turrets/mounts ────────────────────────────────
+    # Items with itemTags are filtered to only show on hardpoints with matching
+    # portTags. Add tags to bespoke items that are missing them.
+    BESPOKE_ITEM_TAGS = {
+        "drak_dual_s1":                 "$DRAK_Caterpillar_Turret",
+        "drak_dual_s3":                 "$DRAK_Caterpillar_Turret",
+        "anvl_terrapin_nose_turret_s3": "$ANVL_Terrapin_Nose",
+        "cnou_mustang_nose_turret_s3":  "$CNOU_Mustang_Nose",
+        "anvl_arrow_turret":            "$ANVL_Arrow_Nose",
+        "anvl_lightning_f8c_turret_s3": "$ANVL_Lightning_F8C",
+    }
+    for item_cls, tag in BESPOKE_ITEM_TAGS.items():
+        if item_cls in items:
+            tags = items[item_cls].setdefault("itemTags", [])
+            if tag not in tags:
+                tags.append(tag)
+
+    # Add matching portTags to the ships that use these bespoke items
+    BESPOKE_SHIP_PORTS = {
+        ("drak_caterpillar", "drak_caterpillar_pirate"): {
+            ("hardpoint_weapon_left", "hardpoint_weapon_right", "hardpoint_weapon_top"):
+                "$DRAK_Caterpillar_Turret",
+        },
+        ("anvl_terrapin", "anvl_terrapin_medic"): {
+            ("hardpoint_weapon_nose",): "$ANVL_Terrapin_Nose",
+        },
+        ("cnou_mustang_alpha", "cnou_mustang_beta", "cnou_mustang_delta", "cnou_mustang_gamma", "cnou_mustang_omega"): {
+            ("hardpoint_weapon_nose",): "$CNOU_Mustang_Nose",
+        },
+        ("ANVL_Arrow",): {
+            ("hardpoint_weapon_nose",): "$ANVL_Arrow_Nose",
+        },
+        ("anvl_lightning_f8c",): {
+            ("hardpoint_weapon_nose",): "$ANVL_Lightning_F8C",
+        },
+    }
+    for ship in ship_list:
+        cls_lower = ship["className"].lower()
+        for ship_group, port_map in BESPOKE_SHIP_PORTS.items():
+            if cls_lower in {s.lower() for s in ship_group}:
+                for hp_ids, tag in port_map.items():
+                    for hp in ship.get("hardpoints", []):
+                        if hp["id"].lower() in {h.lower() for h in hp_ids}:
+                            hp["portTags"] = tag
+
     item_list = list(items.values())
 
     # ── Baseline diff & merge ────────────────────────────────────────────────

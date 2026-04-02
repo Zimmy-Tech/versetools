@@ -733,6 +733,21 @@ export class DataService {
     // Internal QD variants
     'qdrv_acas_s01_foxfire',   // Foxfire (not in-game)
     'qdrv_acas_s01_lightfire', // Lightfire (not in-game)
+    // Internal template/placeholder items (all sizes, all types)
+    'qdrv_s01_template', 'qdrv_s02_template', 'qdrv_s03_template', 'qdrv_s04_template',
+    'powr_s01_template', 'powr_s02_template', 'powr_s03_template', 'powr_s04_template',
+    'shld_s01_template', 'shld_s02_template', 'shld_s03_template', 'shld_s04_template',
+    'cool_s01_template', 'cool_s02_template', 'cool_s03_template', 'cool_s04_template', 'cool_template',
+    'lfsp_s00_template', 'lfsp_s01_template', 'lfsp_s02_template', 'lfsp_s03_template', 'lfsp_s04_template',
+    'radr_s01_template', 'radr_s02_template', 'radr_s03_template',
+    'mining_laser_s0_template', 'mining_laser_s1_template',
+    'wep_tractorbeam_s1_template', 'wep_tractorbeam_s2_template', 'wep_tractorbeam_s4_template',
+    'turret_pdc_scitem_template', 'aegs_idris_turret_pdc_scitem_template',
+    'default_fixed_mount_s3', 'default_fixed_mount_s4',
+    'salvage_head_template', 'salvage_buff_modifier_template', 'salvage_modifier_template',
+    'salvage_modifier_tractor_template', 'salvage_modifier_scraper_template',
+    'qed_template',
+    'shld_banu_s01_placeholder_scitem', // Banu S1 shield placeholder (unused)
     // Internal weapon variants (non-zero DPS but not real items)
     'banu_energyrepeater_s2',      // CF-227 Badger clone (0 DPS)
     'klwe_laserrepeater_pdc_s2',   // CF-227 Badger PDC variant (0 DPS)
@@ -760,6 +775,11 @@ export class DataService {
     'mrck_s10_rsi_polaris_torpedo_cylinder_right_inner',
     'mrck_s10_rsi_polaris_torpedo_lt',
     'mrck_s10_rsi_polaris_torpedo_left',
+    // Unknown mount (TODO: research if this is a real in-game item)
+    'behr_pc2_dual_s1',                // PC2 Dual S1 Mount — never seen in-game
+    // Template/placeholder mounts (TODO: research if these are real items)
+    'default_fixed_mount_s3',          // Size 3 Fixed Mount — unused by any ship
+    'default_fixed_mount_s4',          // Size 4 Fixed Mount — unused by any ship
   ]);
 
   getOptionsForSlot(hp: { id: string; minSize: number; maxSize: number; type: string; flags?: string; portTags?: string; allTypes: { type: string }[] }): Item[] {
@@ -834,10 +854,10 @@ export class DataService {
         // Ship-exclusive items: only show when that ship is selected
         if (exclusiveShip && exclusiveShip !== shipCls) return false;
 
-        // Port-tag filtering: if hardpoint has portTags and item has itemTags,
-        // at least one itemTag must match a portTag.
-        // With exclusive_tags flag: items WITHOUT matching tags are also excluded.
-        // For FlightController slots, items WITHOUT tags are always excluded.
+        // Port-tag filtering: if an item has itemTags, it is ship-specific and
+        // requires a hardpoint with matching portTags. Untagged hardpoints never
+        // show tagged items. With exclusive_tags flag, items WITHOUT tags are also
+        // excluded. FlightController slots always require matching tags.
         if (hpPortTagSet) {
           const isExclusive = hp.flags?.includes('exclusive_tags');
           if (i.itemTags && i.itemTags.length > 0) {
@@ -845,6 +865,8 @@ export class DataService {
           } else if (isExclusive || i.type === 'FlightController') {
             return false;  // no matching tags → excluded
           }
+        } else if (i.itemTags && i.itemTags.length > 0) {
+          return false;  // item has tags but hardpoint has none — not compatible
         }
         // Filter internal flight controller variants (_mm_ = master mode test)
         if (i.type === 'FlightController' && clsL.includes('_mm_')) {
