@@ -276,7 +276,8 @@ export class LoadoutViewComponent {
       if (hp.controllerTag?.toLowerCase() === 'torpedoseat') return false;
       if (hp.id.toLowerCase().includes('turret_cap')) return false;
       // Skip variant-only turrets with no loadout (e.g., A2 turrets on shared M2/C2 XML)
-      if (hp.type === 'Turret' && !lo[hp.id.toLowerCase()]) return false;
+      // But keep turrets with portTags — they're real configurable slots, just empty by default
+      if (hp.type === 'Turret' && !lo[hp.id.toLowerCase()] && !hp.portTags) return false;
       return hp.type === 'WeaponGun' || hp.type === 'Turret' || hp.type === 'TurretBase' ||
         hp.allTypes?.some(t => t.type === 'WeaponGun' || t.type === 'Turret' || t.type === 'TurretBase');
     });
@@ -543,8 +544,8 @@ export class LoadoutViewComponent {
                      parentItem?.type === 'BombLauncher';
       const parentIsDirectWeapon = parentItem?.type === 'WeaponGun' || parentItem?.type === 'WeaponTachyon';
       const hpIsToolArm = hp.type === 'ToolArm' || hp.type === 'UtilityTurret';
-      // Modules are handled separately below
-      if (hp.type === 'Module') continue;
+      // Modules are handled separately below (whether on a Module hardpoint or a Turret hardpoint)
+      if (hp.type === 'Module' || parentItem?.type === 'Module') continue;
       const showSubs = !parentIsDirectWeapon && (
                        parentItem?.type === 'WeaponMount' ||
                        parentItem?.type === 'Turret' ||
@@ -565,23 +566,25 @@ export class LoadoutViewComponent {
         ...allKeys.filter(k => k.startsWith(prefix)),
         ...loadoutKeys.filter(k => k.startsWith(prefix)),
       ])];
-      // If a WeaponMount is equipped but has no child keys, generate a synthetic gun sub-slot
-      if (!childKeys.length && parentItem?.type === 'WeaponMount') {
-        const synthId = `${hp.id}.hardpoint_class_2`;
-        const gunSize = Math.max(1, hp.maxSize - 1);
+      // If no child keys exist but parent has subPorts, let the subPorts path handle it
+      if (!childKeys.length && parentItem?.subPorts?.length) {
+        // Fall through to subPorts-based construction below
+      } else if (!childKeys.length && parentItem?.type === 'WeaponMount') {
+        // WeaponMount without subPorts or child keys: generate a synthetic gun sub-slot
         slots[hp.id] = [{
-          id: synthId,
+          id: `${hp.id}.hardpoint_class_2`,
           label: 'Gun 1',
           type: 'WeaponGun',
           subtypes: '',
           minSize: 1,
-          maxSize: gunSize,
+          maxSize: Math.max(1, hp.maxSize - 1),
           flags: '',
           allTypes: [{ type: 'WeaponGun', subtypes: '' }],
         }];
         continue;
+      } else if (!childKeys.length) {
+        continue;
       }
-      if (!childKeys.length) continue;
       const leaves = childKeys.filter(k => !childKeys.some(k2 => k2.startsWith(k + '.')));
 
       if (isRack) {
@@ -622,8 +625,161 @@ export class LoadoutViewComponent {
           allTypes: [{ type: 'Missile', subtypes: '' }],
         }];
         rackLeafs[firstLeaf] = activeLeaves;
+      } else if (parentItem?.subPorts?.length) {
+        // ── subPorts-based turret/mount sub-slot construction ──
+        // The equipped turret/mount declares its own child slots via subPorts.
+        // Build slots directly from that data — no loadout-key scanning needed.
+        const weaponLock = parentItem.weaponLock ?? null;
+        const lockedWeapon = weaponLock
+          ? items.find(i => i.className.toLowerCase() === weaponLock.toLowerCase()) ?? null
+          : null;
+        const subSlots: Hardpoint[] = [];
+        let gunIdx = 1;
+        const allLoadoutKeys = [...new Set([...allKeys, ...Object.keys(currentLoadout).map(k => k.toLowerCase())])];
+
+        for (const sp of parentItem.subPorts) {
+          const subId = `${hp.id}.${sp.id}`.toLowerCase();
+
+          if (sp.type === 'MissileLauncher' || sp.type === 'BombLauncher') {
+            // Nested missile rack inside turret — find rack children from loadout
+            const rackPrefix = subId.toLowerCase() + '.';
+            const rackChildren = allLoadoutKeys.filter(k => k.startsWith(rackPrefix));
+            const missileLeaves: string[] = [];
+            if (rackChildren.length) {
+              const rackLeafKeys = rackChildren.filter(k => !rackChildren.some(k2 => k2.startsWith(k + '.')));
+              missileLeaves.push(...rackLeafKeys.filter(leaf => {
+                const cls = defaultLoadout[leaf] ?? currentLoadout[leaf]?.className;
+                const mi = cls ? items.find(i => i.className.toLowerCase() === cls.toLowerCase()) : null;
+                return mi?.type === 'Missile' || mi?.type === 'Bomb';
+              }));
+            }
+            // Check equipped rack, default loadout, or locked rack from subPort
+            const equippedRack = currentLoadout[subId];
+            const lockedRackCls = (sp as any).locked as string | undefined;
+            const rackItem = (equippedRack?.type === 'MissileLauncher' || equippedRack?.type === 'BombLauncher')
+              ? equippedRack
+              : items.find(i => i.className.toLowerCase() === (defaultLoadout[subId.toLowerCase()] ?? '').toLowerCase())
+              ?? (lockedRackCls ? items.find(i => i.className.toLowerCase() === lockedRackCls.toLowerCase()) : null)
+              ?? null;
+            if (rackItem?.capacity && !missileLeaves.length) {
+              for (let mi = 1; mi <= rackItem.capacity; mi++) {
+                missileLeaves.push(`${subId}.missile_${String(mi).padStart(2, '0')}_attach`);
+              }
+            }
+            if (!missileLeaves.length) {
+              // No rack in loadout — show an empty missile rack slot from subPort info
+              subSlots.push({
+                id: subId,
+                label: sp.type === 'BombLauncher' ? 'Bombs' : 'Missiles',
+                type: sp.type === 'BombLauncher' ? 'Bomb' : 'MissileLauncher',
+                subtypes: '',
+                minSize: sp.minSize,
+                maxSize: sp.maxSize,
+                flags: lockedRackCls ? '$uneditable' : '',
+                allTypes: sp.allTypes.map((t: any) => ({ type: t.type, subtypes: '' })),
+              });
+              continue;
+            }
+            const capacity = rackItem?.capacity ?? missileLeaves.length;
+            const activeLeaves = missileLeaves.slice(0, capacity);
+            const firstLeaf = activeLeaves[0];
+            const missileSize = rackItem?.missileSize
+              ?? items.find(i => i.className.toLowerCase() === (defaultLoadout[firstLeaf] ?? '').toLowerCase())?.size
+              ?? sp.maxSize;
+            const isBomb = rackItem?.type === 'BombLauncher';
+            subSlots.push({
+              id: firstLeaf,
+              label: isBomb ? `Bombs ×${capacity}` : `Missiles ×${capacity}`,
+              type: isBomb ? 'Bomb' : 'Missile',
+              subtypes: '',
+              minSize: missileSize,
+              maxSize: missileSize,
+              flags: '',
+              allTypes: [{ type: 'Missile', subtypes: '' }],
+            });
+            rackLeafs[firstLeaf] = activeLeaves;
+            continue;
+          }
+
+          // Gun/weapon/utility port — check if a gimbal is equipped on this sub-port
+          // Use case-insensitive lookup: subPort ids may differ in case from loadout keys
+          const equippedChild = currentLoadout[subId] ?? currentLoadout[subId.toLowerCase()];
+          const defaultChildCls = defaultLoadout[subId.toLowerCase()];
+          const childItem = equippedChild
+            ?? (defaultChildCls ? items.find(i => i.className.toLowerCase() === defaultChildCls.toLowerCase()) : null);
+          const isGimbal = childItem?.type === 'WeaponMount';
+
+          if (isGimbal && childItem?.subPorts?.length) {
+            // Gimbal equipped: build the gun slot from the gimbal's own subPorts
+            const gimbalPort = childItem.subPorts[0];
+            const gunLeafId = `${subId}.${gimbalPort.id}`;
+            const gunCls = defaultLoadout[gunLeafId.toLowerCase()] ?? currentLoadout[gunLeafId]?.className ?? currentLoadout[gunLeafId.toLowerCase()]?.className;
+            const gunItem = gunCls ? items.find(i => i.className.toLowerCase() === gunCls.toLowerCase()) : null;
+            const gunSize = lockedWeapon?.size ?? gunItem?.size ?? gimbalPort.maxSize;
+            subSlots.push({
+              id: gunLeafId,
+              label: `Gun ${gunIdx++}`,
+              type: 'WeaponGun',
+              subtypes: '',
+              minSize: lockedWeapon ? gunSize : Math.max(1, gunSize - 1),
+              maxSize: gunSize,
+              flags: weaponLock ? `weaponLock:${weaponLock}` : '',
+              allTypes: [{ type: 'WeaponGun', subtypes: '' }],
+            });
+          } else {
+            // Direct weapon port (no gimbal intermediary)
+            const slotType = sp.type === 'WeaponMining' ? 'WeaponMining'
+              : sp.type === 'MiningModifier' ? 'MiningModifier'
+              : sp.type === 'SalvageHead' ? 'SalvageHead'
+              : sp.type === 'SalvageModifier' ? 'SalvageModifier'
+              : sp.type === 'TractorBeam' ? 'TractorBeam'
+              : 'WeaponGun';
+            const slotLabel = slotType === 'WeaponMining' ? `Laser ${gunIdx++}`
+              : slotType === 'MiningModifier' ? `Module ${gunIdx++}`
+              : slotType === 'SalvageHead' ? `Salvage Head ${gunIdx++}`
+              : slotType === 'SalvageModifier' ? `Salvage Tool ${gunIdx++}`
+              : `Gun ${gunIdx++}`;
+            const slotSize = lockedWeapon?.size ?? sp.maxSize;
+            subSlots.push({
+              id: subId,
+              label: slotLabel,
+              type: slotType,
+              subtypes: '',
+              minSize: lockedWeapon ? slotSize : sp.minSize,
+              maxSize: slotSize,
+              flags: weaponLock ? `weaponLock:${weaponLock}` : (sp.type === 'TractorBeam' && hp.flags?.includes('uneditable') ? '$uneditable' : ''),
+              allTypes: sp.allTypes.map((t: any) => ({ type: t.type, subtypes: '' })),
+            });
+          }
+        }
+
+        // Generate dynamic module slots for mining lasers
+        for (const sub of subSlots) {
+          if (sub.type !== 'WeaponMining') continue;
+          const equippedLaser = currentLoadout[sub.id];
+          const numModules = equippedLaser?.moduleSlots ?? 0;
+          if (numModules > 0) {
+            const moduleSubSlots: Hardpoint[] = [];
+            for (let mi = 1; mi <= numModules; mi++) {
+              const modId = `${sub.id}.module_${mi}`;
+              moduleSubSlots.push({
+                id: modId,
+                label: `Module ${mi}`,
+                type: 'MiningModifier',
+                subtypes: '',
+                minSize: 1,
+                maxSize: 1,
+                flags: '',
+                allTypes: [{ type: 'MiningModifier', subtypes: '' }],
+              });
+            }
+            slots[sub.id] = moduleSubSlots;
+          }
+        }
+
+        if (subSlots.length) slots[hp.id] = subSlots;
       } else {
-        // WeaponMount / Turret: individual gun sub-slots
+        // ── Fallback: leaf-based gun sub-slot discovery (items without subPorts) ──
         const weaponLock = parentItem?.weaponLock ?? null;
         const lockedWeapon = weaponLock
           ? items.find(i => i.className.toLowerCase() === weaponLock.toLowerCase()) ?? null
@@ -660,7 +816,7 @@ export class LoadoutViewComponent {
           });
         }
 
-        // Generate dynamic module slots for mining lasers
+        // Generate dynamic module slots for mining lasers (fallback path)
         for (const sub of subSlots) {
           if (sub.type !== 'WeaponMining') continue;
           const equippedLaser = currentLoadout[sub.id];
@@ -682,58 +838,6 @@ export class LoadoutViewComponent {
             }
             slots[sub.id] = moduleSubSlots;
           }
-        }
-
-        // Check for nested missile racks — only when the default turret is equipped,
-        // since the rack belongs to that specific turret, not a replacement like the TMSB-5
-        const defaultParentCls = defaultLoadout[hp.id.toLowerCase()];
-        const equippedParentCls = currentLoadout[hp.id]?.className?.toLowerCase();
-        const isDefaultTurretEquipped = !equippedParentCls || !defaultParentCls ||
-          equippedParentCls === defaultParentCls.toLowerCase();
-
-        const hpDepth = hp.id.split('.').length;
-        const directChildKeys = isDefaultTurretEquipped
-          ? childKeys.filter(k => k.split('.').length === hpDepth + 1)
-          : [];
-        for (const childKey of directChildKeys) {
-          const rackCls = defaultLoadout[childKey];
-          if (!rackCls) continue;
-          const rackDefaultItem = items.find(i => i.className.toLowerCase() === rackCls.toLowerCase());
-          if (!rackDefaultItem || (rackDefaultItem.type !== 'MissileLauncher' && rackDefaultItem.type !== 'BombLauncher')) continue;
-
-          // Find missile leaves under this rack
-          const rackPrefix = childKey.toLowerCase() + '.';
-          const rackChildKeys = allKeys.filter(k => k.startsWith(rackPrefix));
-          const rackLeafKeys = rackChildKeys.filter(k => !rackChildKeys.some(k2 => k2.startsWith(k + '.')));
-          const missileLeafKeys = rackLeafKeys.filter(leaf => {
-            const missileCls = defaultLoadout[leaf];
-            const missileItem = items.find(i => i.className.toLowerCase() === missileCls?.toLowerCase());
-            return missileItem?.type === 'Missile';
-          });
-          if (!missileLeafKeys.length) continue;
-
-          // Use the currently equipped rack if available, otherwise fall back to default
-          const equippedRack = currentLoadout[childKey];
-          const rackItem = (equippedRack?.type === 'MissileLauncher' || equippedRack?.type === 'BombLauncher')
-            ? equippedRack : rackDefaultItem;
-          const slotSize = rackItem.missileSize
-            ?? items.find(i => i.className.toLowerCase() === (defaultLoadout[missileLeafKeys[0]] ?? '').toLowerCase())?.size
-            ?? hp.maxSize;
-          const capacity = rackItem.capacity ?? missileLeafKeys.length;
-          const activeLeaves = missileLeafKeys.slice(0, capacity);
-          const firstMissileLeaf = activeLeaves[0];
-
-          subSlots.push({
-            id: firstMissileLeaf,
-            label: `Missiles ×${capacity}`,
-            type: 'Missile',
-            subtypes: '',
-            minSize: slotSize,
-            maxSize: slotSize,
-            flags: '',
-            allTypes: [{ type: 'Missile', subtypes: '' }],
-          });
-          rackLeafs[firstMissileLeaf] = activeLeaves;
         }
 
         if (subSlots.length) slots[hp.id] = subSlots;

@@ -100,6 +100,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return url === '/' || url === '/loadout';
   }
 
+  // Messages to display based on equipped items in the current loadout
+  private readonly ITEM_MESSAGES: Record<string, string> = {
+    'behr_ballisticrepeater_s2': 'Sawbuck fire rate (618 RPM) is game-tested — other tools may report different values.',
+    'behr_ballisticrepeater_s3': 'Shredder fire rate (618 RPM) is game-tested — other tools may report different values.',
+  };
+
+  loadoutMessages = computed(() => {
+    const loadout = this.data.loadout();
+    const seen = new Set<string>();
+    const messages: string[] = [];
+    for (const item of Object.values(loadout)) {
+      if (!item) continue;
+      const cls = item.className.toLowerCase();
+      const msg = this.ITEM_MESSAGES[cls];
+      if (msg && !seen.has(cls)) {
+        seen.add(cls);
+        messages.push(msg);
+      }
+    }
+    return messages;
+  });
+
   private closeAllGroups(): void {
     this.shipToolsOpen.set(false);
     this.missionsOpen.set(false);

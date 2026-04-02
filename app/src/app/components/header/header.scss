@@ -542,3 +542,22 @@ header {
 
   &:hover { color: var(--red); }
 }
+
+/* ── Loadout Messages Bar ──────────────────────────── */
+
+.loadout-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 16px;
+  background: rgba(255, 170, 0, 0.06);
+  border-bottom: 1px solid rgba(255, 170, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.loadout-msg {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--gold, #f0a500);
+  text-align: center;
+}

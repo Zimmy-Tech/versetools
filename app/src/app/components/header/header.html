@@ -206,3 +206,12 @@
     }
   </div>
 }
+
+<!-- Loadout messages bar -->
+@if (isOnLoadout() && loadoutMessages().length > 0) {
+  <div class="loadout-messages">
+    @for (msg of loadoutMessages(); track msg) {
+      <div class="loadout-msg">{{ msg }}</div>
+    }
+  </div>
+}

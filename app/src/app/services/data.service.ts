@@ -323,14 +323,50 @@ export class DataService {
       current[slotId] = item;
       const defaultLoadout = this.selectedShip()?.defaultLoadout ?? {};
 
-      if (item.weaponLock) {
-        // Turret with weapon lock: auto-fill gun sub-slots with locked weapon
+      if (item.weaponLock && item.subPorts?.length) {
+        // Turret with weapon lock + subPorts: fill each gun sub-port with locked weapon
+        const lockedWeapon = this.items().find(i => i.className.toLowerCase() === item.weaponLock!.toLowerCase());
+        if (lockedWeapon) {
+          for (const sp of item.subPorts) {
+            if (sp.type === 'WeaponGun' || sp.allTypes?.some((t: any) => t.type === 'WeaponGun')) {
+              current[`${slotId}.${sp.id}`] = lockedWeapon;
+            }
+          }
+        }
+      } else if (item.weaponLock) {
+        // Turret with weapon lock (no subPorts): fallback to default loadout scan
         const lockedWeapon = this.items().find(i => i.className.toLowerCase() === item.weaponLock!.toLowerCase());
         if (lockedWeapon) {
           for (const [dotKey, cls] of Object.entries(defaultLoadout)) {
             if (!dotKey.startsWith(prefix)) continue;
             const defaultItem = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
             if (defaultItem?.type === 'WeaponGun') current[dotKey] = lockedWeapon;
+          }
+        }
+      } else if ((item.type === 'Turret' || item.type === 'TurretBase' || item.type === 'WeaponMount') && item.subPorts?.length) {
+        // Turret/mount with subPorts: populate children from default loadout matching sub-port ids
+        for (const sp of item.subPorts) {
+          const childKey = `${slotId}.${sp.id}`;
+          const childPrefix = childKey.toLowerCase() + '.';
+          // If sub-port has a locked item, auto-equip it
+          const lockedCls = (sp as any).locked as string | undefined;
+          if (lockedCls) {
+            const lockedItem = this.items().find(i => i.className.toLowerCase() === lockedCls.toLowerCase());
+            if (lockedItem) current[childKey] = lockedItem;
+          }
+          // Populate the direct child from default loadout (if not already set by locked)
+          if (!current[childKey]) {
+            const childCls = defaultLoadout[childKey.toLowerCase()];
+            if (childCls) {
+              const childItem = this.items().find(i => i.className.toLowerCase() === childCls.toLowerCase());
+              if (childItem) current[childKey] = childItem;
+            }
+          }
+          // Populate grandchildren (e.g. gimbal→gun, missile_rack→missiles)
+          for (const [dotKey, cls] of Object.entries(defaultLoadout)) {
+            if (!dotKey.toLowerCase().startsWith(childPrefix)) continue;
+            const subItem = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
+            if (subItem) current[dotKey] = subItem;
           }
         }
       } else if (item.type === 'Module') {
@@ -770,6 +806,7 @@ export class DataService {
     const acceptsMiningMod = hp.type === 'MiningModifier' || allTypes.includes('MiningModifier');
     const acceptsSalvage = hp.type === 'SalvageHead' || allTypes.includes('SalvageHead');
     const acceptsSalvageMod = hp.type === 'SalvageModifier' || allTypes.includes('SalvageModifier');
+    const acceptsModule = hp.type === 'Module' || allTypes.includes('Module');
 
     return this.items()
       .filter(i => {
@@ -799,13 +836,14 @@ export class DataService {
 
         // Port-tag filtering: if hardpoint has portTags and item has itemTags,
         // at least one itemTag must match a portTag.
-        // For FlightController slots, items WITHOUT tags are also excluded
-        // (each blade is ship-specific).
+        // With exclusive_tags flag: items WITHOUT matching tags are also excluded.
+        // For FlightController slots, items WITHOUT tags are always excluded.
         if (hpPortTagSet) {
+          const isExclusive = hp.flags?.includes('exclusive_tags');
           if (i.itemTags && i.itemTags.length > 0) {
             if (!i.itemTags.some(t => hpPortTagSet.has(t.toLowerCase()))) return false;
-          } else if (i.type === 'FlightController') {
-            return false;  // no matching tags → wrong ship
+          } else if (isExclusive || i.type === 'FlightController') {
+            return false;  // no matching tags → excluded
           }
         }
         // Filter internal flight controller variants (_mm_ = master mode test)
@@ -822,7 +860,8 @@ export class DataService {
         if (acceptsMiningMod && i.type === 'MiningModifier') return true;
         if (acceptsSalvage && i.type === 'SalvageHead') return true;
         if (acceptsSalvageMod && i.type === 'SalvageModifier') return true;
-        if (!acceptsGun && !acceptsTurret && !acceptsRack && !acceptsMissile && !acceptsMining && !acceptsMiningMod && !acceptsSalvage && !acceptsSalvageMod) {
+        if (acceptsModule && i.type === 'Module') return true;
+        if (!acceptsGun && !acceptsTurret && !acceptsRack && !acceptsMissile && !acceptsMining && !acceptsMiningMod && !acceptsSalvage && !acceptsSalvageMod && !acceptsModule) {
           if (i.type === 'Module' && hp.type === 'Module') {
             // Only show modules belonging to this ship
             if (!clsL.includes(shipCls.replace(/_/g, '').toLowerCase().slice(0, 8)) &&

@@ -1845,6 +1845,25 @@ def parse_weapon_mount_item(root, class_name, loc):
     tags_raw = (attach_el.get("Tags", "") if attach_el is not None else "").split()
     item_tags = [t.lstrip("$") for t in tags_raw if "_" in t]
 
+    # Extract sub-hardpoints this turret/mount provides (gun slots, missile rack slots, etc.)
+    # Same pattern as parse_module_item — rich structured data for dynamic UI slot generation.
+    sub_ports = []
+    for port_el in root.iter("SItemPortDef"):
+        port_name = port_el.get("Name", "")
+        if not port_name:
+            continue
+        types_el = port_el.findall(".//SItemPortDefTypes")
+        port_types = [t.get("Type", "") for t in types_el if t.get("Type")]
+        if not port_types:
+            continue
+        sub_ports.append({
+            "id": port_name,
+            "type": port_types[0],
+            "minSize": int(port_el.get("MinSize", 0)),
+            "maxSize": int(port_el.get("MaxSize", 0)),
+            "allTypes": [{"type": t} for t in port_types],
+        })
+
     # Ball/Canard turrets are full turrets (equip to Turret-type hardpoints)
     # Gimbals/fixed mounts are weapon mounts (equip to WeaponGun-type hardpoints)
     if info["subType"] in ("BallTurret", "CanardTurret", "PDCTurret"):
@@ -1857,6 +1876,8 @@ def parse_weapon_mount_item(root, class_name, loc):
             "size":         info["size"],
             "grade":        info["grade"],
         }
+        if sub_ports:
+            result["subPorts"] = sub_ports
         weapon_lock = TURRET_WEAPON_LOCK.get(class_name.lower())
         if weapon_lock:
             result["weaponLock"] = weapon_lock
@@ -1872,6 +1893,8 @@ def parse_weapon_mount_item(root, class_name, loc):
         "size":         info["size"],
         "grade":        info["grade"],
     }
+    if sub_ports:
+        result["subPorts"] = sub_ports
     weapon_lock = TURRET_WEAPON_LOCK.get(class_name.lower())
     if weapon_lock:
         result["weaponLock"] = weapon_lock
@@ -4330,7 +4353,7 @@ def main(mode: str = "live"):
     # Hornet Mk I: nose turret is bespoke (not swappable) — mark as uneditable
     _hornet_mk1_lock_nose = [
         "anvl_hornet_f7c", "anvl_hornet_f7c_wildfire",
-        "anvl_hornet_f7cr", "anvl_hornet_f7cs",
+        "anvl_hornet_f7cm", "anvl_hornet_f7cm_heartseeker",
     ]
     for hcls in _hornet_mk1_lock_nose:
         if hcls in ships:
@@ -4405,14 +4428,148 @@ def main(mode: str = "live"):
         "hardpoint_class_4_nose.hardpoint_class_1_left": "klwe_laserrepeater_s1",
         "hardpoint_class_4_nose.hardpoint_class_1_right": "klwe_laserrepeater_s1",
     }
-    for hcls in ("anvl_hornet_f7c", "anvl_hornet_f7c_wildfire",
-                 "anvl_hornet_f7cr", "anvl_hornet_f7cs",
-                 "anvl_hornet_f7c_mk2", "anvl_hornet_f7cr_mk2", "anvl_hornet_f7cs_mk2"):
+    for hcls in ("anvl_hornet_f7c", "anvl_hornet_f7c_wildfire"):
         if hcls in ships:
             dl = ships[hcls].setdefault("defaultLoadout", {})
             for k, v in _hornet_mk1_nose.items():
                 if k not in dl:
                     dl[k] = v
+
+    # F7C-R Tracker & F7C-S Ghost Mk I: nose is empty by default, can equip F7C Nose Turret
+    for hcls in ("anvl_hornet_f7cr", "anvl_hornet_f7cs"):
+        if hcls not in ships:
+            continue
+        dl = ships[hcls].setdefault("defaultLoadout", {})
+        for k in list(dl.keys()):
+            if k.lower().startswith("hardpoint_class_4_nose"):
+                del dl[k]
+        for hp in ships[hcls].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_class_4_nose":
+                hp["portTags"] = "ANVL_Hornet_Center"
+                hp["flags"] = "front nose exclusive_tags"
+
+    # F7C-R Tracker Mk I: center slot also accepts WillsOp Radar (not Ghost Cap)
+    if "anvl_hornet_f7cr" in ships:
+        for hp in ships["anvl_hornet_f7cr"].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_class_4_center":
+                hp["portTags"] = "ANVL_Hornet_Base ANVL_Hornet_Tracker"
+
+    # F7C-S Ghost Mk I: center slot also accepts Ghost Center Cap (not WillsOp Radar)
+    if "anvl_hornet_f7cs" in ships:
+        for hp in ships["anvl_hornet_f7cs"].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_class_4_center":
+                hp["portTags"] = "ANVL_Hornet_Base ANVL_Hornet_Ghost"
+
+    # Hornet Mk II: default center item is cargo_door entity which isn't extracted as an item.
+    # Replace with the actual cargo module item.
+    for hcls in ("anvl_hornet_f7c_mk2", "anvl_hornet_f7cr_mk2", "anvl_hornet_f7cs_mk2"):
+        if hcls in ships:
+            dl = ships[hcls].setdefault("defaultLoadout", {})
+            if dl.get("hardpoint_class_4_center") == "anvl_hornet_f7c_mk2_cargo_door":
+                dl["hardpoint_class_4_center"] = "anvl_hornet_f7c_mk2_cargo_mod"
+
+    # Hornet Mk II variants: nose slot is empty by default (not pre-equipped)
+    # Remove any Mk I nose turret keys that may have been injected above
+    for hcls in ("anvl_hornet_f7c_mk2", "anvl_hornet_f7cr_mk2", "anvl_hornet_f7cs_mk2"):
+        if hcls in ships:
+            dl = ships[hcls].setdefault("defaultLoadout", {})
+            for k in list(dl.keys()):
+                if k.lower().startswith("hardpoint_class_4_nose"):
+                    del dl[k]
+
+    # Hornet Mk II (F7C variants): DCB missile loadout uses hardpoint_missile_rack_left/right
+    # but base vehicle hardpoints are hardpoint_class_3_*_bay_door. Replace with correct mapping.
+    _hornet_mk2_missile_remap = {
+        "hardpoint_missile_rack_left": "hardpoint_class_3_left_bay_door",
+        "hardpoint_missile_rack_right": "hardpoint_class_3_right_bay_door",
+    }
+    for hcls in ("anvl_hornet_f7c_mk2", "anvl_hornet_f7cr_mk2", "anvl_hornet_f7cs_mk2"):
+        if hcls not in ships:
+            continue
+        dl = ships[hcls].setdefault("defaultLoadout", {})
+        for old_key, new_key in _hornet_mk2_missile_remap.items():
+            if old_key in dl and new_key not in dl:
+                dl[new_key] = dl.pop(old_key)
+            for k in list(dl.keys()):
+                if k.startswith(old_key + "."):
+                    suffix = k[len(old_key):]
+                    new_child = new_key + suffix
+                    if new_child not in dl:
+                        dl[new_child] = dl.pop(k)
+
+    # Hornet Mk II variants: DCB loadout uses hardpoint_weapon_* keys but base vehicle XML
+    # uses hardpoint_class_*. Remap loadout keys to match the hardpoint definitions.
+    _hornet_mk2_weapon_remap = {
+        "hardpoint_weapon_left_wing": "hardpoint_class_2_left_wing",
+        "hardpoint_weapon_right_wing": "hardpoint_class_2_right_wing",
+        "hardpoint_weapon_center": "hardpoint_class_4_center",
+    }
+    for hcls in ("anvl_hornet_f7c_mk2", "anvl_hornet_f7cr_mk2", "anvl_hornet_f7cs_mk2"):
+        if hcls not in ships:
+            continue
+        dl = ships[hcls].setdefault("defaultLoadout", {})
+        for old_key, new_key in _hornet_mk2_weapon_remap.items():
+            if old_key in dl and new_key not in dl:
+                dl[new_key] = dl.pop(old_key)
+            for k in list(dl.keys()):
+                if k.startswith(old_key + "."):
+                    suffix = k[len(old_key):]
+                    new_child = new_key + suffix
+                    if new_child not in dl:
+                        dl[new_child] = dl.pop(k)
+
+    # Hornet Mk II: center configurable slot restricted to Mk II-tagged turrets only
+    for hcls in ("anvl_hornet_f7c_mk2",):
+        if hcls not in ships:
+            continue
+        for hp in ships[hcls].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_class_4_center":
+                hp["portTags"] = "ANVL_Hornet_Mk2_Center"
+                hp["flags"] = (hp.get("flags", "") + " exclusive_tags").strip()
+
+    # F7C-R Tracker Mk II: center also accepts WillsOp Mk II Radar
+    if "anvl_hornet_f7cr_mk2" in ships:
+        for hp in ships["anvl_hornet_f7cr_mk2"].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_class_4_center":
+                hp["portTags"] = "ANVL_Hornet_Mk2_Center ANVL_Hornet_Tracker_Mk2"
+                hp["flags"] = (hp.get("flags", "") + " exclusive_tags").strip()
+
+    # Hornet Mk II (F7C, F7C-R, F7C-S): nose slot restricted to the Mk II S2 Nose Turret only
+    for hcls in ("anvl_hornet_f7c_mk2", "anvl_hornet_f7cr_mk2", "anvl_hornet_f7cs_mk2"):
+        if hcls not in ships:
+            continue
+        for hp in ships[hcls].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_class_4_nose":
+                hp["portTags"] = "ANVL_Hornet_F7C_Mk2_Nose"
+                hp["flags"] = "front nose exclusive_tags"
+
+    # F7C-S Ghost Mk II: center slot also accepts Ghost Mk II Center Cap
+    if "anvl_hornet_f7cs_mk2" in ships:
+        for hp in ships["anvl_hornet_f7cs_mk2"].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_class_4_center":
+                hp["portTags"] = "ANVL_Hornet_Mk2_Center ANVL_Hornet_Ghost_Mk2"
+                hp["flags"] = (hp.get("flags", "") + " exclusive_tags").strip()
+
+    # Hornet Mk I F7C-M / Heartseeker: DCB loadout uses hardpoint_gun_* keys
+    _hornet_mk1_gun_remap = {
+        "hardpoint_gun_wing_left": "hardpoint_class_2_left_wing",
+        "hardpoint_gun_wing_right": "hardpoint_class_2_right_wing",
+        "hardpoint_gun_center": "hardpoint_class_4_center",
+        "hardpoint_gun_nose": "hardpoint_class_4_nose",
+    }
+    for hcls in ("anvl_hornet_f7cm", "anvl_hornet_f7cm_heartseeker"):
+        if hcls not in ships:
+            continue
+        dl = ships[hcls].setdefault("defaultLoadout", {})
+        for old_key, new_key in _hornet_mk1_gun_remap.items():
+            if old_key in dl and new_key not in dl:
+                dl[new_key] = dl.pop(old_key)
+            for k in list(dl.keys()):
+                if k.startswith(old_key + "."):
+                    suffix = k[len(old_key):]
+                    new_child = new_key + suffix
+                    if new_child not in dl:
+                        dl[new_child] = dl.pop(k)
 
     # Avenger Titan Renegade: wing sub-slots have missiles instead of guns in DCB loadout
     if "aegs_avenger_titan_renegade" in ships:
@@ -4696,6 +4853,64 @@ def main(mode: str = "live"):
         if cls in items:
             items[cls].update(overrides)
 
+    # Hornet variant-specific utility mounts (not auto-extracted from forge data)
+    # F7C-R Tracker: WillsOp Long Look Radar
+    items["umnt_anvl_s5_rotodome"] = {
+        "className": "umnt_anvl_s5_rotodome",
+        "name": "WillsOp Long Look Radar",
+        "manufacturer": "Anvil Aerospace",
+        "type": "Module",
+        "size": 5,
+        "grade": "1",
+        "itemTags": ["ANVL_Hornet_Tracker"],
+    }
+    items["umnt_anvl_s5_rotodome_mk2"] = {
+        "className": "umnt_anvl_s5_rotodome_mk2",
+        "name": "WillsOp Long Look Radar Mk II",
+        "manufacturer": "Anvil Aerospace",
+        "type": "Module",
+        "size": 5,
+        "grade": "1",
+        "itemTags": ["ANVL_Hornet_Tracker_Mk2"],
+    }
+    # F7C-S Ghost: Center Cap (stealth cap)
+    items["umnt_anvl_s5_cap"] = {
+        "className": "umnt_anvl_s5_cap",
+        "name": "Anvil Hornet Ghost Center Cap",
+        "manufacturer": "Anvil Aerospace",
+        "type": "Module",
+        "size": 5,
+        "grade": "1",
+        "itemTags": ["ANVL_Hornet_Ghost"],
+    }
+    items["umnt_anvl_s5_cap_mk2"] = {
+        "className": "umnt_anvl_s5_cap_mk2",
+        "name": "Anvil Hornet Ghost Mk II Center Cap",
+        "manufacturer": "Anvil Aerospace",
+        "type": "Module",
+        "size": 5,
+        "grade": "1",
+        "itemTags": ["ANVL_Hornet_Ghost_Mk2"],
+    }
+
+    # Hornet cargo modules: add 2 SCU cargo capacity
+    for cargo_cls in ("anvl_hornet_f7c_cargo_mod", "anvl_hornet_f7c_mk2_cargo_mod"):
+        if cargo_cls in items:
+            items[cargo_cls]["cargoBonus"] = 2
+
+    # F7C-M Mk II Ball Turret: missile rack is bespoke (locked to Custom-481 with Spark I missiles)
+    if "anvl_hornet_f7cm_mk2_ball_turret" in items:
+        turret = items["anvl_hornet_f7cm_mk2_ball_turret"]
+        for sp in turret.get("subPorts", []):
+            if sp["id"] == "hardpoint_missile_rack":
+                sp["locked"] = "mrck_s04_anvl_hornet_f7cm_mk2_turret"
+
+    # Add F7C Mk II nose tag to the Mk II S2 Nose Turret item
+    if "anvl_hornet_f7c_mk2_nose_turret" in items:
+        tags = items["anvl_hornet_f7c_mk2_nose_turret"].setdefault("itemTags", [])
+        if "ANVL_Hornet_F7C_Mk2_Nose" not in tags:
+            tags.append("ANVL_Hornet_F7C_Mk2_Nose")
+
     # Beam weapon overrides (damage not extractable from standard ammo chain)
     BEAM_OVERRIDES = {
         "hrst_laserbeam_bespoke": {
@@ -4707,6 +4922,19 @@ def main(mode: str = "live"):
     for cls, overrides in BEAM_OVERRIDES.items():
         if cls in items:
             items[cls].update(overrides)
+
+    # Fire rate overrides: in-game tested values that differ from DCB sequence entries
+    # Behring ballistic repeaters: DCB shows 750/825 RPM per barrel, actual ~618 RPM (game-tested)
+    FIRE_RATE_OVERRIDES = {
+        "behr_ballisticrepeater_s2": 618,  # Sawbuck
+        "behr_ballisticrepeater_s3": 618,  # Shredder
+    }
+    for cls, rpm in FIRE_RATE_OVERRIDES.items():
+        if cls in items:
+            items[cls]["fireRate"] = rpm
+            alpha = items[cls].get("alphaDamage", 0)
+            if alpha > 0:
+                items[cls]["dps"] = round(alpha * rpm / 60, 1)
 
     # Name overrides for items with auto-generated names
     NAME_OVERRIDES = {
