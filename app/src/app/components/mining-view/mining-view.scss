@@ -1,6 +1,9 @@
 :host {
   display: flex;
   width: 100%;
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3Cpolygon id='h' points='50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25' fill='none' stroke='%2300c8ff' stroke-width='0.5'/%3E%3C/defs%3E%3Cg opacity='0.04'%3E%3Cuse href='%23h' x='80' y='60'/%3E%3Cuse href='%23h' x='170' y='85'/%3E%3Cuse href='%23h' x='95' y='160'/%3E%3Cuse href='%23h' x='420' y='30'/%3E%3Cuse href='%23h' x='510' y='55'/%3E%3Cuse href='%23h' x='680' y='120'/%3E%3Cuse href='%23h' x='770' y='145'/%3E%3Cuse href='%23h' x='950' y='40'/%3E%3Cuse href='%23h' x='1040' y='65'/%3E%3Cuse href='%23h' x='1080' y='180'/%3E%3Cuse href='%23h' x='200' y='320'/%3E%3Cuse href='%23h' x='290' y='345'/%3E%3Cuse href='%23h' x='560' y='280'/%3E%3Cuse href='%23h' x='830' y='310'/%3E%3Cuse href='%23h' x='920' y='335'/%3E%3Cuse href='%23h' x='1100' y='370'/%3E%3Cuse href='%23h' x='60' y='480'/%3E%3Cuse href='%23h' x='350' y='520'/%3E%3Cuse href='%23h' x='440' y='545'/%3E%3Cuse href='%23h' x='700' y='460'/%3E%3Cuse href='%23h' x='1000' y='510'/%3E%3Cuse href='%23h' x='150' y='680'/%3E%3Cuse href='%23h' x='480' y='720'/%3E%3Cuse href='%23h' x='570' y='745'/%3E%3Cuse href='%23h' x='820' y='650'/%3E%3Cuse href='%23h' x='910' y='675'/%3E%3Cuse href='%23h' x='1060' y='740'/%3E%3Cuse href='%23h' x='300' y='830'/%3E%3Cuse href='%23h' x='650' y='860'/%3E%3Cuse href='%23h' x='740' y='810'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 1200px 900px;
 }
 
 .mining-shell {
@@ -69,19 +72,23 @@ h2 {
   font-family: 'Rajdhani', sans-serif;
   font-size: 18px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--accent);
-  margin: 0 0 12px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid transparent;
+  background-image: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  background-size: 100% 1px;
+  background-position: bottom;
+  background-repeat: no-repeat;
 }
 
 .card-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .card-grid .location-card {
@@ -92,17 +99,43 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 14px 12px;
-  background: var(--bg2);
+  gap: 6px;
+  padding: 16px 14px;
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.03) 0%, rgba(0, 0, 0, 0.2) 100%);
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 2px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
 
   &:hover {
     border-color: var(--accent2);
-    background: rgba(0, 200, 255, 0.04);
+    background: linear-gradient(160deg, rgba(0, 200, 255, 0.08) 0%, rgba(0, 0, 0, 0.15) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 150, 255, 0.1);
+
+    &::before { opacity: 1; }
+  }
+}
+
+.system-card {
+  min-width: 220px;
+  padding: 20px 16px;
+
+  .card-name {
+    font-size: 17px;
+    letter-spacing: 2px;
   }
 }
 
@@ -153,6 +186,8 @@ h3 {
   text-transform: uppercase;
   color: var(--text2);
   margin: 0;
+  padding-left: 8px;
+  border-left: 2px solid var(--accent2);
 }
 
 /* ── Mineral Table ───────────────────────────────────── */
@@ -160,6 +195,10 @@ h3 {
 .mineral-table {
   display: flex;
   flex-direction: column;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
 }
 
 .mt-header, .mt-row {
@@ -178,6 +217,7 @@ h3 {
   text-transform: uppercase;
   color: var(--text3);
   border-bottom: 1px solid var(--border);
+  background: rgba(0, 200, 255, 0.03);
 }
 
 .mt-row {
@@ -188,7 +228,11 @@ h3 {
   cursor: pointer;
   transition: background 0.1s;
 
-  &:hover { background: rgba(0, 200, 255, 0.04); }
+  &:hover {
+    background: rgba(0, 200, 255, 0.06);
+  }
+
+  &:last-child { border-bottom: none; }
 }
 
 .mt-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -202,7 +246,7 @@ h3 {
   grid-template-columns: 1fr 100px 70px 100px 70px;
 }
 
-.section-spacer { margin-top: 24px; }
+.section-spacer { margin-top: 28px; }
 
 .ore-browse-card {
   min-width: 200px;
@@ -219,8 +263,8 @@ h3 {
 .tier-common     { color: var(--text2); }
 .tier-uncommon   { color: var(--green); }
 .tier-rare       { color: var(--accent); }
-.tier-epic       { color: var(--purple); }
-.tier-legendary  { color: var(--gold); }
+.tier-epic       { color: var(--purple, #b388ff); }
+.tier-legendary  { color: var(--gold); text-shadow: 0 0 6px rgba(240, 165, 0, 0.3); }
 
 /* ── Mineral Detail ──────────────────────────────────── */
 
@@ -238,12 +282,23 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 12px;
-  background: var(--bg2);
+  gap: 6px;
+  padding: 14px 12px;
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.2) 100%);
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
-  border-radius: 3px;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent2), transparent);
+    opacity: 0.3;
+  }
 }
 
 .stat-label {
@@ -257,8 +312,9 @@ h3 {
 
 .stat-val {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 18px;
+  font-size: 20px;
   color: var(--text);
+  text-shadow: 0 0 8px rgba(0, 200, 255, 0.15);
 }
 
 @media (max-width: 767px) {
@@ -282,6 +338,12 @@ h3 {
 
   .card-grid .location-card {
     min-width: 0;
+  }
+
+  .system-card {
+    min-width: 0;
+    padding: 14px 10px;
+    .card-name { font-size: 15px; }
   }
 
   .mt-header, .mt-row {

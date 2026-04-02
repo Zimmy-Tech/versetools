@@ -30,6 +30,15 @@
   font-weight: 700;
 }
 
+.lock-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--text3);
+  flex-shrink: 0;
+  margin: 0 4px 0 8px;
+  opacity: 0.5;
+}
+
 /* ── Non-weapon slots: 3-col grid ─────────────────── */
 .slot-fixed {
   font-family: 'Rajdhani', sans-serif;
@@ -114,9 +123,7 @@
   min-width: 0;
   overflow: hidden;
 
-  &:hover { border-color: var(--border2); }
-
-  &:hover { background: rgba(255,255,255,0.04); }
+  &:hover { border-color: var(--accent2); }
 }
 
 .focus-btn {
@@ -472,6 +479,8 @@
   transition: background 0.1s, border-color 0.15s;
   overflow: hidden;
   padding: 6px 0;
+
+  &:hover { border-color: var(--accent2); }
 
   &:hover { border-color: var(--border2); }
 
