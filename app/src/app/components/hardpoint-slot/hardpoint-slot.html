@@ -662,6 +662,17 @@
     <div class="weapon-trigger" (click)="togglePicker($event)">
       @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
       <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      @if (currentItem()) {
+        <span class="mining-trigger-stats">
+          <span class="mining-tstat">{{ Math.round(miningCombined()?.['miningMaxPower'] ?? currentItem()!.miningMaxPower ?? 0) }} PWR</span>
+          <span class="mining-tstat" [class.pos]="(miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) > 0"
+                [class.neg]="(miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) < 0"
+            >{{ (miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) > 0 ? '+' : '' }}{{ Math.round(miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) }}% OPT</span>
+          <span class="mining-tstat" [class.pos]="(miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) < 0"
+                [class.neg]="(miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) > 0"
+            >{{ (miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) > 0 ? '+' : '' }}{{ Math.round(miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) }}% RES</span>
+        </span>
+      }
       <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
     </div>
 
@@ -679,15 +690,19 @@
                 <th class="sortable col-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
                 <th class="sortable" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
                 <th class="sortable" (click)="toggleSort('miningMaxPower')">Power{{ sortIndicator('miningMaxPower') }}</th>
-                <th class="sortable" (click)="toggleSort('throttleMin')">Throttle{{ sortIndicator('throttleMin') }}</th>
+                <th class="sortable" (click)="toggleSort('miningInstability')">Instability{{ sortIndicator('miningInstability') }}</th>
+                <th class="sortable" (click)="toggleSort('miningOptimalWindow')">Charge Zone{{ sortIndicator('miningOptimalWindow') }}</th>
+                <th class="sortable" (click)="toggleSort('miningResistance')">Resistance{{ sortIndicator('miningResistance') }}</th>
+                <th class="sortable" (click)="toggleSort('miningInertMaterials')">Inert Mat{{ sortIndicator('miningInertMaterials') }}</th>
+                <th class="sortable" (click)="toggleSort('optimalRange')">Opt Range{{ sortIndicator('optimalRange') }}</th>
+                <th class="sortable" (click)="toggleSort('moduleSlots')">Modules{{ sortIndicator('moduleSlots') }}</th>
                 <th>Grade</th>
-                <th>Class</th>
               <th class="col-shop" title="Purchasable in-game">Shop</th>
               </tr>
             </thead>
             <tbody>
               <tr class="picker-clear" (click)="selectOption('', $event)">
-                <td colspan="6">— Empty —</td>
+                <td colspan="11">— Empty —</td>
               </tr>
               @for (opt of filteredOptions(); track opt.className) {
                 <tr class="picker-row" [class.active]="currentItem()?.className === opt.className"
@@ -695,9 +710,13 @@
                   <td class="col-name">{{ opt.name }}</td>
                   <td>S{{ opt.size }}</td>
                   <td>{{ opt.miningMaxPower ?? '—' }}</td>
-                  <td>{{ opt.throttleMin ? (opt.throttleMin * 100).toFixed(0) + '%' : '—' }}</td>
+                  <td class="mining-mod" [class.pos]="(opt.miningInstability ?? 0) < 0" [class.neg]="(opt.miningInstability ?? 0) > 0">{{ opt.miningInstability != null ? ((opt.miningInstability > 0 ? '+' : '') + opt.miningInstability + '%') : '—' }}</td>
+                  <td class="mining-mod" [class.pos]="(opt.miningOptimalWindow ?? 0) > 0" [class.neg]="(opt.miningOptimalWindow ?? 0) < 0">{{ opt.miningOptimalWindow != null ? ((opt.miningOptimalWindow > 0 ? '+' : '') + opt.miningOptimalWindow + '%') : '—' }}</td>
+                  <td class="mining-mod" [class.pos]="(opt.miningResistance ?? 0) < 0" [class.neg]="(opt.miningResistance ?? 0) > 0">{{ opt.miningResistance != null ? ((opt.miningResistance > 0 ? '+' : '') + opt.miningResistance + '%') : '—' }}</td>
+                  <td class="mining-mod" [class.pos]="(opt.miningInertMaterials ?? 0) < 0" [class.neg]="(opt.miningInertMaterials ?? 0) > 0">{{ opt.miningInertMaterials != null ? ((opt.miningInertMaterials > 0 ? '+' : '') + opt.miningInertMaterials + '%') : '—' }}</td>
+                  <td>{{ opt.optimalRange ?? '—' }}{{ opt.optimalRange ? 'm' : '' }}</td>
+                  <td>{{ opt.moduleSlots ?? '—' }}</td>
                   <td>{{ opt.grade ?? '—' }}</td>
-                  <td>{{ opt.itemClass ?? '—' }}</td>
                   <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }

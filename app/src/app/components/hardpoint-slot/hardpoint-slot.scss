@@ -701,6 +701,27 @@
   &.dist { color: #a78bfa; }
 }
 
+/* ── Mining modifier cells ────────── */
+.mining-mod, .mining-tstat {
+  &.pos { color: var(--green); }
+  &.neg { color: var(--red); }
+}
+
+/* ── Mining trigger inline stats ──── */
+.mining-trigger-stats {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  margin-right: 4px;
+}
+
+.mining-tstat {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
 /* ── Shop availability indicator ──── */
 .col-shop {
   width: 36px;

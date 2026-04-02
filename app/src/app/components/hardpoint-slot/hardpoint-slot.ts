@@ -10,6 +10,7 @@ import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, componentCoolingDemand, w
   styleUrl: './hardpoint-slot.scss',
 })
 export class HardpointSlotComponent {
+  Math = Math;  // expose to template
   hardpoint   = input.required<Hardpoint>();
   rackLeafIds = input<string[]>([]);
   miningCombined = input<Record<string, number> | null>(null);
