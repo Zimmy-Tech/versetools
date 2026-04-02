@@ -162,8 +162,10 @@ export class HardpointSlotComponent {
         const lockRange = (item.aimMin ?? 0) + ((item.aimMax ?? 0) - (item.aimMin ?? 0)) * frac;
         return { classCode: 'RDR-' + (item.size ?? '?'), primaryVal: lockRange.toFixed(0), primaryUnit: 'm LOCK', meta };
       }
-      case 'WeaponMining':
-        return { classCode: 'MNG-' + (item.size ?? '?'), primaryVal: (item.miningMaxPower ?? 0).toFixed(0), primaryUnit: 'PWR', meta };
+      case 'WeaponMining': {
+        const cPwr = this.miningCombined()?.['miningMaxPower'] ?? item.miningMaxPower ?? 0;
+        return { classCode: 'MNG-' + (item.size ?? '?'), primaryVal: Math.round(cPwr).toString(), primaryUnit: 'PWR', meta };
+      }
       case 'MiningModifier':
         return { classCode: 'MOD-' + (item.size ?? '?'), primaryVal: item.subType === 'Active' ? 'ACTIVE' : 'PASSIVE', primaryUnit: item.charges ? item.charges + ' CHG' : '', meta };
       case 'SalvageHead':

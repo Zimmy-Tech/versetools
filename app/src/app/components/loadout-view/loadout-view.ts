@@ -501,6 +501,19 @@ export class LoadoutViewComponent {
     if (!item) return [];
     const skip = new Set(['className', 'sruRef', 'heatRef', 'psruRef', 'ammoRef',
       'powerBands', 'damage', 'powerMin']);
+    // For mining lasers, overlay combined stats (laser + modules) on top of base values
+    const miningOverrides: Record<string, number> = {};
+    if (item.type === 'WeaponMining') {
+      const loadout = this.data.loadout();
+      // Find the slot ID for this focused laser
+      for (const [slotId, equipped] of Object.entries(loadout)) {
+        if (equipped?.className === item.className && equipped?.type === 'WeaponMining') {
+          const combined = this.getCombinedTotals(slotId);
+          if (combined) Object.assign(miningOverrides, combined);
+          break;
+        }
+      }
+    }
     const rows: { key: string; value: string }[] = [];
     for (const [k, v] of Object.entries(item)) {
       if (skip.has(k) || v == null || v === '' || v === 0 || v === false) continue;
@@ -512,7 +525,9 @@ export class LoadoutViewComponent {
       } else if (typeof v === 'object') {
         continue; // skip complex objects
       } else {
-        rows.push({ key: k, value: String(v) });
+        // Use combined value for mining stats if available
+        const displayVal = (k in miningOverrides) ? miningOverrides[k] : v;
+        rows.push({ key: k, value: String(typeof displayVal === 'number' ? Math.round(displayVal * 100) / 100 : displayVal) });
       }
     }
     // Add damage breakdown
