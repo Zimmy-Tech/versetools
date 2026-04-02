@@ -258,6 +258,17 @@
   align-items: baseline;
 }
 
+.armor-note {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--gold, #f0a500);
+  background: rgba(255, 170, 0, 0.06);
+  border: 1px solid rgba(255, 170, 0, 0.15);
+  padding: 4px 6px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
 .buy-price-entry {
   display: flex;
   flex-direction: column;

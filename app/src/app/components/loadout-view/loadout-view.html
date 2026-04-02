@@ -266,6 +266,7 @@
                       <span class="fs-val">{{ (data.selectedShip()!.componentPenetrationMult! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.componentPenetrationMult! - 1) * 100).toFixed(0) }}%</span>
                     </div>
                   }
+                  <div class="armor-note">Armor Damage = Weapon Alpha &times; Damage Modifier. Damage also bleeds through to hull while armor is up, increasing as armor degrades. Durability role is under investigation. See Formulas for details.</div>
                 </div>
               }
               @if (data.selectedShip()!.signalEM !== undefined) {

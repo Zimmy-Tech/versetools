@@ -326,28 +326,48 @@ Separate deflect thresholds for Physical and Energy damage.</pre>
           </div>
 
           <div class="formula-card">
-            <h3>Damage Modifiers</h3>
-            <pre class="formula">Effective Damage = Incoming Damage &times; Hull Damage Multiplier
+            <h3>Armor Damage per Shot &mdash; CONFIRMED</h3>
+            <pre class="formula">Armor Damage = Weapon Alpha &times; Damage Modifier
 
-  Multiplier &lt; 1.0  &rarr;  damage reduced  (e.g., 0.75 = -25%)
-  Multiplier = 1.0  &rarr;  neutral
-  Multiplier &gt; 1.0  &rarr;  damage amplified
+  Modifier &lt; 1.0  &rarr;  armor takes reduced damage (e.g., 0.5 = half damage)
+  Modifier = 1.0  &rarr;  full damage
+  Modifier &gt; 1.0  &rarr;  armor takes amplified damage
 
-Per-type: Physical, Energy, Distortion</pre>
-            <p>These modifiers come from the ship armor's DamageInfo record.
-              Most ships take reduced physical damage but amplified energy damage.</p>
+Per-type: Physical, Energy, Distortion
+
+Shots to Strip Armor = ceil( Armor HP / (Weapon Alpha &times; Damage Modifier) )</pre>
+            <p>Validated in-game across three ships with different modifiers:</p>
+            <div class="connections">
+              <span class="tag">Asgard</span> 0.50 energy &rarr; 11.6%/shot predicted, ~11.5% observed
+              <span class="tag">Guardian MX</span> 1.10 energy &rarr; 42.0%/shot predicted, 42% observed
+              <span class="tag">Polaris</span> 0.60 energy &rarr; 5.0%/shot predicted, 5.0% observed
+            </div>
           </div>
 
           <div class="formula-card">
-            <h3>Durability Modifiers</h3>
-            <pre class="formula">Armor HP Damage = Incoming Damage &times; Durability Multiplier
+            <h3>Hull Bleedthrough</h3>
+            <pre class="formula">While armor is up, damage simultaneously bleeds through to hull.
+Bleedthrough rate increases as armor degrades.
 
-Per-type: Physical, Energy (from DamageResistance record)
+Ion vs Asgard (no shields):
+  Shot 1 (armor 100%) &rarr; 3% hull lost
+  Shot 5 (armor  42%) &rarr; 4&ndash;5% hull lost
+  Shot 9 (armor   0%) &rarr; 7% hull lost</pre>
+            <p>The exact bleedthrough formula is under investigation. Damage is not purely
+              sequential (armor first, then hull) &mdash; hull takes increasing damage as
+              armor thins out. Capital ships may behave differently (Polaris showed zero
+              hull bleedthrough through 20 shots).</p>
+          </div>
 
-Example (Gladius): Physical -19%, Energy +21%
-  Armor takes 19% less physical damage but 21% more energy damage to its HP pool.</pre>
-            <p>Separate from hull damage modifiers &mdash; these affect how fast the armor
-              itself degrades.</p>
+          <div class="formula-card">
+            <h3>Durability Modifiers &mdash; Under Investigation</h3>
+            <pre class="formula">Per-type: Physical, Energy
+
+Role unconfirmed. Does NOT control per-shot armor damage (disproved by testing).
+May affect hull bleedthrough scaling or component penetration.</pre>
+            <p>Previously assumed to control armor HP degradation rate, but in-game testing
+              shows armor damage is governed by the Damage Modifier field instead.
+              Further testing is needed to determine what Durability actually affects.</p>
           </div>
 
           <div class="formula-card">

@@ -68,6 +68,12 @@
               (click)="navigateTo(tab)">{{ tab === 'submit' ? 'Submit Data' : tab === 'formulas' ? 'Formulas' : tab === 'updates' ? 'Updates' : 'Changelog' }}</button>
     }
     <a class="nav-tab discord-tab" href="https://discord.gg/JSreWj6m6t" target="_blank" rel="noopener">Discord</a>
+    <a class="donate-btn" href="https://www.paypal.com/donate/?hosted_button_id=QUZK33QZKYFW8" target="_blank" rel="noopener" title="Donate">
+      <svg class="donate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 7.5c1.5-2.5 5-3 6.5-1s1 4.5-1 6.5L12 19l-5.5-6c-2-2-2.5-4.5-1-6.5s5-1.5 6.5 1z"/>
+        <path d="M7 14c-1.5 0.5-3 1.5-3 3.5 0 1.5 1 2.5 3 2.5h10c2 0 3-1 3-2.5 0-2-1.5-3-3-3.5"/>
+      </svg>
+    </a>
     <button class="nav-tab beta-tab" [class.active]="isTabActive('compact')"
             (click)="navigateTo('compact')">COMPACT UI - EARLY ALPHA</button>
   </nav>
@@ -126,6 +132,7 @@
     <button class="mobile-nav-item" [class.active]="isTabActive('updates')" (click)="navigateTo('updates')">Updates</button>
     <button class="mobile-nav-item" [class.active]="isTabActive('changelog')" (click)="navigateTo('changelog')">Changelog</button>
     <a class="mobile-nav-item discord" href="https://discord.gg/JSreWj6m6t" target="_blank" rel="noopener">Discord</a>
+    <a class="mobile-nav-item donate" href="https://www.paypal.com/donate/?hosted_button_id=QUZK33QZKYFW8" target="_blank" rel="noopener">Donate</a>
   </div>
 }
 
