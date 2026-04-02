@@ -74,6 +74,7 @@
       <div class="weapon-trigger" (click)="togglePicker($event)">
         @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
         <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+        @if (slotStat()) { <span class="trigger-stat">{{ slotStat() }}</span> }
         <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
       </div>
     }
@@ -370,6 +371,7 @@
     <div class="weapon-trigger" (click)="togglePicker($event)">
       @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
       <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      @if (slotStat()) { <span class="trigger-stat">{{ slotStat() }}</span> }
       <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
     </div>
 

@@ -159,14 +159,8 @@ export class HardpointSlotComponent {
         return { classCode: 'CLR-' + (item.size ?? '?'), primaryVal: (item.coolingRate ?? 0).toLocaleString(), primaryUnit: 'RATE', meta };
       case 'QuantumDrive':
         return { classCode: 'QDR-' + (item.size ?? '?'), primaryVal: item.speed ? ((item.speed / 1e3).toFixed(0)) : '—', primaryUnit: 'Mm/s', meta };
-      case 'Radar': {
-        const alloc = this.data.powerAlloc();
-        const pips = alloc[this.hardpoint().id] ?? 0;
-        const maxPips = Math.max(1, item.powerDraw ?? 1);
-        const frac = Math.min(pips / maxPips, 1);
-        const lockRange = (item.aimMin ?? 0) + ((item.aimMax ?? 0) - (item.aimMin ?? 0)) * frac;
-        return { classCode: 'RDR-' + (item.size ?? '?'), primaryVal: lockRange.toFixed(0), primaryUnit: 'm LOCK', meta };
-      }
+      case 'Radar':
+        return { classCode: 'RDR-' + (item.size ?? '?'), primaryVal: (item.aimMax ?? 0).toFixed(0), primaryUnit: 'm AIM MAX', meta };
       case 'WeaponMining': {
         const cPwr = this.miningCombined()?.['miningMaxPower'] ?? item.miningMaxPower ?? 0;
         return { classCode: 'MNG-' + (item.size ?? '?'), primaryVal: Math.round(cPwr).toString(), primaryUnit: 'PWR', meta };
@@ -391,6 +385,12 @@ export class HardpointSlotComponent {
   slotStat = computed(() => {
     const item = this.currentItem();
     if (!item) return '';
+    if (item.type === 'QuantumDrive' && (item.fuelRate ?? 0) > 0) {
+      const ship = this.data.selectedShip();
+      const fuel = ship?.quantumFuelCapacity ?? 0;
+      const range = fuel > 0 ? (fuel / item.fuelRate!).toFixed(1) : '?';
+      return `${range} Gm range`;
+    }
     if ((item.dps ?? 0) > 0)          return `${item.dps!.toFixed(0)} DPS`;
     if ((item.hp ?? 0) > 0)           return `${item.hp!.toFixed(0)} HP`;
     if ((item.powerOutput ?? 0) > 0)  return `${item.powerOutput} PWR`;
