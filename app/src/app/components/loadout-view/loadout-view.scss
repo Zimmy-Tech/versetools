@@ -88,9 +88,13 @@
   gap: 12px;
   overflow-y: auto;
   flex-shrink: 0;
-  width: clamp(240px, 20vw, 340px);
+  width: clamp(240px, 18vw, 320px);
 
-  app-power-bars, app-dps-panel {
+  app-power-bars {
+    background: transparent;
+    border: none;
+  }
+  app-dps-panel {
     background: var(--bg2);
     border: 1px solid var(--border);
   }

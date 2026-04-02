@@ -96,21 +96,26 @@
             <span class="stat-label">Face Type</span>
             <span class="mono">{{ shieldFaceType() }}</span>
           </div>
-          @if (shieldResists(); as r) {
-            <div class="stat-row" title="Physical: shield takes this % of incoming damage. Remaining bleeds through to hull.">
-              <span class="stat-label">Phys → Shield</span>
-              <span class="mono">{{ (r.physToShield * 100).toFixed(0) }}% dmg, {{ (r.physToHull * 100).toFixed(0) }}% bleeds to hull</span>
-            </div>
-            <div class="stat-row" title="Energy: shield takes this % of incoming damage (>100% = amplified). No bleedthrough.">
-              <span class="stat-label">Enrg → Shield</span>
-              <span class="mono">{{ (r.enrgToShield * 100).toFixed(0) }}% dmg, {{ (r.enrgToHull * 100).toFixed(0) }}% bleeds to hull</span>
-            </div>
-            <div class="stat-row" title="Distortion: shield takes this % of incoming damage. No bleedthrough.">
-              <span class="stat-label">Dist → Shield</span>
-              <span class="mono">{{ (r.distToShield * 100).toFixed(0) }}% dmg, {{ (r.distToHull * 100).toFixed(0) }}% bleeds to hull</span>
-            </div>
-          }
         </div>
+        @if (shieldResists(); as r) {
+          <div class="section-title" style="margin-top: 6px;">Shield Resistances</div>
+          <div class="stat-block">
+            <div class="resist-grid">
+              <span class="resist-header"></span>
+              <span class="resist-header">SHIELD DMG</span>
+              <span class="resist-header">HULL BLEED</span>
+              <span class="resist-type phys">PHYS</span>
+              <span class="resist-val">{{ (r.physToShield * 100).toFixed(0) }}%</span>
+              <span class="resist-val hull-val">{{ (r.physToHull * 100).toFixed(0) }}%</span>
+              <span class="resist-type enrg">ENRG</span>
+              <span class="resist-val">{{ (r.enrgToShield * 100).toFixed(0) }}%</span>
+              <span class="resist-val hull-val">{{ (r.enrgToHull * 100).toFixed(0) }}%</span>
+              <span class="resist-type dist">DIST</span>
+              <span class="resist-val">{{ (r.distToShield * 100).toFixed(0) }}%</span>
+              <span class="resist-val hull-val">{{ (r.distToHull * 100).toFixed(0) }}%</span>
+            </div>
+          </div>
+        }
       </div>
     }
 
