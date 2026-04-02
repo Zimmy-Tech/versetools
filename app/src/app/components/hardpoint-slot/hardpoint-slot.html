@@ -51,7 +51,8 @@
         @if (wc.stats.length) {
           <div class="cmp-stats-right">
             @for (s of wc.stats; track s.key) {
-              @if (s.key === 'DPS' || s.key === 'AMMO' || s.key === 'REGEN' || s.key === 'SHOTS' || s.key === 'OH' || s.key === 'COOL') {
+              @if (s.key === 'DPS' || s.key === 'AMMO' || s.key === 'REGEN' || s.key === 'SHOTS' || s.key === 'OH' || s.key === 'COOL'
+                || s.key === 'PWR' || s.key === 'OPT' || s.key === 'RES' || s.key === 'SPEED' || s.key === 'RADIUS' || s.key === 'EFF') {
                 <span class="cmp-stat" [class]="s.cls ?? ''"><span class="cmp-stat-k">{{ s.key }}</span> {{ s.val }}</span>
               }
             }
@@ -658,23 +659,30 @@
 
   } @else if (isMiningLaserSlot()) {
 
-    <!-- Mining Laser trigger row -->
-    <div class="weapon-trigger" (click)="togglePicker($event)">
-      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
-      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
-      @if (currentItem()) {
-        <span class="mining-trigger-stats">
-          <span class="mining-tstat">{{ Math.round(miningCombined()?.['miningMaxPower'] ?? currentItem()!.miningMaxPower ?? 0) }} PWR</span>
-          <span class="mining-tstat" [class.pos]="(miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) > 0"
-                [class.neg]="(miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) < 0"
-            >{{ (miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) > 0 ? '+' : '' }}{{ Math.round(miningCombined()?.['miningOptimalWindow'] ?? currentItem()!.miningOptimalWindow ?? 0) }}% OPT</span>
-          <span class="mining-tstat" [class.pos]="(miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) < 0"
-                [class.neg]="(miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) > 0"
-            >{{ (miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) > 0 ? '+' : '' }}{{ Math.round(miningCombined()?.['miningResistance'] ?? currentItem()!.miningResistance ?? 0) }}% RES</span>
-        </span>
-      }
-      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
-    </div>
+    <!-- Mining Laser trigger row — compact card when laser equipped -->
+    @if (weaponCompact(); as wc) {
+      <div class="cmp-trigger" (click)="togglePicker($event)">
+        <span class="focus-btn" (click)="focusItem($event)" title="Details"></span>
+        <div class="cmp-tag">{{ wc.size }}</div>
+        <div class="cmp-info">
+          <div class="cmp-name">{{ wc.name }} <span class="cmp-type">{{ wc.dmgType }}</span></div>
+        </div>
+        @if (wc.stats.length) {
+          <div class="cmp-stats-right">
+            @for (s of wc.stats; track s.key) {
+              <span class="cmp-stat" [class]="s.cls ?? ''"><span class="cmp-stat-k">{{ s.key }}</span> {{ s.val }}</span>
+            }
+          </div>
+        }
+        <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+      </div>
+    } @else {
+      <div class="weapon-trigger" (click)="togglePicker($event)">
+        @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+        <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+        <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+      </div>
+    }
 
     <!-- Mining Laser picker -->
     @if (pickerOpen()) {
@@ -764,6 +772,56 @@
                   <td class="col-name">{{ opt.name }}</td>
                   <td>{{ opt.capacity ?? '—' }}</td>
                   <td>S{{ opt.missileSize ?? '—' }}</td>
+                  <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else if (isSalvageSlot()) {
+
+    <!-- Salvage trigger row -->
+    <div class="weapon-trigger" (click)="togglePicker($event)">
+      @if (currentItem()) { <span class="focus-btn" (click)="focusItem($event)" title="Details"></span> }
+      <span class="trigger-name">{{ currentItem()?.name ?? '— Empty —' }}</span>
+      <span class="trigger-arrow">{{ pickerOpen() ? '▾' : '▸' }}</span>
+    </div>
+
+    @if (pickerOpen()) {
+      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+        <input class="picker-search" type="text" placeholder="Search salvage tools..."
+               [value]="pickerSearch()"
+               (input)="pickerSearch.set($any($event.target).value)"
+               autofocus>
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th class="col-name sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+                <th class="sortable" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
+                <th class="sortable" (click)="toggleSort('salvageSpeed')">Speed{{ sortIndicator('salvageSpeed') }}</th>
+                <th class="sortable" (click)="toggleSort('salvageRadius')">Radius{{ sortIndicator('salvageRadius') }}</th>
+                <th class="sortable" (click)="toggleSort('salvageEfficiency')">Efficiency{{ sortIndicator('salvageEfficiency') }}</th>
+                <th>Grade</th>
+                <th class="col-shop" title="Purchasable in-game">Shop</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectOption('', $event)">
+                <td colspan="7">— Empty —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr class="picker-row" [class.active]="currentItem()?.className === opt.className"
+                    (click)="selectOption(opt.className, $event)">
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td>S{{ opt.size }}</td>
+                  <td>{{ opt.salvageSpeed ?? '—' }}</td>
+                  <td>{{ opt.salvageRadius ?? '—' }}</td>
+                  <td>{{ opt.salvageEfficiency ?? '—' }}</td>
+                  <td>{{ opt.grade ?? '—' }}</td>
                   <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>
               }

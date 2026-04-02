@@ -23,9 +23,9 @@ export class HardpointSlotComponent {
 
   options = computed(() => this.data.getOptionsForSlot(this.hardpoint()));
 
-  // Show rich picker when any option is a gun (WeaponGun / WeaponTachyon)
+  // Show rich picker when any option is a gun, mining laser, or salvage head
   isWeaponSlot = computed(() =>
-    this.options().some(o => o.type === 'WeaponGun' || o.type === 'WeaponTachyon' || o.type === 'TractorBeam')
+    this.options().some(o => o.type === 'WeaponGun' || o.type === 'WeaponTachyon' || o.type === 'TractorBeam' || o.type === 'SalvageHead')
   );
 
   isShieldSlot = computed(() =>
@@ -80,6 +80,11 @@ export class HardpointSlotComponent {
   isMiningModSlot = computed(() =>
     this.hardpoint().type === 'MiningModifier' ||
     this.options().some(o => o.type === 'MiningModifier')
+  );
+
+  isSalvageSlot = computed(() =>
+    this.hardpoint().type === 'SalvageHead' || this.hardpoint().type === 'SalvageModifier' ||
+    this.options().some(o => o.type === 'SalvageHead' || o.type === 'SalvageModifier')
   );
 
   private readonly HIDE_LABEL_TYPES = new Set([
@@ -192,11 +197,33 @@ export class HardpointSlotComponent {
   /** Compact inline weapon card data. */
   weaponCompact = computed<{ size: string; name: string; dmgType: string; stats: { key: string; val: string; cls?: string }[] } | null>(() => {
     const item = this.currentItem();
-    if (!item || (item.type !== 'WeaponGun' && item.type !== 'WeaponTachyon' && item.type !== 'TractorBeam')) return null;
+    if (!item || (item.type !== 'WeaponGun' && item.type !== 'WeaponTachyon' && item.type !== 'TractorBeam'
+                  && item.type !== 'WeaponMining' && item.type !== 'SalvageHead')) return null;
     const _alloc = this.data.powerAlloc(); // reactivity
 
     if (item.type === 'TractorBeam') {
       return { size: 'S' + (item.size ?? '?'), name: item.name, dmgType: 'TRACTOR', stats: [] };
+    }
+
+    if (item.type === 'WeaponMining') {
+      const c = this.miningCombined();
+      const maxPwr = c?.['miningMaxPower'] ?? item.miningMaxPower ?? 0;
+      const optWin = c?.['miningOptimalWindow'] ?? item.miningOptimalWindow ?? 0;
+      const resist = c?.['miningResistance'] ?? item.miningResistance ?? 0;
+      const fmtMod = (v: number) => (v > 0 ? '+' : '') + Math.round(v) + '%';
+      const stats: { key: string; val: string; cls?: string }[] = [];
+      stats.push({ key: 'PWR', val: Math.round(maxPwr).toString() });
+      stats.push({ key: 'OPT', val: fmtMod(optWin), cls: optWin > 0 ? 'good' : optWin < 0 ? 'warn' : '' });
+      stats.push({ key: 'RES', val: fmtMod(resist), cls: resist < 0 ? 'good' : resist > 0 ? 'warn' : '' });
+      return { size: 'S' + (item.size ?? '?'), name: item.name, dmgType: 'MINING', stats };
+    }
+
+    if (item.type === 'SalvageHead') {
+      const stats: { key: string; val: string; cls?: string }[] = [];
+      if (item.salvageSpeed) stats.push({ key: 'SPEED', val: Math.round(item.salvageSpeed).toString() });
+      if (item.salvageRadius) stats.push({ key: 'RADIUS', val: Math.round(item.salvageRadius).toString() });
+      if (item.salvageEfficiency) stats.push({ key: 'EFF', val: Math.round(item.salvageEfficiency).toString() });
+      return { size: 'S' + (item.size ?? '?'), name: item.name, dmgType: 'SALVAGE', stats };
     }
 
     const dmg = item.damage ?? {};
