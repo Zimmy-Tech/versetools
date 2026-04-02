@@ -30,6 +30,25 @@
   font-weight: 700;
 }
 
+.jd-stats {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+  opacity: 0.7;
+}
+
+.jd-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--border2);
+  margin-right: 2px;
+}
+
 .lock-icon {
   width: 12px;
   height: 12px;
