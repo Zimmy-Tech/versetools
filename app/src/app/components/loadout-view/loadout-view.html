@@ -644,6 +644,11 @@
             @for (hp of qdSlots(); track hp.id) {
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
             }
+            @for (hp of jumpDriveSlots(); track hp.id) {
+              <div class="sub-slot-indent">
+                <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
+              </div>
+            }
           }
 
           @if (coolerSlots().length) {

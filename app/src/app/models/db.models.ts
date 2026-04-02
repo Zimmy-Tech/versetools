@@ -264,6 +264,10 @@ export interface Item {
   lockRangeMin?: number;
   lockRangeMax?: number;
   acquisition?: string;
+  // Jump drive
+  alignmentRate?: number;
+  tuningRate?: number;
+  fuelEfficiency?: number;
   // Shop prices
   shopPrices?: ShopPrice[];
 }

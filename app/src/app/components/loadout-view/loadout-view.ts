@@ -1002,6 +1002,29 @@ export class LoadoutViewComponent {
   coolerSlots = computed(() => this.utilitySlots().filter(hp => hp.type === 'Cooler'));
   bladeSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'FlightController'));
   qdSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'QuantumDrive'));
+
+  /** Jump drive sub-slots derived from QD loadout keys. */
+  jumpDriveSlots = computed(() => {
+    const loadout = this.data.loadout();
+    const slots: Hardpoint[] = [];
+    for (const qdHp of this.qdSlots()) {
+      const jdKey = `${qdHp.id}.hardpoint_jump_drive`;
+      const jdItem = loadout[jdKey];
+      if (jdItem) {
+        slots.push({
+          id: jdKey,
+          label: 'Jump Module',
+          type: 'JumpDrive',
+          subtypes: '',
+          minSize: jdItem.size ?? 1,
+          maxSize: jdItem.size ?? 1,
+          flags: '$uneditable',
+          allTypes: [{ type: 'JumpDrive', subtypes: '' }],
+        });
+      }
+    }
+    return slots;
+  });
   radarSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'Radar'));
   lsSlots     = computed(() => {
     const base = this.utilitySlots().filter(hp => hp.type === 'LifeSupportGenerator');

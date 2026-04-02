@@ -1383,6 +1383,36 @@ def parse_lifesupport_item(root, class_name, loc):
     }
 
 
+def parse_jumpdrive_item(root, class_name, loc):
+    info = parse_attachdef(root)
+    if not info or info["type"] != "JumpDrive":
+        return None
+    display = resolve_item_name(loc, class_name)
+    hp_el = root.find(".//SHealthComponentParams")
+    component_hp = safe_float(hp_el.get("Health", 0)) if hp_el is not None else 0.0
+    jd = root.find(".//SCItemJumpDriveParams")
+    alignment_rate = safe_float(jd.get("alignmentRate", 0)) if jd is not None else 0.0
+    tuning_rate = safe_float(jd.get("tuningRate", 0)) if jd is not None else 0.0
+    fuel_eff = safe_float(jd.get("fuelUsageEfficiencyMultiplier", 1)) if jd is not None else 1.0
+    dist_el = root.find(".//SDistortionParams")
+    dist_max = safe_float(dist_el.get("Maximum", 0)) if dist_el is not None else 0.0
+    dist_decay_rate = safe_float(dist_el.get("DecayRate", 0)) if dist_el is not None else 0.0
+    return {
+        "className":       class_name,
+        "name":            display,
+        "manufacturer":    mfr_from_classname(class_name),
+        "type":            "JumpDrive",
+        "size":            info["size"],
+        "grade":           info["grade"],
+        "hp":              round(component_hp, 0),
+        "alignmentRate":   round(alignment_rate, 2),
+        "tuningRate":      round(tuning_rate, 2),
+        "fuelEfficiency":  round(fuel_eff, 1),
+        "distortionMax":   round(dist_max, 0),
+        "distortionDecayRate": round(dist_decay_rate, 0),
+    }
+
+
 def parse_miningmodifier_item(root, class_name, loc):
     info = parse_attachdef(root)
     if not info or info["type"] != "MiningModifier":
@@ -1978,6 +2008,7 @@ FOLDER_PARSERS = {
     "weapons/emp":       parse_emp_item,
     "weapons/qig":       parse_qed_item,
     "quantumenforcementdevice": parse_qed_item,
+    "jumpdrive":             parse_jumpdrive_item,
 }
 
 def scan_components(forge_dir, loc):
@@ -2879,10 +2910,14 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
         "hardpoint_power_plant":             "powr_lplt_s01_powerbolt_scitem",
         "hardpoint_radar":                   "radr_wlop_s01_capstan",
         "hardpoint_life_support":            "lfsp_tydt_s01_comfortair",
+        "hardpoint_quantum_drive.hardpoint_jump_drive": "jdrv_tars_s01_explorer_scitem",
     }
     FALLBACK_LOADOUTS = {
-        "ORIG_300i": {**_300_BASE_LOADOUT},
+        "ORIG_300i": {**_300_BASE_LOADOUT,
+            "hardpoint_quantum_drive": "qdrv_tars_s01_expedition_scitem",
+        },
         "orig_315p": {**_300_BASE_LOADOUT,
+            "hardpoint_quantum_drive": "qdrv_godi_s01_goliath_scitem",
             "hardpoint_tractor.turret_left": "grin_tractorbeam_s2",
         },
         "orig_325a": {
@@ -2909,6 +2944,7 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
             "hardpoint_cooler_right":            "cool_aegs_s01_bracer_scitem",
             "hardpoint_power_plant":             "powr_aegs_s01_regulus_scitem",
             "hardpoint_quantum_drive":           "qdrv_wetk_s01_beacon_scitem",
+            "hardpoint_quantum_drive.hardpoint_jump_drive": "jdrv_tars_s01_explorer_scitem",
             "hardpoint_radar":                   "radr_grnp_s01_ecouter",
             "hardpoint_life_support":            "lfsp_tydt_s01_comfortair",
         },
@@ -2929,6 +2965,7 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
             "hardpoint_cooler_right":            "cool_acom_s01_quickcool_scitem",
             "hardpoint_power_plant":             "powr_acom_s01_sunflare_scitem",
             "hardpoint_quantum_drive":           "qdrv_rsi_s01_eos_scitem",
+            "hardpoint_quantum_drive.hardpoint_jump_drive": "jdrv_tars_s01_explorer_scitem",
             "hardpoint_radar":                   "radr_nave_s01_snsr6",
             "hardpoint_life_support":            "lfsp_tydt_s01_comfortair",
         },
@@ -4945,6 +4982,14 @@ def main(mode: str = "live"):
         "qdrv_acas_s01_lightfire_scitem": "LightFire Quantum Drive",
         "shld_banu_s02_placeholder_scitem": "Sukoran Shield",
         "shld_rsi_s04_polaris_scitem": "Glacis Shield",
+        "jdrv_tars_s01_explorer_scitem": "Explorer Jump Module",
+        "jdrv_tars_s02_excelsior_scitem": "Excelsior Jump Module",
+        "jdrv_tars_s03_exodus_scitem": "Exodus Jump Module",
+        "jdrv_tars_s04_c_explorer": "Explorer Jump Module (Capital)",
+        "jdrv_aegs_s04_javelin_scitem": "Javelin Jump Module",
+        "jdrv_orig_s04_890j_scitem": "890 Jump Module",
+        "jdrv_wetk_s04_idris_scitem": "Exfiltrate Jump Module",
+        "jdrv_rsi_s04_bengal_scitem": "Bengal Jump Module",
     }
     for cls, name in NAME_OVERRIDES.items():
         if cls in items:

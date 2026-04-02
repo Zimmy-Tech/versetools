@@ -222,7 +222,7 @@ export class DataService {
           }
         }
         const item = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
-        if (item && (item.type === 'WeaponGun' || item.type === 'Missile' || item.type === 'Bomb' || item.type === 'WeaponMining' || item.type === 'SalvageHead' || item.type === 'SalvageModifier' || item.type === 'TractorBeam')) newLoadout[dotKey] = item;
+        if (item && (item.type === 'WeaponGun' || item.type === 'Missile' || item.type === 'Bomb' || item.type === 'WeaponMining' || item.type === 'SalvageHead' || item.type === 'SalvageModifier' || item.type === 'TractorBeam' || item.type === 'JumpDrive')) newLoadout[dotKey] = item;
       }
 
       // PDC turrets: replace turret item with the actual weapon directly
@@ -747,6 +747,7 @@ export class DataService {
     'salvage_head_template', 'salvage_buff_modifier_template', 'salvage_modifier_template',
     'salvage_modifier_tractor_template', 'salvage_modifier_scraper_template',
     'qed_template',
+    'jdrv_s01_template', 'jdrv_s02_template', 'jdrv_s03_template', 'jdrv_s04_template',
     'shld_banu_s01_placeholder_scitem', // Banu S1 shield placeholder (unused)
     // Internal weapon variants (non-zero DPS but not real items)
     'banu_energyrepeater_s2',      // CF-227 Badger clone (0 DPS)
