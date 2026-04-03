@@ -5,11 +5,12 @@ import { filter } from 'rxjs/operators';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
+export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
   miningSignatures: 'mining-signatures',
+  shipCompare: 'ship-compare',
 };
 
 function tabToRoute(id: string): string {
@@ -66,6 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   readonly shipToolsTabs: { id: TabName; label: string }[] = [
+    { id: 'shipCompare', label: 'Ship Comparator' },
     { id: 'rankings', label: 'Flight Performance' },
     { id: 'armor', label: 'Armor Damage' },
     { id: 'compare', label: 'Weapon Performance' },

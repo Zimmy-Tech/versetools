@@ -1,0 +1,150 @@
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3Cpolygon id='h' points='50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25' fill='none' stroke='%2300c8ff' stroke-width='0.5'/%3E%3C/defs%3E%3Cg opacity='0.04'%3E%3Cuse href='%23h' x='80' y='60'/%3E%3Cuse href='%23h' x='170' y='85'/%3E%3Cuse href='%23h' x='95' y='160'/%3E%3Cuse href='%23h' x='420' y='30'/%3E%3Cuse href='%23h' x='510' y='55'/%3E%3Cuse href='%23h' x='680' y='120'/%3E%3Cuse href='%23h' x='770' y='145'/%3E%3Cuse href='%23h' x='950' y='40'/%3E%3Cuse href='%23h' x='1040' y='65'/%3E%3Cuse href='%23h' x='1080' y='180'/%3E%3Cuse href='%23h' x='200' y='320'/%3E%3Cuse href='%23h' x='290' y='345'/%3E%3Cuse href='%23h' x='560' y='280'/%3E%3Cuse href='%23h' x='830' y='310'/%3E%3Cuse href='%23h' x='920' y='335'/%3E%3Cuse href='%23h' x='1100' y='370'/%3E%3Cuse href='%23h' x='60' y='480'/%3E%3Cuse href='%23h' x='350' y='520'/%3E%3Cuse href='%23h' x='440' y='545'/%3E%3Cuse href='%23h' x='700' y='460'/%3E%3Cuse href='%23h' x='1000' y='510'/%3E%3Cuse href='%23h' x='150' y='680'/%3E%3Cuse href='%23h' x='480' y='720'/%3E%3Cuse href='%23h' x='570' y='745'/%3E%3Cuse href='%23h' x='820' y='650'/%3E%3Cuse href='%23h' x='910' y='675'/%3E%3Cuse href='%23h' x='1060' y='740'/%3E%3Cuse href='%23h' x='300' y='830'/%3E%3Cuse href='%23h' x='650' y='860'/%3E%3Cuse href='%23h' x='740' y='810'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 1200px 900px;
+}
+
+.ship-compare {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  gap: 16px;
+}
+
+.compare-header {
+  text-align: center;
+}
+
+.compare-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.compare-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+// ── Ship pickers ──────────────────────────────────────────
+
+.picker-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.picker-slot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.picker-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.picker-select {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  min-width: 200px;
+  cursor: pointer;
+  &:focus { border-color: var(--accent2); outline: none; }
+}
+
+// ── Comparison table ──────────────────────────────────────
+
+.compare-table-wrap {
+  overflow-x: auto;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+
+  th, td {
+    padding: 5px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text);
+    padding: 10px 12px;
+    border-top: 3px solid transparent;
+  }
+
+  .label-col {
+    text-align: left;
+    color: var(--text2);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    width: 140px;
+    min-width: 140px;
+  }
+
+  .val-col {
+    width: 22%;
+  }
+
+  td.val {
+    color: var(--text);
+  }
+
+  td.best {
+    color: var(--green);
+    font-weight: 600;
+  }
+}
+
+.section-header td {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: left !important;
+  padding: 10px 12px 4px;
+  border-bottom: 1px solid var(--accent2);
+  background: rgba(0, 200, 255, 0.03);
+}
+
+// ── Responsive ────────────────────────────────────────────
+
+@media (max-width: 767px) {
+  .ship-compare { padding: 12px; }
+  .picker-row { flex-direction: column; align-items: stretch; }
+  .picker-select { min-width: 0; width: 100%; min-height: 40px; font-size: 14px; }
+  .compare-table { font-size: 12px; }
+  .compare-table .label-col { width: 100px; min-width: 100px; }
+}

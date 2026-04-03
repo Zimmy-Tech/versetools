@@ -1,0 +1,61 @@
+<div class="ship-compare">
+
+  <div class="compare-header">
+    <div class="compare-title">Ship Comparator</div>
+    <div class="compare-sub">Compare up to 4 ships side by side. Best values are highlighted.</div>
+  </div>
+
+  <!-- Ship pickers -->
+  <div class="picker-row">
+    @for (slot of slots(); track $index; let i = $index) {
+      <div class="picker-slot">
+        <div class="picker-color" [style.background]="slotColors[i]"></div>
+        <select class="picker-select"
+                [value]="slot?.className ?? ''"
+                (change)="setSlot(i, $any($event.target).value)">
+          <option value="">— select ship —</option>
+          @for (s of allShips(); track s.className) {
+            <option [value]="s.className">{{ s.name }}</option>
+          }
+        </select>
+      </div>
+    }
+  </div>
+
+  <!-- Comparison table -->
+  @if (sections().length) {
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <!-- Ship names header -->
+        <thead>
+          <tr>
+            <th class="label-col"></th>
+            @for (ship of slots(); track $index; let i = $index) {
+              <th class="val-col" [style.border-top-color]="ship ? slotColors[i] : 'transparent'">
+                {{ ship?.name ?? '' }}
+              </th>
+            }
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (section of sections(); track section.title) {
+            <tr class="section-header">
+              <td [attr.colspan]="5">{{ section.title }}</td>
+            </tr>
+            @for (row of section.rows; track row[0]) {
+              <tr>
+                <td class="label-col">{{ row[0] }}</td>
+                @for (ship of slots(); track $index; let i = $index) {
+                  <td [class.best]="isBest(row, i)"
+                      [class.val]="!isBest(row, i)">{{ getCellValue(row, ship) }}</td>
+                }
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

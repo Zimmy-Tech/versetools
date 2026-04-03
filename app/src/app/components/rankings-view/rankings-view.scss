@@ -68,7 +68,7 @@
 
 .radar-and-stats {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
@@ -251,8 +251,8 @@
   &:focus { border-color: var(--accent2); }
 }
 
-.radar-wrap { display: flex; justify-content: center; }
-.radar-svg { width: 100%; max-width: 420px; }
+.radar-wrap { display: flex; justify-content: center; flex: 1; }
+.radar-svg { width: 100%; max-width: 600px; overflow: visible; }
 
 .radar-ring { fill: none; stroke: var(--border); stroke-width: 0.5; }
 .radar-spoke { stroke: var(--border); stroke-width: 0.5; }

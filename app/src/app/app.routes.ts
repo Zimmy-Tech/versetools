@@ -15,9 +15,11 @@ import { MiningSignaturesComponent } from './components/mining-signatures/mining
 import { CompactViewComponent } from './components/compact-view/compact-view';
 import { UpdatesViewComponent } from './components/updates-view/updates-view';
 import { ChangelogViewComponent } from './components/changelog-view/changelog-view';
+import { ShipCompareComponent } from './components/ship-compare/ship-compare';
 
 export const routes: Routes = [
   { path: 'loadout',            component: LoadoutViewComponent },
+  { path: 'ship-compare',       component: ShipCompareComponent },
   { path: 'compare',            component: CompareViewComponent },
   { path: 'finder',             component: ComponentFinderComponent },
   { path: 'cart',               component: CartViewComponent },
