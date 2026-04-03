@@ -112,6 +112,21 @@ export class SubmitViewComponent {
     this.form.update(f => ({ ...f, [field]: value }));
   }
 
+  /** Sanitize accel input: strip non-numeric, clamp to 25.0, format X.X */
+  sanitizeAccel(field: keyof AccelForm, value: string): void {
+    // Strip everything except digits and decimal point
+    let clean = value.replace(/[^0-9.]/g, '');
+    // Only allow one decimal point
+    const parts = clean.split('.');
+    if (parts.length > 2) clean = parts[0] + '.' + parts.slice(1).join('');
+    // Limit to one decimal place
+    if (parts.length === 2 && parts[1].length > 1) clean = parts[0] + '.' + parts[1][0];
+    // Clamp to 25.0
+    const num = parseFloat(clean);
+    if (!isNaN(num) && num > 30.0) clean = '30.0';
+    this.form.update(f => ({ ...f, [field]: clean }));
+  }
+
   canSubmit = computed(() => {
     const f = this.form();
     return f.submitterName.trim() !== '' && f.shipClassName !== '' && f.fwd !== '';
@@ -146,6 +161,7 @@ export class SubmitViewComponent {
       existing.push(entry);
       localStorage.setItem('versetools_submissions', JSON.stringify(existing));
       this.submitted.set(true);
+      this.resetAfterSubmit();
     } else {
       this.submitting.set(true);
       this.submitError.set('');
@@ -159,17 +175,20 @@ export class SubmitViewComponent {
       }).then(() => {
         this.submitted.set(true);
         this.submitting.set(false);
+        this.resetAfterSubmit();
       }).catch(() => {
         this.submitError.set('Submission failed — please try again');
         this.submitting.set(false);
       });
     }
+  }
 
+  private resetAfterSubmit(): void {
     setTimeout(() => {
       this.submitted.set(false);
       this.submitError.set('');
-      this.form.set({
-        submitterName: this.form().submitterName,
+      this.form.update(f => ({
+        submitterName: f.submitterName,
         shipClassName: '',
         fwd: '', fwdBoost: '',
         retro: '', retroBoost: '',
@@ -177,8 +196,8 @@ export class SubmitViewComponent {
         up: '', upBoost: '',
         down: '', downBoost: '',
         notes: '',
-      });
-    }, 2000);
+      }));
+    }, 1500);
   }
 
   submitFeedback(): void {
