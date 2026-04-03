@@ -26,6 +26,7 @@ export interface Ship {
   role: string;
   career: string;
   crew: number;
+  isGroundVehicle?: boolean;
   hardpoints: Hardpoint[];
   defaultLoadout?: Record<string, string>;
   // Flight stats

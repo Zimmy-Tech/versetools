@@ -474,6 +474,10 @@ def parse_vehicle_xml(xml_path, loc):
     root = tree.getroot()
     class_name = xml_path.stem
 
+    # Detect ground vehicles
+    vehicle_subtype = root.get("subType", "")
+    is_ground_vehicle = vehicle_subtype == "Vehicle_GroundVehicle"
+
     # Display name from localization
     loc_key = f"vehicle_name{class_name.lower()}"
     display_name = loc.get(loc_key, class_name.replace("_", " "))
@@ -665,12 +669,19 @@ def parse_vehicle_xml(xml_path, loc):
 
         min_size = safe_int(item_port.get("minSize") or item_port.get("minsize", 0))
         max_size = safe_int(item_port.get("maxSize") or item_port.get("maxsize", 0))
-        if max_size == 0:
-            continue
 
         types_el = item_port.find("Types")
         if types_el is None:
             continue
+
+        # Allow S0 for component types (ground vehicles use S0 PP, cooler, shield, radar)
+        S0_ALLOWED = {"Shield", "PowerPlant", "Cooler", "Radar", "LifeSupportGenerator"}
+        if max_size == 0:
+            has_s0_type = types_el is not None and any(
+                t.get("type") in S0_ALLOWED for t in types_el.findall("Type")
+            )
+            if not has_s0_type:
+                continue
 
         port_types = []
         for type_el in types_el.findall("Type"):
@@ -794,6 +805,7 @@ def parse_vehicle_xml(xml_path, loc):
         "role":             "",
         "career":           "",
         "crew":             1,
+        "isGroundVehicle":  is_ground_vehicle,
         "hardpoints":       hardpoints,
         "flightSpoolDelay": round(flight_spool_delay, 1),
         # Hull HP
@@ -2386,12 +2398,12 @@ def resolve_role(val, loc):
 def _resolve_variant_name(variant_cls, loc):
     """Try multiple localization key patterns for a variant class name."""
     # Direct match: vehicle_namersi_constellation_andromeda
-    key = f"vehicle_name{variant_cls}"
+    key = f"vehicle_name{variant_cls}".lower()
     if key in loc:
         return loc[key]
     # Strip common infixes like _gs_ (Aurora): rsi_aurora_gs_mr → rsi_aurora_mr
     stripped = re.sub(r'_gs_', '_', variant_cls)
-    key2 = f"vehicle_name{stripped}"
+    key2 = f"vehicle_name{stripped}".lower()
     if key2 in loc:
         return loc[key2]
     # Fallback: title-case the class name
@@ -2473,6 +2485,7 @@ def expand_ship_variants(ships, forge_dir, loc):
         "TMBL_Cyclone": ["TMBL_Cyclone_AA", "TMBL_Cyclone_MT", "TMBL_Cyclone_RC", "TMBL_Cyclone_RN", "TMBL_Cyclone_TR"],
         "KRIG_P52_Merlin": ["krig_p72_archimedes"],
         "rsi_apollo_medivac": ["rsi_hermes"],  # Hermes uses Apollo vehicle XML with modification="Hermes"
+        "RSI_Ursa_Rover": ["rsi_ursa_medivac"],
     }
     for base_cls, variant_list in MANUAL_VARIANTS.items():
         base_ship = expanded.get(base_cls)
@@ -2820,24 +2833,31 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
     }
 
     enriched = 0
-    for xml_file in sorted(spaceship_dir.glob("*.xml")):
-        stem = xml_file.stem.replace(".xml", "")
-        alias = FORGE_ALIASES.get(stem.lower())
-        matched = next((k for k in ships if k.lower() == (alias or stem).lower()), None)
-        if not matched:
-            continue
-        try:
-            txt = xml_file.read_text(errors='replace')
-            m = re.search(r'SItemPortLoadoutManualParams\[([0-9A-Fa-f]+)\]', txt)
-            if not m:
+    # Scan both spaceships and ground vehicles directories
+    scan_dirs = [spaceship_dir]
+    gv_dir = forge_dir / "entities" / "groundvehicles"
+    if gv_dir.exists():
+        scan_dirs.append(gv_dir)
+
+    for scan_dir in scan_dirs:
+        for xml_file in sorted(scan_dir.glob("*.xml")):
+            stem = xml_file.stem.replace(".xml", "")
+            alias = FORGE_ALIASES.get(stem.lower())
+            matched = next((k for k in ships if k.lower() == (alias or stem).lower()), None)
+            if not matched:
                 continue
-            variant = int(m.group(1), 16)
-            loadout = read_loadout(variant)
-            if loadout:
-                ships[matched]["defaultLoadout"] = loadout
-                enriched += 1
-        except Exception:
-            pass
+            try:
+                txt = xml_file.read_text(errors='replace')
+                m = re.search(r'SItemPortLoadoutManualParams\[([0-9A-Fa-f]+)\]', txt)
+                if not m:
+                    continue
+                variant = int(m.group(1), 16)
+                loadout = read_loadout(variant)
+                if loadout:
+                    ships[matched]["defaultLoadout"] = loadout
+                    enriched += 1
+            except Exception:
+                pass
     print(f"  Default loadouts extracted: {enriched} ships")
 
     # Enrich thruster HP in hull parts tree using the now-available default loadout

@@ -18,10 +18,8 @@ export class DataService {
   thrusterPower = signal<number>(4);
   flightMode = signal<'scm' | 'nav'>('scm');
 
-  // Ships hidden from picker (ground vehicles until properly supported, non-player ships)
+  // Ships hidden from picker (non-player ships only)
   private readonly hiddenShips = new Set([
-    'tmbl_cyclone', 'tmbl_cyclone_aa', 'tmbl_cyclone_mt', 'tmbl_cyclone_rc', 'tmbl_cyclone_rn', 'tmbl_cyclone_tr',
-    'tmbl_nova', 'rsi_ursa_rover', 'rsi_lynx',
     'xian_nox', 'xian_nox_kue',
     'orig_x1', 'orig_x1_force', 'orig_x1_velocity',
     'mrai_pulse', 'mrai_pulse_lx',
