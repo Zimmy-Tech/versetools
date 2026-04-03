@@ -4847,6 +4847,11 @@ def main(mode: str = "live"):
             "accelAbFwd": 24.8, "accelAbRetro": 4.4, "accelAbStrafe": 5.9, "accelAbUp": 7.9, "accelAbDown": 4.6,
             "accelTestedDate": "2026-04-01", "accelCheckedBy": "Zimmy",
         },
+        "DRAK_Cutlass_Black": {
+            "accelFwd": 10.3, "accelRetro": 3.8, "accelStrafe": 8, "accelUp": 8.2, "accelDown": 4.1,
+            "accelAbFwd": 15.5, "accelAbRetro": 5.4, "accelAbStrafe": 10.8, "accelAbUp": 10.7, "accelAbDown": 5.8,
+            "accelTestedDate": "2026-04-02", "accelCheckedBy": "Roma-Starkiller",
+        },
     }
     accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
     for ship in ships.values():
