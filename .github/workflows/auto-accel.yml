@@ -1,0 +1,93 @@
+name: Auto-apply trusted acceleration data
+
+on:
+  repository_dispatch:
+    types: [accel-submission]
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Apply acceleration data
+        run: |
+          python3 - <<'PYEOF'
+          import json, sys, os
+
+          payload = json.loads(os.environ["PAYLOAD"])
+
+          TRUSTED = {"Zimmy", "Roma-Starkiller"}
+          submitter = payload.get("submitterName", "")
+          if submitter not in TRUSTED:
+              print(f"Submitter '{submitter}' is not trusted. Skipping.")
+              sys.exit(0)
+
+          class_name = payload.get("shipClassName", "")
+          if not class_name:
+              print("No shipClassName provided. Skipping.")
+              sys.exit(0)
+
+          accel = {
+              "accelFwd": payload.get("accelFwd", 0),
+              "accelAbFwd": payload.get("accelAbFwd", 0),
+              "accelRetro": payload.get("accelRetro", 0),
+              "accelAbRetro": payload.get("accelAbRetro", 0),
+              "accelStrafe": payload.get("accelStrafe", 0),
+              "accelAbStrafe": payload.get("accelAbStrafe", 0),
+              "accelUp": payload.get("accelUp", 0),
+              "accelAbUp": payload.get("accelAbUp", 0),
+              "accelDown": payload.get("accelDown", 0),
+              "accelAbDown": payload.get("accelAbDown", 0),
+              "accelTestedDate": payload.get("date", ""),
+              "accelCheckedBy": submitter,
+          }
+
+          updated = 0
+          for path in [
+              "app/public/live/versedb_data.json",
+              "app/public/ptu/versedb_data.json",
+              "PY SCRIPTS/versedb_data.json",
+          ]:
+              try:
+                  with open(path) as f:
+                      d = json.load(f)
+                  for s in d["ships"]:
+                      if s["className"] == class_name:
+                          s.update(accel)
+                          updated += 1
+                          break
+                  with open(path, "w") as f:
+                      json.dump(d, f, separators=(",", ":"))
+              except FileNotFoundError:
+                  pass
+
+          ship_name = payload.get("shipName", class_name)
+          print(f"Updated {ship_name} in {updated} files")
+
+          if updated == 0:
+              print("No files updated. Skipping commit.")
+              sys.exit(0)
+
+          # Write commit info for next step
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"ship_name={ship_name}\n")
+              f.write(f"submitter={submitter}\n")
+              f.write(f"updated={updated}\n")
+          PYEOF
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        id: apply
+
+      - name: Commit and push
+        if: steps.apply.outputs.updated
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add ${{ steps.apply.outputs.ship_name }} acceleration data (${{ steps.apply.outputs.submitter }}, auto-applied)"
+          git push
