@@ -63,7 +63,7 @@
           <!-- Flight Data -->
           <div>
             <div class="stats-block-title" (click)="toggleSection('sb-flight')">Flight Data <span class="collapse-arrow">{{ isCollapsed('sb-flight') ? '▸' : '▾' }}</span></div>
-            @if (!isCollapsed('sb-flight') && (flightScmSpeed() || data.selectedShip()!.accelFwd)) {
+            @if (!isCollapsed('sb-flight')) {
               <div class="stat-block">
                 <div class="stat-group-header">Speed (m/s)</div>
                 <div class="stat-row"><span class="stat-label">SCM</span><span class="mono">{{ flightScmSpeed() }}</span></div>
@@ -91,23 +91,21 @@
                     <div class="stat-row"><span class="stat-label">Quantum</span><span class="mono">{{ data.selectedShip()!.quantumFuelCapacity }}</span></div>
                   }
                 }
-                @if (data.selectedShip()!.accelFwd) {
-                  <div class="stat-divider"></div>
-                  <div class="stat-group-header">Acceleration (G)</div>
-                  <div class="stat-row"><span class="stat-label">Fwd</span><span class="mono">{{ data.selectedShip()!.accelFwd }}@if (data.selectedShip()!.accelAbFwd) { / <span class="accent">{{ data.selectedShip()!.accelAbFwd }}</span>}</span></div>
-                  <div class="stat-row"><span class="stat-label">Retro</span><span class="mono">{{ data.selectedShip()!.accelRetro }}@if (data.selectedShip()!.accelAbRetro) { / <span class="accent">{{ data.selectedShip()!.accelAbRetro }}</span>}</span></div>
-                  <div class="stat-row"><span class="stat-label">Strafe</span><span class="mono">{{ data.selectedShip()!.accelStrafe }}@if (data.selectedShip()!.accelAbStrafe) { / <span class="accent">{{ data.selectedShip()!.accelAbStrafe }}</span>}</span></div>
-                  <div class="stat-row"><span class="stat-label">Up</span><span class="mono">{{ data.selectedShip()!.accelUp }}@if (data.selectedShip()!.accelAbUp) { / <span class="accent">{{ data.selectedShip()!.accelAbUp }}</span>}</span></div>
-                  <div class="stat-row"><span class="stat-label">Down</span><span class="mono">{{ data.selectedShip()!.accelDown }}@if (data.selectedShip()!.accelAbDown) { / <span class="accent">{{ data.selectedShip()!.accelAbDown }}</span>}</span></div>
-                  @if (data.selectedShip()!.accelTestedDate) {
-                    <div class="stat-row tested-date"><span class="stat-label">Tested</span><span class="mono">{{ data.selectedShip()!.accelTestedDate }}</span></div>
-                  }
-                  @if (data.selectedShip()!.accelCheckedBy) {
-                    <div class="stat-row checked-by"><span class="stat-label">Checked by</span><span class="mono">{{ data.selectedShip()!.accelCheckedBy }}</span></div>
-                  }
-                  @if (needsAccelData()) {
-                    <button class="help-us-btn" (click)="goToSubmit()">Help Us</button>
-                  }
+                <div class="stat-divider"></div>
+                <div class="stat-group-header">Acceleration (G)</div>
+                <div class="stat-row"><span class="stat-label">Fwd</span><span class="mono">{{ data.selectedShip()!.accelFwd ?? 0 }}@if (data.selectedShip()!.accelAbFwd) { / <span class="accent">{{ data.selectedShip()!.accelAbFwd }}</span>}</span></div>
+                <div class="stat-row"><span class="stat-label">Retro</span><span class="mono">{{ data.selectedShip()!.accelRetro ?? 0 }}@if (data.selectedShip()!.accelAbRetro) { / <span class="accent">{{ data.selectedShip()!.accelAbRetro }}</span>}</span></div>
+                <div class="stat-row"><span class="stat-label">Strafe</span><span class="mono">{{ data.selectedShip()!.accelStrafe ?? 0 }}@if (data.selectedShip()!.accelAbStrafe) { / <span class="accent">{{ data.selectedShip()!.accelAbStrafe }}</span>}</span></div>
+                <div class="stat-row"><span class="stat-label">Up</span><span class="mono">{{ data.selectedShip()!.accelUp ?? 0 }}@if (data.selectedShip()!.accelAbUp) { / <span class="accent">{{ data.selectedShip()!.accelAbUp }}</span>}</span></div>
+                <div class="stat-row"><span class="stat-label">Down</span><span class="mono">{{ data.selectedShip()!.accelDown ?? 0 }}@if (data.selectedShip()!.accelAbDown) { / <span class="accent">{{ data.selectedShip()!.accelAbDown }}</span>}</span></div>
+                @if (data.selectedShip()!.accelTestedDate) {
+                  <div class="stat-row tested-date"><span class="stat-label">Tested</span><span class="mono">{{ data.selectedShip()!.accelTestedDate }}</span></div>
+                }
+                @if (data.selectedShip()!.accelCheckedBy) {
+                  <div class="stat-row checked-by"><span class="stat-label">Checked by</span><span class="mono">{{ data.selectedShip()!.accelCheckedBy }}</span></div>
+                }
+                @if (needsAccelData()) {
+                  <button class="help-us-btn" (click)="goToSubmit()">Help Us</button>
                 }
               </div>
             }

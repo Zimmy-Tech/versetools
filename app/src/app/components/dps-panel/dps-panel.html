@@ -1,4 +1,4 @@
-<div class="dps-panel">
+<div class="dps-panel" [class.flat-mode]="displayMode() === 'flat'">
 
   <div class="dps-stats-col">
 
@@ -9,15 +9,28 @@
           <button class="gimbal-btn" [class.active]="gimbalMode() === 'lock'" (click)="gimbalMode.set('lock')">LOCK</button>
           <button class="gimbal-btn" [class.active]="gimbalMode() === 'gimbal'" (click)="gimbalMode.set('gimbal')">PRE/AUTO/GIMBAL</button>
         </span>
+        <button class="mode-toggle" (click)="toggleDisplayMode()" [title]="displayMode() === 'hud' ? 'Switch to Flat mode' : 'Switch to HUD mode'">
+          {{ displayMode() === 'hud' ? 'FLAT' : 'HUD' }}
+        </button>
       </div>
-      @if (pilotBurstDPS() > 0) {
+
+      <!-- HUD: hero card -->
+      @if (displayMode() === 'hud' && pilotBurstDPS() > 0) {
         <div class="dps-hero" title="All weapons firing simultaneously at maximum fire rate.">
           <span class="dps-hero-val">{{ pilotBurstDPS().toFixed(0) }}</span>
           <span class="dps-hero-label">PEAK DPS</span>
         </div>
       }
+
       <div class="stat-block">
         @if (pilotBurstDPS() > 0 || pilotDPS() > 0) {
+          <!-- Flat: inline peak -->
+          @if (displayMode() === 'flat') {
+            <div class="stat-row" title="All weapons firing simultaneously at maximum fire rate.">
+              <span class="stat-label">Peak DPS</span>
+              <span class="mono peak-val">{{ pilotBurstDPS().toFixed(0) }}</span>
+            </div>
+          }
           <div class="stat-row" title="Average damage per second over a 10-second window. Energy weapons fire then regen (no regen while firing). Ballistic weapons cycle through overheat and cooldown.">
             <span class="stat-label">Pilot Sustained (10s)</span>
             <span class="mono">{{ pilotDPS().toFixed(0) }}</span>
@@ -77,11 +90,23 @@
         <div class="section-title">Shields
           <span class="stat-label" style="color: var(--gold); font-size: 9px; letter-spacing: 1.5px; margin-left: auto;">RESIST MATH CONFIRMED IN-GAME</span>
         </div>
-        <div class="shield-hero" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
-          <span class="shield-hero-val">{{ totalShieldHP().toFixed(0) }}</span>
-          <span class="shield-hero-label">SHIELD HP</span>
-        </div>
+
+        <!-- HUD: hero card -->
+        @if (displayMode() === 'hud') {
+          <div class="shield-hero" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
+            <span class="shield-hero-val">{{ totalShieldHP().toFixed(0) }}</span>
+            <span class="shield-hero-label">SHIELD HP</span>
+          </div>
+        }
+
         <div class="stat-block">
+          <!-- Flat: inline shield HP -->
+          @if (displayMode() === 'flat') {
+            <div class="stat-row" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
+              <span class="stat-label">Shield HP</span>
+              <span class="mono shield-flat-val">{{ totalShieldHP().toFixed(0) }}</span>
+            </div>
+          }
           <div class="stat-row" title="Combined regen rate from primary shields (first 2) at current power pip allocation. Scaled by power band modifiers.">
             <span class="stat-label">Regen Rate</span>
             <span class="mono">{{ shieldRegenRate().toFixed(0) }}/s</span>
@@ -120,23 +145,45 @@
     @if (data.selectedShip()?.totalHp) {
       <div>
         <div class="section-title">Hull &amp; Armor</div>
-        <div class="hull-heroes">
-          <div class="hull-hero" title="Vital hull HP — the main body HP pool">
-            <span class="hull-hero-val">{{ data.selectedShip()!.bodyHp }}</span>
-            <span class="hull-hero-label">VITAL HP</span>
+
+        <!-- HUD: hero cards -->
+        @if (displayMode() === 'hud') {
+          <div class="hull-heroes">
+            <div class="hull-hero" title="Vital hull HP — the main body HP pool">
+              <span class="hull-hero-val">{{ data.selectedShip()!.bodyHp }}</span>
+              <span class="hull-hero-label">VITAL HP</span>
+            </div>
+            @if (data.selectedShip()!.armorDeflectPhys) {
+              <div class="hull-hero" title="Physical armor deflect threshold — weapons below this deal zero damage">
+                <span class="hull-hero-val deflect-phys">{{ data.selectedShip()!.armorDeflectPhys }}</span>
+                <span class="hull-hero-label">PHYS DEFLECT</span>
+              </div>
+              <div class="hull-hero" title="Energy armor deflect threshold — weapons below this deal zero damage">
+                <span class="hull-hero-val deflect-enrg">{{ data.selectedShip()!.armorDeflectEnrg }}</span>
+                <span class="hull-hero-label">ENRG DEFLECT</span>
+              </div>
+            }
           </div>
-          @if (data.selectedShip()!.armorDeflectPhys) {
-            <div class="hull-hero" title="Physical armor deflect threshold — weapons below this deal zero damage">
-              <span class="hull-hero-val deflect-phys">{{ data.selectedShip()!.armorDeflectPhys }}</span>
-              <span class="hull-hero-label">PHYS DEFLECT</span>
-            </div>
-            <div class="hull-hero" title="Energy armor deflect threshold — weapons below this deal zero damage">
-              <span class="hull-hero-val deflect-enrg">{{ data.selectedShip()!.armorDeflectEnrg }}</span>
-              <span class="hull-hero-label">ENRG DEFLECT</span>
-            </div>
-          }
-        </div>
+        }
+
         <div class="stat-block">
+          <!-- Flat: inline hero stats -->
+          @if (displayMode() === 'flat') {
+            <div class="stat-row" title="Vital hull HP — the main body HP pool">
+              <span class="stat-label">Vital HP</span>
+              <span class="mono hull-flat-val">{{ data.selectedShip()!.bodyHp }}</span>
+            </div>
+            @if (data.selectedShip()!.armorDeflectPhys) {
+              <div class="stat-row" title="Physical armor deflect threshold — weapons below this deal zero damage">
+                <span class="stat-label">Phys Deflect</span>
+                <span class="mono hull-flat-val deflect-phys">{{ data.selectedShip()!.armorDeflectPhys }}</span>
+              </div>
+              <div class="stat-row" title="Energy armor deflect threshold — weapons below this deal zero damage">
+                <span class="stat-label">Enrg Deflect</span>
+                <span class="mono hull-flat-val deflect-enrg">{{ data.selectedShip()!.armorDeflectEnrg }}</span>
+              </div>
+            }
+          }
           <div class="stat-row"><span class="stat-label">Total HP</span><span class="mono">{{ data.selectedShip()!.totalHp }}</span></div>
           <div class="stat-row"><span class="stat-label">Armor HP</span><span class="mono">{{ data.selectedShip()!.armorHp }}</span></div>
           @if (data.selectedShip()!.hullDmgPhys !== undefined) {
@@ -270,4 +317,3 @@
     </div>
   </div>
 }
-

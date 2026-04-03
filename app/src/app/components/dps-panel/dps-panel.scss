@@ -102,6 +102,23 @@
 .enrg-fill { background: var(--enrg); }
 .dist-fill { background: var(--dist); }
 
+// ── Mode toggle button ──────────────────────────────────
+.mode-toggle {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  margin-left: 4px;
+  cursor: pointer;
+  &:hover { color: var(--text); border-color: var(--text3); }
+}
+
+// ── HUD mode hero cards ─────────────────────────────────
 .dps-hero {
   text-align: center;
   padding: 12px 10px 10px;
@@ -114,7 +131,7 @@
 
 .dps-hero-val {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
@@ -132,6 +149,29 @@
   margin-top: 2px;
 }
 
+// ── Flat mode inline hero values ────────────────────────
+.peak-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(0, 200, 255, 0.2);
+}
+
+.shield-flat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--phys);
+  text-shadow: 0 0 8px rgba(68, 136, 255, 0.2);
+}
+
+.hull-flat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  &.deflect-phys { color: var(--red); }
+  &.deflect-enrg { color: var(--enrg); }
+}
+
 .shield-hero {
   text-align: center;
   padding: 12px 10px 10px;
@@ -144,7 +184,7 @@
 
 .shield-hero-val {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--phys);
   line-height: 1;
