@@ -32,17 +32,19 @@ jobs:
               print("No shipClassName provided. Skipping.")
               sys.exit(0)
 
+          # Accel values can be top-level (legacy) or nested under "accel"
+          a = payload.get("accel", payload)
           accel = {
-              "accelFwd": payload.get("accelFwd", 0),
-              "accelAbFwd": payload.get("accelAbFwd", 0),
-              "accelRetro": payload.get("accelRetro", 0),
-              "accelAbRetro": payload.get("accelAbRetro", 0),
-              "accelStrafe": payload.get("accelStrafe", 0),
-              "accelAbStrafe": payload.get("accelAbStrafe", 0),
-              "accelUp": payload.get("accelUp", 0),
-              "accelAbUp": payload.get("accelAbUp", 0),
-              "accelDown": payload.get("accelDown", 0),
-              "accelAbDown": payload.get("accelAbDown", 0),
+              "accelFwd": a.get("accelFwd", 0),
+              "accelAbFwd": a.get("accelAbFwd", 0),
+              "accelRetro": a.get("accelRetro", 0),
+              "accelAbRetro": a.get("accelAbRetro", 0),
+              "accelStrafe": a.get("accelStrafe", 0),
+              "accelAbStrafe": a.get("accelAbStrafe", 0),
+              "accelUp": a.get("accelUp", 0),
+              "accelAbUp": a.get("accelAbUp", 0),
+              "accelDown": a.get("accelDown", 0),
+              "accelAbDown": a.get("accelAbDown", 0),
               "accelTestedDate": payload.get("date", ""),
               "accelCheckedBy": submitter,
           }
