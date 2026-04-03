@@ -11,6 +11,7 @@ export class DataService {
   readonly selectedShip = signal<Ship | null>(null);
   readonly loadout = signal<Record<string, Item>>({});
   readonly focusedItem = signal<Item | null>(null);
+  readonly activePickerHpId = signal<string | null>(null);
   readonly poweredOff = signal<Set<string>>(new Set());
   powerAlloc = signal<Record<string, number>>({});
   weaponsPower = signal<number>(0);

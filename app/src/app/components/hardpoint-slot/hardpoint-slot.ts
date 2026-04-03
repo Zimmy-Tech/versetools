@@ -317,7 +317,7 @@ export class HardpointSlotComponent {
     this.data.togglePower(this.hardpoint().id);
   }
 
-  pickerOpen       = signal(false);
+  pickerOpen       = computed(() => this.data.activePickerHpId() === this.hardpoint().id);
   pickerSearch     = signal('');
   pickerSizeFilter = signal<number | null>(null);
   pickerTop        = signal<string | null>('0px');
@@ -599,7 +599,7 @@ export class HardpointSlotComponent {
   @HostListener('document:click', ['$event'])
   onDocClick(e: MouseEvent) {
     if (!this.elRef.nativeElement.contains(e.target as Node)) {
-      this.pickerOpen.set(false);
+      this.data.activePickerHpId.set(null);
       this.pickerSearch.set('');
     }
   }
@@ -610,8 +610,10 @@ export class HardpointSlotComponent {
     const scrollParent = (this.elRef.nativeElement as HTMLElement).closest('.hardpoints-scroll, .col-defense, .col-systems, .col-weapons');
     const savedScroll = scrollParent?.scrollTop ?? 0;
 
-    this.pickerOpen.update(v => !v);
-    if (this.pickerOpen()) {
+    const hpId = this.hardpoint().id;
+    const wasOpen = this.data.activePickerHpId() === hpId;
+    this.data.activePickerHpId.set(wasOpen ? null : hpId);
+    if (!wasOpen) {
       this.pickerSearch.set('');
       this.pickerSizeFilter.set(null);
       const trigger = (e.target as HTMLElement)?.closest('.weapon-trigger, .cmp-trigger, .slot-select') as HTMLElement
@@ -668,7 +670,7 @@ export class HardpointSlotComponent {
   selectOption(className: string, e: MouseEvent) {
     e.stopPropagation();
     this.onChange(className);
-    this.pickerOpen.set(false);
+    this.data.activePickerHpId.set(null);
     this.pickerSearch.set('');
   }
 
