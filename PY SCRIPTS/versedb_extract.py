@@ -4458,6 +4458,11 @@ def main(mode: str = "live"):
                 })
                 g.setdefault("defaultLoadout", {})["hardpoint_lifesupport"] = "lfsp_tydt_s01_comfortair"
 
+    # All Cyclone variants: remove locked module mount (not swappable in-game)
+    for cyc_cls in ("TMBL_Cyclone", "TMBL_Cyclone_AA", "TMBL_Cyclone_MT", "TMBL_Cyclone_RC", "TMBL_Cyclone_RN", "TMBL_Cyclone_TR"):
+        if cyc_cls in ships:
+            ships[cyc_cls]["hardpoints"] = [hp for hp in ships[cyc_cls]["hardpoints"] if hp["id"] != "hardpoint_module_attach"]
+
     # Cyclone AA: promote module sub-ports (missile racks + EMP) as visible hardpoints
     if "TMBL_Cyclone_AA" in ships:
         aa = ships["TMBL_Cyclone_AA"]
@@ -4479,9 +4484,42 @@ def main(mode: str = "live"):
             if not any(h["id"] == hp["id"] for h in aa["hardpoints"]):
                 aa["hardpoints"].append(hp)
 
-    # Storm AA: promote missile racks from turret module sub-ports to visible hardpoints
+    # Cyclone MT: remove module mount (locked), promote sub-ports as visible hardpoints
+    if "TMBL_Cyclone_MT" in ships:
+        mt = ships["TMBL_Cyclone_MT"]
+        mt["hardpoints"] = [hp for hp in mt["hardpoints"] if hp["id"] != "hardpoint_module_attach"]
+        mt_hps = [
+            {"id": "hardpoint_module_attach.hardpoint_missilerack_left", "label": "Missile Rack - Left",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 3, "maxSize": 3, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+            {"id": "hardpoint_module_attach.hardpoint_missilerack_right", "label": "Missile Rack - Right",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 3, "maxSize": 3, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+            {"id": "hardpoint_module_attach.turret_weapon", "label": "Turret Weapon",
+             "type": "WeaponGun", "subtypes": "Gun",
+             "minSize": 1, "maxSize": 1, "flags": "uneditable",
+             "allTypes": [{"type": "WeaponGun", "subtypes": "Gun"}]},
+        ]
+        for hp in mt_hps:
+            if not any(h["id"] == hp["id"] for h in mt["hardpoints"]):
+                mt["hardpoints"].append(hp)
+
+    # Cyclone TR: promote turret weapon from module sub-port
+    if "TMBL_Cyclone_TR" in ships:
+        tr = ships["TMBL_Cyclone_TR"]
+        tr_hp = {"id": "hardpoint_module_attach.turret_weapon", "label": "Turret Weapon",
+                 "type": "WeaponGun", "subtypes": "Gun",
+                 "minSize": 1, "maxSize": 1, "flags": "uneditable",
+                 "allTypes": [{"type": "WeaponGun", "subtypes": "Gun"}]}
+        if not any(h["id"] == tr_hp["id"] for h in tr["hardpoints"]):
+            tr["hardpoints"].append(tr_hp)
+
+    # Storm AA: remove inherited turret (replaced by missile module), promote missile racks
     if "tmbl_storm_aa" in ships:
         saa = ships["tmbl_storm_aa"]
+        saa["hardpoints"] = [hp for hp in saa["hardpoints"] if hp["id"] != "hardpoint_primary_turret"]
         saa_hps = [
             {"id": "hardpoint_primary_turret.hardpoint_missile_rack_s1_left", "label": "Missile Rack S1 - Left",
              "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
