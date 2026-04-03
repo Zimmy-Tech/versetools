@@ -7,6 +7,8 @@
   background: transparent;
   border: 1px solid var(--border);
   min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .pb-title {
@@ -28,6 +30,8 @@
   gap: 6px;
   align-items: flex-end;
   justify-content: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .flight-mode-toggle {
@@ -64,10 +68,11 @@
 
 .pb-grid {
   display: flex;
-  gap: 3px;
+  gap: 2px;
   align-items: flex-end;
   justify-content: center;
   max-width: 100%;
+  min-width: 0;
   // height is set dynamically via [style.height.px] binding in the template
 }
 
@@ -78,7 +83,7 @@
   gap: 2px;
   height: 100%;
   cursor: default;
-  flex-shrink: 0;
+  flex-shrink: 1;
 
   &.restricted {
     .pb-block { background: var(--border) !important; opacity: 0.4; }
@@ -127,11 +132,13 @@
 .pb-bars-col {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .pb-label-row {
   display: flex;
-  gap: 3px;
+  gap: 2px;
   margin-top: 4px;
 }
 

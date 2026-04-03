@@ -311,11 +311,11 @@ export class PowerBarsComponent {
   colWidth = computed(() => {
     const cols = this.columns().length;
     if (cols <= 0) return 28;
-    // Available width ≈ stats column (280px) minus toggle (45px) and padding (24px) = ~211px
-    // Each column needs width + 3px gap
-    const available = 211;
-    const w = Math.floor((available - (cols - 1) * 3) / cols);
-    return Math.max(14, Math.min(28, w));
+    // Available width ≈ stats column minus toggle (45px) and padding (24px)
+    // Each column needs width + 2px gap
+    const available = 190;
+    const w = Math.floor((available - (cols - 1) * 2) / cols);
+    return Math.max(12, Math.min(26, w));
   });
 
   /** Percentage of cooling supply used by demand. >100% = overloaded. */
