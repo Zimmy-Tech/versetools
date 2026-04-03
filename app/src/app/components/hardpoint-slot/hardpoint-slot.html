@@ -138,7 +138,7 @@
                   <td>—</td>
                   <td>{{ fmt(opt.powerDraw, 2) }}</td>
                   <td>{{ fmt(opt.emSignature) }}</td>
-                  <td>—</td>
+                  <td>@if (canOverheat(opt)) { <span class="overheat-dot" title="Can overheat"></span> }</td>
                   <td>{{ fmt(opt.componentHp) }}</td>
                   <td class="col-shop"><span class="shop-icon" [class.yes]="opt.shopPrices?.length">{{ opt.shopPrices?.length ? '✓' : '✗' }}</span></td>
                 </tr>

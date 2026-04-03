@@ -764,3 +764,11 @@
   color: #ff4444;
   &.yes { color: #4aff7a; }
 }
+
+.overheat-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+}

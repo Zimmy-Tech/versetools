@@ -990,6 +990,10 @@ def parse_weapon_item(root, class_name, loc):
     dps_refs = re.findall(r'damagePerSecond="DamageInfo\[([0-9A-Fa-f]+)\]"', txt)
     mining_dps_ref = dps_refs[0] if dps_refs else None  # first ref = fracture beam (mining power)
 
+    # Component health
+    hp_el = root.find(".//SHealthComponentParams")
+    component_hp = safe_float(hp_el.get("Health", 0)) if hp_el is not None else 0.0
+
     return {
         "className":      class_name,
         "name":           display,
@@ -1022,6 +1026,7 @@ def parse_weapon_item(root, class_name, loc):
         "projectileSpeed": 0.0,
         "range":          0.0,
         "ammoCount":      max_ammo_count if max_ammo_count > 0 else None,
+        "componentHp":    round(component_hp, 0) if component_hp > 0 else None,
     }
 
 def parse_missile_rack_item(root, class_name, loc):

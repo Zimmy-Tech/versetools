@@ -711,6 +711,10 @@ export class HardpointSlotComponent {
     return val.toFixed(decimals);
   }
 
+  canOverheat(item: Item): boolean {
+    return !!(item.isBallistic && item.maxHeat);
+  }
+
   fmtRes(val: number | undefined): string {
     if (val == null || val === 0) return '—';
     return (Math.abs(val) * 100).toFixed(0) + '%';
