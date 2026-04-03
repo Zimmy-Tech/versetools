@@ -50,332 +50,141 @@
           </div>
         </div>
 
+        <!-- Ship Image -->
+        <div class="sidebar-ship-image">
+          <img [src]="shipImageSrc()"
+               [alt]="data.selectedShip()!.name"
+               (error)="onShipImageError($any($event.target))">
+        </div>
+
         <!-- Stats Blocks -->
         <div class="stats-blocks">
 
           <!-- Flight Data -->
-          <div class="stats-block block-flight">
+          <div>
             <div class="stats-block-title" (click)="toggleSection('sb-flight')">Flight Data <span class="collapse-arrow">{{ isCollapsed('sb-flight') ? '▸' : '▾' }}</span></div>
-            <div class="stats-block-body" [style.display]="isCollapsed('sb-flight') ? 'none' : ''">
-            @if (flightScmSpeed() || data.selectedShip()!.accelFwd) {
-              <div class="flight-group">
-                <div class="flight-group-label">Speed (m/s)</div>
-                <div class="flight-stat">
-                  <span class="fs-label">SCM</span>
-                  <span class="fs-val">{{ flightScmSpeed() }}</span>
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">NAV</span>
-                  <span class="fs-val">{{ flightNavSpeed() }}</span>
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">AB Fwd</span>
-                  <span class="fs-val accent">{{ flightBoostFwd() }}</span>
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">AB Bwd</span>
-                  <span class="fs-val">{{ flightBoostBwd() }}</span>
-                </div>
-              </div>
-              <div class="flight-divider"></div>
-              <div class="flight-group">
-                <div class="flight-group-label">Rotation (°/s)</div>
+            @if (!isCollapsed('sb-flight') && (flightScmSpeed() || data.selectedShip()!.accelFwd)) {
+              <div class="stat-block">
+                <div class="stat-group-header">Speed (m/s)</div>
+                <div class="stat-row"><span class="stat-label">SCM</span><span class="mono">{{ flightScmSpeed() }}</span></div>
+                <div class="stat-row"><span class="stat-label">NAV</span><span class="mono">{{ flightNavSpeed() }}</span></div>
+                <div class="stat-row"><span class="stat-label">AB Fwd</span><span class="mono accent">{{ flightBoostFwd() }}</span></div>
+                <div class="stat-row"><span class="stat-label">AB Bwd</span><span class="mono">{{ flightBoostBwd() }}</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-group-header">Rotation (°/s)</div>
                 @if (pitchRot(); as p) {
-                  <div class="flight-stat">
-                    <span class="fs-label">Pitch</span>
-                    <span class="fs-val">{{ p.base }}</span>
-                    @if (p.boosted !== p.base) {
-                      <span class="fs-slash">/</span><span class="fs-boost">{{ p.boosted }}</span>
-                    }
-                  </div>
+                  <div class="stat-row"><span class="stat-label">Pitch</span><span class="mono">{{ p.base }}@if (p.boosted !== p.base) { / <span class="accent">{{ p.boosted }}</span>}</span></div>
                 }
                 @if (yawRot(); as y) {
-                  <div class="flight-stat">
-                    <span class="fs-label">Yaw</span>
-                    <span class="fs-val">{{ y.base }}</span>
-                    @if (y.boosted !== y.base) {
-                      <span class="fs-slash">/</span><span class="fs-boost">{{ y.boosted }}</span>
-                    }
-                  </div>
+                  <div class="stat-row"><span class="stat-label">Yaw</span><span class="mono">{{ y.base }}@if (y.boosted !== y.base) { / <span class="accent">{{ y.boosted }}</span>}</span></div>
                 }
                 @if (rollRot(); as r) {
-                  <div class="flight-stat">
-                    <span class="fs-label">Roll</span>
-                    <span class="fs-val">{{ r.base }}</span>
-                    @if (r.boosted !== r.base) {
-                      <span class="fs-slash">/</span><span class="fs-boost">{{ r.boosted }}</span>
-                    }
-                  </div>
+                  <div class="stat-row"><span class="stat-label">Roll</span><span class="mono">{{ r.base }}@if (r.boosted !== r.base) { / <span class="accent">{{ r.boosted }}</span>}</span></div>
                 }
-              </div>
-              <div class="flight-divider"></div>
-              <div class="flight-group">
-                <div class="flight-group-label">Fuel (mSCU)</div>
-                @if (data.selectedShip()!.hydrogenFuelCapacity) {
-                  <div class="flight-stat">
-                    <span class="fs-label">Hydrogen</span>
-                    <span class="fs-val">{{ data.selectedShip()!.hydrogenFuelCapacity }}</span>
-                  </div>
+                @if (data.selectedShip()!.hydrogenFuelCapacity || data.selectedShip()!.quantumFuelCapacity) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Fuel (mSCU)</div>
+                  @if (data.selectedShip()!.hydrogenFuelCapacity) {
+                    <div class="stat-row"><span class="stat-label">Hydrogen</span><span class="mono">{{ data.selectedShip()!.hydrogenFuelCapacity }}</span></div>
+                  }
+                  @if (data.selectedShip()!.quantumFuelCapacity) {
+                    <div class="stat-row"><span class="stat-label">Quantum</span><span class="mono">{{ data.selectedShip()!.quantumFuelCapacity }}</span></div>
+                  }
                 }
-                @if (data.selectedShip()!.quantumFuelCapacity) {
-                  <div class="flight-stat">
-                    <span class="fs-label">Quantum</span>
-                    <span class="fs-val">{{ data.selectedShip()!.quantumFuelCapacity }}</span>
-                  </div>
-                }
-              </div>
-              @if (data.selectedShip()!.boostRampUp) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">AB Ramp</div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Up / Down</span>
-                    <span class="fs-val">{{ data.selectedShip()!.boostRampUp }}s / {{ data.selectedShip()!.boostRampDown }}s</span>
-                  </div>
-                </div>
-              }
-              <div class="flight-divider"></div>
-              <div class="flight-group">
-                <div class="flight-group-label">Acceleration (G)</div>
-                <div class="flight-stat">
-                  <span class="fs-label">Fwd</span>
-                  <span class="fs-val">{{ data.selectedShip()!.accelFwd }}</span>
-                  @if (data.selectedShip()!.accelAbFwd) {
-                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbFwd }}</span>
+                @if (data.selectedShip()!.accelFwd) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Acceleration (G)</div>
+                  <div class="stat-row"><span class="stat-label">Fwd</span><span class="mono">{{ data.selectedShip()!.accelFwd }}@if (data.selectedShip()!.accelAbFwd) { / <span class="accent">{{ data.selectedShip()!.accelAbFwd }}</span>}</span></div>
+                  <div class="stat-row"><span class="stat-label">Retro</span><span class="mono">{{ data.selectedShip()!.accelRetro }}@if (data.selectedShip()!.accelAbRetro) { / <span class="accent">{{ data.selectedShip()!.accelAbRetro }}</span>}</span></div>
+                  <div class="stat-row"><span class="stat-label">Strafe</span><span class="mono">{{ data.selectedShip()!.accelStrafe }}@if (data.selectedShip()!.accelAbStrafe) { / <span class="accent">{{ data.selectedShip()!.accelAbStrafe }}</span>}</span></div>
+                  <div class="stat-row"><span class="stat-label">Up</span><span class="mono">{{ data.selectedShip()!.accelUp }}@if (data.selectedShip()!.accelAbUp) { / <span class="accent">{{ data.selectedShip()!.accelAbUp }}</span>}</span></div>
+                  <div class="stat-row"><span class="stat-label">Down</span><span class="mono">{{ data.selectedShip()!.accelDown }}@if (data.selectedShip()!.accelAbDown) { / <span class="accent">{{ data.selectedShip()!.accelAbDown }}</span>}</span></div>
+                  @if (data.selectedShip()!.accelTestedDate) {
+                    <div class="stat-row tested-date"><span class="stat-label">Tested</span><span class="mono">{{ data.selectedShip()!.accelTestedDate }}</span></div>
                   }
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">Retro</span>
-                  <span class="fs-val">{{ data.selectedShip()!.accelRetro }}</span>
-                  @if (data.selectedShip()!.accelAbRetro) {
-                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbRetro }}</span>
+                  @if (data.selectedShip()!.accelCheckedBy) {
+                    <div class="stat-row checked-by"><span class="stat-label">Checked by</span><span class="mono">{{ data.selectedShip()!.accelCheckedBy }}</span></div>
                   }
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">Strafe</span>
-                  <span class="fs-val">{{ data.selectedShip()!.accelStrafe }}</span>
-                  @if (data.selectedShip()!.accelAbStrafe) {
-                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbStrafe }}</span>
+                  @if (needsAccelData()) {
+                    <button class="help-us-btn" (click)="goToSubmit()">Help Us</button>
                   }
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">Up</span>
-                  <span class="fs-val">{{ data.selectedShip()!.accelUp }}</span>
-                  @if (data.selectedShip()!.accelAbUp) {
-                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbUp }}</span>
-                  }
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">Down</span>
-                  <span class="fs-val">{{ data.selectedShip()!.accelDown }}</span>
-                  @if (data.selectedShip()!.accelAbDown) {
-                    <span class="fs-slash">/</span><span class="fs-boost">{{ data.selectedShip()!.accelAbDown }}</span>
-                  }
-                </div>
-                @if (data.selectedShip()!.accelTestedDate) {
-                  <div class="flight-stat tested-date">
-                    <span class="fs-label">Tested</span>
-                    <span class="fs-val">{{ data.selectedShip()!.accelTestedDate }}</span>
-                  </div>
-                }
-                @if (data.selectedShip()!.accelCheckedBy) {
-                  <div class="flight-stat checked-by">
-                    <span class="fs-label">Checked by</span>
-                    <span class="fs-val">{{ data.selectedShip()!.accelCheckedBy }}</span>
-                  </div>
-                }
-                @if (needsAccelData()) {
-                  <button class="help-us-btn" (click)="goToSubmit()">Help Us</button>
                 }
               </div>
             }
-            </div><!-- /stats-block-body -->
           </div>
 
           <!-- Hull Data -->
-          <div class="stats-block block-hull">
-            <div class="stats-block-title" (click)="toggleSection('sb-hull')">Hull Data <span class="collapse-arrow">{{ isCollapsed('sb-hull') ? '▸' : '▾' }}</span></div>
-            <div class="stats-block-body" [style.display]="isCollapsed('sb-hull') ? 'none' : ''">
-            @if (data.selectedShip()!.totalHp) {
-              <div class="hull-heroes">
-                <div class="hull-hero" title="Vital hull HP — the main body HP pool">
-                  <span class="hull-hero-val">{{ data.selectedShip()!.bodyHp }}</span>
-                  <span class="hull-hero-label">VITAL HP</span>
-                </div>
-                @if (data.selectedShip()!.armorDeflectPhys) {
-                  <div class="hull-hero" title="Physical armor deflect threshold — weapons below this deal zero damage">
-                    <span class="hull-hero-val deflect-phys">{{ data.selectedShip()!.armorDeflectPhys }}</span>
-                    <span class="hull-hero-label">PHYS DEFLECT</span>
-                  </div>
-                  <div class="hull-hero" title="Energy armor deflect threshold — weapons below this deal zero damage">
-                    <span class="hull-hero-val deflect-enrg">{{ data.selectedShip()!.armorDeflectEnrg }}</span>
-                    <span class="hull-hero-label">ENRG DEFLECT</span>
-                  </div>
+          <div>
+            <div class="stats-block-title" (click)="toggleSection('sb-hull')">Hull Data <button class="hull-tree-btn" (click)="hullTreeOpen.set(true); $event.stopPropagation()">&#9776; PARTS</button> <span class="collapse-arrow">{{ isCollapsed('sb-hull') ? '▸' : '▾' }}</span></div>
+            @if (!isCollapsed('sb-hull') && data.selectedShip()!.totalHp) {
+              <div class="stat-block">
+                <div class="stat-group-header">Hull (HP)</div>
+                <div class="stat-row"><span class="stat-label">Total HP</span><span class="mono">{{ data.selectedShip()!.totalHp }}</span></div>
+                <div class="stat-row"><span class="stat-label">Armor HP</span><span class="mono">{{ data.selectedShip()!.armorHp }}</span></div>
+                <div class="stat-row"><span class="stat-label">Vital HP</span><span class="mono">{{ data.selectedShip()!.bodyHp }}</span></div>
+                @if (data.selectedShip()!.durabilityPhys !== undefined) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Durability</div>
+                  <div class="stat-row"><span class="stat-label">Phys</span><span class="mono">{{ (data.selectedShip()!.durabilityPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityPhys! - 1) * 100).toFixed(0) }}%</span></div>
+                  <div class="stat-row"><span class="stat-label">Enrg</span><span class="mono">{{ (data.selectedShip()!.durabilityEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityEnrg! - 1) * 100).toFixed(0) }}%</span></div>
                 }
-              </div>
-              <div class="flight-group">
-                <div class="flight-group-label">Hull (HP) <button class="hull-tree-btn" (click)="hullTreeOpen.set(true)">&#9776; PARTS</button></div>
-                <div class="flight-stat">
-                  <span class="fs-label">Total</span>
-                  <span class="fs-val">{{ data.selectedShip()!.totalHp }}</span>
-                </div>
-                <div class="flight-stat">
-                  <span class="fs-label">Armor HP</span>
-                  <span class="fs-val">{{ data.selectedShip()!.armorHp }}</span>
-                </div>
-              </div>
-              @if (data.selectedShip()!.durabilityPhys !== undefined) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">Durability</div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Phys</span>
-                    <span class="fs-val">{{ (data.selectedShip()!.durabilityPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityPhys! - 1) * 100).toFixed(0) }}%</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Enrg</span>
-                    <span class="fs-val">{{ (data.selectedShip()!.durabilityEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityEnrg! - 1) * 100).toFixed(0) }}%</span>
-                  </div>
-                </div>
-              }
-              @if (data.selectedShip()!.hullDmgPhys !== undefined) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">Damage Modifiers</div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Phys</span>
-                    <span class="fs-val">{{ (data.selectedShip()!.hullDmgPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgPhys! - 1) * 100).toFixed(0) }}%</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Enrg</span>
-                    <span class="fs-val">{{ (data.selectedShip()!.hullDmgEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgEnrg! - 1) * 100).toFixed(0) }}%</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Dist</span>
-                    <span class="fs-val">{{ (data.selectedShip()!.hullDmgDist! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgDist! - 1) * 100).toFixed(0) }}%</span>
-                  </div>
+                @if (data.selectedShip()!.hullDmgPhys !== undefined) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Damage Modifiers</div>
+                  <div class="stat-row"><span class="stat-label">Phys</span><span class="mono">{{ (data.selectedShip()!.hullDmgPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgPhys! - 1) * 100).toFixed(0) }}%</span></div>
+                  <div class="stat-row"><span class="stat-label">Enrg</span><span class="mono">{{ (data.selectedShip()!.hullDmgEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgEnrg! - 1) * 100).toFixed(0) }}%</span></div>
+                  <div class="stat-row"><span class="stat-label">Dist</span><span class="mono">{{ (data.selectedShip()!.hullDmgDist! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgDist! - 1) * 100).toFixed(0) }}%</span></div>
                   @if (data.selectedShip()!.fusePenetrationMult !== undefined) {
-                    <div class="flight-stat">
-                      <span class="fs-label">Fuse Pen</span>
-                      <span class="fs-val">{{ (data.selectedShip()!.fusePenetrationMult! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.fusePenetrationMult! - 1) * 100).toFixed(0) }}%</span>
-                    </div>
+                    <div class="stat-row"><span class="stat-label">Fuse Pen</span><span class="mono">{{ (data.selectedShip()!.fusePenetrationMult! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.fusePenetrationMult! - 1) * 100).toFixed(0) }}%</span></div>
                   }
                   @if (data.selectedShip()!.componentPenetrationMult !== undefined) {
-                    <div class="flight-stat">
-                      <span class="fs-label">Comp Pen</span>
-                      <span class="fs-val">{{ (data.selectedShip()!.componentPenetrationMult! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.componentPenetrationMult! - 1) * 100).toFixed(0) }}%</span>
-                    </div>
+                    <div class="stat-row"><span class="stat-label">Comp Pen</span><span class="mono">{{ (data.selectedShip()!.componentPenetrationMult! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.componentPenetrationMult! - 1) * 100).toFixed(0) }}%</span></div>
                   }
-                  <div class="armor-note">Armor Damage = Weapon Alpha &times; Damage Modifier. Damage also bleeds through to hull while armor is up, increasing as armor degrades. Durability role is under investigation. See Formulas for details.</div>
-                </div>
-              }
-              @if (data.selectedShip()!.signalEM !== undefined) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">Signature</div>
-                  <div class="flight-stat">
-                    <span class="fs-label">EM</span>
-                    <span class="fs-val">{{ signalPct(data.selectedShip()!.signalEM) }}</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Cross</span>
-                    <span class="fs-val">{{ signalPct(data.selectedShip()!.signalCrossSection) }}</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">IR</span>
-                    <span class="fs-val">{{ signalPct(data.selectedShip()!.signalIR) }}</span>
-                  </div>
-                </div>
-              }
-              @if (data.selectedShip()!.dimLength) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">Dimensions (m)</div>
-                  <div class="flight-stat">
-                    <span class="fs-label">W</span>
-                    <span class="fs-val">{{ data.selectedShip()!.dimWidth?.toFixed(0) }}</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">L</span>
-                    <span class="fs-val">{{ data.selectedShip()!.dimLength?.toFixed(0) }}</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">H</span>
-                    <span class="fs-val">{{ data.selectedShip()!.dimHeight?.toFixed(0) }}</span>
-                  </div>
-                </div>
-              }
-              @if (data.selectedShip()!.cmDecoys || data.selectedShip()!.cmNoise) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">Countermeasures</div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Decoys</span>
-                    <span class="fs-val">{{ data.selectedShip()!.cmDecoys ?? 0 }}</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Noise</span>
-                    <span class="fs-val">{{ data.selectedShip()!.cmNoise ?? 0 }}</span>
-                  </div>
-                </div>
-              }
-              @if (data.selectedShip()!.salvageSpeedMult) {
-                <div class="flight-divider"></div>
-                <div class="flight-group">
-                  <div class="flight-group-label">Salvage Hull</div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Speed</span>
-                    <span class="fs-val">{{ data.selectedShip()!.salvageSpeedMult }}x</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Radius</span>
-                    <span class="fs-val">{{ data.selectedShip()!.salvageRadiusMult }}x</span>
-                  </div>
-                  <div class="flight-stat">
-                    <span class="fs-label">Efficiency</span>
-                    <span class="fs-val">{{ ((data.selectedShip()!.salvageEfficiency ?? 0) * 100).toFixed(0) }}%</span>
-                  </div>
-                </div>
-              }
+                }
+                @if (data.selectedShip()!.dimLength) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Dimensions (m)</div>
+                  <div class="stat-row"><span class="stat-label">W × L × H</span><span class="mono">{{ data.selectedShip()!.dimWidth?.toFixed(0) }} × {{ data.selectedShip()!.dimLength?.toFixed(0) }} × {{ data.selectedShip()!.dimHeight?.toFixed(0) }}</span></div>
+                }
+                @if (data.selectedShip()!.cmDecoys || data.selectedShip()!.cmNoise) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Countermeasures</div>
+                  <div class="stat-row"><span class="stat-label">Decoys</span><span class="mono">{{ data.selectedShip()!.cmDecoys ?? 0 }}</span></div>
+                  <div class="stat-row"><span class="stat-label">Noise</span><span class="mono">{{ data.selectedShip()!.cmNoise ?? 0 }}</span></div>
+                }
+                @if (data.selectedShip()!.salvageSpeedMult) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Salvage Hull</div>
+                  <div class="stat-row"><span class="stat-label">Speed</span><span class="mono">{{ data.selectedShip()!.salvageSpeedMult }}x</span></div>
+                  <div class="stat-row"><span class="stat-label">Radius</span><span class="mono">{{ data.selectedShip()!.salvageRadiusMult }}x</span></div>
+                  <div class="stat-row"><span class="stat-label">Efficiency</span><span class="mono">{{ ((data.selectedShip()!.salvageEfficiency ?? 0) * 100).toFixed(0) }}%</span></div>
+                }
+                <div class="armor-note">Armor Damage = Weapon Alpha &times; Damage Modifier. See Formulas for details.</div>
+              </div>
             }
-            </div><!-- /stats-block-body -->
           </div>
 
           <!-- Misc -->
-          <div class="stats-block block-misc">
+          <div>
             <div class="stats-block-title" (click)="toggleSection('sb-misc')">Misc <span class="collapse-arrow">{{ isCollapsed('sb-misc') ? '▸' : '▾' }}</span></div>
-            <div class="stats-block-body" [style.display]="isCollapsed('sb-misc') ? 'none' : ''">
-            @if (data.selectedShip()!.insuranceStandardMinutes) {
-              <div class="flight-group">
-                <div class="flight-group-label">Insurance</div>
-                <div class="flight-stat">
-                  <span class="fs-label">Std</span>
-                  <span class="fs-val">{{ data.selectedShip()!.insuranceStandardMinutes }}m</span>
+            @if (!isCollapsed('sb-misc')) {
+              @if (data.selectedShip()!.insuranceStandardMinutes) {
+                <div class="section-subtitle">Insurance</div>
+                <div class="stat-block">
+                  <div class="stat-row"><span class="stat-label">Standard</span><span class="mono">{{ data.selectedShip()!.insuranceStandardMinutes }}m</span></div>
+                  <div class="stat-row"><span class="stat-label">Expedite</span><span class="mono">{{ data.selectedShip()!.insuranceExpediteMinutes }}m</span></div>
+                  <div class="stat-row"><span class="stat-label">Cost</span><span class="mono accent">{{ data.selectedShip()!.insuranceExpediteCost }} aUEC</span></div>
                 </div>
-                <div class="flight-stat">
-                  <span class="fs-label">Exp</span>
-                  <span class="fs-val">{{ data.selectedShip()!.insuranceExpediteMinutes }}m</span>
+              }
+              @if (shipBuyPrices().length) {
+                <div class="section-subtitle">Buy Price</div>
+                <div class="stat-block">
+                  @for (bp of shipBuyPrices(); track bp.shop) {
+                    <div class="stat-row"><span class="stat-label">{{ bp.shop }}</span><span class="mono">{{ bp.price.toLocaleString('en-US') }} aUEC</span></div>
+                  }
                 </div>
-                <div class="flight-stat">
-                  <span class="fs-label">Cost</span>
-                  <span class="fs-val accent">{{ data.selectedShip()!.insuranceExpediteCost }} aUEC</span>
-                </div>
-              </div>
-              <div class="flight-divider"></div>
+              }
             }
-            @if (shipBuyPrices().length) {
-              <div class="flight-group">
-                <div class="flight-group-label">Buy Price</div>
-                @for (bp of shipBuyPrices(); track bp.shop) {
-                  <div class="buy-price-entry">
-                    <div class="buy-shop">{{ bp.shop }}</div>
-                    <div class="buy-divider"></div>
-                    <div class="buy-val">{{ bp.price.toLocaleString('en-US') }} aUEC</div>
-                  </div>
-                }
-              </div>
-            }
-            </div><!-- /stats-block-body -->
           </div>
 
         </div><!-- /stats-blocks -->
@@ -693,11 +502,6 @@
 
         <!-- Right: Power Block + DPS Output + Details -->
         <div class="stats-column">
-          <div class="ship-image-inset">
-            <img [src]="shipImageSrc()"
-                 [alt]="data.selectedShip()!.name"
-                 (error)="onShipImageError($any($event.target))">
-          </div>
           <app-power-bars />
           <app-dps-panel />
 

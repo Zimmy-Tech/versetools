@@ -217,7 +217,7 @@ export class LoadoutViewComponent {
   }
 
   collapsedSections = signal<Set<string>>(new Set([
-    'pilot-guns', 'crew-guns', 'missiles', 'power', 'pdc', 'tractor', 'coolers', 'modules', 'ls',
+    'pilot-guns', 'crew-guns', 'missiles', 'power', 'pdc', 'tractor', 'coolers', 'ls',
     'sb-flight', 'sb-misc',
   ]));
 

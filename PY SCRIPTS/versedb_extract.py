@@ -4695,10 +4695,12 @@ def main(mode: str = "live"):
         ships["AEGS_Retaliator"]["hardpoints"].extend([
             {"id": "hardpoint_front_module", "label": "Front Module Bay",
              "type": "Module", "subtypes": "", "minSize": 1, "maxSize": 10,
-             "flags": "", "allTypes": [{"type": "Module", "subtypes": ""}]},
+             "flags": "exclusive_tags", "portTags": "AEGS_Retaliator_Module_Front",
+             "allTypes": [{"type": "Module", "subtypes": ""}]},
             {"id": "hardpoint_rear_module", "label": "Rear Module Bay",
              "type": "Module", "subtypes": "", "minSize": 1, "maxSize": 10,
-             "flags": "", "allTypes": [{"type": "Module", "subtypes": ""}]},
+             "flags": "exclusive_tags", "portTags": "AEGS_Retaliator_Module_Rear",
+             "allTypes": [{"type": "Module", "subtypes": ""}]},
         ])
 
     # Add Sabre Firebird bespoke internal missile rack (24x S3 Thunderbolt III)

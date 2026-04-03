@@ -24,6 +24,77 @@ interface PowerBarCol {
 export class PowerBarsComponent {
   constructor(public data: DataService) {}
 
+  fmtSig(val: number): string {
+    if (val >= 1000) return (val / 1000).toFixed(1) + 'k';
+    return val.toFixed(0);
+  }
+
+  totalEM = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return 0;
+    const loadout = this.data.loadout();
+    const alloc = this.data.powerAlloc();
+    const wpnPower = this.data.weaponsPower();
+    const powerOut = this.data.totalPowerOut();
+    const powerUsed = this.data.totalPowerUsed();
+    const utilization = powerOut > 0 ? Math.min(1, powerUsed / powerOut) : 0;
+    let em = 0;
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item) continue;
+      const sig = item.emSignature ?? item.emMax ?? 0;
+      if (sig <= 0) continue;
+      if (item.type === 'WeaponGun' || item.type === 'WeaponTachyon') {
+        if (wpnPower > 0) em += sig;
+      } else if (item.type === 'PowerPlant') {
+        em += sig * utilization;
+      } else {
+        const pips = alloc[hp.id] ?? 0;
+        em += sig * bandModAt(item, pips);
+      }
+    }
+    for (const [key, item] of Object.entries(loadout)) {
+      if (!key.includes('.') || !item) continue;
+      const sig = item.emSignature ?? item.emMax ?? 0;
+      if (sig <= 0) continue;
+      const pips = alloc[key] ?? 0;
+      em += sig * bandModAt(item, pips);
+    }
+    return em;
+  });
+
+  totalIR = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return 0;
+    const mult = ship.signalIR ?? 1;
+    const loadout = this.data.loadout();
+    const alloc = this.data.powerAlloc();
+    let irMax = 0;
+    let mcfWeighted = 0;
+    let irTotal = 0;
+    const processIR = (key: string, item: Item | null) => {
+      if (!item || !item.irSignature) return;
+      const pips = alloc[key] ?? 0;
+      const contribution = item.irSignature * bandModAt(item, pips);
+      irMax += contribution;
+      if (contribution > 0) {
+        mcfWeighted += (item.minConsumptionFraction ?? 0.333) * contribution;
+        irTotal += contribution;
+      }
+    };
+    for (const hp of ship.hardpoints) processIR(hp.id, loadout[hp.id]);
+    for (const [key, item] of Object.entries(loadout)) {
+      if (key.includes('.')) processIR(key, item);
+    }
+    if (irMax <= 0) return 0;
+    const mcf = irTotal > 0 ? mcfWeighted / irTotal : 0.333;
+    const supply = this.coolingSupply();
+    const demand = this.coolingDemand();
+    const loadRatio = supply > 0 ? Math.min(1, demand / supply) : 0;
+    const irFactor = Math.max(mcf, loadRatio);
+    return irMax * irFactor * mult;
+  });
+
   columns = computed<PowerBarCol[]>(() => {
     const ship = this.data.selectedShip();
     if (!ship) return [];

@@ -96,10 +96,7 @@
             <span class="stat-label">Face Type</span>
             <span class="mono">{{ shieldFaceType() }}</span>
           </div>
-        </div>
-        @if (shieldResists(); as r) {
-          <div class="section-title" style="margin-top: 6px;">Shield Resistances</div>
-          <div class="stat-block">
+          @if (shieldResists(); as r) {
             <div class="resist-grid">
               <span class="resist-header"></span>
               <span class="resist-header">SHIELD DMG</span>
@@ -114,33 +111,38 @@
               <span class="resist-val">{{ (r.distToShield * 100).toFixed(0) }}%</span>
               <span class="resist-val hull-val">{{ (r.distToHull * 100).toFixed(0) }}%</span>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
     }
 
-    <!-- Signature -->
-    @if (totalEM() > 0 || totalIR() > 0) {
+    <!-- Hull & Armor Deflect -->
+    @if (data.selectedShip()?.totalHp) {
       <div>
-        <div class="section-title">Signature</div>
+        <div class="section-title">Hull &amp; Armor</div>
+        <div class="hull-heroes">
+          <div class="hull-hero" title="Vital hull HP — the main body HP pool">
+            <span class="hull-hero-val">{{ data.selectedShip()!.bodyHp }}</span>
+            <span class="hull-hero-label">VITAL HP</span>
+          </div>
+          @if (data.selectedShip()!.armorDeflectPhys) {
+            <div class="hull-hero" title="Physical armor deflect threshold — weapons below this deal zero damage">
+              <span class="hull-hero-val deflect-phys">{{ data.selectedShip()!.armorDeflectPhys }}</span>
+              <span class="hull-hero-label">PHYS DEFLECT</span>
+            </div>
+            <div class="hull-hero" title="Energy armor deflect threshold — weapons below this deal zero damage">
+              <span class="hull-hero-val deflect-enrg">{{ data.selectedShip()!.armorDeflectEnrg }}</span>
+              <span class="hull-hero-label">ENRG DEFLECT</span>
+            </div>
+          }
+        </div>
         <div class="stat-block">
-          @if (totalEM() > 0) {
-            <div class="stat-row" title="Electromagnetic signature from all powered components (power plants, shields, coolers, QDs, weapons, life support), scaled by power pips and ship armor EM modifier. EM-seeking missiles track this value.">
-              <span class="stat-label">EM</span>
-              <span class="mono">{{ totalEM().toFixed(0) }}</span>
-            </div>
-          }
-          @if (totalIR() > 0) {
-            <div class="stat-row" title="Infrared signature from coolers, scaled by cooling load (demand/supply ratio), power pips, and ship armor IR modifier. Thruster heat is dynamic and not included. IR-seeking missiles track this value.">
-              <span class="stat-label">IR</span>
-              <span class="mono">{{ totalIR().toFixed(0) }}</span>
-            </div>
-          }
-          @if (crossSection() !== undefined) {
-            <div class="stat-row" title="Cross-section modifier from ship armor. Scales the hull's physical profile for detection. CS-tracking missiles use this. Below 1.0 = stealth, above 1.0 = louder.">
-              <span class="stat-label">Cross-Section</span>
-              <span class="mono">{{ pct(crossSection()) }}</span>
-            </div>
+          <div class="stat-row"><span class="stat-label">Total HP</span><span class="mono">{{ data.selectedShip()!.totalHp }}</span></div>
+          <div class="stat-row"><span class="stat-label">Armor HP</span><span class="mono">{{ data.selectedShip()!.armorHp }}</span></div>
+          @if (data.selectedShip()!.hullDmgPhys !== undefined) {
+            <div class="stat-row" title="Armor damage multiplier — confirmed in-game"><span class="stat-label">Dmg Mod Phys</span><span class="mono">{{ (data.selectedShip()!.hullDmgPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgPhys! - 1) * 100).toFixed(0) }}%</span></div>
+            <div class="stat-row" title="Armor damage multiplier — confirmed in-game"><span class="stat-label">Dmg Mod Enrg</span><span class="mono">{{ (data.selectedShip()!.hullDmgEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgEnrg! - 1) * 100).toFixed(0) }}%</span></div>
+            <div class="stat-row"><span class="stat-label">Dmg Mod Dist</span><span class="mono">{{ (data.selectedShip()!.hullDmgDist! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgDist! - 1) * 100).toFixed(0) }}%</span></div>
           }
         </div>
       </div>

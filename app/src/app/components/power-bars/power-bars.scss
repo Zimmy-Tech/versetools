@@ -5,7 +5,7 @@
   gap: 4px;
   padding: 4px 6px 6px;
   background: transparent;
-  border: none;
+  border: 1px solid var(--border);
   min-width: 0;
 }
 
@@ -217,4 +217,32 @@
 
   &.filled { background: var(--green); opacity: 0.7; }
   &.filled.over { background: #e84040; }
+}
+
+.pb-signature {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  padding: 4px 0 2px;
+  align-self: stretch;
+}
+
+.pb-sig-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pb-sig-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text3);
+}
+
+.pb-sig-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
 }
