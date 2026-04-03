@@ -19,7 +19,7 @@ interface AccelForm {
 }
 
 // Google Apps Script web app URL for submission data
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbysLOeNvKPDOB-CEq6X275KkUIo340FnbJLrecqiqol91WoITJZ2xIyBrTU9dpDhv47/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxTJarWHLZu2HfroVzEfjCBeVj2o929s_SydBVTb6gUkgzhiRZKIb-QJVpgvnEnf8U/exec';
 
 @Component({
   selector: 'app-submit-view',
