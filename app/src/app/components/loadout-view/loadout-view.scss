@@ -76,9 +76,12 @@
   .col-systems { flex: 2; min-width: 0; }
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1980px) {
   .loadout-columns {
     flex-direction: column;
+  }
+  .col-weapons, .col-defense, .col-systems {
+    overflow: visible;
   }
 }
 

@@ -79,7 +79,7 @@
 
     <!-- Rich picker (inline, full width) -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search weapons..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -163,7 +163,7 @@
 
     <!-- Shield picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search shields..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -250,7 +250,7 @@
 
     <!-- Missile picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search missiles..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -315,7 +315,7 @@
 
     <!-- Cooler picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search coolers..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -375,7 +375,7 @@
 
     <!-- Quantum Drive picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search quantum drives..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -438,7 +438,7 @@
 
     <!-- Power Plant picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search power plants..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -499,7 +499,7 @@
 
     <!-- Radar picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search radars..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -568,7 +568,7 @@
 
     <!-- Mining Module picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search modules..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -630,7 +630,7 @@
 
     <!-- Flight Controller picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search blades..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -696,7 +696,7 @@
 
     <!-- Mining Laser picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search mining lasers..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -755,7 +755,7 @@
 
     <!-- Missile Rack picker -->
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search missile racks..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
@@ -801,7 +801,7 @@
     </div>
 
     @if (pickerOpen()) {
-      <div class="weapon-picker" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
+      <div class="weapon-picker" [class.full-width]="pickerFullWidth()" [class.centered]="pickerCentered()" [style.top]="pickerTop()" [style.bottom]="pickerBottom()" [style.left]="pickerLeft()" [style.right]="pickerRight()" [style.max-height]="pickerMaxH()" (click)="$event.stopPropagation()">
         <input class="picker-search" type="text" placeholder="Search salvage tools..."
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"

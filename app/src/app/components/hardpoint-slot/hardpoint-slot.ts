@@ -325,6 +325,8 @@ export class HardpointSlotComponent {
   pickerLeft       = signal<string | null>('0px');
   pickerRight      = signal<string | null>(null);
   pickerMaxH       = signal('70vh');
+  pickerFullWidth  = signal(false);
+  pickerCentered   = signal(false);
   pickerSortKey    = signal<string>('');
   pickerSortAsc    = signal(true);
 
@@ -639,15 +641,35 @@ export class HardpointSlotComponent {
         this.pickerBottom.set(null);
         this.pickerMaxH.set(Math.max(150, spaceBelow) + 'px');
       }
-      const hpType = this.hardpoint().type;
-      const rightAlignTypes = new Set(['Cooler', 'PowerPlant', 'FlightController', 'QuantumDrive', 'LifeSupportGenerator', 'Radar']);
-      if (rightAlignTypes.has(hpType)) {
-        // Right-align — picker grows leftward
-        this.pickerLeft.set(null);
-        this.pickerRight.set((window.innerWidth - rect.right) + 'px');
+      // Check if in single-column mode (≤1500px breakpoint)
+      const loadoutCol = (this.elRef.nativeElement as HTMLElement).closest('.loadout-columns') as HTMLElement | null;
+      const isSingleColumn = window.innerWidth <= 1980;
+
+      this.pickerFullWidth.set(false);
+      this.pickerCentered.set(false);
+      if (isSingleColumn) {
+        // Single-column: span full viewport width
+        this.pickerLeft.set('0px');
+        this.pickerRight.set('0px');
+        this.pickerFullWidth.set(true);
       } else {
-        this.pickerLeft.set(rect.left + 'px');
-        this.pickerRight.set(null);
+        const hpType = this.hardpoint().type;
+        const rightAlignTypes = new Set(['Cooler', 'PowerPlant', 'FlightController', 'QuantumDrive', 'LifeSupportGenerator', 'Radar']);
+        const centerTypes = new Set(['Shield']);
+        if (centerTypes.has(hpType)) {
+          // Center-anchor on the trigger
+          const center = rect.left + rect.width / 2;
+          this.pickerLeft.set(center + 'px');
+          this.pickerRight.set(null);
+          this.pickerCentered.set(true);
+        } else if (rightAlignTypes.has(hpType)) {
+          // Right-align — picker grows leftward
+          this.pickerLeft.set(null);
+          this.pickerRight.set((window.innerWidth - rect.right) + 'px');
+        } else {
+          this.pickerLeft.set(rect.left + 'px');
+          this.pickerRight.set(null);
+        }
       }
       setTimeout(() => {
         // Restore scroll — the picker DOM insertion can cause auto-scroll
