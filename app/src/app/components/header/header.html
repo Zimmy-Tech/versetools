@@ -186,7 +186,6 @@
     </div>
     @if (data.selectedShip()) {
       <button class="lb-store" (click)="storeLoadout()">Store Loadout</button>
-      <span class="lb-hint">Stored Loadouts now have live comparison of damage output</span>
       @if (storedLoadouts().length > 0) {
         <div class="lb-dropdown-wrap">
           <button class="lb-load" (click)="toggleLoadoutDropdown()">
@@ -213,8 +212,9 @@
 }
 
 <!-- Loadout messages bar -->
-@if (isOnLoadout() && loadoutMessages().length > 0) {
+@if (isOnLoadout()) {
   <div class="loadout-messages">
+    <div class="loadout-msg">Stored Loadouts now have live comparison of damage output</div>
     @for (msg of loadoutMessages(); track msg) {
       <div class="loadout-msg">{{ msg }}</div>
     }
