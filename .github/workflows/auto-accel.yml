@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   apply:
@@ -97,3 +98,15 @@ jobs:
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "Add ${{ steps.apply.outputs.ship_name }} acceleration data (${{ steps.apply.outputs.submitter }}, auto-applied)"
           git push
+
+      - name: Trigger deploy
+        if: steps.apply.outputs.updated
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              ref: 'main'
+            })
