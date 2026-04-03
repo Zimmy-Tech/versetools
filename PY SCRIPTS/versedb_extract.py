@@ -2486,6 +2486,7 @@ def expand_ship_variants(ships, forge_dir, loc):
         "KRIG_P52_Merlin": ["krig_p72_archimedes"],
         "rsi_apollo_medivac": ["rsi_hermes"],  # Hermes uses Apollo vehicle XML with modification="Hermes"
         "RSI_Ursa_Rover": ["rsi_ursa_medivac"],
+        "TMBL_Storm": ["tmbl_storm_aa"],
     }
     for base_cls, variant_list in MANUAL_VARIANTS.items():
         base_ship = expanded.get(base_cls)
@@ -4477,6 +4478,31 @@ def main(mode: str = "live"):
         for hp in aa_hps:
             if not any(h["id"] == hp["id"] for h in aa["hardpoints"]):
                 aa["hardpoints"].append(hp)
+
+    # Storm AA: promote missile racks from turret module sub-ports to visible hardpoints
+    if "tmbl_storm_aa" in ships:
+        saa = ships["tmbl_storm_aa"]
+        saa_hps = [
+            {"id": "hardpoint_primary_turret.hardpoint_missile_rack_s1_left", "label": "Missile Rack S1 - Left",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 1, "maxSize": 1, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+            {"id": "hardpoint_primary_turret.hardpoint_missile_rack_s1_right", "label": "Missile Rack S1 - Right",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 1, "maxSize": 1, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+            {"id": "hardpoint_primary_turret.hardpoint_missile_rack_s2_left", "label": "Missile Rack S2 - Left",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 2, "maxSize": 2, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+            {"id": "hardpoint_primary_turret.hardpoint_missile_rack_s2_right", "label": "Missile Rack S2 - Right",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 2, "maxSize": 2, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+        ]
+        for hp in saa_hps:
+            if not any(h["id"] == hp["id"] for h in saa["hardpoints"]):
+                saa["hardpoints"].append(hp)
 
     # Idris M/P: nose railgun hardpoint accepts WeaponGun and MissileLauncher (torpedo)
     for idris_cls in ("aegs_idris_m", "aegs_idris_p"):
