@@ -32,13 +32,30 @@
 
       <div class="field-group">
         <label class="field-label">Ship</label>
-        <select class="field-select" [value]="form().shipClassName"
-                (change)="updateField('shipClassName', $any($event.target).value)">
-          <option value="">— select ship —</option>
-          @for (s of shipOptions(); track s.className) {
-            <option [value]="s.className">{{ s.name }}</option>
+        <div class="ship-picker-wrap">
+          <div class="ship-picker-trigger field-select" (click)="openShipPicker()">
+            {{ selectedShipName() || '— select ship —' }}
+          </div>
+          @if (shipPickerOpen()) {
+            <div class="ship-picker-dropdown">
+              <input #shipSearchInput class="ship-picker-search" type="text"
+                     placeholder="Search ships..."
+                     [value]="shipSearchQuery()"
+                     (input)="shipSearchQuery.set($any($event.target).value)"
+                     (blur)="closeShipPicker()" />
+              <div class="ship-picker-list">
+                @for (s of filteredShipOptions(); track s.className) {
+                  <div class="ship-picker-option"
+                       [class.selected]="form().shipClassName === s.className"
+                       (mousedown)="pickShip(s.className)">{{ s.name }}</div>
+                }
+                @if (filteredShipOptions().length === 0) {
+                  <div class="ship-picker-empty">No ships found</div>
+                }
+              </div>
+            </div>
           }
-        </select>
+        </div>
       </div>
 
       <div class="accel-grid">

@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, viewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../services/data.service';
 
@@ -55,6 +55,33 @@ export class SubmitViewComponent {
   shipOptions = computed(() =>
     [...this.data.ships()].sort((a, b) => a.name.localeCompare(b.name))
   );
+
+  // Ship picker dropdown
+  shipPickerOpen = signal(false);
+  shipSearchQuery = signal('');
+  shipSearchInput = viewChild<ElementRef<HTMLInputElement>>('shipSearchInput');
+
+  filteredShipOptions = computed(() => {
+    const q = this.shipSearchQuery().toLowerCase().trim();
+    const ships = this.shipOptions();
+    if (!q) return ships;
+    return ships.filter(s => s.name.toLowerCase().includes(q));
+  });
+
+  openShipPicker(): void {
+    this.shipPickerOpen.set(true);
+    this.shipSearchQuery.set('');
+    setTimeout(() => this.shipSearchInput()?.nativeElement.focus());
+  }
+
+  closeShipPicker(): void {
+    setTimeout(() => this.shipPickerOpen.set(false), 150);
+  }
+
+  pickShip(className: string): void {
+    this.updateField('shipClassName', className);
+    this.shipPickerOpen.set(false);
+  }
 
   private readonly STALE_DAYS = 90;
 
