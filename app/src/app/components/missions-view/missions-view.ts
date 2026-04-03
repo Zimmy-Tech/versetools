@@ -129,8 +129,6 @@ export class MissionsViewComponent {
   });
 
   private allFiltered = computed(() => {
-    if (!this.hasActiveFilter()) return [];
-
     const search = this.searchQuery().toLowerCase();
     const cat = this.categoryFilter();
     const law = this.lawfulFilter();

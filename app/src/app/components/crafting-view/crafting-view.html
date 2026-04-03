@@ -57,12 +57,12 @@
 
       @if (hasActiveFilter()) {
         <button class="filter-clear" (click)="clearFilters()">Clear Filters</button>
-        <div class="pager">
-          <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
-          <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
-          <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
-        </div>
       }
+      <div class="pager">
+        <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
+        <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
+        <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
+      </div>
 
       <div class="sb-section">
         <span class="sb-label">Armor Sets</span>
@@ -132,17 +132,8 @@
     <!-- Main content -->
     <div class="craft-main">
 
-    @if (!hasActiveFilter()) {
-      <div class="empty-state">
-        <div class="fab-icon">&#9878;</div>
-        <div class="empty-title">Crafting Database</div>
-        <div class="empty-sub">{{ allRecipes().length }} blueprints available. Use the filters to search.</div>
-        <div class="crafting-instructions">Pick an item to see the Crafting UI which includes sliders for the materials quality and the effects of quality materials. Adding items to your Materials List will open a tally window for bulk gathering requirements.</div>
-      </div>
-    }
-
     <!-- Recipe list + static tally sidebar -->
-    <div class="recipe-area" [style.display]="hasActiveFilter() ? '' : 'none'">
+    <div class="recipe-area">
 
       <div class="recipe-list">
         @for (r of filteredRecipes(); track r.className) {

@@ -530,6 +530,14 @@ export class LoadoutViewComponent {
   });
 
   /** Two cheapest buy prices for the selected ship. */
+  cheapestPrice = computed(() => {
+    const prices = this.data.selectedShip()?.shopPrices;
+    if (!prices?.length) return null;
+    const valid = prices.filter(p => p.price > 0);
+    if (!valid.length) return null;
+    return valid.reduce((min, p) => p.price < min.price ? p : min);
+  });
+
   shipBuyPrices = computed(() => {
     const prices = this.data.selectedShip()?.shopPrices;
     if (!prices?.length) return [];

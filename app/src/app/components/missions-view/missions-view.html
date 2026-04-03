@@ -80,24 +80,18 @@
 
       @if (hasActiveFilter()) {
         <button class="filter-clear" (click)="clearFilters()">Clear Filters</button>
-        <div class="pager">
-          <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
-          <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
-          <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
-        </div>
       }
+      <div class="pager">
+        <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
+        <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
+        <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
+      </div>
     </div>
 
     <div class="missions-content">
-    @if (!hasActiveFilter()) {
-      <div class="empty-state">
-        <div class="empty-title">Mission Database</div>
-        <div class="empty-sub">{{ allMissions().length }} contracts available. Use the filters to search.</div>
-      </div>
-    }
 
     <!-- Mission list -->
-    <div class="mission-list" [style.display]="hasActiveFilter() ? '' : 'none'">
+    <div class="mission-list">
       @for (m of filteredMissions(); track m.className) {
         <div class="mission-card" [class.unlawful]="!m.lawful" [class.selected]="selectedMission()?.className === m.className" (click)="selectMission(m, $event)">
           <div class="mission-header">

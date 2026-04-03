@@ -47,6 +47,12 @@
                 <span class="stat-pill-val">{{ data.selectedShip()!.oreCapacity }} SCU</span>
               </div>
             }
+            @if (cheapestPrice(); as cp) {
+              <div class="stat-pill price-pill" [title]="cp.shop + ' — ' + cp.price.toLocaleString('en-US') + ' aUEC'">
+                <span class="stat-pill-label">Price</span>
+                <span class="stat-pill-val">{{ fmtPrice(cp.price) }} aUEC</span>
+              </div>
+            }
           </div>
         </div>
 
