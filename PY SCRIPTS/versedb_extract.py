@@ -4457,6 +4457,27 @@ def main(mode: str = "live"):
                 })
                 g.setdefault("defaultLoadout", {})["hardpoint_lifesupport"] = "lfsp_tydt_s01_comfortair"
 
+    # Cyclone AA: promote module sub-ports (missile racks + EMP) as visible hardpoints
+    if "TMBL_Cyclone_AA" in ships:
+        aa = ships["TMBL_Cyclone_AA"]
+        aa_hps = [
+            {"id": "hardpoint_module_attach.hardpoint_missilerack_left", "label": "Missile Rack - Left",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 2, "maxSize": 2, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+            {"id": "hardpoint_module_attach.hardpoint_missilerack_right", "label": "Missile Rack - Right",
+             "type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack",
+             "minSize": 2, "maxSize": 2, "flags": "uneditable",
+             "allTypes": [{"type": "MissileLauncher", "subtypes": "GroundVehicleMissileRack"}]},
+            {"id": "hardpoint_module_attach.hardpoint_weapon_emp", "label": "EMP",
+             "type": "EMP", "subtypes": "",
+             "minSize": 1, "maxSize": 1, "flags": "uneditable",
+             "allTypes": [{"type": "EMP", "subtypes": ""}]},
+        ]
+        for hp in aa_hps:
+            if not any(h["id"] == hp["id"] for h in aa["hardpoints"]):
+                aa["hardpoints"].append(hp)
+
     # Idris M/P: nose railgun hardpoint accepts WeaponGun and MissileLauncher (torpedo)
     for idris_cls in ("aegs_idris_m", "aegs_idris_p"):
         if idris_cls in ships:
