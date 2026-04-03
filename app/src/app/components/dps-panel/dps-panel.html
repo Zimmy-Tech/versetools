@@ -9,9 +9,6 @@
           <button class="gimbal-btn" [class.active]="gimbalMode() === 'lock'" (click)="gimbalMode.set('lock')">LOCK</button>
           <button class="gimbal-btn" [class.active]="gimbalMode() === 'gimbal'" (click)="gimbalMode.set('gimbal')">PRE/AUTO/GIMBAL</button>
         </span>
-        <button class="mode-toggle" (click)="toggleDisplayMode()" [title]="displayMode() === 'hud' ? 'Switch to Flat mode' : 'Switch to HUD mode'">
-          {{ displayMode() === 'hud' ? 'FLAT' : 'HUD' }}
-        </button>
       </div>
 
       <!-- HUD: hero card -->

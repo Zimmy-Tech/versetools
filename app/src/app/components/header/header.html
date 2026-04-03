@@ -164,6 +164,7 @@
   <div class="loadout-bar">
     <button class="bulk-equip-btn" (click)="data.bulkEquipRequested.set(true)">BULK EQUIP</button>
     <button class="mil-a-btn" (click)="data.milARequested.set(true)">MILITARY A</button>
+    <button class="stealth-a-btn" (click)="data.stealthARequested.set(true)">STEALTH A</button>
     <div class="ship-picker-wrap">
       <input class="ship-picker-input" type="text"
              [placeholder]="data.selectedShip()?.name ?? 'Select a ship...'"
@@ -208,6 +209,10 @@
         </div>
       }
     }
+    <button class="dps-mode-btn" (click)="data.toggleDpsPanelMode()"
+            [title]="data.dpsPanelMode() === 'hud' ? 'Switch to Flat mode' : 'Switch to HUD mode'">
+      DPS PANEL: {{ data.dpsPanelMode() === 'hud' ? 'HUD' : 'FLAT' }}
+    </button>
   </div>
 }
 

@@ -56,9 +56,20 @@ export class DataService {
 
   /** Trigger to apply Military A loadout from header bar. */
   milARequested = signal(false);
+  stealthARequested = signal(false);
 
   /** Gimbal mode: 'lock' = full fire rate, 'gimbal' = 0.85× fire rate. */
   gimbalMode = signal<'lock' | 'gimbal'>('lock');
+
+  /** DPS panel display mode: 'hud' = hero cards, 'flat' = inline rows. */
+  dpsPanelMode = signal<'hud' | 'flat'>(
+    (localStorage.getItem('dps-panel-mode') as 'hud' | 'flat') || 'hud'
+  );
+  toggleDpsPanelMode() {
+    const next = this.dpsPanelMode() === 'hud' ? 'flat' : 'hud';
+    this.dpsPanelMode.set(next);
+    localStorage.setItem('dps-panel-mode', next);
+  }
   readonly GIMBAL_FIRE_RATE_MULT = 0.85;
 
   /** All weapons including PDCs — for weapon power pool max pip calculation. */

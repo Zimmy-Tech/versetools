@@ -10,15 +10,8 @@ import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, bandModAt, coolerSupply, 
   styleUrl: './dps-panel.scss',
 })
 export class DpsPanelComponent {
-  /** HUD vs Flat display mode, persisted in localStorage. */
-  displayMode = signal<'hud' | 'flat'>(
-    (localStorage.getItem('dps-panel-mode') as 'hud' | 'flat') || 'hud'
-  );
-  toggleDisplayMode() {
-    const next = this.displayMode() === 'hud' ? 'flat' : 'hud';
-    this.displayMode.set(next);
-    localStorage.setItem('dps-panel-mode', next);
-  }
+  /** HUD vs Flat display mode — shared via DataService. */
+  get displayMode() { return this.data.dpsPanelMode; }
 
   /** Gimbal mode — shared via DataService so Jane's cards also react. */
   get gimbalMode() { return this.data.gimbalMode; }

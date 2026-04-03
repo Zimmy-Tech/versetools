@@ -399,6 +399,7 @@ header {
   background: var(--bg2);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  position: relative;
 
   .bulk-equip-btn {
     font-size: 11px;
@@ -430,9 +431,41 @@ header {
     &:hover { background: rgba(255, 136, 68, 0.15); border-color: #ff8844; }
   }
 
+  .stealth-a-btn {
+    font-size: 11px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #8888cc;
+    cursor: pointer;
+    padding: 4px 12px;
+    border: 1px solid rgba(136, 136, 204, 0.4);
+    background: rgba(136, 136, 204, 0.06);
+    white-space: nowrap;
+    transition: all 0.15s;
+    &:hover { background: rgba(136, 136, 204, 0.15); border-color: #8888cc; }
+  }
+
   .ship-picker-wrap {
     width: 300px;
     margin: 0;
+  }
+
+  .dps-mode-btn {
+    position: absolute;
+    right: 16px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text3);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    &:hover { color: var(--text); border-color: var(--text3); }
   }
 }
 

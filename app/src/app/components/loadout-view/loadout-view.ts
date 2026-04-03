@@ -175,6 +175,56 @@ export class LoadoutViewComponent {
     }
   }
 
+  private stealthAWatcher = effect(() => {
+    if (this.data.stealthARequested()) {
+      this.data.stealthARequested.set(false);
+      this.applyStealthA();
+    }
+  });
+
+  /** Apply Stealth Grade A components to all compatible slots. */
+  private applyStealthA(): void {
+    const ship = this.data.selectedShip();
+    if (!ship) return;
+    const items = this.data.items();
+
+    // Build lookup: type → size → best Stealth A item (lowest signature)
+    const stealthA = new Map<string, Map<number, Item>>();
+    const targetTypes = ['Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar'];
+
+    for (const item of items) {
+      if (!targetTypes.includes(item.type)) continue;
+      if (item.grade !== 'A' || item.itemClass !== 'Stealth') continue;
+      const size = item.size ?? 0;
+      if (!stealthA.has(item.type)) stealthA.set(item.type, new Map());
+      const bySize = stealthA.get(item.type)!;
+      const existing = bySize.get(size);
+      if (!existing || this.stealthAPrimaryStat(item) < this.stealthAPrimaryStat(existing)) {
+        bySize.set(size, item);
+      }
+    }
+
+    for (const hp of ship.hardpoints) {
+      if (this.isSlotLocked(hp)) continue;
+      const bySize = stealthA.get(hp.type);
+      if (!bySize) continue;
+      const best = bySize.get(hp.maxSize);
+      if (best) this.data.setLoadoutItem(hp.id, best);
+    }
+  }
+
+  /** Primary stat for Stealth A: lowest signature wins. */
+  private stealthAPrimaryStat(item: Item): number {
+    switch (item.type) {
+      case 'PowerPlant': return item.emSignature ?? Infinity;
+      case 'Cooler': return item.irSignature ?? Infinity;
+      case 'Shield': return (item.emSignature ?? 0) + (item.irSignature ?? 0);
+      case 'QuantumDrive': return (item.emSignature ?? 0) + (item.irSignature ?? 0);
+      case 'Radar': return (item.emSignature ?? 0) + (item.irSignature ?? 0);
+      default: return Infinity;
+    }
+  }
+
   openBulkEquip(): void {
     this.bulkEquipTab.set('guns');
     const sizes = this.bulkGunSizes();
