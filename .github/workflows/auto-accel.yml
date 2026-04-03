@@ -94,5 +94,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "Add ${{ steps.apply.outputs.ship_name }} acceleration data (${{ steps.apply.outputs.submitter }}, auto-applied)"
           git push
