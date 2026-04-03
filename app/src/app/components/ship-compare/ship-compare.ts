@@ -17,6 +17,7 @@ export class ShipCompareComponent {
   readonly slotColors = SLOT_COLORS;
 
   searchQueries = signal<string[]>(['', '', '', '']);
+  pickerOpen = signal<boolean[]>([false, false, false, false]);
 
   allShips = computed(() =>
     [...this.data.ships()].sort((a, b) => a.name.localeCompare(b.name))
@@ -31,6 +32,32 @@ export class ShipCompareComponent {
     });
   });
 
+  openPicker(index: number): void {
+    const open = [false, false, false, false];
+    open[index] = true;
+    this.pickerOpen.set(open);
+    this.updateSearch(index, '');
+    setTimeout(() => {
+      const el = document.querySelector('.picker-search') as HTMLInputElement;
+      el?.focus();
+    });
+  }
+
+  closePicker(index: number): void {
+    setTimeout(() => {
+      const open = [...this.pickerOpen()];
+      open[index] = false;
+      this.pickerOpen.set(open);
+    }, 150);
+  }
+
+  pickShip(index: number, className: string): void {
+    this.setSlot(index, className);
+    const open = [...this.pickerOpen()];
+    open[index] = false;
+    this.pickerOpen.set(open);
+  }
+
   // ── Row definitions ──────────────────────────────────────
 
   private overviewRows: RowDef[] = [
@@ -42,7 +69,7 @@ export class ShipCompareComponent {
   ];
 
   private dpsRows: RowDef[] = [
-    ['Peak DPS',          s => this.calcPeakDPS(s).toFixed(0),            v => parseFloat(v) || 0, true],
+    ['Peak DPS (Default Equip)', s => this.calcPeakDPS(s).toFixed(0),            v => parseFloat(v) || 0, true],
     ['Pilot Alpha',       s => this.calcAlpha(s).toFixed(0),              v => parseFloat(v) || 0, true],
     ['Missile Damage',    s => this.calcMissileDmg(s).toFixed(0),         v => parseFloat(v) || 0, true],
   ];
@@ -90,8 +117,6 @@ export class ShipCompareComponent {
   ];
 
   sections = computed(() => {
-    const filled = this.slots().some(s => s !== null);
-    if (!filled) return [];
     return [
       { title: 'Overview',       rows: this.overviewRows },
       { title: 'DPS Output',     rows: this.dpsRows },
