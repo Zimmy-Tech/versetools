@@ -768,6 +768,14 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
   ::ng-deep .trigger-name { color: var(--text2); }
 }
 
+.popout-close {
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 18px;
+  line-height: 1;
+  &:hover { color: var(--text); }
+}
+
 .focus-overlay, .popout-overlay {
   position: fixed;
   inset: 0;
