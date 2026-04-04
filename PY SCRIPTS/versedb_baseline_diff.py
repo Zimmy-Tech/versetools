@@ -127,16 +127,14 @@ def diff_ships(baseline_ships, scrape_ships):
     auto_applied = []
     review_needed = []
 
-    # Ships missing from scrape
+    # Ships missing from scrape — NEVER remove, always auto-reject
+    # Ships can disappear due to forge export gaps, not actual CIG removals
     missing = sorted(set(base_by_cls) - set(scrape_by_cls))
     for cls in missing:
         ship = base_by_cls[cls]
-        review_needed.append({
-            "type": "ship_missing",
-            "className": cls,
-            "name": ship.get("name", cls),
-            "lastUpdated": ship.get("_baseline", {}).get("lastUpdated", "unknown"),
-        })
+        print(f"  [AUTO-KEPT] Ship preserved from baseline: {ship.get('name', cls)} ({cls})")
+        # Carry forward the baseline ship into the scrape so enrichment can find it
+        scrape_by_cls[cls] = ship
 
     # New ships in scrape
     added = sorted(set(scrape_by_cls) - set(base_by_cls))
@@ -212,18 +210,31 @@ def diff_ships(baseline_ships, scrape_ships):
     return auto_applied, review_needed, coverage
 
 
-def diff_items(baseline_items, scrape_items):
-    """Compare items. Items auto-accept all changes; only flag add/remove."""
+def diff_items(baseline_items, scrape_items, baseline_ships=None):
+    """Compare items. Items auto-accept all changes; only flag add/remove.
+    Items referenced by any ship's loadout are never removed."""
     base_by_cls = {i["className"]: i for i in baseline_items}
     scrape_by_cls = {i["className"]: i for i in scrape_items}
 
     auto_applied = []
     review_needed = []
 
+    # Build set of items referenced by any ship's loadout
+    loadout_items = set()
+    if baseline_ships:
+        for ship in baseline_ships:
+            for item_cls in (ship.get("defaultLoadout") or {}).values():
+                if item_cls:
+                    loadout_items.add(item_cls.lower())
+
     # Items missing from scrape
     missing = sorted(set(base_by_cls) - set(scrape_by_cls))
     for cls in missing:
         item = base_by_cls[cls]
+        # Auto-keep items referenced by ship loadouts
+        if cls.lower() in loadout_items:
+            print(f"  [AUTO-KEPT] Item preserved (referenced by ship loadout): {item.get('name', cls)} ({cls})")
+            continue
         review_needed.append({
             "type": "item_missing",
             "className": cls,
@@ -624,7 +635,7 @@ def run_baseline_update(scrape_ships, scrape_items, version,
     ship_auto, ship_review, ship_coverage = diff_ships(
         baseline["ships"], scrape_ships)
     item_auto, item_review = diff_items(
-        baseline["items"], scrape_items)
+        baseline["items"], scrape_items, baseline_ships=baseline["ships"])
 
     # Report
     total_review = print_report(ship_auto, ship_review, ship_coverage,

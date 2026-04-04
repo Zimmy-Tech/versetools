@@ -4346,6 +4346,37 @@ def main(mode: str = "live"):
             skipped += 1
     print(f"  Parsed {len(ships)} ships ({skipped} skipped)")
 
+    # 2a. DCB entity count safety check — detect forge export gaps
+    spaceship_forge_dir = FORGE_DIR / "entities" / "spaceships"
+    if spaceship_forge_dir.exists() and DCB_FILE.exists():
+        forge_count = len(list(spaceship_forge_dir.glob("*.xml.xml")))
+        try:
+            with open(DCB_FILE, "rb") as f:
+                dcb_raw = f.read()
+            needle = b"entities/spaceships/"
+            dcb_entities = set()
+            idx = 0
+            while True:
+                idx = dcb_raw.find(needle, idx)
+                if idx == -1:
+                    break
+                end = dcb_raw.find(b".xml", idx)
+                if end > 0:
+                    path = dcb_raw[idx:end+4].decode("utf-8", errors="replace")
+                    dcb_entities.add(path.split("/")[-1].replace(".xml", ""))
+                idx = (end if end > 0 else idx) + 1
+            gap = len(dcb_entities) - forge_count
+            if gap > 0:
+                missing_names = dcb_entities - set(f.stem.replace(".xml", "") for f in spaceship_forge_dir.glob("*.xml.xml"))
+                print(f"  ⚠ FORGE EXPORT GAP: {gap} DCB entities not exported ({len(dcb_entities)} in DCB, {forge_count} exported)")
+                for m in sorted(missing_names):
+                    print(f"    Missing: {m}")
+            else:
+                print(f"  Forge export check: {forge_count} entities OK (matches DCB)")
+            del dcb_raw
+        except Exception as e:
+            print(f"  Forge export check failed: {e}")
+
     # 2b. Expand ship variants — some vehicle XMLs are shared across variants
     # (e.g., RSI_Constellation → Andromeda, Phoenix, Taurus, Aquila)
     print("\n[2b] Expanding ship variants…")
