@@ -314,38 +314,40 @@
               </div>
 
               @if (qualityEffects().length) {
-                <div class="quality-results">
+                <div class="po-section-title" style="margin-top: 4px;">Crafted Bonus Stats</div>
+                <div class="quality-list">
+                  <div class="ql-header">
+                    <span class="ql-header-label">Property</span>
+                    <div class="ql-header-right">
+                      <span class="ql-header-label ql-h-base">Base</span>
+                      <span class="ql-header-label ql-h-arrow"></span>
+                      <span class="ql-header-label ql-h-mod">Modified</span>
+                      <span class="ql-header-label ql-h-pct">% Change</span>
+                    </div>
+                  </div>
                   @for (eff of qualityEffects(); track eff.property) {
-                    <div class="qr-card">
-                      <div class="qr-card-header">
-                        <span class="qr-card-title">{{ eff.property }}</span>
-                        <span class="qr-card-effect"
+                    <div class="ql-row">
+                      <div class="ql-left">
+                        <span class="ql-property">{{ eff.property }}</span>
+                        @if (eff.description) {
+                          <span class="ql-desc">{{ eff.description }}</span>
+                        }
+                      </div>
+                      <div class="ql-right">
+                        @if (eff.baseValue != null && eff.modifiedValue != null) {
+                          <span class="ql-base">{{ eff.baseValue }}{{ eff.unit }}</span>
+                          <span class="ql-arrow">&rarr;</span>
+                          <span class="ql-modified"
+                                [class.positive]="eff.invertComparison ? eff.modifiedValue! < eff.baseValue! : eff.modifiedValue! > eff.baseValue!"
+                                [class.negative]="eff.invertComparison ? eff.modifiedValue! > eff.baseValue! : eff.modifiedValue! < eff.baseValue!">
+                            {{ eff.modifiedValue }}{{ eff.unit }}
+                          </span>
+                        }
+                        <span class="ql-pct"
                               [class.positive]="eff.invertComparison ? eff.combined < 0.999 : eff.combined > 1.001"
                               [class.negative]="eff.invertComparison ? eff.combined > 1.001 : eff.combined < 0.999">
                           {{ fmtMod(eff.combined) }}
                         </span>
-                      </div>
-                      <div class="qr-card-body">
-                        @if (eff.baseValue != null && eff.modifiedValue != null) {
-                          <div class="qr-gauge">
-                            <span class="qr-gauge-base">{{ eff.baseValue }}{{ eff.unit }}</span>
-                            <span class="qr-gauge-arrow">&rarr;</span>
-                            <span class="qr-gauge-result"
-                                  [class.positive]="eff.invertComparison ? eff.modifiedValue! < eff.baseValue! : eff.modifiedValue! > eff.baseValue!"
-                                  [class.negative]="eff.invertComparison ? eff.modifiedValue! > eff.baseValue! : eff.modifiedValue! < eff.baseValue!">
-                              {{ eff.modifiedValue }}{{ eff.unit }}
-                            </span>
-                          </div>
-                        }
-                        <div class="qr-contrib-row">
-                          @for (c of eff.contributions; track c.resource) {
-                            <span class="qr-contrib"
-                                  [class.positive]="eff.invertComparison ? c.modifier < 0.999 : c.modifier > 1.001"
-                                  [class.negative]="eff.invertComparison ? c.modifier > 1.001 : c.modifier < 0.999">
-                              {{ c.resource }} {{ fmtMod(c.modifier) }}
-                            </span>
-                          }
-                        </div>
                       </div>
                     </div>
                   }

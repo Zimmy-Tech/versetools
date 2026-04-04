@@ -285,20 +285,26 @@ export class CraftingViewComponent {
         unit = ' dmg';
       } else if (pl.includes('recoil') && pl.includes('kick') && baseRecoilPitch != null) {
         baseValue = baseRecoilPitch;
-        modifiedValue = Math.round(baseRecoilPitch * data.combined * 10000) / 10000;
+        modifiedValue = Math.round(baseRecoilPitch * data.combined * 1000) / 1000;
         unit = '°';
       } else if (pl.includes('recoil') && pl.includes('handling') && baseRecoilYaw != null) {
         baseValue = baseRecoilYaw;
-        modifiedValue = Math.round(baseRecoilYaw * data.combined * 10000) / 10000;
+        modifiedValue = Math.round(baseRecoilYaw * data.combined * 1000) / 1000;
         unit = '°';
       } else if (pl.includes('recoil') && pl.includes('smooth') && baseRecoilSmooth != null) {
         baseValue = baseRecoilSmooth;
-        modifiedValue = Math.round(baseRecoilSmooth * data.combined * 10000) / 10000;
+        modifiedValue = Math.round(baseRecoilSmooth * data.combined * 1000) / 1000;
         unit = 's';
       }
 
       // For min temp and recoil, lower is better. For everything else, higher is better.
       const invertComparison = pl.includes('min temp') || pl.includes('recoil');
+
+      // Descriptive label for what the base value actually measures
+      let description = '';
+      if (pl.includes('recoil') && pl.includes('kick')) description = 'Vertical recoil (pitch)';
+      else if (pl.includes('recoil') && pl.includes('handling')) description = 'Horizontal recoil (yaw)';
+      else if (pl.includes('recoil') && pl.includes('smooth')) description = 'Convergence time';
 
       return {
         property: prop,
@@ -308,6 +314,7 @@ export class CraftingViewComponent {
         modifiedValue,
         unit,
         invertComparison,
+        description,
       };
     }).sort((a, b) => a.property.localeCompare(b.property));
   });

@@ -77,6 +77,7 @@
   letter-spacing: 0.3px;
   padding: 4px 8px;
   border: 1px solid var(--border);
+  border-radius: 4px;
   border-radius: 3px;
   background: transparent;
   color: var(--text2);
@@ -143,6 +144,7 @@
 .filter-select, .filter-input {
   background: var(--bg3);
   border: 1px solid var(--border2);
+  border-radius: 4px;
   color: var(--text);
   padding: 4px 8px;
   font-family: 'Share Tech Mono', monospace;
@@ -164,6 +166,7 @@
 .pager-btn {
   background: var(--bg3);
   border: 1px solid var(--border);
+  border-radius: 4px;
   color: var(--text);
   font-size: 10px;
   padding: 3px 8px;
@@ -242,6 +245,7 @@
   padding: 6px 10px;
   background: var(--bg2);
   border-left: 3px solid var(--accent2);
+  border-radius: 4px;
   cursor: pointer;
   transition: background 0.1s, border-color 0.1s;
 
@@ -353,6 +357,7 @@
   height: 80vh;
   background: var(--bg2);
   border: 2px solid var(--border);
+  border-radius: 8px;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
   z-index: 901;
   display: flex;
@@ -367,6 +372,7 @@
   padding: 14px 18px;
   border-bottom: 1px solid var(--border);
   background: var(--bg);
+  border-radius: 6px 6px 0 0;
 }
 
 .popout-title {
@@ -507,10 +513,11 @@
   }
 
   &.dismantle {
-    border-left-color: #4adfff;
-    .po-mat-icon { color: #4adfff; }
+    border-left-color: transparent;
+    opacity: 0.6;
+    .po-mat-icon { color: var(--text3); }
     .po-mat-name { color: var(--text2); }
-    .po-mat-qty { color: #4adfff; }
+    .po-mat-qty { color: var(--text2); }
   }
 }
 
@@ -623,6 +630,116 @@
   gap: 6px;
 }
 
+/* ── Quality Effects List ────────────── */
+.quality-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ql-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+.ql-header-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.ql-header-right {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.ql-h-base { width: 80px; text-align: center; }
+.ql-h-arrow { width: 14px; }
+.ql-h-mod { width: 90px; text-align: center; }
+.ql-h-pct { width: 64px; text-align: center; }
+
+.ql-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  &:last-child { border-bottom: none; }
+}
+
+.ql-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ql-property {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+
+.ql-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+}
+
+.ql-right {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ql-base {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+  width: 80px;
+  text-align: center;
+}
+
+.ql-arrow {
+  font-size: 11px;
+  color: var(--text3);
+  opacity: 0.4;
+  width: 14px;
+  text-align: center;
+}
+
+.ql-modified {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  width: 90px;
+  text-align: center;
+  &.positive { color: var(--green); }
+  &.negative { color: var(--red); }
+}
+
+.ql-pct {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  width: 64px;
+  text-align: center;
+  &.positive { color: var(--green); }
+  &.negative { color: var(--red); }
+}
+
 .qr-header-row {
   display: flex;
   justify-content: space-between;
@@ -721,6 +838,15 @@
   &.negative { color: var(--red); }
 }
 
+.qr-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+  margin-top: -2px;
+}
+
 .qr-contrib-row {
   display: flex;
   flex-wrap: wrap;
@@ -765,6 +891,7 @@
   height: 28px;
   background: var(--bg3);
   border: 1px solid var(--border2);
+  border-radius: 4px;
   color: var(--text);
   font-size: 16px;
   font-family: 'Rajdhani', sans-serif;
@@ -790,6 +917,7 @@
   padding: 8px;
   background: rgba(74, 255, 122, 0.08);
   border: 1px solid rgba(74, 255, 122, 0.3);
+  border-radius: 4px;
   color: #4aff7a;
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
