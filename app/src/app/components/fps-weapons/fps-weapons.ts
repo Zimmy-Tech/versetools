@@ -30,8 +30,8 @@ export class FpsWeaponsComponent {
   typeFilter = signal('');
   subTypeFilter = signal('');
   searchQuery = signal('');
-  sortBy = signal<'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name'>('dps');
-  sortDir = signal<'asc' | 'desc'>('desc');
+  sortBy = signal<'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name'>('name');
+  sortDir = signal<'asc' | 'desc'>('asc');
 
   types = computed(() => {
     const t = new Set(this.weapons().map(w => w.type));

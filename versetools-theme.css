@@ -1,0 +1,73 @@
+/*
+ * VerseTools Theme v1.0
+ * https://zimmy-tech.github.io/versetools/
+ *
+ * Usage: @import url('versetools-theme.css');
+ * Or copy the :root block into your own stylesheet.
+ *
+ * Fonts (load separately):
+ *   Rajdhani (headers, labels): 300-700 weight
+ *   Share Tech Mono (data values, monospace)
+ *   Exo 2 (body text): 200-600 weight
+ *   @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@200;300;400;500;600&display=swap');
+ */
+
+:root {
+  /* ── Backgrounds ──────────────────────────── */
+  --bg:      #0d1117;   /* primary background */
+  --bg2:     #131a24;   /* panels, cards */
+  --bg3:     #192030;   /* inset, input fields */
+
+  /* ── Borders ──────────────────────────────── */
+  --border:  #58636d;   /* primary borders (WCAG AA 3.08:1 vs bg) */
+  --border2: #5c6771;   /* secondary borders (WCAG AA 3.27:1 vs bg) */
+
+  /* ── Accent ───────────────────────────────── */
+  --accent:  #00c8ff;   /* primary accent (cyan) */
+  --accent2: #0090c8;   /* muted accent */
+
+  /* ── Semantic Colors ──────────────────────── */
+  --gold:    #f0a500;   /* legendary, boss, gold highlights */
+  --green:   #00e676;   /* positive, lawful, penetrates */
+  --red:     #ff4444;   /* negative, unlawful, deflected */
+  --orange:  #ff8c00;   /* warnings, distortion damage */
+  --purple:  #b47aff;   /* epic tier, special */
+
+  /* ── Text ─────────────────────────────────── */
+  --text:    #c8d8e8;   /* primary text */
+  --text2:   #7a8fa8;   /* secondary / muted text */
+  --text3:   #667f98;   /* tertiary / labels (WCAG AA 4.55:1 vs bg) */
+
+  /* ── Damage Types ─────────────────────────── */
+  --phys:    #4488ff;   /* physical damage */
+  --enrg:    #00e676;   /* energy damage */
+  --dist:    #ff8c00;   /* distortion damage */
+  --therm:   #ff4444;   /* thermal damage */
+}
+
+/* ── Recommended Base Styles ─────────────────── */
+
+/*
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 15px;
+}
+
+h1, h2, h3, .label {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.mono, code, .data-value {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+*/

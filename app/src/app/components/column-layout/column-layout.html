@@ -1,0 +1,333 @@
+@if (!data.selectedShip()) {
+  <div class="empty-state">
+    <div class="empty-icon">⬡</div>
+    <div class="empty-title">Select a Ship</div>
+    <div class="empty-sub">Choose a ship from the ship picker at the top to build a loadout</div>
+  </div>
+} @else {
+  <div class="cl-main">
+
+    <!-- COL 1: Ship info + DPS side by side -->
+    <div class="cl-col1">
+      <div class="cl-inner">
+      <div class="cl-inner-left">
+      <div class="ship-title">
+        <div class="ship-name-big">{{ data.selectedShip()!.name }}</div>
+        <div class="ship-mfr-big">{{ data.selectedShip()!.manufacturer }}</div>
+        <div class="ship-stats-row">
+          <div class="stat-pill"><span class="stat-pill-label">Role</span><span class="stat-pill-val">{{ data.selectedShip()!.role || '—' }}</span></div>
+          <div class="stat-pill"><span class="stat-pill-label">Crew</span><span class="stat-pill-val">{{ data.selectedShip()!.crew }}</span></div>
+          <div class="stat-pill"><span class="stat-pill-label">Size</span><span class="stat-pill-val">{{ (data.selectedShip()!.size || '—') | uppercase }}</span></div>
+          <div class="stat-pill"><span class="stat-pill-label">Cargo</span><span class="stat-pill-val">{{ effectiveCargo() }} SCU</span></div>
+          <div class="stat-pill"><span class="stat-pill-label">Mass</span><span class="stat-pill-val">{{ massDisplay() }}</span></div>
+        </div>
+      </div>
+
+      <div class="ship-image-inset">
+        <img [src]="shipImageSrc()" [alt]="data.selectedShip()!.name" (error)="onShipImageError($any($event.target))">
+      </div>
+
+      <app-power-bars />
+
+      <!-- Flight Data -->
+      <div class="section-title" (click)="toggleSection('sb-flight')">Flight <span class="collapse-arrow">{{ isCollapsed('sb-flight') ? '▸' : '▾' }}</span></div>
+      @if (!isCollapsed('sb-flight')) {
+        <div class="stat-block">
+          @if (flightScmSpeed()) {
+            <div class="stat-row"><span class="stat-label">SCM</span><span class="mono">{{ flightScmSpeed() }} m/s</span></div>
+            <div class="stat-row"><span class="stat-label">NAV</span><span class="mono">{{ flightNavSpeed() }} m/s</span></div>
+            <div class="stat-row"><span class="stat-label">AB Fwd</span><span class="mono accent">{{ flightBoostFwd() }} m/s</span></div>
+            <div class="stat-row"><span class="stat-label">AB Bwd</span><span class="mono">{{ flightBoostBwd() }} m/s</span></div>
+          }
+        </div>
+        @if (pitchRot()) {
+          <div class="section-subtitle">Rotation (°/s)</div>
+          <div class="stat-block">
+            @if (pitchRot(); as p) { <div class="stat-row"><span class="stat-label">Pitch</span><span class="mono">{{ p.base }}@if (p.boosted !== p.base) { / <span class="accent">{{ p.boosted }}</span>}</span></div> }
+            @if (yawRot(); as y) { <div class="stat-row"><span class="stat-label">Yaw</span><span class="mono">{{ y.base }}@if (y.boosted !== y.base) { / <span class="accent">{{ y.boosted }}</span>}</span></div> }
+            @if (rollRot(); as r) { <div class="stat-row"><span class="stat-label">Roll</span><span class="mono">{{ r.base }}@if (r.boosted !== r.base) { / <span class="accent">{{ r.boosted }}</span>}</span></div> }
+          </div>
+        }
+        @if (data.selectedShip()!.accelFwd) {
+          <div class="section-subtitle">Acceleration (G)</div>
+          <div class="stat-block">
+            <div class="stat-row"><span class="stat-label">Fwd</span><span class="mono">{{ data.selectedShip()!.accelFwd }}@if (data.selectedShip()!.accelAbFwd) { / <span class="accent">{{ data.selectedShip()!.accelAbFwd }}</span>}</span></div>
+            <div class="stat-row"><span class="stat-label">Retro</span><span class="mono">{{ data.selectedShip()!.accelRetro }}@if (data.selectedShip()!.accelAbRetro) { / <span class="accent">{{ data.selectedShip()!.accelAbRetro }}</span>}</span></div>
+            <div class="stat-row"><span class="stat-label">Strafe</span><span class="mono">{{ data.selectedShip()!.accelStrafe }}@if (data.selectedShip()!.accelAbStrafe) { / <span class="accent">{{ data.selectedShip()!.accelAbStrafe }}</span>}</span></div>
+            <div class="stat-row"><span class="stat-label">Up</span><span class="mono">{{ data.selectedShip()!.accelUp }}@if (data.selectedShip()!.accelAbUp) { / <span class="accent">{{ data.selectedShip()!.accelAbUp }}</span>}</span></div>
+            <div class="stat-row"><span class="stat-label">Down</span><span class="mono">{{ data.selectedShip()!.accelDown }}@if (data.selectedShip()!.accelAbDown) { / <span class="accent">{{ data.selectedShip()!.accelAbDown }}</span>}</span></div>
+          </div>
+        }
+      }
+
+      <!-- Hull Data -->
+      <div class="section-title" (click)="toggleSection('sb-hull')">Hull <span class="collapse-arrow">{{ isCollapsed('sb-hull') ? '▸' : '▾' }}</span></div>
+      @if (!isCollapsed('sb-hull') && data.selectedShip()!.totalHp) {
+        <div class="stat-block">
+          <div class="stat-row"><span class="stat-label">Total HP</span><span class="mono">{{ data.selectedShip()!.totalHp }}</span></div>
+          <div class="stat-row"><span class="stat-label">Armor HP</span><span class="mono">{{ data.selectedShip()!.armorHp }}</span></div>
+          <div class="stat-row"><span class="stat-label">Vital HP</span><span class="mono">{{ data.selectedShip()!.bodyHp }}</span></div>
+          @if (data.selectedShip()!.durabilityPhys !== undefined) {
+            <div class="stat-row"><span class="stat-label">Durability Phys</span><span class="mono">{{ (data.selectedShip()!.durabilityPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityPhys! - 1) * 100).toFixed(0) }}%</span></div>
+            <div class="stat-row"><span class="stat-label">Durability Enrg</span><span class="mono">{{ (data.selectedShip()!.durabilityEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.durabilityEnrg! - 1) * 100).toFixed(0) }}%</span></div>
+          }
+        </div>
+        @if (data.selectedShip()!.signalEM !== undefined) {
+          <div class="section-subtitle">Signature</div>
+          <div class="stat-block">
+            <div class="stat-row"><span class="stat-label">EM</span><span class="mono">{{ signalPct(data.selectedShip()!.signalEM) }}</span></div>
+            <div class="stat-row"><span class="stat-label">IR</span><span class="mono">{{ signalPct(data.selectedShip()!.signalIR) }}</span></div>
+            <div class="stat-row"><span class="stat-label">Cross Section</span><span class="mono">{{ signalPct(data.selectedShip()!.signalCrossSection) }}</span></div>
+          </div>
+        }
+        @if (data.selectedShip()!.dimLength) {
+          <div class="section-subtitle">Dimensions (m)</div>
+          <div class="stat-block">
+            <div class="stat-row"><span class="stat-label">W × L × H</span><span class="mono">{{ data.selectedShip()!.dimWidth?.toFixed(0) }} × {{ data.selectedShip()!.dimLength?.toFixed(0) }} × {{ data.selectedShip()!.dimHeight?.toFixed(0) }}</span></div>
+          </div>
+        }
+        @if (data.selectedShip()!.cmDecoys || data.selectedShip()!.cmNoise) {
+          <div class="section-subtitle">Countermeasures</div>
+          <div class="stat-block">
+            <div class="stat-row"><span class="stat-label">Decoys</span><span class="mono">{{ data.selectedShip()!.cmDecoys ?? 0 }}</span></div>
+            <div class="stat-row"><span class="stat-label">Noise</span><span class="mono">{{ data.selectedShip()!.cmNoise ?? 0 }}</span></div>
+          </div>
+        }
+      }
+
+      <!-- Misc -->
+      <div class="section-title" (click)="toggleSection('sb-misc')">Misc <span class="collapse-arrow">{{ isCollapsed('sb-misc') ? '▸' : '▾' }}</span></div>
+      @if (!isCollapsed('sb-misc')) {
+        @if (data.selectedShip()!.insuranceStandardMinutes) {
+          <div class="stat-block">
+            <div class="stat-row"><span class="stat-label">Insurance Std</span><span class="mono">{{ data.selectedShip()!.insuranceStandardMinutes }}m</span></div>
+            <div class="stat-row"><span class="stat-label">Insurance Exp</span><span class="mono">{{ data.selectedShip()!.insuranceExpediteMinutes }}m</span></div>
+            <div class="stat-row"><span class="stat-label">Expedite Cost</span><span class="mono accent">{{ data.selectedShip()!.insuranceExpediteCost }} aUEC</span></div>
+          </div>
+        }
+        @if (shipBuyPrices().length) {
+          <div class="section-subtitle">Buy Price</div>
+          <div class="stat-block">
+            @for (bp of shipBuyPrices(); track bp.shop) {
+              <div class="stat-row"><span class="stat-label">{{ bp.shop }}</span><span class="mono">{{ bp.price.toLocaleString('en-US') }} aUEC</span></div>
+            }
+          </div>
+        }
+      }
+
+      </div>
+      <div class="cl-inner-right">
+        <app-dps-panel />
+      </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Loadout Hardpoints -->
+    <div class="cl-right">
+
+      <div class="loadout-controls">
+        <button class="btn-reset" (click)="data.resetLoadout()">Reset to Default</button>
+        <button class="btn-cart-add" (click)="data.addNonStockToCart()">Add Non-Stock to Cart</button>
+      </div>
+
+      <div class="cl-columns">
+
+        <!-- Column 1: Weapons -->
+        <div class="cl-col">
+
+          @if (!pilotGunSlots().length && !crewGunSlots().length && !missileSlots().length && !miningSlots().length) {
+            <div class="no-hardpoints">No Equippable Hardpoints</div>
+          }
+
+          @if (isMiningShip() && miningSlots().length) {
+            <div class="slot-group-label">Mining / Salvage <span class="collapse-btn" (click)="toggleSection('mining')">{{ isCollapsed('mining') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of miningSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('mining')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('mining')"
+                                      [miningCombined]="getCombinedTotals(sub.id)" />
+                  @for (mod of subSlotsMap()[sub.id] ?? []; track mod.id) {
+                    <div class="sub-slot-indent">
+                      <app-hardpoint-slot [hardpoint]="mod" [collapsed]="isCollapsed('mining')" />
+                    </div>
+                  }
+                </div>
+              }
+            }
+          }
+
+          @if (pilotGunSlots().length) {
+            <div class="slot-group-label">Pilot Weapons <span class="collapse-btn" (click)="toggleSection('pilot-guns')">{{ isCollapsed('pilot-guns') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of pilotGunSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('pilot-guns')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('pilot-guns')"
+                                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                </div>
+              }
+            }
+          }
+          @if (crewGunSlots().length) {
+            <div class="slot-group-label">Crew Weapons <span class="collapse-btn" (click)="toggleSection('crew-guns')">{{ isCollapsed('crew-guns') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of crewGunSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('crew-guns')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('crew-guns')"
+                                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                </div>
+              }
+            }
+          }
+          @if (missileSlots().length) {
+            <div class="slot-group-label">Missiles <span class="collapse-btn" (click)="toggleSection('missiles')">{{ isCollapsed('missiles') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of missileSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('missiles')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('missiles')"
+                                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                </div>
+              }
+            }
+          }
+
+          @if (empSlots().length) {
+            <div class="slot-group-label">EMP <span class="collapse-btn" (click)="toggleSection('emp')">{{ isCollapsed('emp') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of empSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('emp')" />
+            }
+          }
+
+          @if (qedSlots().length) {
+            <div class="slot-group-label">QED <span class="collapse-btn" (click)="toggleSection('qed')">{{ isCollapsed('qed') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of qedSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qed')" />
+            }
+          }
+
+          @if (!isMiningShip() && miningSlots().length) {
+            <div class="slot-group-label">Mining / Salvage <span class="collapse-btn" (click)="toggleSection('mining')">{{ isCollapsed('mining') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of miningSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('mining')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('mining')"
+                                      [miningCombined]="getCombinedTotals(sub.id)" />
+                  @for (mod of subSlotsMap()[sub.id] ?? []; track mod.id) {
+                    <div class="sub-slot-indent">
+                      <app-hardpoint-slot [hardpoint]="mod" />
+                    </div>
+                  }
+                </div>
+              }
+            }
+          }
+        </div>
+
+        <!-- Column 2: Defense + Systems -->
+        <div class="cl-col">
+
+          @if (shieldSlots().length) {
+            <div class="slot-group-label">Shields <span class="collapse-btn" (click)="toggleSection('shields')">{{ isCollapsed('shields') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of primaryShieldSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('shields')" />
+            }
+            @if (excessShieldSlots().length) {
+              <div class="slot-group-label excess-label">Excess Shields <span>(HP pool only)</span></div>
+              @for (hp of excessShieldSlots(); track hp.id) {
+                <div class="excess-shield">
+                  <app-hardpoint-slot [hardpoint]="hp" [collapsed]="true" />
+                </div>
+              }
+            }
+          }
+
+          @if (tractorSlots().length) {
+            <div class="slot-group-label">Tractor Beam <span class="collapse-btn" (click)="toggleSection('tractor')">{{ isCollapsed('tractor') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of tractorSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('tractor')" />
+              @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
+                <div class="sub-slot-indent">
+                  <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('tractor')" />
+                </div>
+              }
+            }
+          }
+
+          @if (pdcSlots().length) {
+            <div class="slot-group-label">Point Defense <span class="collapse-btn" (click)="toggleSection('pdc')">{{ isCollapsed('pdc') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of pdcSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('pdc')" />
+            }
+          }
+
+          @if (ppSlots().length) {
+            <div class="slot-group-label">Power Plant <span class="collapse-btn" (click)="toggleSection('power')">{{ isCollapsed('power') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of ppSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('power')" />
+            }
+          }
+
+          @if (radarSlots().length) {
+            <div class="slot-group-label">Radar <span class="collapse-btn" (click)="toggleSection('radar')">{{ isCollapsed('radar') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of radarSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('radar')" />
+            }
+          }
+
+          @if (qdSlots().length) {
+            <div class="slot-group-label">Quantum Drive <span class="collapse-btn" (click)="toggleSection('qd')">{{ isCollapsed('qd') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of qdSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
+            }
+            @for (hp of jumpDriveSlots(); track hp.id) {
+              <div class="sub-slot-indent">
+                <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
+              </div>
+            }
+          }
+
+          @if (coolerSlots().length) {
+            <div class="slot-group-label">Coolers <span class="collapse-btn" (click)="toggleSection('coolers')">{{ isCollapsed('coolers') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of coolerSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('coolers')" />
+            }
+          }
+
+          @if (moduleSlots().length) {
+            <div class="slot-group-label">Modules <span class="collapse-btn" (click)="toggleSection('modules')">{{ isCollapsed('modules') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of moduleSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('modules')" />
+              @if (!isCollapsed('modules') && unpromotedSubSlotsForModules()[hp.id]; as subs) {
+                @for (sub of subs; track sub.id) {
+                  <div class="sub-slot-indent">
+                    <app-hardpoint-slot [hardpoint]="sub"
+                      [rackLeafIds]="rackLeafIdsMap()[sub.id] ?? []" />
+                  </div>
+                }
+              }
+            }
+          }
+
+          @if (bladeSlots().length) {
+            <div class="slot-group-label">Flight Controller <span class="collapse-btn" (click)="toggleSection('blade')">{{ isCollapsed('blade') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of bladeSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('blade')" />
+            }
+          }
+
+          @if (lsSlots().length) {
+            <div class="slot-group-label">Life Support <span class="collapse-btn" (click)="toggleSection('ls')">{{ isCollapsed('ls') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            @for (hp of lsSlots(); track hp.id) {
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('ls')" />
+            }
+          }
+
+        </div>
+      </div>
+    </div>
+  </div>
+}

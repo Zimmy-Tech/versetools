@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "dataforge": {
+      "type": "http",
+      "url": "http://localhost:3721/mcp"
+    },
+    "scdb": {
+      "command": "npx",
+      "args": ["@scfools/scdb-mcp@2.0.3"],
+      "env": {
+        "SCDB_DATA_DIR": "/home/bryan/projects/versedb/stdb"
+      }
+    }
+  }
+}

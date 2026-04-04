@@ -1,0 +1,4498 @@
+[
+  {
+    "id": "backpack_combat_heavy",
+    "containerType": "backpack",
+    "x": 0.64,
+    "y": 1,
+    "z": 0.45,
+    "scu": 0
+  },
+  {
+    "id": "backpack_combat_light",
+    "containerType": "backpack",
+    "x": 0.53,
+    "y": 0.64,
+    "z": 0.38,
+    "scu": 0
+  },
+  {
+    "id": "backpack_combat_medium",
+    "containerType": "backpack",
+    "x": 0.51,
+    "y": 0.88,
+    "z": 0.45,
+    "scu": 0
+  },
+  {
+    "id": "backpack_utility_heavy",
+    "containerType": "backpack",
+    "x": 0.74,
+    "y": 1,
+    "z": 0.54,
+    "scu": 0
+  },
+  {
+    "id": "backpack_utility_light",
+    "containerType": "backpack",
+    "x": 0.52,
+    "y": 0.73,
+    "z": 0.43,
+    "scu": 0
+  },
+  {
+    "id": "backpack_utility_medium",
+    "containerType": "backpack",
+    "x": 0.69,
+    "y": 0.93,
+    "z": 0.5,
+    "scu": 0
+  },
+  {
+    "id": "heavy_core",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_core_combat",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_core_specialist",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_core_support",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_core_utilitarian",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_legs",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_legs_combat",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_legs_specialist",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_legs_support",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "heavy_legs_utilitarian",
+    "containerType": "heavy",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_core",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_core_combat",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_core_specialist",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_core_support",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_core_utilitarian",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_legs",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_legs_combat",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_legs_specialist",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_legs_support",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "light_legs_utilitarian",
+    "containerType": "light",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_core",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_core_combat",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_core_specialist",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_core_support",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_core_utilitarian",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_legs",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_legs_combat",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_legs_specialist",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_legs_support",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "medium_legs_utilitarian",
+    "containerType": "medium",
+    "x": 0.2,
+    "y": 0.27,
+    "z": 0.2,
+    "scu": 0
+  },
+  {
+    "id": "flightsuit",
+    "containerType": "undersuit",
+    "x": 0.2,
+    "y": 0.2,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "undersuit",
+    "containerType": "undersuit",
+    "x": 0.2,
+    "y": 0.2,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "armouryinventory",
+    "containerType": "inventorycontainers",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_reclaimer_cargogrid",
+    "containerType": "cargogrid",
+    "x": 3.75,
+    "y": 3.75,
+    "z": 3.75,
+    "scu": 27
+  },
+  {
+    "id": "aegs_reclaimer_cargogrid_salvage_front_temp",
+    "containerType": "cargogrid",
+    "x": 8.75,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 70
+  },
+  {
+    "id": "aegs_reclaimer_cargogrid_salvage_rear_temp",
+    "containerType": "cargogrid",
+    "x": 6.25,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 50
+  },
+  {
+    "id": "aegs_reclaimer_cargogrid_small",
+    "containerType": "cargogrid",
+    "x": 3.75,
+    "y": 2.5,
+    "z": 3.75,
+    "scu": 18
+  },
+  {
+    "id": "aegs_retaliator_front_cargogrid_left",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 4
+  },
+  {
+    "id": "aegs_retaliator_front_cargogrid_main",
+    "containerType": "cargogrid",
+    "x": 3.75,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 30
+  },
+  {
+    "id": "aegs_retaliator_front_cargogrid_right",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 4
+  },
+  {
+    "id": "aegs_retaliator_front_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 8.75,
+    "z": 2.5,
+    "scu": 28
+  },
+  {
+    "id": "aegs_retaliator_rear_cargogrid",
+    "containerType": "cargogrid",
+    "x": 3.75,
+    "y": 7.5,
+    "z": 2.5,
+    "scu": 36
+  },
+  {
+    "id": "argo_moth_cargogrid_elevator",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 32
+  },
+  {
+    "id": "argo_moth_cargogrid_right",
+    "containerType": "cargogrid",
+    "x": 7.5,
+    "y": 5,
+    "z": 5,
+    "scu": 96
+  },
+  {
+    "id": "argo_moth_cargogrid_side",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 7.5,
+    "z": 5,
+    "scu": 96
+  },
+  {
+    "id": "argo_moth_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 7.5,
+    "z": 5,
+    "scu": 96
+  },
+  {
+    "id": "basebuilding_cargogrid_fpscraftingbench",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 2
+  },
+  {
+    "id": "crus_intrepid_cargogrid",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "crus_intrepid_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "crus_spirit_c1_cargogrid",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 10,
+    "z": 2.5,
+    "scu": 32
+  },
+  {
+    "id": "crus_spirit_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_caterpillar_cargoinventory_module",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 7.5,
+    "z": 5,
+    "scu": 96
+  },
+  {
+    "id": "drak_caterpillar_cargoinventory_module_ladder",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 6.25,
+    "z": 5,
+    "scu": 20
+  },
+  {
+    "id": "drak_caterpillar_cargoinventory_module_walkway",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 8
+  },
+  {
+    "id": "drak_caterpillar_cargoinventory_nose",
+    "containerType": "cargogrid",
+    "x": 6.25,
+    "y": 5,
+    "z": 3.75,
+    "scu": 60
+  },
+  {
+    "id": "drak_caterpillar_cargoinventory_nose_access",
+    "containerType": "cargogrid",
+    "x": 6.25,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 20
+  },
+  {
+    "id": "drak_vulture_cargoinventory_main",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 12
+  },
+  {
+    "id": "freightelevator_cargogrid_exterior",
+    "containerType": "cargogrid",
+    "x": 40,
+    "y": 25,
+    "z": 10,
+    "scu": 5120
+  },
+  {
+    "id": "freightelevator_cargogrid_large",
+    "containerType": "cargogrid",
+    "x": 20,
+    "y": 17.5,
+    "z": 5,
+    "scu": 896
+  },
+  {
+    "id": "freightelevator_cargogrid_medium",
+    "containerType": "cargogrid",
+    "x": 10,
+    "y": 8.75,
+    "z": 5,
+    "scu": 224
+  },
+  {
+    "id": "freightelevator_cargogrid_small",
+    "containerType": "cargogrid",
+    "x": 7.5,
+    "y": 6.25,
+    "z": 5,
+    "scu": 120
+  },
+  {
+    "id": "freightelevator_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 1
+  },
+  {
+    "id": "freightelevator_cargogrid_xl",
+    "containerType": "cargogrid",
+    "x": 25,
+    "y": 17.5,
+    "z": 5,
+    "scu": 1120
+  },
+  {
+    "id": "gama_syulen_cargogrid",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 1
+  },
+  {
+    "id": "gama_syulen_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "grin_mtc_cargogrid",
+    "containerType": "cargogrid",
+    "x": 0.5,
+    "y": 0.5,
+    "z": 0.5,
+    "scu": 0
+  },
+  {
+    "id": "grin_roc_cargogrid_ds",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "grin_roc_cargogrid_roc",
+    "containerType": "cargogrid",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "misc_hull_a_cargogrid",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 16
+  },
+  {
+    "id": "misc_starlancer_cargogrid_max_template",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 20,
+    "z": 2.5,
+    "scu": 64
+  },
+  {
+    "id": "misc_starlancer_cargogrid_small_template",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 16
+  },
+  {
+    "id": "misc_starlancer_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 10,
+    "z": 3.75,
+    "scu": 48
+  },
+  {
+    "id": "opencargo_drak_cutlass_black_rear",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 6
+  },
+  {
+    "id": "opencargotest",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 40
+  },
+  {
+    "id": "pushable_trolley_1scu_x_2scu_x_1scu",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 3,
+    "z": 1.25,
+    "scu": 2
+  },
+  {
+    "id": "pushable_trolley_2scu_x_2scu_x_1scu",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 3,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "rsi_apollo_cargoinventory_main",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 16
+  },
+  {
+    "id": "rsi_aurora_cl_cargoinventory_main",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 7.5,
+    "z": 1.25,
+    "scu": 6
+  },
+  {
+    "id": "rsi_aurora_es_cargoinventory_main",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 1.25,
+    "scu": 3
+  },
+  {
+    "id": "rsi_hermes_cargoinventory_main",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 22.5,
+    "z": 2.5,
+    "scu": 144
+  },
+  {
+    "id": "rsi_perseus_cargogrid",
+    "containerType": "cargogrid",
+    "x": 10,
+    "y": 7.5,
+    "z": 2.5,
+    "scu": 96
+  },
+  {
+    "id": "rsi_perseus_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 10,
+    "y": 7.5,
+    "z": 2.5,
+    "scu": 96
+  },
+  {
+    "id": "rsi_polaris_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "rsi_zeus_cargogrid_base_main",
+    "containerType": "cargogrid",
+    "x": 5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 32
+  },
+  {
+    "id": "rsi_zeus_cargogrid_bounty_center",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 16
+  },
+  {
+    "id": "rsi_zeus_cargogrid_cargo_left",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 4
+  },
+  {
+    "id": "rsi_zeus_cargogrid_cargo_main",
+    "containerType": "cargogrid",
+    "x": 6.25,
+    "y": 10,
+    "z": 3.75,
+    "scu": 120
+  },
+  {
+    "id": "rsi_zeus_cargogrid_cargo_right",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 4
+  },
+  {
+    "id": "rsi_zeus_cargogrid_passenger_left",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 1.25,
+    "scu": 3
+  },
+  {
+    "id": "rsi_zeus_cargogrid_passenger_right",
+    "containerType": "cargogrid",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 1.25,
+    "scu": 3
+  },
+  {
+    "id": "rsi_zeus_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "spaceship_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "trolley_hover_cargogrid_template",
+    "containerType": "cargogrid",
+    "x": 2.5,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 12
+  },
+  {
+    "id": "clothing_backpack",
+    "containerType": "clothing",
+    "x": 0.346,
+    "y": 0.487,
+    "z": 0.286,
+    "scu": 0
+  },
+  {
+    "id": "clothing_legs",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_legs_pocket_size1",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_legs_pocket_size2_ext_a",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_legs_pocket_size3_ext_b",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_legs_pocket_size4_ext_c",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_legs_pocket_size5_utility",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_pouches",
+    "containerType": "clothing",
+    "x": 0.333,
+    "y": 0.5,
+    "z": 0.166,
+    "scu": 0
+  },
+  {
+    "id": "clothing_pouches_large",
+    "containerType": "clothing",
+    "x": 0.333,
+    "y": 0.5,
+    "z": 0.166,
+    "scu": 0
+  },
+  {
+    "id": "clothing_pouches_moderate",
+    "containerType": "clothing",
+    "x": 0.333,
+    "y": 0.5,
+    "z": 0.166,
+    "scu": 0
+  },
+  {
+    "id": "clothing_pouches_small",
+    "containerType": "clothing",
+    "x": 0.333,
+    "y": 0.5,
+    "z": 0.166,
+    "scu": 0
+  },
+  {
+    "id": "clothing_torso1",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_torso1_pocket_size1_int_a",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_torso1_pocket_size2_int_b",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_torso1_pocket_size3_ext",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_torso1_pocket_size4_ext",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "clothing_torso1_pocket_size5_ext",
+    "containerType": "clothing",
+    "x": 0.365,
+    "y": 0.365,
+    "z": 0.1825,
+    "scu": 0
+  },
+  {
+    "id": "destroyedinventory_box_0125miliscu_050x050x050",
+    "containerType": "destroyedinventoryboxes",
+    "x": 0.499,
+    "y": 0.499,
+    "z": 0.499,
+    "scu": 0
+  },
+  {
+    "id": "destroyedinventory_box_1scu_125x125x125",
+    "containerType": "destroyedinventoryboxes",
+    "x": 1,
+    "y": 1.2,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "destroyedinventory_box_2scu_250x125x125",
+    "containerType": "destroyedinventoryboxes",
+    "x": 1,
+    "y": 2,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "bed_single_medicalbed",
+    "containerType": "furniture",
+    "x": 0.8,
+    "y": 1.6,
+    "z": 0.6,
+    "scu": 0
+  },
+  {
+    "id": "dropship_passengerseatweaponstorage",
+    "containerType": "furniture",
+    "x": 1,
+    "y": 1.25,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "locker_drawer_clothing_handweareyewear",
+    "containerType": "furniture",
+    "x": 1,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "locker_external_inventory_0375_0625_2000",
+    "containerType": "furniture",
+    "x": 0.375,
+    "y": 0.625,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "anvl_ballista_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "anvl_centurion_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "anvl_spartan_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "argo_atls_cargogrid_geo",
+    "containerType": "groundvehicles",
+    "x": 1,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "argo_atls_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "argo_csv_cargogrid_cargo_main",
+    "containerType": "groundvehicles",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "argo_csv_cargogrid_cargo_rear",
+    "containerType": "groundvehicles",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 1
+  },
+  {
+    "id": "argo_csv_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "drak_mule_cargogrid_rear",
+    "containerType": "groundvehicles",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 1
+  },
+  {
+    "id": "drak_mule_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "grin_ptv_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "grin_roc_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "grin_stv_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_large",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_medium",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_small",
+    "containerType": "groundvehicles",
+    "x": 1.2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_small_bike_1seat",
+    "containerType": "groundvehicles",
+    "x": 1.2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_small_bike_2seats",
+    "containerType": "groundvehicles",
+    "x": 1.2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_small_bike_hoverquad_1seat",
+    "containerType": "groundvehicles",
+    "x": 1.2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "groundvehicle_small_nointerior",
+    "containerType": "groundvehicles",
+    "x": 1.2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "rsi_ursa_rover_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "tmbl_cyclone_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "tmbl_nova_cargogrid_template",
+    "containerType": "groundvehicles",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "inventory_box_1scu_125x125x125",
+    "containerType": "inventoryboxes",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 1
+  },
+  {
+    "id": "inventory_box_2scu_250x125x125",
+    "containerType": "inventoryboxes",
+    "x": 1.25,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 2
+  },
+  {
+    "id": "inventory_box_4scu_250x250x125",
+    "containerType": "inventoryboxes",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "inventory_box_8scu_250x250x250",
+    "containerType": "inventoryboxes",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 8
+  },
+  {
+    "id": "itembankcontainer",
+    "containerType": "itembankcontainers",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 8
+  },
+  {
+    "id": "landingzone",
+    "containerType": "inventorycontainers",
+    "x": 999,
+    "y": 999,
+    "z": 999,
+    "scu": 510082399
+  },
+  {
+    "id": "landingzoneinventory",
+    "containerType": "inventorycontainers",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_005x005x005",
+    "containerType": "lootcontainers",
+    "x": 0.46,
+    "y": 0.46,
+    "z": 0.46,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_01x005x0025",
+    "containerType": "lootcontainers",
+    "x": 1.2,
+    "y": 0.6,
+    "z": 0.46,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_01x005x0037",
+    "containerType": "lootcontainers",
+    "x": 1.4,
+    "y": 0.7,
+    "z": 0.5,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_075x045x00375",
+    "containerType": "lootcontainers",
+    "x": 0.71,
+    "y": 0.41,
+    "z": 0.335,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_hoilday_box",
+    "containerType": "lootcontainers",
+    "x": 0.46,
+    "y": 0.71,
+    "z": 0.27,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_kopionparams",
+    "containerType": "lootcontainers",
+    "x": 1,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_large_0125x05x06",
+    "containerType": "lootcontainers",
+    "x": 1.22,
+    "y": 0.46,
+    "z": 0.54,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_large_armour",
+    "containerType": "lootcontainers",
+    "x": 1.22,
+    "y": 1.4,
+    "z": 0.91,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_large_weapons",
+    "containerType": "lootcontainers",
+    "x": 1.22,
+    "y": 0.46,
+    "z": 0.54,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_medium_05x05x075",
+    "containerType": "lootcontainers",
+    "x": 0.45,
+    "y": 0.45,
+    "z": 0.7,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_medium_armour",
+    "containerType": "lootcontainers",
+    "x": 0.48,
+    "y": 1.25,
+    "z": 0.7,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_medium_weapons",
+    "containerType": "lootcontainers",
+    "x": 0.45,
+    "y": 0.45,
+    "z": 1.1,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_picoparams",
+    "containerType": "lootcontainers",
+    "x": 0.184,
+    "y": 0.362,
+    "z": 0.184,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_small_05x05x03",
+    "containerType": "lootcontainers",
+    "x": 0.46,
+    "y": 0.45,
+    "z": 0.27,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_small_armour",
+    "containerType": "lootcontainers",
+    "x": 0.46,
+    "y": 1.15,
+    "z": 0.46,
+    "scu": 0
+  },
+  {
+    "id": "lootable_container_small_weapons",
+    "containerType": "lootcontainers",
+    "x": 0.46,
+    "y": 0.71,
+    "z": 0.27,
+    "scu": 0
+  },
+  {
+    "id": "master_lootable_pu_container",
+    "containerType": "lootcontainers",
+    "x": 1,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "nyx_landingzoneinventory",
+    "containerType": "inventorycontainers",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "pyro_landingzoneinventory",
+    "containerType": "inventorycontainers",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_avenger_cargogrid_stalker",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "aegs_avenger_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_avenger_cargogrid_titan",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 5,
+    "z": 1.25,
+    "scu": 8
+  },
+  {
+    "id": "aegs_avenger_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_avenger_stalker_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_avenger_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_avenger_titan_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_avenger_warlock_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_eclipse_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_eclipse_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_gladius_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_gladius_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_gladius_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_hammerhead_cargogrid",
+    "containerType": "ships",
+    "x": 5,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 40
+  },
+  {
+    "id": "aegs_hammerhead_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_hammerhead_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_hammerhead_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_idris_cargogrid_additionalstorage",
+    "containerType": "ships",
+    "x": 3.75,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 12
+  },
+  {
+    "id": "aegs_idris_cargogrid_cargo_room_back",
+    "containerType": "ships",
+    "x": 22.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 144
+  },
+  {
+    "id": "aegs_idris_cargogrid_cargo_room_front",
+    "containerType": "ships",
+    "x": 17.5,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 140
+  },
+  {
+    "id": "aegs_idris_cargogrid_cargo_room_medium",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 10
+  },
+  {
+    "id": "aegs_idris_cargogrid_cargo_room_small",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 4
+  },
+  {
+    "id": "aegs_idris_cargogrid_hangar",
+    "containerType": "ships",
+    "x": 5,
+    "y": 5,
+    "z": 5,
+    "scu": 64
+  },
+  {
+    "id": "aegs_idris_cargogrid_missile_room_back",
+    "containerType": "ships",
+    "x": 20,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 96
+  },
+  {
+    "id": "aegs_idris_cargogrid_missile_room_front",
+    "containerType": "ships",
+    "x": 17.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 112
+  },
+  {
+    "id": "aegs_idris_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_idris_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_javelin_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_reclaimer_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_reclaimer_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_reclaimer_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_redeemer_cargogrid",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 2
+  },
+  {
+    "id": "aegs_redeemer_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_redeemer_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_redeemer_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_retaliator_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_sabre_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_sabre_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_sabre_raven_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_sabre_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_vanguard_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "aegs_vanguard_harbinger_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_vanguard_hoplite_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_vanguard_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "aegs_vanguard_sentinel_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_vanguard_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "aegs_vanguard_warden_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_arrow_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_arrow_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_asgard_cargogrid_ic",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 11.25,
+    "z": 5,
+    "scu": 180
+  },
+  {
+    "id": "anvl_asgard_cargogrid_template",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 11.25,
+    "z": 5,
+    "scu": 180
+  },
+  {
+    "id": "anvl_ballista_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_c8_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "anvl_c8_pisces_cargogrid",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 2
+  },
+  {
+    "id": "anvl_c8_pisces_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_c8_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_c8r_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "anvl_c8r_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_c8x_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "anvl_carrack_cargogrid_large",
+    "containerType": "ships",
+    "x": 5,
+    "y": 5,
+    "z": 5,
+    "scu": 64
+  },
+  {
+    "id": "anvl_carrack_cargogrid_medium",
+    "containerType": "ships",
+    "x": 5,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 24
+  },
+  {
+    "id": "anvl_carrack_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_carrack_personalstorage",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "anvl_carrack_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_centurion_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_f7c_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_f7cm_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_f7cr_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_f7cs_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_f8c_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_gladiator_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_gladiator_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_hawk_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_hawk_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_hornet_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_hornet_f7c_mk2_cargogrid",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 2
+  },
+  {
+    "id": "anvl_hurricane_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_hurricane_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_lighting_f8_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_paladin_cargogrid",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "anvl_paladin_cargogrid_template",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 7.5,
+    "z": 1.25,
+    "scu": 30
+  },
+  {
+    "id": "anvl_paladin_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_spartan_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_terrapin_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "anvl_terrapin_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "anvl_valkyrie_cargogrid",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 7.5,
+    "z": 3.75,
+    "scu": 90
+  },
+  {
+    "id": "anvl_valkyrie_cargogrid_template",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 7.5,
+    "z": 1.25,
+    "scu": 30
+  },
+  {
+    "id": "anvl_valkyrie_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "argo_mole_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "argo_mole_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "argo_mpuv-1t_cargogrid",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 16
+  },
+  {
+    "id": "argo_mpuv_cargo_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "argo_mpuv_cargogrid",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 2
+  },
+  {
+    "id": "argo_mpuv_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "argo_mpuv_personnel_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "argo_mpuv_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "argo_raft_cargogrid",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 10,
+    "z": 2.5,
+    "scu": 32
+  },
+  {
+    "id": "argo_raft_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "argo_raft_cargogridic_192",
+    "containerType": "ships",
+    "x": 10,
+    "y": 15,
+    "z": 2.5,
+    "scu": 192
+  },
+  {
+    "id": "argo_raft_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "argo_srv_cargogrid",
+    "containerType": "ships",
+    "x": 5,
+    "y": 3.75,
+    "z": 1.25,
+    "scu": 12
+  },
+  {
+    "id": "argo_srv_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "argo_srv_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "banu_defender_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "banu_defender_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "cnou_hoverquad_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "cnou_hoverquad_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "cnou_mustang_alpha_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "cnou_mustang_beta_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "cnou_mustang_cargogrid",
+    "containerType": "ships",
+    "x": 5,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "cnou_mustang_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "cnou_mustang_delta_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "cnou_mustang_gamma_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "cnou_mustang_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "cnou_nomad_cargogrid",
+    "containerType": "ships",
+    "x": 3.75,
+    "y": 5,
+    "z": 2.5,
+    "scu": 24
+  },
+  {
+    "id": "cnou_nomad_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "cnou_nomad_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_ares_starfighter_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "crus_hercules_a2_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_hercules_c2_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_hercules_m2_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_hercules_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_intrepid_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_spirit_a1_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_spirit_c1_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_star_runner_cargogrid_large",
+    "containerType": "ships",
+    "x": 7.5,
+    "y": 7.5,
+    "z": 3.75,
+    "scu": 108
+  },
+  {
+    "id": "crus_star_runner_cargogrid_small",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 6
+  },
+  {
+    "id": "crus_star_runner_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "crus_starfighter_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "crus_starlifter_cargogrid_large_c2",
+    "containerType": "ships",
+    "x": 10,
+    "y": 18.75,
+    "z": 5,
+    "scu": 480
+  },
+  {
+    "id": "crus_starlifter_cargogrid_large_m2",
+    "containerType": "ships",
+    "x": 10,
+    "y": 18.75,
+    "z": 3.75,
+    "scu": 360
+  },
+  {
+    "id": "crus_starlifter_cargogrid_small_a2",
+    "containerType": "ships",
+    "x": 7.5,
+    "y": 22.5,
+    "z": 2.5,
+    "scu": 216
+  },
+  {
+    "id": "crus_starlifter_cargogrid_small_c2",
+    "containerType": "ships",
+    "x": 7.5,
+    "y": 11.25,
+    "z": 5,
+    "scu": 216
+  },
+  {
+    "id": "crus_starlifter_cargogrid_small_m2",
+    "containerType": "ships",
+    "x": 7.5,
+    "y": 11.25,
+    "z": 3.75,
+    "scu": 162
+  },
+  {
+    "id": "crus_starlifter_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "crus_starrunner_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_buccaneer_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_buccaneer_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_caterpillar_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_caterpillar_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_clipper_cargogrid",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 12
+  },
+  {
+    "id": "drak_clipper_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_corsair_cargogrid",
+    "containerType": "ships",
+    "x": 5,
+    "y": 11.25,
+    "z": 2.5,
+    "scu": 72
+  },
+  {
+    "id": "drak_corsair_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_corsair_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_cutlass_black_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_cutlass_blue_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_cutlass_cargogrid_main",
+    "containerType": "ships",
+    "x": 5,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 40
+  },
+  {
+    "id": "drak_cutlass_cargogrid_rear",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 6
+  },
+  {
+    "id": "drak_cutlass_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_cutlass_red_cargogrid_left",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 6
+  },
+  {
+    "id": "drak_cutlass_red_cargogrid_right",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 3.75,
+    "z": 2.5,
+    "scu": 6
+  },
+  {
+    "id": "drak_cutlass_red_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_cutlass_steel_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_cutlass_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_cutter_cargogrid_2scu",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 2
+  },
+  {
+    "id": "drak_cutter_cargogrid_4scu",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 4
+  },
+  {
+    "id": "drak_cutter_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_cutter_scout_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_cutter_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_dragonfly_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_dragonfly_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_golem_ox_cargogrid",
+    "containerType": "ships",
+    "x": 5,
+    "y": 10,
+    "z": 2.5,
+    "scu": 64
+  },
+  {
+    "id": "drak_golem_ox_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_herald_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_herald_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_mule_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "drak_vulture_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "drak_vulture_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "espr_blade_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "espr_glaive_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "espr_prowler_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "espr_prowler_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "espr_prowler_utility_cargogrid_main",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 5,
+    "z": 2.5,
+    "scu": 16
+  },
+  {
+    "id": "espr_prowler_utility_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "espr_talon_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "espr_talon_shrike_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "espr_talon_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "gama_syulen_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "glsn_shiv_cargogrid_main_ic",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 10,
+    "z": 2.5,
+    "scu": 32
+  },
+  {
+    "id": "grin_ptv_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "grin_roc_ds_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "grin_roc_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "grin_stv_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "krig_p52_merlin_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "krig_p52_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "krig_p72_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_fortune_cargogrid_lift",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "misc_fortune_cargogrid_side",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 3.75,
+    "z": 1.25,
+    "scu": 6
+  },
+  {
+    "id": "misc_freelancer__mis_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_freelancer_cargogrid_dur_rear",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 5,
+    "z": 3.75,
+    "scu": 24
+  },
+  {
+    "id": "misc_freelancer_cargogrid_max_rear",
+    "containerType": "ships",
+    "x": 5,
+    "y": 11.25,
+    "z": 3.75,
+    "scu": 108
+  },
+  {
+    "id": "misc_freelancer_cargogrid_mid",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 3.75,
+    "scu": 6
+  },
+  {
+    "id": "misc_freelancer_cargogrid_rear",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 11.25,
+    "z": 3.75,
+    "scu": 54
+  },
+  {
+    "id": "misc_freelancer_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "misc_freelancer_dur_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_freelancer_max_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_freelancer_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_hull_a_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "misc_hull_a_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_hull_c_cargogrid",
+    "containerType": "ships",
+    "x": 10,
+    "y": 10,
+    "z": 7.5,
+    "scu": 384
+  },
+  {
+    "id": "misc_hull_c_cargogrid_outer",
+    "containerType": "ships",
+    "x": 5,
+    "y": 10,
+    "z": 7.5,
+    "scu": 192
+  },
+  {
+    "id": "misc_hull_c_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "misc_hull_c_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_prospector_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "misc_prospector_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_razor_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "misc_reliant_cargogrid_kore",
+    "containerType": "ships",
+    "x": 3.75,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 3
+  },
+  {
+    "id": "misc_reliant_cargogrid_tana",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 1.25,
+    "scu": 1
+  },
+  {
+    "id": "misc_reliant_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "misc_reliant_kore_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_reliant_mako_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_reliant_sen_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_reliant_tana_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_reliant_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_starfarer_cargogrid_center",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 8.75,
+    "z": 6.25,
+    "scu": 175
+  },
+  {
+    "id": "misc_starfarer_cargogrid_side",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 2.5,
+    "z": 6.25,
+    "scu": 50
+  },
+  {
+    "id": "misc_starfarer_cargogrid_side_alcove",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 8
+  },
+  {
+    "id": "misc_starfarer_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "misc_starfarer_gemini_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "misc_starfarer_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "mrai_fury_lx_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "mrai_fury_mx_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "mrai_fury_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "mrai_razor_ex_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "mrai_razor_lx_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "mrai_razor_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_100i_cargogrid",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 2
+  },
+  {
+    "id": "orig_100i_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "orig_100i_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_125a_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_135c_cargogrid",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "orig_135c_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_300i_cargogrid_front",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 5,
+    "z": 1.25,
+    "scu": 8
+  },
+  {
+    "id": "orig_300i_cargogrid_rear",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "orig_300i_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "orig_300i_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_315p_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_325a_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_350r_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_400i_cargogrid",
+    "containerType": "ships",
+    "x": 3.75,
+    "y": 8.75,
+    "z": 2.5,
+    "scu": 42
+  },
+  {
+    "id": "orig_400i_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "orig_400i_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_600i_cargogrid_main",
+    "containerType": "ships",
+    "x": 5,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 8
+  },
+  {
+    "id": "orig_600i_cargogrid_main_small",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 1.25,
+    "z": 2.5,
+    "scu": 2
+  },
+  {
+    "id": "orig_600i_cargogrid_module_large",
+    "containerType": "ships",
+    "x": 5,
+    "y": 1.25,
+    "z": 3.75,
+    "scu": 12
+  },
+  {
+    "id": "orig_600i_cargogrid_module_small",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 1.25,
+    "z": 3.75,
+    "scu": 6
+  },
+  {
+    "id": "orig_600i_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "orig_600i_executive_edition_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_600i_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_600i_touring_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_85x_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "orig_85x_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_890jump_cargogrid_hangar",
+    "containerType": "ships",
+    "x": 1.25,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 10
+  },
+  {
+    "id": "orig_890jump_cargogrid_hangar_wide",
+    "containerType": "ships",
+    "x": 3.75,
+    "y": 6.25,
+    "z": 2.5,
+    "scu": 30
+  },
+  {
+    "id": "orig_890jump_cargogrid_rear",
+    "containerType": "ships",
+    "x": 7.5,
+    "y": 15,
+    "z": 5,
+    "scu": 288
+  },
+  {
+    "id": "orig_890jump_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "orig_890jump_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "orig_m50_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "orig_m50_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "personalstorage_locker",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_015",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_030",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_045",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_060",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_075",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_090",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_105",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_120",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_135",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_150",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_aegs_retaliator",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_anvl_terrapin",
+    "containerType": "ships",
+    "x": 0.75,
+    "y": 0.5,
+    "z": 1.5,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_drak_corsair",
+    "containerType": "ships",
+    "x": 0.75,
+    "y": 0.5,
+    "z": 1.5,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_drak_cutlass_01",
+    "containerType": "ships",
+    "x": 0.75,
+    "y": 0.5,
+    "z": 1.5,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_hull_a_01",
+    "containerType": "ships",
+    "x": 0.6,
+    "y": 0.7,
+    "z": 0.4,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_raft",
+    "containerType": "ships",
+    "x": 0.5,
+    "y": 0.5,
+    "z": 1.5,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_redeemer_01",
+    "containerType": "ships",
+    "x": 0.6,
+    "y": 1.2,
+    "z": 1.5,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_rsi_com_suit_locker_overhead",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_rsi_common_locker",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_rsi_polaris_captain",
+    "containerType": "ships",
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_rsi_polaris_medlocker",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 8
+  },
+  {
+    "id": "personalstorage_locker_rsi_polaris_medlocker_small",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 2.5,
+    "z": 2.5,
+    "scu": 8
+  },
+  {
+    "id": "personalstorage_locker_scorpius_01",
+    "containerType": "ships",
+    "x": 1.2,
+    "y": 1.3,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_locker_spartan",
+    "containerType": "ships",
+    "x": 0.5,
+    "y": 0.7,
+    "z": 1.3,
+    "scu": 0
+  },
+  {
+    "id": "personalstorage_template",
+    "containerType": "ships",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  },
+  {
+    "id": "rsi_aurora_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "rsi_aurora_cl_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_aurora_es_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_aurora_ln_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_aurora_lx_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_aurora_mr_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_aurora_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_bengal_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "rsi_constellation_andromeda_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_constellation_aquila_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_constellation_cargogrid_main",
+    "containerType": "ships",
+    "x": 5,
+    "y": 10,
+    "z": 3.75,
+    "scu": 96
+  },
+  {
+    "id": "rsi_constellation_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "rsi_constellation_phoenix_cargogrid_main",
+    "containerType": "ships",
+    "x": 6.25,
+    "y": 10,
+    "z": 2.5,
+    "scu": 80
+  },
+  {
+    "id": "rsi_constellation_phoenix_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_constellation_taurus_cargogrid_main",
+    "containerType": "ships",
+    "x": 5,
+    "y": 17.5,
+    "z": 3.75,
+    "scu": 168
+  },
+  {
+    "id": "rsi_constellation_taurus_cargogrid_tail",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 3.75,
+    "z": 1.25,
+    "scu": 6
+  },
+  {
+    "id": "rsi_constellation_taurus_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_constellation_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_lynx_rover_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_mantis_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "rsi_mantis_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_meteor_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_polaris_cargogrid_main",
+    "containerType": "ships",
+    "x": 7.5,
+    "y": 15,
+    "z": 5,
+    "scu": 288
+  },
+  {
+    "id": "rsi_salvation_cargogrid_template",
+    "containerType": "ships",
+    "x": 2.5,
+    "y": 3.75,
+    "z": 1.25,
+    "scu": 6
+  },
+  {
+    "id": "rsi_scorpius_antares_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_scorpius_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "rsi_scorpius_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_ursa_medivac_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_ursa_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_zeus_cl_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_zeus_es_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "rsi_zeus_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "ship_capital",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "ship_capital_luxuryyacht",
+    "containerType": "ships",
+    "x": 2.25,
+    "y": 6,
+    "z": 1.25,
+    "scu": 4
+  },
+  {
+    "id": "ship_crus_starlifter_personalinventory",
+    "containerType": "ships",
+    "x": 1.75,
+    "y": 1.75,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_gama_syulen",
+    "containerType": "ships",
+    "x": 5,
+    "y": 5,
+    "z": 5,
+    "scu": 64
+  },
+  {
+    "id": "ship_large",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "ship_medium",
+    "containerType": "ships",
+    "x": 5,
+    "y": 5,
+    "z": 5,
+    "scu": 64
+  },
+  {
+    "id": "ship_medium_nointerior",
+    "containerType": "ships",
+    "x": 5,
+    "y": 5,
+    "z": 5,
+    "scu": 64
+  },
+  {
+    "id": "ship_personal_inventory_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "ship_small",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "ship_small_no_interior_argo_mpuv_personal_storage",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "ship_small_nointerior",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "ship_small_nointerior_racer",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "ship_snub",
+    "containerType": "ships",
+    "x": 1.2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_aegs_avenger",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 1.75,
+    "y": 3,
+    "z": 1.75,
+    "scu": 2
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_aegs_hammerhead",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2.5,
+    "y": 7,
+    "z": 2.25,
+    "scu": 10
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_aegs_reclaimer",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 9.5,
+    "y": 9.5,
+    "z": 2,
+    "scu": 49
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_aegs_redeemer",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 1,
+    "y": 2.5,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_anvl_carrack",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 12,
+    "y": 12,
+    "z": 3,
+    "scu": 162
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_anvl_pisces",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 2,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_argo_mole",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 7,
+    "y": 7,
+    "z": 2,
+    "scu": 25
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_argo_mpuv",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 1,
+    "y": 2.5,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_argo_raft",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 7,
+    "y": 7,
+    "z": 2,
+    "scu": 25
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_argo_srv",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 7,
+    "y": 7,
+    "z": 2,
+    "scu": 25
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_cnou_mustang",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 1.5,
+    "y": 4,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_cnou_nomad",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 4,
+    "y": 5,
+    "z": 1.2,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_crus_hercules_a2",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 9,
+    "y": 9,
+    "z": 2.9,
+    "scu": 98
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_crus_hercules_c2",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 12,
+    "y": 16,
+    "z": 3.5,
+    "scu": 216
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_crus_hercules_m2",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 12,
+    "y": 12,
+    "z": 3.25,
+    "scu": 162
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_crus_mercury",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 5,
+    "y": 10,
+    "z": 2,
+    "scu": 32
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_drak_caterpillar",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 8,
+    "y": 16,
+    "z": 4.5,
+    "scu": 216
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_drak_corsair",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 5,
+    "y": 7.5,
+    "z": 3.75,
+    "scu": 72
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_drak_cutlass_black",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 4,
+    "y": 4,
+    "z": 2.875,
+    "scu": 18
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_drak_cutlass_redblue",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 4,
+    "z": 1.5,
+    "scu": 3
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_drak_cutter",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 2,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_drak_cutter_variant",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_misc_freelancer",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 3,
+    "y": 11,
+    "z": 2,
+    "scu": 16
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_misc_freelancer_dur_mis",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 3,
+    "y": 4.5,
+    "z": 2,
+    "scu": 6
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_misc_freelancer_max",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 3,
+    "y": 11,
+    "z": 3.7,
+    "scu": 32
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_misc_hull_a",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 4,
+    "y": 6,
+    "z": 2,
+    "scu": 12
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_misc_reliant_kore",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 1.5,
+    "y": 3.5,
+    "z": 1.15,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_misc_starfarer",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 5.9,
+    "y": 10,
+    "z": 5,
+    "scu": 128
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_100i_125a",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 0.9,
+    "y": 2.5,
+    "z": 0.9,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_135c",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 3,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_300i",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 4.5,
+    "z": 1.75,
+    "scu": 3
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_315p",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 6,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_325a_350r",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 5,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_400i",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 5,
+    "y": 5,
+    "z": 1.7,
+    "scu": 16
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_600i",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2.5,
+    "y": 8,
+    "z": 2,
+    "scu": 12
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_600i_touring",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2.5,
+    "y": 8,
+    "z": 2,
+    "scu": 12
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_orig_890_jump",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 10,
+    "y": 10,
+    "z": 4.6,
+    "scu": 192
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_rsi_aurora_cl",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 3,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_rsi_consellation_aquila_andromeda",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 5,
+    "y": 9,
+    "z": 2.125,
+    "scu": 28
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_rsi_polaris",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 15,
+    "y": 15,
+    "z": 3.75,
+    "scu": 432
+  },
+  {
+    "id": "ship_tempitemcarryingcapacity_rsi_zeus",
+    "containerType": "tempshipitemcarryingcapacity",
+    "x": 2,
+    "y": 3,
+    "z": 1,
+    "scu": 0
+  },
+  {
+    "id": "tmbl_cyclone_aa_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_cyclone_mt_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_cyclone_rc_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_cyclone_rn_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_cyclone_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_cyclone_tr_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_nova_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_storm_aa_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "tmbl_storm_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "vncl_blade_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "vncl_glaive_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "vncl_scythe_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "xian_nox_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "xian_scout_cargogrid_template",
+    "containerType": "ships",
+    "x": 35,
+    "y": 35,
+    "z": 35,
+    "scu": 21952
+  },
+  {
+    "id": "xnaa_nox_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "xnaa_scout_template",
+    "containerType": "ships",
+    "x": 2,
+    "y": 2,
+    "z": 2,
+    "scu": 1
+  },
+  {
+    "id": "starcitizen",
+    "containerType": "inventorycontainers",
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "scu": 0
+  }
+]
