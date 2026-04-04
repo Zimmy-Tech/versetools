@@ -652,6 +652,8 @@ def extract_fps_weapons():
         # Store per-shot average for DPS calc, full breakdown for display
         MANUAL_DAMAGE = {
             "none_rifle_multi_01": {"physical": 11.0, "energy": 9.5, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
+            "apar_special_ballistic_01": {"physical": 6000.0, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},  # Scourge: 20 base × 300 charge mult
+            "none_special_ballistic_01": {"physical": 1000.0, "energy": 0, "distortion": 0, "thermal": 500.0, "biochemical": 0, "stun": 0},  # Boomtube: explosion DamageInfo[0191]
         }
         if class_name in MANUAL_DAMAGE:
             damage = MANUAL_DAMAGE[class_name]

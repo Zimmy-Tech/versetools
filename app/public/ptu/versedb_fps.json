@@ -40,15 +40,15 @@
       "magazineSize": 5,
       "projectileSpeed": 50.0,
       "damage": {
-        "physical": 20.0,
-        "energy": 0.0,
-        "distortion": 0.0,
-        "thermal": 0.0,
-        "biochemical": 0.0,
-        "stun": 0.0
+        "physical": 6000.0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
       },
-      "alphaDamage": 20.0,
-      "dps": 10.0,
+      "alphaDamage": 6000.0,
+      "dps": 3000.0,
       "pelletCount": null,
       "isBeam": null
     },
@@ -914,15 +914,15 @@
       "magazineSize": 0,
       "projectileSpeed": 135.0,
       "damage": {
-        "physical": 20.0,
-        "energy": 0.0,
-        "distortion": 0.0,
-        "thermal": 0.0,
-        "biochemical": 0.0,
-        "stun": 0.0
+        "physical": 1000.0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 500.0,
+        "biochemical": 0,
+        "stun": 0
       },
-      "alphaDamage": 20.0,
-      "dps": 166.67,
+      "alphaDamage": 1500.0,
+      "dps": 12500.0,
       "pelletCount": null,
       "isBeam": null
     },
