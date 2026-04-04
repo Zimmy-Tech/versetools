@@ -8,12 +8,13 @@
 
     <div class="fps-header">
       <div class="fps-title">FPS Armor Database</div>
-      <div class="fps-sub">{{ filtered().length }} armor pieces with damage reduction data</div>
+      <div class="fps-sub">{{ filtered().length }} armor pieces</div>
     </div>
 
     <div class="fps-filters">
       <select class="fps-select" [value]="weightFilter()" (change)="weightFilter.set($any($event.target).value)">
         <option value="">All Weights</option>
+        <option value="undersuit">Undersuit</option>
         <option value="light">Light</option>
         <option value="medium">Medium</option>
         <option value="heavy">Heavy</option>
@@ -27,6 +28,12 @@
         <option value="backpack">Backpack</option>
         <option value="undersuit">Undersuit</option>
       </select>
+      <select class="fps-select" [value]="setFilter()" (change)="setFilter.set($any($event.target).value)">
+        <option value="">All Sets</option>
+        @for (s of setRoots(); track s) {
+          @if (s) { <option [value]="s">{{ s }}</option> }
+        }
+      </select>
       <input class="fps-search" type="text" placeholder="Search..."
              [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
     </div>
@@ -36,25 +43,42 @@
         <thead>
           <tr>
             <th class="sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
-            <th>Set</th>
-            <th>Manufacturer</th>
             <th class="sortable" (click)="toggleSort('weight')">Weight{{ sortIndicator('weight') }}</th>
-            <th class="sortable" (click)="toggleSort('slot')">Slot{{ sortIndicator('slot') }}</th>
-            <th class="sortable" (click)="toggleSort('damageReduction')">Dmg Reduction{{ sortIndicator('damageReduction') }}</th>
-            <th>Temp Range</th>
+            <th class="sortable" (click)="toggleSort('damageReduction')">DR{{ sortIndicator('damageReduction') }}</th>
+            <th>Temp</th>
+            <th>Rad</th>
+            <th>Carry (K µSCU)</th>
           </tr>
         </thead>
         <tbody>
           @for (p of filtered(); track p.className) {
-            <tr [class.light]="p.weight === 'light'" [class.medium]="p.weight === 'medium'" [class.heavy]="p.weight === 'heavy'">
-              <td class="col-name">{{ p.name }}</td>
-              <td>{{ p.setName }}</td>
-              <td>{{ p.manufacturer }}</td>
+            <tr [class.expandable]="p.variants.length > 0"
+                [class.expanded]="expandedPiece() === p.className"
+                (click)="p.variants.length > 0 ? toggleExpand(p.className) : null">
+              <td class="col-name">
+                {{ p.baseName }}
+                @if (p.variants.length > 0) {
+                  <span class="variant-count">({{ p.variants.length + 1 }} variants) {{ expandedPiece() === p.className ? '\u25BE' : '\u25B8' }}</span>
+                }
+              </td>
               <td><span class="weight-badge" [class]="p.weight">{{ weightLabel(p.weight) }}</span></td>
-              <td>{{ p.slot }}</td>
               <td class="col-num col-dr">{{ p.damageReduction }}%</td>
-              <td class="col-num">{{ p.tempMin }}&deg; / {{ p.tempMax }}&deg;C</td>
+              <td class="col-num">{{ p.tempMin }}&deg; / {{ p.tempMax }}&deg;</td>
+              <td class="col-num">{{ p.radiationProtection ? (p.radiationProtection / 1000).toFixed(1) + 'k' : '\u2014' }}</td>
+              <td class="col-num">{{ p.carryingCapacity ?? '\u2014' }}</td>
             </tr>
+            @if (expandedPiece() === p.className && p.variants.length > 0) {
+              <tr class="variant-row">
+                <td colspan="6">
+                  <div class="variant-list">
+                    <span class="variant-tag">{{ p.baseName }}</span>
+                    @for (v of p.variants; track v) {
+                      <span class="variant-tag">{{ p.baseName }} {{ v }}</span>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
           }
         </tbody>
       </table>

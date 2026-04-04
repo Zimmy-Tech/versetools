@@ -133,6 +133,11 @@ def parse_armor_piece(xml_path, loc, slot, weight):
     # Get damage reduction from description
     dmg_reduction = get_damage_reduction(loc, loc_key) if loc_key else None
 
+    # Default DR by weight if not found in description
+    DEFAULT_DR = {"light": 20, "medium": 30, "heavy": 40, "undersuit": 10}
+    if dmg_reduction is None:
+        dmg_reduction = DEFAULT_DR.get(weight)
+
     # Temperature resistance
     min_temp = None
     max_temp = None
@@ -143,14 +148,44 @@ def parse_armor_piece(xml_path, loc, slot, weight):
     if m_max:
         max_temp = int(m_max.group(1))
 
+    # Radiation protection from description
+    radiation_protection = None
+    radiation_scrub = None
+    desc_key = loc_key.replace("item_Name_", "item_Desc_").replace("item_name_", "item_desc_").lower()
+    desc = loc.get(desc_key, "")
+    if not desc:
+        # Try shared desc
+        parts = desc_key.rsplit("_", 1)
+        if len(parts) == 2:
+            desc = loc.get(parts[0] + "_shared", "")
+    m_rad = re.search(r'Radiation Protection:\s*([\d,]+)', desc)
+    m_scrub = re.search(r'Radiation Scrub Rate:\s*([\d.]+)', desc)
+    if m_rad:
+        radiation_protection = int(m_rad.group(1).replace(",", ""))
+    if m_scrub:
+        radiation_scrub = float(m_scrub.group(1))
+
+    # Carrying capacity from description
+    carrying = None
+    m_carry = re.search(r'Carrying Capacity:\s*([\d.]+)', desc)
+    if m_carry:
+        carrying = float(m_carry.group(1))
+
+    # Damage resistance UUID (for future DCB per-type resistance lookup)
+    dr_uuid = None
+    m_dr = re.search(r'damageResistance="([0-9a-f-]+)"', txt, re.IGNORECASE)
+    if m_dr:
+        dr_uuid = m_dr.group(1)
+
     # Get manufacturer
     manufacturer = get_mfr(stem)
 
-    # Determine armor set name (strip slot suffix)
+    # Determine armor set name: strip slot keyword and everything after it
     set_name = display_name
-    for suffix in [" Arms", " Core", " Legs", " Helmet", " Backpack"]:
-        if set_name.endswith(suffix):
-            set_name = set_name[:-len(suffix)]
+    for slot_word in [" Arms", " Core", " Legs", " Helmet", " Backpack", " Undersuit"]:
+        idx = set_name.find(slot_word)
+        if idx > 0:
+            set_name = set_name[:idx].strip()
             break
 
     return {
@@ -158,11 +193,14 @@ def parse_armor_piece(xml_path, loc, slot, weight):
         "name": display_name,
         "setName": set_name,
         "manufacturer": manufacturer,
-        "weight": weight,  # light/medium/heavy
-        "slot": slot,  # arms/core/legs/helmet/backpack
+        "weight": weight,
+        "slot": slot,
         "damageReduction": dmg_reduction,
         "tempMin": min_temp,
         "tempMax": max_temp,
+        "radiationProtection": radiation_protection,
+        "radiationScrub": radiation_scrub,
+        "carryingCapacity": carrying,
     }
 
 
@@ -222,7 +260,33 @@ def main():
         else:
             skipped += 1
 
-    print(f"\nExtracted {len(armor_pieces)} armor pieces ({skipped} skipped)")
+    # Inherit radiation/carrying from base pieces to color variants
+    # Group by className prefix (strip trailing _XX color suffix)
+    base_data = {}  # (weight, slot, base_prefix) -> {rad, scrub, carry}
+    for p in armor_pieces:
+        if p["radiationProtection"] is not None or p["carryingCapacity"] is not None:
+            # Extract base prefix: e.g., "cds_armor_medium_core_01_01" from "cds_armor_medium_core_01_01_01"
+            parts = p["className"].rsplit("_", 1)
+            base_key = (p["weight"], p["slot"], parts[0])
+            base_data[base_key] = {
+                "rad": p["radiationProtection"],
+                "scrub": p["radiationScrub"],
+                "carry": p["carryingCapacity"],
+            }
+
+    inherited = 0
+    for p in armor_pieces:
+        if p["radiationProtection"] is None:
+            parts = p["className"].rsplit("_", 1)
+            base_key = (p["weight"], p["slot"], parts[0])
+            if base_key in base_data:
+                bd = base_data[base_key]
+                p["radiationProtection"] = bd["rad"]
+                p["radiationScrub"] = bd["scrub"]
+                p["carryingCapacity"] = bd["carry"]
+                inherited += 1
+
+    print(f"\nExtracted {len(armor_pieces)} armor pieces ({skipped} skipped, {inherited} inherited stats)")
 
     # Stats
     from collections import Counter
@@ -241,13 +305,44 @@ def main():
         sets[p["setName"]].append(p)
     print(f"\nUnique armor sets: {len(sets)}")
 
+    # Group color variants under base pieces
+    # Base name = everything up to and including the slot word (Arms/Core/Legs/Helmet/Backpack)
+    from collections import OrderedDict
+    grouped = OrderedDict()
+    for p in armor_pieces:
+        name = p["name"]
+        base_name = name
+        for slot_word in ["Arms", "Core", "Legs", "Helmet", "Backpack", "Undersuit"]:
+            idx = name.find(slot_word)
+            if idx >= 0:
+                base_name = name[:idx + len(slot_word)]
+                break
+
+        key = (p["weight"], p["slot"], base_name)
+        if key not in grouped:
+            grouped[key] = {**p, "baseName": base_name, "variants": []}
+
+        variant_suffix = name[len(base_name):].strip()
+        if variant_suffix:
+            grouped[key]["variants"].append(variant_suffix)
+        # Use stats from whichever piece has them
+        entry = grouped[key]
+        if p["radiationProtection"] is not None and entry["radiationProtection"] is None:
+            entry["radiationProtection"] = p["radiationProtection"]
+            entry["radiationScrub"] = p["radiationScrub"]
+        if p["carryingCapacity"] is not None and entry["carryingCapacity"] is None:
+            entry["carryingCapacity"] = p["carryingCapacity"]
+
+    base_pieces = list(grouped.values())
+    print(f"  Base pieces (grouped): {len(base_pieces)} (from {len(armor_pieces)} total)")
+
     # Output
     output = {
         "meta": {
             "totalPieces": len(armor_pieces),
-            "uniqueSets": len(sets),
+            "basePieces": len(base_pieces),
         },
-        "armor": armor_pieces,
+        "armor": base_pieces,
     }
 
     for out_path in [OUT_LIVE, OUT_PTU]:
