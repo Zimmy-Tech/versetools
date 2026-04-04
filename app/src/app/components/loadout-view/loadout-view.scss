@@ -92,6 +92,14 @@
   overflow-y: auto;
   flex-shrink: 0;
   width: clamp(240px, 18vw, 320px);
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  &:hover { scrollbar-color: var(--border2) transparent; }
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: transparent; }
+  &:hover::-webkit-scrollbar-thumb { background: var(--border2); }
 
   app-power-bars {
     background: transparent;
@@ -113,6 +121,15 @@
   flex-direction: column;
   flex-shrink: 0;
   width: clamp(180px, 17vw, 290px);
+
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  &:hover { scrollbar-color: var(--border2) transparent; }
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: transparent; }
+  &:hover::-webkit-scrollbar-thumb { background: var(--border2); }
 }
 
 .ship-header-row {
