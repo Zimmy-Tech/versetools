@@ -1157,6 +1157,29 @@ def main():
     print(f"  Merged {merged_bp} blueprint rewards from contracts into missions")
     print(f"  Dropped {len(merged_contracts)} duplicate contracts, kept {len(remaining_contracts)}")
 
+    # Second-pass dedup on combined list (catches contract duplicates with same title+category+reward)
+    before_dedup2 = len(all_entries)
+    seen2 = {}
+    unique2 = []
+    for m in all_entries:
+        key = (m["title"], m["category"], m["reward"])
+        if key not in seen2:
+            seen2[key] = m
+            unique2.append(m)
+        else:
+            seen2[key]["multiSystem"] = True
+            # Merge rep scopes and blueprint rewards from duplicate
+            for field in ("repScopes", "blueprintRewards"):
+                if m.get(field):
+                    existing = seen2[key].get(field, [])
+                    for s in m[field]:
+                        if s not in existing:
+                            existing.append(s)
+                    seen2[key][field] = existing
+    all_entries = unique2
+    if before_dedup2 != len(all_entries):
+        print(f"  Second-pass dedup: {before_dedup2} -> {len(all_entries)}")
+
     # ── Chain resolution ────────────────────────────────────
     print("\n  Resolving contract chains...")
 
