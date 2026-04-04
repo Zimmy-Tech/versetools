@@ -1,9 +1,57 @@
 {
   "meta": {
-    "generatedAt": "2026-03-31T16:05:03.651054+00:00",
-    "entries": 5
+    "generatedAt": "2026-04-04T18:44:55.577323+00:00",
+    "entries": 7
   },
   "changelog": [
+    {
+      "fromVersion": "4.7.0-ptu.11494258",
+      "toVersion": "4.7.0-live.11576750",
+      "date": "2026-04-04",
+      "changes": [],
+      "added": [
+        {
+          "category": "flightcontroller",
+          "className": "controller_flight_rsi_aurora_mk2",
+          "name": "Flight Blade"
+        },
+        {
+          "category": "missilelauncher",
+          "className": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+          "name": "RSI S1 Missile Rack"
+        },
+        {
+          "category": "module",
+          "className": "rsi_aurora_mk2_module_cargo",
+          "name": "Aurora Mk II TS Module"
+        },
+        {
+          "category": "module",
+          "className": "rsi_aurora_mk2_module_missile",
+          "name": "Aurora Mk II DM Module"
+        }
+      ],
+      "removed": []
+    },
+    {
+      "fromVersion": "4.7.0-live.11545720",
+      "toVersion": "4.7.0-ptu.11494258",
+      "date": "2026-03-31",
+      "changes": [],
+      "added": [],
+      "removed": [
+        {
+          "category": "ship",
+          "className": "rsi_aurora_gs_se",
+          "name": "RSI Aurora Mk I SE"
+        },
+        {
+          "category": "ship",
+          "className": "rsi_aurora_mk2",
+          "name": "RSI Aurora Mk II"
+        }
+      ]
+    },
     {
       "fromVersion": "4.7.0-ptu.11494258",
       "toVersion": "4.7.0-live.11545720",
