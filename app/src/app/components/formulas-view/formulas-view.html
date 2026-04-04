@@ -9,6 +9,65 @@
   <div class="body">
     @switch (activeSection()) {
 
+      <!-- ═══════════════════ ABOUT ═══════════════════ -->
+      @case ('about') {
+        <div class="section about-section">
+          <h2>VerseTools</h2>
+
+          <p>This project has been in the making for about 8 years.</p>
+
+          <p>With minimal coding experience, I attempted to make multiple versions of this tool over those years, and always hit impassable walls mostly constructed of "personal ability checks." It is only due to the existence of AI programming tools that I was able to see my dream become a reality. There is no intent to deceive or otherwise mislead users as to the source of this tool. I am not a front end developer. I will never be a front end developer.</p>
+
+          <p>The blood, sweat, and tears of years of recording game data with notebooks and excel sheets is my own. Many people around me in my org spent countless hours refining the methodology to get the data in a reliable, repeatable way.</p>
+
+          <p>A lot of data that gets used in SC cannot be obtained by data mining. You have to sit in Arena Commander and shoot lasers at ships for hours and hours. People like Camural doing weapon tests for hours to figure out mechanics.</p>
+
+          <p>That being said, the existence of the tool is solely due to my standing on the shoulders of others in the community. Without people like Peter, tools like Unp4k and hours of slaving away at a terminal to find a way to see the data, none of these tools would be possible. I would also like to specifically shout out Malogos, who, as far as I know, ran the first real effort to visualize this data. And our community owes him a large debt for that effort.</p>
+
+          <p>My main desire for all the years I've dreamt of having this tool is to see what weapons changed, what ships' accelerations changed. This is not a "shot" at any other community tool for their speed of update. It's a personal compulsion.</p>
+
+          <p>My primary goal was always to have a "single" source for all of the information I wanted to have personally available for my Star Citizen journey.</p>
+
+          <p>As it started to "come together" with the use of Claude Code, I realized I was able to make the tool I always wanted.</p>
+
+          <p>In typical Star Citizen fashion, the more of the data that was unlocked, the more and more tools that can be created. Thus, more data can be visualized. What used to exist in meticulously maintained spreadsheets now exists in a tool that I've seen in my head for almost a decade.</p>
+
+          <p>Yes, other community tools exist that contain some of these tools.</p>
+
+          <p>Part of my intent, as you will see in the Formulas, is that I want this data to be accessible to others in our community. Currently, you have to spend a lot of time, or a lot of money, or maybe both, to figure out the formulas and data linkages that allow this tool to exist.</p>
+
+          <p>That stops today.</p>
+
+          <p>All of my formulas including testing methodology are published as of the creation date of this tool.</p>
+
+          <p>My intention is to use the publication of this data to improve my own tool. I hope and expect to receive user feedback about ways to refine the data to make the tool better.</p>
+
+          <p>My hope is that the release of this information will lead to a larger community effort to refine and improve the use of the data.</p>
+
+          <p>This has always been a community effort, but the information was not publicly available. It was kept behind closed doors and treated as an "industry secret" to a certain extent.</p>
+
+          <p>It's a community project, and the community now has the info in readily available and digestible format.</p>
+
+          <p>Sometimes the first guy on the beach doesn't make it to the end of the battle. But the first and the last are remembered in different ways.</p>
+
+          <p>Perhaps I'm the guy in the middle. There were men ahead of me to the beach, and likely will be men behind me to raise the flag. I hope to pay respects to the former and provide stepping stones to the latter.</p>
+
+          <p>I hope this tool opens doors for others like me, and the community at large.</p>
+
+          <p>If other creators feel "harmed" because the game data calculations are now available, I will say only that our community is better for it at the end of the day.</p>
+
+          <h3>New Features and Updates</h3>
+
+          <p>It is my intention to continue to build data visualizations, and provide regular and continual updates to the tools, as well as adding new ones as ideas come to me, or are provided to me by the community.</p>
+
+          <p>I will need the help of the SC community to keep certain parts of the website up to date. Flight Accelerations, for example, have to be manually recorded and checked, and then checked again.</p>
+
+          <p>Someone is going to come to this site eventually and say "Hey, your math is wrong on [insert feature]."</p>
+
+          <p>Not only do I openly welcome this type of feedback, I will give credit by name where such fixes are applied.</p>
+        </div>
+      }
+
       <!-- ═══════════════════ POWER SYSTEM ═══════════════════ -->
       @case ('power') {
         <div class="section">
@@ -123,7 +182,7 @@ Burst Time   = Burst Rounds / ( Cyclic Rate / 60 )</pre>
             <h3>Alpha Damage</h3>
             <pre class="formula">Alpha Damage = Physical + Energy + Distortion + Thermal</pre>
             <p>Sum of all damage types dealt per shot. Each projectile carries a breakdown
-              of damage across four categories, extracted from the weapon's linked ammo record.</p>
+              of damage across four categories.</p>
           </div>
 
           <div class="formula-card">
@@ -163,8 +222,7 @@ Penetration Radius   = min&ndash;max spread of the penetration cone (meters)
 
 All weapons have penetration values. Distortion and scatter weapons
 also have proximity detonation (separate min/max blast radius).</pre>
-            <p>Penetration values are extracted from each weapon's projectile record
-              in the game data. Higher values mean the projectile passes through more
+            <p>Higher penetration distance means the projectile passes through more
               material before stopping.</p>
           </div>
 
@@ -255,7 +313,7 @@ Per damage type: Physical, Energy, Distortion</pre>
           <h2>Signatures (EM / IR / CS)</h2>
           <p class="intro">Ship signatures determine detectability by sensors and missile locks.
             Three types: Electromagnetic (EM), Infrared (IR), and Cross-Section (CS).
-            Validated against in-game values across 4 ships.</p>
+            EM and IR formulas are validated against in-game values. CS research is ongoing.</p>
 
           <div class="formula-card">
             <h3>Electromagnetic (EM) Signature</h3>
@@ -285,15 +343,27 @@ where:
               Thrusters contribute to cooling demand (~1 unit per pip) despite having 0 static IR.</p>
           </div>
 
-          <div class="formula-card">
+          <div class="formula-card status-wip">
             <h3>Cross-Section (CS)</h3>
-            <pre class="formula">CS = Hull Silhouette Area &times; Global CS Factor (10) &times; Armor signalCrossSection
+            <pre class="formula">CS = Base Hull CS &times; Armor CS Multiplier
 
-Directional: Front, Side, Top silhouette areas (m&sup2;)
-Computed from the ship's 3D mesh (SDF projection), not stored in data files.</pre>
-            <p>CS is purely geometry-based &mdash; no component contributes to it.
-              The game displays the largest axis (typically top view). CS values
-              cannot be derived from static game data; they require mesh data.</p>
+Armor CS Multiplier:
+  Standard ships: 1.0 &ndash; 1.5 (higher = more visible)
+  Stealth ships:  0.55 &ndash; 0.85 (Eclipse 0.6, Prowler 0.55, Ghost 0.72)
+  Heavy ships:    1.13 &ndash; 1.4 (Hornets 1.13, Vanguard 1.33, Starfarer 1.4)
+
+Estimation formula (approximate):
+  CS &asymp; 253 &times; mass^0.33 &times; CS Multiplier^1.4</pre>
+            <p>CS is primarily driven by the ship's physical hull geometry (a per-ship base value),
+              multiplied by the armor's CS modifier. The base CS cannot be reliably calculated from
+              mass or dimensions alone &mdash; ships with similar mass can have very different CS
+              values (e.g., Talon 3k vs Eclipse 4.3k at nearly identical mass and CS multiplier).</p>
+            <p>Validated ships show the exact in-game value. All others display an estimate based on
+              a mass-based approximation (marked "EST"). The estimate is within ~10% for fighters
+              but can deviate up to 25% for larger ships.</p>
+            <p>12 ships validated in-game so far: Arrow (7.4k), Gladius (9.7k), Hawk (11.2k),
+              Eclipse (4.3k), Talon (3.0k), 400i (19.7k), Vanguard (22.7k), Andromeda (23.9k),
+              Spirit C1 (24.7k), 600i (24.7k), Starlancer TAC (18.2k), Polaris (42.4k).</p>
           </div>
 
           <div class="formula-card">
@@ -435,11 +505,11 @@ PP Idle Base &asymp; 0.6 (varies slightly by power plant)</pre>
 
           <div class="formula-card">
             <h3>Research Notes</h3>
-            <p>The game files contain <code>maxPowerToCoolantRatio=2.5</code> in
-              <code>ItemResourceNetworkGlobal</code>. Third-party tools
-              use this as a demand multiplier, in some cases producing much higher cooling
-              percentages. In-game testing shows stable IR and normal operation at configs
-              where the 2.5&times; multiplier would predict overload, disproving its use.</p>
+            <p>A cooling multiplier of 2.5 exists in the game's resource network
+              configuration. Some third-party tools use this as a demand multiplier,
+              producing much higher cooling percentages. In-game testing shows stable IR
+              and normal operation at configs where the 2.5&times; multiplier would predict
+              overload, disproving its use in the displayed cooling calculation.</p>
             <p>The corrected supply formula (rate &times; pips &times; bandMod / maxPips) was
               discovered through cooler toggle tests &mdash; at reduced pips, the game applies
               BOTH the band efficiency penalty AND a linear power fraction, not just one.
@@ -483,7 +553,7 @@ Rotation Rate = Base Rate + Thruster Multiplier &times; (Boosted Rate - Base Rat
 NAV Speed         &mdash;  Navigation (cruise) speed
 Boost Speed (Fwd) &mdash;  Afterburner forward speed
 Boost Speed (Bwd) &mdash;  Afterburner reverse speed</pre>
-            <p>These are direct extractions from the flight controller, not computed values.</p>
+            <p>These values come from the ship's flight controller configuration.</p>
           </div>
 
           <div class="formula-card">
@@ -659,7 +729,7 @@ missions award each blueprint.</pre>
       @case ('contracts') {
         <div class="section">
           <h2>Contracts</h2>
-          <p class="intro">Contract data is extracted from both the mission broker system (legacy)
+          <p class="intro">Contract data comes from both the mission broker system (legacy)
             and the contract generator system (current). Matching entries are merged, with
             blueprint rewards and rep data flowing from contract generators into mission broker entries.</p>
 
@@ -671,9 +741,8 @@ missions award each blueprint.</pre>
   Ceiling    = maximum reputation value for the scope
   Gated      = some ranks require manual unlock (e.g., initial application)
 
-38 scopes extracted with 224 total ranks across all ladders.</pre>
-            <p>Reputation thresholds are extracted from game data.
-              Each contract's detail view shows the applicable ladder with the
+38 scopes with 224 total ranks across all ladders.</pre>
+            <p>Each contract's detail view shows the applicable ladder with the
               required rank range highlighted.</p>
           </div>
 
@@ -682,11 +751,10 @@ missions award each blueprint.</pre>
             <pre class="formula">Success:  + Rep Amount   (e.g., +500 for Vaughn assassination)
 Failure:  - Rep Amount   (e.g., -250 for failed assassination)
 
-54 reputation reward tiers extracted from game data.
+54 reputation reward tiers identified.
 Amounts range from -640,000 to +64,000.</pre>
-            <p>Each contract has success and failure reputation results. The success result
-              fires when the first Boolean in the result pattern is 1; failure when the third is 1.
-              Reward GUIDs are resolved against SReputationRewardAmount records.</p>
+            <p>Each contract has success and failure reputation results that affect your
+              standing with the associated faction.</p>
           </div>
 
           <div class="formula-card">
@@ -699,17 +767,19 @@ Abandon Cooldown    = time before an abandoned contract reappears (minutes)</pre
           </div>
 
           <div class="formula-card">
-            <h3>Data Merge Pipeline</h3>
-            <pre class="formula">1. Parse mission broker entries (legacy system, have rewards/locations)
-2. Parse contract generator entries (new system, have blueprints/rep data)
-3. Deduplicate missions by title + category + reward
-4. Merge contracts into missions by title match:
-   - Blueprint rewards flow from contract &rarr; mission
-   - Rep requirements, rewards, penalties flow from contract &rarr; mission
-5. Drop matched contracts, keep unmatched as standalone entries</pre>
-            <p>This merge ensures that legacy missions get enriched with the newer
-              contract generator data (blueprints, standing requirements, rep amounts)
-              without creating duplicate entries.</p>
+            <h3>Data Sources</h3>
+            <pre class="formula">Contract data is assembled from two game systems:
+
+1. Mission broker entries (legacy) &mdash; contain rewards, locations, descriptions
+2. Contract generator entries (current) &mdash; contain blueprints, rep data, chains
+
+These are merged by title match:
+  - Blueprint rewards flow from contracts into missions
+  - Rep requirements, rewards, penalties are linked
+  - Duplicates are removed, unmatched entries kept standalone</pre>
+            <p>This approach ensures the most complete picture of each contract,
+              combining reward data from the legacy system with the newer rep and
+              blueprint information.</p>
           </div>
         </div>
       }

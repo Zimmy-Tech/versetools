@@ -106,10 +106,10 @@
           <span class="pb-sig-label">IR</span>
           <span class="pb-sig-val">{{ fmtSig(totalIR()) }}</span>
         </div>
-        @if (data.selectedShip()?.signalCrossSection !== undefined) {
+        @if (data.selectedShip()?.csValue) {
           <div class="pb-sig-item">
             <span class="pb-sig-label">CS</span>
-            <span class="pb-sig-val">{{ data.selectedShip()!.signalCrossSection }}</span>
+            <span class="pb-sig-val">{{ fmtSig(data.selectedShip()!.csValue!) }}@if (data.selectedShip()!.csEstimated) { <span class="pb-sig-est">EST</span>}</span>
           </div>
         }
       </div>

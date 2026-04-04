@@ -27,6 +27,8 @@ export interface Ship {
   career: string;
   crew: number;
   isGroundVehicle?: boolean;
+  csValue?: number;
+  csEstimated?: boolean;
   hardpoints: Hardpoint[];
   defaultLoadout?: Record<string, string>;
   // Flight stats

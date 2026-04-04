@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 
-type Section = 'power' | 'weapons' | 'shields' | 'signatures' | 'armor' | 'cooling' | 'flight' | 'mining' | 'radar' | 'cargo' | 'crafting' | 'contracts';
+type Section = 'about' | 'power' | 'weapons' | 'shields' | 'signatures' | 'armor' | 'cooling' | 'flight' | 'mining' | 'radar' | 'cargo' | 'crafting' | 'contracts';
 
 @Component({
   selector: 'app-formulas-view',
@@ -9,9 +9,10 @@ type Section = 'power' | 'weapons' | 'shields' | 'signatures' | 'armor' | 'cooli
   styleUrl: './formulas-view.scss',
 })
 export class FormulasViewComponent {
-  activeSection = signal<Section>('power');
+  activeSection = signal<Section>('about');
 
   readonly sections: { id: Section; label: string }[] = [
+    { id: 'about', label: 'About' },
     { id: 'power', label: 'Power System' },
     { id: 'weapons', label: 'Weapons & DPS' },
     { id: 'shields', label: 'Shields' },
