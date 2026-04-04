@@ -105,6 +105,7 @@
         <div class="popout-stats">
           <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
           @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
+          @if (sm.contractor) { <div class="popout-stat"><span class="ps-label">Contractor</span><span class="ps-val">{{ sm.contractor }}</span></div> }
           @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
           @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
           @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
@@ -115,14 +116,63 @@
           @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
         </div>
 
-        @if (sm.repScopes?.length) {
+        @if (sm.missionFlow?.length) {
           <div class="popout-section">
-            <div class="popout-section-title">Reputation Rewards</div>
+            <div class="popout-section-title">Mission Type</div>
             <div class="popout-tags">
-              @for (scope of sm.repScopes; track scope) {
-                <span class="rep-scope">{{ scope }}</span>
+              @for (flow of sm.missionFlow; track flow) {
+                <span class="meta-tag activity">{{ flow }}</span>
               }
             </div>
+          </div>
+        }
+
+        @if (sm.repScopes?.length) {
+          <div class="popout-section">
+            <div class="popout-section-title">Reputation</div>
+            <div class="popout-stats">
+              @for (scope of sm.repScopes; track scope) {
+                <div class="popout-stat"><span class="ps-label">Scope</span><span class="ps-val">{{ scope }}</span></div>
+              }
+              @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Success</span><span class="ps-val positive">+{{ sm.repReward }}</span></div> }
+              @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure</span><span class="ps-val negative">{{ sm.repPenalty }}</span></div> }
+            </div>
+            @if (sm.repRequirements?.length) {
+              <div class="popout-tags" style="margin-top: 4px;">
+                @for (req of sm.repRequirements; track req.scope) {
+                  <span class="rep-scope">{{ req.scope }}: {{ req.minRank }} — {{ req.maxRank }}</span>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        @if (sm.requiresCompletion?.length) {
+          <div class="popout-section">
+            <div class="popout-section-title">Prerequisites</div>
+            <div class="popout-tags">
+              @for (req of sm.requiresCompletion; track req) {
+                <span class="rep-scope">{{ req }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        @if (sm.unlocks?.length) {
+          <div class="popout-section">
+            <div class="popout-section-title">Unlocks</div>
+            <div class="popout-tags">
+              @for (u of sm.unlocks; track u) {
+                <span class="bp-reward-tag">{{ u }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        @if (sm.description && sm.description.length > 20) {
+          <div class="popout-section">
+            <div class="popout-section-title">Mission Brief</div>
+            <div class="popout-desc" [innerHTML]="sm.description.replace(/\\n/g, '<br>')"></div>
           </div>
         }
 

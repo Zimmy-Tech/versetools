@@ -12,9 +12,11 @@ interface Mission {
   difficulty: number;
   maxPlayers: number;
   canShare: boolean;
+  description?: string;
   system?: string;
   activity?: string;
   giver?: string;
+  contractor?: string;
   lifetimeMin?: number;
   respawnMin?: number;
   cooldownMin?: number;
@@ -22,6 +24,13 @@ interface Mission {
   onceOnly?: boolean;
   blueprintRewards?: string[];
   repScopes?: string[];
+  missionFlow?: string[];
+  repReward?: number;
+  repPenalty?: number;
+  repRequirements?: { scope: string; minRank: string; maxRank: string }[];
+  danger?: string;
+  requiresCompletion?: string[];
+  unlocks?: string[];
 }
 
 interface MissionData {

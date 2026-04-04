@@ -36,6 +36,21 @@ interface CraftingData {
   recipes: CraftingRecipe[];
 }
 
+interface ArmorPieceRef {
+  className: string;
+  tempMin: number | null;
+  tempMax: number | null;
+  damageReduction: number | null;
+  weight: string;
+}
+
+interface FpsWeaponRef {
+  className: string;
+  fireRate: number;
+  alphaDamage: number;
+  dps: number;
+}
+
 @Component({
   selector: 'app-crafting-view',
   standalone: true,
@@ -45,6 +60,8 @@ interface CraftingData {
 export class CraftingViewComponent {
   allRecipes = signal<CraftingRecipe[]>([]);
   loaded = signal(false);
+  armorLookup = signal<Record<string, ArmorPieceRef>>({});
+  weaponLookup = signal<Record<string, FpsWeaponRef>>({});
 
   searchQuery = signal('');
   categoryFilter = signal('');
@@ -81,7 +98,8 @@ export class CraftingViewComponent {
   readonly Math = Math;
 
   // Popout tab: 'crafting' or 'missions'
-  popoutTab = signal<'crafting' | 'missions'>('crafting');
+  popoutTab = signal<'crafting' | 'missions' | 'mining'>('crafting');
+  mineralLocations = signal<Record<string, { location: string; system: string; type: string; probability: number }[]>>({});
 
   // Mission data for blueprint source lookup
   private allMissions = signal<any[]>([]);
@@ -95,6 +113,19 @@ export class CraftingViewComponent {
     return this.allMissions().filter(m =>
       m.blueprintRewards?.some((bp: string) => bp === name)
     );
+  });
+
+  recipeMineralSources = computed(() => {
+    const sr = this.selectedRecipe();
+    if (!sr) return [];
+    const lookup = this.mineralLocations();
+    const sources: { resource: string; locations: { location: string; system: string; type: string; probability: number }[] }[] = [];
+    for (const ing of sr.ingredients) {
+      if (ing.type === 'resource' && lookup[ing.resource]) {
+        sources.push({ resource: ing.resource, locations: lookup[ing.resource] });
+      }
+    }
+    return sources;
   });
 
   // Quality sliders: resource name → quality value (0–1000)
@@ -190,14 +221,98 @@ export class CraftingViewComponent {
       }
     }
 
-    return Object.entries(propMap).map(([prop, data]) => ({
-      property: prop,
-      combined: data.combined,
-      contributions: data.contributions,
-    })).sort((a, b) => a.property.localeCompare(b.property));
+    // Look up base stats from armor and weapon data
+    const armorPiece = this.armorLookup()[sr.className];
+    const weaponPiece = this.weaponLookup()[sr.className];
+    const baseDR = armorPiece?.damageReduction ?? null;
+    const baseTempMin = armorPiece?.tempMin ?? null;
+    const baseTempMax = armorPiece?.tempMax ?? null;
+    const baseFireRate = weaponPiece?.fireRate ?? null;
+
+    return Object.entries(propMap).map(([prop, data]) => {
+      let baseValue: number | null = null;
+      let modifiedValue: number | null = null;
+      let unit = '';
+      const pl = prop.toLowerCase();
+
+      if (pl.includes('mitigation') || pl.includes('damage')) {
+        baseValue = baseDR;
+        if (baseValue != null) {
+          modifiedValue = Math.round(baseValue * data.combined * 100) / 100;
+          unit = '%';
+        }
+      } else if (pl.includes('max temp')) {
+        baseValue = baseTempMax;
+        if (baseValue != null) {
+          modifiedValue = Math.round(baseValue * data.combined * 10) / 10;
+          unit = '°C';
+        }
+      } else if (pl.includes('min temp')) {
+        baseValue = baseTempMin;
+        if (baseValue != null) {
+          modifiedValue = Math.round(baseValue * data.combined * 10) / 10;
+          unit = '°C';
+        }
+      } else if (pl.includes('fire rate')) {
+        baseValue = baseFireRate;
+        if (baseValue != null) {
+          modifiedValue = Math.round(baseValue * data.combined * 10) / 10;
+          unit = ' RPM';
+        }
+      }
+
+      // For min temp and recoil, lower is better. For everything else, higher is better.
+      const invertComparison = pl.includes('min temp') || pl.includes('recoil');
+
+      return {
+        property: prop,
+        combined: data.combined,
+        contributions: data.contributions,
+        baseValue,
+        modifiedValue,
+        unit,
+        invertComparison,
+      };
+    }).sort((a, b) => a.property.localeCompare(b.property));
   });
 
   constructor(private http: HttpClient, private data: DataService) {
+    // Load mining location data for mineral sources
+    this.http.get<any>('live/versedb_mining_locs.json').subscribe(d => {
+      const locs = d.locations ?? [];
+      const lookup: Record<string, { location: string; system: string; type: string; probability: number }[]> = {};
+      for (const loc of locs) {
+        for (const cat of ['ship', 'roc', 'hand']) {
+          for (const m of loc.mining?.[cat] ?? []) {
+            if (!lookup[m.mineral]) lookup[m.mineral] = [];
+            lookup[m.mineral].push({
+              location: loc.location,
+              system: loc.system,
+              type: cat,
+              probability: m.probability,
+            });
+          }
+        }
+      }
+      // Sort each mineral's locations by probability descending, keep top 3
+      for (const mineral of Object.keys(lookup)) {
+        lookup[mineral] = lookup[mineral].sort((a, b) => b.probability - a.probability).slice(0, 3);
+      }
+      this.mineralLocations.set(lookup);
+    });
+
+    // Load armor and weapon data for base stat lookups
+    this.http.get<{ armor: ArmorPieceRef[] }>('live/versedb_fps_armor.json').subscribe(d => {
+      const lookup: Record<string, ArmorPieceRef> = {};
+      for (const p of d.armor) lookup[p.className] = p;
+      this.armorLookup.set(lookup);
+    });
+    this.http.get<{ weapons: FpsWeaponRef[] }>('live/versedb_fps.json').subscribe(d => {
+      const lookup: Record<string, FpsWeaponRef> = {};
+      for (const w of d.weapons) lookup[w.className] = w;
+      this.weaponLookup.set(lookup);
+    });
+
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion(); // track mode changes

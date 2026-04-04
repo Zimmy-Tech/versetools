@@ -205,8 +205,11 @@
         </div>
         <div class="popout-tabs">
           <button class="popout-tab" [class.active]="popoutTab() === 'crafting'" (click)="popoutTab.set('crafting')">Crafting</button>
+          <button class="popout-tab" [class.active]="popoutTab() === 'mining'" (click)="popoutTab.set('mining')">
+            Mining Sources
+          </button>
           <button class="popout-tab" [class.active]="popoutTab() === 'missions'" (click)="popoutTab.set('missions')">
-            Sources ({{ rewardingMissions().length }})
+            Blueprint Sources ({{ rewardingMissions().length }})
           </button>
         </div>
         <div class="popout-body" [style.display]="popoutTab() === 'crafting' ? '' : 'none'">
@@ -312,26 +315,53 @@
 
               @if (qualityEffects().length) {
                 <div class="quality-results">
-                  <div class="qr-header-row">
-                    <span class="qr-prop-header">Stat</span>
-                    <span class="qr-mod-header">Combined Effect</span>
-                  </div>
                   @for (eff of qualityEffects(); track eff.property) {
-                    <div class="qr-result">
-                      <span class="qr-prop">{{ eff.property }}</span>
-                      <span class="qr-combined" [class.positive]="eff.combined > 1.001"
-                            [class.negative]="eff.combined < 0.999"
-                            [class.neutral]="eff.combined >= 0.999 && eff.combined <= 1.001">
-                        {{ fmtMod(eff.combined) }}
-                      </span>
-                    </div>
-                    <div class="qr-breakdown">
-                      @for (c of eff.contributions; track c.resource) {
-                        <span class="qr-contrib" [class.positive]="c.modifier > 1.001"
-                              [class.negative]="c.modifier < 0.999">
-                          {{ c.resource }}: {{ fmtMod(c.modifier) }}
-                        </span>
-                      }
+                    <div class="qr-card">
+                      <div class="qr-card-header">{{ eff.property }}</div>
+                      <div class="qr-card-body">
+                        @if (eff.baseValue != null && eff.modifiedValue != null) {
+                          <div class="qr-values">
+                            <div class="qr-value-col">
+                              <span class="qr-value-label">Base</span>
+                              <span class="qr-value-num">{{ eff.baseValue }}{{ eff.unit }}</span>
+                            </div>
+                            <span class="qr-arrow">&rarr;</span>
+                            <div class="qr-value-col">
+                              <span class="qr-value-label">Modified</span>
+                              <span class="qr-value-num modified"
+                                    [class.positive]="eff.invertComparison ? eff.modifiedValue! < eff.baseValue! : eff.modifiedValue! > eff.baseValue!"
+                                    [class.negative]="eff.invertComparison ? eff.modifiedValue! > eff.baseValue! : eff.modifiedValue! < eff.baseValue!">
+                                {{ eff.modifiedValue }}{{ eff.unit }}
+                              </span>
+                            </div>
+                            <div class="qr-value-col">
+                              <span class="qr-value-label">Effect</span>
+                              <span class="qr-value-num" [class.positive]="eff.combined > 1.001"
+                                    [class.negative]="eff.combined < 0.999">
+                                {{ fmtMod(eff.combined) }}
+                              </span>
+                            </div>
+                          </div>
+                        } @else {
+                          <div class="qr-values">
+                            <div class="qr-value-col">
+                              <span class="qr-value-label">Effect</span>
+                              <span class="qr-value-num" [class.positive]="eff.combined > 1.001"
+                                    [class.negative]="eff.combined < 0.999">
+                                {{ fmtMod(eff.combined) }}
+                              </span>
+                            </div>
+                          </div>
+                        }
+                        <div class="qr-breakdown">
+                          @for (c of eff.contributions; track c.resource) {
+                            <span class="qr-contrib" [class.positive]="c.modifier > 1.001"
+                                  [class.negative]="c.modifier < 0.999">
+                              {{ c.resource }}: {{ fmtMod(c.modifier) }}
+                            </span>
+                          }
+                        </div>
+                      </div>
                     </div>
                   }
                 </div>
@@ -350,6 +380,32 @@
           </div>
 
         </div>
+
+        <!-- Mining Sources tab -->
+        @if (popoutTab() === 'mining') {
+          <div class="popout-body">
+            @if (recipeMineralSources().length === 0) {
+              <div class="no-missions">No mining location data available for this recipe's materials.</div>
+            } @else {
+              <div class="mining-sources">
+                @for (src of recipeMineralSources(); track src.resource) {
+                  <div class="ms-mineral">
+                    <div class="ms-mineral-name">{{ src.resource }}</div>
+                    <div class="ms-mineral-locs">
+                      @for (loc of src.locations; track loc.location) {
+                        <div class="ms-loc-row">
+                          <span class="ms-loc-name">{{ loc.location }}</span>
+                          <span class="ms-loc-type">{{ loc.type === 'ship' ? 'Ship' : loc.type === 'roc' ? 'ROC' : 'Hand' }}</span>
+                          <span class="ms-loc-pct">{{ loc.probability }}%</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
 
         <!-- Missions (Sources) tab -->
         @if (popoutTab() === 'missions') {

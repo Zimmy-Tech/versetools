@@ -477,6 +477,18 @@
   font-size: 13px;
   color: var(--text);
   &.accent { color: var(--accent); }
+  &.positive { color: var(--green); }
+  &.negative { color: var(--red); }
+}
+
+.popout-desc {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
 }
 
 .popout-section {
