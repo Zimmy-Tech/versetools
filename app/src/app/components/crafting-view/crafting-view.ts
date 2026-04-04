@@ -49,6 +49,9 @@ interface FpsWeaponRef {
   fireRate: number;
   alphaDamage: number;
   dps: number;
+  recoilPitch?: number;
+  recoilYaw?: number;
+  recoilSmooth?: number;
 }
 
 @Component({
@@ -242,6 +245,9 @@ export class CraftingViewComponent {
     const baseFireRate = weaponPiece?.fireRate ?? null;
     const baseAlpha = weaponPiece?.alphaDamage ?? null;
     const baseDPS = weaponPiece?.dps ?? null;
+    const baseRecoilPitch = weaponPiece?.recoilPitch ?? null;
+    const baseRecoilYaw = weaponPiece?.recoilYaw ?? null;
+    const baseRecoilSmooth = weaponPiece?.recoilSmooth ?? null;
 
     return Object.entries(propMap).map(([prop, data]) => {
       let baseValue: number | null = null;
@@ -277,6 +283,18 @@ export class CraftingViewComponent {
         baseValue = baseAlpha;
         modifiedValue = Math.round(baseAlpha * data.combined * 100) / 100;
         unit = ' dmg';
+      } else if (pl.includes('recoil') && pl.includes('kick') && baseRecoilPitch != null) {
+        baseValue = baseRecoilPitch;
+        modifiedValue = Math.round(baseRecoilPitch * data.combined * 10000) / 10000;
+        unit = '°';
+      } else if (pl.includes('recoil') && pl.includes('handling') && baseRecoilYaw != null) {
+        baseValue = baseRecoilYaw;
+        modifiedValue = Math.round(baseRecoilYaw * data.combined * 10000) / 10000;
+        unit = '°';
+      } else if (pl.includes('recoil') && pl.includes('smooth') && baseRecoilSmooth != null) {
+        baseValue = baseRecoilSmooth;
+        modifiedValue = Math.round(baseRecoilSmooth * data.combined * 10000) / 10000;
+        unit = 's';
       }
 
       // For min temp and recoil, lower is better. For everything else, higher is better.

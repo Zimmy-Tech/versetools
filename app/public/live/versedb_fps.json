@@ -106,7 +106,10 @@
       "dps": 157.08,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.28,
+      "recoilYaw": 0.03,
+      "recoilSmooth": 0.4
     },
     {
       "className": "behr_pistol_ballistic_01",
@@ -133,7 +136,10 @@
       "dps": 168.75,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.06,
+      "recoilSmooth": 0.09
     },
     {
       "className": "behr_rifle_ballistic_01",
@@ -161,7 +167,10 @@
       "dps": 162.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.02,
+      "recoilSmooth": 0.09
     },
     {
       "className": "behr_rifle_ballistic_02_civilian",
@@ -216,7 +225,10 @@
       "dps": 194.79,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.235,
+      "recoilYaw": 0.2,
+      "recoilSmooth": 0.09
     },
     {
       "className": "behr_shotgun_ballistic_01",
@@ -297,7 +309,10 @@
       "dps": 200.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.25,
+      "recoilYaw": 0.125,
+      "recoilSmooth": 0.4
     },
     {
       "className": "gmni_pistol_ballistic_01",
@@ -324,7 +339,10 @@
       "dps": 205.83,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.1,
+      "recoilSmooth": 0.09
     },
     {
       "className": "gmni_rifle_ballistic_01",
@@ -351,7 +369,10 @@
       "dps": 179.17,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.3,
+      "recoilYaw": 0.01,
+      "recoilSmooth": 0.09
     },
     {
       "className": "gmni_smg_ballistic_01",
@@ -378,7 +399,10 @@
       "dps": 177.29,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.14,
+      "recoilYaw": 0.155,
+      "recoilSmooth": 0.09
     },
     {
       "className": "gmni_shotgun_ballistic_01",
@@ -405,7 +429,10 @@
       "dps": 120.0,
       "pelletCount": 12,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 1.75,
+      "recoilYaw": 0.45,
+      "recoilSmooth": 0.09
     },
     {
       "className": "gmni_sniper_ballistic_01",
@@ -484,7 +511,10 @@
       "dps": 180.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.1,
+      "recoilSmooth": 0.09
     },
     {
       "className": "ksar_rifle_energy_01",
@@ -511,7 +541,10 @@
       "dps": 175.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.345,
+      "recoilYaw": 0.05,
+      "recoilSmooth": 0.09
     },
     {
       "className": "ksar_smg_energy_01",
@@ -538,7 +571,10 @@
       "dps": 173.33,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.12,
+      "recoilYaw": 0.185,
+      "recoilSmooth": 0.09
     },
     {
       "className": "ksar_shotgun_energy_01",
@@ -563,7 +599,10 @@
       "dps": 120.0,
       "pelletCount": 12,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.07,
+      "recoilSmooth": 0.09
     },
     {
       "className": "ksar_shotgun_ballistic_01",
@@ -588,7 +627,10 @@
       "dps": 104.0,
       "pelletCount": 8,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 3.25,
+      "recoilYaw": 1.25,
+      "recoilSmooth": 0.03
     },
     {
       "className": "ksar_sniper_ballistic_01",
@@ -613,7 +655,10 @@
       "dps": 30.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.2,
+      "recoilYaw": 0.01,
+      "recoilSmooth": 0.09
     },
     {
       "className": "klwe_lmg_energy_01",
@@ -640,7 +685,10 @@
       "dps": 153.33,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.13,
+      "recoilSmooth": 0.09
     },
     {
       "className": "klwe_pistol_energy_01",
@@ -668,7 +716,10 @@
       "dps": 210.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.125,
+      "recoilYaw": 0.01,
+      "recoilSmooth": 0.09
     },
     {
       "className": "klwe_rifle_energy_01",
@@ -696,7 +747,10 @@
       "dps": 315.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.35,
+      "recoilYaw": 0.03,
+      "recoilSmooth": 0.09
     },
     {
       "className": "klwe_smg_energy_01",
@@ -721,7 +775,10 @@
       "dps": 210.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.33,
+      "recoilYaw": 0.1,
+      "recoilSmooth": 0.09
     },
     {
       "className": "klwe_sniper_energy_01",
@@ -746,7 +803,10 @@
       "dps": 50.0,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.3,
+      "recoilYaw": 0.1,
+      "recoilSmooth": 0.09
     },
     {
       "className": "lbco_pistol_energy_01",
@@ -827,7 +887,10 @@
       "dps": 159.75,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.8,
+      "recoilYaw": 0.32,
+      "recoilSmooth": 0.2
     },
     {
       "className": "none_pistol_ballistic_01",
@@ -856,7 +919,10 @@
       "dps": 36.0,
       "pelletCount": 3,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 1.75,
+      "recoilYaw": 0.45,
+      "recoilSmooth": 0.09
     },
     {
       "className": "none_rifle_multi_01",
@@ -881,7 +947,10 @@
       "dps": 102.5,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.45,
+      "recoilYaw": 0.09,
+      "recoilSmooth": 0.15
     },
     {
       "className": "none_smg_energy_01",
@@ -908,7 +977,10 @@
       "dps": 165.0,
       "pelletCount": null,
       "isBeam": true,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.07,
+      "recoilSmooth": 0.09
     },
     {
       "className": "none_shotgun_ballistic_01",
@@ -1014,7 +1086,10 @@
       "dps": 97.92,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.19,
+      "recoilYaw": 0.1,
+      "recoilSmooth": 0.09
     },
     {
       "className": "volt_rifle_energy_01",
@@ -1041,7 +1116,10 @@
       "dps": 260.0,
       "pelletCount": null,
       "isBeam": true,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.2,
+      "recoilYaw": 0.05,
+      "recoilSmooth": 1.0
     },
     {
       "className": "volt_smg_energy_01",
@@ -1068,7 +1146,10 @@
       "dps": 275.0,
       "pelletCount": null,
       "isBeam": true,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 1.0,
+      "recoilYaw": 0.2,
+      "recoilSmooth": 1.0
     },
     {
       "className": "volt_shotgun_energy_01",
@@ -1093,7 +1174,10 @@
       "dps": 92.0,
       "pelletCount": 8,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 1.0,
+      "recoilYaw": 0.3,
+      "recoilSmooth": 0.09
     },
     {
       "className": "volt_sniper_energy_01",
@@ -1118,7 +1202,10 @@
       "dps": 31.88,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.26,
+      "recoilYaw": 0.02,
+      "recoilSmooth": 0.09
     }
   ]
 }

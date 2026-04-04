@@ -36,6 +36,7 @@ FORGE_DIR    = _SC / "sc_data_forge" / "libs" / "foundry" / "records"
 FPS_WPN_DIR  = FORGE_DIR / "entities" / "scitem" / "weapons" / "fps_weapons"
 MAG_DIR      = FORGE_DIR / "entities" / "scitem" / "weapons" / "magazines"
 AMMO_DIR     = FORGE_DIR / "ammoparams" / "fps"
+RECOIL_DIR   = FORGE_DIR / "weaponproceduralrecoil"
 DCB_FILE     = _SC / "sc_data" / "Data" / "Game2.dcb"
 GLOBAL_INI   = _SC / "sc_data_xml_live" / "Data" / "Localization" / "english" / "global.ini"
 
@@ -282,6 +283,67 @@ def find_ammo_for_weapon(weapon_class: str, ammo_index: dict) -> dict | None:
                 return val
 
     return None
+
+
+# ── Recoil data lookup ─────────────────────────────────────────────────────
+
+def build_recoil_index(recoil_dir: Path) -> dict:
+    """Scan weaponproceduralrecoil XMLs and build weapon_class -> recoil values map.
+
+    Each recoil XML contains curveAimRecoil with pitchMaxDegrees, yawMaxDegrees,
+    recoilSmoothTime.  Multiple fire modes per weapon; we pick the one with the
+    highest non-zero pitch (most representative for sustained fire).
+    Files named {weapon_class}_{firemode}.xml.xml, possibly cross-listed under
+    another weapon's directory.
+    """
+    index: dict[str, dict] = {}  # weapon_class -> {pitch, yaw, smooth}
+    if not recoil_dir.exists():
+        return index
+
+    for subdir in sorted(recoil_dir.iterdir()):
+        if not subdir.is_dir():
+            continue
+        if subdir.name in ("shiprecoil", "vehicleweapons", "test.xml.xml"):
+            continue
+        for xml_file in subdir.iterdir():
+            if not xml_file.name.endswith(".xml.xml"):
+                continue
+            try:
+                xml_text = xml_file.read_text(errors="replace")
+                m_pitch = re.search(r'pitchMaxDegrees="([^"]+)"', xml_text)
+                m_yaw = re.search(r'yawMaxDegrees="([^"]+)"', xml_text)
+                m_smooth = re.search(r'recoilSmoothTime="([^"]+)"', xml_text)
+                if not m_pitch:
+                    continue
+                pitch = safe_float(m_pitch.group(1))
+                yaw = safe_float(m_yaw.group(1)) if m_yaw else 0.0
+                smooth = safe_float(m_smooth.group(1)) if m_smooth else 0.0
+
+                # Derive weapon className from filename by stripping fire mode suffix
+                stem = xml_file.stem.replace(".xml", "").lower()
+                # Known fire mode suffixes to strip
+                for suffix in ("_rapid_newrecoil", "_rapid", "_burst_altfire", "_burst",
+                               "_single_post_heat", "_single_preheat", "_single",
+                               "_parallel", "_beam", "_ballistic_shot", "_energy_shot"):
+                    if stem.endswith(suffix):
+                        weapon_class = stem[:-len(suffix)]
+                        break
+                else:
+                    weapon_class = stem
+
+                # Keep the entry with highest pitch per weapon (most useful for comparison)
+                existing = index.get(weapon_class)
+                if existing is None or abs(pitch) > abs(existing.get("recoilPitch", 0)):
+                    if pitch != 0 or yaw != 0 or smooth != 0:
+                        index[weapon_class] = {
+                            "recoilPitch": round(abs(pitch), 4),
+                            "recoilYaw": round(abs(yaw), 4),
+                            "recoilSmooth": round(smooth, 4),
+                        }
+            except Exception:
+                pass
+
+    return index
 
 
 # ── DCB binary damage lookup ────────────────────────────────────────────────
@@ -580,15 +642,20 @@ def extract_fps_weapons():
     ammo_index = build_ammo_index(AMMO_DIR)
     print(f"  Ammo entries: {len(ammo_index)}")
 
-    # 4. Build DCB damage lookup
-    print("\n[4] Building DCB damage lookup...")
+    # 4. Build recoil index
+    print("\n[4] Building recoil index...")
+    recoil_index = build_recoil_index(RECOIL_DIR)
+    print(f"  Recoil entries: {len(recoil_index)}")
+
+    # 5. Build DCB damage lookup
+    print("\n[5] Building DCB damage lookup...")
     dcb_data = build_damage_lookup(DCB_FILE)
     damage_map = dcb_data.get("damage", {})
     pellet_map = dcb_data.get("pellets", {})
     beam_map = dcb_data.get("beam", {})
 
-    # 5. Parse weapon XMLs
-    print("\n[5] Parsing weapon XMLs...")
+    # 6. Parse weapon XMLs
+    print("\n[6] Parsing weapon XMLs...")
     weapons = []
     skipped = 0
 
@@ -752,6 +819,9 @@ def extract_fps_weapons():
         if is_beam and "Beam" not in fire_mode_names:
             fire_mode_names.append("Beam")
 
+        # Recoil data
+        recoil = recoil_index.get(class_name)
+
         # Build output record
         record = {
             "className": class_name,
@@ -771,6 +841,8 @@ def extract_fps_weapons():
             "isBeam": is_beam or None,
             "category": "Anti-Ship" if class_name in ANTI_SHIP else "Anti-Personnel",
         }
+        if recoil:
+            record.update(recoil)
 
         weapons.append(record)
 
@@ -801,7 +873,7 @@ def extract_fps_weapons():
     }
 
     # Write output
-    print(f"\n[6] Writing output...")
+    print(f"\n[7] Writing output...")
     for out_path in [OUT_LIVE, OUT_PTU]:
         out_path.parent.mkdir(parents=True, exist_ok=True)
         with open(out_path, "w") as f:
