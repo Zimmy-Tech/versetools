@@ -15,6 +15,7 @@ interface FpsWeapon {
   damage: { physical: number; energy: number; distortion: number; thermal: number; biochemical: number; stun: number };
   alphaDamage: number;
   dps: number;
+  category?: string;
 }
 
 @Component({
@@ -70,6 +71,9 @@ export class FpsWeaponsComponent {
 
     return list;
   });
+
+  antiPersonnel = computed(() => this.filtered().filter(w => w.category !== 'Anti-Ship'));
+  antiShip = computed(() => this.filtered().filter(w => w.category === 'Anti-Ship'));
 
   constructor(private http: HttpClient) {
     this.http.get<{ weapons: FpsWeapon[] }>('live/versedb_fps.json').subscribe(data => {

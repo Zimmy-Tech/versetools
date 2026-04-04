@@ -26,7 +26,8 @@
       "alphaDamage": 0,
       "dps": 0.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Ship"
     },
     {
       "className": "apar_special_ballistic_01",
@@ -50,7 +51,8 @@
       "alphaDamage": 6000.0,
       "dps": 3000.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Ship"
     },
     {
       "className": "behr_glauncher_ballistic_01",
@@ -76,7 +78,8 @@
       "alphaDamage": 3.0,
       "dps": 3.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "behr_lmg_ballistic_01",
@@ -102,7 +105,8 @@
       "alphaDamage": 14.5,
       "dps": 157.08,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "behr_pistol_ballistic_01",
@@ -128,7 +132,8 @@
       "alphaDamage": 22.5,
       "dps": 168.75,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "behr_rifle_ballistic_01",
@@ -155,7 +160,8 @@
       "alphaDamage": 12.0,
       "dps": 162.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "behr_rifle_ballistic_02_civilian",
@@ -181,7 +187,8 @@
       "alphaDamage": 18.0,
       "dps": 70.5,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "behr_smg_ballistic_01",
@@ -208,7 +215,8 @@
       "alphaDamage": 13.75,
       "dps": 194.79,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "behr_shotgun_ballistic_01",
@@ -234,7 +242,8 @@
       "alphaDamage": 88.0,
       "dps": 132.0,
       "pelletCount": 8,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "behr_sniper_ballistic_01",
@@ -260,7 +269,8 @@
       "alphaDamage": 100.0,
       "dps": 91.67,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "gmni_lmg_ballistic_01",
@@ -286,7 +296,8 @@
       "alphaDamage": 10.0,
       "dps": 200.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "gmni_pistol_ballistic_01",
@@ -312,7 +323,8 @@
       "alphaDamage": 13.0,
       "dps": 205.83,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "gmni_rifle_ballistic_01",
@@ -338,7 +350,8 @@
       "alphaDamage": 21.5,
       "dps": 179.17,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "gmni_smg_ballistic_01",
@@ -364,7 +377,8 @@
       "alphaDamage": 11.5,
       "dps": 177.29,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "gmni_shotgun_ballistic_01",
@@ -390,7 +404,8 @@
       "alphaDamage": 48.0,
       "dps": 120.0,
       "pelletCount": 12,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "gmni_sniper_ballistic_01",
@@ -416,7 +431,8 @@
       "alphaDamage": 42.5,
       "dps": 159.38,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "hdgw_pistol_ballistic_01",
@@ -440,7 +456,8 @@
       "alphaDamage": 45.0,
       "dps": 90.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "ksar_pistol_ballistic_01",
@@ -466,7 +483,8 @@
       "alphaDamage": 60.0,
       "dps": 180.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "ksar_rifle_energy_01",
@@ -492,7 +510,8 @@
       "alphaDamage": 17.5,
       "dps": 175.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "ksar_smg_energy_01",
@@ -518,7 +537,8 @@
       "alphaDamage": 13.0,
       "dps": 173.33,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "ksar_shotgun_energy_01",
@@ -542,7 +562,8 @@
       "alphaDamage": 120.0,
       "dps": 120.0,
       "pelletCount": 12,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "ksar_shotgun_ballistic_01",
@@ -566,7 +587,8 @@
       "alphaDamage": 52.0,
       "dps": 104.0,
       "pelletCount": 8,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "ksar_sniper_ballistic_01",
@@ -590,7 +612,8 @@
       "alphaDamage": 45.0,
       "dps": 30.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "klwe_lmg_energy_01",
@@ -616,7 +639,8 @@
       "alphaDamage": 11.5,
       "dps": 153.33,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "klwe_pistol_energy_01",
@@ -643,7 +667,8 @@
       "alphaDamage": 18.0,
       "dps": 210.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "klwe_rifle_energy_01",
@@ -670,7 +695,8 @@
       "alphaDamage": 21.0,
       "dps": 315.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "klwe_smg_energy_01",
@@ -694,7 +720,8 @@
       "alphaDamage": 21.0,
       "dps": 210.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "klwe_sniper_energy_01",
@@ -718,7 +745,8 @@
       "alphaDamage": 50.0,
       "dps": 50.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "lbco_pistol_energy_01",
@@ -744,7 +772,8 @@
       "alphaDamage": 41.0,
       "dps": 239.17,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "lbco_sniper_energy_01",
@@ -770,7 +799,8 @@
       "alphaDamage": 165.0,
       "dps": 82.5,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "none_lmg_ballistic_01",
@@ -796,7 +826,8 @@
       "alphaDamage": 27.0,
       "dps": 159.75,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "none_pistol_ballistic_01",
@@ -824,7 +855,8 @@
       "alphaDamage": 36.0,
       "dps": 36.0,
       "pelletCount": 3,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "none_rifle_multi_01",
@@ -848,7 +880,8 @@
       "alphaDamage": 20.5,
       "dps": 102.5,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "none_smg_energy_01",
@@ -874,7 +907,8 @@
       "alphaDamage": 165.0,
       "dps": 165.0,
       "pelletCount": null,
-      "isBeam": true
+      "isBeam": true,
+      "category": "Anti-Personnel"
     },
     {
       "className": "none_shotgun_ballistic_01",
@@ -898,7 +932,8 @@
       "alphaDamage": 72.0,
       "dps": 96.0,
       "pelletCount": 8,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "none_special_ballistic_01",
@@ -924,7 +959,8 @@
       "alphaDamage": 1500.0,
       "dps": 12500.0,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Ship"
     },
     {
       "className": "volt_lmg_energy_01",
@@ -950,7 +986,8 @@
       "alphaDamage": 275.0,
       "dps": 275.0,
       "pelletCount": null,
-      "isBeam": true
+      "isBeam": true,
+      "category": "Anti-Personnel"
     },
     {
       "className": "volt_pistol_energy_01",
@@ -976,7 +1013,8 @@
       "alphaDamage": 11.75,
       "dps": 97.92,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "volt_rifle_energy_01",
@@ -1002,7 +1040,8 @@
       "alphaDamage": 260.0,
       "dps": 260.0,
       "pelletCount": null,
-      "isBeam": true
+      "isBeam": true,
+      "category": "Anti-Personnel"
     },
     {
       "className": "volt_smg_energy_01",
@@ -1028,7 +1067,8 @@
       "alphaDamage": 275.0,
       "dps": 275.0,
       "pelletCount": null,
-      "isBeam": true
+      "isBeam": true,
+      "category": "Anti-Personnel"
     },
     {
       "className": "volt_shotgun_energy_01",
@@ -1052,7 +1092,8 @@
       "alphaDamage": 46.0,
       "dps": 92.0,
       "pelletCount": 8,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     },
     {
       "className": "volt_sniper_energy_01",
@@ -1076,7 +1117,8 @@
       "alphaDamage": 42.5,
       "dps": 31.88,
       "pelletCount": null,
-      "isBeam": null
+      "isBeam": null,
+      "category": "Anti-Personnel"
     }
   ]
 }

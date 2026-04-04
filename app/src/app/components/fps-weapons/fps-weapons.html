@@ -46,7 +46,8 @@
           </tr>
         </thead>
         <tbody>
-          @for (w of filtered(); track w.className) {
+          <tr class="section-header"><td colspan="11">Anti-Personnel</td></tr>
+          @for (w of antiPersonnel(); track w.className) {
             <tr>
               <td class="col-name">{{ w.name }}</td>
               <td>{{ w.manufacturer }}</td>
@@ -60,6 +61,24 @@
               <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
               <td>{{ dmgType(w) }}</td>
             </tr>
+          }
+          @if (antiShip().length) {
+            <tr class="section-header"><td colspan="11">Anti-Ship</td></tr>
+            @for (w of antiShip(); track w.className) {
+              <tr>
+                <td class="col-name">{{ w.name }}</td>
+                <td>{{ w.manufacturer }}</td>
+                <td>{{ w.type }}</td>
+                <td>{{ w.subType }}</td>
+                <td class="col-modes">{{ w.fireModes.join(', ') || '\u2014' }}</td>
+                <td class="col-num">{{ fmt(w.dps) }}</td>
+                <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
+                <td class="col-num">{{ fmt(w.fireRate, 0) }}</td>
+                <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
+                <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
+                <td>{{ dmgType(w) }}</td>
+              </tr>
+            }
           }
         </tbody>
       </table>

@@ -124,4 +124,18 @@
   }
 
   tbody tr:hover { background: rgba(0, 200, 255, 0.03); }
+
+  .section-header td {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: left;
+    padding: 10px 10px 4px;
+    border-bottom: 1px solid var(--accent2);
+    background: rgba(0, 200, 255, 0.03);
+  }
+  .section-header:hover { background: rgba(0, 200, 255, 0.03) !important; }
 }
