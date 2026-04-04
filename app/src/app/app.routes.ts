@@ -16,10 +16,14 @@ import { CompactViewComponent } from './components/compact-view/compact-view';
 import { UpdatesViewComponent } from './components/updates-view/updates-view';
 import { ChangelogViewComponent } from './components/changelog-view/changelog-view';
 import { ShipCompareComponent } from './components/ship-compare/ship-compare';
+import { FpsWeaponsComponent } from './components/fps-weapons/fps-weapons';
+import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 
 export const routes: Routes = [
   { path: 'loadout',            component: LoadoutViewComponent },
   { path: 'ship-compare',       component: ShipCompareComponent },
+  { path: 'fps-weapons',        component: FpsWeaponsComponent },
+  { path: 'fps-armor',          component: FpsArmorComponent },
   { path: 'compare',            component: CompareViewComponent },
   { path: 'finder',             component: ComponentFinderComponent },
   { path: 'cart',               component: CartViewComponent },

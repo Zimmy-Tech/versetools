@@ -1,0 +1,998 @@
+{
+  "meta": {
+    "count": 42,
+    "version": "4.7.0"
+  },
+  "weapons": [
+    {
+      "className": "apar_special_ballistic_02",
+      "name": "Animus Missile Launcher",
+      "manufacturer": "Apocalypse Arms",
+      "type": "Special",
+      "subType": "Ballistic",
+      "size": 5,
+      "fireRate": 60,
+      "fireModes": [],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0
+    },
+    {
+      "className": "apar_special_ballistic_01",
+      "name": "Scourge Railgun",
+      "manufacturer": "Apocalypse Arms",
+      "type": "Special",
+      "subType": "Ballistic",
+      "size": 5,
+      "fireRate": 30,
+      "fireModes": [],
+      "magazineSize": 5,
+      "projectileSpeed": 50.0,
+      "damage": {
+        "physical": 20.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 20.0,
+      "dps": 10.0
+    },
+    {
+      "className": "behr_glauncher_ballistic_01",
+      "name": "GP-33 MOD Grenade Launcher",
+      "manufacturer": "Behring",
+      "type": "Grenade Launcher",
+      "subType": "Ballistic",
+      "size": 4,
+      "fireRate": 60.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 6,
+      "projectileSpeed": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0
+    },
+    {
+      "className": "behr_lmg_ballistic_01",
+      "name": "FS-9 LMG",
+      "manufacturer": "Behring",
+      "type": "LMG",
+      "subType": "Ballistic",
+      "size": 4,
+      "fireRate": 650.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 75,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 14.5,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 14.5,
+      "dps": 157.08
+    },
+    {
+      "className": "behr_pistol_ballistic_01",
+      "name": "S-38 Pistol",
+      "manufacturer": "Behring",
+      "type": "Pistol",
+      "subType": "Ballistic",
+      "size": 1,
+      "fireRate": 450.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 20,
+      "projectileSpeed": 500.0,
+      "damage": {
+        "physical": 22.5,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 22.5,
+      "dps": 168.75
+    },
+    {
+      "className": "behr_rifle_ballistic_01",
+      "name": "P4-AR Rifle",
+      "manufacturer": "Behring",
+      "type": "Rifle",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 810.0,
+      "fireModes": [
+        "Rapid",
+        "Single"
+      ],
+      "magazineSize": 40,
+      "projectileSpeed": 550.0,
+      "damage": {
+        "physical": 12.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 12.0,
+      "dps": 162.0
+    },
+    {
+      "className": "behr_rifle_ballistic_02_civilian",
+      "name": "P8-AR Rifle",
+      "manufacturer": "Behring",
+      "type": "Rifle",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 235.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 15,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 18.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 18.0,
+      "dps": 70.5
+    },
+    {
+      "className": "behr_smg_ballistic_01",
+      "name": "P8-SC SMG",
+      "manufacturer": "Behring",
+      "type": "SMG",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 850.0,
+      "fireModes": [
+        "Rapid",
+        "Burst"
+      ],
+      "magazineSize": 45,
+      "projectileSpeed": 500.0,
+      "damage": {
+        "physical": 13.75,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 13.75,
+      "dps": 194.79
+    },
+    {
+      "className": "behr_shotgun_ballistic_01",
+      "name": "BR-2 Shotgun",
+      "manufacturer": "Behring",
+      "type": "Shotgun",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 90.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 12,
+      "projectileSpeed": 225.0,
+      "damage": {
+        "physical": 11.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 11.0,
+      "dps": 16.5
+    },
+    {
+      "className": "behr_sniper_ballistic_01",
+      "name": "P6-LR Sniper Rifle",
+      "manufacturer": "Behring",
+      "type": "Sniper",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 55.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 8,
+      "projectileSpeed": 725.0,
+      "damage": {
+        "physical": 100.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 100.0,
+      "dps": 91.67
+    },
+    {
+      "className": "gmni_lmg_ballistic_01",
+      "name": "F55 LMG",
+      "manufacturer": "Gemini",
+      "type": "LMG",
+      "subType": "Ballistic",
+      "size": 4,
+      "fireRate": 1200.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 150,
+      "projectileSpeed": 550.0,
+      "damage": {
+        "physical": 10.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 10.0,
+      "dps": 200.0
+    },
+    {
+      "className": "gmni_pistol_ballistic_01",
+      "name": "LH86 Pistol",
+      "manufacturer": "Gemini",
+      "type": "Pistol",
+      "subType": "Ballistic",
+      "size": 1,
+      "fireRate": 950.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 25,
+      "projectileSpeed": 500.0,
+      "damage": {
+        "physical": 13.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 13.0,
+      "dps": 205.83
+    },
+    {
+      "className": "gmni_rifle_ballistic_01",
+      "name": "S71 Rifle",
+      "manufacturer": "Gemini",
+      "type": "Rifle",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 500.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 30,
+      "projectileSpeed": 1200.0,
+      "damage": {
+        "physical": 21.5,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 21.5,
+      "dps": 179.17
+    },
+    {
+      "className": "gmni_smg_ballistic_01",
+      "name": "C54 SMG",
+      "manufacturer": "Gemini",
+      "type": "SMG",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 925.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 50,
+      "projectileSpeed": 500.0,
+      "damage": {
+        "physical": 11.5,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 11.5,
+      "dps": 177.29
+    },
+    {
+      "className": "gmni_shotgun_ballistic_01",
+      "name": "R97 Shotgun",
+      "manufacturer": "Gemini",
+      "type": "Shotgun",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 150.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 18,
+      "projectileSpeed": 225.0,
+      "damage": {
+        "physical": 4.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 4.0,
+      "dps": 10.0
+    },
+    {
+      "className": "gmni_sniper_ballistic_01",
+      "name": "A03 Sniper Rifle",
+      "manufacturer": "Gemini",
+      "type": "Sniper",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 225.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 15,
+      "projectileSpeed": 800.0,
+      "damage": {
+        "physical": 42.5,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 42.5,
+      "dps": 159.38
+    },
+    {
+      "className": "hdgw_pistol_ballistic_01",
+      "name": "Salvo Frag Pistol",
+      "manufacturer": "Hedgeway",
+      "type": "Pistol",
+      "subType": "Ballistic",
+      "size": 1,
+      "fireRate": 120,
+      "fireModes": [],
+      "magazineSize": 8,
+      "projectileSpeed": 550.0,
+      "damage": {
+        "physical": 45.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 45.0,
+      "dps": 90.0
+    },
+    {
+      "className": "ksar_pistol_ballistic_01",
+      "name": "Coda Pistol",
+      "manufacturer": "Kastak Arms",
+      "type": "Pistol",
+      "subType": "Ballistic",
+      "size": 1,
+      "fireRate": 180.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 6,
+      "projectileSpeed": 550.0,
+      "damage": {
+        "physical": 60.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 60.0,
+      "dps": 180.0
+    },
+    {
+      "className": "ksar_rifle_energy_01",
+      "name": "Karna Rifle",
+      "manufacturer": "Kastak Arms",
+      "type": "Rifle",
+      "subType": "Energy",
+      "size": 3,
+      "fireRate": 600.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 35,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 17.5,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 17.5,
+      "dps": 175.0
+    },
+    {
+      "className": "ksar_smg_energy_01",
+      "name": "Custodian SMG",
+      "manufacturer": "Kastak Arms",
+      "type": "SMG",
+      "subType": "Energy",
+      "size": 2,
+      "fireRate": 800.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 60,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 13.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 13.0,
+      "dps": 173.33
+    },
+    {
+      "className": "ksar_shotgun_energy_01",
+      "name": "Devastator Shotgun",
+      "manufacturer": "Kastak Arms",
+      "type": "Shotgun",
+      "subType": "Energy",
+      "size": 3,
+      "fireRate": 60,
+      "fireModes": [],
+      "magazineSize": 12,
+      "projectileSpeed": 300.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 10.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 10.0,
+      "dps": 10.0
+    },
+    {
+      "className": "ksar_shotgun_ballistic_01",
+      "name": "Ravager-212 Twin Shotgun",
+      "manufacturer": "Kastak Arms",
+      "type": "Shotgun",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 120,
+      "fireModes": [],
+      "magazineSize": 16,
+      "projectileSpeed": 300.0,
+      "damage": {
+        "physical": 6.5,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 6.5,
+      "dps": 13.0
+    },
+    {
+      "className": "ksar_sniper_ballistic_01",
+      "name": "Scalpel Sniper Rifle",
+      "manufacturer": "Kastak Arms",
+      "type": "Sniper",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 40,
+      "fireModes": [],
+      "magazineSize": 12,
+      "projectileSpeed": 875.0,
+      "damage": {
+        "physical": 45.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 45.0,
+      "dps": 30.0
+    },
+    {
+      "className": "klwe_lmg_energy_01",
+      "name": "Demeco LMG",
+      "manufacturer": "Klaus & Werner",
+      "type": "LMG",
+      "subType": "Energy",
+      "size": 4,
+      "fireRate": 800.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 100,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 11.5,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 11.5,
+      "dps": 153.33
+    },
+    {
+      "className": "klwe_pistol_energy_01",
+      "name": "Arclight Pistol",
+      "manufacturer": "Klaus & Werner",
+      "type": "Pistol",
+      "subType": "Energy",
+      "size": 1,
+      "fireRate": 700.0,
+      "fireModes": [
+        "Burst",
+        "Single"
+      ],
+      "magazineSize": 30,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 18.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 18.0,
+      "dps": 210.0
+    },
+    {
+      "className": "klwe_rifle_energy_01",
+      "name": "Gallant Rifle",
+      "manufacturer": "Klaus & Werner",
+      "type": "Rifle",
+      "subType": "Energy",
+      "size": 2,
+      "fireRate": 900.0,
+      "fireModes": [
+        "Burst",
+        "Burst"
+      ],
+      "magazineSize": 45,
+      "projectileSpeed": 1200.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 21.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 21.0,
+      "dps": 315.0
+    },
+    {
+      "className": "klwe_smg_energy_01",
+      "name": "Lumin V SMG",
+      "manufacturer": "Klaus & Werner",
+      "type": "SMG",
+      "subType": "Energy",
+      "size": 2,
+      "fireRate": 600,
+      "fireModes": [],
+      "magazineSize": 45,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 21.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 21.0,
+      "dps": 210.0
+    },
+    {
+      "className": "klwe_sniper_energy_01",
+      "name": "Arrowhead Sniper Rifle",
+      "manufacturer": "Klaus & Werner",
+      "type": "Sniper",
+      "subType": "Energy",
+      "size": 3,
+      "fireRate": 60,
+      "fireModes": [],
+      "magazineSize": 16,
+      "projectileSpeed": 1000.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 50.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 50.0,
+      "dps": 50.0
+    },
+    {
+      "className": "lbco_pistol_energy_01",
+      "name": "Yubarev Pistol",
+      "manufacturer": "Lightning Bolt Co.",
+      "type": "Pistol",
+      "subType": "Energy",
+      "size": 1,
+      "fireRate": 350.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 10,
+      "projectileSpeed": 500.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 32.5,
+        "distortion": 7.5,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 1.0
+      },
+      "alphaDamage": 41.0,
+      "dps": 239.17
+    },
+    {
+      "className": "lbco_sniper_energy_01",
+      "name": "Atzkav Sniper Rifle",
+      "manufacturer": "Lightning Bolt Co.",
+      "type": "Sniper",
+      "subType": "Energy",
+      "size": 3,
+      "fireRate": 30.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 8,
+      "projectileSpeed": 500.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 120.0,
+        "distortion": 35.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 10.0
+      },
+      "alphaDamage": 165.0,
+      "dps": 82.5
+    },
+    {
+      "className": "none_lmg_ballistic_01",
+      "name": "Pulverizer LMG",
+      "manufacturer": "Unknown",
+      "type": "LMG",
+      "subType": "Ballistic",
+      "size": 4,
+      "fireRate": 355.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 120,
+      "projectileSpeed": 1050.0,
+      "damage": {
+        "physical": 27.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 27.0,
+      "dps": 159.75
+    },
+    {
+      "className": "none_pistol_ballistic_01",
+      "name": "Tripledown Pistol",
+      "manufacturer": "Unknown",
+      "type": "Pistol",
+      "subType": "Ballistic",
+      "size": 1,
+      "fireRate": 60.0,
+      "fireModes": [
+        "Single",
+        "Single",
+        "Single"
+      ],
+      "magazineSize": 12,
+      "projectileSpeed": 550.0,
+      "damage": {
+        "physical": 12.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 12.0,
+      "dps": 12.0
+    },
+    {
+      "className": "none_rifle_multi_01",
+      "name": "Killshot Rifle",
+      "manufacturer": "Unknown",
+      "type": "Rifle",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 300,
+      "fireModes": [],
+      "magazineSize": 45,
+      "projectileSpeed": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0
+    },
+    {
+      "className": "none_smg_energy_01",
+      "name": "Ripper \"Sunblock\" SMG",
+      "manufacturer": "Unknown",
+      "type": "SMG",
+      "subType": "Energy",
+      "size": 2,
+      "fireRate": 0,
+      "fireModes": [
+        "Beam"
+      ],
+      "magazineSize": 60,
+      "projectileSpeed": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0
+    },
+    {
+      "className": "none_shotgun_ballistic_01",
+      "name": "Deadrig Shotgun",
+      "manufacturer": "Unknown",
+      "type": "Shotgun",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 80,
+      "fireModes": [],
+      "magazineSize": 8,
+      "projectileSpeed": 300.0,
+      "damage": {
+        "physical": 9.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 9.0,
+      "dps": 12.0
+    },
+    {
+      "className": "none_special_ballistic_01",
+      "name": "Boomtube Rocket Launcher",
+      "manufacturer": "Unknown",
+      "type": "Special",
+      "subType": "Ballistic",
+      "size": 5,
+      "fireRate": 500.0,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 0,
+      "projectileSpeed": 135.0,
+      "damage": {
+        "physical": 20.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 20.0,
+      "dps": 166.67
+    },
+    {
+      "className": "volt_lmg_energy_01",
+      "name": "Fresnel Energy LMG",
+      "manufacturer": "Voltaire",
+      "type": "LMG",
+      "subType": "Energy",
+      "size": 4,
+      "fireRate": 0,
+      "fireModes": [
+        "Beam"
+      ],
+      "magazineSize": 165,
+      "projectileSpeed": 1100.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 9.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 9.0,
+      "dps": 0
+    },
+    {
+      "className": "volt_pistol_energy_01",
+      "name": "Pulse Laser Pistol",
+      "manufacturer": "Voltaire",
+      "type": "Pistol",
+      "subType": "Energy",
+      "size": 1,
+      "fireRate": 500.0,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 60,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 11.75,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 11.75,
+      "dps": 97.92
+    },
+    {
+      "className": "volt_rifle_energy_01",
+      "name": "Parallax Energy Assault Rifle",
+      "manufacturer": "Voltaire",
+      "type": "Rifle",
+      "subType": "Energy",
+      "size": 2,
+      "fireRate": 0,
+      "fireModes": [
+        "Beam"
+      ],
+      "magazineSize": 80,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 13.0,
+        "distortion": 5.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 3.0
+      },
+      "alphaDamage": 21.0,
+      "dps": 0
+    },
+    {
+      "className": "volt_smg_energy_01",
+      "name": "Quartz Energy SMG",
+      "manufacturer": "Voltaire",
+      "type": "SMG",
+      "subType": "Energy",
+      "size": 2,
+      "fireRate": 0,
+      "fireModes": [
+        "Beam"
+      ],
+      "magazineSize": 45,
+      "projectileSpeed": 600.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 5.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 5.0,
+      "dps": 0
+    },
+    {
+      "className": "volt_shotgun_energy_01",
+      "name": "Prism Laser Shotgun",
+      "manufacturer": "Voltaire",
+      "type": "Shotgun",
+      "subType": "Energy",
+      "size": 3,
+      "fireRate": 120,
+      "fireModes": [],
+      "magazineSize": 20,
+      "projectileSpeed": 300.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 5.75,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 5.75,
+      "dps": 11.5
+    },
+    {
+      "className": "volt_sniper_energy_01",
+      "name": "Zenith Laser Sniper Rifle",
+      "manufacturer": "Voltaire",
+      "type": "Sniper",
+      "subType": "Energy",
+      "size": 3,
+      "fireRate": 45,
+      "fireModes": [],
+      "magazineSize": 22,
+      "projectileSpeed": 700.0,
+      "damage": {
+        "physical": 0.0,
+        "energy": 42.5,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
+      },
+      "alphaDamage": 42.5,
+      "dps": 31.88
+    }
+  ]
+}

@@ -5,12 +5,14 @@ import { filter } from 'rxjs/operators';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
+export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
   miningSignatures: 'mining-signatures',
   shipCompare: 'ship-compare',
+  fpsWeapons: 'fps-weapons',
+  fpsArmor: 'fps-armor',
 };
 
 function tabToRoute(id: string): string {
@@ -85,9 +87,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { id: 'crafting', label: 'Crafting' },
   ];
 
+  readonly fpsGearTabs: { id: TabName; label: string }[] = [
+    { id: 'fpsWeapons', label: 'FPS Weapons' },
+    { id: 'fpsArmor', label: 'FPS Armor' },
+  ];
+
   shipToolsOpen = signal(false);
   missionsOpen = signal(false);
   industryToolsOpen = signal(false);
+  fpsGearOpen = signal(false);
 
   isTabActive(id: string): boolean {
     return this.currentUrl() === '/' + tabToRoute(id);
@@ -96,6 +104,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isShipToolActive = computed(() => { this.currentUrl(); return this.shipToolsTabs.some(t => this.isTabActive(t.id)); });
   isMissionsActive = computed(() => { this.currentUrl(); return this.missionsTabs.some(t => this.isTabActive(t.id)); });
   isIndustryToolActive = computed(() => { this.currentUrl(); return this.industryToolsTabs.some(t => this.isTabActive(t.id)); });
+  isFpsGearActive = computed(() => { this.currentUrl(); return this.fpsGearTabs.some(t => this.isTabActive(t.id)); });
 
   isOnLoadout(): boolean {
     const url = this.currentUrl();
@@ -128,6 +137,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.shipToolsOpen.set(false);
     this.missionsOpen.set(false);
     this.industryToolsOpen.set(false);
+    this.fpsGearOpen.set(false);
   }
   toggleShipTools(): void {
     const open = !this.shipToolsOpen();
@@ -143,6 +153,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const open = !this.industryToolsOpen();
     this.closeAllGroups();
     this.industryToolsOpen.set(open);
+  }
+  toggleFpsGear(): void {
+    const open = !this.fpsGearOpen();
+    this.closeAllGroups();
+    this.fpsGearOpen.set(open);
   }
   navigateTo(id: string): void {
     this._router.navigate(['/' + tabToRoute(id)]);

@@ -1,0 +1,108 @@
+import { Component, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+interface FpsWeapon {
+  className: string;
+  name: string;
+  manufacturer: string;
+  type: string;
+  subType: string;
+  size: number;
+  fireRate: number;
+  fireModes: string[];
+  magazineSize: number;
+  projectileSpeed: number;
+  damage: { physical: number; energy: number; distortion: number; thermal: number; biochemical: number; stun: number };
+  alphaDamage: number;
+  dps: number;
+}
+
+@Component({
+  selector: 'app-fps-weapons',
+  standalone: true,
+  templateUrl: './fps-weapons.html',
+  styleUrl: './fps-weapons.scss',
+})
+export class FpsWeaponsComponent {
+  weapons = signal<FpsWeapon[]>([]);
+  loaded = signal(false);
+
+  typeFilter = signal('');
+  subTypeFilter = signal('');
+  searchQuery = signal('');
+  sortBy = signal<'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name'>('dps');
+  sortDir = signal<'asc' | 'desc'>('desc');
+
+  types = computed(() => {
+    const t = new Set(this.weapons().map(w => w.type));
+    return ['', ...Array.from(t).sort()];
+  });
+
+  subTypes = computed(() => {
+    const t = new Set(this.weapons().map(w => w.subType));
+    return ['', ...Array.from(t).sort()];
+  });
+
+  filtered = computed(() => {
+    let list = this.weapons();
+    const type = this.typeFilter();
+    const sub = this.subTypeFilter();
+    const q = this.searchQuery().toLowerCase();
+    const sort = this.sortBy();
+    const dir = this.sortDir();
+
+    if (type) list = list.filter(w => w.type === type);
+    if (sub) list = list.filter(w => w.subType === sub);
+    if (q) list = list.filter(w => w.name.toLowerCase().includes(q) || w.manufacturer.toLowerCase().includes(q));
+
+    list = [...list].sort((a, b) => {
+      let av: number | string, bv: number | string;
+      switch (sort) {
+        case 'name': av = a.name; bv = b.name; return dir === 'asc' ? (av as string).localeCompare(bv as string) : (bv as string).localeCompare(av as string);
+        case 'dps': av = a.dps; bv = b.dps; break;
+        case 'alphaDamage': av = a.alphaDamage; bv = b.alphaDamage; break;
+        case 'fireRate': av = a.fireRate; bv = b.fireRate; break;
+        case 'magazineSize': av = a.magazineSize; bv = b.magazineSize; break;
+        default: av = a.dps; bv = b.dps;
+      }
+      return dir === 'asc' ? (av as number) - (bv as number) : (bv as number) - (av as number);
+    });
+
+    return list;
+  });
+
+  constructor(private http: HttpClient) {
+    this.http.get<{ weapons: FpsWeapon[] }>('live/versedb_fps.json').subscribe(data => {
+      this.weapons.set(data.weapons);
+      this.loaded.set(true);
+    });
+  }
+
+  toggleSort(col: 'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name'): void {
+    if (this.sortBy() === col) {
+      this.sortDir.set(this.sortDir() === 'desc' ? 'asc' : 'desc');
+    } else {
+      this.sortBy.set(col);
+      this.sortDir.set('desc');
+    }
+  }
+
+  sortIndicator(col: string): string {
+    if (this.sortBy() !== col) return '';
+    return this.sortDir() === 'desc' ? ' \u25BE' : ' \u25B4';
+  }
+
+  fmt(val: number, decimals = 1): string {
+    if (!val) return '\u2014';
+    return val.toFixed(decimals);
+  }
+
+  dmgType(w: FpsWeapon): string {
+    const d = w.damage;
+    if (d.physical > 0 && d.energy === 0) return 'Phys';
+    if (d.energy > 0 && d.physical === 0) return 'Enrg';
+    if (d.distortion > 0) return 'Dist';
+    if (d.physical > 0 && d.energy > 0) return 'Mixed';
+    return '\u2014';
+  }
+}

@@ -1,0 +1,69 @@
+<div class="fps-view">
+
+  @if (!loaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading FPS weapons...</div>
+    </div>
+  } @else {
+
+    <div class="fps-header">
+      <div class="fps-title">FPS Weapons Database</div>
+      <div class="fps-sub">{{ filtered().length }} of {{ weapons().length }} weapons</div>
+    </div>
+
+    <div class="fps-filters">
+      <select class="fps-select" [value]="typeFilter()" (change)="typeFilter.set($any($event.target).value)">
+        <option value="">All Types</option>
+        @for (t of types(); track t) {
+          @if (t) { <option [value]="t">{{ t }}</option> }
+        }
+      </select>
+      <select class="fps-select" [value]="subTypeFilter()" (change)="subTypeFilter.set($any($event.target).value)">
+        <option value="">All Ammo</option>
+        @for (t of subTypes(); track t) {
+          @if (t) { <option [value]="t">{{ t }}</option> }
+        }
+      </select>
+      <input class="fps-search" type="text" placeholder="Search..."
+             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+    </div>
+
+    <div class="fps-table-wrap">
+      <table class="fps-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+            <th>Manufacturer</th>
+            <th>Type</th>
+            <th>Ammo</th>
+            <th>Modes</th>
+            <th class="sortable" (click)="toggleSort('dps')">DPS{{ sortIndicator('dps') }}</th>
+            <th class="sortable" (click)="toggleSort('alphaDamage')">Alpha{{ sortIndicator('alphaDamage') }}</th>
+            <th class="sortable" (click)="toggleSort('fireRate')">RPM{{ sortIndicator('fireRate') }}</th>
+            <th class="sortable" (click)="toggleSort('magazineSize')">Mag{{ sortIndicator('magazineSize') }}</th>
+            <th>Speed</th>
+            <th>Dmg Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (w of filtered(); track w.className) {
+            <tr>
+              <td class="col-name">{{ w.name }}</td>
+              <td>{{ w.manufacturer }}</td>
+              <td>{{ w.type }}</td>
+              <td>{{ w.subType }}</td>
+              <td class="col-modes">{{ w.fireModes.join(', ') || '\u2014' }}</td>
+              <td class="col-num">{{ fmt(w.dps) }}</td>
+              <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
+              <td class="col-num">{{ fmt(w.fireRate, 0) }}</td>
+              <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
+              <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
+              <td>{{ dmgType(w) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  }
+</div>

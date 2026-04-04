@@ -1,0 +1,64 @@
+<div class="fps-armor-view">
+
+  @if (!loaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading FPS armor...</div>
+    </div>
+  } @else {
+
+    <div class="fps-header">
+      <div class="fps-title">FPS Armor Database</div>
+      <div class="fps-sub">{{ filtered().length }} armor pieces with damage reduction data</div>
+    </div>
+
+    <div class="fps-filters">
+      <select class="fps-select" [value]="weightFilter()" (change)="weightFilter.set($any($event.target).value)">
+        <option value="">All Weights</option>
+        <option value="light">Light</option>
+        <option value="medium">Medium</option>
+        <option value="heavy">Heavy</option>
+      </select>
+      <select class="fps-select" [value]="slotFilter()" (change)="slotFilter.set($any($event.target).value)">
+        <option value="">All Slots</option>
+        <option value="helmet">Helmet</option>
+        <option value="core">Core</option>
+        <option value="arms">Arms</option>
+        <option value="legs">Legs</option>
+        <option value="backpack">Backpack</option>
+        <option value="undersuit">Undersuit</option>
+      </select>
+      <input class="fps-search" type="text" placeholder="Search..."
+             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+    </div>
+
+    <div class="fps-table-wrap">
+      <table class="fps-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+            <th>Set</th>
+            <th>Manufacturer</th>
+            <th class="sortable" (click)="toggleSort('weight')">Weight{{ sortIndicator('weight') }}</th>
+            <th class="sortable" (click)="toggleSort('slot')">Slot{{ sortIndicator('slot') }}</th>
+            <th class="sortable" (click)="toggleSort('damageReduction')">Dmg Reduction{{ sortIndicator('damageReduction') }}</th>
+            <th>Temp Range</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of filtered(); track p.className) {
+            <tr [class.light]="p.weight === 'light'" [class.medium]="p.weight === 'medium'" [class.heavy]="p.weight === 'heavy'">
+              <td class="col-name">{{ p.name }}</td>
+              <td>{{ p.setName }}</td>
+              <td>{{ p.manufacturer }}</td>
+              <td><span class="weight-badge" [class]="p.weight">{{ weightLabel(p.weight) }}</span></td>
+              <td>{{ p.slot }}</td>
+              <td class="col-num col-dr">{{ p.damageReduction }}%</td>
+              <td class="col-num">{{ p.tempMin }}&deg; / {{ p.tempMax }}&deg;C</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  }
+</div>

@@ -62,6 +62,19 @@
       }
     </div>
 
+    <!-- FPS Gear dropdown -->
+    <div class="nav-group">
+      <button class="nav-tab" [class.active]="isFpsGearActive()"
+              (click)="toggleFpsGear()">FPS Gear <span class="nav-arrow">{{ fpsGearOpen() ? '▾' : '▸' }}</span></button>
+      @if (fpsGearOpen()) {
+        <div class="nav-dropdown">
+          @for (tab of fpsGearTabs; track tab.id) {
+            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
+                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+          }
+        </div>
+      }
+    </div>
     <!-- Remaining flat tabs -->
     @for (tab of ['submit', 'formulas', 'updates', 'changelog']; track tab) {
       <button class="nav-tab" [class.active]="isTabActive(tab)"
