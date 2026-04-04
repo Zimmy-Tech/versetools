@@ -201,9 +201,10 @@ export class CraftingViewComponent {
     // Aggregate all modifiers by property
     const propMap: Record<string, { combined: number; contributions: { resource: string; modifier: number }[] }> = {};
 
-    for (const ing of sr.ingredients) {
+    for (let idx = 0; idx < sr.ingredients.length; idx++) {
+      const ing = sr.ingredients[idx];
       const mods = ing.qualityModifiers ?? [];
-      const quality = qv[ing.resource] ?? 500; // default mid quality
+      const quality = qv[`${idx}_${ing.resource}`] ?? 500;
 
       for (const m of mods) {
         const range = m.endQuality - m.startQuality;
@@ -222,8 +223,19 @@ export class CraftingViewComponent {
     }
 
     // Look up base stats from armor and weapon data
-    const armorPiece = this.armorLookup()[sr.className];
-    const weaponPiece = this.weaponLookup()[sr.className];
+    // Try exact match first, then base prefix (strip last _XX suffix for color variants)
+    const armorLookup = this.armorLookup();
+    let armorPiece: ArmorPieceRef | undefined = armorLookup[sr.className];
+    if (!armorPiece) {
+      const basePrefix = sr.className.replace(/_\d+$/, '');
+      armorPiece = Object.values(armorLookup).find(p => p.className.startsWith(basePrefix));
+    }
+    const weaponLookup = this.weaponLookup();
+    let weaponPiece: FpsWeaponRef | undefined = weaponLookup[sr.className];
+    if (!weaponPiece) {
+      const basePrefix = sr.className.replace(/_\d+$/, '');
+      weaponPiece = Object.values(weaponLookup).find(w => w.className.startsWith(basePrefix));
+    }
     const baseDR = armorPiece?.damageReduction ?? null;
     const baseTempMin = armorPiece?.tempMin ?? null;
     const baseTempMax = armorPiece?.tempMax ?? null;
@@ -375,9 +387,9 @@ export class CraftingViewComponent {
       this.expandedMission.set(null);
       // Initialize quality sliders at midpoint for all ingredients
       const qv: Record<string, number> = {};
-      for (const ing of r.ingredients) {
-        if (ing.qualityModifiers?.length) {
-          qv[ing.resource] = 500;
+      for (let i = 0; i < r.ingredients.length; i++) {
+        if (r.ingredients[i].qualityModifiers?.length) {
+          qv[`${i}_${r.ingredients[i].resource}`] = 500;
         }
       }
       this.qualityValues.set(qv);
@@ -386,8 +398,8 @@ export class CraftingViewComponent {
 
   closePopout(): void { this.selectedRecipe.set(null); }
 
-  setQuality(resource: string, value: number): void {
-    this.qualityValues.update(qv => ({ ...qv, [resource]: value }));
+  setQuality(key: string, value: number): void {
+    this.qualityValues.update(qv => ({ ...qv, [key]: value }));
   }
 
   fmtTime(seconds: number): string {
@@ -418,8 +430,10 @@ export class CraftingViewComponent {
     return recipe.ingredients.some(i => i.qualityModifiers?.length);
   }
 
-  ingredientsWithQuality(recipe: CraftingRecipe): CraftingIngredient[] {
-    return recipe.ingredients.filter(i => i.qualityModifiers?.length);
+  ingredientsWithQuality(recipe: CraftingRecipe): { ing: CraftingIngredient; key: string }[] {
+    return recipe.ingredients
+      .map((ing, i) => ({ ing, key: `${i}_${ing.resource}` }))
+      .filter(x => x.ing.qualityModifiers?.length);
   }
 
   dismantleReturns = computed(() => {

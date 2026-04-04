@@ -216,7 +216,7 @@
 
           <div class="popout-meta">
             <span class="po-cat">{{ sr.category }}</span>
-            <span class="po-class">{{ sr.className }}</span>
+            @if (sr.subtype) { <span class="po-cat">{{ sr.subtype }}</span> }
           </div>
 
           <div class="po-stats">
@@ -302,13 +302,13 @@
               <div class="po-section-title">Material Quality</div>
 
               <div class="quality-sliders">
-                @for (ing of ingredientsWithQuality(sr); track ing.resource) {
+                @for (entry of ingredientsWithQuality(sr); track entry.key) {
                   <div class="quality-row">
-                    <span class="qr-name" [class.ore]="isOre(ing)" [class.gem]="isGem(ing)">{{ ing.resource }}</span>
+                    <span class="qr-name" [class.ore]="isOre(entry.ing)" [class.gem]="isGem(entry.ing)">{{ entry.ing.resource }}</span>
                     <input type="range" class="qr-slider" min="0" max="1000" step="10"
-                           [value]="qualityValues()[ing.resource] ?? 500"
-                           (input)="setQuality(ing.resource, +$any($event.target).value)">
-                    <span class="qr-val">{{ qualityValues()[ing.resource] ?? 500 }}</span>
+                           [value]="qualityValues()[entry.key] ?? 500"
+                           (input)="setQuality(entry.key, +$any($event.target).value)">
+                    <span class="qr-val">{{ qualityValues()[entry.key] ?? 500 }}</span>
                   </div>
                 }
               </div>
@@ -317,47 +317,32 @@
                 <div class="quality-results">
                   @for (eff of qualityEffects(); track eff.property) {
                     <div class="qr-card">
-                      <div class="qr-card-header">{{ eff.property }}</div>
+                      <div class="qr-card-header">
+                        <span class="qr-card-title">{{ eff.property }}</span>
+                        <span class="qr-card-effect"
+                              [class.positive]="eff.invertComparison ? eff.combined < 0.999 : eff.combined > 1.001"
+                              [class.negative]="eff.invertComparison ? eff.combined > 1.001 : eff.combined < 0.999">
+                          {{ fmtMod(eff.combined) }}
+                        </span>
+                      </div>
                       <div class="qr-card-body">
                         @if (eff.baseValue != null && eff.modifiedValue != null) {
-                          <div class="qr-values">
-                            <div class="qr-value-col">
-                              <span class="qr-value-label">Base</span>
-                              <span class="qr-value-num">{{ eff.baseValue }}{{ eff.unit }}</span>
-                            </div>
-                            <span class="qr-arrow">&rarr;</span>
-                            <div class="qr-value-col">
-                              <span class="qr-value-label">Modified</span>
-                              <span class="qr-value-num modified"
-                                    [class.positive]="eff.invertComparison ? eff.modifiedValue! < eff.baseValue! : eff.modifiedValue! > eff.baseValue!"
-                                    [class.negative]="eff.invertComparison ? eff.modifiedValue! > eff.baseValue! : eff.modifiedValue! < eff.baseValue!">
-                                {{ eff.modifiedValue }}{{ eff.unit }}
-                              </span>
-                            </div>
-                            <div class="qr-value-col">
-                              <span class="qr-value-label">Effect</span>
-                              <span class="qr-value-num" [class.positive]="eff.combined > 1.001"
-                                    [class.negative]="eff.combined < 0.999">
-                                {{ fmtMod(eff.combined) }}
-                              </span>
-                            </div>
-                          </div>
-                        } @else {
-                          <div class="qr-values">
-                            <div class="qr-value-col">
-                              <span class="qr-value-label">Effect</span>
-                              <span class="qr-value-num" [class.positive]="eff.combined > 1.001"
-                                    [class.negative]="eff.combined < 0.999">
-                                {{ fmtMod(eff.combined) }}
-                              </span>
-                            </div>
+                          <div class="qr-gauge">
+                            <span class="qr-gauge-base">{{ eff.baseValue }}{{ eff.unit }}</span>
+                            <span class="qr-gauge-arrow">&rarr;</span>
+                            <span class="qr-gauge-result"
+                                  [class.positive]="eff.invertComparison ? eff.modifiedValue! < eff.baseValue! : eff.modifiedValue! > eff.baseValue!"
+                                  [class.negative]="eff.invertComparison ? eff.modifiedValue! > eff.baseValue! : eff.modifiedValue! < eff.baseValue!">
+                              {{ eff.modifiedValue }}{{ eff.unit }}
+                            </span>
                           </div>
                         }
-                        <div class="qr-breakdown">
+                        <div class="qr-contrib-row">
                           @for (c of eff.contributions; track c.resource) {
-                            <span class="qr-contrib" [class.positive]="c.modifier > 1.001"
-                                  [class.negative]="c.modifier < 0.999">
-                              {{ c.resource }}: {{ fmtMod(c.modifier) }}
+                            <span class="qr-contrib"
+                                  [class.positive]="eff.invertComparison ? c.modifier < 0.999 : c.modifier > 1.001"
+                                  [class.negative]="eff.invertComparison ? c.modifier > 1.001 : c.modifier < 0.999">
+                              {{ c.resource }} {{ fmtMod(c.modifier) }}
                             </span>
                           }
                         </div>
