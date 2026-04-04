@@ -228,6 +228,8 @@ export class CraftingViewComponent {
     const baseTempMin = armorPiece?.tempMin ?? null;
     const baseTempMax = armorPiece?.tempMax ?? null;
     const baseFireRate = weaponPiece?.fireRate ?? null;
+    const baseAlpha = weaponPiece?.alphaDamage ?? null;
+    const baseDPS = weaponPiece?.dps ?? null;
 
     return Object.entries(propMap).map(([prop, data]) => {
       let baseValue: number | null = null;
@@ -259,6 +261,10 @@ export class CraftingViewComponent {
           modifiedValue = Math.round(baseValue * data.combined * 10) / 10;
           unit = ' RPM';
         }
+      } else if (pl.includes('impact force') && baseAlpha != null) {
+        baseValue = baseAlpha;
+        modifiedValue = Math.round(baseAlpha * data.combined * 100) / 100;
+        unit = ' dmg';
       }
 
       // For min temp and recoil, lower is better. For everything else, higher is better.
@@ -327,6 +333,17 @@ export class CraftingViewComponent {
         });
         this.allRecipes.set(recipes);
         this.loaded.set(true);
+
+        // Check if navigated from Blueprint Finder
+        const craftSearch = localStorage.getItem('versetools_craft_search');
+        if (craftSearch) {
+          localStorage.removeItem('versetools_craft_search');
+          this.searchQuery.set(craftSearch);
+          const match = recipes.find(r => r.itemName === craftSearch);
+          if (match) {
+            this.selectedRecipe.set(match);
+          }
+        }
       });
       this.http.get<any>(`${prefix}versedb_missions.json`).subscribe(data => {
         this.allMissions.set(data.contracts ?? data.missions ?? []);

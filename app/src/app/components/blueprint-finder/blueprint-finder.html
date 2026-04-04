@@ -59,6 +59,7 @@
                 <span class="bp-name">{{ bp.name }}</span>
                 <span class="bp-type">{{ bp.type }}</span>
                 <span class="bp-mission-count">{{ bp.missions.length }} mission{{ bp.missions.length !== 1 ? 's' : '' }}</span>
+                <button class="bp-craft-btn" (click)="openInCrafting(bp.name, $event)" title="Open in Crafting">CRAFT</button>
                 <span class="bp-arrow">{{ expandedBp() === bp.name ? '▾' : '▸' }}</span>
               </div>
 

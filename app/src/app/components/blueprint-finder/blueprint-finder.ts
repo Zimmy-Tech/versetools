@@ -1,4 +1,5 @@
 import { Component, signal, computed, effect } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../services/data.service';
 
@@ -161,7 +162,14 @@ export class BlueprintFinderComponent {
     return n.toString();
   }
 
-  constructor(private http: HttpClient, private data: DataService) {
+  openInCrafting(blueprintName: string, e: Event): void {
+    e.stopPropagation();
+    // Store the blueprint name so crafting page can pick it up
+    localStorage.setItem('versetools_craft_search', blueprintName);
+    this.router.navigate(['/crafting']);
+  }
+
+  constructor(private http: HttpClient, private data: DataService, private router: Router) {
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion();
