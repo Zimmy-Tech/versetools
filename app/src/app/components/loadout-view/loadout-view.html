@@ -87,16 +87,6 @@
                 @if (rollRot(); as r) {
                   <div class="stat-row"><span class="stat-label">Roll</span><span class="mono">{{ r.base }}@if (r.boosted !== r.base) { / <span class="accent">{{ r.boosted }}</span>}</span></div>
                 }
-                @if (data.selectedShip()!.hydrogenFuelCapacity || data.selectedShip()!.quantumFuelCapacity) {
-                  <div class="stat-divider"></div>
-                  <div class="stat-group-header">Fuel (mSCU)</div>
-                  @if (data.selectedShip()!.hydrogenFuelCapacity) {
-                    <div class="stat-row"><span class="stat-label">Hydrogen</span><span class="mono">{{ data.selectedShip()!.hydrogenFuelCapacity }}</span></div>
-                  }
-                  @if (data.selectedShip()!.quantumFuelCapacity) {
-                    <div class="stat-row"><span class="stat-label">Quantum</span><span class="mono">{{ data.selectedShip()!.quantumFuelCapacity }}</span></div>
-                  }
-                }
                 <div class="stat-divider"></div>
                 <div class="stat-group-header">Acceleration (G)</div>
                 <div class="stat-row"><span class="stat-label">Fwd</span><span class="mono">{{ data.selectedShip()!.accelFwd ?? 0 }}@if (data.selectedShip()!.accelAbFwd) { / <span class="accent">{{ data.selectedShip()!.accelAbFwd }}</span>}</span></div>
@@ -112,6 +102,16 @@
                 }
                 @if (needsAccelData()) {
                   <button class="help-us-btn" (click)="goToSubmit()">Help Us</button>
+                }
+                @if (data.selectedShip()!.hydrogenFuelCapacity || data.selectedShip()!.quantumFuelCapacity) {
+                  <div class="stat-divider"></div>
+                  <div class="stat-group-header">Fuel (mSCU)</div>
+                  @if (data.selectedShip()!.hydrogenFuelCapacity) {
+                    <div class="stat-row"><span class="stat-label">Hydrogen</span><span class="mono">{{ data.selectedShip()!.hydrogenFuelCapacity }}</span></div>
+                  }
+                  @if (data.selectedShip()!.quantumFuelCapacity) {
+                    <div class="stat-row"><span class="stat-label">Quantum</span><span class="mono">{{ data.selectedShip()!.quantumFuelCapacity }}</span></div>
+                  }
                 }
               </div>
             }
@@ -517,22 +517,366 @@
 
   </div>
 
-  @if (data.focusedItem()) {
+  @if (data.focusedItem(); as fi) {
     <div class="focus-overlay" (click)="data.focusedItem.set(null)"></div>
     <div class="focus-popout">
       <div class="focus-header">
-        <span class="focus-title">{{ data.focusedItem()!.name }}</span>
+        <div class="focus-header-left">
+          <span class="focus-title">{{ fi.name }}</span>
+          <span class="focus-subtitle">{{ fi.manufacturer ?? '' }}{{ fi.manufacturer && fi.size != null ? ' \u00B7 ' : '' }}{{ fi.size != null ? 'S' + fi.size : '' }}{{ fi.grade ? ' \u00B7 Grade ' + fi.grade : '' }}{{ fi.itemClass ? ' \u00B7 ' + fi.itemClass : '' }}</span>
+        </div>
         <span class="focus-close" (click)="data.focusedItem.set(null)">&times;</span>
       </div>
       <div class="focus-body">
-        <table class="focus-table">
-          @for (row of focusRows(); track row.key) {
-            <tr>
-              <td class="fk">{{ row.key }}</td>
-              <td class="fv">{{ row.value }}</td>
-            </tr>
-          }
-        </table>
+
+        <!-- Weapon detail -->
+        @if (fi.type === 'WeaponGun' || fi.type === 'WeaponTachyon') {
+          <div class="fd-grid">
+
+            <!-- Combat Performance -->
+            <div class="fd-section">
+              <div class="fd-section-title">Combat Performance</div>
+              <div class="fd-card">
+                <div class="fd-stat hero"><span class="fd-label">DPS</span><span class="fd-val accent">{{ (fi.dps ?? 0).toFixed(1) }}</span></div>
+                <div class="fd-stat hero"><span class="fd-label">Alpha</span><span class="fd-val">{{ (fi.alphaDamage ?? 0).toFixed(1) }}</span></div>
+              </div>
+              <div class="fd-card">
+                <div class="fd-stat"><span class="fd-label">Fire Rate</span><span class="fd-val">{{ (fi.fireRate ?? 0).toFixed(0) }} rpm</span></div>
+                <div class="fd-stat"><span class="fd-label">Proj Speed</span><span class="fd-val">{{ (fi.projectileSpeed ?? 0).toFixed(0) }} m/s</span></div>
+                <div class="fd-stat"><span class="fd-label">Range</span><span class="fd-val">{{ fi.range ? ((fi.range / 1000).toFixed(1) + ' km') : '\u2014' }}</span></div>
+              </div>
+            </div>
+
+            <!-- Damage Breakdown -->
+            <div class="fd-section">
+              <div class="fd-section-title">Damage Breakdown</div>
+              <div class="fd-card">
+                @if (fi.damage?.physical) { <div class="fd-stat"><span class="fd-label phys">Physical</span><span class="fd-val">{{ fi.damage!.physical!.toFixed(1) }}</span></div> }
+                @if (fi.damage?.energy) { <div class="fd-stat"><span class="fd-label enrg">Energy</span><span class="fd-val">{{ fi.damage!.energy!.toFixed(1) }}</span></div> }
+                @if (fi.damage?.distortion) { <div class="fd-stat"><span class="fd-label dist">Distortion</span><span class="fd-val">{{ fi.damage!.distortion!.toFixed(1) }}</span></div> }
+                @if (fi.damage?.thermal) { <div class="fd-stat"><span class="fd-label therm">Thermal</span><span class="fd-val">{{ fi.damage!.thermal!.toFixed(1) }}</span></div> }
+              </div>
+            </div>
+
+            <!-- Penetration -->
+            @if (fi.penetrationDistance) {
+              <div class="fd-section">
+                <div class="fd-section-title">Penetration</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Distance</span><span class="fd-val">{{ fi.penetrationDistance.toFixed(2) }} m</span></div>
+                  @if (fi.penetrationMinRadius != null) {
+                    <div class="fd-stat"><span class="fd-label">Radius</span><span class="fd-val">{{ fi.penetrationMinRadius.toFixed(2) }} \u2013 {{ fi.penetrationMaxRadius?.toFixed(2) }} m</span></div>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Ammo & Heat -->
+            <div class="fd-section">
+              <div class="fd-section-title">{{ fi.isBallistic ? 'Ammo & Heat' : 'Energy Pool' }}</div>
+              <div class="fd-card">
+                @if (fi.isBallistic) {
+                  @if (fi.ammoCount) { <div class="fd-stat"><span class="fd-label">Ammo</span><span class="fd-val">{{ fi.ammoCount }}</span></div> }
+                  @if (fi.maxHeat) { <div class="fd-stat"><span class="fd-label">Max Heat</span><span class="fd-val">{{ fi.maxHeat }}</span></div> }
+                  @if (fi.heatPerShot) { <div class="fd-stat"><span class="fd-label">Heat/Shot</span><span class="fd-val">{{ fi.heatPerShot }}</span></div> }
+                  @if (fi.overheatCooldown) { <div class="fd-stat"><span class="fd-label warn">Cooldown</span><span class="fd-val warn">{{ fi.overheatCooldown.toFixed(1) }}s</span></div> }
+                } @else {
+                  @if (fi.maxRegenPerSec) { <div class="fd-stat"><span class="fd-label">Regen Rate</span><span class="fd-val">{{ fi.maxRegenPerSec }}/s</span></div> }
+                  @if (fi.regenCooldown) { <div class="fd-stat"><span class="fd-label">Regen Delay</span><span class="fd-val">{{ fi.regenCooldown }}s</span></div> }
+                  @if (fi.ammoCount) { <div class="fd-stat"><span class="fd-label">Pool Size</span><span class="fd-val">{{ fi.ammoCount }}</span></div> }
+                }
+              </div>
+            </div>
+
+            <!-- Signatures & Power -->
+            <div class="fd-section">
+              <div class="fd-section-title">Signatures & Power</div>
+              <div class="fd-card">
+                <div class="fd-stat"><span class="fd-label">Power Draw</span><span class="fd-val">{{ (fi.powerDraw ?? 0).toFixed(2) }}</span></div>
+                @if (fi.emSignature) { <div class="fd-stat"><span class="fd-label">EM Signature</span><span class="fd-val">{{ fi.emSignature }}</span></div> }
+                @if (fi.irSignature) { <div class="fd-stat"><span class="fd-label">IR Signature</span><span class="fd-val">{{ fi.irSignature }}</span></div> }
+              </div>
+            </div>
+
+            <!-- Durability -->
+            @if (fi.componentHp) {
+              <div class="fd-section">
+                <div class="fd-section-title">Durability</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Component HP</span><span class="fd-val">{{ fi.componentHp }}</span></div>
+                  @if (fi.distortionMax) { <div class="fd-stat"><span class="fd-label">Distortion HP</span><span class="fd-val">{{ fi.distortionMax }}</span></div> }
+                </div>
+              </div>
+            }
+
+          </div>
+
+        <!-- Shield detail -->
+        } @else if (fi.type === 'Shield') {
+          <div class="fd-grid">
+            <div class="fd-section">
+              <div class="fd-section-title">Shield Pool</div>
+              <div class="fd-card">
+                <div class="fd-stat hero"><span class="fd-label">HP</span><span class="fd-val accent">{{ (fi.hp ?? 0).toLocaleString() }}</span></div>
+                <div class="fd-stat"><span class="fd-label">Regen Rate</span><span class="fd-val">{{ (fi.regenRate ?? 0).toFixed(0) }}/s</span></div>
+                <div class="fd-stat"><span class="fd-label">Damaged Delay</span><span class="fd-val">{{ (fi.damagedRegenDelay ?? 0).toFixed(2) }}s</span></div>
+                <div class="fd-stat"><span class="fd-label">Downed Delay</span><span class="fd-val">{{ (fi.downedRegenDelay ?? 0).toFixed(2) }}s</span></div>
+              </div>
+            </div>
+            @if (fi.resistPhysMax != null) {
+              <div class="fd-section">
+                <div class="fd-section-title">Resistance (Min / Max)</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label phys">Physical</span><span class="fd-val">{{ ((fi.resistPhysMin ?? 0) * 100).toFixed(0) }}% / {{ ((fi.resistPhysMax ?? 0) * 100).toFixed(0) }}%</span></div>
+                  <div class="fd-stat"><span class="fd-label enrg">Energy</span><span class="fd-val">{{ ((fi.resistEnrgMin ?? 0) * 100).toFixed(0) }}% / {{ ((fi.resistEnrgMax ?? 0) * 100).toFixed(0) }}%</span></div>
+                  <div class="fd-stat"><span class="fd-label dist">Distortion</span><span class="fd-val">{{ ((fi.resistDistMin ?? 0) * 100).toFixed(0) }}% / {{ ((fi.resistDistMax ?? 0) * 100).toFixed(0) }}%</span></div>
+                </div>
+              </div>
+            }
+            @if (fi.absPhysMax != null) {
+              <div class="fd-section">
+                <div class="fd-section-title">Absorption (Min / Max)</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label phys">Physical</span><span class="fd-val">{{ ((fi.absPhysMin ?? 0) * 100).toFixed(0) }}% / {{ ((fi.absPhysMax ?? 0) * 100).toFixed(0) }}%</span></div>
+                  <div class="fd-stat"><span class="fd-label enrg">Energy</span><span class="fd-val">{{ ((fi.absEnrgMin ?? 0) * 100).toFixed(0) }}% / {{ ((fi.absEnrgMax ?? 0) * 100).toFixed(0) }}%</span></div>
+                  <div class="fd-stat"><span class="fd-label dist">Distortion</span><span class="fd-val">{{ ((fi.absDistMin ?? 0) * 100).toFixed(0) }}% / {{ ((fi.absDistMax ?? 0) * 100).toFixed(0) }}%</span></div>
+                </div>
+              </div>
+            }
+            <div class="fd-section">
+              <div class="fd-section-title">Signatures & Power</div>
+              <div class="fd-card">
+                @if (fi.emSignature) { <div class="fd-stat"><span class="fd-label">EM Signature</span><span class="fd-val">{{ fi.emSignature }}</span></div> }
+                @if (fi.powerDraw) { <div class="fd-stat"><span class="fd-label">Power Draw</span><span class="fd-val">{{ fi.powerDraw.toFixed(2) }}</span></div> }
+              </div>
+            </div>
+            @if (fi.componentHp) {
+              <div class="fd-section">
+                <div class="fd-section-title">Durability</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Component HP</span><span class="fd-val">{{ fi.componentHp }}</span></div>
+                  @if (fi.distortionMax) { <div class="fd-stat"><span class="fd-label">Distortion HP</span><span class="fd-val">{{ fi.distortionMax }}</span></div> }
+                </div>
+              </div>
+            }
+          </div>
+
+        <!-- PowerPlant detail -->
+        } @else if (fi.type === 'PowerPlant') {
+          <div class="fd-grid">
+            <div class="fd-section">
+              <div class="fd-section-title">Power Output</div>
+              <div class="fd-card">
+                <div class="fd-stat hero"><span class="fd-label">Output</span><span class="fd-val accent">{{ fi.powerOutput }} segs</span></div>
+              </div>
+            </div>
+            <div class="fd-section">
+              <div class="fd-section-title">Signatures</div>
+              <div class="fd-card">
+                @if (fi.emSignature) { <div class="fd-stat"><span class="fd-label">EM Signature</span><span class="fd-val">{{ fi.emSignature }}</span></div> }
+              </div>
+            </div>
+            @if (fi.componentHp) {
+              <div class="fd-section">
+                <div class="fd-section-title">Durability</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Component HP</span><span class="fd-val">{{ fi.componentHp }}</span></div>
+                  @if (fi.distortionMax) { <div class="fd-stat"><span class="fd-label">Distortion HP</span><span class="fd-val">{{ fi.distortionMax }}</span></div> }
+                  @if (fi.misfireCountdown) { <div class="fd-stat"><span class="fd-label warn">Misfire Timer</span><span class="fd-val warn">{{ fi.misfireCountdown }}s</span></div> }
+                </div>
+              </div>
+            }
+          </div>
+
+        <!-- Cooler detail -->
+        } @else if (fi.type === 'Cooler') {
+          <div class="fd-grid">
+            <div class="fd-section">
+              <div class="fd-section-title">Cooling</div>
+              <div class="fd-card">
+                <div class="fd-stat hero"><span class="fd-label">Cooling Rate</span><span class="fd-val accent">{{ fi.coolingRate }}</span></div>
+              </div>
+            </div>
+            <div class="fd-section">
+              <div class="fd-section-title">Signatures</div>
+              <div class="fd-card">
+                @if (fi.irSignature) { <div class="fd-stat"><span class="fd-label">IR Signature</span><span class="fd-val">{{ fi.irSignature }}</span></div> }
+              </div>
+            </div>
+            @if (fi.componentHp) {
+              <div class="fd-section">
+                <div class="fd-section-title">Durability</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Component HP</span><span class="fd-val">{{ fi.componentHp }}</span></div>
+                  @if (fi.distortionMax) { <div class="fd-stat"><span class="fd-label">Distortion HP</span><span class="fd-val">{{ fi.distortionMax }}</span></div> }
+                </div>
+              </div>
+            }
+          </div>
+
+        <!-- Quantum Drive detail -->
+        } @else if (fi.type === 'QuantumDrive') {
+          <div class="fd-grid">
+            <div class="fd-section">
+              <div class="fd-section-title">Performance</div>
+              <div class="fd-card">
+                <div class="fd-stat hero"><span class="fd-label">Speed</span><span class="fd-val accent">{{ fi.speed ? ((fi.speed / 1e6).toFixed(1) + ' Mm/s') : '\u2014' }}</span></div>
+                @if (fi.splineSpeed) { <div class="fd-stat"><span class="fd-label">Spline Speed</span><span class="fd-val">{{ (fi.splineSpeed / 1e6).toFixed(1) }} Mm/s</span></div> }
+                <div class="fd-stat"><span class="fd-label">Fuel Rate</span><span class="fd-val">{{ fi.fuelRate ?? '\u2014' }}</span></div>
+              </div>
+            </div>
+            <div class="fd-section">
+              <div class="fd-section-title">Timing</div>
+              <div class="fd-card">
+                @if (fi.calTime) { <div class="fd-stat"><span class="fd-label">Calibration</span><span class="fd-val">{{ fi.calTime.toFixed(1) }}s</span></div> }
+                @if (fi.spoolTime) { <div class="fd-stat"><span class="fd-label">Spool Time</span><span class="fd-val">{{ fi.spoolTime.toFixed(1) }}s</span></div> }
+                @if (fi.cooldownTime) { <div class="fd-stat"><span class="fd-label">Cooldown</span><span class="fd-val">{{ fi.cooldownTime.toFixed(1) }}s</span></div> }
+              </div>
+            </div>
+            @if (fi.stageOneAccel || fi.stageTwoAccel) {
+              <div class="fd-section">
+                <div class="fd-section-title">Acceleration</div>
+                <div class="fd-card">
+                  @if (fi.stageOneAccel) { <div class="fd-stat"><span class="fd-label">Stage 1</span><span class="fd-val">{{ fi.stageOneAccel.toFixed(0) }}</span></div> }
+                  @if (fi.stageTwoAccel) { <div class="fd-stat"><span class="fd-label">Stage 2</span><span class="fd-val">{{ fi.stageTwoAccel.toFixed(0) }}</span></div> }
+                </div>
+              </div>
+            }
+            @if (fi.componentHp) {
+              <div class="fd-section">
+                <div class="fd-section-title">Durability</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Component HP</span><span class="fd-val">{{ fi.componentHp }}</span></div>
+                  @if (fi.distortionMax) { <div class="fd-stat"><span class="fd-label">Distortion HP</span><span class="fd-val">{{ fi.distortionMax }}</span></div> }
+                </div>
+              </div>
+            }
+          </div>
+
+        <!-- Radar detail -->
+        } @else if (fi.type === 'Radar') {
+          <div class="fd-grid">
+            <div class="fd-section">
+              <div class="fd-section-title">Lock Range</div>
+              <div class="fd-card">
+                <div class="fd-stat"><span class="fd-label">Min Range</span><span class="fd-val">{{ fi.aimMin ?? '\u2014' }} m</span></div>
+                <div class="fd-stat"><span class="fd-label">Max Range</span><span class="fd-val">{{ fi.aimMax ?? '\u2014' }} m</span></div>
+                @if (fi.aimBuffer) { <div class="fd-stat"><span class="fd-label">Buffer</span><span class="fd-val">{{ fi.aimBuffer }} m</span></div> }
+              </div>
+            </div>
+            @if (fi.irSensitivity || fi.emSensitivity || fi.csSensitivity) {
+              <div class="fd-section">
+                <div class="fd-section-title">Sensitivity</div>
+                <div class="fd-card">
+                  @if (fi.irSensitivity) { <div class="fd-stat"><span class="fd-label">IR</span><span class="fd-val">{{ fi.irSensitivity }}</span></div> }
+                  @if (fi.emSensitivity) { <div class="fd-stat"><span class="fd-label">EM</span><span class="fd-val">{{ fi.emSensitivity }}</span></div> }
+                  @if (fi.csSensitivity) { <div class="fd-stat"><span class="fd-label">CS</span><span class="fd-val">{{ fi.csSensitivity }}</span></div> }
+                </div>
+              </div>
+            }
+            @if (fi.componentHp) {
+              <div class="fd-section">
+                <div class="fd-section-title">Durability</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Component HP</span><span class="fd-val">{{ fi.componentHp }}</span></div>
+                </div>
+              </div>
+            }
+          </div>
+
+        <!-- Missile detail -->
+        } @else if (fi.type === 'Missile' || fi.type === 'Bomb') {
+          <div class="fd-grid">
+            <div class="fd-section">
+              <div class="fd-section-title">Warhead</div>
+              <div class="fd-card">
+                <div class="fd-stat hero"><span class="fd-label">Damage</span><span class="fd-val accent">{{ (fi.alphaDamage ?? 0).toFixed(0) }}</span></div>
+                @if (fi.damage?.physical) { <div class="fd-stat"><span class="fd-label phys">Physical</span><span class="fd-val">{{ fi.damage!.physical!.toFixed(1) }}</span></div> }
+                @if (fi.damage?.energy) { <div class="fd-stat"><span class="fd-label enrg">Energy</span><span class="fd-val">{{ fi.damage!.energy!.toFixed(1) }}</span></div> }
+                @if (fi.damage?.distortion) { <div class="fd-stat"><span class="fd-label dist">Distortion</span><span class="fd-val">{{ fi.damage!.distortion!.toFixed(1) }}</span></div> }
+              </div>
+            </div>
+            @if (fi.explosionMinRadius || fi.detonationMinRadius) {
+              <div class="fd-section">
+                <div class="fd-section-title">Blast Radius</div>
+                <div class="fd-card">
+                  @if (fi.explosionMinRadius) { <div class="fd-stat"><span class="fd-label">Explosion</span><span class="fd-val">{{ fi.explosionMinRadius.toFixed(1) }} \u2013 {{ fi.explosionMaxRadius?.toFixed(1) }} m</span></div> }
+                  @if (fi.detonationMinRadius) { <div class="fd-stat"><span class="fd-label">Detonation</span><span class="fd-val">{{ fi.detonationMinRadius.toFixed(1) }} \u2013 {{ fi.detonationMaxRadius?.toFixed(1) }} m</span></div> }
+                </div>
+              </div>
+            }
+            <div class="fd-section">
+              <div class="fd-section-title">Tracking & Flight</div>
+              <div class="fd-card">
+                @if (fi.projectileSpeed) { <div class="fd-stat"><span class="fd-label">Speed</span><span class="fd-val">{{ fi.projectileSpeed.toFixed(0) }} m/s</span></div> }
+                @if (fi.lockTime != null) { <div class="fd-stat"><span class="fd-label">Lock Time</span><span class="fd-val">{{ fi.lockTime.toFixed(1) }}s</span></div> }
+                @if (fi.lockRangeMax) { <div class="fd-stat"><span class="fd-label">Lock Range</span><span class="fd-val">{{ (fi.lockRangeMax / 1000).toFixed(1) }} km</span></div> }
+                @if (fi.lockAngle) { <div class="fd-stat"><span class="fd-label">Lock Angle</span><span class="fd-val">{{ fi.lockAngle }}\u00B0</span></div> }
+                @if (fi.armTime) { <div class="fd-stat"><span class="fd-label">Arm Time</span><span class="fd-val">{{ fi.armTime.toFixed(1) }}s</span></div> }
+                @if (fi.acquisition) { <div class="fd-stat"><span class="fd-label">Acquisition</span><span class="fd-val">{{ fi.acquisition }}</span></div> }
+              </div>
+            </div>
+          </div>
+
+        <!-- EMP detail -->
+        } @else if (fi.type === 'EMP') {
+          <div class="fd-grid">
+            <div class="fd-section">
+              <div class="fd-section-title">EMP Output</div>
+              <div class="fd-card">
+                @if (fi.distortionDamage) { <div class="fd-stat hero"><span class="fd-label">Distortion Damage</span><span class="fd-val accent">{{ fi.distortionDamage }}</span></div> }
+                @if (fi.empRadius) { <div class="fd-stat"><span class="fd-label">Radius</span><span class="fd-val">{{ fi.empRadius }} m</span></div> }
+                @if (fi.chargeTime) { <div class="fd-stat"><span class="fd-label">Charge Time</span><span class="fd-val">{{ fi.chargeTime.toFixed(1) }}s</span></div> }
+              </div>
+            </div>
+            @if (fi.componentHp) {
+              <div class="fd-section">
+                <div class="fd-section-title">Durability</div>
+                <div class="fd-card">
+                  <div class="fd-stat"><span class="fd-label">Component HP</span><span class="fd-val">{{ fi.componentHp }}</span></div>
+                </div>
+              </div>
+            }
+          </div>
+
+        <!-- FlightController detail -->
+        } @else if (fi.type === 'FlightController') {
+          <div class="fd-grid">
+            @if (fi.scmSpeed || fi.navSpeed) {
+              <div class="fd-section">
+                <div class="fd-section-title">Speed</div>
+                <div class="fd-card">
+                  @if (fi.scmSpeed) { <div class="fd-stat"><span class="fd-label">SCM</span><span class="fd-val accent">{{ fi.scmSpeed }} m/s</span></div> }
+                  @if (fi.navSpeed) { <div class="fd-stat"><span class="fd-label">NAV</span><span class="fd-val">{{ fi.navSpeed }} m/s</span></div> }
+                  @if (fi.boostSpeedFwd) { <div class="fd-stat"><span class="fd-label">AB Forward</span><span class="fd-val">{{ fi.boostSpeedFwd }} m/s</span></div> }
+                  @if (fi.boostSpeedBwd) { <div class="fd-stat"><span class="fd-label">AB Backward</span><span class="fd-val">{{ fi.boostSpeedBwd }} m/s</span></div> }
+                </div>
+              </div>
+            }
+            @if (fi.pitch || fi.yaw || fi.roll) {
+              <div class="fd-section">
+                <div class="fd-section-title">Rotation (\u00B0/s)</div>
+                <div class="fd-card">
+                  @if (fi.pitch) { <div class="fd-stat"><span class="fd-label">Pitch</span><span class="fd-val">{{ fi.pitch }}{{ fi.pitchBoosted ? ' / ' + fi.pitchBoosted : '' }}</span></div> }
+                  @if (fi.yaw) { <div class="fd-stat"><span class="fd-label">Yaw</span><span class="fd-val">{{ fi.yaw }}{{ fi.yawBoosted ? ' / ' + fi.yawBoosted : '' }}</span></div> }
+                  @if (fi.roll) { <div class="fd-stat"><span class="fd-label">Roll</span><span class="fd-val">{{ fi.roll }}{{ fi.rollBoosted ? ' / ' + fi.rollBoosted : '' }}</span></div> }
+                </div>
+              </div>
+            }
+          </div>
+
+        } @else {
+          <!-- Fallback: generic key-value table -->
+          <table class="focus-table">
+            @for (row of focusRows(); track row.key) {
+              <tr>
+                <td class="fk">{{ row.key }}</td>
+                <td class="fv">{{ row.value }}</td>
+              </tr>
+            }
+          </table>
+        }
+
       </div>
     </div>
   }

@@ -97,15 +97,15 @@
     background: transparent;
   }
   app-dps-panel {
-    background: var(--bg2);
-    border: 1px solid var(--border);
+    background: transparent;
+    border: none;
   }
 }
 
 .ship-side-panel {
   background: transparent;
   border: none;
-  border-right: 1px solid var(--border);
+  border-right: none;
   padding: 10px 14px;
   position: relative;
   overflow-y: auto;
@@ -214,47 +214,27 @@
 .stats-blocks {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  border-top: 1px solid var(--border);
-  padding-top: 8px;
+  gap: 12px;
 }
 
-.stats-block {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-
-  .stats-block-body {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-}
 
 .stats-block-title {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--accent);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 4px;
-  margin-bottom: 2px;
-  text-align: center;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
   user-select: none;
+  gap: 6px;
 
-  &:hover { color: var(--text); }
+  &:hover { color: var(--text2); }
 }
 
 .ship-image-inset {
@@ -380,13 +360,13 @@
 }
 
 .stat-block {
-  padding: 6px 12px 6px 10px;
+  padding: 8px 12px 8px 10px;
   background: linear-gradient(200deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
   border: 1px solid var(--border);
-  border-right: 3px solid var(--accent);
+  border-left: 3px solid var(--accent);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .stat-row {
@@ -783,10 +763,10 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 420px;
+  width: 480px;
   max-width: 90vw;
   max-height: 80vh;
-  background: var(--bg2);
+  background: var(--bg);
   border: 1px solid var(--accent2);
   z-index: 901;
   display: flex;
@@ -797,29 +777,103 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
 .focus-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg3);
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--accent2);
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.06) 0%, var(--bg2) 100%);
+}
+
+.focus-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .focus-title {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 14px;
-  color: var(--accent);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
   font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.focus-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
 }
 
 .focus-close {
   cursor: pointer;
   color: var(--text3);
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1;
+  padding: 2px 4px;
   &:hover { color: var(--text); }
 }
 
 .focus-body {
   overflow-y: auto;
+  padding: 10px;
+}
+
+// ── Focused detail grid (tactical style) ─────────────────
+
+.fd-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fd-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-bottom: 3px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--accent2);
+}
+
+.fd-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent2);
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.fd-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+
+  &.hero {
+    padding: 4px 0;
+    .fd-val { font-size: 18px; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+  }
+}
+
+.fd-label {
+  color: var(--text2);
+  &.phys { color: var(--red); }
+  &.enrg { color: var(--enrg); }
+  &.dist { color: var(--dist); }
+  &.therm { color: var(--therm); }
+  &.warn { color: var(--gold); }
+}
+
+.fd-val {
+  color: var(--text);
+  &.accent { color: var(--accent); }
+  &.warn { color: var(--gold); }
 }
 
 .focus-table {
