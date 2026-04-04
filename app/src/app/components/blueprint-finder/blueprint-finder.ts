@@ -126,6 +126,11 @@ export class BlueprintFinderComponent {
   });
 
   expandedBp = signal<string | null>(null);
+  expandedBpData = computed(() => {
+    const name = this.expandedBp();
+    if (!name) return null;
+    return this.filtered().find(bp => bp.name === name) ?? null;
+  });
   selectedMission = signal<Mission | null>(null);
 
   toggleExpand(name: string): void {
