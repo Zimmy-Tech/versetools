@@ -62,15 +62,15 @@
       "magazineSize": 6,
       "projectileSpeed": 0,
       "damage": {
-        "physical": 0,
-        "energy": 0,
-        "distortion": 0,
-        "thermal": 0,
-        "biochemical": 0,
-        "stun": 0
+        "physical": 3.0,
+        "energy": 0.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
       },
-      "alphaDamage": 0,
-      "dps": 0.0
+      "alphaDamage": 3.0,
+      "dps": 3.0
     },
     {
       "className": "behr_lmg_ballistic_01",
@@ -774,15 +774,15 @@
       "magazineSize": 45,
       "projectileSpeed": 0,
       "damage": {
-        "physical": 0,
-        "energy": 0,
+        "physical": 11.0,
+        "energy": 9.5,
         "distortion": 0,
         "thermal": 0,
         "biochemical": 0,
         "stun": 0
       },
-      "alphaDamage": 0,
-      "dps": 0.0
+      "alphaDamage": 20.5,
+      "dps": 102.5
     },
     {
       "className": "none_smg_energy_01",

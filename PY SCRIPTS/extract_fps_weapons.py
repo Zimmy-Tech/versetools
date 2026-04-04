@@ -588,12 +588,27 @@ def extract_fps_weapons():
         bpp_ref = ammo_data["bpp_ref"] if ammo_data else ""
         ammo_type = classify_ammo_type(class_name, "")
 
-        # Look up damage from DCB
-        damage = {"physical": 0, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0}
-        if bpp_ref:
-            dcb_damage = damage_map.get(bpp_ref.upper())
-            if dcb_damage:
-                damage = dcb_damage
+        # Manual BPP overrides for weapons whose ammo names don't match
+        MANUAL_BPP = {
+            "behr_glauncher_ballistic_01": "00A3",  # GP-33 grenade (40mm)
+        }
+        # Killshot: alternates 22 phys + 19 enrg per shot pair
+        # Store per-shot average for DPS calc, full breakdown for display
+        MANUAL_DAMAGE = {
+            "none_rifle_multi_01": {"physical": 11.0, "energy": 9.5, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
+        }
+        if class_name in MANUAL_DAMAGE:
+            damage = MANUAL_DAMAGE[class_name]
+        else:
+            if not bpp_ref and class_name in MANUAL_BPP:
+                bpp_ref = MANUAL_BPP[class_name]
+
+            # Look up damage from DCB
+            damage = {"physical": 0, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0}
+            if bpp_ref:
+                dcb_damage = damage_map.get(bpp_ref.upper())
+                if dcb_damage:
+                    damage = dcb_damage
 
         # Calculate alpha damage and DPS
         alpha_damage = round(sum(damage.values()), 4)

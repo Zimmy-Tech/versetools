@@ -1,0 +1,140 @@
+<div class="ttk-view">
+
+  @if (!loaded()) {
+    <div class="empty-state"><div class="empty-title">Loading...</div></div>
+  } @else {
+
+    <div class="ttk-header">
+      <div class="ttk-title">FPS Time-to-Kill Calculator</div>
+      <div class="ttk-sub">Select a weapon and armor tier to see shots-to-down and TTK per body zone.</div>
+    </div>
+
+    <div class="ttk-layout">
+
+      <!-- Left: controls -->
+      <div class="ttk-controls">
+        <div class="control-section">
+          <div class="control-label">Weapon</div>
+          <input class="control-search" type="text" placeholder="Search weapons..."
+                 [value]="weaponSearch()" (input)="weaponSearch.set($any($event.target).value)" />
+          <div class="weapon-list">
+            @for (w of filteredWeapons(); track w.className) {
+              <div class="weapon-option" [class.selected]="selectedWeapon()?.className === w.className"
+                   (click)="selectWeapon(w.className)">
+                <span class="wo-name">{{ w.name }}</span>
+                <span class="wo-dps">{{ w.dps.toFixed(0) }} DPS</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="control-section">
+          <div class="control-label">Target Armor</div>
+          <div class="armor-buttons">
+            @for (tier of armorTiers; track tier.label; let i = $index) {
+              <button class="armor-btn" [class.active]="selectedArmor() === i"
+                      (click)="selectedArmor.set(i)">{{ tier.label }}</button>
+            }
+          </div>
+        </div>
+
+        @if (selectedWeapon(); as w) {
+          <div class="control-section">
+            <div class="control-label">Weapon Stats</div>
+            <div class="weapon-stats">
+              <div class="ws-row"><span class="ws-k">Alpha</span><span class="ws-v">{{ w.alphaDamage }}</span></div>
+              <div class="ws-row"><span class="ws-k">Fire Rate</span><span class="ws-v">{{ w.fireRate }} RPM</span></div>
+              <div class="ws-row"><span class="ws-k">DPS</span><span class="ws-v accent">{{ w.dps.toFixed(1) }}</span></div>
+              <div class="ws-row"><span class="ws-k">Type</span><span class="ws-v">{{ w.type }}</span></div>
+              <div class="ws-row"><span class="ws-k">Ammo</span><span class="ws-v">{{ w.subType }}</span></div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Center: body model -->
+      <div class="ttk-body">
+        <div class="body-title">Health Pool: {{ healthPool }} HP</div>
+        <svg viewBox="0 0 200 480" class="body-svg">
+          <!-- Head -->
+          <ellipse cx="100" cy="40" rx="25" ry="30"
+                   class="body-zone" [class.hovered]="hoveredZone() === 'head'"
+                   (mouseenter)="hoveredZone.set('head')" (mouseleave)="hoveredZone.set(null)" />
+          <text x="100" y="44" class="zone-label">{{ getZoneStat('head')?.hp ?? 30 }}</text>
+
+          <!-- Torso -->
+          <path d="M65,75 L135,75 L140,200 L60,200 Z"
+                class="body-zone" [class.hovered]="hoveredZone() === 'torso'"
+                (mouseenter)="hoveredZone.set('torso')" (mouseleave)="hoveredZone.set(null)" />
+          <text x="100" y="145" class="zone-label">{{ getZoneStat('torso')?.hp ?? 60 }}</text>
+
+          <!-- Left Arm (viewer's left = character's right) -->
+          <path d="M55,80 L35,85 L20,190 L30,195 L55,200 Z"
+                class="body-zone" [class.hovered]="hoveredZone() === 'rightArm'"
+                (mouseenter)="hoveredZone.set('rightArm')" (mouseleave)="hoveredZone.set(null)" />
+          <text x="38" y="145" class="zone-label sm">{{ getZoneStat('rightArm')?.hp ?? 36 }}</text>
+
+          <!-- Right Arm -->
+          <path d="M145,80 L165,85 L180,190 L170,195 L145,200 Z"
+                class="body-zone" [class.hovered]="hoveredZone() === 'leftArm'"
+                (mouseenter)="hoveredZone.set('leftArm')" (mouseleave)="hoveredZone.set(null)" />
+          <text x="162" y="145" class="zone-label sm">{{ getZoneStat('leftArm')?.hp ?? 36 }}</text>
+
+          <!-- Left Leg -->
+          <path d="M65,205 L95,205 L90,400 L55,400 Z"
+                class="body-zone" [class.hovered]="hoveredZone() === 'rightLeg'"
+                (mouseenter)="hoveredZone.set('rightLeg')" (mouseleave)="hoveredZone.set(null)" />
+          <text x="75" y="310" class="zone-label sm">{{ getZoneStat('rightLeg')?.hp ?? 48 }}</text>
+
+          <!-- Right Leg -->
+          <path d="M105,205 L135,205 L145,400 L110,400 Z"
+                class="body-zone" [class.hovered]="hoveredZone() === 'leftLeg'"
+                (mouseenter)="hoveredZone.set('leftLeg')" (mouseleave)="hoveredZone.set(null)" />
+          <text x="125" y="310" class="zone-label sm">{{ getZoneStat('leftLeg')?.hp ?? 48 }}</text>
+
+          <!-- Zone labels on hover -->
+          @if (hoveredZone(); as hz) {
+            @if (getZoneStat(hz); as zs) {
+              <rect x="0" y="420" width="200" height="55" rx="3" class="tooltip-bg" />
+              <text x="100" y="440" class="tooltip-line1">{{ zs.label }} — {{ zs.shotsToDown }} shots</text>
+              <text x="100" y="458" class="tooltip-line2">{{ zs.effectiveDmg }} dmg/shot · TTK {{ fmtTtk(zs.ttk) }}</text>
+            }
+          }
+        </svg>
+      </div>
+
+      <!-- Right: stats table -->
+      <div class="ttk-table">
+        <div class="control-label">Shots to Down</div>
+        @if (zoneStats(); as stats) {
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>Zone</th>
+                <th>HP</th>
+                <th>Dmg/Shot</th>
+                <th>Shots</th>
+                <th>TTK</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (z of stats; track z.id) {
+                <tr [class.hovered]="hoveredZone() === z.id"
+                    (mouseenter)="hoveredZone.set(z.id)" (mouseleave)="hoveredZone.set(null)">
+                  <td class="zone-name" [class.headshot]="z.isHeadshot">{{ z.label }}</td>
+                  <td class="num">{{ z.hp }}</td>
+                  <td class="num">{{ z.effectiveDmg.toFixed(1) }}</td>
+                  <td class="num shots">{{ z.shotsToDown }}</td>
+                  <td class="num ttk-val">{{ fmtTtk(z.ttk) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="no-weapon">Select a weapon to see TTK data</div>
+        }
+      </div>
+
+    </div>
+  }
+</div>

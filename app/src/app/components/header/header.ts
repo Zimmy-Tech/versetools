@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
+export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
@@ -13,6 +13,7 @@ const TAB_ROUTES: Record<string, string> = {
   shipCompare: 'ship-compare',
   fpsWeapons: 'fps-weapons',
   fpsArmor: 'fps-armor',
+  fpsTtk: 'fps-ttk',
 };
 
 function tabToRoute(id: string): string {
@@ -90,6 +91,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly fpsGearTabs: { id: TabName; label: string }[] = [
     { id: 'fpsWeapons', label: 'FPS Weapons' },
     { id: 'fpsArmor', label: 'FPS Armor' },
+    { id: 'fpsTtk', label: 'TTK Calculator' },
   ];
 
   shipToolsOpen = signal(false);

@@ -18,12 +18,14 @@ import { ChangelogViewComponent } from './components/changelog-view/changelog-vi
 import { ShipCompareComponent } from './components/ship-compare/ship-compare';
 import { FpsWeaponsComponent } from './components/fps-weapons/fps-weapons';
 import { FpsArmorComponent } from './components/fps-armor/fps-armor';
+import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
 
 export const routes: Routes = [
   { path: 'loadout',            component: LoadoutViewComponent },
   { path: 'ship-compare',       component: ShipCompareComponent },
   { path: 'fps-weapons',        component: FpsWeaponsComponent },
   { path: 'fps-armor',          component: FpsArmorComponent },
+  { path: 'fps-ttk',            component: FpsTtkComponent },
   { path: 'compare',            component: CompareViewComponent },
   { path: 'finder',             component: ComponentFinderComponent },
   { path: 'cart',               component: CartViewComponent },

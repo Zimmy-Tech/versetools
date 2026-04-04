@@ -1,0 +1,263 @@
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background-color: var(--bg);
+}
+
+.ttk-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  gap: 12px;
+  align-items: center;
+}
+
+.empty-state { flex: 1; display: flex; align-items: center; justify-content: center; }
+.empty-title { font-family: 'Rajdhani', sans-serif; font-size: 18px; color: var(--text3); }
+
+.ttk-header { text-align: center; margin-bottom: 20px; }
+.ttk-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--accent);
+}
+.ttk-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px; color: var(--text3); margin-top: 2px;
+}
+
+// ── Layout ────────────────────────────────────────────────
+
+.ttk-layout {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+  max-width: 1000px;
+  align-self: center;
+  width: 100%;
+  border: 1px solid var(--border);
+  padding: 16px;
+  background: var(--bg2);
+}
+
+// ── Controls (left) ───────────────────────────────────────
+
+.ttk-controls {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text3);
+  border-bottom: 1px solid var(--border); padding-bottom: 4px;
+}
+
+.control-search {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); padding: 4px 8px;
+  font-family: 'Share Tech Mono', monospace; font-size: 12px;
+  outline: none;
+  &:focus { border-color: var(--accent2); }
+}
+
+.weapon-list {
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.weapon-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  &:hover { background: var(--bg3); color: var(--text); }
+  &.selected { background: rgba(0, 200, 255, 0.06); color: var(--accent); border-left: 2px solid var(--accent); }
+}
+
+.wo-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wo-dps { font-size: 11px; color: var(--text3); flex-shrink: 0; margin-left: 6px; }
+
+.armor-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.armor-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px; font-weight: 600;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  text-align: left;
+  &:hover { border-color: var(--text3); color: var(--text); }
+  &.active { border-color: var(--accent); color: var(--accent); background: rgba(0, 200, 255, 0.06); }
+}
+
+.weapon-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  padding: 6px 8px;
+}
+
+.ws-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+}
+
+.ws-k { color: var(--text2); }
+.ws-v { color: var(--text); &.accent { color: var(--accent); } }
+
+// ── Body model (center) ───────────────────────────────────
+
+.ttk-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 280px;
+}
+
+.body-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.body-svg {
+  width: 100%;
+  max-width: 220px;
+}
+
+.body-zone {
+  fill: rgba(0, 200, 255, 0.08);
+  stroke: var(--accent2);
+  stroke-width: 1;
+  cursor: pointer;
+  transition: fill 0.15s, stroke 0.15s;
+
+  &:hover, &.hovered {
+    fill: rgba(0, 200, 255, 0.25);
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+}
+
+.zone-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px; font-weight: 700;
+  fill: var(--text);
+  text-anchor: middle;
+  pointer-events: none;
+
+  &.sm { font-size: 13px; }
+}
+
+.tooltip-bg {
+  fill: var(--bg2);
+  stroke: var(--accent2);
+  stroke-width: 1;
+}
+
+.tooltip-line1 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; font-weight: 700;
+  fill: var(--accent);
+  text-anchor: middle;
+}
+
+.tooltip-line2 {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  fill: var(--text2);
+  text-anchor: middle;
+}
+
+// ── Stats table (right) ──────────────────────────────────
+
+.ttk-table {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+
+  th, td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th {
+    background: var(--bg3);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text3); text-align: left;
+  }
+
+  .zone-name { color: var(--text); }
+  .zone-name.headshot { color: var(--red); }
+  .num { text-align: right; }
+  .shots { color: var(--accent); font-weight: 600; font-size: 15px; }
+  .ttk-val { color: var(--gold); }
+
+  tr.hovered { background: rgba(0, 200, 255, 0.06); }
+  tr:hover { background: rgba(0, 200, 255, 0.03); }
+}
+
+.no-weapon {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px; color: var(--text3);
+  padding: 20px; text-align: center;
+}
+
+// ── Responsive ────────────────────────────────────────────
+
+@media (max-width: 900px) {
+  .ttk-layout { flex-direction: column; align-items: center; }
+  .ttk-controls { width: 100%; max-width: 400px; }
+  .ttk-body { max-width: 200px; }
+  .ttk-table { width: 100%; max-width: 400px; }
+}
