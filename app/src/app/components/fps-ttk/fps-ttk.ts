@@ -78,7 +78,7 @@ export class FpsTtkComponent {
       const zoneMult = isNaked ? zone.nakedMult : zone.armoredMult;
       const drMult = 1 - armor.dr;
       const effectiveDmg = weapon.alphaDamage * zoneMult * drMult;
-      const shotsToDown = effectiveDmg > 0 ? Math.ceil(zone.hp / effectiveDmg) : Infinity;
+      const shotsToDown = effectiveDmg > 0 ? Math.ceil(HEALTH_POOL / effectiveDmg) : Infinity;
       const ttk = weapon.fireRate > 0 ? ((shotsToDown - 1) / (weapon.fireRate / 60)) : Infinity;
       return {
         ...zone,
