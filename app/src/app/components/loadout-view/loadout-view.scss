@@ -768,7 +768,7 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
   ::ng-deep .trigger-name { color: var(--text2); }
 }
 
-.focus-overlay {
+.focus-overlay, .popout-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);

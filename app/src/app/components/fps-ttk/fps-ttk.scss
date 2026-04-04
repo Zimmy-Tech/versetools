@@ -39,10 +39,9 @@
 .ttk-layout {
   display: flex;
   gap: 16px;
-  flex: 1;
   min-height: 0;
   justify-content: center;
-  max-width: 1000px;
+  max-width: 900px;
   align-self: center;
   width: 100%;
   border: 1px solid var(--border);

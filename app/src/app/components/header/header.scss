@@ -41,18 +41,19 @@ header {
 }
 
 .nav-tab {
-  padding: 6px 18px;
+  padding: 6px 14px;
   background: none;
   border: 1px solid transparent;
   color: var(--text2);
   font-family: 'Rajdhani', sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.15s;
   clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  white-space: nowrap;
 
   &:hover { color: var(--text); border-color: var(--border2); }
   &.active {
@@ -617,3 +618,4 @@ header {
   color: var(--gold, #f0a500);
   text-align: center;
 }
+
