@@ -432,7 +432,52 @@ def build_damage_lookup(dcb_path: Path) -> dict:
             }
 
     print(f"  BPP damage entries: {len(damage_map)}")
-    return damage_map
+
+    # Build SProjectileLauncher pellet count map: hex_index -> pellet_count
+    pellet_map = {}
+    spl_si = si("SProjectileLauncher")
+    if spl_si is not None and spl_si in sd:
+        spl_off, spl_cnt = sd[spl_si]
+        spl_rs = sdefs[spl_si][4]
+        for spl_idx in range(spl_cnt):
+            inst = spl_off + spl_idx * spl_rs
+            pellets = u32at(inst + 12)
+            if pellets > 1:
+                hex_key = format(spl_idx, "04X")
+                pellet_map[hex_key] = pellets
+        print(f"  SPL pellet entries (>1): {len(pellet_map)}")
+
+    # Build beam DPS map: hex_index -> damage_dict
+    beam_map = {}
+    beam_si = si("SWeaponActionFireBeamParams")
+    if beam_si is not None and beam_si in sd and di_si in sd:
+        beam_off, beam_cnt = sd[beam_si]
+        beam_rs = sdefs[beam_si][4]
+        di_off2, di_cnt2 = sd[di_si]
+        for beam_idx in range(beam_cnt):
+            inst = beam_off + beam_idx * beam_rs
+            # DamageInfo pointer at bytes +94 (struct_idx u16) and +98 (instance_idx u16)
+            try:
+                ptr_si3 = u16at(inst + 94)
+                ptr_ii3 = u16at(inst + 98)
+                if ptr_si3 == di_si and ptr_ii3 < di_cnt2:
+                    base = di_off2 + ptr_ii3 * 24
+                    v = struct.unpack_from("<6f", d, base)
+                    if any(vv > 0 for vv in v):
+                        hex_key = format(beam_idx, "04X")
+                        beam_map[hex_key] = {
+                            "physical":    round(v[0], 4),
+                            "energy":      round(v[1], 4),
+                            "distortion":  round(v[2], 4),
+                            "thermal":     round(v[3], 4),
+                            "biochemical": round(v[4], 4),
+                            "stun":        round(v[5], 4),
+                        }
+            except struct.error:
+                pass
+        print(f"  Beam DPS entries: {len(beam_map)}")
+
+    return {"damage": damage_map, "pellets": pellet_map, "beam": beam_map}
 
 
 # ── Main weapon parsing ──────────────────────────────────────────────────────
@@ -494,6 +539,12 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
     m_acr = re.search(r'ammoContainerRecord="([^"]+)"', xml_text)
     ammo_container_guid = m_acr.group(1) if m_acr else ""
 
+    # Extract SProjectileLauncher refs (for pellet counts)
+    spl_refs = re.findall(r'SProjectileLauncher\[([0-9A-Fa-f]+)\]', xml_text)
+
+    # Extract SWeaponActionFireBeamParams refs (for beam DPS)
+    beam_refs = re.findall(r'SWeaponActionFireBeamParams\[([0-9A-Fa-f]+)\]', xml_text)
+
     return {
         "className": stem,
         "locKey": loc_key.lstrip("@").lower(),
@@ -503,6 +554,8 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
         "fireModes": fire_modes,
         "bestFireRate": best_fire_rate,
         "ammoContainerGuid": ammo_container_guid,
+        "splRefs": spl_refs,
+        "beamRefs": beam_refs,
     }
 
 
@@ -529,7 +582,10 @@ def extract_fps_weapons():
 
     # 4. Build DCB damage lookup
     print("\n[4] Building DCB damage lookup...")
-    damage_map = build_damage_lookup(DCB_FILE)
+    dcb_data = build_damage_lookup(DCB_FILE)
+    damage_map = dcb_data.get("damage", {})
+    pellet_map = dcb_data.get("pellets", {})
+    beam_map = dcb_data.get("beam", {})
 
     # 5. Parse weapon XMLs
     print("\n[5] Parsing weapon XMLs...")
@@ -648,7 +704,44 @@ def extract_fps_weapons():
         if fire_rate_rpm == 0 and class_name in FALLBACK_RATES:
             fire_rate_rpm = FALLBACK_RATES[class_name]
 
-        dps = round(alpha_damage * fire_rate_rpm / 60, 2) if fire_rate_rpm > 0 else 0
+        # Pellet count: multiply alpha by pellets for shotguns
+        MANUAL_PELLETS = {
+            "ksar_shotgun_ballistic_01": 8,    # Ravager-212
+            "ksar_shotgun_energy_01": 12,      # Devastator
+            "none_shotgun_ballistic_01": 8,    # Deadrig
+            "volt_shotgun_energy_01": 8,       # Prism
+        }
+        pellet_count = MANUAL_PELLETS.get(class_name, 1)
+        if pellet_count == 1:
+            for spl_ref in wpn.get("splRefs", []):
+                pc = pellet_map.get(spl_ref.upper(), 1)
+                if pc > pellet_count:
+                    pellet_count = pc
+        if pellet_count > 1:
+            alpha_damage = round(alpha_damage * pellet_count, 4)
+            # Scale per-type damage too
+            damage = {k: round(v * pellet_count, 4) for k, v in damage.items()}
+
+        # Beam weapons: use beam DPS from DCB instead of projectile damage
+        MANUAL_BEAM = {
+            "volt_smg_energy_01": "0020",    # Quartz
+            "none_smg_energy_01": "0021",    # Ripper
+            "volt_lmg_energy_01": "0020",    # Fresnel (same beam profile as Quartz)
+        }
+        if is_beam:
+            beam_ref = MANUAL_BEAM.get(class_name)
+            if not beam_ref:
+                beam_refs = wpn.get("beamRefs", [])
+                beam_ref = beam_refs[0] if beam_refs else None
+            if beam_ref:
+                beam_dmg = beam_map.get(beam_ref.upper())
+                if beam_dmg:
+                    damage = beam_dmg
+                    alpha_damage = round(sum(beam_dmg.values()), 4)
+
+        dps = round(alpha_damage * fire_rate_rpm / 60, 2) if fire_rate_rpm > 0 and not is_beam else 0
+        if is_beam and alpha_damage > 0:
+            dps = alpha_damage  # For beams, alpha IS the DPS
 
         # Fire mode names
         fire_mode_names = [fm["type"] for fm in wpn["fireModes"]]
@@ -670,6 +763,8 @@ def extract_fps_weapons():
             "damage": damage,
             "alphaDamage": alpha_damage,
             "dps": dps,
+            "pelletCount": pellet_count if pellet_count > 1 else None,
+            "isBeam": is_beam or None,
         }
 
         weapons.append(record)

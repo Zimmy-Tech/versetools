@@ -24,7 +24,9 @@
         "stun": 0
       },
       "alphaDamage": 0,
-      "dps": 0.0
+      "dps": 0.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "apar_special_ballistic_01",
@@ -46,7 +48,9 @@
         "stun": 0.0
       },
       "alphaDamage": 20.0,
-      "dps": 10.0
+      "dps": 10.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "behr_glauncher_ballistic_01",
@@ -70,7 +74,9 @@
         "stun": 0.0
       },
       "alphaDamage": 3.0,
-      "dps": 3.0
+      "dps": 3.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "behr_lmg_ballistic_01",
@@ -94,7 +100,9 @@
         "stun": 0.0
       },
       "alphaDamage": 14.5,
-      "dps": 157.08
+      "dps": 157.08,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "behr_pistol_ballistic_01",
@@ -118,7 +126,9 @@
         "stun": 0.0
       },
       "alphaDamage": 22.5,
-      "dps": 168.75
+      "dps": 168.75,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "behr_rifle_ballistic_01",
@@ -143,7 +153,9 @@
         "stun": 0.0
       },
       "alphaDamage": 12.0,
-      "dps": 162.0
+      "dps": 162.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "behr_rifle_ballistic_02_civilian",
@@ -167,7 +179,9 @@
         "stun": 0.0
       },
       "alphaDamage": 18.0,
-      "dps": 70.5
+      "dps": 70.5,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "behr_smg_ballistic_01",
@@ -192,7 +206,9 @@
         "stun": 0.0
       },
       "alphaDamage": 13.75,
-      "dps": 194.79
+      "dps": 194.79,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "behr_shotgun_ballistic_01",
@@ -208,15 +224,17 @@
       "magazineSize": 12,
       "projectileSpeed": 225.0,
       "damage": {
-        "physical": 11.0,
+        "physical": 88.0,
         "energy": 0.0,
         "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 11.0,
-      "dps": 16.5
+      "alphaDamage": 88.0,
+      "dps": 132.0,
+      "pelletCount": 8,
+      "isBeam": null
     },
     {
       "className": "behr_sniper_ballistic_01",
@@ -240,7 +258,9 @@
         "stun": 0.0
       },
       "alphaDamage": 100.0,
-      "dps": 91.67
+      "dps": 91.67,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "gmni_lmg_ballistic_01",
@@ -264,7 +284,9 @@
         "stun": 0.0
       },
       "alphaDamage": 10.0,
-      "dps": 200.0
+      "dps": 200.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "gmni_pistol_ballistic_01",
@@ -288,7 +310,9 @@
         "stun": 0.0
       },
       "alphaDamage": 13.0,
-      "dps": 205.83
+      "dps": 205.83,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "gmni_rifle_ballistic_01",
@@ -312,7 +336,9 @@
         "stun": 0.0
       },
       "alphaDamage": 21.5,
-      "dps": 179.17
+      "dps": 179.17,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "gmni_smg_ballistic_01",
@@ -336,7 +362,9 @@
         "stun": 0.0
       },
       "alphaDamage": 11.5,
-      "dps": 177.29
+      "dps": 177.29,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "gmni_shotgun_ballistic_01",
@@ -352,15 +380,17 @@
       "magazineSize": 18,
       "projectileSpeed": 225.0,
       "damage": {
-        "physical": 4.0,
+        "physical": 48.0,
         "energy": 0.0,
         "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 4.0,
-      "dps": 10.0
+      "alphaDamage": 48.0,
+      "dps": 120.0,
+      "pelletCount": 12,
+      "isBeam": null
     },
     {
       "className": "gmni_sniper_ballistic_01",
@@ -384,7 +414,9 @@
         "stun": 0.0
       },
       "alphaDamage": 42.5,
-      "dps": 159.38
+      "dps": 159.38,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "hdgw_pistol_ballistic_01",
@@ -406,7 +438,9 @@
         "stun": 0.0
       },
       "alphaDamage": 45.0,
-      "dps": 90.0
+      "dps": 90.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "ksar_pistol_ballistic_01",
@@ -430,7 +464,9 @@
         "stun": 0.0
       },
       "alphaDamage": 60.0,
-      "dps": 180.0
+      "dps": 180.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "ksar_rifle_energy_01",
@@ -454,7 +490,9 @@
         "stun": 0.0
       },
       "alphaDamage": 17.5,
-      "dps": 175.0
+      "dps": 175.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "ksar_smg_energy_01",
@@ -478,7 +516,9 @@
         "stun": 0.0
       },
       "alphaDamage": 13.0,
-      "dps": 173.33
+      "dps": 173.33,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "ksar_shotgun_energy_01",
@@ -493,14 +533,16 @@
       "projectileSpeed": 300.0,
       "damage": {
         "physical": 0.0,
-        "energy": 10.0,
+        "energy": 120.0,
         "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 10.0,
-      "dps": 10.0
+      "alphaDamage": 120.0,
+      "dps": 120.0,
+      "pelletCount": 12,
+      "isBeam": null
     },
     {
       "className": "ksar_shotgun_ballistic_01",
@@ -514,15 +556,17 @@
       "magazineSize": 16,
       "projectileSpeed": 300.0,
       "damage": {
-        "physical": 6.5,
+        "physical": 52.0,
         "energy": 0.0,
         "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 6.5,
-      "dps": 13.0
+      "alphaDamage": 52.0,
+      "dps": 104.0,
+      "pelletCount": 8,
+      "isBeam": null
     },
     {
       "className": "ksar_sniper_ballistic_01",
@@ -544,7 +588,9 @@
         "stun": 0.0
       },
       "alphaDamage": 45.0,
-      "dps": 30.0
+      "dps": 30.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "klwe_lmg_energy_01",
@@ -568,7 +614,9 @@
         "stun": 0.0
       },
       "alphaDamage": 11.5,
-      "dps": 153.33
+      "dps": 153.33,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "klwe_pistol_energy_01",
@@ -593,7 +641,9 @@
         "stun": 0.0
       },
       "alphaDamage": 18.0,
-      "dps": 210.0
+      "dps": 210.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "klwe_rifle_energy_01",
@@ -618,7 +668,9 @@
         "stun": 0.0
       },
       "alphaDamage": 21.0,
-      "dps": 315.0
+      "dps": 315.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "klwe_smg_energy_01",
@@ -640,7 +692,9 @@
         "stun": 0.0
       },
       "alphaDamage": 21.0,
-      "dps": 210.0
+      "dps": 210.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "klwe_sniper_energy_01",
@@ -662,7 +716,9 @@
         "stun": 0.0
       },
       "alphaDamage": 50.0,
-      "dps": 50.0
+      "dps": 50.0,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "lbco_pistol_energy_01",
@@ -686,7 +742,9 @@
         "stun": 1.0
       },
       "alphaDamage": 41.0,
-      "dps": 239.17
+      "dps": 239.17,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "lbco_sniper_energy_01",
@@ -710,7 +768,9 @@
         "stun": 10.0
       },
       "alphaDamage": 165.0,
-      "dps": 82.5
+      "dps": 82.5,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "none_lmg_ballistic_01",
@@ -734,7 +794,9 @@
         "stun": 0.0
       },
       "alphaDamage": 27.0,
-      "dps": 159.75
+      "dps": 159.75,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "none_pistol_ballistic_01",
@@ -752,15 +814,17 @@
       "magazineSize": 12,
       "projectileSpeed": 550.0,
       "damage": {
-        "physical": 12.0,
+        "physical": 36.0,
         "energy": 0.0,
         "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 12.0,
-      "dps": 12.0
+      "alphaDamage": 36.0,
+      "dps": 36.0,
+      "pelletCount": 3,
+      "isBeam": null
     },
     {
       "className": "none_rifle_multi_01",
@@ -782,7 +846,9 @@
         "stun": 0
       },
       "alphaDamage": 20.5,
-      "dps": 102.5
+      "dps": 102.5,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "none_smg_energy_01",
@@ -798,15 +864,17 @@
       "magazineSize": 60,
       "projectileSpeed": 0,
       "damage": {
-        "physical": 0,
-        "energy": 0,
-        "distortion": 0,
-        "thermal": 0,
-        "biochemical": 0,
-        "stun": 0
+        "physical": 0.0,
+        "energy": 165.0,
+        "distortion": 0.0,
+        "thermal": 0.0,
+        "biochemical": 0.0,
+        "stun": 0.0
       },
-      "alphaDamage": 0,
-      "dps": 0
+      "alphaDamage": 165.0,
+      "dps": 165.0,
+      "pelletCount": null,
+      "isBeam": true
     },
     {
       "className": "none_shotgun_ballistic_01",
@@ -820,15 +888,17 @@
       "magazineSize": 8,
       "projectileSpeed": 300.0,
       "damage": {
-        "physical": 9.0,
+        "physical": 72.0,
         "energy": 0.0,
         "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 9.0,
-      "dps": 12.0
+      "alphaDamage": 72.0,
+      "dps": 96.0,
+      "pelletCount": 8,
+      "isBeam": null
     },
     {
       "className": "none_special_ballistic_01",
@@ -852,7 +922,9 @@
         "stun": 0.0
       },
       "alphaDamage": 20.0,
-      "dps": 166.67
+      "dps": 166.67,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "volt_lmg_energy_01",
@@ -869,14 +941,16 @@
       "projectileSpeed": 1100.0,
       "damage": {
         "physical": 0.0,
-        "energy": 9.0,
-        "distortion": 0.0,
+        "energy": 225.0,
+        "distortion": 50.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 9.0,
-      "dps": 0
+      "alphaDamage": 275.0,
+      "dps": 275.0,
+      "pelletCount": null,
+      "isBeam": true
     },
     {
       "className": "volt_pistol_energy_01",
@@ -900,7 +974,9 @@
         "stun": 0.0
       },
       "alphaDamage": 11.75,
-      "dps": 97.92
+      "dps": 97.92,
+      "pelletCount": null,
+      "isBeam": null
     },
     {
       "className": "volt_rifle_energy_01",
@@ -917,14 +993,16 @@
       "projectileSpeed": 600.0,
       "damage": {
         "physical": 0.0,
-        "energy": 13.0,
-        "distortion": 5.0,
+        "energy": 210.0,
+        "distortion": 50.0,
         "thermal": 0.0,
         "biochemical": 0.0,
-        "stun": 3.0
+        "stun": 0.0
       },
-      "alphaDamage": 21.0,
-      "dps": 0
+      "alphaDamage": 260.0,
+      "dps": 260.0,
+      "pelletCount": null,
+      "isBeam": true
     },
     {
       "className": "volt_smg_energy_01",
@@ -941,14 +1019,16 @@
       "projectileSpeed": 600.0,
       "damage": {
         "physical": 0.0,
-        "energy": 5.0,
-        "distortion": 0.0,
+        "energy": 225.0,
+        "distortion": 50.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 5.0,
-      "dps": 0
+      "alphaDamage": 275.0,
+      "dps": 275.0,
+      "pelletCount": null,
+      "isBeam": true
     },
     {
       "className": "volt_shotgun_energy_01",
@@ -963,14 +1043,16 @@
       "projectileSpeed": 300.0,
       "damage": {
         "physical": 0.0,
-        "energy": 5.75,
+        "energy": 46.0,
         "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 5.75,
-      "dps": 11.5
+      "alphaDamage": 46.0,
+      "dps": 92.0,
+      "pelletCount": 8,
+      "isBeam": null
     },
     {
       "className": "volt_sniper_energy_01",
@@ -992,7 +1074,9 @@
         "stun": 0.0
       },
       "alphaDamage": 42.5,
-      "dps": 31.88
+      "dps": 31.88,
+      "pelletCount": null,
+      "isBeam": null
     }
   ]
 }
