@@ -360,10 +360,10 @@
 }
 
 .stat-block {
-  padding: 8px 12px 8px 10px;
-  background: linear-gradient(200deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
+  padding: 8px 10px 8px 12px;
+  background: linear-gradient(to left, rgba(0, 200, 255, 0.04), transparent);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  border-right: 1px solid var(--accent);
   display: flex;
   flex-direction: column;
   gap: 6px;
