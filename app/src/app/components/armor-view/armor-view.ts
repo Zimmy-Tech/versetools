@@ -21,6 +21,8 @@ export class ArmorViewComponent {
   dmgType = signal<DmgType>('physical');
   selectedWeapon = signal('');
   shipSize = signal<ShipSize>('');
+  wpSearch = signal('');
+  wpOpen = signal(false);
   readonly shipSizeOptions: { value: ShipSize; label: string }[] = [
     { value: '', label: 'Alpha Range' },
     { value: 'small', label: 'Small' },
@@ -46,6 +48,26 @@ export class ArmorViewComponent {
       .filter(i => i.type === 'WeaponGun' && i.damage && (i.damage[this.dmgType()] ?? 0) >= 1 && !i.name.includes('PLACEHOLDER'))
       .sort((a, b) => (a.size ?? 0) - (b.size ?? 0) || (a.damage![this.dmgType()] ?? 0) - (b.damage![this.dmgType()] ?? 0))
   );
+
+  filteredWeapons = computed(() => {
+    const q = this.wpSearch().toLowerCase();
+    const wpns = this.weapons();
+    if (!q) return wpns;
+    return wpns.filter(w =>
+      (w.name ?? '').toLowerCase().includes(q) ||
+      (w.manufacturer ?? '').toLowerCase().includes(q)
+    );
+  });
+
+  selectWeapon(className: string): void {
+    this.selectedWeapon.set(className);
+    this.wpSearch.set('');
+    this.wpOpen.set(false);
+  }
+
+  wpClose(): void {
+    setTimeout(() => this.wpOpen.set(false), 150);
+  }
 
   activeWeapon = computed(() => {
     const cls = this.selectedWeapon();
@@ -92,4 +114,7 @@ export class ArmorViewComponent {
       ...above.map(s => ({ ship: s.ship, deflect: s.deflect, deflected: true })),
     ];
   });
+
+  penetrateCount = computed(() => this.nearbyShips().filter(s => !s.deflected).length);
+  deflectCount = computed(() => this.nearbyShips().filter(s => s.deflected).length);
 }

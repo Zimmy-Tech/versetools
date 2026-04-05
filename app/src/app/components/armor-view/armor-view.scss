@@ -15,8 +15,9 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  max-width: 900px;
+  max-width: 960px;
   gap: 8px;
+  min-height: 0;
 }
 
 // ── Filter bar ───────────────────────────────────────────
@@ -25,12 +26,13 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  padding: 10px 12px;
+  padding: 10px 14px;
   flex-shrink: 0;
 }
 
@@ -60,216 +62,391 @@
   option { background: var(--bg3); color: var(--text); }
 }
 
-.weapon-picker { min-width: 300px; }
-
-// ── Weapon info ──────────────────────────────────────────
-
-.weapon-info {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 10px 14px;
-  background: linear-gradient(160deg, rgba(19, 26, 36, 0.7) 0%, rgba(0, 0, 0, 0.2) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-left: 3px solid var(--accent2);
-  border-radius: 0 4px 4px 0;
-  flex-shrink: 0;
+.wp-wrap {
+  position: relative;
+  min-width: 300px;
 }
 
-.weapon-info-name {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: 1px;
-}
-
-.weapon-info-size {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--accent);
-  background: rgba(0, 200, 255, 0.06);
-  border: 1px solid rgba(0, 200, 255, 0.2);
-  border-radius: 3px;
-  padding: 2px 8px;
-}
-
-.weapon-info-alpha {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  color: var(--text2);
-}
-
-// ── Ship size buttons ────────────────────────────────────
-
-.size-buttons {
-  display: flex;
-  gap: 3px;
-  padding: 6px 10px;
-  background: rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  flex-shrink: 0;
-}
-
-.size-btn {
-  background: rgba(255, 255, 255, 0.02);
+.wp-input {
+  width: 100%;
+  background: var(--bg3);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
-  color: var(--text3);
-  padding: 4px 14px;
+  color: var(--text);
+  padding: 6px 12px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  &:hover { color: var(--text); border-color: var(--accent2); box-shadow: 0 0 6px rgba(0, 200, 255, 0.08); }
-  &.active { background: rgba(0, 200, 255, 0.08); color: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &::placeholder { color: var(--text3); font-weight: 400; }
+  &:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
+  }
 }
 
-// ── Ship table ───────────────────────────────────────────
-
-.ship-list-wrap {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+.wp-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg2);
+  border: 1px solid rgba(0, 200, 255, 0.12);
   border-radius: 6px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 255, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+  max-height: 320px;
+  overflow-y: auto;
 
   &::-webkit-scrollbar { width: 4px; }
   &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 }
 
-.ship-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.ship-table th {
-  background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
-  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
-  padding: 8px 10px;
-  text-align: left;
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: var(--text3);
-  text-transform: uppercase;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  white-space: nowrap;
-}
-
-.th-status { width: 30px; text-align: center; }
-.th-deflect { width: 70px; text-align: right; }
-.th-diff { width: 70px; text-align: right; }
-
-.ship-table td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  padding: 6px 10px;
-}
-
-.ship-table tr {
+.wp-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
   transition: background 0.1s;
-  &:hover td { background: rgba(255, 255, 255, 0.03); }
+  margin: 1px 3px;
+  border-radius: 3px;
+
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+  &.active {
+    background: rgba(0, 200, 255, 0.06);
+    .wp-opt-name { color: var(--accent); }
+  }
 }
 
-.cell-status {
-  text-align: center;
-  font-size: 14px;
-}
-
-.cell-ship {
+.wp-opt-name {
   font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 14px;
   color: var(--text);
+  flex: 1;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.cell-deflect {
-  text-align: right;
+.wp-opt-size {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+.wp-opt-alpha {
   font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+  min-width: 36px;
+  text-align: right;
+}
+
+.wp-empty {
+  padding: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  text-align: center;
+}
+
+// ── Weapon Hero ─────────────────────────────────────────
+
+.weapon-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(19, 26, 36, 0.8) 0%, rgba(0, 200, 255, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  flex-shrink: 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
+}
+
+.wh-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wh-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
   color: var(--text);
 }
 
-.cell-diff {
-  text-align: right;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  &.positive { color: var(--green); }
-  &.negative { color: var(--red); }
+.wh-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
 
-.row-penetrated {
-  background: rgba(0, 230, 118, 0.02);
-}
-
-.row-deflected {
-  background: rgba(255, 68, 68, 0.02);
-}
-
-.armor-icon {
+.wh-size {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
   font-weight: 700;
-  &.pen { color: var(--green); }
-  &.def { color: var(--red); }
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.06);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 3px;
+  padding: 2px 8px;
 }
 
-// ── Two-column layout ───────────────────────────────────
+.wh-type {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.wh-center {
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  }
+  &::before { left: 0; }
+  &::after { right: 0; }
+}
+
+.wh-alpha-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(0, 200, 255, 0.25);
+}
+
+.wh-alpha-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.wh-right {
+  display: flex;
+  align-items: center;
+}
+
+.wh-size-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wh-size-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  padding: 3px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+
+  &:hover { color: var(--text); border-color: var(--accent2); }
+  &.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(0, 200, 255, 0.06);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.08);
+  }
+}
+
+// ── Explainer ───────────────────────────────────────────
 
 .armor-explainer {
   font-family: 'Exo 2', sans-serif;
   font-size: 12px;
-  color: var(--text2);
-  padding: 10px 14px;
-  background: rgba(0, 200, 255, 0.03);
-  border: 1px solid rgba(0, 200, 255, 0.08);
-  border-left: 2px solid var(--accent2);
-  border-radius: 0 4px 4px 0;
-  line-height: 1.6;
+  color: var(--text3);
+  padding: 8px 14px;
+  line-height: 1.5;
   flex-shrink: 0;
+  text-align: center;
 }
 
-.armor-columns-wrap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+// ── Results Panel (unified) ─────────────────────────────
+
+.results-panel {
   flex: 1;
   min-height: 0;
-  overflow: hidden;
-}
-
-.armor-col-wrap {
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 4px;
 }
 
-.armor-col-title {
+.results-header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.rh-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+
+  &.pen { justify-content: flex-start; }
+  &.def { justify-content: flex-end; }
+}
+
+.rh-icon {
+  font-size: 14px;
+  font-weight: 700;
+  .pen & { color: var(--green); }
+  .def & { color: var(--red); }
+}
+
+.rh-label {
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  flex-shrink: 0;
+  .pen & { color: var(--green); }
+  .def & { color: var(--red); }
+}
 
-  &.penetrates { color: var(--green); }
-  &.deflected { color: var(--red); }
+.rh-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.rh-divider {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  flex-shrink: 0;
+}
+
+.results-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.results-col {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+}
+
+.results-divider {
+  width: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.06));
+  flex-shrink: 0;
+}
+
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  transition: background 0.1s;
+
+  &:hover { background: rgba(255, 255, 255, 0.03); }
+  &:last-child { border-bottom: none; }
+
+  &.pen { background: rgba(0, 230, 118, 0.015); }
+  &.def { background: rgba(255, 68, 68, 0.015); }
+}
+
+.rr-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rr-deflect {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+  flex-shrink: 0;
+  min-width: 36px;
+  text-align: right;
+}
+
+.rr-margin {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  flex-shrink: 0;
+  min-width: 44px;
+  text-align: right;
+
+  &.positive { color: var(--green); }
+  &.negative { color: var(--red); }
+}
+
+.result-empty {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  text-align: center;
+  padding: 20px;
+  opacity: 0.5;
 }
 
 // ── Empty state ──────────────────────────────────────────
@@ -283,9 +460,11 @@
 
 .empty-hint {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text3);
 }
+
+// ── Mobile ──────────────────────────────────────────────
 
 @media (max-width: 767px) {
   :host {
@@ -293,53 +472,25 @@
     padding: 10px;
   }
 
-  .armor-damage {
-    overflow: visible;
+  .armor-damage { overflow: visible; }
+
+  .weapon-hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
   }
 
-  .armor-columns-wrap {
-    grid-template-columns: 1fr;
-    overflow: visible;
-  }
+  .wh-left { align-items: center; }
+  .wh-center { padding: 8px 0; &::before, &::after { display: none; } }
+  .wh-right { width: 100%; }
+  .wh-size-filters { flex-direction: row; flex-wrap: wrap; justify-content: center; }
 
-  .armor-col-wrap {
-    overflow: visible;
-  }
+  .results-body { flex-direction: column; }
+  .results-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent); }
 
-  .ship-list-wrap {
-    overflow-x: auto;
-  }
-
-  .ship-table {
-    min-width: 500px;
-  }
-
-  .ship-table th { padding: 5px 6px; font-size: 11px; }
-  .ship-table td { padding: 4px 6px; }
-
-  .filter-bar {
-    padding: 6px 8px;
-    gap: 6px;
-  }
-
-  .filter-select {
-    min-height: 40px;
-    font-size: 13px;
-  }
-
+  .filter-bar { padding: 6px 8px; gap: 6px; }
+  .filter-select { min-height: 40px; font-size: 13px; }
   .weapon-picker { min-width: 0; width: 100%; }
 
-  .size-btn {
-    min-height: 40px;
-    padding: 6px 14px;
-    font-size: 13px;
-  }
-
-  .weapon-info {
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 8px 10px;
-  }
-
-  .weapon-info-name { font-size: 16px; }
+  .wh-size-btn { min-height: 36px; padding: 6px 14px; }
 }
