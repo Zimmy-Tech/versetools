@@ -350,6 +350,23 @@ def main():
     base_pieces = list(grouped.values())
     print(f"  Base pieces (grouped): {len(base_pieces)} (from {len(armor_pieces)} total)")
 
+    # ── Baseline protection: prevent armor from disappearing ──────────
+    new_classes = {p["className"] for p in base_pieces}
+    if OUT_FILE.exists():
+        try:
+            prev = json.loads(OUT_FILE.read_text())
+            prev_armor = prev.get("armor", [])
+            kept = 0
+            for pa in prev_armor:
+                if pa["className"] not in new_classes:
+                    base_pieces.append(pa)
+                    new_classes.add(pa["className"])
+                    kept += 1
+            if kept:
+                print(f"  ⚠ Baseline protection: kept {kept} armor pieces that would have disappeared")
+        except Exception:
+            pass
+
     # Output
     output = {
         "meta": {

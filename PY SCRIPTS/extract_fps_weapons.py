@@ -882,6 +882,24 @@ def extract_fps_weapons():
     except Exception:
         pass
 
+    # ── Baseline protection: prevent weapons from disappearing ──────────
+    new_classes = {w["className"] for w in weapons}
+    if OUT_FILE.exists():
+        try:
+            prev = json.loads(OUT_FILE.read_text())
+            prev_weapons = prev.get("weapons", [])
+            kept = 0
+            for pw in prev_weapons:
+                if pw["className"] not in new_classes:
+                    weapons.append(pw)
+                    new_classes.add(pw["className"])
+                    kept += 1
+            if kept:
+                print(f"  ⚠ Baseline protection: kept {kept} weapons that would have disappeared")
+                weapons.sort(key=lambda w: (w["manufacturer"], w["type"], w["name"]))
+        except Exception:
+            pass
+
     # Build output
     output = {
         "meta": {
