@@ -292,6 +292,36 @@
   margin-bottom: 3px;
 }
 
+// ── Shielded Deflect ─────────────────────────────────────
+
+.shielded-deflect-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  margin-top: 6px;
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.1);
+  border-radius: 4px;
+}
+
+.sd-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+.sd-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+}
+
 .resist-row {
   display: flex;
   justify-content: space-between;

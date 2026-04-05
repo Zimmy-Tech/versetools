@@ -353,6 +353,17 @@ export class DpsPanelComponent {
 
   shieldFaceType = computed(() => this.data.selectedShip()?.shieldFaceType ?? 'Bubble');
 
+  /** Shielded physical deflect — the raw ballistic alpha needed to penetrate through shields + armor. */
+  shieldedPhysDeflect = computed(() => {
+    const ship = this.data.selectedShip();
+    const resists = this.shieldResists();
+    if (!ship || !resists) return null;
+    const physDeflect = ship.armorDeflectPhys ?? 0;
+    if (!physDeflect) return null;
+    const physHullBleed = resists.physToHull;
+    return physHullBleed > 0 ? Math.round(physDeflect / physHullBleed * 10) / 10 : null;
+  });
+
   // Shield resists/absorption at current power pip allocation (averaged across primary shields)
   shieldResists = computed(() => {
     const entries = this.primaryShieldEntries();

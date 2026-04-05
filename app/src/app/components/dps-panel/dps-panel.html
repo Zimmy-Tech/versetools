@@ -182,6 +182,12 @@
               </div>
             </div>
           }
+          @if (shieldedPhysDeflect(); as spd) {
+            <div class="shielded-deflect-row" title="With current shields at max power — the raw ballistic alpha a weapon needs to penetrate through shields and armor combined">
+              <span class="sd-label">Shielded Phys Deflect</span>
+              <span class="sd-val">{{ spd }}</span>
+            </div>
+          }
         </div>
       </div>
     }
@@ -290,7 +296,7 @@
       <span class="popout-close" (click)="showArmorDetail.set(false)">&times;</span>
     </div>
     <div class="popout-body">
-      <div class="armor-explainer">Weapons below your armor's deflect threshold are stopped — damage reduced to zero. Weapons above it penetrate and deal full alpha damage per shot.</div>
+      <div class="armor-explainer">Weapons below your armor's deflect threshold are stopped — damage reduced to zero. Weapons above it penetrate and deal full alpha damage per shot. These values are calculated against raw armor with no shields active. With shields up, absorption reduces the effective alpha reaching the hull, which may cause additional weapons to be deflected.</div>
       @if (armorDetailList(); as dl) {
         @if (dl.physical.length > 0) {
           <div class="armor-type-section">
