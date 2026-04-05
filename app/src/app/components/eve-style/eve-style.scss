@@ -250,6 +250,13 @@
   text-transform: uppercase;
 }
 
+.ef-tree-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--accent2);
+  flex-shrink: 0;
+}
+
 .ef-tree-leaf {
   display: flex;
   align-items: center;
@@ -328,6 +335,8 @@
 
 .ef-ph-name { flex: 1; }
 .ef-ph-col { width: 55px; text-align: right; }
+.ef-sortable { cursor: pointer; transition: color 0.15s; &:hover { color: var(--accent); } }
+.ef-ph-sz { width: 28px; }
 
 .ef-picker-list {
   flex: 1;
@@ -347,6 +356,7 @@
   transition: background 0.1s;
 
   &:hover { background: rgba(0, 200, 255, 0.04); }
+  &.selected { background: rgba(0, 200, 255, 0.06); border-left: 2px solid var(--accent); }
 }
 
 .ef-pr-name {
@@ -410,6 +420,21 @@
   }
 }
 
+.ef-lr-cat {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  width: 60px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+  padding: 0 4px;
+  text-align: center;
+}
+
 .ef-lr-slot {
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
@@ -449,6 +474,7 @@
   &.accent { color: var(--accent); font-weight: 700; }
   &.shield { color: var(--green); }
   &.power { color: var(--gold); }
+  &.cooling { color: var(--accent); }
   &.muted { color: var(--text3); opacity: 0.3; }
 }
 
@@ -485,6 +511,15 @@
   color: var(--text);
 
   &.accent { color: var(--accent); }
+  &.shield { color: var(--green); }
+  &.cooling { color: var(--accent); }
+}
+
+.ef-selected-detail {
+  border-top: 2px solid var(--accent2);
+  background: rgba(0, 200, 255, 0.02);
+  margin-top: 4px;
+  border-radius: 4px;
 }
 
 // ── RIGHT: Details Panel ────────────────────────────────
