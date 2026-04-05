@@ -4993,6 +4993,117 @@ def main(mode: str = "live"):
             "accelAbFwd": 15.5, "accelAbRetro": 5.4, "accelAbStrafe": 10.8, "accelAbUp": 10.7, "accelAbDown": 5.8,
             "accelTestedDate": "2026-04-02", "accelCheckedBy": "Roma-Starkiller",
         },
+        # ── Community-submitted acceleration data (auto-accel workflow) ──
+        "ANVL_Arrow": {
+            "accelFwd": 13.5, "accelRetro": 4.5, "accelStrafe": 10.8, "accelUp": 10.8, "accelDown": 5.2,
+            "accelAbFwd": 20, "accelAbRetro": 6.3, "accelAbStrafe": 14, "accelAbUp": 14, "accelAbDown": 7.1,
+            "accelTestedDate": "2026-04-03", "accelCheckedBy": "Zimmy",
+        },
+        "ANVL_Hawk": {
+            "accelFwd": 12.8, "accelRetro": 4.1, "accelStrafe": 9.7, "accelUp": 9.7, "accelDown": 4.8,
+            "accelAbFwd": 19.9, "accelAbRetro": 5.7, "accelAbStrafe": 12.6, "accelAbUp": 12.6, "accelAbDown": 6.5,
+            "accelTestedDate": "2026-04-03", "accelCheckedBy": "Zimmy",
+        },
+        "anvl_hornet_f7c_mk2": {
+            "accelFwd": 10.9, "accelRetro": 3.9, "accelStrafe": 7.5, "accelUp": 7.9, "accelDown": 4.6,
+            "accelAbFwd": 16.9, "accelAbRetro": 5.5, "accelAbStrafe": 10.2, "accelAbUp": 10.7, "accelAbDown": 6.2,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "anvl_hornet_f7cm": {
+            "accelFwd": 10.9, "accelRetro": 3.9, "accelStrafe": 7.2, "accelUp": 7.9, "accelDown": 4.4,
+            "accelAbFwd": 17, "accelAbRetro": 5.4, "accelAbStrafe": 9.8, "accelAbUp": 10.7, "accelAbDown": 6,
+            "accelTestedDate": "2026-04-03", "accelCheckedBy": "Zimmy",
+        },
+        "ARGO_RAFT": {
+            "accelFwd": 4, "accelRetro": 2.1, "accelStrafe": 3, "accelUp": 3, "accelDown": 2,
+            "accelAbFwd": 5.6, "accelAbRetro": 3, "accelAbStrafe": 3.9, "accelAbUp": 4.2, "accelAbDown": 2.6,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "CNOU_Nomad": {
+            "accelFwd": 10.1, "accelRetro": 3.5, "accelStrafe": 6, "accelUp": 7.7, "accelDown": 4.7,
+            "accelAbFwd": 15.7, "accelAbRetro": 4.9, "accelAbStrafe": 7.8, "accelAbUp": 10.1, "accelAbDown": 6.3,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "CRUS_Intrepid": {
+            "accelFwd": 12.6, "accelRetro": 3.8, "accelStrafe": 5.7, "accelUp": 6.5, "accelDown": 5.6,
+            "accelAbFwd": 17.7, "accelAbRetro": 4.9, "accelAbStrafe": 7.7, "accelAbUp": 8.5, "accelAbDown": 7.8,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "CRUS_Star_Runner": {
+            "accelFwd": 6.2, "accelRetro": 3.1, "accelStrafe": 2.6, "accelUp": 3.1, "accelDown": 2.6,
+            "accelAbFwd": 10.6, "accelAbRetro": 3.7, "accelAbStrafe": 3.5, "accelAbUp": 4, "accelAbDown": 3.1,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "crus_starlifter_m2": {
+            "accelFwd": 4.4, "accelRetro": 1.7, "accelStrafe": 2.1, "accelUp": 2.2, "accelDown": 2.2,
+            "accelAbFwd": 6.6, "accelAbRetro": 2.1, "accelAbStrafe": 2.9, "accelAbUp": 2.8, "accelAbDown": 2.6,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "espr_talon": {
+            "accelFwd": 13.1, "accelRetro": 4.2, "accelStrafe": 10.2, "accelUp": 10.4, "accelDown": 5.2,
+            "accelAbFwd": 20.3, "accelAbRetro": 5.9, "accelAbStrafe": 13.5, "accelAbUp": 13.5, "accelAbDown": 7,
+            "accelTestedDate": "2026-04-03", "accelCheckedBy": "Zimmy",
+        },
+        "espr_talon_shrike": {
+            "accelFwd": 13.5, "accelRetro": 4.4, "accelStrafe": 10.7, "accelUp": 10.7, "accelDown": 5.3,
+            "accelAbFwd": 20.9, "accelAbRetro": 6.1, "accelAbStrafe": 14, "accelAbUp": 14, "accelAbDown": 7.2,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "rsi_constellation_andromeda": {
+            "accelFwd": 5.2, "accelRetro": 2.6, "accelStrafe": 2.6, "accelUp": 3.1, "accelDown": 2.6,
+            "accelAbFwd": 7.8, "accelAbRetro": 3.1, "accelAbStrafe": 3.5, "accelAbUp": 4, "accelAbDown": 3.1,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "rsi_constellation_phoenix": {
+            "accelFwd": 5, "accelRetro": 2.5, "accelStrafe": 2.4, "accelUp": 3, "accelDown": 2.4,
+            "accelAbFwd": 7.5, "accelAbRetro": 3, "accelAbStrafe": 3.3, "accelAbUp": 3.9, "accelAbDown": 2.9,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "rsi_constellation_taurus": {
+            "accelFwd": 5, "accelRetro": 2.5, "accelStrafe": 2.6, "accelUp": 3.2, "accelDown": 2.6,
+            "accelAbFwd": 7.5, "accelAbRetro": 3, "accelAbStrafe": 3.5, "accelAbUp": 4.2, "accelAbDown": 3.1,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "RSI_Mantis": {
+            "accelFwd": 14.8, "accelRetro": 3.4, "accelStrafe": 4.3, "accelUp": 5.8, "accelDown": 3.4,
+            "accelAbFwd": 24.7, "accelAbRetro": 4.5, "accelAbStrafe": 5.9, "accelAbUp": 7.8, "accelAbDown": 4.5,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "rsi_zeus_es": {
+            "accelFwd": 8.5, "accelRetro": 2.6, "accelStrafe": 3, "accelUp": 3, "accelDown": 2.7,
+            "accelAbFwd": 11.1, "accelAbRetro": 3.3, "accelAbStrafe": 4.1, "accelAbUp": 3.9, "accelAbDown": 3.5,
+            "accelTestedDate": "2026-04-03", "accelCheckedBy": "Zimmy",
+        },
+        "misc_starlancer_max": {
+            "accelFwd": 3.2, "accelRetro": 1.8, "accelStrafe": 2, "accelUp": 2.3, "accelDown": 2.3,
+            "accelAbFwd": 4.3, "accelAbRetro": 2.5, "accelAbStrafe": 2.6, "accelAbUp": 3.3, "accelAbDown": 3,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "misc_starlancer_tac": {
+            "accelFwd": 2.9, "accelRetro": 1.6, "accelStrafe": 1.8, "accelUp": 2.1, "accelDown": 2.1,
+            "accelAbFwd": 3.9, "accelAbRetro": 2.3, "accelAbStrafe": 2.4, "accelAbUp": 3, "accelAbDown": 2.8,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "mrai_guardian": {
+            "accelFwd": 9.3, "accelRetro": 3.5, "accelStrafe": 7.5, "accelUp": 7.5, "accelDown": 7.5,
+            "accelAbFwd": 14, "accelAbRetro": 4.9, "accelAbStrafe": 10.2, "accelAbUp": 9.8, "accelAbDown": 10.6,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "mrai_guardian_mx": {
+            "accelFwd": 9.2, "accelRetro": 3.5, "accelStrafe": 6.8, "accelUp": 6.8, "accelDown": 6.8,
+            "accelAbFwd": 13.8, "accelAbRetro": 4.9, "accelAbStrafe": 9.2, "accelAbUp": 8.8, "accelAbDown": 9.5,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "rsi_apollo_medivac": {
+            "accelFwd": 4.2, "accelRetro": 2.4, "accelStrafe": 2.9, "accelUp": 2, "accelDown": 1.9,
+            "accelAbFwd": 5.9, "accelAbRetro": 3.4, "accelAbStrafe": 3.8, "accelAbUp": 2.8, "accelAbDown": 2.5,
+            "accelTestedDate": "2026-04-04", "accelCheckedBy": "Zimmy",
+        },
+        "rsi_meteor": {
+            "accelFwd": 15.2, "accelRetro": 2.9, "accelStrafe": 4.2, "accelUp": 5.5, "accelDown": 3.2,
+            "accelAbFwd": 25.4, "accelAbRetro": 3.8, "accelAbStrafe": 5.7, "accelAbUp": 7.4, "accelAbDown": 4.3,
+            "accelTestedDate": "2026-04-03", "accelCheckedBy": "Zimmy",
+        },
     }
     accel_lower = {k.lower(): v for k, v in accel_overrides.items()}
     for ship in ships.values():
