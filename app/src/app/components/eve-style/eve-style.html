@@ -2,17 +2,53 @@
 
   <!-- ═══ HEADER BAR ═══ -->
   <div class="ef-header">
-    @if (data.selectedShip(); as ship) {
-      <div class="ef-ship-name">{{ ship.name }}</div>
-      <div class="ef-ship-meta">
-        <span class="ef-meta-item">{{ ship.role || ship.career || ship.size }}</span>
+    <div class="ef-ship-picker-wrap">
+      @if (data.selectedShip(); as ship) {
+        <button class="ef-ship-btn" (click)="shipPickerOpen.set(!shipPickerOpen())">
+          <span class="ef-ship-name">{{ ship.name }}</span>
+          <span class="ef-ship-meta">
+            <span class="ef-meta-item">{{ ship.role || ship.career || ship.size }}</span>
+            <span class="ef-meta-sep">·</span>
+            <span class="ef-meta-item">{{ ship.manufacturer }}</span>
+          </span>
+          <span class="ef-ship-caret">{{ shipPickerOpen() ? '▴' : '▾' }}</span>
+        </button>
+      } @else {
+        <button class="ef-ship-btn" (click)="shipPickerOpen.set(!shipPickerOpen())">
+          <span class="ef-ship-name">Select a Ship</span>
+          <span class="ef-ship-caret">▾</span>
+        </button>
+      }
+
+      @if (shipPickerOpen()) {
+        <div class="ef-ship-dropdown">
+          <input type="text" placeholder="Search ships..."
+                 class="ef-search-input ef-ship-search-input"
+                 [value]="shipSearch()"
+                 (input)="shipSearch.set($any($event.target).value)"
+                 (click)="$event.stopPropagation()">
+          <div class="ef-ship-list">
+            @for (ship of filteredShips(); track ship.className) {
+              <div class="ef-ship-option"
+                   [class.active]="data.selectedShip()?.className === ship.className"
+                   (click)="selectShip(ship)">
+                <span class="ef-so-name">{{ ship.name }}</span>
+                <span class="ef-so-meta">{{ ship.manufacturer }} · {{ ship.role || ship.size }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (data.selectedShip()) {
+      <div class="ef-header-stats">
+        <span class="ef-hs accent">{{ fmt(totalDps()) }} DPS</span>
         <span class="ef-meta-sep">·</span>
-        <span class="ef-meta-item">{{ ship.manufacturer }}</span>
+        <span class="ef-hs shield">{{ fmt(totalShieldHp()) }} SHP</span>
         <span class="ef-meta-sep">·</span>
-        <span class="ef-meta-item accent">{{ fmt(totalDps()) }} DPS</span>
+        <span class="ef-hs">{{ missileCount() }} MSL</span>
       </div>
-    } @else {
-      <div class="ef-ship-name">No Ship Selected</div>
     }
   </div>
 
@@ -36,18 +72,27 @@
                   <span class="ef-tree-arrow">{{ cat.expanded ? '▾' : '▸' }}</span>
                   <span class="ef-tree-icon">{{ cat.icon }}</span>
                   <span class="ef-tree-name">{{ cat.name }}</span>
-                  <span class="ef-tree-count">{{ slotsForCategory(cat.id).length }}</span>
+                  <span class="ef-tree-count">{{ flatNodesForCategory(cat.id).length }}</span>
                 </div>
                 @if (cat.expanded) {
-                  @for (slot of slotsForCategory(cat.id); track slot.slotId) {
+                  @for (node of flatNodesForCategory(cat.id); track node.slotId) {
                     <div class="ef-slot-leaf"
-                         [class.active]="selectedSlotId() === slot.slotId"
-                         [class.empty]="!slot.item"
-                         (click)="selectSlot(slot.slotId)">
-                      <span class="ef-slot-size">S{{ slot.hardpoint.maxSize }}</span>
-                      <span class="ef-slot-name">{{ slot.item?.name ?? '— Empty —' }}</span>
-                      @if (slot.item && slot.item.dps) {
-                        <span class="ef-slot-stat">{{ fmt(slot.item!.dps) }}</span>
+                         [class.active]="selectedSlotId() === node.slotId"
+                         [class.empty]="!node.item"
+                         [class.depth-1]="node.depth === 1"
+                         [class.depth-2]="node.depth >= 2"
+                         [class.is-parent]="node.children.length > 0"
+                         (click)="selectSlot(node.slotId)">
+                      <span class="ef-slot-size">S{{ node.hardpoint.maxSize }}</span>
+                      <span class="ef-slot-name">
+                        @if (node.depth === 0 && node.children.length > 0) {
+                          {{ node.label }}
+                        } @else {
+                          {{ node.item?.name ?? '— Empty —' }}
+                        }
+                      </span>
+                      @if (node.item?.dps) {
+                        <span class="ef-slot-stat">{{ fmt(node.item!.dps) }}</span>
                       }
                     </div>
                   }
@@ -118,20 +163,30 @@
     <div class="ef-panel ef-loadout">
       <div class="ef-panel-title">Fitted Loadout — {{ data.selectedShip()?.name ?? 'None' }}</div>
       <div class="ef-loadout-list">
-        @for (entry of equippedItems(); track entry.slotId) {
-          <div class="ef-loadout-row" (click)="selectPicker(entry.item)">
-            <span class="ef-lr-cat">{{ entry.category }}</span>
-            <span class="ef-lr-name">{{ entry.item.name }}</span>
-            <span class="ef-lr-size">S{{ entry.item.size }}</span>
-            @if (entry.item.dps) {
-              <span class="ef-lr-stat accent">{{ fmt(entry.item.dps) }} DPS</span>
-            } @else if (entry.item.hp) {
-              <span class="ef-lr-stat shield">{{ fmt(entry.item.hp) }} HP</span>
-            } @else if (entry.item.powerOutput) {
-              <span class="ef-lr-stat power">{{ fmt(entry.item.powerOutput) }} pwr</span>
-            } @else if (entry.item.coolingRate) {
-              <span class="ef-lr-stat cooling">{{ fmt(entry.item.coolingRate) }}</span>
+        @for (node of allFlatNodes(); track node.slotId) {
+          <div class="ef-loadout-row"
+               [class.selected]="selectedSlotId() === node.slotId"
+               [class.depth-1]="node.depth === 1"
+               [class.depth-2]="node.depth >= 2"
+               (click)="selectSlot(node.slotId)">
+            <span class="ef-lr-cat">{{ node.category }}</span>
+            @if (node.item) {
+              <span class="ef-lr-name">{{ node.item.name }}</span>
+              <span class="ef-lr-size">S{{ node.item.size }}</span>
+              @if (node.item.dps) {
+                <span class="ef-lr-stat accent">{{ fmt(node.item.dps) }} DPS</span>
+              } @else if (node.item.hp) {
+                <span class="ef-lr-stat shield">{{ fmt(node.item.hp) }} HP</span>
+              } @else if (node.item.powerOutput) {
+                <span class="ef-lr-stat power">{{ fmt(node.item.powerOutput) }} pwr</span>
+              } @else if (node.item.coolingRate) {
+                <span class="ef-lr-stat cooling">{{ fmt(node.item.coolingRate) }}</span>
+              } @else {
+                <span class="ef-lr-stat muted">—</span>
+              }
             } @else {
+              <span class="ef-lr-name empty">{{ node.label }} — Empty</span>
+              <span class="ef-lr-size">S{{ node.hardpoint.maxSize }}</span>
               <span class="ef-lr-stat muted">—</span>
             }
           </div>
@@ -162,49 +217,90 @@
     <div class="ef-panel ef-details">
       <div class="ef-panel-title">Ship Overview</div>
 
+      <!-- Firepower Section -->
       <div class="ef-detail-section">
         <div class="ef-ds-title">Firepower</div>
         <div class="ef-ds-grid">
-          <div class="ef-ds-hero"><span class="ef-hero-val">{{ fmt(totalDps()) }}</span><span class="ef-hero-label">Peak DPS</span></div>
+          <div class="ef-ds-hero"><span class="ef-hero-val accent-text">{{ fmt(totalDps()) }}</span><span class="ef-hero-label">Peak DPS</span></div>
           <div class="ef-ds-hero"><span class="ef-hero-val">{{ fmt(totalAlpha(), 1) }}</span><span class="ef-hero-label">Alpha</span></div>
         </div>
+        @if (avgProjectileSpeed() > 0) {
+          <div class="ef-ds-stat"><span class="ef-stat-k">Avg Proj Speed</span><span class="ef-stat-v">{{ fmt(avgProjectileSpeed()) }} m/s</span></div>
+        }
+        @for (node of equippedWeapons(); track node.slotId) {
+          <div class="ef-weapon-row">
+            <span class="ef-wr-name">{{ node.item!.name }}</span>
+            <span class="ef-wr-dps">{{ fmt(node.item!.dps) }}</span>
+          </div>
+        }
       </div>
 
+      <!-- Missiles Section -->
+      @if (missileCount() > 0) {
+        <div class="ef-detail-section">
+          <div class="ef-ds-title">Missiles</div>
+          <div class="ef-ds-grid">
+            <div class="ef-ds-hero"><span class="ef-hero-val">{{ missileCount() }}</span><span class="ef-hero-label">Count</span></div>
+            <div class="ef-ds-hero"><span class="ef-hero-val">{{ fmt(totalMissileDmg()) }}</span><span class="ef-hero-label">Total Dmg</span></div>
+          </div>
+        </div>
+      }
+
+      <!-- Shields Section -->
       <div class="ef-detail-section">
         <div class="ef-ds-title">Shields</div>
         <div class="ef-ds-grid">
-          <div class="ef-ds-hero"><span class="ef-hero-val">{{ fmt(totalShieldHp()) }}</span><span class="ef-hero-label">Shield HP</span></div>
+          <div class="ef-ds-hero"><span class="ef-hero-val shield-text">{{ fmt(totalShieldHp()) }}</span><span class="ef-hero-label">Shield HP</span></div>
           <div class="ef-ds-hero"><span class="ef-hero-val">{{ fmt(totalShieldRegen()) }}/s</span><span class="ef-hero-label">Regen</span></div>
         </div>
         @if (totalShieldHp() > 0 && totalShieldRegen() > 0) {
           <div class="ef-ds-stat"><span class="ef-stat-k">Full Regen</span><span class="ef-stat-v">{{ fmt(totalShieldHp() / totalShieldRegen(), 1) }}s</span></div>
         }
+        @for (node of equippedShields(); track node.slotId) {
+          <div class="ef-weapon-row">
+            <span class="ef-wr-name">{{ node.item!.name }}</span>
+            <span class="ef-wr-dps shield-text">{{ fmt(node.item!.hp) }}</span>
+          </div>
+        }
       </div>
 
+      <!-- Power & Cooling Section -->
       <div class="ef-detail-section">
         <div class="ef-ds-title">Power & Cooling</div>
-        <div class="ef-ds-stat"><span class="ef-stat-k">Power Output</span><span class="ef-stat-v">{{ fmt(totalPowerOutput()) }}</span></div>
+        <div class="ef-ds-stat"><span class="ef-stat-k">Power Output</span><span class="ef-stat-v power-text">{{ fmt(totalPowerOutput()) }}</span></div>
         <div class="ef-ds-stat"><span class="ef-stat-k">Power Draw</span><span class="ef-stat-v">{{ fmt(totalPowerDraw()) }}</span></div>
         @if (totalPowerOutput() > 0) {
           <div class="ef-ds-bar">
             <span class="ef-bar-label">Usage</span>
-            <div class="ef-bar-track"><div class="ef-bar-fill power" [style.width.%]="totalPowerDraw() / totalPowerOutput() * 100"></div></div>
-            <span class="ef-bar-val">{{ fmt(totalPowerDraw() / totalPowerOutput() * 100) }}%</span>
+            <div class="ef-bar-track">
+              <div class="ef-bar-fill power"
+                   [style.width.%]="Math.min(100, totalPowerDraw() / totalPowerOutput() * 100)"></div>
+            </div>
+            <span class="ef-bar-val" [class.over]="totalPowerDraw() > totalPowerOutput()">{{ fmt(totalPowerDraw() / totalPowerOutput() * 100) }}%</span>
           </div>
         }
-        <div class="ef-ds-stat"><span class="ef-stat-k">Cooling Rate</span><span class="ef-stat-v">{{ fmt(totalCooling()) }}</span></div>
+        <div class="ef-ds-stat" style="margin-top: 6px"><span class="ef-stat-k">Cooling Rate</span><span class="ef-stat-v accent-text">{{ fmt(totalCooling()) }}</span></div>
       </div>
 
+      <!-- Flight Section -->
       @if (data.selectedShip(); as ship) {
         <div class="ef-detail-section">
           <div class="ef-ds-title">Flight</div>
-          <div class="ef-ds-row-group">
-            <div class="ef-ds-stat"><span class="ef-stat-k">SCM</span><span class="ef-stat-v">{{ ship.scmSpeed ?? '—' }} m/s</span></div>
-            <div class="ef-ds-stat"><span class="ef-stat-k">NAV</span><span class="ef-stat-v">{{ ship.navSpeed ?? '—' }} m/s</span></div>
-            <div class="ef-ds-stat"><span class="ef-stat-k">Boost</span><span class="ef-stat-v">{{ ship.boostSpeedFwd ?? '—' }} m/s</span></div>
+          <div class="ef-ds-grid triple">
+            <div class="ef-ds-hero compact"><span class="ef-hero-val">{{ ship.scmSpeed ?? '—' }}</span><span class="ef-hero-label">SCM</span></div>
+            <div class="ef-ds-hero compact"><span class="ef-hero-val">{{ ship.navSpeed ?? '—' }}</span><span class="ef-hero-label">NAV</span></div>
+            <div class="ef-ds-hero compact"><span class="ef-hero-val">{{ ship.boostSpeedFwd ?? '—' }}</span><span class="ef-hero-label">Boost</span></div>
           </div>
+          @if (ship.pitch || ship.yaw || ship.roll) {
+            <div class="ef-ds-grid triple" style="margin-top: 4px">
+              <div class="ef-ds-hero compact"><span class="ef-hero-val">{{ fmt(ship.pitch, 1) }}</span><span class="ef-hero-label">Pitch</span></div>
+              <div class="ef-ds-hero compact"><span class="ef-hero-val">{{ fmt(ship.yaw, 1) }}</span><span class="ef-hero-label">Yaw</span></div>
+              <div class="ef-ds-hero compact"><span class="ef-hero-val">{{ fmt(ship.roll, 1) }}</span><span class="ef-hero-label">Roll</span></div>
+            </div>
+          }
         </div>
 
+        <!-- Hull & Armor Section -->
         <div class="ef-detail-section">
           <div class="ef-ds-title">Hull & Armor</div>
           <div class="ef-ds-grid">
@@ -214,13 +310,14 @@
         </div>
       }
 
+      <!-- Selected Item Detail -->
       @if (selectedPickerItem(); as sel) {
         <div class="ef-detail-section ef-selected-detail">
           <div class="ef-ds-title">{{ sel.name }}</div>
           <div class="ef-ds-stat"><span class="ef-stat-k">Type</span><span class="ef-stat-v">{{ sel.type }}</span></div>
           <div class="ef-ds-stat"><span class="ef-stat-k">Size</span><span class="ef-stat-v">S{{ sel.size }}</span></div>
           <div class="ef-ds-stat"><span class="ef-stat-k">Manufacturer</span><span class="ef-stat-v">{{ sel.manufacturer }}</span></div>
-          @if (sel.dps) { <div class="ef-ds-stat"><span class="ef-stat-k">DPS</span><span class="ef-stat-v accent">{{ fmt(sel.dps) }}</span></div> }
+          @if (sel.dps) { <div class="ef-ds-stat"><span class="ef-stat-k">DPS</span><span class="ef-stat-v accent-text">{{ fmt(sel.dps) }}</span></div> }
           @if (sel.alphaDamage) { <div class="ef-ds-stat"><span class="ef-stat-k">Alpha</span><span class="ef-stat-v">{{ fmt(sel.alphaDamage, 1) }}</span></div> }
           @if (sel.fireRate) { <div class="ef-ds-stat"><span class="ef-stat-k">Fire Rate</span><span class="ef-stat-v">{{ fmt(sel.fireRate) }} RPM</span></div> }
           @if (sel.hp) { <div class="ef-ds-stat"><span class="ef-stat-k">HP</span><span class="ef-stat-v">{{ fmt(sel.hp) }}</span></div> }

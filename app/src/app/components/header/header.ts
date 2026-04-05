@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { id: 'armor', label: 'Armor Damage' },
     { id: 'compare', label: 'Weapon Performance' },
     { id: 'finder', label: 'Default Loadout Finder' },
-    { id: 'eveStyle', label: 'Eve Style (Pilot)' },
+    // { id: 'eveStyle', label: 'Eve Style (Pilot)' },  // hidden until ready
   ];
 
   readonly missionsTabs: { id: TabName; label: string }[] = [

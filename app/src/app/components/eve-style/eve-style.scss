@@ -35,14 +35,41 @@
   }
 }
 
+.ef-ship-picker-wrap {
+  position: relative;
+}
+
+.ef-ship-btn {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  background: none;
+  border: 1px solid rgba(0, 200, 255, 0.1);
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: rgba(0, 200, 255, 0.04);
+    border-color: rgba(0, 200, 255, 0.25);
+  }
+}
+
 .ef-ship-name {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   color: var(--accent);
   text-shadow: 0 0 12px rgba(0, 200, 255, 0.25);
   text-transform: uppercase;
+}
+
+.ef-ship-caret {
+  font-size: 14px;
+  color: var(--accent2);
+  margin-left: 4px;
 }
 
 .ef-ship-meta {
@@ -54,8 +81,83 @@
   color: var(--text3);
 }
 
+.ef-header-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-left: auto;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.ef-hs {
+  &.accent { color: var(--accent); font-weight: 700; }
+  &.shield { color: var(--green); }
+}
+
 .ef-meta-sep { opacity: 0.3; }
 .ef-meta-item.accent { color: var(--accent); font-weight: 600; }
+
+// Ship dropdown
+.ef-ship-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 380px;
+  max-height: 400px;
+  background: var(--bg2);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.ef-ship-search-input { margin: 8px; width: calc(100% - 16px) !important; }
+
+.ef-ship-list {
+  flex: 1;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+}
+
+.ef-ship-option {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  transition: background 0.1s;
+
+  &:hover { background: rgba(0, 200, 255, 0.05); }
+  &.active {
+    background: rgba(0, 200, 255, 0.08);
+    .ef-so-name { color: var(--accent); }
+  }
+}
+
+.ef-so-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+
+.ef-so-meta {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
 
 // ── Body (4-panel grid) ─────────────────────────────────
 
@@ -93,8 +195,8 @@
 // ── LEFT COLUMN ─────────────────────────────────────────
 
 .ef-left {
-  width: 340px;
-  min-width: 340px;
+  width: 520px;
+  min-width: 520px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(255, 255, 255, 0.04);
@@ -301,6 +403,12 @@
     .ef-slot-name { color: var(--accent); }
   }
   &.empty .ef-slot-name { color: var(--text3); font-style: italic; }
+
+  &.depth-1 { padding-left: 54px; }
+  &.depth-2 { padding-left: 70px; }
+  &.is-parent {
+    .ef-slot-name { color: var(--text3); font-size: 12px; letter-spacing: 0.5px; }
+  }
 }
 
 .ef-slot-size {
@@ -508,7 +616,11 @@
     background: rgba(0, 200, 255, 0.05);
     border-left: 2px solid var(--accent);
   }
+  &.depth-1 { padding-left: 26px; }
+  &.depth-2 { padding-left: 42px; }
 }
+
+.ef-lr-name.empty { color: var(--text3); font-style: italic; }
 
 .ef-lr-cat {
   font-family: 'Rajdhani', sans-serif;
@@ -615,8 +727,8 @@
 // ── RIGHT: Details Panel ────────────────────────────────
 
 .ef-details {
-  width: 340px;
-  min-width: 340px;
+  width: 420px;
+  min-width: 420px;
   overflow-y: auto;
   border-right: none;
 
@@ -719,6 +831,47 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 
   &:last-child { border-bottom: none; }
+}
+
+// ── Weapon/shield item rows in details panel ───────────
+
+.ef-weapon-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1px 0;
+}
+
+.ef-wr-name {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  color: var(--text3);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px;
+}
+
+.ef-wr-dps {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+// ── Color accent classes ────────────────────────────────
+
+.accent-text { color: var(--accent) !important; }
+.shield-text { color: var(--green) !important; }
+.power-text { color: var(--gold) !important; }
+.ef-bar-val.over { color: #ff4444; font-weight: 700; }
+
+.ef-ds-grid.triple { gap: 4px; }
+.ef-ds-hero.compact {
+  padding: 5px 2px;
+  .ef-hero-val { font-size: 18px; }
+  .ef-hero-label { font-size: 8px; }
 }
 
 // ── Bars ────────────────────────────────────────────────

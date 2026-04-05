@@ -477,22 +477,32 @@ if Pips = 0  &rarr;  Supply = 0</pre>
 
           <div class="formula-card">
             <h3>Cooling Demand</h3>
-            <pre class="formula">Total Demand = &Sigma;( pips &times; weight ) + PP Idle Base
+            <pre class="formula">Total Demand = PP_IDLE + &Sigma;( pips &times; weight ) + wpnPips &times; totalWpnPowerDraw &times; 0.484
 
-Component weights (heat generated per pip):
-  Radar            1.92        Shields          1.71
-  Life Support     1.87        Weapons          1.28
-  Thrusters        1.28        Tools/Tractors   1.28
-  Coolers          ~1.0        Quantum Drive    ~1.0
+Two-tier weight system (heat generated per pip):
+  High tier (~2.0/pip):
+    Life Support     2.300       Quantum Drive    2.070
+    Radar            1.988       Shields          1.978
 
-PP Idle Base &asymp; 0.6 (varies slightly by power plant)</pre>
-            <p>Different component types generate different amounts of heat per power pip.
-              Radar and life support run hottest (~2&times;), while weapons and thrusters
-              are moderate (~1.3&times;). Coolers themselves generate about 1 unit of demand
-              per pip.</p>
-            <p>Weights derived from Aurora MR II (9 isolated toggle tests, 0% error) and
-              validated on Guardian MX (5 configs, &plusmn;1%). Per-ship overrides exist for
-              Polaris and Mercury Star Runner.</p>
+  Low tier (~1.0/pip):
+    Thrusters        1.032       Coolers          0.939
+    Tools/Tractors   0.966
+
+  Weapons: scales with powerDraw
+    Weapon Demand = pips &times; &Sigma;(weapon powerDraw) &times; 0.484
+
+PP_IDLE = 0.04</pre>
+            <p>Components fall into two tiers: power-hungry systems (Radar, Shields, QD,
+              Life Support) generate ~2 units of heat per pip, while lighter systems
+              (Coolers, Thrusters) generate ~1 unit per pip.</p>
+            <p>Weapon cooling demand scales with the total powerDraw of equipped weapons,
+              not a fixed per-pip weight. Ships with high-powerDraw energy weapons (e.g.
+              M7A, powerDraw=1.9) generate significantly more cooling demand than ships
+              with low-powerDraw ballistics (e.g. AD4B, powerDraw=0.1).</p>
+            <p>PP idle base is essentially zero (0.04), not the 0.6 previously estimated.
+              Validated across Aurora MK II, Guardian, Guardian MX, and Crusader Intrepid
+              (27+ data points, 3 different weapons, max 1% error within game rounding).
+              Per-ship overrides exist for Polaris and Mercury Star Runner.</p>
           </div>
 
           <div class="formula-card">
@@ -506,14 +516,18 @@ PP Idle Base &asymp; 0.6 (varies slightly by power plant)</pre>
           <div class="formula-card">
             <h3>Research Notes</h3>
             <p>A cooling multiplier of 2.5 exists in the game's resource network
-              configuration. Some third-party tools use this as a demand multiplier,
+              configuration. Some tools use this as a demand multiplier,
               producing much higher cooling percentages. In-game testing shows stable IR
               and normal operation at configs where the 2.5&times; multiplier would predict
               overload, disproving its use in the displayed cooling calculation.</p>
             <p>The corrected supply formula (rate &times; pips &times; bandMod / maxPips) was
               discovered through cooler toggle tests &mdash; at reduced pips, the game applies
-              BOTH the band efficiency penalty AND a linear power fraction, not just one.
-              This was confirmed across 13 configurations on two ships.</p>
+              BOTH the band efficiency penalty AND a linear power fraction, not just one.</p>
+            <p>Weapon demand was initially modeled as a fixed per-pip weight (1.28), but
+              testing with three different weapons (M7A energy cannon, CF-557 Galdereen,
+              AD4B ballistic) revealed it scales with the weapon's powerDraw value from the
+              game data. The scaling factor (0.484) was derived from isolation tests and
+              confirmed across multiple ships.</p>
           </div>
 
           <div class="formula-card">
