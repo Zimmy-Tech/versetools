@@ -119,7 +119,7 @@ export class PowerBarsComponent {
     const thruMax = ship.thrusterPowerBars ?? 4;
     cols.push({
       id: '__thrusters__', label: 'THRU',
-      max: thruMax, powerMin: 1,
+      max: thruMax, powerMin: 0,
       alloc: this.data.thrusterPower(),
       restricted: false, placeholder: !ship.thrusterPowerBars, item: null,
     });
@@ -607,7 +607,7 @@ export class PowerBarsComponent {
     if (col.id === '__weapons__') {
       this.data.setWeaponsPower(target);
     } else if (col.id === '__thrusters__') {
-      this.data.setThrusterPower(target === 0 ? 1 : target);
+      this.data.setThrusterPower(target);
     } else if (col.shieldBands) {
       // Distribute target pips across shields: fill each shield's min first, then extras
       const slots = col.shieldBands.map(b => ({ hpId: b.hpId, item: b.item }));
