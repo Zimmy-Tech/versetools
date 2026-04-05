@@ -15,20 +15,32 @@
 }
 
 .sig-header {
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg2);
+  padding: 16px 20px 14px;
+  border-bottom: none;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
   flex-shrink: 0;
   text-align: center;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
 }
 
 .sig-title {
   font-family: 'Rajdhani', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--accent);
+  text-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
   margin-bottom: 4px;
 }
 
@@ -50,17 +62,27 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  padding: 4px 14px;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
+  padding: 5px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
   color: var(--text3);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
 
-  &:hover { color: var(--text); border-color: var(--accent2); }
-  &.active { background: var(--accent2); color: #fff; border-color: var(--accent); }
+  &:hover {
+    color: var(--text);
+    border-color: var(--accent2);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.08);
+  }
+  &.active {
+    background: rgba(0, 200, 255, 0.08);
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
+  }
 }
 
 .sig-note {
@@ -76,15 +98,22 @@
   flex: 1;
   overflow: auto;
   padding: 0 20px 20px;
+
+  &::-webkit-scrollbar { width: 4px; height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 }
 
 .sig-table {
   width: 100%;
   max-width: 900px;
-  margin: 12px auto 0;
+  margin: 14px auto 0;
   border-collapse: collapse;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 14px;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .sig-table thead {
@@ -95,15 +124,15 @@
 
 .sig-table th {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text3);
   padding: 8px 10px;
   text-align: right;
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
 }
 
 .sig-table th.col-name,
@@ -113,9 +142,11 @@
 
 .sig-table td {
   padding: 6px 10px;
-  border-bottom: 1px solid var(--bg3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   text-align: right;
   color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
 }
 
 .sig-table td.col-name {
@@ -123,21 +154,29 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 15px;
   font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .sig-table td.col-rarity {
   text-align: left;
-  font-size: 12px;
-  letter-spacing: 1px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .sig-table td.empty {
   color: var(--text3);
-  opacity: 0.4;
+  opacity: 0.3;
+}
+
+.sig-table tbody tr {
+  transition: background 0.1s;
 }
 
 .sig-table tr:hover td {
-  background: rgba(0, 200, 255, 0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* ── Rarity colors ────────────────────────────── */
