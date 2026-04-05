@@ -52,17 +52,31 @@
   gap: 8px;
   justify-content: center;
   flex-wrap: wrap;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
 }
 
 .fps-select, .fps-search {
   font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
   background: var(--bg3);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
   color: var(--text);
   padding: 5px 10px;
   outline: none;
-  &:focus { border-color: var(--accent2); }
+  transition: all 0.15s;
+  &:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
+  }
+  option {
+    background: var(--bg3);
+    color: var(--text);
+  }
 }
 
 .fps-search { min-width: 180px; }
@@ -71,7 +85,8 @@
   flex: 1;
   overflow: auto;
   background: var(--bg2);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
   max-width: 1100px;
   align-self: center;
   width: 100%;
@@ -85,7 +100,7 @@
 
   th, td {
     padding: 3px 8px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     white-space: nowrap;
   }
 
@@ -123,7 +138,10 @@
     color: var(--text3);
   }
 
-  tbody tr:hover { background: rgba(0, 200, 255, 0.03); }
+  tbody tr {
+    transition: background 0.15s;
+    &:hover { background: rgba(255, 255, 255, 0.03); }
+  }
 
   .section-header td {
     font-family: 'Rajdhani', sans-serif;
@@ -138,4 +156,14 @@
     background: rgba(0, 200, 255, 0.03);
   }
   .section-header:hover { background: rgba(0, 200, 255, 0.03) !important; }
+}
+
+// ── Buttons ─────────────────────────────────────────────
+
+button {
+  border-radius: 4px;
+  transition: all 0.15s;
+  &:hover {
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.15);
+  }
 }

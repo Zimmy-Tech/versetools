@@ -44,9 +44,11 @@
   max-width: 900px;
   align-self: center;
   width: 100%;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
   padding: 16px;
   background: var(--bg2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 // ── Controls (left) ───────────────────────────────────────
@@ -70,15 +72,17 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px; font-weight: 700; letter-spacing: 2px;
   text-transform: uppercase; color: var(--text3);
-  border-bottom: 1px solid var(--border); padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 4px;
 }
 
 .control-search {
-  background: var(--bg3); border: 1px solid var(--border);
+  background: var(--bg3); border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
   color: var(--text); padding: 4px 8px;
   font-family: 'Share Tech Mono', monospace; font-size: 12px;
   outline: none;
-  &:focus { border-color: var(--accent2); }
+  &:focus { border-color: var(--accent2); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
+  option { background: var(--bg3); color: var(--text); }
 }
 
 .weapon-list {
@@ -115,12 +119,13 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px; font-weight: 600;
   padding: 3px 8px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
   background: transparent;
   color: var(--text2);
   cursor: pointer;
   text-align: left;
-  &:hover { border-color: var(--text3); color: var(--text); }
+  &:hover { border-color: var(--text3); color: var(--text); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
   &.active { border-color: var(--accent); color: var(--accent); background: rgba(0, 200, 255, 0.06); }
 }
 
@@ -129,8 +134,9 @@
   flex-direction: column;
   gap: 2px;
   background: var(--bg2);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-left: 2px solid var(--accent);
+  border-radius: 4px;
   padding: 6px 8px;
 }
 
@@ -152,6 +158,7 @@
   flex-direction: column;
   align-items: center;
   max-width: 280px;
+  border-radius: 6px;
 }
 
 .body-title {
@@ -226,11 +233,12 @@
   font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
   background: var(--bg2);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
 
   th, td {
     padding: 4px 8px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   thead th {
@@ -239,6 +247,7 @@
     font-size: 11px; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase;
     color: var(--text3); text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .zone-name { color: var(--text); }
@@ -248,7 +257,7 @@
   .ttk-val { color: var(--gold); }
 
   tr.hovered { background: rgba(0, 200, 255, 0.06); }
-  tr:hover { background: rgba(0, 200, 255, 0.03); }
+  tr:hover { background: rgba(255, 255, 255, 0.03); }
 }
 
 .no-weapon {
