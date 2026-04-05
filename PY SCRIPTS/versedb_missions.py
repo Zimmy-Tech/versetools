@@ -909,8 +909,29 @@ def main():
                     entry["_grantTags"] = grant_tags
                 if once_only:
                     entry["onceOnly"] = True
+                # Resolve contractor early so scope display can use it
+                contractor = _resolve_contractor(debug_name, loc) or _resolve_contractor(gen_name, loc) or ""
+                if contractor:
+                    entry["contractor"] = contractor
                 if result_scopes:
-                    entry["repScopes"] = sorted(result_scopes)
+                    # Map scope names to readable display names
+                    SCOPE_DISPLAY = {
+                        "factionreputationscope": None,  # handled below with contractor
+                        "bounty": "Bounty Hunting",
+                        "bounty_bountyhuntersguild": "Bounty Hunting (Guild)",
+                        "shipcombat_headhunters": "Ship Combat (Headhunters)",
+                        "racing_shiptimetrial": "Racing (Ship)",
+                        "handyman_citizensforpyro": "Hired Muscle",
+                    }
+                    display_scopes = []
+                    for s in sorted(result_scopes):
+                        if s == "factionreputationscope" and contractor:
+                            display_scopes.append(contractor)
+                        elif s in SCOPE_DISPLAY and SCOPE_DISPLAY[s]:
+                            display_scopes.append(SCOPE_DISPLAY[s])
+                        else:
+                            display_scopes.append(s.replace("_", " ").title())
+                    entry["repScopes"] = display_scopes
                 if rep_success:
                     entry["repReward"] = rep_success
                 if rep_failure:
@@ -933,10 +954,6 @@ def main():
                 activity = infer_activity(debug_name, gen_name)
                 if activity:
                     entry["activity"] = activity
-                # Contractor and danger (inferred from className/generator)
-                contractor = _resolve_contractor(debug_name, loc) or _resolve_contractor(gen_name, loc)
-                if contractor:
-                    entry["contractor"] = contractor
                 danger = _infer_danger(debug_name)
                 if danger:
                     entry["danger"] = danger
@@ -1045,6 +1062,20 @@ def main():
                 c["contractor"] = name
                 gen_resolved += 1
                 break
+
+    # Post-process: resolve "factionreputationscope" to contractor name in rep requirements and scopes
+    for c in contracts:
+        contractor = c.get("contractor", "")
+        for rr in c.get("repRequirements", []):
+            if rr["scope"] == "factionreputationscope":
+                rr["scope"] = contractor if contractor else "Faction Standing"
+        # Also fix repScopes (may be title-cased from earlier processing)
+        if "repScopes" in c:
+            c["repScopes"] = [
+                (contractor if s.lower() == "factionreputationscope" and contractor else
+                 "Faction Standing" if s.lower() == "factionreputationscope" else s)
+                for s in c["repScopes"]
+            ]
 
     print(f"  Parsed {before_filter} contracts ({sum(1 for c in contracts if c.get('repRequirements'))} with rep requirements, {fixed_titles} titles fixed, {hidden} hidden event, {gen_resolved} contractors resolved)")
 
@@ -1301,6 +1332,20 @@ def main():
                     continue
                 scope_name = scope_name_m.group(1)
                 display = loc_lookup(loc, "@" + display_m.group(1)) if display_m else scope_name
+                # Fix unresolved localization tokens
+                DISPLAY_FALLBACKS = {
+                    "RepScope_ShipCombat_Name": "Ship Combat",
+                    "RepScope_ShipCombat_HeadHunters_Name": "Ship Combat (Headhunters)",
+                    "RepScope_ShipCombat_RoughAndReady_Name": "Ship Combat (Rough & Ready)",
+                    "RepScope_ShipCombat_XenoThreat_Name": "Ship Combat (XenoThreat)",
+                    "RepScope_FPSCombat_Name": "FPS Combat",
+                    "RepScope_Worker_Name": "Worker",
+                    "RepScope_Racing_HeadHunters_Name": "Racing (Headhunters)",
+                    "Racing_Hover_DisplayName": "Racing (Hover)",
+                    "Racing_Wheeled_DisplayName": "Racing (Wheeled)",
+                }
+                if display in DISPLAY_FALLBACKS:
+                    display = DISPLAY_FALLBACKS[display]
                 ceiling = int(ceiling_m.group(1)) if ceiling_m else 0
 
                 # Extract standing references in order
