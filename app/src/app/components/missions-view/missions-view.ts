@@ -262,10 +262,9 @@ export class MissionsViewComponent {
     const scopes = m.repScopes ?? [];
     // Also check repRequirements scope
     const reqScopes = (m.repRequirements ?? []).map(r => r.scope).filter(s => s && s !== '?');
-    const allScopes = [...new Set([...scopes, ...reqScopes])];
+    const allScopes = [...new Set([...scopes, ...reqScopes].map(s => s.toLowerCase()))];
     const results: RepLadder[] = [];
-    for (const scope of allScopes) {
-      const key = scope.toLowerCase();
+    for (const key of allScopes) {
       const ladder = ladders[key]
         // Scope names and ladder keys use different prefixes in some cases
         ?? ladders[key.replace('bounty_', 'bountyhunter_')]
