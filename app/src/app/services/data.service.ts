@@ -640,7 +640,7 @@ export class DataService {
     const maxBars = this.selectedShip()?.thrusterPowerBars ?? 4;
     const totalOut = this.totalPowerOut();
     const headroom = totalOut - (this.totalPowerUsed() - this.thrusterPower());
-    this.thrusterPower.set(Math.max(1, Math.min(n, maxBars, headroom)));
+    this.thrusterPower.set(Math.max(0, Math.min(n, maxBars, headroom)));
   }
 
   setWeaponsPower(n: number): void {
