@@ -46,14 +46,22 @@
       </div>
       <div class="wh-center">
         <div class="wh-alpha-val">{{ (w.damage![dmgType()] ?? 0).toFixed(1) }}</div>
-        <div class="wh-alpha-label">Alpha Damage</div>
+        <div class="wh-alpha-label">{{ shieldsUp() ? 'Raw Alpha' : 'Alpha Damage' }}</div>
       </div>
       <div class="wh-right">
-        <div class="wh-size-filters">
-          @for (opt of shipSizeOptions; track opt.value) {
-            <button class="wh-size-btn" [class.active]="shipSize() === opt.value"
-                    (click)="shipSize.set(opt.value)">{{ opt.label }}</button>
-          }
+        <div class="wh-controls">
+          <label class="wh-shield-toggle" (click)="shieldsUp.set(!shieldsUp())">
+            <span class="wh-toggle-track" [class.on]="shieldsUp()">
+              <span class="wh-toggle-thumb"></span>
+            </span>
+            <span class="wh-toggle-label">Shields {{ shieldsUp() ? 'Up' : 'Down' }}</span>
+          </label>
+          <div class="wh-size-filters">
+            @for (opt of shipSizeOptions; track opt.value) {
+              <button class="wh-size-btn" [class.active]="shipSize() === opt.value"
+                      (click)="shipSize.set(opt.value)">{{ opt.label }}</button>
+            }
+          </div>
         </div>
       </div>
     </div>
@@ -83,8 +91,9 @@
             @if (!row.deflected) {
               <div class="result-row pen">
                 <span class="rr-name">{{ row.ship.name }}</span>
+                @if (shieldsUp()) { <span class="rr-eff">{{ row.effectiveAlpha?.toFixed(1) }}</span> }
                 <span class="rr-deflect">{{ row.deflect }}</span>
-                <span class="rr-margin negative">{{ (row.deflect - (w.damage![dmgType()] ?? 0)).toFixed(1) }}</span>
+                <span class="rr-margin negative">{{ (row.deflect - (row.effectiveAlpha ?? (w.damage![dmgType()] ?? 0))).toFixed(1) }}</span>
               </div>
             }
           }
@@ -99,8 +108,9 @@
             @if (row.deflected) {
               <div class="result-row def">
                 <span class="rr-name">{{ row.ship.name }}</span>
+                @if (shieldsUp()) { <span class="rr-eff">{{ row.effectiveAlpha?.toFixed(1) }}</span> }
                 <span class="rr-deflect">{{ row.deflect }}</span>
-                <span class="rr-margin positive">+{{ (row.deflect - (w.damage![dmgType()] ?? 0)).toFixed(1) }}</span>
+                <span class="rr-margin positive">+{{ (row.deflect - (row.effectiveAlpha ?? (w.damage![dmgType()] ?? 0))).toFixed(1) }}</span>
               </div>
             }
           }

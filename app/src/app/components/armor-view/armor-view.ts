@@ -9,6 +9,7 @@ interface ShipRow {
   ship: Ship;
   deflect: number;
   deflected: boolean;
+  effectiveAlpha?: number;
 }
 
 @Component({
@@ -21,6 +22,7 @@ export class ArmorViewComponent {
   dmgType = signal<DmgType>('physical');
   selectedWeapon = signal('');
   shipSize = signal<ShipSize>('');
+  shieldsUp = signal(false);
   wpSearch = signal('');
   wpOpen = signal(false);
   readonly shipSizeOptions: { value: ShipSize; label: string }[] = [
@@ -74,12 +76,32 @@ export class ArmorViewComponent {
     return cls ? this.data.items().find(i => i.className === cls) ?? null : null;
   });
 
+  /** Get the default shield absorption for a ship (max power, averaged across shields). */
+  private getShieldAbsorption(ship: Ship, dmgType: DmgType): number {
+    const dl = ship.defaultLoadout;
+    if (!dl) return 0;
+    const items = this.data.items();
+    const absKey = dmgType === 'physical' ? 'absPhysMax' : 'absEnrgMax';
+    let totalAbs = 0;
+    let count = 0;
+    for (const [slot, cls] of Object.entries(dl)) {
+      if (!slot.toLowerCase().includes('shield_generator')) continue;
+      const item = items.find(i => i.className.toLowerCase() === cls.toLowerCase());
+      if (item && item.type === 'Shield') {
+        totalAbs += (item as any)[absKey] ?? 0;
+        count++;
+      }
+    }
+    return count > 0 ? totalAbs / count : 0;
+  }
+
   nearbyShips = computed<ShipRow[]>(() => {
     const weapon = this.activeWeapon();
     if (!weapon?.damage) return [];
     const dt = this.dmgType();
-    const alpha = weapon.damage[dt] ?? 0;
+    const rawAlpha = weapon.damage[dt] ?? 0;
     const deflectKey = dt === 'physical' ? 'armorDeflectPhys' : 'armorDeflectEnrg';
+    const withShields = this.shieldsUp();
 
     const sizeFilter = this.shipSize();
     const ships = this.data.ships()
@@ -87,15 +109,17 @@ export class ArmorViewComponent {
       .filter(s => !sizeFilter || s.size === sizeFilter)
       .map(s => {
         const deflect = (s as any)[deflectKey] as number;
-        return { ship: s, deflect, deflected: alpha <= deflect, dist: Math.abs(alpha - deflect) };
+        // With shields up, effective alpha is reduced by shield absorption
+        const absorption = withShields ? this.getShieldAbsorption(s, dt) : 0;
+        const effectiveAlpha = rawAlpha * (1 - absorption);
+        return { ship: s, deflect, deflected: effectiveAlpha <= deflect, dist: Math.abs(effectiveAlpha - deflect), effectiveAlpha };
       });
 
     const sizeActive = this.shipSize();
     if (sizeActive) {
-      // Show all ships in the size class, sorted by deflect descending
       return ships
         .sort((a, b) => b.deflect - a.deflect)
-        .map(s => ({ ship: s.ship, deflect: s.deflect, deflected: s.deflected }));
+        .map(s => ({ ship: s.ship, deflect: s.deflect, deflected: s.deflected, effectiveAlpha: s.effectiveAlpha }));
     }
 
     // No size filter: show 3 closest above and 3 closest below
@@ -110,8 +134,8 @@ export class ArmorViewComponent {
       .slice(0, 3);
 
     return [
-      ...below.map(s => ({ ship: s.ship, deflect: s.deflect, deflected: false })),
-      ...above.map(s => ({ ship: s.ship, deflect: s.deflect, deflected: true })),
+      ...below.map(s => ({ ship: s.ship, deflect: s.deflect, deflected: false, effectiveAlpha: s.effectiveAlpha })),
+      ...above.map(s => ({ ship: s.ship, deflect: s.deflect, deflected: true, effectiveAlpha: s.effectiveAlpha })),
     ];
   });
 
