@@ -742,16 +742,16 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
     padding: 3px 10px;
   }
   ::ng-deep .cmp-name, ::ng-deep .trigger-name {
-    font-size: 14px;
-    color: var(--text3);
+    font-size: 15px;
+    color: var(--text2);
   }
   ::ng-deep .cmp-tag {
     font-size: 12px;
     padding: 1px 5px;
   }
   ::ng-deep .slot-select {
-    font-size: 13px;
-    color: var(--text3);
+    font-size: 15px;
+    color: var(--text2);
   }
 }
 

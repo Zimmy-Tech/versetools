@@ -1061,13 +1061,17 @@ export class LoadoutViewComponent {
   bladeSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'FlightController'));
   qdSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'QuantumDrive'));
 
-  /** Jump drive sub-slots derived from QD loadout keys. */
+  /** Jump drive sub-slots — always shown if the ship's default loadout has one. */
   jumpDriveSlots = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship?.defaultLoadout) return [];
     const loadout = this.data.loadout();
+    const items = this.data.items();
     const slots: Hardpoint[] = [];
     for (const qdHp of this.qdSlots()) {
       const jdKey = `${qdHp.id}.hardpoint_jump_drive`;
-      const jdItem = loadout[jdKey];
+      // Check current loadout first, fall back to default loadout item
+      const jdItem = loadout[jdKey] ?? this._resolveDefaultJD(ship, jdKey, items);
       if (jdItem) {
         slots.push({
           id: jdKey,
@@ -1083,6 +1087,12 @@ export class LoadoutViewComponent {
     }
     return slots;
   });
+
+  private _resolveDefaultJD(ship: Ship, jdKey: string, items: Item[]): Item | null {
+    const cls = ship.defaultLoadout?.[jdKey];
+    if (!cls) return null;
+    return items.find(i => i.className.toLowerCase() === cls.toLowerCase()) ?? null;
+  }
   radarSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'Radar'));
   lsSlots     = computed(() => {
     const base = this.utilitySlots().filter(hp => hp.type === 'LifeSupportGenerator');

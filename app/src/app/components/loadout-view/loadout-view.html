@@ -458,9 +458,7 @@
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
             }
             @for (hp of jumpDriveSlots(); track hp.id) {
-              <div class="sub-slot-indent">
-                <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
-              </div>
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('qd')" />
             }
           }
 

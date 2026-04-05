@@ -65,12 +65,13 @@
   font-weight: 600;
   color: var(--text2);
   padding: 8px 10px;
-  background: rgba(19, 26, 36, 0.5);
+  background: rgba(19, 26, 36, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 3px;
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 35px;
 }
 
 .fixed-badge {
@@ -104,19 +105,28 @@
 }
 
 .slot-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: rgba(19, 26, 36, 0.6);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23667f98'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 3px;
-  color: var(--text3);
-  padding: 5px 10px;
+  color: var(--text);
+  padding: 8px 28px 8px 10px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
   width: 100%;
   outline: none;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  min-height: 35px;
+  transition: all 0.15s;
 
+  &:hover { border-color: rgba(0, 200, 255, 0.15); background-color: rgba(19, 26, 36, 0.8); }
   &:focus { border-color: var(--accent2); box-shadow: 0 0 6px rgba(0, 200, 255, 0.08); }
   option { background: var(--bg3); color: var(--text); }
 }

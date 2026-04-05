@@ -324,9 +324,12 @@ export class DataService {
     const current = { ...this.loadout() };
     const prefix = slotId.toLowerCase() + '.';
 
-    // Always clear child sub-slot entries when changing a parent slot
+    // Clear child sub-slot entries when changing a parent slot,
+    // but preserve jump drive entries (they persist independently)
     for (const key of Object.keys(current)) {
-      if (key.toLowerCase().startsWith(prefix)) delete current[key];
+      if (key.toLowerCase().startsWith(prefix) && !key.toLowerCase().includes('jump_drive')) {
+        delete current[key];
+      }
     }
 
     if (item) {

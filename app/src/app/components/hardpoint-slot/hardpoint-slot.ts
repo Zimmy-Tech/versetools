@@ -61,6 +61,7 @@ export class HardpointSlotComponent {
   );
 
   isQuantumDriveSlot = computed(() =>
+    this.hardpoint().type === 'QuantumDrive' ||
     this.options().some(o => o.type === 'QuantumDrive')
   );
 
