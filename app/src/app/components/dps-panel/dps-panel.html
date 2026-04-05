@@ -119,19 +119,67 @@
             <span class="mono">{{ shieldFaceType() }}</span>
           </div>
           @if (shieldResists(); as r) {
-            <div class="resist-grid">
-              <span class="resist-header"></span>
-              <span class="resist-header">SHIELD DMG</span>
-              <span class="resist-header">HULL BLEED</span>
-              <span class="resist-type phys">PHYS</span>
-              <span class="resist-val">{{ (r.physToShield * 100).toFixed(0) }}%</span>
-              <span class="resist-val hull-val">{{ (r.physToHull * 100).toFixed(0) }}%</span>
-              <span class="resist-type enrg">ENRG</span>
-              <span class="resist-val">{{ (r.enrgToShield * 100).toFixed(0) }}%</span>
-              <span class="resist-val hull-val">{{ (r.enrgToHull * 100).toFixed(0) }}%</span>
-              <span class="resist-type dist">DIST</span>
-              <span class="resist-val">{{ (r.distToShield * 100).toFixed(0) }}%</span>
-              <span class="resist-val hull-val">{{ (r.distToHull * 100).toFixed(0) }}%</span>
+            <div class="resist-panel-title">Shield Resist / Damage Per Shot</div>
+            <div class="resist-values">
+              <div class="rv-row">
+                <span class="rv-type phys">PHYS</span>
+                <span class="rv-val">{{ (r.resistPhys * 100).toFixed(0) }}% resist</span>
+                <span class="rv-abs">{{ (r.absPhys * 100).toFixed(0) }}% absorbed</span>
+              </div>
+              <div class="rv-row">
+                <span class="rv-type enrg">ENRG</span>
+                <span class="rv-val" [class.negative]="r.resistEnrg < 0">{{ (r.resistEnrg * 100).toFixed(0) }}% resist</span>
+                <span class="rv-abs">{{ (r.absEnrg * 100).toFixed(0) }}% absorbed</span>
+              </div>
+              <div class="rv-row">
+                <span class="rv-type dist">DIST</span>
+                <span class="rv-val">{{ (r.resistDist * 100).toFixed(0) }}% resist</span>
+                <span class="rv-abs">{{ (r.absDist * 100).toFixed(0) }}% absorbed</span>
+              </div>
+            </div>
+            <div class="resist-panel">
+              <div class="resist-panel-header">
+                <span class="rph-cols"><span>To Shield</span><span>To Hull</span></span>
+              </div>
+              <div class="resist-channel phys">
+                <span class="rc-type">PHYS</span>
+                <div class="rc-bars">
+                  <div class="rc-bar">
+                    <div class="rc-fill" [style.width.%]="r.physToShield * 100"></div>
+                    <span class="rc-pct">{{ (r.physToShield * 100).toFixed(0) }}%</span>
+                  </div>
+                  <div class="rc-bar hull">
+                    <div class="rc-fill" [style.width.%]="r.physToHull * 100"></div>
+                    <span class="rc-pct">{{ (r.physToHull * 100).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="resist-channel enrg">
+                <span class="rc-type">ENRG</span>
+                <div class="rc-bars">
+                  <div class="rc-bar">
+                    <div class="rc-fill" [style.width.%]="r.enrgToShield * 100"></div>
+                    <span class="rc-pct">{{ (r.enrgToShield * 100).toFixed(0) }}%</span>
+                  </div>
+                  <div class="rc-bar hull">
+                    <div class="rc-fill" [style.width.%]="r.enrgToHull * 100"></div>
+                    <span class="rc-pct">{{ (r.enrgToHull * 100).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="resist-channel dist">
+                <span class="rc-type">DIST</span>
+                <div class="rc-bars">
+                  <div class="rc-bar">
+                    <div class="rc-fill" [style.width.%]="r.distToShield * 100"></div>
+                    <span class="rc-pct">{{ (r.distToShield * 100).toFixed(0) }}%</span>
+                  </div>
+                  <div class="rc-bar hull">
+                    <div class="rc-fill" [style.width.%]="r.distToHull * 100"></div>
+                    <span class="rc-pct">{{ (r.distToHull * 100).toFixed(0) }}%</span>
+                  </div>
+                </div>
+              </div>
             </div>
           }
         </div>
@@ -242,71 +290,73 @@
       <span class="popout-close" (click)="showArmorDetail.set(false)">&times;</span>
     </div>
     <div class="popout-body">
-      <div class="armor-explainer">Weapons below your armor's deflect value are stopped (damage reduced to zero). Weapons above it penetrate and deal full damage.</div>
+      <div class="armor-explainer">Weapons below your armor's deflect threshold are stopped — damage reduced to zero. Weapons above it penetrate and deal full alpha damage per shot.</div>
       @if (armorDetailList(); as dl) {
         @if (dl.physical.length > 0) {
-          <div class="popout-section-title">Physical — Deflect: {{ dl.physDeflect }}</div>
-          <div class="armor-columns">
-            <div class="armor-col">
-              <div class="armor-col-header deflected">Deflected</div>
-              @for (w of dl.physical; track w.name) {
-                @if (!w.penetrates) {
-                  <div class="stat-row">
-                    <span class="stat-label">
-                      <span class="armor-icon pen">&#x2713;</span>
-                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
-                    </span>
-                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
-                  </div>
-                }
-              }
+          <div class="armor-type-section">
+            <div class="ats-header">
+              <span class="ats-type phys">Physical</span>
+              <span class="ats-deflect">Deflect Threshold: <strong>{{ dl.physDeflect }}</strong></span>
             </div>
-            <div class="armor-col">
-              <div class="armor-col-header penetrates">Penetrates</div>
-              @for (w of dl.physical; track w.name) {
-                @if (w.penetrates) {
-                  <div class="stat-row">
-                    <span class="stat-label">
-                      <span class="armor-icon def">&#x2717;</span>
-                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
-                    </span>
-                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
-                  </div>
+            <div class="armor-columns">
+              <div class="armor-col safe">
+                <div class="armor-col-header deflected">Deflected</div>
+                @for (w of dl.physical; track w.name) {
+                  @if (!w.penetrates) {
+                    <div class="armor-weapon-row safe">
+                      <span class="aw-name">{{ w.name }}</span>
+                      <span class="aw-size">S{{ w.size }}</span>
+                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
+                    </div>
+                  }
                 }
-              }
+              </div>
+              <div class="armor-col danger">
+                <div class="armor-col-header penetrates">Penetrates</div>
+                @for (w of dl.physical; track w.name) {
+                  @if (w.penetrates) {
+                    <div class="armor-weapon-row danger">
+                      <span class="aw-name">{{ w.name }}</span>
+                      <span class="aw-size">S{{ w.size }}</span>
+                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
+                    </div>
+                  }
+                }
+              </div>
             </div>
           </div>
         }
         @if (dl.energy.length > 0) {
-          <div class="popout-section-title" [style.margin-top]="dl.physical.length > 0 ? '16px' : '0'">Energy — Deflect: {{ dl.enrgDeflect }}</div>
-          <div class="armor-columns">
-            <div class="armor-col">
-              <div class="armor-col-header deflected">Deflected</div>
-              @for (w of dl.energy; track w.name) {
-                @if (!w.penetrates) {
-                  <div class="stat-row">
-                    <span class="stat-label">
-                      <span class="armor-icon pen">&#x2713;</span>
-                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
-                    </span>
-                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
-                  </div>
-                }
-              }
+          <div class="armor-type-section">
+            <div class="ats-header">
+              <span class="ats-type enrg">Energy</span>
+              <span class="ats-deflect">Deflect Threshold: <strong>{{ dl.enrgDeflect }}</strong></span>
             </div>
-            <div class="armor-col">
-              <div class="armor-col-header penetrates">Penetrates</div>
-              @for (w of dl.energy; track w.name) {
-                @if (w.penetrates) {
-                  <div class="stat-row">
-                    <span class="stat-label">
-                      <span class="armor-icon def">&#x2717;</span>
-                      {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
-                    </span>
-                    <span class="mono">{{ w.alpha.toFixed(1) }}</span>
-                  </div>
+            <div class="armor-columns">
+              <div class="armor-col safe">
+                <div class="armor-col-header deflected">Deflected</div>
+                @for (w of dl.energy; track w.name) {
+                  @if (!w.penetrates) {
+                    <div class="armor-weapon-row safe">
+                      <span class="aw-name">{{ w.name }}</span>
+                      <span class="aw-size">S{{ w.size }}</span>
+                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
+                    </div>
+                  }
                 }
-              }
+              </div>
+              <div class="armor-col danger">
+                <div class="armor-col-header penetrates">Penetrates</div>
+                @for (w of dl.energy; track w.name) {
+                  @if (w.penetrates) {
+                    <div class="armor-weapon-row danger">
+                      <span class="aw-name">{{ w.name }}</span>
+                      <span class="aw-size">S{{ w.size }}</span>
+                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
+                    </div>
+                  }
+                }
+              </div>
             </div>
           </div>
         }

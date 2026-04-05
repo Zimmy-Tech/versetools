@@ -114,7 +114,7 @@
 }
 
 .ship-side-panel {
-  background: transparent;
+  background: linear-gradient(180deg, rgba(19, 26, 36, 0.4) 0%, transparent 100%);
   border: none;
   border-right: none;
   padding: 10px 14px;
@@ -168,16 +168,21 @@
 .sidebar-signature {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  padding: 4px 0;
-  margin-bottom: 4px;
+  gap: 2px;
+  padding: 6px 0;
+  margin-bottom: 6px;
 }
 
 .sig-row {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
+  flex: 1;
+  padding: 4px 0;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 3px;
 }
 
 .sig-label {
@@ -193,6 +198,7 @@
   font-family: 'Share Tech Mono', monospace;
   font-size: 14px;
   color: var(--text);
+  line-height: 1;
 }
 
 .sidebar-ship-image {
@@ -202,14 +208,29 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-bottom: 6px;
-  border: 1px solid var(--accent);
+  margin-bottom: 8px;
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 3px;
   background: var(--bg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  // Corner accents
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(135deg, rgba(0, 200, 255, 0.15) 0%, transparent 20%) no-repeat top left,
+      linear-gradient(315deg, rgba(0, 200, 255, 0.08) 0%, transparent 15%) no-repeat bottom right;
   }
 }
 
@@ -242,19 +263,32 @@
   display: flex;
   align-items: center;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   color: var(--text3);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
   padding-bottom: 6px;
   margin-bottom: 6px;
   cursor: pointer;
   user-select: none;
   gap: 6px;
+  position: relative;
+  transition: color 0.15s;
 
-  &:hover { color: var(--text2); }
+  // Gradient scanner line
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent2), var(--border), transparent);
+  }
+
+  &:hover { color: var(--accent2); }
 }
 
 .ship-image-inset {
@@ -318,9 +352,9 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent2);
   width: 100%;
   margin-bottom: 2px;
 }
@@ -340,11 +374,13 @@
   flex: 1;
   text-align: center;
   padding: 8px 4px 6px;
-  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(0, 200, 255, 0.03) 0%, rgba(0, 0, 0, 0.2) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-top: 2px solid var(--accent2);
   border-radius: 4px;
   cursor: help;
+  transition: border-color 0.15s;
+  &:hover { border-color: rgba(255, 255, 255, 0.08); }
 }
 
 .hull-hero-val {
@@ -381,14 +417,26 @@
 }
 
 .stat-block {
-  padding: 8px 10px 8px 12px;
-  background: linear-gradient(to left, rgba(0, 200, 255, 0.04), transparent);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-right: 1px solid var(--accent);
+  padding: 8px 12px 8px 12px;
+  background: linear-gradient(to left, rgba(0, 200, 255, 0.03), rgba(0, 0, 0, 0.15));
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid rgba(0, 200, 255, 0.2);
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  position: relative;
+
+  // Subtle top-right corner accent
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 1px;
+    background: linear-gradient(270deg, rgba(0, 200, 255, 0.2), transparent);
+  }
 }
 
 .stat-row {
@@ -400,7 +448,7 @@
 }
 
 .stat-label { color: var(--text2); white-space: nowrap; }
-.stat-divider { height: 1px; background: var(--border); margin: 2px 0; opacity: 0.4; }
+.stat-divider { height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent); margin: 2px 0; }
 .stat-group-header {
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px;
@@ -417,9 +465,11 @@
   font-family: 'Share Tech Mono', monospace;
   font-size: 10px;
   color: var(--gold, #f0a500);
-  background: rgba(255, 170, 0, 0.06);
-  border: 1px solid rgba(255, 170, 0, 0.15);
-  padding: 4px 6px;
+  background: rgba(255, 170, 0, 0.04);
+  border: 1px solid rgba(255, 170, 0, 0.12);
+  border-left: 2px solid rgba(255, 170, 0, 0.3);
+  border-radius: 3px;
+  padding: 5px 8px;
   margin-top: 4px;
   line-height: 1.4;
 }
@@ -514,8 +564,8 @@
 
 /* ── Right-column stats block (2-col flowing grid) ── */
 .right-stats-block {
-  background: var(--bg2);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(160deg, rgba(19, 26, 36, 0.6) 0%, rgba(0, 0, 0, 0.15) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 4px;
   padding: 8px 12px;
 }
@@ -598,12 +648,13 @@
   text-transform: uppercase;
   color: var(--accent);
   background: rgba(0, 200, 255, 0.06);
-  border: 1px solid var(--accent2);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 4px;
   padding: 4px 10px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.2s;
 
-  &:hover { background: rgba(0, 200, 255, 0.15); }
+  &:hover { background: rgba(0, 200, 255, 0.12); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
 }
 
 .btn-reset {
@@ -614,14 +665,16 @@
   text-transform: uppercase;
   color: var(--text3);
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
   padding: 4px 10px;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition: all 0.2s;
 
   &:hover {
     color: var(--accent);
-    border-color: var(--accent);
+    border-color: var(--accent2);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.08);
   }
 }
 
@@ -727,17 +780,28 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
 
 .slot-group-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   color: var(--text2);
   text-transform: uppercase;
-  padding: 6px 0 3px;
-  border-bottom: 1px solid var(--border);
+  padding: 6px 0 4px;
+  border-bottom: none;
   margin-top: 6px;
   display: flex;
   align-items: center;
   gap: 6px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
 
   .collapse-btn {
     font-size: 11px;
@@ -894,18 +958,19 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--accent);
-  padding-bottom: 3px;
+  color: var(--accent2);
+  padding-bottom: 4px;
   margin-bottom: 4px;
-  border-bottom: 1px solid var(--accent2);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
 }
 
 .fd-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
+  background: rgba(19, 26, 36, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-left: 2px solid var(--accent2);
+  border-radius: 0 4px 4px 0;
   padding: 6px 10px;
   display: flex;
   flex-direction: column;
@@ -1516,11 +1581,12 @@ select {
   color: var(--accent);
   cursor: pointer;
   padding: 3px 12px;
-  border: 1px solid var(--accent2);
-  background: rgba(74, 255, 122, 0.06);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 3px;
+  background: rgba(0, 200, 255, 0.04);
   white-space: nowrap;
-  transition: all 0.15s;
-  &:hover { background: rgba(74, 255, 122, 0.15); border-color: var(--accent); }
+  transition: all 0.2s;
+  &:hover { background: rgba(0, 200, 255, 0.1); border-color: var(--accent); box-shadow: 0 0 6px rgba(0, 200, 255, 0.1); }
 }
 
 /* ── Hull Tree Button ────────────────────── */

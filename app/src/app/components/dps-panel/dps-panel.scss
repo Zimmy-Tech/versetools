@@ -300,46 +300,164 @@
   padding: 1px 0;
 }
 
-.resist-grid {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  gap: 2px 8px;
-  align-items: center;
-  padding: 4px 0;
+// ── Shield Resistance Panel ─────────────────────────────
+.resist-panel-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-top: 6px;
+  margin-bottom: 4px;
 }
 
-.resist-header {
+.resist-values {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+
+.rv-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.rv-type {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  width: 36px;
+  flex-shrink: 0;
+  color: var(--text2);
+}
+
+.rv-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  flex: 1;
+
+  &.negative { color: var(--red); }
+}
+
+.rv-abs {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  flex: 1;
+  text-align: right;
+}
+
+.resist-panel {
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.resist-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+  // Spacer matching .rc-type width
+  &::before {
+    content: '';
+    width: 36px;
+    flex-shrink: 0;
+  }
+}
+
+.rph-cols {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.5px;
+  text-transform: uppercase;
   color: var(--text3);
-  text-align: center;
-  justify-self: center;
+
+  span { flex: 1; text-align: center; }
 }
 
-.resist-type {
+.resist-channel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  &:last-child { border-bottom: none; }
+}
+
+.rc-type {
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
-  justify-self: start;
-
-  &.phys { color: var(--red); }
-  &.enrg { color: var(--enrg); }
-  &.dist { color: var(--phys); }
+  width: 36px;
+  flex-shrink: 0;
+  color: var(--text2);
 }
 
-.resist-val {
+.rc-bars {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+
+.rc-bar {
+  flex: 1;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rc-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+
+  .phys & { background: linear-gradient(90deg, rgba(255, 68, 68, 0.5), rgba(255, 68, 68, 0.25)); }
+  .enrg & { background: linear-gradient(90deg, rgba(0, 230, 118, 0.5), rgba(0, 230, 118, 0.25)); }
+  .dist & { background: linear-gradient(90deg, rgba(68, 136, 255, 0.5), rgba(68, 136, 255, 0.25)); }
+
+  .rc-bar.hull & {
+    opacity: 0.5;
+  }
+}
+
+.rc-pct {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 10px;
   color: var(--text);
-  justify-self: center;
+  z-index: 1;
+
+  .rc-bar.hull & { color: var(--text3); }
 }
 
-.hull-val {
-  color: var(--text3);
-}
+// Keep old classes for compatibility if referenced elsewhere
+.resist-grid { display: none; }
+.resist-header, .resist-type, .resist-val, .hull-val { display: none; }
 
 .stat-block {
   padding: 8px 10px 8px 12px;
@@ -537,42 +655,127 @@
 }
 
 .armor-popout {
-  width: 700px;
+  width: 720px;
 }
 
 .armor-explainer {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 12px;
   color: var(--text2);
-  margin-bottom: 12px;
-  padding: 8px 10px;
-  background: rgba(0, 200, 255, 0.04);
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: rgba(0, 200, 255, 0.03);
+  border: 1px solid rgba(0, 200, 255, 0.08);
   border-left: 2px solid var(--accent2);
-  line-height: 1.5;
+  border-radius: 0 4px 4px 0;
+  line-height: 1.6;
+}
+
+// ── Armor Type Section ──────────────────────────────────
+.armor-type-section {
+  margin-bottom: 16px;
+  &:last-child { margin-bottom: 0; }
+}
+
+.ats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.ats-type {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  &.phys { color: var(--red); }
+  &.enrg { color: var(--enrg); }
+}
+
+.ats-deflect {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+
+  strong {
+    color: var(--text);
+    font-size: 14px;
+  }
 }
 
 .armor-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
 }
 
 .armor-col {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  padding: 6px;
+  overflow: hidden;
+
+  &.safe { border-top: 2px solid rgba(0, 230, 118, 0.3); }
+  &.danger { border-top: 2px solid rgba(255, 68, 68, 0.3); }
 }
 
 .armor-col-header {
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   padding-bottom: 4px;
   margin-bottom: 2px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 
   &.deflected { color: var(--green); }
   &.penetrates { color: var(--red); }
+}
+
+.armor-weapon-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  transition: background 0.1s;
+
+  &:hover { background: rgba(255, 255, 255, 0.03); }
+  &.safe .aw-alpha { color: var(--text3); }
+  &.danger .aw-alpha { color: var(--text); }
+}
+
+.aw-name {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  flex: 1;
+}
+
+.aw-size {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+.aw-alpha {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  min-width: 40px;
+  text-align: right;
 }
