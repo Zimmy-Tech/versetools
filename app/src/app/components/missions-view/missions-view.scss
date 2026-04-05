@@ -261,10 +261,38 @@
 
 .mission-meta {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   padding: 0 12px 6px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.meta-inline {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 12px;
+  color: var(--text3);
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  line-height: 1.4;
+
+  .mission-card:hover & { opacity: 0.85; }
+}
+
+.mi-item {
+  &::before {
+    content: '·';
+    margin: 0 5px;
+    color: var(--border);
+  }
+  &:first-child::before { display: none; }
+
+  &.contractor { color: #c0a0ff; }
+  &.system { color: var(--text2); }
+  &.activity { color: #7ae8a0; }
+  &.danger { color: #ff8844; }
+  &.chain { color: #60c8ff; }
+  &.share { color: var(--accent2); }
+  &.multi { color: #4adfff; }
 }
 
 .meta-item {

@@ -106,35 +106,18 @@
             @if (m.boss) {
               <span class="meta-tag boss">BOSS</span>
             }
-            @if (m.lawful) {
-              <span class="meta-tag lawful">LAWFUL</span>
-            } @else {
-              <span class="meta-tag unlawful">UNLAWFUL</span>
-            }
             @if (m.onceOnly) {
               <span class="meta-tag unique">UNIQUE</span>
             }
-            @if (m.isChain) {
-              <span class="meta-tag chain">CHAIN</span>
-            }
-            @if (m.canShare) {
-              <span class="meta-tag share">SHAREABLE</span>
-            }
-            @if (m.multiSystem) {
-              <span class="meta-tag multi">MULTI-SYSTEM</span>
-            }
-            @if (m.system) {
-              <span class="meta-tag system">{{ m.system }}</span>
-            }
-            @if (m.activity) {
-              <span class="meta-tag activity">{{ m.activity }}</span>
-            }
-            @if (m.contractor) {
-              <span class="meta-tag contractor">{{ m.contractor }}</span>
-            }
-            @if (m.danger) {
-              <span class="meta-tag danger">{{ m.danger }}</span>
-            }
+            <span class="meta-inline"><!--
+              -->@if (m.contractor) {<span class="mi-item contractor">{{ m.contractor }}</span>}<!--
+              -->@if (m.system) {<span class="mi-item system">{{ m.system }}</span>}<!--
+              -->@if (m.activity) {<span class="mi-item activity">{{ m.activity }}</span>}<!--
+              -->@if (m.danger) {<span class="mi-item danger">{{ m.danger }}</span>}<!--
+              -->@if (m.isChain) {<span class="mi-item chain">Chain</span>}<!--
+              -->@if (m.canShare) {<span class="mi-item share">Shareable</span>}<!--
+              -->@if (m.multiSystem) {<span class="mi-item multi">Multi-System</span>}<!--
+            --></span>
           </div>
 
         </div>
