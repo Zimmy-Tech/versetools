@@ -1,0 +1,116 @@
+<div class="lc-overlay" (click)="close.emit()"></div>
+<div class="lc-panel" [class.wide]="phase() === 'compare'">
+  <div class="lc-header">
+    <div class="lc-header-left">
+      @if (phase() === 'compare') {
+        <button class="lc-back" (click)="backToPick()">&#9664; Back</button>
+      }
+      <div class="lc-title">{{ phase() === 'pick' ? 'Select Loadouts to Compare' : 'Loadout Comparison' }}</div>
+    </div>
+    <div class="lc-subtitle">{{ ship()?.name }}</div>
+    <span class="lc-close" (click)="close.emit()">&times;</span>
+  </div>
+
+  <!-- ═══ PICKER PHASE ═══ -->
+  @if (phase() === 'pick') {
+    <div class="lc-body">
+      <div class="lc-pick-hint">Select up to 3 saved loadouts to compare against your current build.</div>
+      <div class="lc-pick-list">
+        @for (lo of allLoadouts; track lo.timestamp; let i = $index) {
+          <div class="lc-pick-option" [class.selected]="isSelected(i)" (click)="toggleSelect(i)">
+            <div class="lc-pick-check">{{ isSelected(i) ? '◆' : '◇' }}</div>
+            <div class="lc-pick-info">
+              <span class="lc-pick-name">{{ lo.name }}</span>
+              <span class="lc-pick-ship">{{ lo.shipName }}</span>
+            </div>
+            <div class="lc-pick-stats">
+              @if (lo.peakDps) { <span class="lc-pick-dps">{{ lo.peakDps }} DPS</span> }
+              @if (lo.totalAlpha) { <span class="lc-pick-alpha">{{ lo.totalAlpha }} Alpha</span> }
+            </div>
+          </div>
+        }
+      </div>
+      <button class="lc-go-btn" [disabled]="!canCompare()" (click)="startCompare()">
+        Compare {{ selectedIndices().size }} Loadout{{ selectedIndices().size !== 1 ? 's' : '' }}
+      </button>
+    </div>
+  }
+
+  <!-- ═══ COMPARISON PHASE ═══ -->
+  @if (phase() === 'compare') {
+    <div class="lc-body">
+
+      <!-- Column headers -->
+      <div class="lc-col-headers">
+        <div class="lc-col-label-spacer"></div>
+        @for (col of columns(); track col.label) {
+          <div class="lc-col-header" [class.current]="col.label === 'Current'">
+            <span class="lc-col-name">{{ col.label }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Stat rows with section headers -->
+      @for (row of statRows(); track row.label) {
+        @if (row.section) {
+          <div class="lc-section-divider">
+            <span class="lc-divider-label">{{ row.section }}</span>
+          </div>
+        }
+        <div class="lc-row">
+          <div class="lc-row-label">{{ row.label }}</div>
+          @for (val of row.values; track $index) {
+            <div class="lc-row-val"
+                 [class.best]="bestIndex(row.values, row.invert) === $index"
+                 [class.current-col]="$index === 0">
+              {{ fmtNum(val) }}{{ row.unit }}
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Weapon breakdown per column -->
+      <div class="lc-section-divider">
+        <span class="lc-divider-label">Pilot Weapons</span>
+      </div>
+      <div class="lc-weapons-grid">
+        @for (col of columns(); track col.label) {
+          <div class="lc-weapons-col">
+            <div class="lc-weapons-heading">{{ col.label }}</div>
+            @for (w of col.pilotWeapons; track w.name) {
+              <div class="lc-weapon-row">
+                <span class="lc-w-size">S{{ w.size }}</span>
+                <span class="lc-w-name">{{ w.name }}</span>
+                <span class="lc-w-dps">{{ w.dps }}</span>
+              </div>
+            }
+            @if (col.pilotWeapons.length === 0) {
+              <div class="lc-weapon-empty">No weapons</div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Missile breakdown -->
+      @if ((columns()[0]?.missileCount ?? 0) > 0 || (columns().length > 1 && (columns()[1]?.missileCount ?? 0) > 0)) {
+        <div class="lc-weapons-grid">
+          @for (col of columns(); track col.label) {
+            <div class="lc-weapons-col">
+              <div class="lc-weapons-heading">{{ col.label }}</div>
+              @for (m of col.missileGroups; track m.name) {
+                <div class="lc-weapon-row">
+                  <span class="lc-w-size">S{{ m.size }}</span>
+                  <span class="lc-w-name">{{ m.name }}</span>
+                  <span class="lc-w-dps">×{{ m.count }}</span>
+                </div>
+              }
+              @if (col.missileGroups.length === 0) {
+                <div class="lc-weapon-empty">None</div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

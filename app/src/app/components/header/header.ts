@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
+import { LoadoutCompareComponent, StoredLoadout as StoredLoadoutExport } from '../loadout-compare/loadout-compare';
 
 export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog';
 
@@ -38,6 +39,7 @@ const STORAGE_KEY = 'versedb_loadouts';
 @Component({
   selector: 'app-header',
   standalone: true,
+  imports: [LoadoutCompareComponent],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -181,6 +183,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // ── Loadout storage ──────────────────────────────────────
   storedLoadouts = signal<StoredLoadout[]>(this.readStorage());
   loadoutDropdownOpen = signal(false);
+  showCompare = signal(false);
 
   filteredShips = computed(() => {
     const q = this.searchQuery().toLowerCase();
@@ -295,6 +298,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   clearStoredLoadouts(): void {
     this.writeStorage([]);
+    this.loadoutDropdownOpen.set(false);
+  }
+
+  openCompare(event: Event): void {
+    event.stopPropagation();
+    this.showCompare.set(true);
     this.loadoutDropdownOpen.set(false);
   }
 

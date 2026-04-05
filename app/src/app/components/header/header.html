@@ -216,7 +216,10 @@
                   <button class="lb-delete" (mousedown)="deleteStoredLoadout(i, $event)" title="Delete">&#x2715;</button>
                 </div>
               }
-              <div class="lb-clear" (mousedown)="clearStoredLoadouts()">Clear All</div>
+              <div class="lb-actions">
+                <div class="lb-compare-all" (mousedown)="openCompare($event)">&#x21C4; Compare Loadouts</div>
+                <div class="lb-clear" (mousedown)="clearStoredLoadouts()">Clear All</div>
+              </div>
             </div>
           }
         </div>
@@ -237,4 +240,8 @@
       <div class="loadout-msg">{{ msg }}</div>
     }
   </div>
+}
+
+@if (showCompare()) {
+  <app-loadout-compare [allLoadouts]="storedLoadouts()" (close)="showCompare.set(false)"></app-loadout-compare>
 }
