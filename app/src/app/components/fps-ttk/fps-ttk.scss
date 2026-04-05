@@ -21,8 +21,9 @@
 .ttk-header { text-align: center; margin-bottom: 20px; }
 .ttk-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 20px; font-weight: 700; letter-spacing: 3px;
+  font-size: 22px; font-weight: 700; letter-spacing: 4px;
   text-transform: uppercase; color: var(--accent);
+  text-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
 }
 .ttk-sub {
   font-family: 'Share Tech Mono', monospace;
@@ -38,17 +39,29 @@
 
 .ttk-layout {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   min-height: 0;
   justify-content: center;
-  max-width: 900px;
+  max-width: 960px;
   align-self: center;
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
-  padding: 16px;
-  background: var(--bg2);
+  padding: 20px;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+
+  // Accent bar at top edge
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
 }
 
 // ── Controls (left) ───────────────────────────────────────
@@ -71,16 +84,17 @@
 .control-label {
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--text3);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 4px;
+  text-transform: uppercase; color: var(--accent2);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1); padding-bottom: 4px;
 }
 
 .control-search {
   background: var(--bg3); border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
-  color: var(--text); padding: 4px 8px;
-  font-family: 'Share Tech Mono', monospace; font-size: 12px;
+  color: var(--text); padding: 6px 10px;
+  font-family: 'Exo 2', sans-serif; font-size: 13px;
   outline: none;
+  transition: all 0.2s;
   &:focus { border-color: var(--accent2); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
   option { background: var(--bg3); color: var(--text); }
 }
@@ -97,17 +111,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3px 8px;
+  padding: 5px 10px;
   cursor: pointer;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
   color: var(--text2);
-  &:hover { background: var(--bg3); color: var(--text); }
+  border-radius: 3px;
+  transition: all 0.1s;
+  margin: 1px 0;
+  &:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); }
   &.selected { background: rgba(0, 200, 255, 0.06); color: var(--accent); border-left: 2px solid var(--accent); }
 }
 
 .wo-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.wo-dps { font-size: 11px; color: var(--text3); flex-shrink: 0; margin-left: 6px; }
+.wo-dps { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text3); flex-shrink: 0; margin-left: 8px; }
 
 .armor-buttons {
   display: flex;
@@ -117,38 +134,41 @@
 
 .armor-btn {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px; font-weight: 600;
-  padding: 3px 8px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  padding: 5px 10px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
   color: var(--text2);
   cursor: pointer;
   text-align: left;
-  &:hover { border-color: var(--text3); color: var(--text); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
-  &.active { border-color: var(--accent); color: var(--accent); background: rgba(0, 200, 255, 0.06); }
+  transition: all 0.2s;
+  &:hover { border-color: var(--accent2); color: var(--text); box-shadow: 0 0 6px rgba(0, 200, 255, 0.08); }
+  &.active { border-color: var(--accent); color: var(--accent); background: rgba(0, 200, 255, 0.06); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
 }
 
 .weapon-stats {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  background: var(--bg2);
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--accent2);
   border-radius: 4px;
-  padding: 6px 8px;
+  padding: 8px 10px;
 }
 
 .ws-row {
   display: flex;
   justify-content: space-between;
-  font-family: 'Share Tech Mono', monospace;
   font-size: 12px;
+  padding: 1px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  &:last-child { border-bottom: none; }
 }
 
-.ws-k { color: var(--text2); }
-.ws-v { color: var(--text); &.accent { color: var(--accent); } }
+.ws-k { font-family: 'Rajdhani', sans-serif; font-weight: 600; letter-spacing: 0.5px; color: var(--text3); }
+.ws-v { font-family: 'Share Tech Mono', monospace; color: var(--text); &.accent { color: var(--accent); } }
 
 // ── Body model (center) ───────────────────────────────────
 
@@ -163,9 +183,9 @@
 
 .body-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--accent);
-  margin-bottom: 4px;
+  font-size: 13px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--accent2);
+  margin-bottom: 6px;
 }
 
 .body-svg {
@@ -230,30 +250,35 @@
 .stats-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  background: var(--bg2);
+  background: rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
+  overflow: hidden;
 
   th, td {
-    padding: 4px 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   }
 
   thead th {
-    background: var(--bg3);
+    background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
     font-family: 'Rajdhani', sans-serif;
     font-size: 11px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
+    letter-spacing: 1.5px; text-transform: uppercase;
     color: var(--text3); text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.1);
   }
 
-  .zone-name { color: var(--text); }
+  tbody td {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+  }
+
+  .zone-name { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); }
   .zone-name.headshot { color: var(--red); }
-  .num { text-align: right; }
-  .shots { color: var(--accent); font-weight: 600; font-size: 15px; }
+  .num { text-align: right; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--text); }
+  .shots { color: var(--accent); font-weight: 600; font-size: 16px; text-shadow: 0 0 8px rgba(0, 200, 255, 0.15); }
   .ttk-val { color: var(--gold); }
 
   tr.hovered { background: rgba(0, 200, 255, 0.06); }
