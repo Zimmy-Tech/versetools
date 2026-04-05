@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
@@ -29,7 +29,17 @@ export class ArmorViewComponent {
     { value: 'capital', label: 'Capital' },
   ];
 
-  constructor(public data: DataService) {}
+  constructor(public data: DataService) {
+    // Auto-select a default weapon once data loads
+    effect(() => {
+      const wpns = this.weapons();
+      if (wpns.length > 0 && !this.selectedWeapon()) {
+        // Pick an S3 weapon as a good default, or first available
+        const s3 = wpns.find(w => (w.size ?? 0) === 3);
+        this.selectedWeapon.set((s3 ?? wpns[0]).className);
+      }
+    });
+  }
 
   weapons = computed(() =>
     this.data.items()
