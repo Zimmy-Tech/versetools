@@ -124,6 +124,7 @@ header {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
   z-index: 998;
   -webkit-tap-highlight-color: transparent;
 }
@@ -137,6 +138,7 @@ header {
   height: 100vh;
   background: var(--bg2);
   border-left: 1px solid var(--border);
+  border-radius: 8px 0 0 8px;
   z-index: 999;
   overflow-y: auto;
   padding: 16px 0;
@@ -207,9 +209,9 @@ header {
   min-width: 200px;
   background: var(--bg2);
   border: 1px solid var(--border2);
-  border-radius: 3px;
+  border-radius: 6px;
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.04), 0 4px 12px rgba(0,0,0,0.4);
 }
 
 .nav-drop-item {
@@ -221,11 +223,12 @@ header {
   text-transform: uppercase;
   color: var(--text2);
   cursor: pointer;
-  transition: all 0.1s;
+  transition: all 0.15s;
 
   &:hover {
     color: var(--text);
     background: rgba(255,255,255,0.04);
+    border-radius: 3px;
   }
 
   &.active {
@@ -305,7 +308,7 @@ header {
   border-radius: 8px;
   position: relative;
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 
   &:hover { border-color: var(--accent2); }
   &.disabled { opacity: 0.3; cursor: not-allowed; &:hover { border-color: var(--border2); } }
@@ -336,6 +339,7 @@ header {
   width: 100%;
   background: var(--bg3);
   border: 1px solid var(--border);
+  border-radius: 4px;
   color: var(--text);
   padding: 5px 10px;
   font-family: 'Share Tech Mono', monospace;
@@ -356,6 +360,8 @@ header {
   width: max-content;
   background: var(--bg2);
   border: 1px solid var(--border2);
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.06), 0 12px 40px rgba(0, 0, 0, 0.6);
   max-height: 320px;
   overflow-y: auto;
   z-index: 100;
@@ -368,8 +374,9 @@ header {
   padding: 6px 10px;
   cursor: pointer;
   gap: 8px;
+  transition: background 0.15s;
 
-  &:hover { background: rgba(255,255,255,0.04); }
+  &:hover { background: rgba(255,255,255,0.04); border-radius: 3px; }
   &.active { background: rgba(0,200,255,0.06); }
 }
 
@@ -411,10 +418,11 @@ header {
     cursor: pointer;
     padding: 4px 12px;
     border: 1px solid var(--accent2);
+    border-radius: 4px;
     background: rgba(74, 255, 122, 0.06);
     white-space: nowrap;
-    transition: all 0.15s;
-    &:hover { background: rgba(74, 255, 122, 0.15); border-color: var(--accent); }
+    transition: all 0.2s;
+    &:hover { background: rgba(74, 255, 122, 0.15); border-color: var(--accent); box-shadow: 0 0 8px rgba(74, 255, 122, 0.15); }
   }
 
   .mil-a-btn {
@@ -426,10 +434,11 @@ header {
     cursor: pointer;
     padding: 4px 12px;
     border: 1px solid rgba(255, 136, 68, 0.4);
+    border-radius: 4px;
     background: rgba(255, 136, 68, 0.06);
     white-space: nowrap;
-    transition: all 0.15s;
-    &:hover { background: rgba(255, 136, 68, 0.15); border-color: #ff8844; }
+    transition: all 0.2s;
+    &:hover { background: rgba(255, 136, 68, 0.15); border-color: #ff8844; box-shadow: 0 0 8px rgba(255, 136, 68, 0.15); }
   }
 
   .stealth-a-btn {
@@ -441,10 +450,11 @@ header {
     cursor: pointer;
     padding: 4px 12px;
     border: 1px solid rgba(136, 136, 204, 0.4);
+    border-radius: 4px;
     background: rgba(136, 136, 204, 0.06);
     white-space: nowrap;
-    transition: all 0.15s;
-    &:hover { background: rgba(136, 136, 204, 0.15); border-color: #8888cc; }
+    transition: all 0.2s;
+    &:hover { background: rgba(136, 136, 204, 0.15); border-color: #8888cc; box-shadow: 0 0 8px rgba(136, 136, 204, 0.15); }
   }
 
   .ship-picker-wrap {
@@ -462,11 +472,12 @@ header {
     color: var(--text3);
     background: var(--bg3);
     border: 1px solid var(--border);
+    border-radius: 4px;
     padding: 4px 10px;
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.15s;
-    &:hover { color: var(--text); border-color: var(--text3); }
+    transition: all 0.2s;
+    &:hover { color: var(--text); border-color: var(--text3); box-shadow: 0 0 8px rgba(0, 200, 255, 0.15); }
   }
 }
 
@@ -519,7 +530,8 @@ header {
   min-width: 280px;
   background: var(--bg2);
   border: 1px solid var(--border2);
-  border-radius: 3px;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   z-index: 100;
   max-height: 320px;
   overflow-y: auto;
@@ -535,9 +547,9 @@ header {
   gap: 8px;
   padding: 6px 10px;
   cursor: pointer;
-  transition: background 0.1s;
+  transition: background 0.15s;
 
-  &:hover { background: rgba(0, 200, 255, 0.06); }
+  &:hover { background: rgba(0, 200, 255, 0.06); border-radius: 3px; }
 }
 
 .lb-option-name {
@@ -617,5 +629,14 @@ header {
   font-size: 11px;
   color: var(--gold, #f0a500);
   text-align: center;
+}
+
+/* ── Select & input dark backgrounds ─────────────── */
+
+select, input, textarea {
+  option {
+    background: var(--bg3);
+    color: var(--text);
+  }
 }
 

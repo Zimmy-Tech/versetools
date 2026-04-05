@@ -6,6 +6,9 @@
   background-size: 1200px 900px;
 }
 
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes panelIn { from { opacity: 0; transform: translate(-50%, -48%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
 .compact-shell {
   width: 100%;
   max-width: 420px;
@@ -42,7 +45,8 @@
   right: 0;
   background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 0 0 8px 8px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.06), 0 12px 40px rgba(0, 0, 0, 0.6);
   max-height: 250px;
   overflow-y: auto;
   z-index: 10;
@@ -64,7 +68,7 @@
 
 .clean-card {
   background: var(--bg2);
-  border-radius: 12px;
+  border-radius: 4px;
   border: 1px solid var(--border);
   overflow: hidden;
 }
@@ -280,8 +284,8 @@
   align-items: center;
   padding: 8px 4px;
   background: var(--bg3);
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .clean-stat-v {
@@ -556,9 +560,10 @@
   flex: 1;
   min-width: 0;
   background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
   padding: 6px 8px;
+  transition: all 0.15s;
 }
 
 .cv-block-title {
@@ -661,8 +666,9 @@
   margin: 8px 12px;
   padding: 10px;
   background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  transition: all 0.15s;
 }
 .concept-label {
   font-family: 'Rajdhani', sans-serif;
@@ -704,7 +710,7 @@
 
 /* Concept 3: Regen Stats Block */
 .regen-block-wrap { display: flex; flex-direction: column; gap: 8px; }
-.regen-block { padding: 6px; background: rgba(0,200,255,0.03); border: 1px solid rgba(0,200,255,0.1); border-radius: 6px; }
+.regen-block { padding: 6px; background: rgba(0,200,255,0.03); border: 1px solid rgba(0,200,255,0.1); border-radius: 4px; transition: all 0.15s; }
 .rb-name { font-family: 'Rajdhani', sans-serif; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
 .rb-stats { display: flex; gap: 8px; flex-wrap: wrap; }
 .rb-stat { display: flex; flex-direction: column; align-items: center; }
@@ -804,8 +810,8 @@
   padding: 6px 14px;
   margin: 4px 14px;
   background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
 }
 .ord-summary-stat { display: flex; flex-direction: column; align-items: center; }
 .ord-summary-val { font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: 700; color: var(--text); }
@@ -835,8 +841,9 @@
   background: var(--bg3);
   border: 1px solid var(--border);
   border-left: 3px solid;
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 6px 8px;
+  transition: all 0.15s;
 }
 .ord-card-top { display: flex; align-items: center; gap: 6px; }
 .ord-card-acq { font-family: 'Share Tech Mono', monospace; font-size: 11px; font-weight: 700; min-width: 20px; }

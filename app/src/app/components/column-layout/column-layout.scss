@@ -152,7 +152,7 @@
   padding: 3px 8px;
   background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: 3px;
   min-width: 48px;
 }
 
@@ -315,7 +315,7 @@
   align-items: center;
   gap: 6px;
 }
-.flight-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.flight-divider { height: 1px; background: rgba(255, 255, 255, 0.04); margin: 4px 0; }
 .flight-stat {
   display: flex;
   align-items: baseline;
@@ -349,6 +349,7 @@
   background: linear-gradient(160deg, rgba(160, 170, 180, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
   border: 1px solid var(--border);
   border-top: 2px solid var(--accent2);
+  border-radius: 4px;
   cursor: help;
 }
 .hull-hero-val {
@@ -404,8 +405,9 @@
 .stat-block {
   padding: 8px 10px 8px 12px;
   background: linear-gradient(160deg, rgba(160, 170, 180, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-left: 3px solid var(--accent);
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -426,6 +428,7 @@
   background: linear-gradient(160deg, rgba(160, 170, 180, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
   border: 1px solid var(--border2);
   border-left: 3px solid var(--red);
+  border-radius: 4px;
   cursor: help;
 }
 
@@ -469,6 +472,7 @@
   color: var(--gold, #f0a500);
   background: rgba(255, 170, 0, 0.06);
   border: 1px solid rgba(255, 170, 0, 0.15);
+  border-radius: 4px;
   padding: 4px 6px;
   margin-top: 4px;
   line-height: 1.4;
@@ -487,6 +491,10 @@
   font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--text);
 }
 
+select {
+  option { background: var(--bg3); color: var(--text); }
+}
+
 .btn-reset, .btn-cart-add {
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
@@ -495,10 +503,11 @@
   text-transform: uppercase;
   padding: 4px 14px;
   border: 1px solid var(--border);
+  border-radius: 4px;
   background: transparent;
   color: var(--text2);
   cursor: pointer;
   transition: all 0.15s;
 
-  &:hover { color: var(--accent); border-color: var(--accent2); }
+  &:hover { color: var(--accent); border-color: var(--accent2); box-shadow: 0 0 8px rgba(0, 200, 255, 0.08); }
 }
