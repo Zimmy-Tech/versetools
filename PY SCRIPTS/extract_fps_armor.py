@@ -6,12 +6,26 @@ import json, re, sys
 from pathlib import Path
 from collections import defaultdict
 
+# ── Target mode ──────────────────────────────────────────────────────────────
+import argparse as _ap
+_parser = _ap.ArgumentParser(description="Extract FPS armor data")
+_parser.add_argument("--target", choices=["live", "ptu"], default="live", help="Target build (live or ptu)")
+_args = _parser.parse_args()
+_MODE = _args.target
+
 # ── Paths ──────────────────────────────────────────────────────────────────────
-_SC = Path(__file__).parent / ".." / "SC FILES"
-FORGE_DIR = _SC / "sc_data_forge/libs/foundry/records"
-GLOBAL_INI = _SC / "sc_data_xml_live/Data/Localization/english/global.ini"
-OUT_LIVE = Path(__file__).parent / ".." / "app/public/live/versedb_fps_armor.json"
-OUT_PTU  = Path(__file__).parent / ".." / "app/public/ptu/versedb_fps_armor.json"
+_BASE = Path(__file__).resolve().parent.parent
+_SC = _BASE / "SC FILES"
+
+FORGE_DIR = _SC / f"sc_data_forge_{_MODE}" / "libs" / "foundry" / "records"
+GLOBAL_INI = _SC / f"sc_data_xml_{_MODE}" / "Data" / "Localization" / "english" / "global.ini"
+OUT_FILE = _BASE / "app" / "public" / _MODE / "versedb_fps_armor.json"
+
+# Fallback: if mode-specific dirs don't exist, try generic (backward compat)
+if not FORGE_DIR.exists():
+    FORGE_DIR = _SC / "sc_data_forge" / "libs" / "foundry" / "records"
+if not GLOBAL_INI.exists():
+    GLOBAL_INI = _SC / "sc_data_xml_live" / "Data" / "Localization" / "english" / "global.ini"
 
 ARMOR_BASE = FORGE_DIR / "entities/scitem/characters/human/armor/pu_armor"
 HELMET_BASE = FORGE_DIR / "entities/scitem/characters/human/starwear/helmet"
@@ -345,11 +359,10 @@ def main():
         "armor": base_pieces,
     }
 
-    for out_path in [OUT_LIVE, OUT_PTU]:
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(out_path, "w") as f:
-            json.dump(output, f, separators=(",", ":"))
-        print(f"  Saved to {out_path}")
+    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUT_FILE, "w") as f:
+        json.dump(output, f, separators=(",", ":"))
+    print(f"  Saved to {OUT_FILE} ({_MODE})")
 
 
 if __name__ == "__main__":

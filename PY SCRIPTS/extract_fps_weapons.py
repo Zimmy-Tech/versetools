@@ -27,21 +27,40 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+# ── Target mode ──────────────────────────────────────────────────────────────
+
+import argparse as _ap
+_parser = _ap.ArgumentParser(description="Extract FPS weapon data")
+_parser.add_argument("--target", choices=["live", "ptu"], default="live", help="Target build (live or ptu)")
+_args = _parser.parse_args()
+_MODE = _args.target
+
 # ── Paths ────────────────────────────────────────────────────────────────────
 
 _BASE = Path(__file__).resolve().parent.parent
 _SC   = _BASE / "SC FILES"
 
-FORGE_DIR    = _SC / "sc_data_forge" / "libs" / "foundry" / "records"
+FORGE_DIR    = _SC / f"sc_data_forge_{_MODE}" / "libs" / "foundry" / "records"
 FPS_WPN_DIR  = FORGE_DIR / "entities" / "scitem" / "weapons" / "fps_weapons"
 MAG_DIR      = FORGE_DIR / "entities" / "scitem" / "weapons" / "magazines"
 AMMO_DIR     = FORGE_DIR / "ammoparams" / "fps"
 RECOIL_DIR   = FORGE_DIR / "weaponproceduralrecoil"
-DCB_FILE     = _SC / "sc_data" / "Data" / "Game2.dcb"
-GLOBAL_INI   = _SC / "sc_data_xml_live" / "Data" / "Localization" / "english" / "global.ini"
+DCB_FILE     = _SC / f"sc_data_{_MODE}" / "Data" / "Game2.dcb"
+GLOBAL_INI   = _SC / f"sc_data_xml_{_MODE}" / "Data" / "Localization" / "english" / "global.ini"
 
-OUT_LIVE = _BASE / "app" / "public" / "live" / "versedb_fps.json"
-OUT_PTU  = _BASE / "app" / "public" / "ptu"  / "versedb_fps.json"
+OUT_FILE = _BASE / "app" / "public" / _MODE / "versedb_fps.json"
+
+# Fallback: if mode-specific dirs don't exist, try generic (backward compat)
+if not FORGE_DIR.exists():
+    FORGE_DIR = _SC / "sc_data_forge" / "libs" / "foundry" / "records"
+    FPS_WPN_DIR = FORGE_DIR / "entities" / "scitem" / "weapons" / "fps_weapons"
+    MAG_DIR = FORGE_DIR / "entities" / "scitem" / "weapons" / "magazines"
+    AMMO_DIR = FORGE_DIR / "ammoparams" / "fps"
+    RECOIL_DIR = FORGE_DIR / "weaponproceduralrecoil"
+if not DCB_FILE.exists():
+    DCB_FILE = _SC / "sc_data" / "Data" / "Game2.dcb"
+if not GLOBAL_INI.exists():
+    GLOBAL_INI = _SC / "sc_data_xml_live" / "Data" / "Localization" / "english" / "global.ini"
 
 # ── Manufacturer prefix mapping ─────────────────────────────────────────────
 
@@ -854,7 +873,7 @@ def extract_fps_weapons():
     # Read game version
     version = "unknown"
     try:
-        manifest_path = Path("/home/bryan/projects/SC Raw Data/LIVE/build_manifest.id")
+        manifest_path = Path(f"/home/bryan/projects/SC Raw Data/{_MODE.upper()}/build_manifest.id")
         if manifest_path.exists():
             data = json.loads(manifest_path.read_text())["Data"]
             branch = data.get("Branch", "")
@@ -873,12 +892,11 @@ def extract_fps_weapons():
     }
 
     # Write output
-    print(f"\n[7] Writing output...")
-    for out_path in [OUT_LIVE, OUT_PTU]:
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(out_path, "w") as f:
-            json.dump(output, f, indent=2)
-        print(f"  Written: {out_path}")
+    print(f"\n[7] Writing output ({_MODE})...")
+    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUT_FILE, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"  Written: {OUT_FILE}")
 
     print(f"\nDone! {len(weapons)} FPS weapons extracted.")
 
