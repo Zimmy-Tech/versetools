@@ -343,8 +343,20 @@
 .popout-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
   z-index: 900;
+  animation: overlayIn 0.15s ease-out;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translate(-50%, -48%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 .popout-panel {
@@ -352,36 +364,71 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 640px;
-  max-width: 90%;
+  width: 660px;
+  max-width: 92%;
   height: 80vh;
   background: var(--bg2);
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 255, 0.06),
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 80px rgba(0, 200, 255, 0.03);
   z-index: 901;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: panelIn 0.2s ease-out;
+
+  // Subtle scan-line overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    border-radius: 6px;
+  }
 }
 
 .popout-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
   border-bottom: 1px solid var(--border);
-  background: var(--bg);
   border-radius: 6px 6px 0 0;
+  position: relative;
+  z-index: 2;
+
+  // Accent bar at top edge
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
 }
 
 .popout-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   color: var(--text);
   flex: 1;
+  text-transform: uppercase;
 }
 
 .popout-close {
@@ -389,17 +436,21 @@
   color: var(--text3);
   font-size: 16px;
   padding: 4px 8px;
-  &:hover { color: var(--text); }
+  border-radius: 4px;
+  transition: all 0.15s;
+  &:hover { color: var(--red); background: rgba(255, 68, 68, 0.08); }
 }
 
 .popout-body {
   flex: 1;
   min-height: 0;
-  padding: 14px 16px;
+  padding: 16px 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
 }
 
 .popout-meta {
@@ -410,14 +461,15 @@
 
 .po-cat {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   color: var(--accent);
   text-transform: uppercase;
-  background: rgba(0, 200, 255, 0.08);
-  border: 1px solid var(--accent2);
-  padding: 2px 8px;
+  background: rgba(0, 200, 255, 0.06);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 3px;
+  padding: 3px 10px;
 }
 
 .po-class {
@@ -457,20 +509,32 @@
 }
 
 .po-section {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid transparent;
   padding-top: 8px;
+  position: relative;
+
+  // Gradient divider instead of solid line
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent2), var(--border), transparent);
+  }
 }
 
 .po-section-title {
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   color: var(--text3);
   text-transform: uppercase;
-  margin-bottom: 4px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .po-section-note {
@@ -491,9 +555,11 @@
   display: flex;
   align-items: baseline;
   gap: 8px;
-  padding: 4px 8px;
-  background: rgba(255, 255, 255, 0.02);
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.015);
   border-left: 2px solid var(--border);
+  border-radius: 0 3px 3px 0;
+  transition: background 0.1s;
 
   &.ore {
     border-left-color: #7ec8e3;
@@ -551,10 +617,21 @@
 
 /* ── Quality Simulator ──────────────── */
 .quality-section {
-  margin: 4px -16px 0;
-  padding: 14px 16px !important;
-  border-top: 1px solid var(--border) !important;
-  background: rgba(255, 255, 255, 0.01);
+  margin: 4px -20px 0;
+  padding: 16px 20px !important;
+  border-top: none !important;
+  background: linear-gradient(180deg, rgba(0, 200, 255, 0.02) 0%, rgba(0, 0, 0, 0.1) 100%);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent2), var(--border), transparent);
+  }
 }
 
 .quality-presets {
@@ -565,19 +642,23 @@
 }
 
 .qp-btn {
-  padding: 3px 10px;
-  background: var(--bg3);
+  padding: 4px 12px;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--text2);
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.15s;
-  &:hover { border-color: var(--text2); color: var(--text); }
+  transition: all 0.2s;
+  &:hover {
+    border-color: var(--accent2);
+    color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
+  }
 }
 
 .quality-sliders {
@@ -608,32 +689,37 @@
 
 .qr-slider {
   flex: 1;
-  height: 6px;
+  height: 4px;
   -webkit-appearance: none;
   appearance: none;
-  background: var(--border);
-  border-radius: 3px;
+  background: linear-gradient(90deg, var(--bg3), var(--border));
+  border-radius: 2px;
   outline: none;
   cursor: pointer;
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background: var(--text);
+    background: var(--accent);
     border: 2px solid var(--bg);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.3);
     cursor: pointer;
+    transition: box-shadow 0.15s;
+  }
+
+  &:hover::-webkit-slider-thumb {
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
   }
 
   &::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background: var(--text);
+    background: var(--accent);
     border: 2px solid var(--bg);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.3);
     cursor: pointer;
   }
 }
@@ -655,13 +741,15 @@
 
 .ql-section-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--text2);
+  letter-spacing: 2.5px;
+  color: var(--accent2);
   text-transform: uppercase;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
 }
 
 /* ── Quality Effects List ────────────── */
@@ -674,8 +762,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0 4px;
-  border-bottom: 1px solid var(--border);
+  padding: 0 0 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   margin-bottom: 2px;
 }
 
@@ -703,9 +791,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 9px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
+  transition: background 0.1s;
   &:last-child { border-bottom: none; }
+  &:hover { background: rgba(255, 255, 255, 0.02); }
 }
 
 .ql-left {
@@ -788,10 +879,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 10px;
-  background: var(--bg);
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 4px;
+  transition: border-color 0.15s;
+  &:hover { border-color: rgba(255, 255, 255, 0.08); }
 }
 
 .resist-type {
@@ -1002,22 +1095,23 @@
 
 .add-materials-btn {
   flex: 1;
-  padding: 8px;
-  background: rgba(74, 255, 122, 0.08);
-  border: 1px solid rgba(74, 255, 122, 0.3);
+  padding: 10px;
+  background: rgba(74, 255, 122, 0.06);
+  border: 1px solid rgba(74, 255, 122, 0.25);
   border-radius: 4px;
-  color: #4aff7a;
+  color: var(--green);
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
 
   &:hover {
-    background: rgba(74, 255, 122, 0.15);
-    border-color: #4aff7a;
+    background: rgba(74, 255, 122, 0.12);
+    border-color: var(--green);
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.1);
   }
 }
 
@@ -1155,6 +1249,9 @@
 .popout-tabs {
   display: flex;
   border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 2;
 }
 
 .popout-tab {
@@ -1165,13 +1262,18 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1px;
-  padding: 8px 12px;
+  letter-spacing: 1.5px;
+  padding: 10px 12px;
   cursor: pointer;
   text-transform: uppercase;
   border-bottom: 2px solid transparent;
-  &.active { color: var(--text); border-bottom-color: var(--text2); }
-  &:hover:not(.active) { color: var(--text2); }
+  transition: all 0.15s;
+  &.active {
+    color: var(--text);
+    border-bottom-color: var(--accent2);
+    background: rgba(0, 200, 255, 0.03);
+  }
+  &:hover:not(.active) { color: var(--text2); background: rgba(255, 255, 255, 0.02); }
 }
 
 // Mission sources tab
