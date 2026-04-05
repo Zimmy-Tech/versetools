@@ -14,7 +14,7 @@
   align-items: center;
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: 20px 16px;
   gap: 16px;
 }
 
@@ -26,23 +26,36 @@
 }
 
 .submit-panel {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px 20px;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 18px 22px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   width: 546px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
 }
 
 .panel-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   color: var(--text);
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
 }
 
 .panel-sub {
@@ -64,8 +77,8 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--text3);
+  letter-spacing: 2px;
+  color: var(--accent2);
   text-transform: uppercase;
 }
 
@@ -73,19 +86,23 @@
   font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
-  opacity: 0.6;
+  opacity: 0.5;
+  color: var(--text3);
 }
 
 .field-input, .field-select, .field-textarea {
   background: var(--bg3);
-  border: 1px solid var(--border2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
   color: var(--text);
-  padding: 6px 10px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  padding: 7px 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
   outline: none;
-  &:focus { border-color: var(--accent2); }
+  transition: border-color 0.15s, box-shadow 0.15s;
+  &:focus { border-color: var(--accent2); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
   &::placeholder { color: var(--text3); }
+  option { background: var(--bg3); color: var(--text); }
 }
 
 .field-select { cursor: pointer; }
@@ -103,26 +120,32 @@
 
 .ship-picker-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
   z-index: 100;
   background: var(--bg2);
-  border: 1px solid var(--accent2);
-  border-top: none;
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 255, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .ship-picker-search {
-  background: var(--bg3);
+  background: rgba(0, 0, 0, 0.3);
   border: none;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px 6px 0 0;
   color: var(--text);
-  padding: 8px 10px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  padding: 8px 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
   outline: none;
+  &:focus { border-bottom-color: var(--accent2); }
 }
 
 .ship-picker-list {
@@ -131,17 +154,20 @@
 }
 
 .ship-picker-option {
-  padding: 6px 10px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  padding: 6px 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
   color: var(--text2);
   cursor: pointer;
-  &:hover { background: var(--bg3); color: var(--text); }
-  &.selected { color: var(--accent); }
+  border-radius: 3px;
+  margin: 1px 2px;
+  transition: all 0.1s;
+  &:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); }
+  &.selected { color: var(--accent); background: rgba(0, 200, 255, 0.06); }
 }
 
 .ship-picker-empty {
-  padding: 10px;
+  padding: 12px;
   font-family: 'Share Tech Mono', monospace;
   font-size: 12px;
   color: var(--text3);
@@ -159,9 +185,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border: 1px solid var(--border);
-  padding: 10px;
-  background: var(--bg3);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .accel-header, .accel-row {
@@ -177,7 +204,7 @@
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   color: var(--text3);
   text-transform: uppercase;
   text-align: center;
@@ -193,7 +220,8 @@
 
 .field-input.narrow {
   text-align: center;
-  padding: 4px 6px;
+  padding: 5px 6px;
+  font-family: 'Share Tech Mono', monospace;
 }
 
 // hide number input spinners
@@ -215,24 +243,41 @@ input[type="number"] { -moz-appearance: textfield; }
   color: var(--bg);
   background: var(--accent);
   border: none;
-  padding: 8px 16px;
+  border-radius: 4px;
+  padding: 10px 20px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
   align-self: flex-end;
 
-  &:hover:not(:disabled) { background: var(--accent2); color: var(--text); }
+  &:hover:not(:disabled) {
+    background: var(--accent2);
+    color: var(--text);
+    box-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
+  }
   &:disabled { opacity: 0.3; cursor: not-allowed; }
 }
 
 .feedback-panel {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px 20px;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 18px 22px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   width: 468px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
 }
 
 .help-toggle {
@@ -242,40 +287,41 @@ input[type="number"] { -moz-appearance: textfield; }
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 2px 8px;
-  border: 1px solid var(--accent2);
-  border-radius: 3px;
-  background: transparent;
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(0, 200, 255, 0.04);
   color: var(--accent);
   cursor: pointer;
   margin-left: 10px;
   vertical-align: middle;
-  transition: all 0.15s;
+  transition: all 0.2s;
 
-  &:hover { background: rgba(0, 200, 255, 0.08); }
+  &:hover { background: rgba(0, 200, 255, 0.1); box-shadow: 0 0 6px rgba(0, 200, 255, 0.1); }
 }
 
 .testing-guide {
-  background: rgba(0, 200, 255, 0.04);
-  border: 1px solid var(--accent2);
-  border-radius: 4px;
-  padding: 10px 14px;
+  background: rgba(0, 200, 255, 0.03);
+  border: 1px solid rgba(0, 200, 255, 0.1);
+  border-left: 2px solid var(--accent2);
+  border-radius: 0 4px 4px 0;
+  padding: 12px 14px;
 }
 
 .tg-title {
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent2);
   margin-bottom: 6px;
 }
 
 .tg-steps {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.7;
   padding-left: 20px;
   margin: 0;
 
@@ -294,21 +340,34 @@ input[type="number"] { -moz-appearance: textfield; }
 /* ── Needs Testing ───────────────────── */
 
 .needs-testing {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 14px;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 16px;
   width: 100%;
   max-width: 1040px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
 }
 
 .nt-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.15);
   margin-bottom: 2px;
   flex-shrink: 0;
 }
@@ -317,7 +376,7 @@ input[type="number"] { -moz-appearance: textfield; }
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   color: var(--text3);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   flex-shrink: 0;
 }
 
@@ -335,26 +394,29 @@ input[type="number"] { -moz-appearance: textfield; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 8px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.02);
 
   &:hover {
     border-color: var(--accent2);
     background: rgba(0, 200, 255, 0.04);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.08);
   }
 
   &.selected {
     border-color: var(--accent);
     background: rgba(0, 200, 255, 0.08);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
   }
 }
 
 .nt-name {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 12px;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
