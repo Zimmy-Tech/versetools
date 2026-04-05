@@ -747,6 +747,17 @@ def main():
                 title = loc_lookup(loc, title_m.group(1)) if title_m else ""
                 desc = loc_lookup(loc, desc_m.group(1)) if desc_m else ""
 
+                # Try debug-name-based localization lookup (strip suffixes like -Stanton4)
+                if not title:
+                    base_name = debug_name.split("-")[0] if "-" in debug_name else debug_name
+                    for suffix in ["_title", "_title,p", "_title,P"]:
+                        title = loc.get((base_name + suffix).lower(), "")
+                        if title:
+                            break
+                if not desc:
+                    base_name = debug_name.split("-")[0] if "-" in debug_name else debug_name
+                    desc = loc.get((base_name + "_desc").lower(), "")
+
                 # Clean template vars or fall back to parent title or debug name
                 if not title:
                     title = parent_title or debug_name
@@ -980,9 +991,32 @@ def main():
                 if gen_abandon_cooldown and "abandonCooldownMin" not in entry:
                     entry["abandonCooldownMin"] = gen_abandon_cooldown
 
+            # Build handler-level title map: for each Contract, find the nearest
+            # ancestor contractParams Title (handler-level fallback)
+            def _handler_title_for(contract_start):
+                """Find the nearest contractParams Title before this contract position."""
+                pre = txt[:contract_start]
+                # Search backwards for the last contractParams Title
+                for m in reversed(list(re.finditer(r'param="Title"\s+value="([^"]+)"', pre))):
+                    resolved = loc_lookup(loc, m.group(1))
+                    if resolved:
+                        return resolved
+                return ""
+
+            def _handler_desc_for(contract_start):
+                """Find the nearest contractParams Description before this contract position."""
+                pre = txt[:contract_start]
+                for m in reversed(list(re.finditer(r'param="Description"\s+value="([^"]+)"', pre))):
+                    resolved = loc_lookup(loc, m.group(1))
+                    if resolved:
+                        return resolved
+                return ""
+
             # Parse top-level Contracts
             for cm in re.finditer(r'<Contract\s([^>]+)>(.*?)</Contract>', txt, re.S):
-                entry = parse_contract_element(cm.group(1), cm.group(2), gen_name, gen_title)
+                # Use handler-level title as fallback, then generator-level
+                handler_title = _handler_title_for(cm.start()) or gen_title
+                entry = parse_contract_element(cm.group(1), cm.group(2), gen_name, handler_title)
                 if entry:
                     _apply_gen_cooldown(entry)
                     contracts.append(entry)
@@ -1076,6 +1110,53 @@ def main():
                  "Faction Standing" if s.lower() == "factionreputationscope" else s)
                 for s in c["repScopes"]
             ]
+
+    # Supplement: add template-spawned sub-missions that aren't standalone Contract elements.
+    # These are multi-mission children whose data lives in localization but not in generator XMLs.
+    _existing_classes = {c["className"].lower() for c in contracts}
+    MANUAL_CONTRACTS = [
+        {
+            "className": "Hockrow_FacilityDelve_P3M1",
+            "title": loc.get("hockrow_facilitydelve_p3m1_title,p", "Jorrit Dossier: Project Hyperion"),
+            "category": "Contract",
+            "generator": "hockrowagency_facilitydelve",
+            "reward": 1098000,
+            "currency": "UEC",
+            "lawful": True,
+            "difficulty": -1,
+            "maxPlayers": 1,
+            "canShare": False,
+            "rewardEstimated": True,
+            "description": loc.get("hockrow_facilitydelve_p3m1_desc,p", loc.get("hockrow_facilitydelve_p3m1_desc", "")),
+            "activity": "FPS",
+            "contractor": "Hockrow Agency",
+            "requiresCompletion": ["Jorrit Dossier: Power Usage Data"],
+            "unlocks": ["Jorrit Dossier: Experiment Redux"],
+            "isChain": True,
+        },
+        {
+            "className": "Hockrow_FacilityDelve_P3Repeat",
+            "title": loc.get("hockrow_facilitydelve_p3repeat_title", "Jorrit Dossier: Experiment Redux"),
+            "category": "Contract",
+            "generator": "hockrowagency_facilitydelve",
+            "reward": 1098000,
+            "currency": "UEC",
+            "lawful": True,
+            "difficulty": -1,
+            "maxPlayers": 1,
+            "canShare": False,
+            "rewardEstimated": True,
+            "description": loc.get("hockrow_facilitydelve_p3repeat_desc", ""),
+            "activity": "FPS",
+            "contractor": "Hockrow Agency",
+            "requiresCompletion": ["Jorrit Dossier: Project Hyperion"],
+            "isChain": True,
+        },
+    ]
+    for mc in MANUAL_CONTRACTS:
+        if mc["className"].lower() not in _existing_classes:
+            contracts.append(mc)
+            print(f"  + Supplemented: {mc['title']}")
 
     print(f"  Parsed {before_filter} contracts ({sum(1 for c in contracts if c.get('repRequirements'))} with rep requirements, {fixed_titles} titles fixed, {hidden} hidden event, {gen_resolved} contractors resolved)")
 

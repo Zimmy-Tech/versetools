@@ -1,13 +1,13 @@
 {
   "meta": {
-    "totalContracts": 1521,
+    "totalContracts": 1523,
     "categories": {
       "Blockade Runner": 1,
       "Bounty": 147,
       "Cargo": 184,
       "Combat": 111,
       "Combined": 4,
-      "Contract": 844,
+      "Contract": 846,
       "Delivery": 91,
       "Derelict": 16,
       "Event": 5,
@@ -14208,6 +14208,49 @@
       "isChain": true
     },
     {
+      "className": "Hockrow_FacilityDelve_P3M1",
+      "title": "Jorrit Dossier: Project Hyperion",
+      "category": "Contract",
+      "generator": "hockrowagency_facilitydelve",
+      "reward": 1098000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update: \\nAll your digging around Onyx has paid off. I’ve been able to confirm that Jorrit has been operating an off-the-record lab in the facility’s Site-B in order to conduct an experiment he calls “Project Hyperion.” I’ll send his <EM4>lab notes to your mobiGlas journal</EM4> once you’re underway, but the long and short of it is the bastard is trying to make Humans evolve or some nonsense like that.\\n\\nThe client wants the experimental data, so you’re going back to Onyx and do everything needed to get Project Hyperion up and running. \\n\\nContract Investigator Actions:\\nPrep the experiment by collecting a <EM4>Reagent code from the Engineering wing</EM4> and a <EM4>Catalyst code from the Research wing</EM4>.\\n\\nOnce you have those, head down to the <EM4>Lab in Site-B</EM4> and <EM4>run the experiment</EM4> so you can <EM4>upload the results</EM4>.\\n\\nAdditional Notes:\\nSince this is an active lab, there might be ASD security on-site.\\n \\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n",
+      "activity": "FPS",
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Power Usage Data"
+      ],
+      "unlocks": [
+        "Jorrit Dossier: Experiment Redux"
+      ],
+      "isChain": true
+    },
+    {
+      "className": "Hockrow_FacilityDelve_P3Repeat",
+      "title": "Jorrit Dossier: Experiment Redux",
+      "category": "Contract",
+      "generator": "hockrowagency_facilitydelve",
+      "reward": 1098000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update: \\nThe client’s been back in touch. Guess in order to verify the data we provided, they need us to run Dr. Jorrit’s Hyperion experiment again. While using the same reagents and catalysts will still provide useful data, the client encouraged trying different experimental factors to provide a broader picture of Jorrit’s research.\\n\\nContract Investigator Actions:\\nPrep the experiment by collecting a <EM4>Reagent code from the Engineering wing</EM4>and a <EM4>Catalyst code from the Research wing</EM4>. \\n\\nOnce acquired, proceed to <EM4>Lab in Site-B</EM4> and <EM4>run the experiment</EM4> in order to <EM4>upload the results</EM4>.\\n\\nAdditional Notes:\\nSince this is an active lab, there might be ASD security on-site. \\n\\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n",
+      "activity": "FPS",
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Project Hyperion"
+      ],
+      "isChain": true
+    },
+    {
       "className": "RedWind_Pyro_BulkGrade_Solar_CFP_StationToRuin_Carbon_CargoHauling_Multi4ToSingle",
       "title": "[ReputationRank] Hauler Needed for [CargoGradeToken] Shipment",
       "category": "Contract",
@@ -14240,7 +14283,7 @@
     },
     {
       "className": "Hockrow_FacilityDelve_P3MM_Intro",
-      "title": "Jorrit Dossier: Onyx Personnel Files",
+      "title": "Jorrit Dossier: Access Research Files",
       "category": "Contract",
       "generator": "hockrowagency_facilitydelve",
       "reward": 677750,
@@ -14265,7 +14308,11 @@
         "Geist Armor Legs ASD Edition",
         "Geist Armor Helmet ASD Edition",
         "Zenith Laser Sniper Rifle Battery (22 Cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "IDS_ResourceGathering_Tech",
@@ -24516,7 +24563,7 @@
     },
     {
       "className": "Hockrow_FacilityDelve_P2M4-Stanton4",
-      "title": "Jorrit Dossier: Onyx Personnel Files",
+      "title": "Jorrit Dossier: Power Usage Data",
       "category": "Contract",
       "generator": "hockrowagency_facilitydelve",
       "reward": 91500,
@@ -24527,11 +24574,16 @@
       "canShare": false,
       "rewardEstimated": true,
       "timeLimitMin": 25,
+      "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update: \\nThe seismic data you extracted had some interesting revelations. My expert says she thinks that Jorrit might have been excavating down there. Hate to think what he’s doing, but it's our job to find out. I think we’re close to cracking this, so I want you to go back to Onyx and gather the Power Usage data. If we can track energy flow from the last couple months, a pattern should reveal itself. \\n\\nContract Investigator Actions:\\nExplore the <EM4>Engineering</EM4> wing and <EM4>upload the Power Usage data</EM4>.\\n\\nAdditional Notes:\\nBe wary of possible hostile forces on site. \\n\\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n\\nOnce you hand off this data, I'll be sending you <EM4>10 Secure Drives</EM4> with copies of the information we've gathered so far. You can collect them at your home location.",
       "system": "microTech",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M4-Stanton4_Repeat",
@@ -26679,7 +26731,7 @@
     },
     {
       "className": "Hockrow_FacilityDelve_P2M3-Stanton4",
-      "title": "Jorrit Dossier: Onyx Personnel Files",
+      "title": "Jorrit Dossier: Retrieve Seismic Data",
       "category": "Contract",
       "generator": "hockrowagency_facilitydelve",
       "reward": 73250,
@@ -26690,11 +26742,16 @@
       "canShare": false,
       "rewardEstimated": true,
       "timeLimitMin": 20,
+      "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update: \\nThanks to that last batch of data you delivered, we’re starting to fill in the gaps on what Dr. Jorrit’s doing down there. Got a rough timeline of his activities. Seems he’s had more stuff coming into Onyx than going out which is interesting. We’re going to need more intel though. There’s an old experiment running down there that monitors minute seismic changes. If you can deliver that data to me, it’ll help us pinpoint some of the movement around the facility.\\n\\nContract Investigator Actions:\\nExplore the <EM4>Research</EM4> wing and <EM4>retrieve the Seismic data</EM4> and deliver it to <EM4>~mission(Destination|Address).</EM4>\\n\\nAdditional Notes:\\nBe wary of possible hostile forces on site.\\n \\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n",
       "system": "microTech",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M3-Stanton4_Repeat",
@@ -30486,7 +30543,7 @@
     },
     {
       "className": "Hockrow_FacilityDelve_P2M2-Stanton4",
-      "title": "Jorrit Dossier: Onyx Personnel Files",
+      "title": "Jorrit Dossier: Retrieve Security Data",
       "category": "Contract",
       "generator": "hockrowagency_facilitydelve",
       "reward": 55000,
@@ -30497,11 +30554,16 @@
       "canShare": false,
       "rewardEstimated": true,
       "timeLimitMin": 15,
+      "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update: \\nWe were able to pull some very interesting data from what you delivered, but we still don’t have a clear enough picture. What we did concretely learn though is that the Onyx security monitoring system is still operational. The data from there is going to be your next target.\\n\\nContract Investigator Actions:\\nExplore the <EM4>Research</EM4> wing and <EM4>retrieve the Security data</EM4> and deliver it to <EM4>~mission(Destination|Address)</EM4>.\\n\\nAdditional Notes:\\nBe wary of possible hostile forces on site. \\n\\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n",
       "system": "microTech",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M2-Stanton4_Repeat",
@@ -35416,7 +35478,7 @@
     },
     {
       "className": "Hockrow_FacilityDelve_P2M1-Stanton4",
-      "title": "Jorrit Dossier: Onyx Personnel Files",
+      "title": "Jorrit Dossier: Retrieve Energy Anomaly Data",
       "category": "Contract",
       "generator": "hockrowagency_facilitydelve",
       "reward": 36500,
@@ -35427,11 +35489,16 @@
       "canShare": false,
       "rewardEstimated": true,
       "timeLimitMin": 10,
+      "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update: \\nReviewing Dr. Jorrit’s recent files that you uploaded to me left us with more questions than answers. While we know for a fact that the doctor had been inside Onyx, we don’t yet know the specifics of what he was doing. The client is eager for us to learn more about what exactly Jorrit’s up to, so I’m afraid you’re going to have to go back in.\\n\\nI have a few ideas on how we might be able to use the facility’s systems to pinpoint Dr. Jorrit’s activities, though you’ll have to physically bring me the data this time so we can properly analyze it. First up, are the energy sensors in Engineering. They’re still active and sensitive enough to pick up any anomalous readings.\\n\\nContract Investigator Actions:\\nExplore the <EM4>Engineering</EM4> wing and <EM4>retrieve the Energy Anomaly data</EM4> and deliver it to <EM4>~mission(Destination|Address)</EM4>.\\n\\nAdditional Notes:\\nBe wary of possible hostile forces on site. \\n\\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n",
       "system": "microTech",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M1-Stanton4_Repeat",
@@ -40353,6 +40420,11 @@
       "unlocks": [
         "Jorrit Dossier: Lab Sample",
         "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data",
+        "Jorrit Dossier: Access Research Files",
         "Jorrit Dossier: Updated Energy Anomaly Data",
         "Jorrit Dossier: Updated Security Data",
         "Jorrit Dossier: Updated Seismic Data",
