@@ -337,52 +337,71 @@ header {
 
 .ship-picker-input {
   width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   color: var(--text);
-  padding: 5px 10px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  padding: 6px 12px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 
-  &::placeholder { color: var(--text3); }
-  &:focus { border-color: var(--accent2); }
+  &::placeholder { color: var(--text3); font-weight: 400; }
+  &:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.12);
+    background: rgba(0, 0, 0, 0.35);
+  }
 }
 
 .ship-picker-dropdown {
   position: absolute;
-  top: calc(100% + 2px);
+  top: calc(100% + 4px);
   left: 0;
   min-width: 100%;
   width: max-content;
   background: var(--bg2);
-  border: 1px solid var(--border2);
+  border: 1px solid rgba(0, 200, 255, 0.12);
   border-radius: 6px;
-  box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.06), 0 12px 40px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 255, 0.06),
+    0 12px 40px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(0, 200, 255, 0.03);
   max-height: 320px;
   overflow-y: auto;
   z-index: 100;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 }
 
 .ship-picker-option {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 10px;
+  padding: 7px 12px;
   cursor: pointer;
-  gap: 8px;
-  transition: background 0.15s;
+  gap: 10px;
+  transition: all 0.1s;
+  margin: 1px 3px;
+  border-radius: 3px;
 
-  &:hover { background: rgba(255,255,255,0.04); border-radius: 3px; }
-  &.active { background: rgba(0,200,255,0.06); }
+  &:hover { background: rgba(255,255,255,0.04); }
+  &.active {
+    background: rgba(0, 200, 255, 0.06);
+    .spo-name { color: var(--accent); }
+  }
 }
 
 .spo-name {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
@@ -390,8 +409,8 @@ header {
 }
 
 .spo-mfr {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
   color: var(--text3);
   flex-shrink: 0;
 }

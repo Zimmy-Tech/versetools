@@ -204,7 +204,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showDropdown.set(true);
   }
 
-  openDropdown(): void  { this.showDropdown.set(true); }
+  openDropdown(): void  {
+    this.showDropdown.set(true);
+    // Scroll to the currently selected ship after the dropdown renders
+    setTimeout(() => {
+      const active = document.querySelector('.ship-picker-dropdown .active') as HTMLElement;
+      if (active) active.scrollIntoView({ block: 'center' });
+    });
+  }
   closeDropdown(): void { setTimeout(() => this.showDropdown.set(false), 150); }
 
   toggleDataMode(): void {
