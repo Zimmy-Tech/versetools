@@ -19,6 +19,7 @@ import { ShipCompareComponent } from './components/ship-compare/ship-compare';
 import { FpsWeaponsComponent } from './components/fps-weapons/fps-weapons';
 import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
+import { EveStyleComponent } from './components/eve-style/eve-style';
 
 export const routes: Routes = [
   { path: 'loadout',            component: LoadoutViewComponent },
@@ -39,6 +40,7 @@ export const routes: Routes = [
   { path: 'mining',             component: MiningViewComponent },
   { path: 'mining-signatures',  component: MiningSignaturesComponent },
   { path: 'compact',            component: CompactViewComponent },
+  { path: 'eve-style',          component: EveStyleComponent },
   { path: 'updates',            component: UpdatesViewComponent },
   { path: 'changelog',          component: ChangelogViewComponent },
   { path: '',                    redirectTo: 'loadout', pathMatch: 'full' },
