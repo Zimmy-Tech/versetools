@@ -42,6 +42,12 @@ interface ArmorPieceRef {
   tempMax: number | null;
   damageReduction: number | null;
   weight: string;
+  resistPhysical?: number;
+  resistEnergy?: number;
+  resistDistortion?: number;
+  resistThermal?: number;
+  resistBiochemical?: number;
+  resistStun?: number;
 }
 
 interface FpsWeaponRef {
@@ -306,6 +312,22 @@ export class CraftingViewComponent {
       else if (pl.includes('recoil') && pl.includes('handling')) description = 'Horizontal recoil (yaw)';
       else if (pl.includes('recoil') && pl.includes('smooth')) description = 'Convergence time';
 
+      // Determine color class for the modified value and % change
+      let colorClass = '';
+      if (pl.includes('min temp') && modifiedValue != null && baseValue != null) {
+        // Min temp is negative (e.g. -40°C). Lower (more negative) = better = green. Higher (closer to 0) = worse = red.
+        if (modifiedValue < baseValue) colorClass = 'positive';
+        else if (modifiedValue > baseValue) colorClass = 'negative';
+      } else if (invertComparison) {
+        // Recoil: green when lower, red when higher
+        if (data.combined < 0.999) colorClass = 'positive';
+        else if (data.combined > 1.001) colorClass = 'negative';
+      } else {
+        // Normal stats: green when higher, red when lower
+        if (data.combined > 1.001) colorClass = 'positive';
+        else if (data.combined < 0.999) colorClass = 'negative';
+      }
+
       return {
         property: prop,
         combined: data.combined,
@@ -314,9 +336,42 @@ export class CraftingViewComponent {
         modifiedValue,
         unit,
         invertComparison,
+        colorClass,
         description,
       };
     }).sort((a, b) => a.property.localeCompare(b.property));
+  });
+
+  armorResistances = computed(() => {
+    const sr = this.selectedRecipe();
+    if (!sr || sr.category !== 'FPSArmours') return null;
+    const armorLookup = this.armorLookup();
+    let piece: ArmorPieceRef | undefined = armorLookup[sr.className];
+    if (!piece) {
+      const basePrefix = sr.className.replace(/_\d+$/, '');
+      piece = Object.values(armorLookup).find(p => p.className.startsWith(basePrefix));
+    }
+    if (!piece || !piece.resistPhysical) return null;
+
+    // Apply Damage Mitigation quality modifier to resistances
+    const effects = this.qualityEffects();
+    const mitEff = effects.find(e => e.property.toLowerCase().includes('mitigation') || e.property.toLowerCase().includes('damage'));
+    const mitMod = mitEff ? mitEff.combined : 1;
+
+    const types = [
+      { type: 'Physical', base: piece.resistPhysical! },
+      { type: 'Energy', base: piece.resistEnergy! },
+      { type: 'Distortion', base: piece.resistDistortion! },
+      { type: 'Thermal', base: piece.resistThermal! },
+      { type: 'Biochemical', base: piece.resistBiochemical! },
+      { type: 'Stun', base: piece.resistStun! },
+    ];
+
+    return types.map(t => {
+      const baseDR = Math.round((1 - t.base) * 100);
+      const modDR = Math.round((1 - t.base) * mitMod * 100 * 10) / 10;
+      return { type: t.type, baseDR, modDR, changed: Math.abs(modDR - baseDR) > 0.05 };
+    });
   });
 
   constructor(private http: HttpClient, private data: DataService) {
@@ -346,8 +401,24 @@ export class CraftingViewComponent {
 
     // Load armor and weapon data for base stat lookups
     this.http.get<{ armor: ArmorPieceRef[] }>('live/versedb_fps_armor.json').subscribe(d => {
+      const resistByWeight: Record<string, { phys: number; enrg: number; dist: number; thrm: number; bio: number; stun: number }> = {
+        light:  { phys: 0.80, enrg: 0.80, dist: 0.80, thrm: 0.80, bio: 0.80, stun: 0.70 },
+        medium: { phys: 0.70, enrg: 0.70, dist: 0.70, thrm: 0.70, bio: 0.70, stun: 0.55 },
+        heavy:  { phys: 0.60, enrg: 0.60, dist: 0.60, thrm: 0.60, bio: 0.60, stun: 0.40 },
+      };
       const lookup: Record<string, ArmorPieceRef> = {};
-      for (const p of d.armor) lookup[p.className] = p;
+      for (const p of d.armor) {
+        const r = resistByWeight[p.weight];
+        if (r) {
+          p.resistPhysical = r.phys;
+          p.resistEnergy = r.enrg;
+          p.resistDistortion = r.dist;
+          p.resistThermal = r.thrm;
+          p.resistBiochemical = r.bio;
+          p.resistStun = r.stun;
+        }
+        lookup[p.className] = p;
+      }
       this.armorLookup.set(lookup);
     });
     this.http.get<{ weapons: FpsWeaponRef[] }>('live/versedb_fps.json').subscribe(d => {
@@ -425,6 +496,15 @@ export class CraftingViewComponent {
 
   setQuality(key: string, value: number): void {
     this.qualityValues.update(qv => ({ ...qv, [key]: value }));
+  }
+
+  setAllQuality(value: number): void {
+    const sr = this.selectedRecipe();
+    if (!sr) return;
+    const entries = this.ingredientsWithQuality(sr);
+    const updated: Record<string, number> = {};
+    for (const e of entries) updated[e.key] = value;
+    this.qualityValues.update(qv => ({ ...qv, ...updated }));
   }
 
   fmtTime(seconds: number): string {

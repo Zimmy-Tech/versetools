@@ -557,6 +557,29 @@
   background: rgba(255, 255, 255, 0.01);
 }
 
+.quality-presets {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 10px 0 14px;
+}
+
+.qp-btn {
+  padding: 3px 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text2);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { border-color: var(--text2); color: var(--text); }
+}
+
 .quality-sliders {
   display: flex;
   flex-direction: column;
@@ -630,6 +653,17 @@
   gap: 6px;
 }
 
+.ql-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 /* ── Quality Effects List ────────────── */
 .quality-list {
   display: flex;
@@ -647,7 +681,7 @@
 
 .ql-header-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -682,7 +716,7 @@
 
 .ql-property {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: var(--text);
@@ -690,7 +724,7 @@
 
 .ql-desc {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text3);
   letter-spacing: 0.5px;
@@ -705,14 +739,14 @@
 
 .ql-base {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text3);
   width: 80px;
   text-align: center;
 }
 
 .ql-arrow {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text3);
   opacity: 0.4;
   width: 14px;
@@ -721,23 +755,77 @@
 
 .ql-modified {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text);
   width: 90px;
   text-align: center;
   &.positive { color: var(--green); }
+  &.cold { color: var(--accent); }
   &.negative { color: var(--red); }
 }
 
 .ql-pct {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text3);
   width: 64px;
   text-align: center;
   &.positive { color: var(--green); }
+  &.cold { color: var(--accent); }
   &.negative { color: var(--red); }
+}
+
+/* ── Armor Damage Resistance ──────────── */
+.resist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.resist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  background: var(--bg);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+
+.resist-type {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.resist-vals {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.resist-base {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.resist-arrow {
+  font-size: 10px;
+  color: var(--text3);
+  opacity: 0.4;
+}
+
+.resist-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  &.positive { color: var(--green); }
+  &.unchanged { color: var(--text2); }
 }
 
 .qr-header-row {
