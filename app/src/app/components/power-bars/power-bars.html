@@ -46,7 +46,7 @@
                        (click)="setAlloc(col, shieldBandThreshold(col, i))">
                   </div>
                 }
-              } @else {
+              } @else if (col.powerMin > 0) {
                 <div class="pb-block"
                      [class.pb-block-minband]="col.powerMin > 1"
                      [style.height.px]="col.powerMin * 10 + (col.powerMin - 1) * 2"

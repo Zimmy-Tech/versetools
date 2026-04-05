@@ -262,8 +262,7 @@ export class PowerBarsComponent {
     for (const hp of ship.hardpoints) {
       const item = loadout[hp.id];
       if (item?.type === 'Cooler' && (item.powerMax ?? 0) > 0) {
-        const b = item.powerBands ?? [];
-        const cMin = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
+        const cMin = 1;  // Coolers are always individually addressable (1 pip minimum)
         cols.push({
           id: hp.id, label: `CL${ci++}`,
           max: Math.max(1, (item.powerMax ?? 0) - 1), powerMin: cMin,
@@ -352,28 +351,26 @@ export class PowerBarsComponent {
   /**
    * Total cooling demand from all powered components.
    *
-   * Weighted-pip model: demand = Σ(pips × weight_per_type) + PP_IDLE_BASE.
-   * Derived from in-game engineering gauge on Aurora MR II (9 configs, 0% error)
-   * and validated on Guardian MX (5 configs, ±1% error).
+   * Weighted-pip model: demand = PP_IDLE + Σ(pips × weight) + wpnPips × totalWpnPD × 0.484
+   * Validated across Aurora MK II, Guardian, Guardian MX, Crusader Intrepid
+   * (27 data points, max 1% error within game's whole-percentage rounding).
    *
-   * Per-component cooling demand weights (heat per pip):
-   *   Radar:       ~2.0    Shields:     ~1.71
-   *   LS:          ~1.87   Weapons:     ~1.28
-   *   Thrusters:   ~1.28   Coolers:     ~1.0
-   *   QD:          ~1.0
+   * Two-tier system:
+   *   High (~2.0/pip): Radar 1.988, Shield 1.978, QD 2.070, LS 2.300
+   *   Low  (~1.0/pip): Cooler 0.939, Thruster 1.032
+   *   Weapons: scales with powerDraw (pips × totalPowerDraw × 0.484)
    *
-   * PP idle base is a small constant (~0.6) that varies by power plant.
    * Ships with validated per-component models (Polaris, MSR) use those.
    */
-  private static readonly W_RADAR  = 1.92;
-  private static readonly W_SHIELD = 1.71;
-  private static readonly W_LS     = 1.87;
-  private static readonly W_WPN    = 1.28;
-  private static readonly W_THRU   = 1.28;
-  private static readonly W_COOL   = 1.0;
-  private static readonly W_QD     = 1.0;
-  private static readonly W_TOOL   = 1.28;
-  private static readonly PP_IDLE  = 0.6;
+  private static readonly W_RADAR  = 1.988;
+  private static readonly W_SHIELD = 1.978;
+  private static readonly W_LS     = 2.300;
+  private static readonly W_WPN_PD = 0.484;  // weapon demand scales with powerDraw: pips × totalPowerDraw × factor
+  private static readonly W_THRU   = 1.032;
+  private static readonly W_COOL   = 0.939;
+  private static readonly W_QD     = 2.070;
+  private static readonly W_TOOL   = 0.966;  // tools use fixed per-pip weight
+  private static readonly PP_IDLE  = 0.04;
 
   coolingDemand = computed(() => {
     const loadout = this.data.loadout();
@@ -417,7 +414,10 @@ export class PowerBarsComponent {
         case 'Radar':                demand += p * C.W_RADAR;  break;
       }
     }
-    demand += this.data.weaponsPower() * C.W_WPN;
+    // Weapon demand scales with total powerDraw of equipped weapons
+    const wpnPD = this.data.allWeaponsIncludingPdc()
+      .reduce((s, w) => s + (w.powerDraw ?? 0), 0);
+    demand += this.data.weaponsPower() * wpnPD * C.W_WPN_PD;
     demand += this.data.toolPower() * C.W_TOOL;
     demand += this.data.tractorPower() * C.W_TOOL;
     demand += this.data.thrusterPower() * C.W_THRU;
@@ -543,8 +543,7 @@ export class PowerBarsComponent {
       if (col.id === '__weapons__') {
         this.data.setWeaponsPower(0);
       } else if (col.id === '__thrusters__') {
-        // Thrusters can't go to 0
-        return;
+        this.data.setThrusterPower(0);
       } else if (col.shieldBands) {
         const slots = col.shieldBands.map(b => ({ hpId: b.hpId, item: b.item }));
         this.data.setShieldsPower(0, slots);
@@ -559,6 +558,9 @@ export class PowerBarsComponent {
       } else if (col.shieldBands) {
         const slots = col.shieldBands.map(b => ({ hpId: b.hpId, item: b.item }));
         this.data.setShieldsPower(col.powerMin, slots);
+      } else if (col.id === '__thrusters__') {
+        const thrustMax = this.data.selectedShip()?.thrusterPowerBars ?? 4;
+        this.data.setThrusterPower(Math.round(thrustMax * 0.5));
       } else if (col.item?.type === 'Radar') {
         const rMin = Math.max(1, Math.round((col.item.powerDraw ?? 1) * (col.item.minConsumptionFraction ?? 0.25)));
         this.data.setPowerAlloc(col.id, rMin, col.item);
