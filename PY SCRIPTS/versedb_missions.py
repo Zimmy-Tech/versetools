@@ -1133,6 +1133,15 @@ def main():
             "requiresCompletion": ["Jorrit Dossier: Power Usage Data"],
             "unlocks": ["Jorrit Dossier: Experiment Redux"],
             "isChain": True,
+            "blueprintRewards": [
+                'Zenith "Darkwave" Laser Sniper Rifle',
+                'Fresnel "Molten" Energy LMG',
+                'Geist Armor Arms ASD Edition',
+                'Geist Armor Core ASD Edition',
+                'Geist Armor Legs ASD Edition',
+                'Geist Armor Helmet ASD Edition',
+                'Zenith Laser Sniper Rifle Battery (22 Cap)',
+            ],
         },
         {
             "className": "Hockrow_FacilityDelve_P3Repeat",
