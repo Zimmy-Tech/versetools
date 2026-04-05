@@ -31,7 +31,7 @@ export class FpsArmorComponent {
   expandedPiece = signal<string | null>(null);
   weightFilter = signal('');
   slotFilter = signal('');
-  setFilter = signal('ADP');
+  setFilter = signal('');
 
   /** Multi-word set roots that should stay together */
   private readonly COMPOUND_ROOTS = new Set([

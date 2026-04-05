@@ -13,7 +13,8 @@
   flex: 1;
   overflow: hidden;
   padding: 16px 20px;
-  gap: 12px;
+  gap: 14px;
+  align-items: center;
 }
 
 .empty-state {
@@ -33,11 +34,12 @@
 
 .fps-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--accent);
+  text-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
 }
 
 .fps-sub {
@@ -52,25 +54,33 @@
   gap: 8px;
   justify-content: center;
   flex-wrap: wrap;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   padding: 10px 14px;
+  width: 100%;
+  max-width: 1000px;
 }
 
 .fps-select, .fps-search {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Exo 2', sans-serif;
   font-size: 13px;
   background: var(--bg3);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   color: var(--text);
-  padding: 5px 10px;
+  padding: 6px 12px;
   outline: none;
-  transition: all 0.15s;
-  &:focus { border-color: var(--accent2); box-shadow: 0 0 8px rgba(0, 200, 255, 0.15); }
+  transition: all 0.2s;
+  &:focus { border-color: var(--accent2); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
   option { background: var(--bg3); color: var(--text); }
+}
+
+.fps-select {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .fps-search { min-width: 180px; }
@@ -78,23 +88,25 @@
 .fps-table-wrap {
   flex: 1;
   overflow: auto;
-  background: var(--bg2);
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
-  max-width: 900px;
-  align-self: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 1000px;
   width: 100%;
+
+  &::-webkit-scrollbar { width: 4px; height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 }
 
 .fps-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
 
   th, td {
-    padding: 3px 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     white-space: nowrap;
   }
 
@@ -104,36 +116,52 @@
     z-index: 1;
 
     th {
-      background: var(--bg3);
+      background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
       font-family: 'Rajdhani', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--text3);
       text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.1);
     }
   }
 
   .sortable {
     cursor: pointer;
+    transition: color 0.15s;
     &:hover { color: var(--accent); }
   }
 
   .col-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     color: var(--text);
-    font-family: 'Exo 2', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
   }
 
-  .col-num { text-align: right; }
+  .col-num {
+    text-align: right;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+  }
 
   .col-dr { color: var(--green); font-weight: 600; }
 
+  // Default body text
+  tbody td {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
   .expandable { cursor: pointer; transition: background 0.15s; }
   .expandable:hover { background: rgba(255, 255, 255, 0.03); }
-  .expanded { background: rgba(0, 200, 255, 0.04); }
+  .expanded { background: rgba(0, 200, 255, 0.03); }
 
   .variant-count {
     font-family: 'Share Tech Mono', monospace;
@@ -143,9 +171,9 @@
   }
 
   .variant-row td {
-    padding: 4px 10px 6px;
-    background: var(--bg3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 6px 10px 8px;
+    background: rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   }
 
   .variant-list {
@@ -155,15 +183,15 @@
   }
 
   .variant-tag {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Exo 2', sans-serif;
     font-size: 11px;
     color: var(--text2);
-    background: var(--bg2);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 2px 6px;
+    padding: 3px 8px;
     border-radius: 3px;
     transition: all 0.15s;
-    &:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
+    &:hover { border-color: var(--accent2); box-shadow: 0 0 6px rgba(0, 200, 255, 0.08); }
   }
 }
 
