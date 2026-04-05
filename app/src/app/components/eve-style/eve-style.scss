@@ -253,7 +253,7 @@
 .ef-tree-count {
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
-  color: var(--accent2);
+  color: var(--text3);
   flex-shrink: 0;
 }
 
@@ -280,6 +280,96 @@
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   color: var(--text3);
+}
+
+// ── Slot leaves (actual ship hardpoints) ────────────────
+
+.ef-slot-leaf {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 38px;
+  cursor: pointer;
+  transition: all 0.1s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.01);
+  border-left: 2px solid transparent;
+
+  &:hover { background: rgba(255, 255, 255, 0.03); }
+  &.active {
+    background: rgba(0, 200, 255, 0.05);
+    border-left-color: var(--accent);
+    .ef-slot-name { color: var(--accent); }
+  }
+  &.empty .ef-slot-name { color: var(--text3); font-style: italic; }
+}
+
+.ef-slot-size {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.ef-slot-name {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.1s;
+}
+
+.ef-slot-stat {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+// ── Equip button ────────────────────────────────────────
+
+.ef-equip-btn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 200, 255, 0.04);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 3px;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  padding: 0;
+
+  &:hover {
+    background: rgba(0, 200, 255, 0.12);
+    border-color: var(--accent);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.15);
+  }
+}
+
+.ef-ph-equip { width: 22px; flex-shrink: 0; }
+
+.ef-picker-row.equipped {
+  background: rgba(0, 200, 255, 0.04);
+  .ef-pr-name { color: var(--accent); }
+  .ef-equip-btn { background: rgba(0, 200, 255, 0.1); border-color: var(--accent); }
+}
+
+.ef-picker-empty {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+  text-align: center;
+  padding: 30px 16px;
 }
 
 .ef-leaf-count {

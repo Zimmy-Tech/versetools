@@ -4,11 +4,28 @@ import { Item, Hardpoint } from '../../models/db.models';
 
 type CategoryId = 'weapons' | 'shields' | 'power' | 'cooling' | 'quantum' | 'avionics' | 'missiles';
 
+interface SlotEntry {
+  hardpoint: Hardpoint;
+  slotId: string;
+  item: Item | null;
+  category: CategoryId;
+  label: string;
+}
+
+const HP_TYPE_TO_CAT: Record<string, CategoryId> = {
+  WeaponGun: 'weapons', WeaponTachyon: 'weapons', Turret: 'weapons', TurretBase: 'weapons',
+  Missile: 'missiles', MissileLauncher: 'missiles',
+  Shield: 'shields',
+  PowerPlant: 'power',
+  Cooler: 'cooling',
+  QuantumDrive: 'quantum',
+  Radar: 'avionics', LifeSupportGenerator: 'avionics',
+};
+
 interface BrowserCategory {
   id: CategoryId;
   name: string;
   icon: string;
-  types: string[];  // Item types to filter
   expanded: boolean;
 }
 
@@ -21,35 +38,65 @@ interface BrowserCategory {
 export class EveStyleComponent {
   constructor(public data: DataService) {}
 
-  selectedCategory = signal<CategoryId>('weapons');
+  selectedSlotId = signal<string | null>(null);
   selectedPickerItem = signal<Item | null>(null);
   browserTab = signal<'browse' | 'buy'>('browse');
   pickerSearch = signal('');
   pickerSort = signal<'name' | 'dps' | 'size'>('name');
 
   categories: BrowserCategory[] = [
-    { id: 'weapons', name: 'Weapons', icon: '⚔', types: ['WeaponGun', 'WeaponTachyon'], expanded: true },
-    { id: 'missiles', name: 'Missiles', icon: '◆', types: ['Missile'], expanded: false },
-    { id: 'shields', name: 'Shields', icon: '◈', types: ['Shield'], expanded: false },
-    { id: 'power', name: 'Power Plants', icon: '⚡', types: ['PowerPlant'], expanded: false },
-    { id: 'cooling', name: 'Coolers', icon: '❄', types: ['Cooler'], expanded: false },
-    { id: 'quantum', name: 'Quantum Drives', icon: '◉', types: ['QuantumDrive'], expanded: false },
-    { id: 'avionics', name: 'Avionics', icon: '◎', types: ['Radar', 'LifeSupportGenerator'], expanded: false },
+    { id: 'weapons', name: 'Weapons', icon: '⚔', expanded: true },
+    { id: 'missiles', name: 'Missiles', icon: '◆', expanded: false },
+    { id: 'shields', name: 'Shields', icon: '◈', expanded: false },
+    { id: 'power', name: 'Power Plants', icon: '⚡', expanded: false },
+    { id: 'cooling', name: 'Coolers', icon: '❄', expanded: false },
+    { id: 'quantum', name: 'Quantum Drives', icon: '◉', expanded: false },
+    { id: 'avionics', name: 'Avionics', icon: '◎', expanded: false },
   ];
 
-  // Count items per category from live data
-  categoryCount(cat: BrowserCategory): number {
-    return this.data.items().filter(i => cat.types.includes(i.type)).length;
+  // Map ship hardpoints to categorized slot entries
+  slots = computed<SlotEntry[]>(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return [];
+    const loadout = this.data.loadout();
+    const entries: SlotEntry[] = [];
+
+    for (const hp of ship.hardpoints) {
+      const cat = HP_TYPE_TO_CAT[hp.type];
+      if (!cat) continue;
+
+      // Check if this slot has an equipped item
+      const item = loadout[hp.id] ?? null;
+
+      // Clean label
+      const label = hp.id.replace(/hardpoint_/g, '').replace(/_/g, ' ');
+
+      entries.push({ hardpoint: hp, slotId: hp.id, item, category: cat, label });
+    }
+
+    return entries;
+  });
+
+  // Slots filtered by category for the tree browser
+  slotsForCategory(catId: CategoryId): SlotEntry[] {
+    return this.slots().filter(s => s.category === catId);
   }
 
-  // Picker: items filtered by selected category, search, and sorted
+  // The currently selected slot entry
+  selectedSlot = computed<SlotEntry | null>(() => {
+    const id = this.selectedSlotId();
+    if (!id) return null;
+    return this.slots().find(s => s.slotId === id) ?? null;
+  });
+
+  // Picker: items that fit the selected slot
   pickerItems = computed(() => {
-    const cat = this.categories.find(c => c.id === this.selectedCategory());
-    if (!cat) return [];
+    const slot = this.selectedSlot();
+    if (!slot) return [];
     const q = this.pickerSearch().toLowerCase();
     const sort = this.pickerSort();
 
-    let items = this.data.items().filter(i => cat.types.includes(i.type));
+    let items = this.data.getOptionsForSlot(slot.hardpoint);
     if (q) {
       items = items.filter(i =>
         (i.name ?? '').toLowerCase().includes(q) ||
@@ -82,109 +129,36 @@ export class EveStyleComponent {
       else if (item.type === 'QuantumDrive') category = 'Quantum';
       else if (item.type === 'Radar' || item.type === 'LifeSupportGenerator') category = 'Avionics';
 
-      // Clean up slot label
       const label = slotId.split('.').pop()?.replace(/hardpoint_/g, '').replace(/_/g, ' ') ?? slotId;
-
       entries.push({ slotId, slotLabel: label, item, category });
     }
 
-    // Sort: weapons first, then by category, then by slot
     const catOrder = ['Weapons', 'Missiles', 'Shields', 'Power', 'Cooling', 'Quantum', 'Avionics', 'Other'];
     entries.sort((a, b) => catOrder.indexOf(a.category) - catOrder.indexOf(b.category));
-
     return entries;
   });
 
-  // Stats computed from equipped items
-  totalDps = computed(() => {
-    return this.equippedItems()
-      .filter(e => e.category === 'Weapons')
-      .reduce((sum, e) => sum + (e.item.dps ?? 0), 0);
-  });
+  // Stats
+  totalDps = computed(() => this.equippedItems().filter(e => e.category === 'Weapons').reduce((s, e) => s + (e.item.dps ?? 0), 0));
+  totalAlpha = computed(() => this.equippedItems().filter(e => e.category === 'Weapons').reduce((s, e) => s + (e.item.alphaDamage ?? 0), 0));
+  totalShieldHp = computed(() => this.equippedItems().filter(e => e.category === 'Shields').reduce((s, e) => s + (e.item.hp ?? 0), 0));
+  totalShieldRegen = computed(() => this.equippedItems().filter(e => e.category === 'Shields').reduce((s, e) => s + (e.item.regenRate ?? 0), 0));
+  totalPowerOutput = computed(() => this.equippedItems().filter(e => e.category === 'Power').reduce((s, e) => s + (e.item.powerOutput ?? 0), 0));
+  totalPowerDraw = computed(() => this.equippedItems().filter(e => e.category !== 'Power').reduce((s, e) => s + (e.item.powerDraw ?? 0), 0));
+  totalCooling = computed(() => this.equippedItems().filter(e => e.category === 'Cooling').reduce((s, e) => s + (e.item.coolingRate ?? 0), 0));
+  missileCount = computed(() => this.equippedItems().filter(e => e.category === 'Missiles').length);
 
-  totalAlpha = computed(() => {
-    return this.equippedItems()
-      .filter(e => e.category === 'Weapons')
-      .reduce((sum, e) => sum + (e.item.alphaDamage ?? 0), 0);
-  });
-
-  totalShieldHp = computed(() => {
-    return this.equippedItems()
-      .filter(e => e.category === 'Shields')
-      .reduce((sum, e) => sum + (e.item.hp ?? 0), 0);
-  });
-
-  totalShieldRegen = computed(() => {
-    return this.equippedItems()
-      .filter(e => e.category === 'Shields')
-      .reduce((sum, e) => sum + (e.item.regenRate ?? 0), 0);
-  });
-
-  totalPowerOutput = computed(() => {
-    return this.equippedItems()
-      .filter(e => e.category === 'Power')
-      .reduce((sum, e) => sum + (e.item.powerOutput ?? 0), 0);
-  });
-
-  totalPowerDraw = computed(() => {
-    return this.equippedItems()
-      .filter(e => e.category !== 'Power')
-      .reduce((sum, e) => sum + (e.item.powerDraw ?? 0), 0);
-  });
-
-  totalCooling = computed(() => {
-    return this.equippedItems()
-      .filter(e => e.category === 'Cooling')
-      .reduce((sum, e) => sum + (e.item.coolingRate ?? 0), 0);
-  });
-
-  missileCount = computed(() => {
-    return this.equippedItems().filter(e => e.category === 'Missiles').length;
-  });
-
-  // Get the primary stat for a picker item (depends on category)
-  primaryStat(item: Item): string {
-    if (item.dps) return Math.round(item.dps).toString();
-    if (item.hp) return item.hp.toLocaleString();
-    if (item.powerOutput) return item.powerOutput.toLocaleString();
-    if (item.coolingRate) return Math.round(item.coolingRate).toString();
-    if (item.speed) return Math.round(item.speed).toLocaleString() + ' m/s';
-    return '—';
+  // Actions
+  selectSlot(slotId: string): void {
+    this.selectedSlotId.set(slotId);
+    this.pickerSearch.set('');
+    this.selectedPickerItem.set(null);
   }
 
-  primaryStatLabel(): string {
-    const cat = this.selectedCategory();
-    if (cat === 'weapons') return 'DPS';
-    if (cat === 'missiles') return 'DMG';
-    if (cat === 'shields') return 'HP';
-    if (cat === 'power') return 'Output';
-    if (cat === 'cooling') return 'Rate';
-    if (cat === 'quantum') return 'Speed';
-    return 'Stat';
-  }
-
-  secondaryStat(item: Item): string {
-    if (item.fireRate) return Math.round(item.fireRate) + ' RPM';
-    if (item.regenRate) return Math.round(item.regenRate) + '/s';
-    if (item.range) return Math.round(item.range * 10) / 10 + ' Gm';
-    return '—';
-  }
-
-  // Equip: double-click an item in the picker to add it to a matching slot
-  equipItem(item: Item): void {
-    const ship = this.data.selectedShip();
-    if (!ship) return;
-
-    // Find a matching hardpoint for this item type
-    for (const hp of ship.hardpoints) {
-      if (item.size && item.size >= (hp.minSize ?? 0) && item.size <= (hp.maxSize ?? 99)) {
-        const options = this.data.getOptionsForSlot(hp);
-        if (options.some(o => o.className === item.className)) {
-          this.data.setLoadoutItem(hp.id, item);
-          return;
-        }
-      }
-    }
+  equipToSlot(item: Item): void {
+    const slot = this.selectedSlot();
+    if (!slot) return;
+    this.data.setLoadoutItem(slot.slotId, item);
   }
 
   selectPicker(item: Item): void {
@@ -195,9 +169,33 @@ export class EveStyleComponent {
     cat.expanded = !cat.expanded;
   }
 
-  selectCategory(id: CategoryId): void {
-    this.selectedCategory.set(id);
-    this.pickerSearch.set('');
+  primaryStat(item: Item): string {
+    if (item.dps) return Math.round(item.dps).toString();
+    if (item.hp) return item.hp.toLocaleString();
+    if (item.powerOutput) return item.powerOutput.toLocaleString();
+    if (item.coolingRate) return Math.round(item.coolingRate).toString();
+    if (item.speed) return Math.round(item.speed).toLocaleString() + ' m/s';
+    if (item.alphaDamage) return Math.round(item.alphaDamage).toString();
+    return '—';
+  }
+
+  primaryStatLabel(): string {
+    const slot = this.selectedSlot();
+    if (!slot) return 'Stat';
+    if (slot.category === 'weapons') return 'DPS';
+    if (slot.category === 'missiles') return 'DMG';
+    if (slot.category === 'shields') return 'HP';
+    if (slot.category === 'power') return 'Output';
+    if (slot.category === 'cooling') return 'Rate';
+    if (slot.category === 'quantum') return 'Speed';
+    return 'Stat';
+  }
+
+  secondaryStat(item: Item): string {
+    if (item.fireRate) return Math.round(item.fireRate) + ' RPM';
+    if (item.regenRate) return Math.round(item.regenRate) + '/s';
+    if (item.range) return Math.round(item.range * 10) / 10 + ' Gm';
+    return '—';
   }
 
   fmt(n: number | undefined, digits = 0): string {
