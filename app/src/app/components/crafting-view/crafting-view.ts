@@ -523,6 +523,14 @@ export class CraftingViewComponent {
     return pct >= 0 ? `+${pct.toFixed(1)}%` : `${pct.toFixed(1)}%`;
   }
 
+  cleanDesc(desc: string): string {
+    return desc
+      .replace(/<[^>]+>/g, '')
+      .replace(/\\n/g, '\n')
+      .replace(/~mission\([^)]+\)/g, '???')
+      .trim();
+  }
+
   isOre(ing: CraftingIngredient): boolean {
     return ing.type === 'resource' && ing.quantity < 1;
   }

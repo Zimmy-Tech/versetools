@@ -445,18 +445,69 @@
                     </div>
                     @if (expandedMission() === m.className) {
                       <div class="ms-detail">
-                        @if (m.reward) {
-                          <div class="ms-stat"><span class="ms-label">Reward</span><span class="ms-val accent">{{ m.reward.toLocaleString('en-US') }} {{ m.currency }}</span></div>
+                        <!-- Stats -->
+                        <div class="ms-stats-grid">
+                          @if (m.reward) {
+                            <div class="ms-stat"><span class="ms-label">Reward</span><span class="ms-val accent">{{ m.reward.toLocaleString('en-US') }} {{ m.currency }}@if (m.rewardEstimated) { <span class="ms-est">(est)</span>}</span></div>
+                          }
+                          @if (m.contractor) {
+                            <div class="ms-stat"><span class="ms-label">Contractor</span><span class="ms-val">{{ m.contractor }}</span></div>
+                          }
+                          @if (m.difficulty >= 0) {
+                            <div class="ms-stat"><span class="ms-label">Difficulty</span><span class="ms-val">{{ m.difficulty }}</span></div>
+                          }
+                          @if (m.repReward) {
+                            <div class="ms-stat"><span class="ms-label">Rep Reward</span><span class="ms-val positive">+{{ m.repReward }}</span></div>
+                          }
+                          @if (m.repPenalty) {
+                            <div class="ms-stat"><span class="ms-label">Failure</span><span class="ms-val negative">{{ m.repPenalty }}</span></div>
+                          }
+                          @if (m.repScopes?.length) {
+                            <div class="ms-stat"><span class="ms-label">Rep Scope</span><span class="ms-val">{{ m.repScopes.join(', ') }}</span></div>
+                          }
+                          @if (m.timeLimitMin) {
+                            <div class="ms-stat"><span class="ms-label">Time Limit</span><span class="ms-val">{{ m.timeLimitMin }} min</span></div>
+                          }
+                          @if (m.cooldownMin) {
+                            <div class="ms-stat"><span class="ms-label">Cooldown</span><span class="ms-val">{{ m.cooldownMin }} min</span></div>
+                          }
+                          @if (m.maxPlayers > 1) {
+                            <div class="ms-stat"><span class="ms-label">Max Players</span><span class="ms-val">{{ m.maxPlayers }}</span></div>
+                          }
+                          @if (m.canShare) {
+                            <div class="ms-stat"><span class="ms-label">Shareable</span><span class="ms-val">Yes</span></div>
+                          }
+                          @if (m.onceOnly) {
+                            <div class="ms-stat"><span class="ms-label">Once Only</span><span class="ms-val">Yes</span></div>
+                          }
+                        </div>
+
+                        <!-- Chain Links -->
+                        @if (m.requiresCompletion?.length) {
+                          <div class="ms-chain">
+                            <span class="ms-chain-label">Requires</span>
+                            <div class="ms-tag-list">
+                              @for (req of m.requiresCompletion; track req) {
+                                <span class="ms-tag chain">{{ req }}</span>
+                              }
+                            </div>
+                          </div>
                         }
-                        @if (m.repReward) {
-                          <div class="ms-stat"><span class="ms-label">Rep Reward</span><span class="ms-val">+{{ m.repReward }}</span></div>
+                        @if (m.unlocks?.length) {
+                          <div class="ms-chain">
+                            <span class="ms-chain-label">Unlocks</span>
+                            <div class="ms-tag-list">
+                              @for (u of m.unlocks; track u) {
+                                <span class="ms-tag chain">{{ u }}</span>
+                              }
+                            </div>
+                          </div>
                         }
-                        @if (m.repScopes?.length) {
-                          <div class="ms-stat"><span class="ms-label">Rep Scope</span><span class="ms-val">{{ m.repScopes.join(', ') }}</span></div>
-                        }
+
+                        <!-- Enemy Ships -->
                         @if (m.enemyPool?.length) {
-                          <div class="ms-ships">
-                            <span class="ms-label">Enemy Ships</span>
+                          <div class="ms-chain">
+                            <span class="ms-chain-label">Enemy Ships</span>
                             <div class="ms-tag-list">
                               @for (ship of m.enemyPool; track ship) {
                                 <span class="ms-tag danger">{{ ship }}</span>
@@ -464,8 +515,10 @@
                             </div>
                           </div>
                         }
+
+                        <!-- Description -->
                         @if (m.description) {
-                          <div class="ms-desc">{{ m.description }}</div>
+                          <div class="ms-desc">{{ cleanDesc(m.description) }}</div>
                         }
                       </div>
                     }
