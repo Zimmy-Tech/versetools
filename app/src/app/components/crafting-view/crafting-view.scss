@@ -254,40 +254,49 @@
 .recipe-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+  gap: 6px;
   flex: 1;
   min-width: 0;
   flex-shrink: 0;
   overflow-y: auto;
   padding-right: 14px;
   align-content: start;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 }
 
 .recipe-card {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 7px 10px;
-  background: rgba(19, 26, 36, 0.7);
-  border-left: 3px solid var(--accent2);
-  border-radius: 4px;
+  gap: 0;
+  background: linear-gradient(160deg, rgba(19, 26, 36, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-left: 3px solid rgba(0, 144, 200, 0.4);
+  border-radius: 0 4px 4px 0;
   cursor: pointer;
   transition: all 0.15s;
   position: relative;
+  overflow: hidden;
 
   &:hover {
-    background: var(--bg3);
     border-left-color: var(--accent);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 200, 255, 0.1);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
     transform: translateX(2px);
+
+    .rc-name { color: var(--accent); }
   }
 
   &.selected {
-    background: var(--bg3);
     border-left-color: var(--accent);
+    border-color: rgba(0, 200, 255, 0.12);
     box-shadow:
-      0 0 0 1px rgba(0, 200, 255, 0.08),
-      0 2px 12px rgba(0, 0, 0, 0.3);
+      0 0 0 1px rgba(0, 200, 255, 0.06),
+      0 2px 16px rgba(0, 0, 0, 0.35);
+
+    .rc-name { color: var(--accent); }
   }
 }
 
@@ -295,13 +304,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 8px 10px 6px;
 }
 
 .rc-sub-tag {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   color: var(--text3);
   text-transform: uppercase;
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -313,63 +323,68 @@
 
 .rc-name {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
   min-width: 0;
+  transition: color 0.15s;
 }
 
 .rc-time {
-  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
-  font-size: 11px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
   color: var(--text3);
   white-space: nowrap;
   flex-shrink: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   padding: 2px 6px;
+  letter-spacing: 0.5px;
 }
 
 .rc-bottom {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding-left: 1px;
+  gap: 0;
+  padding: 4px 8px 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .rc-chip {
   display: flex;
   align-items: baseline;
-  gap: 6px;
-  padding: 2px 8px;
-  font-family: 'Chakra Petch', 'Share Tech Mono', monospace;
+  gap: 4px;
+  padding: 2px 6px;
   font-size: 12px;
-  border-left: 2px solid rgba(255, 255, 255, 0.06);
 
   &.ore {
-    border-left-color: rgba(126, 200, 227, 0.3);
-    .rc-chip-name { color: #7ec8e3; }
+    .rc-chip-name { color: rgba(126, 200, 227, 0.8); }
     .rc-chip-qty { color: #a5ddf0; }
   }
 
   &.gem {
-    border-left-color: rgba(232, 122, 232, 0.3);
-    .rc-chip-name { color: #e87ae8; }
+    .rc-chip-name { color: rgba(232, 122, 232, 0.8); }
     .rc-chip-qty { color: #f0a0f0; }
   }
 }
 
 .rc-chip-name {
-  color: var(--text2);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 12px;
+  color: var(--text3);
 }
 
 .rc-chip-qty {
-  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
   font-weight: 700;
+  margin-left: auto;
 }
 
 /* ── Popout panel ──────────────────────── */
