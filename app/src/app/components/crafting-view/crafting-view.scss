@@ -1546,6 +1546,7 @@
   &.lawful { color: #4aff7a; border: 1px solid rgba(74, 255, 122, 0.3); }
   &.unlawful { color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.3); }
   &.chain { color: #60c8ff; border: 1px solid rgba(96, 200, 255, 0.3); }
+  &.boss { color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); background: rgba(255, 204, 0, 0.08); }
 }
 
 @media (max-width: 767px) {

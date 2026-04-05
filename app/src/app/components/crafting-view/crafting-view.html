@@ -438,10 +438,15 @@
                       <span class="ms-toggle">{{ expandedMission() === m.className ? '−' : '+' }}</span>
                     </div>
                     <div class="ms-meta">
+                      @if (m.boss) { <span class="ms-tag boss">BOSS</span> }
+                      @if (m.lawful === true) { <span class="ms-tag lawful">LAWFUL</span> }
+                      @if (m.lawful === false) { <span class="ms-tag unlawful">UNLAWFUL</span> }
                       @if (m.contractor) { <span class="ms-tag contractor">{{ m.contractor }}</span> }
-                      @if (m.danger) { <span class="ms-tag danger">{{ m.danger }}</span> }
                       @if (m.system) { <span class="ms-tag system">{{ m.system }}</span> }
                       @if (m.activity) { <span class="ms-tag activity">{{ m.activity }}</span> }
+                      @if (m.danger) { <span class="ms-tag danger">{{ m.danger }}</span> }
+                      @if (m.isChain) { <span class="ms-tag chain">CHAIN</span> }
+                      @if (m.multiSystem) { <span class="ms-tag system">MULTI-SYSTEM</span> }
                     </div>
                     @if (expandedMission() === m.className) {
                       <div class="ms-detail">
@@ -449,6 +454,9 @@
                         <div class="ms-stats-grid">
                           @if (m.reward) {
                             <div class="ms-stat"><span class="ms-label">Reward</span><span class="ms-val accent">{{ m.reward.toLocaleString('en-US') }} {{ m.currency }}@if (m.rewardEstimated) { <span class="ms-est">(est)</span>}</span></div>
+                          }
+                          @if (m.giver) {
+                            <div class="ms-stat"><span class="ms-label">From</span><span class="ms-val">{{ m.giver }}</span></div>
                           }
                           @if (m.contractor) {
                             <div class="ms-stat"><span class="ms-label">Contractor</span><span class="ms-val">{{ m.contractor }}</span></div>
@@ -465,11 +473,25 @@
                           @if (m.repScopes?.length) {
                             <div class="ms-stat"><span class="ms-label">Rep Scope</span><span class="ms-val">{{ m.repScopes.join(', ') }}</span></div>
                           }
+                          @if (m.repRequirements?.length) {
+                            @for (req of m.repRequirements; track req.scope) {
+                              <div class="ms-stat"><span class="ms-label">Req: {{ req.scope }}</span><span class="ms-val">{{ req.minRank }} — {{ req.maxRank }}</span></div>
+                            }
+                          }
+                          @if (m.lifetimeMin) {
+                            <div class="ms-stat"><span class="ms-label">Lifetime</span><span class="ms-val">{{ m.lifetimeMin }} min</span></div>
+                          }
                           @if (m.timeLimitMin) {
                             <div class="ms-stat"><span class="ms-label">Time Limit</span><span class="ms-val">{{ m.timeLimitMin }} min</span></div>
                           }
+                          @if (m.respawnMin) {
+                            <div class="ms-stat"><span class="ms-label">Respawn</span><span class="ms-val">{{ m.respawnMin }} min</span></div>
+                          }
                           @if (m.cooldownMin) {
                             <div class="ms-stat"><span class="ms-label">Cooldown</span><span class="ms-val">{{ m.cooldownMin }} min</span></div>
+                          }
+                          @if (m.abandonCooldownMin) {
+                            <div class="ms-stat"><span class="ms-label">Abandon CD</span><span class="ms-val">{{ m.abandonCooldownMin }} min</span></div>
                           }
                           @if (m.maxPlayers > 1) {
                             <div class="ms-stat"><span class="ms-label">Max Players</span><span class="ms-val">{{ m.maxPlayers }}</span></div>
@@ -481,6 +503,18 @@
                             <div class="ms-stat"><span class="ms-label">Once Only</span><span class="ms-val">Yes</span></div>
                           }
                         </div>
+
+                        <!-- Mission Flow -->
+                        @if (m.missionFlow?.length) {
+                          <div class="ms-chain">
+                            <span class="ms-chain-label">Mission Type</span>
+                            <div class="ms-tag-list">
+                              @for (flow of m.missionFlow; track flow) {
+                                <span class="ms-tag activity">{{ flow }}</span>
+                              }
+                            </div>
+                          </div>
+                        }
 
                         <!-- Chain Links -->
                         @if (m.requiresCompletion?.length) {
