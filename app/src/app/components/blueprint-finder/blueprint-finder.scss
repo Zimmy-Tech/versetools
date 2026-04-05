@@ -80,7 +80,7 @@
 }
 
 .filter-select, .filter-input {
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--bg3);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   color: var(--text);
@@ -91,6 +91,7 @@
   cursor: pointer;
   width: 100%;
   transition: border-color 0.15s, box-shadow 0.15s;
+  option { background: var(--bg3); color: var(--text); }
   &:focus { border-color: var(--accent2); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
 }
 
