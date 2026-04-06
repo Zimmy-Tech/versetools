@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 
-type Section = 'about' | 'power' | 'weapons' | 'shields' | 'signatures' | 'armor' | 'cooling' | 'flight' | 'mining' | 'radar' | 'cargo' | 'crafting' | 'contracts';
+type Section = 'about' | 'power' | 'weapons' | 'rof' | 'shields' | 'signatures' | 'armor' | 'cooling' | 'flight' | 'mining' | 'radar' | 'cargo' | 'crafting' | 'contracts';
 
 @Component({
   selector: 'app-formulas-view',
@@ -15,6 +15,7 @@ export class FormulasViewComponent {
     { id: 'about', label: 'About' },
     { id: 'power', label: 'Power System' },
     { id: 'weapons', label: 'Weapons & DPS' },
+    { id: 'rof', label: 'Rate of Fire - Real DPS' },
     { id: 'shields', label: 'Shields' },
     { id: 'signatures', label: 'Signatures' },
     { id: 'armor', label: 'Armor' },

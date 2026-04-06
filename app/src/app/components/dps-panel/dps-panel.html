@@ -34,6 +34,7 @@
           <div class="real-dps-popup" (click)="$event.stopPropagation()">
             <button class="real-dps-close" (click)="showRealDpsInfo.set(false)">&times;</button>
             <h3 class="real-dps-title">What is Real DPS?</h3>
+            <p class="real-dps-disclaimer">This data is based on real in-game testing and results. It is my best understanding of how the system works, calculated to an error rate of less than 1.5%. It could possibly be incorrect, however, enough data points were checked that it seems incredibly likely. The rationale is listed here as well as in the formulas tab.</p>
             <p>The fire rates listed in the game data for many weapons are <strong>not what you actually get in-game</strong>. We tested this by timing ammo consumption across 9 different weapons and found a consistent pattern.</p>
             <h4>The Problem</h4>
             <p>The game server runs on a clock that ticks <strong>30 times per second</strong>. Every tick, the server checks: "is it time to fire another shot?" If yes, fire. If no, wait for the next tick.</p>

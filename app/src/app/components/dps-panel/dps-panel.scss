@@ -981,6 +981,17 @@
   }
 }
 
+.real-dps-disclaimer {
+  font-size: 11px !important;
+  color: var(--accent2) !important;
+  font-style: italic;
+  background: rgba(0, 200, 255, 0.03);
+  border: 1px solid rgba(0, 200, 255, 0.08);
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 12px !important;
+}
+
 .real-dps-note {
   font-size: 11px !important;
   color: var(--text3) !important;

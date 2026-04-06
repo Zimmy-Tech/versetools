@@ -320,3 +320,41 @@ h3 {
   h2 { font-size: 16px; }
   h3 { font-size: 13px; }
 }
+
+.disclaimer {
+  font-style: italic;
+  color: var(--accent2) !important;
+  background: rgba(0, 200, 255, 0.03);
+  border: 1px solid rgba(0, 200, 255, 0.08);
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+.formula-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  margin: 10px 0;
+
+  thead th {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text3);
+    text-align: right;
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+    &:first-child { text-align: left; }
+  }
+
+  tbody td {
+    padding: 4px 8px;
+    text-align: right;
+    color: var(--text2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    &:first-child { text-align: left; color: var(--text); }
+  }
+}
