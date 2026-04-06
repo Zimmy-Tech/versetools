@@ -1,0 +1,303 @@
+================================================================================
+  VERSETOOLS DATA EXTRACTION PIPELINE — STEP-BY-STEP INSTRUCTIONS
+================================================================================
+
+This document describes the complete workflow for updating VerseTools when new
+Star Citizen game files are available (new patch, PTU build, etc).
+
+Prerequisites:
+  - Python 3.10+
+  - unp4k installed and on PATH (used to extract from Data.p4k and forge DCB)
+  - Node.js + npm (for building the Angular app)
+  - Git (for committing and deploying)
+
+
+================================================================================
+  STEP 0: GET THE NEW GAME FILES
+================================================================================
+
+1. Copy the new Data.p4k file to:
+     /home/bryan/projects/SC Raw Data/LIVE/Data.p4k     (for live builds)
+     /home/bryan/projects/SC Raw Data/PTU/Data.p4k      (for PTU builds)
+
+2. Also copy the build_manifest.id file to the same folder:
+     /home/bryan/projects/SC Raw Data/LIVE/build_manifest.id
+     /home/bryan/projects/SC Raw Data/PTU/build_manifest.id
+
+   The build_manifest.id is used to detect version changes and auto-clear
+   stale intermediate extraction data.
+
+
+================================================================================
+  STEP 1: RUN THE MAIN EXTRACTION SCRIPT
+================================================================================
+
+This is the primary pipeline. It extracts ships, components, weapons, shields,
+coolers, power plants, quantum drives, radar, life support, mining data,
+default loadouts, shop prices, and all associated metadata.
+
+  cd /home/bryan/projects/versedb
+
+  # For LIVE only:
+  python3 "PY SCRIPTS/versedb_extract.py" --mode live
+
+  # For PTU only:
+  python3 "PY SCRIPTS/versedb_extract.py" --mode ptu
+
+  # For both LIVE and PTU:
+  python3 "PY SCRIPTS/versedb_extract.py" --mode both
+
+  # If you need to force a fresh extraction from the p4k (clears all
+  # intermediate directories):
+  python3 "PY SCRIPTS/versedb_extract.py" --mode live --reextract
+
+What it does automatically:
+  1. Extracts vehicle XMLs, localization, and Game2.dcb from Data.p4k (via unp4k)
+  2. Forges the DCB into XML records (via unp4k dcb command)
+  3. Parses all vehicle XMLs for ship data
+  4. Extracts components from forged DCB records
+  5. Resolves default loadouts per ship
+  6. Extracts mining locations and mineral compositions
+  7. Detects and displays any changes from the baseline
+
+BASELINE REVIEW:
+  The script will show a diff of changes from the last extraction (new ships,
+  changed hardpoints, modified stats). For each change it will ask:
+    "Accept? (y/n/q to quit)"
+  - Press 'y' to accept and update the baseline
+  - Press 'n' to skip (keeps old baseline)
+  - Press 'q' to quit (ABORTS — nothing is written)
+
+  IMPORTANT: If you press 'q', the output file is NOT written. You must
+  re-run and accept/skip all items for the file to be generated.
+
+Output files:
+  - PY SCRIPTS/versedb_data.json          (main output, auto-copied below)
+  - app/public/live/versedb_data.json     (auto-copied for LIVE)
+  - app/public/ptu/versedb_data.json      (auto-copied for PTU)
+
+
+================================================================================
+  STEP 2: RUN THE MISSIONS EXTRACTION
+================================================================================
+
+This extracts contract/mission data from the DCB mission broker XMLs.
+Must run AFTER Step 1 (needs localization data from the same extraction).
+
+  cd /home/bryan/projects/versedb
+
+  # For LIVE:
+  VERSEDB_DATA_MODE=live python3 "PY SCRIPTS/versedb_missions.py"
+
+  # For PTU:
+  VERSEDB_DATA_MODE=ptu python3 "PY SCRIPTS/versedb_missions.py"
+
+Output files:
+  - PY SCRIPTS/versedb_missions.json
+  - app/public/live/versedb_missions.json   (auto-copied)
+  - app/public/ptu/versedb_missions.json    (auto-copied)
+
+
+================================================================================
+  STEP 3: RUN THE CRAFTING EXTRACTION
+================================================================================
+
+This extracts crafting blueprints, recipes, and ingredients from the DCB.
+
+  cd /home/bryan/projects/versedb
+
+  # For LIVE:
+  VERSEDB_DATA_MODE=live python3 "PY SCRIPTS/crafting_extract.py"
+
+  # For PTU:
+  VERSEDB_DATA_MODE=ptu python3 "PY SCRIPTS/crafting_extract.py"
+
+Output files:
+  - PY SCRIPTS/versedb_crafting.json
+  - app/public/live/versedb_crafting.json   (auto-copied)
+  - app/public/ptu/versedb_crafting.json    (auto-copied)
+
+
+================================================================================
+  STEP 4: RUN THE FPS WEAPONS EXTRACTION
+================================================================================
+
+This extracts FPS weapon data (damage, fire rates, recoil, ammo, magazines).
+
+  cd /home/bryan/projects/versedb
+
+  # For LIVE:
+  python3 "PY SCRIPTS/extract_fps_weapons.py"
+
+  # For PTU:
+  python3 "PY SCRIPTS/extract_fps_weapons.py"
+  (Note: this script outputs to both live/ and ptu/ automatically)
+
+Output files:
+  - app/public/live/versedb_fps.json
+  - app/public/ptu/versedb_fps.json
+
+
+================================================================================
+  STEP 5: RUN THE FPS ARMOR EXTRACTION
+================================================================================
+
+This extracts FPS armor sets (resistances, slots, tiers).
+
+  cd /home/bryan/projects/versedb
+
+  # For LIVE:
+  python3 "PY SCRIPTS/extract_fps_armor.py" --target live
+
+  # For PTU:
+  python3 "PY SCRIPTS/extract_fps_armor.py" --target ptu
+
+Output files:
+  - app/public/live/versedb_fps_armor.json
+  - app/public/ptu/versedb_fps_armor.json
+
+
+================================================================================
+  STEP 6: COPY ROOT-LEVEL DATA FILES
+================================================================================
+
+The app also reads some JSON files from the root of app/public/ (not inside
+live/ or ptu/). These are the "active" data files used when PTU mode is off.
+After extraction, copy the LIVE versions to the root:
+
+  cd /home/bryan/projects/versedb
+
+  cp app/public/live/versedb_data.json     app/public/versedb_data.json
+  cp app/public/live/versedb_missions.json app/public/versedb_missions.json
+  cp app/public/live/versedb_crafting.json  app/public/versedb_crafting.json
+
+
+================================================================================
+  STEP 7: VERIFY LOCALLY (OPTIONAL BUT RECOMMENDED)
+================================================================================
+
+Start the dev server and check the app:
+
+  cd /home/bryan/projects/versedb/app
+  npx ng serve --port 4200
+
+  Open http://localhost:4200 in a browser and spot-check:
+  - Ship list loads correctly
+  - Loadout page shows correct default weapons
+  - DPS numbers look reasonable
+  - Mining locations tab shows correct mineral distributions
+  - Missions/Contracts tab loads
+  - Crafting tab loads
+  - FPS Weapons/Armor tabs load
+
+
+================================================================================
+  STEP 8: COMMIT AND DEPLOY
+================================================================================
+
+The app auto-deploys to GitHub Pages on every push to main.
+
+  cd /home/bryan/projects/versedb
+
+  # Stage the updated data files
+  git add app/public/versedb_data.json
+  git add app/public/versedb_missions.json
+  git add app/public/versedb_crafting.json
+  git add app/public/live/
+  git add app/public/ptu/
+
+  # Commit with a descriptive message
+  git commit -m "Update data files for SC X.X.X-live.NNNNNNN"
+
+  # Push to trigger auto-deploy
+  git push
+
+The GitHub Actions workflow (deploy.yml) will:
+  1. Install dependencies (npm ci)
+  2. Run prebuild.sh (generates version.json with git hash)
+  3. Build the Angular app (ng build --configuration production)
+  4. Deploy to GitHub Pages
+
+Deployment typically takes 2-3 minutes after push.
+
+
+================================================================================
+  PTU MODE
+================================================================================
+
+To enable PTU mode on the live site, edit:
+  app/public/config.json
+
+  {
+    "ptuEnabled": true,
+    "ptuLabel": "4.0.2 PTU"     <-- whatever label you want shown
+  }
+
+To disable PTU mode:
+  {
+    "ptuEnabled": false,
+    "ptuLabel": "No active PTU build"
+  }
+
+Commit and push config.json to deploy the change.
+
+
+================================================================================
+  QUICK REFERENCE — FULL PIPELINE (LIVE)
+================================================================================
+
+  cd /home/bryan/projects/versedb
+
+  # 1. Main extraction (ships, components, mining, loadouts)
+  python3 "PY SCRIPTS/versedb_extract.py" --mode live
+
+  # 2. Missions
+  VERSEDB_DATA_MODE=live python3 "PY SCRIPTS/versedb_missions.py"
+
+  # 3. Crafting
+  VERSEDB_DATA_MODE=live python3 "PY SCRIPTS/crafting_extract.py"
+
+  # 4. FPS Weapons
+  python3 "PY SCRIPTS/extract_fps_weapons.py"
+
+  # 5. FPS Armor
+  python3 "PY SCRIPTS/extract_fps_armor.py" --target live
+
+  # 6. Copy to root
+  cp app/public/live/versedb_data.json     app/public/versedb_data.json
+  cp app/public/live/versedb_missions.json app/public/versedb_missions.json
+  cp app/public/live/versedb_crafting.json  app/public/versedb_crafting.json
+
+  # 7. Commit and deploy
+  git add app/public/
+  git commit -m "Update data files for SC X.X.X"
+  git push
+
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+"unp4k: command not found"
+  → Install unp4k and ensure it's on your PATH.
+
+"Data.p4k not found"
+  → Check that the file exists at /home/bryan/projects/SC Raw Data/LIVE/Data.p4k
+  → The folder names are case-sensitive: LIVE, PTU (uppercase)
+
+"Baseline review — Accept? (y/n/q)"
+  → This is normal. Review the changes. Press 'y' to accept each one.
+  → If you press 'q', the output file is NOT written. Re-run the script.
+
+"Missing: sc_data_xml_live" or similar
+  → The p4k extraction failed. Check that unp4k works:
+    unp4k extract "/path/to/Data.p4k" "*.xml" --convert-xml -o /tmp/test
+
+Stale data after deploy
+  → The browser may cache old JSON files. Hard refresh (Ctrl+Shift+R).
+  → GitHub Pages CDN can take a few minutes to propagate.
+
+Data looks wrong after extraction
+  → Check git diff to see what changed
+  → If needed, restore with: git checkout -- app/public/
+  → Re-run the extraction after fixing the issue
