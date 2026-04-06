@@ -380,6 +380,9 @@ export class PowerBarsComponent {
     if (ship.className === 'CRUS_Star_Runner') {
       return this.msrCoolingDemand(ship, loadout, alloc);
     }
+    if (ship.className === 'orig_600i' || ship.className === 'orig_600i_touring') {
+      return this.origin600iCoolingDemand(ship, loadout, alloc);
+    }
     // Reclaimer: no engineering panel, but generic formula matches third-party tools (~55%)
 
     const C = PowerBarsComponent;
@@ -520,11 +523,42 @@ export class PowerBarsComponent {
     // Coolers
     ['cool_aegs_s04_reclaimer', 5],         // Algid S4 (Reclaimer)
     ['cool_orig_s04_890j_scitem', 3],       // Serac S4 (890 Jump)
+    ['cool_lplt_s03_frostburn_scitem', 2],  // FrostBurn S3 (600i)
     // Shields
     ['shld_basl_s03_stronghold_scitem', 4], // Stronghold S3
     ['shld_behr_s03_5ca_scitem', 2],        // 5CA 'Akura' S3
     ['shld_orig_s04_890j_scitem', 5],       // Glacis S4 (890 Jump)
   ]);
+
+  /** Origin 600i cooling demand. Calibrated to match third-party tools (3 configs, max 1% error). */
+  private origin600iCoolingDemand(
+    ship: any, loadout: Record<string, Item>, alloc: Record<string, number>
+  ): number {
+    const C = PowerBarsComponent;
+    const W_WPN = 0.75;
+    const W_THRU = 0.334;
+
+    let demand = C.PP_IDLE;
+    demand += this.data.weaponsPower() * W_WPN;
+    demand += this.data.thrusterPower() * W_THRU;
+    demand += this.data.toolPower() * C.W_TOOL;
+    demand += this.data.tractorPower() * C.W_TOOL;
+
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item) continue;
+      const pips = alloc[hp.id] ?? 0;
+      if (pips <= 0) continue;
+      switch (item.type) {
+        case 'Shield':               demand += pips * C.W_SHIELD; break;
+        case 'Cooler':               demand += pips * C.W_COOL;   break;
+        case 'LifeSupportGenerator':  demand += pips * C.W_LS;     break;
+        case 'QuantumDrive':         demand += pips * C.W_QD;     break;
+        case 'Radar':                demand += pips * C.W_RADAR;  break;
+      }
+    }
+    return Math.round(demand * 10) / 10;
+  }
 
   private mergedMin(item: Item): number {
     const override = PowerBarsComponent.MERGED_BLOCK_ITEMS.get(item.className?.toLowerCase() ?? '');

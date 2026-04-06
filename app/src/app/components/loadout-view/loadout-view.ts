@@ -300,7 +300,7 @@ export class LoadoutViewComponent {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
       // gunNacelle = pilot-controlled weapon nacelle (e.g., Constellation nose guns)
       // Note: 'copilotSeat' is crew, 'pilotSeat' is pilot — match exact token, not substring
-      return !!ct && !ct.includes('remote_turret') && !ct.startsWith('pilotseat') && !ct.includes('gunnacelle') && !ct.includes('gunnose');
+      return !!ct && !ct.includes('remote_turret') && !ct.startsWith('pilotseat') && !ct.includes('gunnacelle') && !ct.includes('gunnose') && !ct.includes('weaponpilot');
     }
     return false;
   }
