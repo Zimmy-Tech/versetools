@@ -4920,7 +4920,12 @@ def main(mode: str = "live"):
     accel_overrides = {
         "aegs_avenger_titan": {
             "accelFwd": 15.2, "accelRetro": 3.9, "accelStrafe": 6.0, "accelUp": 6.0, "accelDown": 4.0,
-            "accelAbFwd": 25.5, "accelAbRetro": 5.1, "accelAbStrafe": 8.1, "accelAbUp": 8.1, "accelAbDown": 5.4,
+            "accelAbFwd": 26.5, "accelAbRetro": 5.1, "accelAbStrafe": 8.1, "accelAbUp": 8.1, "accelAbDown": 5.4,
+            "accelTestedDate": "2026-04-06", "accelCheckedBy": "Zimmy",
+        },
+        "aegs_avenger_titan_renegade": {
+            "accelFwd": 15.2, "accelRetro": 3.9, "accelStrafe": 6.0, "accelUp": 6.0, "accelDown": 4.0,
+            "accelAbFwd": 26.5, "accelAbRetro": 5.1, "accelAbStrafe": 8.1, "accelAbUp": 8.1, "accelAbDown": 5.4,
             "accelTestedDate": "2026-04-06", "accelCheckedBy": "Zimmy",
         },
         "aegs_gladius": {

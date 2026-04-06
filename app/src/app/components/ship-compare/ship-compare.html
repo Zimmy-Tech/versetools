@@ -51,7 +51,8 @@
               <td class="label-col">{{ row[0] }}</td>
               @for (ship of slots(); track $index; let i = $index) {
                 <td [class.best]="isBest(row, i)"
-                    [class.val]="!isBest(row, i)">{{ getCellValue(row, ship) }}</td>
+                    [class.val]="!isBest(row, i)"
+                    [innerHTML]="getCellValue(row, ship)"></td>
               }
             </tr>
           }
