@@ -10,6 +10,8 @@ import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, bandModAt, coolerSupply, 
   styleUrl: './dps-panel.scss',
 })
 export class DpsPanelComponent {
+  showRealDpsInfo = signal(false);
+
   /** HUD vs Flat display mode — shared via DataService. */
   get displayMode() { return this.data.dpsPanelMode; }
 
@@ -26,6 +28,39 @@ export class DpsPanelComponent {
   private effectiveDPS(w: Item): number {
     const base = w.dps ?? 0;
     return this.gimbalMode() === 'gimbal' ? base * this.data.GIMBAL_FIRE_RATE_MULT : base;
+  }
+
+  /**
+   * Server-tick-corrected fire rate for sequence weapons.
+   * Sequence weapons (repeaters with multi-barrel cycling) are quantized to a 30 Hz
+   * server tick. Gatlings (FireRapidParams) and cannons are unaffected.
+   * Formula: effectiveRPM = 1800 / ceil(1800 / DCB_RPM)
+   */
+  private static readonly SERVER_TICK_HZ = 30;
+  private static readonly TICKS_PER_MIN = 1800; // 30 * 60
+
+  private isGatling(w: Item): boolean {
+    return w.className?.toLowerCase().includes('gatling') ?? false;
+  }
+
+  private tickCorrectedFireRate(w: Item): number {
+    const rpm = this.effectiveFireRate(w);
+    if (rpm <= 0) return 0;
+    // Gatlings use FireRapidParams — no tick quantization
+    if (this.isGatling(w)) return rpm;
+    // Cannons fire slowly enough that tick rounding has negligible effect
+    // Sequence weapons get quantized
+    const T = DpsPanelComponent.TICKS_PER_MIN;
+    const ticks = Math.ceil(T / rpm);
+    return T / ticks;
+  }
+
+  private tickCorrectedDPS(w: Item): number {
+    const rpm = w.fireRate ?? 0;
+    if (rpm <= 0) return 0;
+    const correctedRpm = this.tickCorrectedFireRate(w);
+    const ratio = correctedRpm / rpm;
+    return this.effectiveDPS(w) * ratio;
   }
 
   private loadoutEntries = computed(() => Object.entries(this.data.loadout()));
@@ -249,6 +284,11 @@ export class DpsPanelComponent {
   pilotBurstDPS = computed(() => {
     if (!this.weaponsLive()) return 0;
     return this.directWeapons().reduce((s, w) => s + this.effectiveDPS(w), 0);
+  });
+  /** Peak DPS corrected for 30 Hz server tick quantization on sequence weapons. */
+  realPilotDPS = computed(() => {
+    if (!this.weaponsLive()) return 0;
+    return this.directWeapons().reduce((s, w) => s + this.tickCorrectedDPS(w), 0);
   });
   pilotBurst = computed(() => {
     if (!this.weaponsLive()) return { damage: 0, time: 0 };

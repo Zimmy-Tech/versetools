@@ -140,6 +140,29 @@
   cursor: help;
 }
 
+.dps-hero-dual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dps-hero-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dps-hero-sep {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--text3);
+  opacity: 0.4;
+  line-height: 1;
+  padding-bottom: 14px;
+}
+
 .dps-hero-val {
   font-family: 'Rajdhani', sans-serif;
   font-size: 32px;
@@ -147,6 +170,11 @@
   color: var(--accent);
   line-height: 1;
   text-shadow: 0 0 12px rgba(0, 200, 255, 0.25);
+
+  &.real {
+    color: var(--green);
+    text-shadow: 0 0 12px rgba(0, 255, 120, 0.2);
+  }
 }
 
 .dps-hero-label {
@@ -809,4 +837,155 @@
   flex-shrink: 0;
   min-width: 40px;
   text-align: right;
+}
+
+// ── Real DPS info icon ──────────────────────────────────
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  border: 1px solid var(--green);
+  color: var(--green);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+// ── Real DPS explainer popup ────────────────────────────
+
+.real-dps-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayIn 0.2s ease;
+}
+
+.real-dps-popup {
+  background: var(--bg2);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 6px;
+  padding: 24px 28px;
+  max-width: 540px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  animation: panelIn 0.2s ease;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  h3, h4 { font-family: 'Rajdhani', sans-serif; color: var(--accent); margin: 0; }
+  h3 { font-size: 20px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  h4 { font-size: 14px; letter-spacing: 1px; text-transform: uppercase; margin-top: 16px; margin-bottom: 6px; color: var(--accent2); }
+
+  p {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--text2);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 8px 12px;
+
+    li {
+      padding: 2px 0;
+      strong { color: var(--green); }
+    }
+  }
+
+  strong { color: var(--text); }
+}
+
+.real-dps-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  &:hover { color: var(--text); }
+}
+
+.real-dps-title {
+  padding-right: 24px;
+}
+
+.real-dps-formula {
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 14px !important;
+  color: var(--green) !important;
+  background: rgba(0, 255, 120, 0.04);
+  border: 1px solid rgba(0, 255, 120, 0.1);
+  border-radius: 4px;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.real-dps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  margin: 8px 0;
+
+  thead {
+    th {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text3);
+      text-align: right;
+      padding: 4px 8px;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+      &:first-child { text-align: left; }
+    }
+  }
+
+  tbody {
+    td {
+      padding: 4px 8px;
+      text-align: right;
+      color: var(--text2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      &:first-child { text-align: left; color: var(--text); }
+    }
+    tr:last-child td { border-bottom: none; }
+  }
+}
+
+.real-dps-note {
+  font-size: 11px !important;
+  color: var(--text3) !important;
+  font-style: italic;
+  margin-top: 14px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 10px;
 }

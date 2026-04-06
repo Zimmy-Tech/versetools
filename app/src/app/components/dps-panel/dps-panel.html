@@ -14,8 +14,55 @@
       <!-- HUD: hero card -->
       @if (displayMode() === 'hud' && pilotBurstDPS() > 0) {
         <div class="dps-hero" title="All weapons firing simultaneously at maximum fire rate.">
-          <span class="dps-hero-val">{{ pilotBurstDPS().toFixed(0) }}</span>
-          <span class="dps-hero-label">PEAK DPS</span>
+          <div class="dps-hero-dual">
+            <div class="dps-hero-side">
+              <span class="dps-hero-val">{{ pilotBurstDPS().toFixed(0) }}</span>
+              <span class="dps-hero-label">PEAK DPS</span>
+            </div>
+            <span class="dps-hero-sep">/</span>
+            <div class="dps-hero-side" (click)="showRealDpsInfo.set(true)" style="cursor: pointer">
+              <span class="dps-hero-val real">{{ realPilotDPS().toFixed(0) }}</span>
+              <span class="dps-hero-label">REAL DPS <span class="info-icon">?</span></span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Real DPS explainer popup -->
+      @if (showRealDpsInfo()) {
+        <div class="real-dps-overlay" (click)="showRealDpsInfo.set(false)">
+          <div class="real-dps-popup" (click)="$event.stopPropagation()">
+            <button class="real-dps-close" (click)="showRealDpsInfo.set(false)">&times;</button>
+            <h3 class="real-dps-title">What is Real DPS?</h3>
+            <p>The fire rates listed in the game data for many weapons are <strong>not what you actually get in-game</strong>. We tested this by timing ammo consumption across 9 different weapons and found a consistent pattern.</p>
+            <h4>The Problem</h4>
+            <p>The game server runs on a clock that ticks <strong>30 times per second</strong>. Every tick, the server checks: "is it time to fire another shot?" If yes, fire. If no, wait for the next tick.</p>
+            <p>A weapon that wants to fire every 80ms (750 RPM) gets delayed:</p>
+            <ul>
+              <li>Tick 1 (0ms): <strong>FIRE</strong></li>
+              <li>Tick 2 (33ms): not yet</li>
+              <li>Tick 3 (66ms): not yet</li>
+              <li>Tick 4 (100ms): 100ms &gt; 80ms &rarr; <strong>FIRE</strong></li>
+            </ul>
+            <p>Instead of 80ms between shots, you get 100ms. That's <strong>600 RPM instead of 750</strong>.</p>
+            <h4>Which Weapons Are Affected?</h4>
+            <p><strong>Repeaters</strong> (multi-barrel cycling weapons) are affected. <strong>Gatlings</strong> and <strong>cannons</strong> use a different firing mechanism and are not affected &mdash; their listed rates are accurate.</p>
+            <h4>The Formula</h4>
+            <p class="real-dps-formula">Real RPM = 1800 / ceil(1800 / Listed RPM)</p>
+            <h4>Tested &amp; Validated</h4>
+            <table class="real-dps-table">
+              <thead><tr><th>Weapon</th><th>Listed</th><th>Predicted</th><th>Measured</th></tr></thead>
+              <tbody>
+                <tr><td>Attrition-4</td><td>350</td><td>300</td><td>299</td></tr>
+                <tr><td>NDB-28</td><td>500</td><td>450</td><td>446</td></tr>
+                <tr><td>Panther</td><td>750</td><td>600</td><td>595</td></tr>
+                <tr><td>Sawbuck</td><td>825</td><td>600</td><td>608</td></tr>
+                <tr><td>Buzzsaw</td><td>900</td><td>900</td><td>906</td></tr>
+                <tr><td>Mantis (gatling)</td><td>1600</td><td>1600</td><td>1599</td></tr>
+              </tbody>
+            </table>
+            <p class="real-dps-note">This research is under community validation. If you'd like to help validate, time your ammo consumption and compare to the predictions above.</p>
+          </div>
         </div>
       }
 
