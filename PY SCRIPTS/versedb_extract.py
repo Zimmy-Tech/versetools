@@ -4783,6 +4783,57 @@ def main(mode: str = "live"):
         })
         per.setdefault("defaultLoadout", {})["hardpoint_lifesupport"] = "lfsp_tydt_s03_comfortairmax"
 
+    # 890 Jump: system hardpoints defined as Part class="ItemPort" in vehicle XML, not SItemPortDef.
+    # Pipeline doesn't extract them. Add manually.
+    if "ORIG_890Jump" in ships:
+        j890 = ships["ORIG_890Jump"]
+        j890_hps = j890.setdefault("hardpoints", [])
+        j890_missing = [
+            ("hardpoint_powerplant_01", "Power Plant", "PowerPlant", 4, "$uneditable"),
+            ("hardpoint_shield_generator_left", "Shield Left", "Shield", 4, ""),
+            ("hardpoint_shield_generator_right", "Shield Right", "Shield", 4, ""),
+            ("hardpoint_cooler_left", "Cooler Left", "Cooler", 4, ""),
+            ("hardpoint_cooler_right", "Cooler Right", "Cooler", 4, ""),
+            ("hardpoint_quantum_drive", "Quantum Drive", "QuantumDrive", 4, ""),
+            ("hardpoint_lifesupport", "Life Support", "LifeSupportGenerator", 4, "uneditable"),
+        ]
+        existing_ids = {hp["id"].lower() for hp in j890_hps}
+        for hp_id, label, hp_type, size, flags in j890_missing:
+            if hp_id.lower() not in existing_ids:
+                j890_hps.append({
+                    "id": hp_id, "label": label, "type": hp_type,
+                    "subtypes": "", "minSize": size, "maxSize": size, "flags": flags,
+                    "allTypes": [{"type": hp_type, "subtypes": ""}],
+                })
+        # Thruster power bars — 890 Jump has 10 bars in-game
+        if not j890.get("thrusterPowerBars"):
+            j890["thrusterPowerBars"] = 10
+        # Missile turrets: remap to MissileLauncher so they display as missile racks
+        # In-game these are remote missile turrets with MSD-481 racks + 8× Ignite II
+        dl890 = j890.setdefault("defaultLoadout", {})
+        for mt_id in ("hardpoint_remote_missile_turret_left", "hardpoint_remote_missile_turret_right",
+                       "hardpoint_remote_missile_turret_leftL", "hardpoint_remote_missile_turret_rightL"):
+            # Promote the missile rack from sub-slot to the turret level
+            rack_key = f"{mt_id.lower()}.turret_missile_rack"
+            rack_cls = dl890.get(rack_key, "")
+            if rack_cls:
+                dl890[mt_id.lower()] = rack_cls
+                del dl890[rack_key]
+                # Re-key missile children: remove .turret_missile_rack intermediate
+                for k in list(dl890.keys()):
+                    if k.startswith(rack_key + "."):
+                        new_key = mt_id.lower() + k[len(rack_key):]
+                        dl890[new_key] = dl890.pop(k)
+            # Change hardpoint type to MissileLauncher
+            for hp in j890_hps:
+                if hp["id"].lower() == mt_id.lower():
+                    hp["type"] = "MissileLauncher"
+                    hp["subtypes"] = "MissileRack"
+                    hp["allTypes"] = [{"type": "MissileLauncher", "subtypes": "MissileRack"}]
+                    hp["flags"] = "$uneditable"
+                    hp["label"] = "Remote Missile Turret"
+                    break
+
     # Tractor beam arms should display as tractor turrets, not mining tools
     for tcls, tid in [("rsi_zeus_cl", "hardpoint_tractor_beam"),
                        ("rsi_hermes", "hardpoint_remote_tractor_turret")]:

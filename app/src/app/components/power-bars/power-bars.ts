@@ -518,10 +518,12 @@ export class PowerBarsComponent {
    */
   private static readonly MERGED_BLOCK_ITEMS = new Map<string, number>([
     // Coolers
-    ['cool_aegs_s04_reclaimer', 5],     // Algid S4 (Reclaimer)
+    ['cool_aegs_s04_reclaimer', 5],         // Algid S4 (Reclaimer)
+    ['cool_orig_s04_890j_scitem', 3],       // Serac S4 (890 Jump)
     // Shields
     ['shld_basl_s03_stronghold_scitem', 4], // Stronghold S3
     ['shld_behr_s03_5ca_scitem', 2],        // 5CA 'Akura' S3
+    ['shld_orig_s04_890j_scitem', 5],       // Glacis S4 (890 Jump)
   ]);
 
   private mergedMin(item: Item): number {

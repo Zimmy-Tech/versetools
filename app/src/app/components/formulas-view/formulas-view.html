@@ -574,7 +574,7 @@ if Pips = 0  &rarr;  Supply = 0</pre>
 
           <div class="formula-card">
             <h3>Cooling Demand</h3>
-            <pre class="formula">Total Demand = PP_IDLE + &Sigma;( pips &times; weight ) + wpnPips &times; totalWpnPowerDraw &times; 0.484
+            <pre class="formula">Total Demand = PP_IDLE + &Sigma;( pips &times; weight )
 
 Two-tier weight system (heat generated per pip):
   High tier (~2.0/pip):
@@ -582,23 +582,16 @@ Two-tier weight system (heat generated per pip):
     Radar            1.988       Shields          1.978
 
   Low tier (~1.0/pip):
-    Thrusters        1.032       Coolers          0.939
-    Tools/Tractors   0.966
-
-  Weapons: scales with powerDraw
-    Weapon Demand = pips &times; &Sigma;(weapon powerDraw) &times; 0.484
+    Thrusters        1.032       Tools/Tractors   0.966
+    Coolers          0.939       Weapons          0.900
 
 PP_IDLE = 0.04</pre>
             <p>Components fall into two tiers: power-hungry systems (Radar, Shields, QD,
               Life Support) generate ~2 units of heat per pip, while lighter systems
-              (Coolers, Thrusters) generate ~1 unit per pip.</p>
-            <p>Weapon cooling demand scales with the total powerDraw of equipped weapons,
-              not a fixed per-pip weight. Ships with high-powerDraw energy weapons (e.g.
-              M7A, powerDraw=1.9) generate significantly more cooling demand than ships
-              with low-powerDraw ballistics (e.g. AD4B, powerDraw=0.1).</p>
-            <p>PP idle base is essentially zero (0.04), not the 0.6 previously estimated.
-              Validated across Aurora MK II, Guardian, Guardian MX, and Crusader Intrepid
-              (27+ data points, 3 different weapons, max 1% error within game rounding).
+              (Weapons, Coolers, Thrusters, Tools) generate ~1 unit per pip.</p>
+            <p>PP idle base is essentially zero (0.04). Validated across Aurora MK II,
+              Guardian, Guardian MX, Crusader Intrepid, and Asgard with isolated
+              component tests. Max error: 2% within game&rsquo;s whole-percentage rounding.
               Per-ship overrides exist for Polaris and Mercury Star Runner.</p>
           </div>
 
@@ -620,11 +613,12 @@ PP_IDLE = 0.04</pre>
             <p>The corrected supply formula (rate &times; pips &times; bandMod / maxPips) was
               discovered through cooler toggle tests &mdash; at reduced pips, the game applies
               BOTH the band efficiency penalty AND a linear power fraction, not just one.</p>
-            <p>Weapon demand was initially modeled as a fixed per-pip weight (1.28), but
-              testing with three different weapons (M7A energy cannon, CF-557 Galdereen,
-              AD4B ballistic) revealed it scales with the weapon's powerDraw value from the
-              game data. The scaling factor (0.484) was derived from isolation tests and
-              confirmed across multiple ships.</p>
+            <p>Weapon demand was initially modeled as scaling with powerDraw (0.484 &times;
+              totalPD), but isolated high-pip tests on the Guardian (4w, cooler only = 16%)
+              disproved this. The powerDraw formula appeared to work because early tests used
+              low weapon pips in multi-component configs where the weapon term was too small
+              to distinguish from a fixed weight. The corrected fixed weight of 0.90/pip was
+              validated across 5 ships with max 2% error.</p>
           </div>
 
           <div class="formula-card">
