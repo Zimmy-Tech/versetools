@@ -320,6 +320,64 @@ export class DataService {
     if (ship) this.selectShip(ship);
   }
 
+  /** Re-initialize all power allocations from the current loadout without changing the loadout. */
+  reinitPower(): void {
+    const ship = this.selectedShip();
+    if (!ship) return;
+    const loadout = this.loadout();
+
+    const allocInit: Record<string, number> = {};
+    let shieldCount = 0;
+    for (const [hpId, item] of Object.entries(loadout)) {
+      if (this.isFlightRestricted(item)) {
+        allocInit[hpId] = 0;
+        continue;
+      }
+      if (item.type === 'Shield') {
+        shieldCount++;
+        if (shieldCount <= 2) {
+          const maxPips = Math.max(1, (item.powerMax ?? 0) - 1);
+          const b = item.powerBands ?? [];
+          const minThreshold = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
+          allocInit[hpId] = Math.max(minThreshold, Math.round(maxPips * 0.5));
+        }
+      } else if (item.type === 'Cooler') {
+        const b = item.powerBands ?? [];
+        const cMin = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
+        allocInit[hpId] = cMin;
+      } else if (item.type === 'LifeSupportGenerator') {
+        allocInit[hpId] = 1;
+      } else if (item.type === 'Radar') {
+        const pd = item.powerDraw ?? 1;
+        const mcf = item.minConsumptionFraction ?? 0.25;
+        allocInit[hpId] = Math.max(1, Math.round(pd * mcf));
+      } else if (item.type === 'QuantumDrive') {
+        allocInit[hpId] = 0;
+      } else if (item.type === 'EMP') {
+        allocInit[hpId] = 0;
+      } else if (item.type === 'QuantumInterdictionGenerator') {
+        allocInit[hpId] = 0;
+      } else if (item.powerBands?.length) {
+        allocInit[hpId] = item.powerMin ?? 1;
+      }
+    }
+    this.powerAlloc.set(allocInit);
+
+    const poolSize = ship.weaponPowerPoolSize ?? 0;
+    this.weaponsPower.set(Math.max(0, Math.round(poolSize * 0.5)));
+
+    const thrustMax = ship.thrusterPowerBars ?? 4;
+    this.thrusterPower.set(Math.max(1, Math.round(thrustMax * 0.5)));
+
+    const toolCount = Object.values(loadout).filter(
+      i => i?.type === 'WeaponMining' || i?.type === 'SalvageHead'
+    ).length;
+    const pipsPerTool = ship.className.toLowerCase() === 'argo_mole' ? 2 : 1;
+    this.toolPower.set(toolCount * pipsPerTool);
+
+    this.tractorPower.set(0);
+  }
+
   setLoadoutItem(slotId: string, item: Item | null): void {
     const current = { ...this.loadout() };
     const prefix = slotId.toLowerCase() + '.';

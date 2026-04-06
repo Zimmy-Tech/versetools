@@ -161,6 +161,7 @@ export class LoadoutViewComponent {
       const best = bySize.get(hp.maxSize);
       if (best) this.data.setLoadoutItem(hp.id, best);
     }
+    this.data.reinitPower();
   }
 
   /** Primary stat used to pick the best Military A item when multiple exist. */
@@ -211,6 +212,7 @@ export class LoadoutViewComponent {
       const best = bySize.get(hp.maxSize);
       if (best) this.data.setLoadoutItem(hp.id, best);
     }
+    this.data.reinitPower();
   }
 
   /** Primary stat for Stealth A: lowest signature wins. */
