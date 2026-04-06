@@ -96,19 +96,28 @@ export class ShipCompareComponent {
     ['AB Forward',     s => s.boostSpeedFwd ? s.boostSpeedFwd + ' m/s' : '—',  v => parseFloat(v) || 0, true],
   ];
 
-  private accelRows: RowDef[] = [
-    ['Accel Fwd',      s => this.fmtAccel(s.accelFwd, s.accelAbFwd),            v => parseFloat(v) || 0, true],
-    ['Accel Retro',    s => this.fmtAccel(s.accelRetro, s.accelAbRetro),        v => parseFloat(v) || 0, true],
-    ['Accel Strafe',   s => this.fmtAccel(s.accelStrafe, s.accelAbStrafe),      v => parseFloat(v) || 0, true],
-    ['Accel Up',       s => this.fmtAccel(s.accelUp, s.accelAbUp),              v => parseFloat(v) || 0, true],
-    ['Accel Down',     s => this.fmtAccel(s.accelDown, s.accelAbDown),          v => parseFloat(v) || 0, true],
-  ];
+  boostedAccel = signal(false);
+  boostedRotation = signal(false);
 
-  private rotationRows: RowDef[] = [
-    ['Pitch',          s => this.fmtRotation((s as any).pitch, (s as any).pitchBoosted),   v => parseFloat(v) || 0, true],
-    ['Yaw',            s => this.fmtRotation((s as any).yaw, (s as any).yawBoosted),       v => parseFloat(v) || 0, true],
-    ['Roll',           s => this.fmtRotation((s as any).roll, (s as any).rollBoosted),     v => parseFloat(v) || 0, true],
-  ];
+  accelRows = computed<RowDef[]>(() => {
+    const b = this.boostedAccel();
+    return [
+      ['Accel Fwd',    s => (b ? s.accelAbFwd : s.accelFwd) ? (b ? s.accelAbFwd : s.accelFwd) + ' G' : '—',       v => parseFloat(v) || 0, true],
+      ['Accel Retro',  s => (b ? s.accelAbRetro : s.accelRetro) ? (b ? s.accelAbRetro : s.accelRetro) + ' G' : '—', v => parseFloat(v) || 0, true],
+      ['Accel Strafe', s => (b ? s.accelAbStrafe : s.accelStrafe) ? (b ? s.accelAbStrafe : s.accelStrafe) + ' G' : '—', v => parseFloat(v) || 0, true],
+      ['Accel Up',     s => (b ? s.accelAbUp : s.accelUp) ? (b ? s.accelAbUp : s.accelUp) + ' G' : '—',           v => parseFloat(v) || 0, true],
+      ['Accel Down',   s => (b ? s.accelAbDown : s.accelDown) ? (b ? s.accelAbDown : s.accelDown) + ' G' : '—',   v => parseFloat(v) || 0, true],
+    ];
+  });
+
+  rotationRows = computed<RowDef[]>(() => {
+    const b = this.boostedRotation();
+    return [
+      ['Pitch', s => (b ? (s as any).pitchBoosted : (s as any).pitch) ? (b ? (s as any).pitchBoosted : (s as any).pitch) + ' °/s' : '—', v => parseFloat(v) || 0, true],
+      ['Yaw',   s => (b ? (s as any).yawBoosted : (s as any).yaw) ? (b ? (s as any).yawBoosted : (s as any).yaw) + ' °/s' : '—',       v => parseFloat(v) || 0, true],
+      ['Roll',  s => (b ? (s as any).rollBoosted : (s as any).roll) ? (b ? (s as any).rollBoosted : (s as any).roll) + ' °/s' : '—',   v => parseFloat(v) || 0, true],
+    ];
+  });
 
   private miscRows: RowDef[] = [
     ['Cargo',          s => (s.cargoCapacity ?? 0) + ' SCU',                    v => parseInt(v) || 0, true],
@@ -123,8 +132,8 @@ export class ShipCompareComponent {
       { title: 'Hardpoints',     rows: this.hardpointRows },
       { title: 'Hull & Armor',   rows: this.hullRows },
       { title: 'Flight',         rows: this.flightRows },
-      { title: 'Acceleration',   rows: this.accelRows },
-      { title: 'Rotation',       rows: this.rotationRows },
+      { title: 'Acceleration',   rows: this.accelRows() },
+      { title: 'Rotation',       rows: this.rotationRows() },
       { title: 'Misc',           rows: this.miscRows },
     ];
   });
@@ -142,18 +151,6 @@ export class ShipCompareComponent {
     const updated = [...this.searchQueries()];
     updated[index] = value;
     this.searchQueries.set(updated);
-  }
-
-  private fmtAccel(base?: number, boosted?: number): string {
-    if (!base) return '—';
-    if (boosted && boosted !== base) return `${base} / <span class="boost-val">${boosted}</span> G`;
-    return base + ' G';
-  }
-
-  private fmtRotation(base?: number, boosted?: number): string {
-    if (!base) return '—';
-    if (boosted && boosted !== base) return `${base} / <span class="boost-val">${boosted}</span> °/s`;
-    return base + ' °/s';
   }
 
   getCellValue(row: RowDef, ship: Ship | null): string {

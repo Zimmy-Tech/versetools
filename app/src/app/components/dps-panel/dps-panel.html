@@ -69,11 +69,15 @@
 
       <div class="stat-block">
         @if (pilotBurstDPS() > 0 || pilotDPS() > 0) {
-          <!-- Flat: inline peak -->
+          <!-- Flat: inline peak + real -->
           @if (displayMode() === 'flat') {
             <div class="stat-row" title="All weapons firing simultaneously at maximum fire rate.">
               <span class="stat-label">Peak DPS</span>
               <span class="mono peak-val">{{ pilotBurstDPS().toFixed(0) }}</span>
+            </div>
+            <div class="stat-row" title="Peak DPS corrected for 30 Hz server tick quantization." style="cursor: pointer" (click)="showRealDpsInfo.set(true)">
+              <span class="stat-label">Real DPS <span class="info-icon">?</span></span>
+              <span class="mono real-val">{{ realPilotDPS().toFixed(0) }}</span>
             </div>
           }
           <div class="stat-row" title="Average damage per second over a 10-second window. Energy weapons fire then regen (no regen while firing). Ballistic weapons cycle through overheat and cooldown.">

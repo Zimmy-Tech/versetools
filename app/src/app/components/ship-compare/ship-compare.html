@@ -44,15 +44,28 @@
       <tbody>
         @for (section of sections(); track section.title) {
           <tr class="section-header">
-            <td [attr.colspan]="5">{{ section.title }}</td>
+            <td [attr.colspan]="5">
+              {{ section.title }}
+              @if (section.title === 'Acceleration') {
+                <label class="boost-toggle" (click)="$event.stopPropagation()">
+                  <input type="checkbox" [checked]="boostedAccel()" (change)="boostedAccel.set($any($event.target).checked)" />
+                  <span>Boosted</span>
+                </label>
+              }
+              @if (section.title === 'Rotation') {
+                <label class="boost-toggle" (click)="$event.stopPropagation()">
+                  <input type="checkbox" [checked]="boostedRotation()" (change)="boostedRotation.set($any($event.target).checked)" />
+                  <span>Boosted</span>
+                </label>
+              }
+            </td>
           </tr>
           @for (row of section.rows; track row[0]) {
             <tr>
               <td class="label-col">{{ row[0] }}</td>
               @for (ship of slots(); track $index; let i = $index) {
                 <td [class.best]="isBest(row, i)"
-                    [class.val]="!isBest(row, i)"
-                    [innerHTML]="getCellValue(row, ship)"></td>
+                    [class.val]="!isBest(row, i)">{{ getCellValue(row, ship) }}</td>
               }
             </tr>
           }
