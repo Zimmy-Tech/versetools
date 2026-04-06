@@ -257,36 +257,68 @@ export class DataService {
     // - Coolers: minimum pips (at least 1)
     // - Life Support: ON (turnedOnByDefault)
     // - Radar/QD: OFF at spawn
+
+    // Identify which slots get power columns (matches power-bars column discovery)
+    // Shields: first 2 only. Radar: first only. LS: first only.
+    const primaryShieldIds = new Set<string>();
+    let sc = 0;
+    for (const hp of ship.hardpoints) {
+      const si = newLoadout[hp.id];
+      if (si?.type === 'Shield' && (si.powerMax ?? 0) > 0) {
+        sc++;
+        if (sc <= 2) primaryShieldIds.add(hp.id);
+      }
+    }
+    for (const [key, si] of Object.entries(newLoadout)) {
+      if (si?.type === 'Shield' && key.includes('.') && (si.powerMax ?? 0) > 0 && !primaryShieldIds.has(key)) {
+        sc++;
+        if (sc <= 2) primaryShieldIds.add(key);
+      }
+    }
+    // First radar and first LS that appear in hardpoints (power-bars uses break after first)
+    let primaryRadarId: string | null = null;
+    let primaryLsId: string | null = null;
+    for (const hp of ship.hardpoints) {
+      const si = newLoadout[hp.id];
+      if (!primaryRadarId && si?.type === 'Radar' && (si.powerDraw ?? 0) > 0) primaryRadarId = hp.id;
+      if (!primaryLsId && si?.type === 'LifeSupportGenerator' && (si.powerMax ?? 0) > 0) primaryLsId = hp.id;
+    }
+    // LS fallback: scan loadout for LS not in hardpoints
+    if (!primaryLsId) {
+      for (const [key, si] of Object.entries(newLoadout)) {
+        if (si?.type === 'LifeSupportGenerator' && (si.powerMax ?? 0) > 0) { primaryLsId = key; break; }
+      }
+    }
+
     const allocInit: Record<string, number> = {};
-    let shieldCount = 0;
     for (const [hpId, item] of Object.entries(newLoadout)) {
       if (this.isFlightRestricted(item)) {
         allocInit[hpId] = 0;
         continue;
       }
       if (item.type === 'Shield') {
-        shieldCount++;
-        if (shieldCount <= 2) {
-          // Primary shields: 50% of their max pips, but at least the min threshold
+        if (primaryShieldIds.has(hpId)) {
           const maxPips = Math.max(1, (item.powerMax ?? 0) - 1);
           const b = item.powerBands ?? [];
           const minThreshold = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
           allocInit[hpId] = Math.max(minThreshold, Math.round(maxPips * 0.5));
         }
-        // Excess shields (3rd+): no power allocation
+        // Excess shields: no entry in allocInit
       } else if (item.type === 'Cooler') {
         // Coolers: start at minimum band
         const b = item.powerBands ?? [];
         const cMin = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
         allocInit[hpId] = cMin;
       } else if (item.type === 'LifeSupportGenerator') {
-        // Life support: ON by default
-        allocInit[hpId] = 1;
+        // Life support: first only (matches power-bars which breaks after first)
+        if (hpId === primaryLsId) allocInit[hpId] = 1;
       } else if (item.type === 'Radar') {
-        // Radar: ON at spawn at minimum power
-        const pd = item.powerDraw ?? 1;
-        const mcf = item.minConsumptionFraction ?? 0.25;
-        allocInit[hpId] = Math.max(1, Math.round(pd * mcf));
+        // Radar: first only (matches power-bars which breaks after first)
+        if (hpId === primaryRadarId) {
+          const pd = item.powerDraw ?? 1;
+          const mcf = item.minConsumptionFraction ?? 0.25;
+          allocInit[hpId] = Math.max(1, Math.round(pd * mcf));
+        }
       } else if (item.type === 'QuantumDrive') {
         // QD: OFF at spawn
         allocInit[hpId] = 0;
@@ -302,9 +334,13 @@ export class DataService {
     }
     this.powerAlloc.set(allocInit);
 
-    // Weapons: default to 50% of poolSize
+    // Weapons: default to 50% of poolSize, capped by actual weapon power draw
     const poolSize = ship.weaponPowerPoolSize ?? 0;
-    const wpnDefault = Math.max(0, Math.round(poolSize * 0.5));
+    const wpnWeapons = Object.values(newLoadout).filter(
+      i => i !== null && (i.type === 'WeaponGun' || i.type === 'WeaponTachyon')
+    ) as Item[];
+    const wpnMax = poolSize > 0 ? calcMaxPips(poolSize, wpnWeapons) : 0;
+    const wpnDefault = Math.max(0, Math.min(Math.round(poolSize * 0.5), wpnMax));
     this.weaponsPower.set(wpnDefault);
 
     // Tools: 1 pip per tool (MOLE uses 2 pips per turret), default ON
@@ -324,18 +360,53 @@ export class DataService {
   reinitPower(): void {
     const ship = this.selectedShip();
     if (!ship) return;
+
+    // Wipe all power state first to prevent any stale entries
+    this.powerAlloc.set({});
+    this.weaponsPower.set(0);
+    this.thrusterPower.set(0);
+    this.toolPower.set(0);
+    this.tractorPower.set(0);
+
     const loadout = this.loadout();
 
+    // Identify which slots get power columns (matches power-bars column discovery)
+    const primaryShieldIds = new Set<string>();
+    let sc = 0;
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (item?.type === 'Shield' && (item.powerMax ?? 0) > 0) {
+        sc++;
+        if (sc <= 2) primaryShieldIds.add(hp.id);
+      }
+    }
+    for (const [key, item] of Object.entries(loadout)) {
+      if (item?.type === 'Shield' && key.includes('.') && (item.powerMax ?? 0) > 0 && !primaryShieldIds.has(key)) {
+        sc++;
+        if (sc <= 2) primaryShieldIds.add(key);
+      }
+    }
+    let primaryRadarId: string | null = null;
+    let primaryLsId: string | null = null;
+    for (const hp of ship.hardpoints) {
+      const si = loadout[hp.id];
+      if (!primaryRadarId && si?.type === 'Radar' && (si.powerDraw ?? 0) > 0) primaryRadarId = hp.id;
+      if (!primaryLsId && si?.type === 'LifeSupportGenerator' && (si.powerMax ?? 0) > 0) primaryLsId = hp.id;
+    }
+    if (!primaryLsId) {
+      for (const [key, si] of Object.entries(loadout)) {
+        if (si?.type === 'LifeSupportGenerator' && (si.powerMax ?? 0) > 0) { primaryLsId = key; break; }
+      }
+    }
+
     const allocInit: Record<string, number> = {};
-    let shieldCount = 0;
     for (const [hpId, item] of Object.entries(loadout)) {
       if (this.isFlightRestricted(item)) {
         allocInit[hpId] = 0;
         continue;
       }
       if (item.type === 'Shield') {
-        shieldCount++;
-        if (shieldCount <= 2) {
+        if (primaryShieldIds.has(hpId)) {
           const maxPips = Math.max(1, (item.powerMax ?? 0) - 1);
           const b = item.powerBands ?? [];
           const minThreshold = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
@@ -346,11 +417,13 @@ export class DataService {
         const cMin = b.length <= 1 ? 1 : Math.max(1, b[1].start - b[0].start);
         allocInit[hpId] = cMin;
       } else if (item.type === 'LifeSupportGenerator') {
-        allocInit[hpId] = 1;
+        if (hpId === primaryLsId) allocInit[hpId] = 1;
       } else if (item.type === 'Radar') {
-        const pd = item.powerDraw ?? 1;
-        const mcf = item.minConsumptionFraction ?? 0.25;
-        allocInit[hpId] = Math.max(1, Math.round(pd * mcf));
+        if (hpId === primaryRadarId) {
+          const pd = item.powerDraw ?? 1;
+          const mcf = item.minConsumptionFraction ?? 0.25;
+          allocInit[hpId] = Math.max(1, Math.round(pd * mcf));
+        }
       } else if (item.type === 'QuantumDrive') {
         allocInit[hpId] = 0;
       } else if (item.type === 'EMP') {
@@ -364,7 +437,11 @@ export class DataService {
     this.powerAlloc.set(allocInit);
 
     const poolSize = ship.weaponPowerPoolSize ?? 0;
-    this.weaponsPower.set(Math.max(0, Math.round(poolSize * 0.5)));
+    const wpnWeapons = Object.values(loadout).filter(
+      (i): i is Item => i !== null && (i.type === 'WeaponGun' || i.type === 'WeaponTachyon')
+    );
+    const wpnMax = poolSize > 0 ? calcMaxPips(poolSize, wpnWeapons) : 0;
+    this.weaponsPower.set(Math.max(0, Math.min(Math.round(poolSize * 0.5), wpnMax)));
 
     const thrustMax = ship.thrusterPowerBars ?? 4;
     this.thrusterPower.set(Math.max(1, Math.round(thrustMax * 0.5)));

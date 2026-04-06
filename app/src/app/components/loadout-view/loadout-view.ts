@@ -512,7 +512,7 @@ export class LoadoutViewComponent {
   onShipImageError(img: HTMLImageElement): void {
     const cls = this.data.selectedShip()?.className ?? '';
     if (img.src.endsWith('.jpg')) {
-      img.src = `ship-images/${cls.toLowerCase()}.webp`;
+      img.src = `ship-images/${cls}.webp`;
     } else if (img.src.endsWith('.webp')) {
       img.src = `ship-images/${cls}.png`;
     } else {

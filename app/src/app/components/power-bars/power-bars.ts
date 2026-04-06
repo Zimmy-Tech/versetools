@@ -590,9 +590,18 @@ export class PowerBarsComponent {
       : col.powerMin;
     // Clicking below the lowest activatable band = "off"
     let target = blockNum > 0 && blockNum < lowestMin ? 0 : blockNum;
-    // Clicking the current top block steps down (respecting min gap)
+    // Clicking the current top block steps down
     if (target === col.alloc) {
-      target = col.alloc <= lowestMin ? 0 : col.alloc - 1;
+      if (col.alloc <= lowestMin) {
+        target = 0;
+      } else if (col.shieldBands && col.shieldBands.length > 1) {
+        // For merged shield bands, step down by the top shield's band min
+        // so clicking the top band turns off that entire shield
+        const topBandMin = col.shieldBands[0].min;
+        target = Math.max(0, col.alloc - topBandMin);
+      } else {
+        target = col.alloc - 1;
+      }
     }
     target = Math.max(0, target);
 
