@@ -141,11 +141,7 @@ export class PowerBarsComponent {
       const totalMax = primaryShields.reduce((s, sl) => s + Math.max(1, (sl.item.powerMax ?? 0) - 1), 0);
       const totalAlloc = primaryShields.reduce((s, sl) => s + (alloc[sl.hpId] ?? 0), 0);
       const bands = primaryShields.map(sl => {
-        const b = sl.item.powerBands ?? [];
-        let min: number;
-        if (b.length <= 1) min = 1;
-        else min = Math.max(1, b[1].start - b[0].start);
-        return { min, hpId: sl.hpId, item: sl.item };
+        return { min: this.mergedMin(sl.item), hpId: sl.hpId, item: sl.item };
       });
       const totalMin = bands.reduce((s, b) => s + b.min, 0);
       cols.push({
@@ -262,7 +258,7 @@ export class PowerBarsComponent {
     for (const hp of ship.hardpoints) {
       const item = loadout[hp.id];
       if (item?.type === 'Cooler' && (item.powerMax ?? 0) > 0) {
-        const cMin = 1;  // Coolers are always individually addressable (1 pip minimum)
+        const cMin = this.mergedMin(item);
         cols.push({
           id: hp.id, label: `CL${ci++}`,
           max: Math.max(1, (item.powerMax ?? 0) - 1), powerMin: cMin,
@@ -357,15 +353,14 @@ export class PowerBarsComponent {
    *
    * Two-tier system:
    *   High (~2.0/pip): Radar 1.988, Shield 1.978, QD 2.070, LS 2.300
-   *   Low  (~1.0/pip): Cooler 0.939, Thruster 1.032
-   *   Weapons: scales with powerDraw (pips × totalPowerDraw × 0.484)
+   *   Low  (~1.0/pip): Cooler 0.939, Weapon 0.90, Thruster 1.032, Tool 0.966
    *
    * Ships with validated per-component models (Polaris, MSR) use those.
    */
   private static readonly W_RADAR  = 1.988;
   private static readonly W_SHIELD = 1.978;
   private static readonly W_LS     = 2.300;
-  private static readonly W_WPN_PD = 0.484;  // weapon demand scales with powerDraw: pips × totalPowerDraw × factor
+  private static readonly W_WPN    = 0.90;   // fixed per-pip (validated on Guardian, Guardian MX, Intrepid)
   private static readonly W_THRU   = 1.032;
   private static readonly W_COOL   = 0.939;
   private static readonly W_QD     = 2.070;
@@ -385,6 +380,7 @@ export class PowerBarsComponent {
     if (ship.className === 'CRUS_Star_Runner') {
       return this.msrCoolingDemand(ship, loadout, alloc);
     }
+    // Reclaimer: no engineering panel, but generic formula matches third-party tools (~55%)
 
     const C = PowerBarsComponent;
     let demand = C.PP_IDLE;
@@ -414,10 +410,7 @@ export class PowerBarsComponent {
         case 'Radar':                demand += p * C.W_RADAR;  break;
       }
     }
-    // Weapon demand scales with total powerDraw of equipped weapons
-    const wpnPD = this.data.allWeaponsIncludingPdc()
-      .reduce((s, w) => s + (w.powerDraw ?? 0), 0);
-    demand += this.data.weaponsPower() * wpnPD * C.W_WPN_PD;
+    demand += this.data.weaponsPower() * C.W_WPN;
     demand += this.data.toolPower() * C.W_TOOL;
     demand += this.data.tractorPower() * C.W_TOOL;
     demand += this.data.thrusterPower() * C.W_THRU;
@@ -487,6 +480,54 @@ export class PowerBarsComponent {
       }
     }
     return Math.round(demand * 10) / 10;
+  }
+
+  /** Reclaimer cooling demand. Uses generic weights + flat weapon weight (no engineering panel to validate). */
+  private reclaimerCoolingDemand(
+    ship: any, loadout: Record<string, Item>, alloc: Record<string, number>
+  ): number {
+    const C = PowerBarsComponent;
+    const W_WPN = 0.95;  // flat per-pip, calibrated to match third-party tools at 55%
+
+    let demand = C.PP_IDLE;
+    demand += this.data.weaponsPower() * W_WPN;
+    demand += this.data.thrusterPower() * C.W_THRU;
+    demand += this.data.toolPower() * C.W_TOOL;
+    demand += this.data.tractorPower() * C.W_TOOL;
+
+    for (const hp of ship.hardpoints) {
+      const item = loadout[hp.id];
+      if (!item) continue;
+      const pips = alloc[hp.id] ?? 0;
+      if (pips <= 0) continue;
+      switch (item.type) {
+        case 'Shield':               demand += pips * C.W_SHIELD; break;
+        case 'Cooler':               demand += pips * C.W_COOL;   break;
+        case 'LifeSupportGenerator':  demand += pips * C.W_LS;     break;
+        case 'QuantumDrive':         demand += pips * C.W_QD;     break;
+        case 'Radar':                demand += pips * C.W_RADAR;  break;
+      }
+    }
+    return Math.round(demand * 10) / 10;
+  }
+
+  /**
+   * Minimum pip block for a component. Most are individually addressable (1 pip).
+   * Some items require a merged block to power on — not derivable from DCB data,
+   * maintained as a known-exceptions list from in-game testing.
+   */
+  private static readonly MERGED_BLOCK_ITEMS = new Map<string, number>([
+    // Coolers
+    ['cool_aegs_s04_reclaimer', 5],     // Algid S4 (Reclaimer)
+    // Shields
+    ['shld_basl_s03_stronghold_scitem', 4], // Stronghold S3
+    ['shld_behr_s03_5ca_scitem', 2],        // 5CA 'Akura' S3
+  ]);
+
+  private mergedMin(item: Item): number {
+    const override = PowerBarsComponent.MERGED_BLOCK_ITEMS.get(item.className?.toLowerCase() ?? '');
+    if (override) return override;
+    return 1;
   }
 
   range(n: number): number[] {
