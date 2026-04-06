@@ -3172,7 +3172,8 @@ def enrich_armor_from_forge(ships, forge_dir, dcb_path=None):
     dmg_resist_refs = {}  # ship className -> hex index for DamageResistance
     enriched = 0
     for ship in ships.values():
-        armor_cls = (ship.get("defaultLoadout") or {}).get("hardpoint_armor", "")
+        dl_armor = ship.get("defaultLoadout") or {}
+        armor_cls = dl_armor.get("hardpoint_armor", "") or dl_armor.get("hardpoint_armour", "")
         # Fallback: derive armor class from ship className (armr_{className})
         # Try exact match first, then strip trailing segments for variant → base fallback
         if not armor_cls:
