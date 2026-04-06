@@ -2183,9 +2183,9 @@ def extract_mining_locations(forge_dir, dcb_path):
         "hpp_stanton1c": "Ita", "hpp_stanton1d": "Magda",
         "hpp_stanton2a": "Cellin", "hpp_stanton2b": "Daymar", "hpp_stanton2c": "Yela",
         "hpp_stanton2c_belt": "Yela Belt",
-        "hpp_stanton3a": "Calliope", "hpp_stanton3b": "Clio",
-        "hpp_stanton4": "microTech", "hpp_stanton4a": "Euterpe",
-        "hpp_stanton4b": "Lyria", "hpp_stanton4c": "Wala",
+        "hpp_stanton3a": "Lyria", "hpp_stanton3b": "Wala",
+        "hpp_stanton4": "microTech", "hpp_stanton4a": "Calliope",
+        "hpp_stanton4b": "Clio", "hpp_stanton4c": "Euterpe",
         "hpp_aaronhalo": "Aaron Halo",
         # Lagrange presets are shared profiles mapped to multiple points.
         # Mapping validated against community mining data.
