@@ -853,6 +853,8 @@ export class DataService {
   ]);
 
   // Items that should never appear in weapon pickers (locked to specific hardpoints only)
+  isBlacklisted(cls: string): boolean { return this.PICKER_BLACKLIST.has(cls); }
+
   private readonly PICKER_BLACKLIST = new Set([
     // Jericho rocket pods
     'rpod_s3_fski_9x_s3',
@@ -866,12 +868,39 @@ export class DataService {
     'vncl_gen2_plasmacannon_s5',// WRATH Cannon (Gen2)
     'vncl_lasercannon_s1',      // WEAK Repeater
     'vncl_lasercannon_s2',      // WASP Repeater
+    'vncl_neutroncannon_s5',    // WAR Cannon
+    // Capital/ground vehicle weapons (not player-equippable on ships)
+    'bengal_turret_ballisticcannon_s8', // Slayer Cannon (Bengal turret)
+    'hrst_nova_ballisticcannon_s5',     // Slayer Cannon (Nova tank)
+    'behr_nova_ballisticgatling_s5',    // NV57 Ballistic Gatling (Nova tank)
     // Hurston Storm (ship-locked)
     'hrst_storm_laserrepeater_s3', // Reign-3 Repeater
     // Liberator rocket pods (TODO: determine where these belong)
     'rpod_s1_thcn_4x_s2',         // Liberator
     'rpod_s2_thcn_8x_s2',         // Liberator Prime
     'rpod_s3_thcn_12x_s2',        // Liberator Ultra
+    // AI/NPC weapon variants
+    'amrs_aagun_cc_s3',                // PyroBurst AA variant (NPC only)
+    // Wolf-exclusive weapons (handled by WOLF_WEAPONS in picker, but also blacklisted for bulk)
+    'krig_ballisticgatling_bespoke_s4', // Relentless L-21 Gatling (Wolf only)
+    'krig_laserrepeater_bespoke_s4',    // Axiom L-22 Repeater (Wolf only)
+    // Vanguard nose-exclusive weapons
+    'behr_ballisticrepeater_vng_s2',    // BRVS Repeater
+    'behr_laserrepeater_vng_s2',        // GVSR Repeater (S2)
+    'behr_lasercannon_vng_s2',          // MVSA Cannon
+    'behr_ballisticcannon_vng_s2',      // CVSA Cannon
+    'behr_distortionrepeater_vng_s2',   // ATVS Repeater
+    // Capital/security network weapons
+    'behr_laserrepeater_s10',               // GVSR Repeater (S10)
+    'behr_laserrepeater_s10_securitynetwork',      // GVSR Security Network
+    'behr_laserrepeater_s10_securitynetwork_weak', // GVSR Security Network (weak)
+    // Ship-exclusive weapons
+    'toag_lasergatling_s2',             // Thlilye Laser Gatling (Mirai Pulse only)
+    // Placeholder/broken items with wrong size data
+    'vncl_gen2_plasmacannon_s4',        // Vanduul Gen2 placeholder (shows as S1)
+    'vncl_gen2_plasmacannon_s2',        // Vanduul Gen2 placeholder (shows as S1)
+    'apar_ballisticscattergun_s6',      // S6 scattergun placeholder (shows as S1)
+    'brra_lasercannon_ap_automatedturret', // Automated turret placeholder
     // Ship-locked weapons
     'krig_ballisticgatling_s2',        // Tigerstrike T-19P (Merlin-only)
     'rpod_s2_fski_6x_s3',             // Yebira II (ship-locked rocket pod)

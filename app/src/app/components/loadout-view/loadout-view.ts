@@ -99,10 +99,14 @@ export class LoadoutViewComponent {
     const q = this.bulkEquipSearch().toLowerCase().trim();
     let opts: Item[];
     if (tab === 'guns') {
-      opts = this.data.items().filter(i =>
-        (i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && i.size === size &&
-        (i.dps ?? 0) > 0
-      );
+      opts = this.data.items().filter(i => {
+        if (i.type !== 'WeaponGun' && i.type !== 'WeaponTachyon') return false;
+        if (i.size !== size || (i.dps ?? 0) <= 0) return false;
+        const cls = i.className.toLowerCase();
+        if (cls.endsWith('_turret') || cls.includes('_aagun_')) return false;
+        // Use same blacklist as main picker
+        return !this.data.isBlacklisted(cls);
+      });
     } else {
       opts = this.data.items().filter(i => i.type === 'Missile' && i.size === size);
     }
