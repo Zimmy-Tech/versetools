@@ -461,14 +461,18 @@ def parse_dcb():
                 mod_resolved += 1
     print(f"  Quality modifiers resolved: {mod_resolved}")
 
-    # Deduplicate by className
-    seen = {}
+    # Deduplicate by className, then by itemName (skin variants share the same name)
+    seen_cls = {}
+    seen_name = {}
     unique = []
     for r in recipes_out:
-        key = r["className"]
-        if key not in seen:
-            seen[key] = True
-            unique.append(r)
+        if r["className"] in seen_cls:
+            continue
+        if r["itemName"] in seen_name:
+            continue
+        seen_cls[r["className"]] = True
+        seen_name[r["itemName"]] = True
+        unique.append(r)
     print(f"  Unique recipes: {len(unique)}")
 
     # Print sample recipes
