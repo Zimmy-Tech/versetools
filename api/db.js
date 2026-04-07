@@ -396,6 +396,128 @@ export async function importIfEmpty() {
   }
 }
 
+// Migrate from the old schema where shopPrices lived inside the
+// ships/items JSONB blob to the standalone shop_prices table. Also
+// extends changelog_entries with price_* columns.
+//
+// Idempotent: detects whether changelog_entries already has the
+// entry_type column (which only exists post-migration) and bails out
+// if so. On first run it:
+//   1. ALTERs changelog_entries to add entry_type, actor, and price_* columns
+//   2. Walks LIVE ships/items, pulls each shopPrices array out of the
+//      data JSONB, inserts the entries into shop_prices (deduped via
+//      ON CONFLICT, since LIVE/PTU were seeded as identical clones)
+//   3. UPDATEs ships and items to remove the now-extracted shopPrices
+//      field from their data JSONB
+// Location columns (star_system, planet, etc.) are left NULL on this
+// initial extraction; the next UEX refresh fills them in.
+export async function migrateExtractShopPrices() {
+  if (!pool) return;
+  const { rows: hasCol } = await pool.query(`
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'versedb' AND table_name = 'changelog_entries' AND column_name = 'entry_type'
+  `);
+  if (hasCol.length > 0) {
+    // Already migrated. Ensure the type index exists for fresh installs
+    // where this function returns early on first run after schema.sql
+    // created the column directly (no ALTER needed). No-op otherwise.
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS changelog_entries_type_idx
+        ON versedb.changelog_entries (entry_type, id DESC)
+    `);
+    return;
+  }
+
+  console.log('[db] migrating: extracting shopPrices into standalone shop_prices table...');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 1. Extend changelog_entries with the new columns
+    await client.query(`
+      ALTER TABLE versedb.changelog_entries
+        ADD COLUMN entry_type     TEXT NOT NULL DEFAULT 'build_import',
+        ADD COLUMN actor          TEXT,
+        ADD COLUMN price_changes  JSONB NOT NULL DEFAULT '[]'::jsonb,
+        ADD COLUMN price_added    JSONB NOT NULL DEFAULT '[]'::jsonb,
+        ADD COLUMN price_removed  JSONB NOT NULL DEFAULT '[]'::jsonb,
+        ADD COLUMN price_snapshot JSONB
+    `);
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS changelog_entries_type_idx
+        ON versedb.changelog_entries (entry_type, id DESC)
+    `);
+
+    // 2. Extract from LIVE ships (PTU is an identical clone — we'd just
+    //    re-insert duplicates that ON CONFLICT would discard anyway).
+    let shipPricesExtracted = 0;
+    const { rows: shipRows } = await client.query(`
+      SELECT class_name, data->'shopPrices' AS prices
+      FROM versedb.ships
+      WHERE mode = 'live'
+        AND data ? 'shopPrices'
+        AND jsonb_typeof(data->'shopPrices') = 'array'
+    `);
+
+    for (const row of shipRows) {
+      for (const p of (row.prices || [])) {
+        if (!p?.shop || typeof p?.price !== 'number') continue;
+        await client.query(`
+          INSERT INTO versedb.shop_prices
+            (entity_type, entity_class, shop_nickname, price_buy, source)
+          VALUES ('ship', $1, $2, $3, 'uex')
+          ON CONFLICT (entity_type, entity_class, shop_nickname, source) DO NOTHING
+        `, [row.class_name, p.shop, p.price]);
+        shipPricesExtracted++;
+      }
+    }
+
+    // 3. Strip shopPrices from BOTH live and ptu ships rows.
+    const stripShipsRes = await client.query(
+      `UPDATE versedb.ships SET data = data - 'shopPrices' WHERE data ? 'shopPrices'`
+    );
+
+    // 4. Same for items.
+    let itemPricesExtracted = 0;
+    const { rows: itemRows } = await client.query(`
+      SELECT class_name, data->'shopPrices' AS prices
+      FROM versedb.items
+      WHERE mode = 'live'
+        AND data ? 'shopPrices'
+        AND jsonb_typeof(data->'shopPrices') = 'array'
+    `);
+
+    for (const row of itemRows) {
+      for (const p of (row.prices || [])) {
+        if (!p?.shop || typeof p?.price !== 'number') continue;
+        await client.query(`
+          INSERT INTO versedb.shop_prices
+            (entity_type, entity_class, shop_nickname, price_buy, source)
+          VALUES ('item', $1, $2, $3, 'uex')
+          ON CONFLICT (entity_type, entity_class, shop_nickname, source) DO NOTHING
+        `, [row.class_name, p.shop, p.price]);
+        itemPricesExtracted++;
+      }
+    }
+
+    const stripItemsRes = await client.query(
+      `UPDATE versedb.items SET data = data - 'shopPrices' WHERE data ? 'shopPrices'`
+    );
+
+    await client.query('COMMIT');
+    console.log(
+      `[db] shop_prices migration complete: ` +
+      `extracted ${shipPricesExtracted} ship prices (stripped from ${stripShipsRes.rowCount} ship rows), ` +
+      `${itemPricesExtracted} item prices (stripped from ${stripItemsRes.rowCount} item rows)`
+    );
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 // Check whether the schema/data is present, and run init/import if not.
 // Safe to call repeatedly — every step is idempotent.
 export async function ensureReady() {
@@ -409,6 +531,7 @@ export async function ensureReady() {
   }
   await migrateAddModeColumn();
   await importIfEmpty();
+  await migrateExtractShopPrices();
 }
 
 /** Coerce arbitrary input into a valid mode value. */
@@ -416,25 +539,312 @@ export function normalizeMode(input) {
   return input === 'ptu' ? 'ptu' : 'live';
 }
 
+// ─── Shop prices: UEX refresh ──────────────────────────────────────────
+
+/** Refresh the source='uex' shop prices from UEX Corp's API. Manual
+ *  entries (source='manual') are never touched. The whole operation
+ *  runs in a single transaction so a partial failure leaves the table
+ *  in its prior state.
+ *
+ *  Side effects:
+ *    - DELETE all existing source='uex' rows
+ *    - INSERT freshly fetched rows
+ *    - INSERT one changelog_entries row of entry_type='price_refresh'
+ *      with the per-(entity,shop) diff lists and a full snapshot of
+ *      the new UEX state for the next refresh to diff against
+ *    - INSERT one audit_log entry summarizing the refresh
+ *
+ *  @param {{ actor: string }} options - actor is the admin username
+ *  @returns {Promise<{
+ *    shipsMatched: number, itemsMatched: number,
+ *    shipPricesInserted: number, itemPricesInserted: number,
+ *    priceChanges: number, priceAdded: number, priceRemoved: number,
+ *    unmatchedShipNames: string[], unmatchedItemNames: string[],
+ *    changelogEntryId: number,
+ *  }>}
+ */
+export async function refreshUexShopPrices({ actor }) {
+  if (!pool) throw new Error('Database not configured');
+  if (!actor) throw new Error('actor is required');
+
+  const {
+    fetchUexTerminals,
+    fetchUexVehiclePrices,
+    fetchUexItemPrices,
+    matchUexVehiclesToShips,
+    matchUexItemsToItems,
+  } = await import('./uex.js');
+
+  // 1. Fetch from UEX (in parallel)
+  const [terminals, vehiclePrices, itemPrices] = await Promise.all([
+    fetchUexTerminals(),
+    fetchUexVehiclePrices(),
+    fetchUexItemPrices(),
+  ]);
+
+  // 2. Get current ship and item lists from the DB. We only need
+  //    className/name/subType for matching — pull these from the LIVE
+  //    side since both modes are mode-agnostic for prices.
+  const [shipsRes, itemsRes] = await Promise.all([
+    pool.query("SELECT data->>'className' AS class_name, data->>'name' AS name FROM versedb.ships WHERE mode = 'live'"),
+    pool.query("SELECT data->>'className' AS class_name, data->>'name' AS name, data->>'subType' AS sub_type FROM versedb.items WHERE mode = 'live'"),
+  ]);
+  const ships = shipsRes.rows.map(r => ({ className: r.class_name, name: r.name }));
+  const items = itemsRes.rows.map(r => ({ className: r.class_name, name: r.name, subType: r.sub_type }));
+
+  // 3. Match
+  const shipMatch = matchUexVehiclesToShips(vehiclePrices, terminals, ships);
+  const itemMatch = matchUexItemsToItems(itemPrices, terminals, items);
+  const newRows = [...shipMatch.rows, ...itemMatch.rows];
+
+  // 4. Capture the previous UEX state for the diff
+  const { rows: prevRows } = await pool.query(`
+    SELECT entity_type, entity_class, shop_nickname, price_buy
+    FROM versedb.shop_prices
+    WHERE source = 'uex'
+  `);
+  const diff = computeShopPriceDiff(prevRows, newRows);
+
+  // 5. Apply the changes transactionally
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    await client.query("DELETE FROM versedb.shop_prices WHERE source = 'uex'");
+
+    // Batched multi-row INSERT — orders of magnitude faster than one
+    // statement per row for the ~4k rows a typical refresh produces.
+    // Postgres allows ~65k bind params per statement, so 16 cols × 500 rows
+    // = 8000 params per batch is well within bounds.
+    const BATCH_ROWS = 500;
+    let shipPricesInserted = 0;
+    let itemPricesInserted = 0;
+    for (let i = 0; i < newRows.length; i += BATCH_ROWS) {
+      const batch = newRows.slice(i, i + BATCH_ROWS);
+      const valueClauses = [];
+      const params = [];
+      let p = 1;
+      for (const row of batch) {
+        valueClauses.push(
+          `($${p++}, $${p++}, $${p++}, $${p++}, $${p++}, $${p++}, $${p++}, $${p++}, ` +
+          `$${p++}, $${p++}, $${p++}, $${p++}, $${p++}, $${p++}, $${p++}, $${p++})`
+        );
+        params.push(
+          row.entity_type, row.entity_class, row.shop_nickname, row.shop_company,
+          row.star_system, row.planet, row.moon, row.orbit, row.space_station, row.city, row.outpost,
+          row.price_buy, row.price_sell, row.source, row.uex_terminal_id, row.notes
+        );
+        if (row.entity_type === 'ship') shipPricesInserted++;
+        else itemPricesInserted++;
+      }
+      await client.query(
+        `INSERT INTO versedb.shop_prices
+          (entity_type, entity_class, shop_nickname, shop_company,
+           star_system, planet, moon, orbit, space_station, city, outpost,
+           price_buy, price_sell, source, uex_terminal_id, notes)
+         VALUES ${valueClauses.join(', ')}
+         ON CONFLICT (entity_type, entity_class, shop_nickname, source) DO NOTHING`,
+        params
+      );
+    }
+
+    // 6. Record the changelog entry
+    const refreshTimestamp = new Date().toISOString();
+    const insRes = await client.query(
+      `INSERT INTO versedb.changelog_entries
+        (entry_type, from_version, from_channel, to_version, to_channel, actor,
+         price_changes, price_added, price_removed, price_snapshot)
+       VALUES ('price_refresh', $1, $2, $3, 'uex', $4, $5, $6, $7, $8)
+       RETURNING id`,
+      [
+        diff.fromVersion,
+        diff.fromVersion ? 'uex' : null,
+        refreshTimestamp,
+        actor,
+        JSON.stringify(diff.changes),
+        JSON.stringify(diff.added),
+        JSON.stringify(diff.removed),
+        JSON.stringify(newRows.map(r => ({
+          entity_type: r.entity_type,
+          entity_class: r.entity_class,
+          shop_nickname: r.shop_nickname,
+          price_buy: r.price_buy,
+        }))),
+      ]
+    );
+    const changelogEntryId = insRes.rows[0].id;
+
+    // Prune older entries beyond retention (same logic as build imports)
+    await client.query(
+      `DELETE FROM versedb.changelog_entries
+       WHERE id NOT IN (
+         SELECT id FROM versedb.changelog_entries ORDER BY id DESC LIMIT $1
+       )`,
+      [CHANGELOG_RETENTION]
+    );
+
+    // 7. Audit log entry
+    await client.query(
+      `INSERT INTO versedb.audit_log (user_name, action, entity_type, entity_key, new_value)
+       VALUES ($1, 'shop_prices_refresh', 'shop_prices', NULL, $2)`,
+      [
+        actor,
+        JSON.stringify({
+          shipPricesInserted,
+          itemPricesInserted,
+          priceChanges: diff.changes.length,
+          priceAdded: diff.added.length,
+          priceRemoved: diff.removed.length,
+        }),
+      ]
+    );
+
+    await client.query('COMMIT');
+
+    return {
+      shipsMatched: shipMatch.matchedShipCount,
+      itemsMatched: itemMatch.matchedItemCount,
+      shipPricesInserted,
+      itemPricesInserted,
+      priceChanges: diff.changes.length,
+      priceAdded: diff.added.length,
+      priceRemoved: diff.removed.length,
+      unmatchedShipNames: shipMatch.unmatchedUexNames,
+      unmatchedItemNames: itemMatch.unmatchedUexNames,
+      changelogEntryId,
+    };
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+/** Compute the diff between the previous source='uex' shop_prices state
+ *  and the new set of rows about to be inserted. Returns lists for the
+ *  changelog: changes (same key, different price), added (new keys),
+ *  removed (keys that disappeared). The "key" here is
+ *  (entity_type, entity_class, shop_nickname). */
+function computeShopPriceDiff(prevRows, newRows) {
+  const keyOf = (r) => `${r.entity_type}\u0001${r.entity_class}\u0001${r.shop_nickname}`;
+  const prevMap = new Map(prevRows.map(r => [keyOf(r), r]));
+  const newMap = new Map(newRows.map(r => [keyOf(r), r]));
+
+  const changes = [];
+  const added = [];
+  const removed = [];
+
+  for (const [k, n] of newMap.entries()) {
+    const p = prevMap.get(k);
+    if (!p) {
+      added.push({
+        entity_type: n.entity_type,
+        entity_class: n.entity_class,
+        shop_nickname: n.shop_nickname,
+        new_price: n.price_buy,
+      });
+    } else if (Number(p.price_buy) !== Number(n.price_buy)) {
+      changes.push({
+        entity_type: n.entity_type,
+        entity_class: n.entity_class,
+        shop_nickname: n.shop_nickname,
+        old_price: Number(p.price_buy),
+        new_price: Number(n.price_buy),
+      });
+    }
+  }
+  for (const [k, p] of prevMap.entries()) {
+    if (!newMap.has(k)) {
+      removed.push({
+        entity_type: p.entity_type,
+        entity_class: p.entity_class,
+        shop_nickname: p.shop_nickname,
+        old_price: Number(p.price_buy),
+      });
+    }
+  }
+
+  return {
+    fromVersion: prevRows.length > 0 ? `prev:${prevRows.length}` : null,
+    changes,
+    added,
+    removed,
+  };
+}
+
 // Assemble the same JSON shape the Angular app expects from versedb_data.json
 // for the requested mode (defaults to 'live').
+//
+// Shop prices are stored in their own mode-agnostic table and reattached
+// here so the frontend payload shape is unchanged from the days when
+// shopPrices lived inside each ship/item JSONB blob.
 export async function exportFullDb(mode = 'live') {
   if (!pool) throw new Error('Database not configured');
   await ensureReady();
   const m = normalizeMode(mode);
 
-  const [shipsRes, itemsRes, locsRes, elsRes, metaRes] = await Promise.all([
+  const [shipsRes, itemsRes, locsRes, elsRes, metaRes, shopPricesRes] = await Promise.all([
     pool.query('SELECT data FROM ships WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM items WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM mining_locations ORDER BY id'),
     pool.query('SELECT data FROM mining_elements ORDER BY id'),
     pool.query('SELECT data FROM meta WHERE id = 1'),
+    pool.query(`
+      SELECT entity_type, entity_class, shop_nickname, shop_company,
+             star_system, planet, moon, orbit, space_station, city, outpost,
+             price_buy, price_sell, source, notes
+      FROM shop_prices
+      ORDER BY entity_type, entity_class, shop_nickname
+    `),
   ]);
+
+  // Group shop prices by entity for fast lookup
+  const shipPriceMap = new Map();
+  const itemPriceMap = new Map();
+  for (const row of shopPricesRes.rows) {
+    // Build the legacy {price, shop} entry the frontend expects today,
+    // plus the richer fields appended for future use. Existing UI code
+    // reads `.shop` and `.price` and is unaffected by the extra keys.
+    const entry = {
+      shop: row.shop_nickname,
+      price: row.price_buy,
+      // Richer location/source data — opt-in for new UI features:
+      shopCompany: row.shop_company,
+      starSystem: row.star_system,
+      planet: row.planet,
+      moon: row.moon,
+      orbit: row.orbit,
+      spaceStation: row.space_station,
+      city: row.city,
+      outpost: row.outpost,
+      priceSell: row.price_sell,
+      source: row.source,
+      notes: row.notes,
+    };
+    const map = row.entity_type === 'ship' ? shipPriceMap : itemPriceMap;
+    if (!map.has(row.entity_class)) map.set(row.entity_class, []);
+    map.get(row.entity_class).push(entry);
+  }
+
+  // Reattach shopPrices to each ship/item without mutating the stored
+  // JSONB rows. We spread into a new object so the cached row data
+  // stays clean for any other reader.
+  const ships = shipsRes.rows.map((r) => {
+    const ship = r.data;
+    const prices = shipPriceMap.get(ship.className);
+    return prices ? { ...ship, shopPrices: prices } : ship;
+  });
+  const items = itemsRes.rows.map((r) => {
+    const item = r.data;
+    const prices = itemPriceMap.get(item.className);
+    return prices ? { ...item, shopPrices: prices } : item;
+  });
 
   return {
     meta: metaRes.rows[0]?.data ?? { shipCount: shipsRes.rowCount, itemCount: itemsRes.rowCount },
-    ships: shipsRes.rows.map((r) => r.data),
-    items: itemsRes.rows.map((r) => r.data),
+    ships,
+    items,
     miningLocations: locsRes.rows.map((r) => r.data),
     miningElements: elsRes.rows.map((r) => r.data),
   };

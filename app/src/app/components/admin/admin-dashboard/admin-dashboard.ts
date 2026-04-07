@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DataService } from '../../../services/data.service';
-import { AdminService } from '../admin.service';
+import { AdminService, ShopPriceRefreshSummary } from '../admin.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -26,6 +26,12 @@ export class AdminDashboardComponent {
   configMessage = signal<string | null>(null);
   configError = signal<string | null>(null);
   detectingDiff = signal(false);
+
+  // Shop price refresh state
+  shopRefreshing = signal(false);
+  shopRefreshResult = signal<ShopPriceRefreshSummary | null>(null);
+  shopRefreshError = signal<string | null>(null);
+  showUnmatched = signal(false);
 
   constructor() {
     this.loadConfig();
@@ -64,6 +70,27 @@ export class AdminDashboardComponent {
       this.configError.set(err?.error?.error || err?.message || 'Save failed');
     } finally {
       this.configSaving.set(false);
+    }
+  }
+
+  /** Refresh all source='uex' shop prices from UEX Corp's API. Manual
+   *  entries are untouched. The whole operation is transactional on the
+   *  backend so a partial failure leaves the table in its prior state. */
+  async refreshShopPrices(): Promise<void> {
+    this.shopRefreshing.set(true);
+    this.shopRefreshError.set(null);
+    this.shopRefreshResult.set(null);
+    this.showUnmatched.set(false);
+    try {
+      const summary = await this.admin.refreshShopPrices();
+      this.shopRefreshResult.set(summary);
+      // Force the public data service to re-fetch so the sidebar/cart
+      // immediately reflect the new prices instead of waiting for a reload.
+      await this.data.refreshDb();
+    } catch (err: any) {
+      this.shopRefreshError.set(err?.error?.error || err?.message || 'Refresh failed');
+    } finally {
+      this.shopRefreshing.set(false);
     }
   }
 

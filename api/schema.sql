@@ -126,17 +126,24 @@ CREATE TABLE IF NOT EXISTS feedback_submissions (
   acknowledged    BOOLEAN NOT NULL DEFAULT FALSE
 );
 
--- Build-import changelog. One row per imported build, recorded
--- automatically when an admin applies a diff. The snapshot columns
--- store the full ships/items arrays from THIS build so the next
--- import can compute its diff against the previous build's content
--- (independent of any manual edits made to the live tables since).
+-- Changelog entries. Two kinds, distinguished by `entry_type`:
+--   * 'build_import' — recorded when an admin applies a build-import diff.
+--     The ship/item snapshot columns store full arrays from THIS build so
+--     the next import diffs against build-to-build content (independent of
+--     manual edits made to the live tables since).
+--   * 'price_refresh' — recorded when an admin clicks "Refresh shop prices
+--     from UEX". The price_* columns store the changes; price_snapshot is
+--     the full set of UEX-sourced prices for diffing against the next refresh.
+-- to_version/to_channel are repurposed for price refreshes: to_version holds
+-- an ISO timestamp of the refresh, to_channel holds 'uex'.
 CREATE TABLE IF NOT EXISTS changelog_entries (
   id              SERIAL PRIMARY KEY,
+  entry_type      TEXT NOT NULL DEFAULT 'build_import',
   from_version    TEXT,
   from_channel    TEXT,
   to_version      TEXT NOT NULL,
   to_channel      TEXT NOT NULL,
+  actor           TEXT,
   imported_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   ship_changes    JSONB NOT NULL DEFAULT '[]'::jsonb,
   item_changes    JSONB NOT NULL DEFAULT '[]'::jsonb,
@@ -146,6 +153,47 @@ CREATE TABLE IF NOT EXISTS changelog_entries (
   item_removed    JSONB NOT NULL DEFAULT '[]'::jsonb,
   ship_snapshot   JSONB,
   item_snapshot   JSONB,
+  price_changes   JSONB NOT NULL DEFAULT '[]'::jsonb,
+  price_added     JSONB NOT NULL DEFAULT '[]'::jsonb,
+  price_removed   JSONB NOT NULL DEFAULT '[]'::jsonb,
+  price_snapshot  JSONB,
   notes           TEXT
 );
 CREATE INDEX IF NOT EXISTS changelog_entries_id_desc_idx ON changelog_entries (id DESC);
+-- Note: changelog_entries_type_idx is created by migrateExtractShopPrices()
+-- after the entry_type column is added (existing DBs predate the column).
+
+-- Shop prices for ships and items, extracted from UEX or manually entered.
+-- Stored in a standalone table (not embedded in ships/items JSONB) so that:
+--   (1) prices are mode-agnostic — one row applies to both LIVE and PTU,
+--   (2) UEX refresh is a fast atomic DELETE+INSERT,
+--   (3) cross-entity queries like "what does Lorville sell?" are trivial,
+--   (4) manual overrides (source='manual') survive UEX refreshes that only
+--       touch source='uex' rows.
+CREATE TABLE IF NOT EXISTS shop_prices (
+  id               SERIAL PRIMARY KEY,
+  entity_type      TEXT NOT NULL,             -- 'ship' or 'item'
+  entity_class     TEXT NOT NULL,             -- e.g. 'aegs_avenger_titan'
+  shop_nickname    TEXT NOT NULL,             -- e.g. 'New Deal Lorville' (display string)
+  shop_company     TEXT,                      -- e.g. 'New Deal' (operator)
+  star_system      TEXT,
+  planet           TEXT,
+  moon             TEXT,
+  orbit            TEXT,
+  space_station    TEXT,
+  city             TEXT,
+  outpost          TEXT,
+  price_buy        INTEGER NOT NULL,
+  price_sell       INTEGER,                   -- nullable; UEX provides for items, not vehicles
+  source           TEXT NOT NULL DEFAULT 'uex',  -- 'uex' or 'manual'
+  uex_terminal_id  INTEGER,                   -- UEX's id_terminal (null for manual)
+  notes            TEXT,                      -- free-form, useful for manual entries
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (entity_type, entity_class, shop_nickname, source)
+);
+CREATE INDEX IF NOT EXISTS shop_prices_entity_idx   ON shop_prices (entity_type, entity_class);
+CREATE INDEX IF NOT EXISTS shop_prices_nickname_idx ON shop_prices (shop_nickname);
+CREATE INDEX IF NOT EXISTS shop_prices_company_idx  ON shop_prices (shop_company);
+CREATE INDEX IF NOT EXISTS shop_prices_system_idx   ON shop_prices (star_system);
+CREATE INDEX IF NOT EXISTS shop_prices_source_idx   ON shop_prices (source);

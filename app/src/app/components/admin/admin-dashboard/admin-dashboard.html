@@ -66,6 +66,71 @@
     </div>
   </div>
 
+  <h2>Shop Prices</h2>
+  <div class="settings-card">
+    <p class="settings-hint">
+      Pulls the latest ship and item shop prices from UEX Corp's API and
+      replaces all UEX-sourced rows in the database. Manual price entries
+      are never touched. The diff is recorded in the build changelog.
+    </p>
+
+    @if (shopRefreshError()) {
+      <div class="config-msg error">{{ shopRefreshError() }}</div>
+    }
+
+    @if (shopRefreshResult(); as summary) {
+      <div class="config-msg success">
+        Refreshed.
+        {{ summary.shipsMatched }} ships matched ({{ summary.shipPricesInserted }} prices),
+        {{ summary.itemsMatched }} items matched ({{ summary.itemPricesInserted }} prices).
+        @if (summary.priceChanges + summary.priceAdded + summary.priceRemoved > 0) {
+          <br>
+          <strong>Changes:</strong>
+          {{ summary.priceChanges }} price changes,
+          {{ summary.priceAdded }} new offerings,
+          {{ summary.priceRemoved }} removed offerings.
+        } @else {
+          <br>No price changes since last refresh.
+        }
+        @if (summary.unmatchedShipNames.length + summary.unmatchedItemNames.length > 0) {
+          <br>
+          <button type="button" class="link-button" (click)="showUnmatched.set(!showUnmatched())">
+            {{ showUnmatched() ? 'Hide' : 'Show' }}
+            {{ summary.unmatchedShipNames.length + summary.unmatchedItemNames.length }}
+            unmatched UEX names
+          </button>
+          @if (showUnmatched()) {
+            <div class="unmatched-list">
+              @if (summary.unmatchedShipNames.length > 0) {
+                <strong>Unmatched ships ({{ summary.unmatchedShipNames.length }}):</strong>
+                <ul>
+                  @for (n of summary.unmatchedShipNames; track n) { <li>{{ n }}</li> }
+                </ul>
+              }
+              @if (summary.unmatchedItemNames.length > 0) {
+                <strong>Unmatched items ({{ summary.unmatchedItemNames.length }}):</strong>
+                <ul>
+                  @for (n of summary.unmatchedItemNames; track n) { <li>{{ n }}</li> }
+                </ul>
+              }
+            </div>
+          }
+        }
+      </div>
+    }
+
+    <div class="settings-actions">
+      <button
+        type="button"
+        class="save-btn"
+        (click)="refreshShopPrices()"
+        [disabled]="shopRefreshing()"
+      >
+        {{ shopRefreshing() ? 'Refreshing…' : 'Refresh from UEX' }}
+      </button>
+    </div>
+  </div>
+
   <h2>Quick links</h2>
   <a routerLink="/admin/ships" class="link-card">
     <strong>Edit Ships</strong>

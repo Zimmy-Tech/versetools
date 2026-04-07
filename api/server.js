@@ -1,12 +1,18 @@
 // VerseTools API Server
 // Phase 2: Public read endpoints + admin auth + admin write endpoints
 
+// Load .env BEFORE importing db.js / auth.js, since those modules read
+// process.env at module-load time. Production sets these via DigitalOcean
+// App Platform env vars and has no .env file; the dotenv call is a no-op
+// there.
+import 'dotenv/config';
+
 import express from 'express';
 import cors from 'cors';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { dbEnabled, initSchema, importIfEmpty, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting, recordChangelogEntry, getChangelogHistory } from './db.js';
+import { dbEnabled, ensureReady, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting, recordChangelogEntry, getChangelogHistory, refreshUexShopPrices } from './db.js';
 import { authConfigured, verifyCredentials, issueToken, requireAdmin } from './auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -344,6 +350,26 @@ app.delete('/admin/ships/:className', requireAdmin, deleteShipHandler);
 app.delete('/api/admin/ships/:className', requireAdmin, deleteShipHandler);
 app.delete('/admin/items/:className', requireAdmin, deleteItemHandler);
 app.delete('/api/admin/items/:className', requireAdmin, deleteItemHandler);
+
+// ─── Shop prices: UEX refresh ─────────────────────────────────────────
+//
+// Replaces all source='uex' rows in versedb.shop_prices with a fresh
+// pull from UEX Corp's API. Manual entries (source='manual') are
+// untouched. Records a price_refresh entry in the build changelog and
+// an audit_log entry. Synchronous: blocks until complete (typically
+// 5-15 seconds depending on UEX response time).
+const refreshShopPricesHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  try {
+    const summary = await refreshUexShopPrices({ actor: req.user?.username || 'unknown' });
+    res.json({ ok: true, summary });
+  } catch (err) {
+    console.error('[shop-prices/refresh] failed:', err);
+    res.status(500).json({ error: err.message || 'Refresh failed' });
+  }
+};
+app.post('/admin/shop-prices/refresh', requireAdmin, refreshShopPricesHandler);
+app.post('/api/admin/shop-prices/refresh', requireAdmin, refreshShopPricesHandler);
 
 // ─── Diff / import review ────────────────────────────────────────────
 //
@@ -1121,8 +1147,10 @@ app.get('/', (req, res) => {
 async function start() {
   if (dbEnabled) {
     try {
-      await initSchema();
-      await importIfEmpty();
+      // ensureReady runs initSchema, all migrations, and importIfEmpty
+      // in the correct order, so any schema evolution lands before we
+      // accept the first request.
+      await ensureReady();
     } catch (err) {
       console.error('[db] init failed:', err);
       // Don't crash — fall back to file proxy so the site stays up

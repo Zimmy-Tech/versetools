@@ -220,6 +220,18 @@ export class AdminService {
     return (resp.stats?.shipChanges ?? 0) + (resp.stats?.itemChanges ?? 0) > 0;
   }
 
+  // ─── Shop prices: UEX refresh ─────────────────────────────────────
+
+  async refreshShopPrices(): Promise<ShopPriceRefreshSummary> {
+    const resp = await this.http
+      .post<{ ok: boolean; summary: ShopPriceRefreshSummary }>('/api/admin/shop-prices/refresh', {}, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    if (!resp?.summary) throw new Error('Refresh response missing summary');
+    return resp.summary;
+  }
+
   // ─── Community submissions ────────────────────────────────────────
 
   async listAccelSubmissions(status: 'pending' | 'approved' | 'rejected' | 'all' = 'pending'): Promise<AccelSubmission[]> {
@@ -300,6 +312,19 @@ export interface AuditEntry {
   old_value: string | null;
   new_value: string | null;
   created_at: string;
+}
+
+export interface ShopPriceRefreshSummary {
+  shipsMatched: number;
+  itemsMatched: number;
+  shipPricesInserted: number;
+  itemPricesInserted: number;
+  priceChanges: number;
+  priceAdded: number;
+  priceRemoved: number;
+  unmatchedShipNames: string[];
+  unmatchedItemNames: string[];
+  changelogEntryId: number;
 }
 
 export interface AccelSubmission {
