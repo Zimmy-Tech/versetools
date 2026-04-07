@@ -93,17 +93,37 @@ export class ChangelogViewComponent {
   });
 
   constructor(private http: HttpClient, private data: DataService) {
+    // Prefer the API (database-backed, populated by admin imports) and
+    // fall back to the bundled JSON for hosts without an API (GitHub
+    // Pages mirror) or if the API call fails for any reason.
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion(); // track mode changes
       this.loaded.set(false);
-      this.http.get<ChangelogData>(`${prefix}versedb_changelog.json`).subscribe({
-        next: data => {
-          this.entries.set(data.changelog);
-          this.loaded.set(true);
-        },
-        error: () => this.loaded.set(true), // loaded but empty
-      });
+      const fallbackUrl = `${prefix}versedb_changelog.json`;
+      const apply = (data: ChangelogData) => {
+        this.entries.set(data.changelog);
+        this.loaded.set(true);
+      };
+      if (isStaticHost) {
+        this.http.get<ChangelogData>(fallbackUrl).subscribe({
+          next: apply,
+          error: () => this.loaded.set(true),
+        });
+      } else {
+        this.http.get<ChangelogData>('/api/changelog/history').subscribe({
+          next: apply,
+          error: () => {
+            this.http.get<ChangelogData>(fallbackUrl).subscribe({
+              next: apply,
+              error: () => this.loaded.set(true),
+            });
+          },
+        });
+      }
     });
   }
 

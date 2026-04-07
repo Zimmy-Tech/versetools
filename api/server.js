@@ -6,7 +6,7 @@ import cors from 'cors';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { dbEnabled, initSchema, importIfEmpty, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting } from './db.js';
+import { dbEnabled, initSchema, importIfEmpty, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting, recordChangelogEntry, getChangelogHistory } from './db.js';
 import { authConfigured, verifyCredentials, issueToken, requireAdmin } from './auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -441,10 +441,14 @@ const diffApplyHandler = async (req, res) => {
   const ships = Array.isArray(body.ships) ? body.ships : [];
   const items = Array.isArray(body.items) ? body.items : [];
   const meta = body.meta && typeof body.meta === 'object' ? body.meta : null;
+  // Full uploaded arrays — used by the changelog recorder so the
+  // changelog reflects the entire build, not just the user's selection.
+  const fullShips = Array.isArray(body.fullShips) ? body.fullShips : null;
+  const fullItems = Array.isArray(body.fullItems) ? body.fullItems : null;
   const mode = normalizeMode(req.query.mode);
 
   const client = await pool.connect();
-  let applied = { ships: 0, items: 0, meta: false };
+  let applied = { ships: 0, items: 0, meta: false, changelog: null };
   try {
     await client.query('BEGIN');
 
@@ -485,6 +489,26 @@ const diffApplyHandler = async (req, res) => {
     }
 
     await client.query('COMMIT');
+
+    // Record a changelog entry AFTER the apply transaction commits.
+    // Done outside the transaction so a changelog failure can never
+    // roll back a successful apply. Idempotent / de-duped on duplicate
+    // builds.
+    if (fullShips && fullItems && meta?.version) {
+      try {
+        const result = await recordChangelogEntry({
+          toVersion: meta.version,
+          toChannel: mode,
+          ships: fullShips,
+          items: fullItems,
+        });
+        applied.changelog = result;
+      } catch (clErr) {
+        console.error('changelog record failed (apply still succeeded):', clErr);
+        applied.changelog = { error: clErr.message };
+      }
+    }
+
     res.json({ ok: true, mode, applied });
   } catch (err) {
     await client.query('ROLLBACK');
@@ -665,6 +689,49 @@ const changelogHandler = async (req, res) => {
 
 app.get('/changelog', changelogHandler);
 app.get('/api/changelog', changelogHandler);
+
+// ─── Build-import changelog history (public) ─────────────────────────
+
+const changelogHistoryHandler = async (req, res) => {
+  if (!dbEnabled) return res.json({ entries: [] });
+  try {
+    const limit = Math.min(parseInt(req.query.limit, 10) || 6, 12);
+    const rows = await getChangelogHistory(limit);
+    // Re-shape into the same format the existing /changelog UI uses
+    const changelog = rows.map((r) => ({
+      fromVersion: r.from_version,
+      fromChannel: r.from_channel,
+      toVersion: r.to_version,
+      toChannel: r.to_channel,
+      date: r.imported_at,
+      changes: [
+        ...(r.ship_changes || []),
+        ...(r.item_changes || []),
+      ],
+      added: [
+        ...(r.ship_added || []),
+        ...(r.item_added || []),
+      ],
+      removed: [
+        ...(r.ship_removed || []),
+        ...(r.item_removed || []),
+      ],
+    }));
+    res.json({
+      meta: {
+        generatedAt: rows[0]?.imported_at ?? null,
+        entries: rows.length,
+      },
+      changelog,
+    });
+  } catch (err) {
+    console.error('changelog history failed:', err);
+    res.status(500).json({ error: 'Failed to load changelog history' });
+  }
+};
+
+app.get('/changelog/history', changelogHistoryHandler);
+app.get('/api/changelog/history', changelogHistoryHandler);
 
 // ─── Site config (PTU toggle, label) ─────────────────────────────────
 

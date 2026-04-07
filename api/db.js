@@ -142,6 +142,162 @@ export async function getConfig() {
   };
 }
 
+// ─── Changelog history ──────────────────────────────────────────────
+
+const CHANGELOG_RETENTION = 6; // keep this many most-recent entries
+
+function categorizeItem(item) {
+  const t = item?.type || '';
+  if (t === 'WeaponGun' || t === 'WeaponTachyon') return 'weapon';
+  if (t === 'TractorBeam') return 'tractor';
+  if (t === 'Shield') return 'shield';
+  if (t === 'PowerPlant') return 'powerplant';
+  if (t === 'Cooler') return 'cooler';
+  if (t === 'QuantumDrive') return 'quantumdrive';
+  if (t === 'Radar') return 'radar';
+  if (t === 'MissileLauncher' || t === 'BombLauncher') return 'missilelauncher';
+  if (t === 'Missile') return 'missile';
+  return t.toLowerCase() || 'other';
+}
+
+function diffArraysForChangelog(prevArr, nextArr, isShip) {
+  const prevMap = new Map((prevArr || []).map((e) => [e.className, e]));
+  const nextMap = new Map((nextArr || []).map((e) => [e.className, e]));
+  const allKeys = new Set([...prevMap.keys(), ...nextMap.keys()]);
+  const changes = [];
+  const added = [];
+  const removed = [];
+  for (const key of [...allKeys].sort()) {
+    const prev = prevMap.get(key);
+    const next = nextMap.get(key);
+    if (!prev && next) {
+      added.push({
+        category: isShip ? 'ship' : categorizeItem(next),
+        className: key,
+        name: next.name || key,
+      });
+      continue;
+    }
+    if (prev && !next) {
+      removed.push({
+        category: isShip ? 'ship' : categorizeItem(prev),
+        className: key,
+        name: prev.name || key,
+      });
+      continue;
+    }
+    // Compare every top-level field
+    const fieldDiffs = [];
+    const allFieldKeys = new Set([...Object.keys(prev || {}), ...Object.keys(next || {})]);
+    for (const f of allFieldKeys) {
+      const ov = prev[f];
+      const nv = next[f];
+      if (ov === undefined && nv === undefined) continue;
+      if (JSON.stringify(ov) !== JSON.stringify(nv)) {
+        fieldDiffs.push({ field: f, old: ov ?? null, new: nv ?? null });
+      }
+    }
+    if (fieldDiffs.length > 0) {
+      changes.push({
+        category: isShip ? 'ship' : categorizeItem(next),
+        className: key,
+        name: next.name || key,
+        fields: fieldDiffs,
+      });
+    }
+  }
+  return { changes, added, removed };
+}
+
+/** Records a new changelog entry by diffing the supplied build against
+ *  the most recent stored entry's snapshot. Idempotent: if the most
+ *  recent entry already has the same to_version + to_channel, skips.
+ *  Prunes older entries beyond CHANGELOG_RETENTION. */
+export async function recordChangelogEntry({ toVersion, toChannel, ships, items }) {
+  if (!pool) return null;
+  if (!toVersion || !toChannel) {
+    throw new Error('toVersion and toChannel are required');
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const { rows: prevRows } = await client.query(
+      'SELECT id, to_version, to_channel, ship_snapshot, item_snapshot FROM changelog_entries ORDER BY id DESC LIMIT 1'
+    );
+    const prev = prevRows[0] || null;
+
+    if (prev && prev.to_version === toVersion && prev.to_channel === toChannel) {
+      // De-dup: same build re-imported. Skip.
+      await client.query('COMMIT');
+      return { skipped: true, reason: 'duplicate' };
+    }
+
+    const prevShips = prev?.ship_snapshot || [];
+    const prevItems = prev?.item_snapshot || [];
+
+    const shipDiff = diffArraysForChangelog(prevShips, ships, true);
+    const itemDiff = diffArraysForChangelog(prevItems, items, false);
+
+    const insRes = await client.query(
+      `INSERT INTO changelog_entries
+       (from_version, from_channel, to_version, to_channel,
+        ship_changes, item_changes, ship_added, item_added, ship_removed, item_removed,
+        ship_snapshot, item_snapshot)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+       RETURNING id`,
+      [
+        prev?.to_version ?? null,
+        prev?.to_channel ?? null,
+        toVersion,
+        toChannel,
+        JSON.stringify(shipDiff.changes),
+        JSON.stringify(itemDiff.changes),
+        JSON.stringify(shipDiff.added),
+        JSON.stringify(itemDiff.added),
+        JSON.stringify(shipDiff.removed),
+        JSON.stringify(itemDiff.removed),
+        JSON.stringify(ships || []),
+        JSON.stringify(items || []),
+      ]
+    );
+
+    // Prune older entries beyond the retention window
+    await client.query(
+      `DELETE FROM changelog_entries
+       WHERE id NOT IN (
+         SELECT id FROM changelog_entries ORDER BY id DESC LIMIT $1
+       )`,
+      [CHANGELOG_RETENTION]
+    );
+
+    await client.query('COMMIT');
+    return { id: insRes.rows[0].id, skipped: false };
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+/** Returns the most recent changelog entries, newest first.
+ *  Snapshots are not returned (they're internal — used to compute
+ *  the next diff). */
+export async function getChangelogHistory(limit = CHANGELOG_RETENTION) {
+  if (!pool) return [];
+  const { rows } = await pool.query(
+    `SELECT id, from_version, from_channel, to_version, to_channel,
+            imported_at, ship_changes, item_changes,
+            ship_added, item_added, ship_removed, item_removed
+     FROM changelog_entries
+     ORDER BY id DESC
+     LIMIT $1`,
+    [Math.min(limit, CHANGELOG_RETENTION * 2)]
+  );
+  return rows;
+}
+
 // Replace all PTU rows with the current LIVE rows. Used after a CIG
 // patch lands LIVE so PTU starts the next test cycle from a clean
 // baseline. Atomic: either both tables flip together or nothing changes.

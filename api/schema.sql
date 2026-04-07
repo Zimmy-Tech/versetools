@@ -85,3 +85,27 @@ CREATE TABLE IF NOT EXISTS settings (
   value           JSONB NOT NULL,
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Build-import changelog. One row per imported build, recorded
+-- automatically when an admin applies a diff. The snapshot columns
+-- store the full ships/items arrays from THIS build so the next
+-- import can compute its diff against the previous build's content
+-- (independent of any manual edits made to the live tables since).
+CREATE TABLE IF NOT EXISTS changelog_entries (
+  id              SERIAL PRIMARY KEY,
+  from_version    TEXT,
+  from_channel    TEXT,
+  to_version      TEXT NOT NULL,
+  to_channel      TEXT NOT NULL,
+  imported_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  ship_changes    JSONB NOT NULL DEFAULT '[]'::jsonb,
+  item_changes    JSONB NOT NULL DEFAULT '[]'::jsonb,
+  ship_added      JSONB NOT NULL DEFAULT '[]'::jsonb,
+  item_added      JSONB NOT NULL DEFAULT '[]'::jsonb,
+  ship_removed    JSONB NOT NULL DEFAULT '[]'::jsonb,
+  item_removed    JSONB NOT NULL DEFAULT '[]'::jsonb,
+  ship_snapshot   JSONB,
+  item_snapshot   JSONB,
+  notes           TEXT
+);
+CREATE INDEX IF NOT EXISTS changelog_entries_id_desc_idx ON changelog_entries (id DESC);

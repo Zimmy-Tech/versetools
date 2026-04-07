@@ -211,11 +211,25 @@ export class DiffReviewComponent {
     );
     if (!ok) return;
 
-    const payload: { ships: DiffApply[]; items: DiffApply[]; meta?: any } = { ships: [], items: [] };
+    const payload: {
+      ships: DiffApply[];
+      items: DiffApply[];
+      meta?: any;
+      fullShips?: any[];
+      fullItems?: any[];
+    } = { ships: [], items: [] };
     // Always send the uploaded meta blob — extraction metadata (version,
     // counts, etc.) has no curation review, so the API just overwrites it.
     if (this.uploadedJson()?.meta) {
       payload.meta = this.uploadedJson().meta;
+    }
+    // Send the full uploaded arrays so the API can record a complete
+    // changelog entry (independent of which fields the user selected).
+    if (Array.isArray(this.uploadedJson()?.ships)) {
+      payload.fullShips = this.uploadedJson().ships;
+    }
+    if (Array.isArray(this.uploadedJson()?.items)) {
+      payload.fullItems = this.uploadedJson().items;
     }
 
     const buildChange = (kind: 'ship' | 'item', e: DiffEntity, uploadedItem: any): DiffApply | null => {
