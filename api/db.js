@@ -34,21 +34,18 @@ if (process.env.DATABASE_URL) {
 function buildPool() {
   if (!process.env.DATABASE_URL) return null;
   const u = new URL(process.env.DATABASE_URL);
-  const p = new Pool({
+  return new Pool({
     host: u.hostname,
     port: u.port ? Number(u.port) : 5432,
     user: decodeURIComponent(u.username),
     password: decodeURIComponent(u.password),
     database: u.pathname.replace(/^\//, '') || 'defaultdb',
     ssl: { rejectUnauthorized: false },
+    // Set search_path via session option so every backend connection
+    // already has it before we issue a query (avoids racing client.query()
+    // inside a 'connect' handler, which pg v9 deprecates).
+    options: '-c search_path=versedb,public',
   });
-  // Every new connection should look at our schema first
-  p.on('connect', (client) => {
-    client.query('SET search_path TO versedb, public').catch((err) => {
-      console.error('[db] failed to set search_path:', err.message);
-    });
-  });
-  return p;
 }
 
 export const pool = buildPool();
