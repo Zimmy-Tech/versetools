@@ -34,7 +34,7 @@ const healthHandler = (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    version: '0.1.0',
+    version: '0.1.1',
     phase: dbEnabled ? 'Phase 1 — db' : 'Phase 1 — proxy',
     db: dbEnabled,
   });
