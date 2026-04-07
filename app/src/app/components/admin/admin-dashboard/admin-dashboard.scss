@@ -57,6 +57,7 @@
   text-decoration: none;
   color: #fff;
   transition: all 0.15s;
+  margin-bottom: 8px;
 
   &:hover {
     border-color: rgba(80, 180, 255, 0.5);
@@ -72,5 +73,126 @@
   span {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.settings-card {
+  padding: 20px;
+  background: rgba(8, 14, 22, 0.7);
+  border: 1px solid rgba(80, 180, 255, 0.2);
+  border-radius: 6px;
+
+  .settings-hint {
+    margin: 0 0 16px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.9rem;
+
+    input[type='checkbox'] {
+      width: 18px;
+      height: 18px;
+      accent-color: #4ea0d8;
+    }
+  }
+
+  .text-row {
+    display: block;
+    margin-bottom: 14px;
+
+    span {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(159, 223, 255, 0.7);
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px 10px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(80, 180, 255, 0.3);
+      border-radius: 3px;
+      color: #fff;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: rgba(80, 180, 255, 0.6);
+      }
+    }
+  }
+
+  .config-msg {
+    margin: 12px 0;
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 0.82rem;
+
+    &.success {
+      background: rgba(80, 200, 80, 0.12);
+      border: 1px solid rgba(80, 200, 80, 0.4);
+      color: #80ff80;
+    }
+
+    &.error {
+      background: rgba(255, 60, 60, 0.12);
+      border: 1px solid rgba(255, 60, 60, 0.4);
+      color: #ff9090;
+    }
+  }
+
+  .settings-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    button {
+      padding: 8px 16px;
+      border-radius: 3px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .detect-btn {
+      background: rgba(255, 192, 77, 0.1);
+      border: 1px solid rgba(255, 192, 77, 0.45);
+      color: #ffc04d;
+
+      &:hover:not(:disabled) {
+        background: rgba(255, 192, 77, 0.2);
+      }
+    }
+
+    .save-btn {
+      background: linear-gradient(180deg, #2a7db8, #1a5a8a);
+      border: 1px solid #4ea0d8;
+      color: #fff;
+      margin-left: auto;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(180deg, #3590cf, #2070a0);
+      }
+    }
   }
 }

@@ -113,6 +113,35 @@ export async function migrateAddModeColumn() {
   }
 }
 
+// Settings helpers ─────────────────────────────────────────────────
+
+const DEFAULT_SETTINGS = {
+  ptu_enabled: false,
+  ptu_label: '',
+};
+
+export async function getSetting(key, fallback = null) {
+  if (!pool) return fallback;
+  const { rows } = await pool.query('SELECT value FROM settings WHERE key = $1', [key]);
+  if (rows.length === 0) return fallback ?? DEFAULT_SETTINGS[key] ?? null;
+  return rows[0].value;
+}
+
+export async function setSetting(key, value) {
+  if (!pool) return;
+  await pool.query(
+    'INSERT INTO settings (key, value, updated_at) VALUES ($1, $2, NOW()) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()',
+    [key, JSON.stringify(value)]
+  );
+}
+
+export async function getConfig() {
+  return {
+    ptuEnabled: await getSetting('ptu_enabled', false),
+    ptuLabel: await getSetting('ptu_label', ''),
+  };
+}
+
 // Replace all PTU rows with the current LIVE rows. Used after a CIG
 // patch lands LIVE so PTU starts the next test cycle from a clean
 // baseline. Atomic: either both tables flip together or nothing changes.

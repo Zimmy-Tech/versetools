@@ -78,3 +78,10 @@ CREATE TABLE IF NOT EXISTS users (
   role            TEXT NOT NULL DEFAULT 'admin',
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Generic key/value site settings (PTU toggle, PTU label, etc.)
+CREATE TABLE IF NOT EXISTS settings (
+  key             TEXT PRIMARY KEY,
+  value           JSONB NOT NULL,
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

@@ -172,6 +172,35 @@ export class AdminService {
       .toPromise();
     return resp ?? { shipsCopied: 0, itemsCopied: 0 };
   }
+
+  /** Read the public site config (PTU toggle, label). */
+  async getConfig(): Promise<{ ptuEnabled: boolean; ptuLabel: string }> {
+    const resp = await this.http
+      .get<{ ptuEnabled: boolean; ptuLabel: string }>('/api/config')
+      .toPromise();
+    return resp ?? { ptuEnabled: false, ptuLabel: '' };
+  }
+
+  /** Update the public site config. */
+  async setConfig(cfg: { ptuEnabled?: boolean; ptuLabel?: string }): Promise<{ ptuEnabled: boolean; ptuLabel: string }> {
+    const resp = await this.http
+      .post<{ ptuEnabled: boolean; ptuLabel: string }>('/api/admin/config', cfg, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return resp ?? { ptuEnabled: false, ptuLabel: '' };
+  }
+
+  /** Convenience: returns whether the LIVE database currently differs
+   *  from the PTU database in any way. Used by the dashboard to suggest
+   *  enabling the PTU slider when there are real differences to show. */
+  async hasPtuDifferences(): Promise<boolean> {
+    const resp = await this.http
+      .get<{ stats: { shipChanges: number; itemChanges: number } }>('/api/changelog')
+      .toPromise();
+    if (!resp) return false;
+    return (resp.stats?.shipChanges ?? 0) + (resp.stats?.itemChanges ?? 0) > 0;
+  }
 }
 
 export interface DiffChange {

@@ -1,6 +1,6 @@
 <div class="dashboard">
   <h1>Dashboard</h1>
-  <p class="subtitle">Phase 2: admin auth + ship acceleration editor</p>
+  <p class="subtitle">VerseTools admin panel</p>
 
   <div class="stat-grid">
     <div class="stat">
@@ -13,11 +13,70 @@
     </div>
   </div>
 
-  <div class="quick-links">
-    <h2>Quick links</h2>
-    <a routerLink="/admin/ship-accel" class="link-card">
-      <strong>Edit Ship Acceleration</strong>
-      <span>Update accel data without touching JSON files.</span>
-    </a>
+  <h2>Site Settings</h2>
+  <div class="settings-card">
+    <p class="settings-hint">
+      Controls the public LIVE/PTU slider in the site header. Enable when there's
+      something to show in PTU; disable when PTU is identical to LIVE.
+    </p>
+
+    <label class="toggle-row">
+      <input
+        type="checkbox"
+        [checked]="ptuEnabled()"
+        (change)="ptuEnabled.set($any($event.target).checked)"
+      />
+      <span>PTU slider enabled (visible to users)</span>
+    </label>
+
+    <label class="text-row">
+      <span>PTU label (e.g. "4.9 PTU")</span>
+      <input
+        type="text"
+        placeholder="Optional label shown next to the slider"
+        [ngModel]="ptuLabel()"
+        (ngModelChange)="ptuLabel.set($event)"
+      />
+    </label>
+
+    @if (configMessage()) {
+      <div class="config-msg success">{{ configMessage() }}</div>
+    }
+    @if (configError()) {
+      <div class="config-msg error">{{ configError() }}</div>
+    }
+
+    <div class="settings-actions">
+      <button
+        type="button"
+        class="detect-btn"
+        (click)="detectFromChangelog()"
+        [disabled]="detectingDiff() || configSaving()"
+      >
+        {{ detectingDiff() ? 'Checking…' : 'Detect from changelog' }}
+      </button>
+      <button
+        type="button"
+        class="save-btn"
+        (click)="saveConfig()"
+        [disabled]="configSaving()"
+      >
+        {{ configSaving() ? 'Saving…' : 'Save Settings' }}
+      </button>
+    </div>
   </div>
+
+  <h2>Quick links</h2>
+  <a routerLink="/admin/ships" class="link-card">
+    <strong>Edit Ships</strong>
+    <span>Full editor for any ship in the active mode.</span>
+  </a>
+  <a routerLink="/admin/items" class="link-card">
+    <strong>Edit Items</strong>
+    <span>Weapons, shields, coolers, every component.</span>
+  </a>
+  <a routerLink="/admin/diff" class="link-card">
+    <strong>Diff &amp; Import</strong>
+    <span>Upload an extracted JSON and review what changed.</span>
+  </a>
 </div>

@@ -6,7 +6,7 @@ import cors from 'cors';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { dbEnabled, initSchema, importIfEmpty, exportFullDb, pool, normalizeMode, syncPtuFromLive } from './db.js';
+import { dbEnabled, initSchema, importIfEmpty, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting } from './db.js';
 import { authConfigured, verifyCredentials, issueToken, requireAdmin } from './auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -637,6 +637,46 @@ const changelogHandler = async (req, res) => {
 
 app.get('/changelog', changelogHandler);
 app.get('/api/changelog', changelogHandler);
+
+// ─── Site config (PTU toggle, label) ─────────────────────────────────
+
+const configReadHandler = async (req, res) => {
+  if (!dbEnabled) {
+    // No DB → return safe defaults so the public site still loads
+    return res.json({ ptuEnabled: false, ptuLabel: '' });
+  }
+  try {
+    const cfg = await getConfig();
+    res.json(cfg);
+  } catch (err) {
+    console.error('config read failed:', err);
+    res.json({ ptuEnabled: false, ptuLabel: '' });
+  }
+};
+
+app.get('/config', configReadHandler);
+app.get('/api/config', configReadHandler);
+
+const configWriteHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const body = req.body || {};
+  try {
+    if (typeof body.ptuEnabled === 'boolean') {
+      await setSetting('ptu_enabled', body.ptuEnabled);
+    }
+    if (typeof body.ptuLabel === 'string') {
+      await setSetting('ptu_label', body.ptuLabel);
+    }
+    const cfg = await getConfig();
+    res.json({ ok: true, ...cfg });
+  } catch (err) {
+    console.error('config write failed:', err);
+    res.status(500).json({ error: 'Config write failed', detail: err.message });
+  }
+};
+
+app.post('/admin/config', requireAdmin, configWriteHandler);
+app.post('/api/admin/config', requireAdmin, configWriteHandler);
 
 // Root — useful for sanity checking
 app.get('/', (req, res) => {

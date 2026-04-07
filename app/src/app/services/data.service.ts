@@ -123,19 +123,34 @@ export class DataService {
   readonly ptuLabel = signal('');
 
   constructor(private http: HttpClient) {
-    // Load PTU config
-    this.http.get<{ ptuEnabled: boolean; ptuLabel?: string }>('config.json', { headers: { 'Cache-Control': 'no-cache' } })
-      .subscribe({
-        next: cfg => {
-          this.ptuEnabled.set(cfg.ptuEnabled);
-          this.ptuLabel.set(cfg.ptuLabel ?? '');
-          // Force back to LIVE if PTU is disabled
-          if (!cfg.ptuEnabled && this.dataMode() === 'ptu') {
-            this.dataMode.set('live');
-          }
-        },
-        error: () => {},
-      });
+    // Load PTU config — prefer the API (admin-toggleable, lives in the DB)
+    // and fall back to the static config.json for hosts without an API
+    // (GitHub Pages mirror).
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
+    const applyCfg = (cfg: { ptuEnabled: boolean; ptuLabel?: string }) => {
+      this.ptuEnabled.set(cfg.ptuEnabled);
+      this.ptuLabel.set(cfg.ptuLabel ?? '');
+      if (!cfg.ptuEnabled && this.dataMode() === 'ptu') {
+        this.dataMode.set('live');
+      }
+    };
+    const loadStatic = () =>
+      this.http
+        .get<{ ptuEnabled: boolean; ptuLabel?: string }>('config.json', {
+          headers: { 'Cache-Control': 'no-cache' },
+        })
+        .subscribe({ next: applyCfg, error: () => {} });
+    if (isStaticHost) {
+      loadStatic();
+    } else {
+      this.http
+        .get<{ ptuEnabled: boolean; ptuLabel?: string }>('/api/config', {
+          headers: { 'Cache-Control': 'no-cache' },
+        })
+        .subscribe({ next: applyCfg, error: () => loadStatic() });
+    }
 
     // React to dataMode changes: reload the main database.
     // Both LIVE and PTU now live in the same database — the API serves
@@ -144,9 +159,7 @@ export class DataService {
     // bundled JSON file directly (PTU support there is read-only). On
     // any other host, if the API call fails for any reason, we fall
     // back to the bundled JSON so the site never breaks.
-    const isStaticHost =
-      typeof window !== 'undefined' &&
-      /github\.io$/i.test(window.location.hostname);
+    // (isStaticHost is already declared above for the config load.)
     effect(() => {
       const mode = this.dataMode();
       const prefix = this.dataPrefix();
