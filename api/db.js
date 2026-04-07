@@ -61,8 +61,285 @@ export async function initSchema() {
   console.log('[db] schema initialized');
 }
 
+// Migrate an existing single-mode database to the dual-mode schema.
+// Idempotent: detects whether the `mode` column already exists and
+// bails out if so. On first run it adds the column, swaps the primary
+// key, and seeds a PTU copy of every existing row so PTU starts as a
+// clone of LIVE.
+export async function migrateAddModeColumn() {
+  if (!pool) return;
+  const { rows } = await pool.query(`
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'versedb' AND table_name = 'ships' AND column_name = 'mode'
+  `);
+  if (rows.length > 0) return; // already migrated
+
+  console.log('[db] migrating to dual-mode (live/ptu) schema...');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // ships
+    await client.query(`ALTER TABLE versedb.ships ADD COLUMN mode TEXT NOT NULL DEFAULT 'live'`);
+    await client.query(`ALTER TABLE versedb.ships DROP CONSTRAINT IF EXISTS ships_pkey`);
+    await client.query(`ALTER TABLE versedb.ships ADD PRIMARY KEY (class_name, mode)`);
+    // items
+    await client.query(`ALTER TABLE versedb.items ADD COLUMN mode TEXT NOT NULL DEFAULT 'live'`);
+    await client.query(`ALTER TABLE versedb.items DROP CONSTRAINT IF EXISTS items_pkey`);
+    await client.query(`ALTER TABLE versedb.items ADD PRIMARY KEY (class_name, mode)`);
+    // audit_log mode column
+    const auditCol = await client.query(`
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'versedb' AND table_name = 'audit_log' AND column_name = 'entity_mode'
+    `);
+    if (auditCol.rows.length === 0) {
+      await client.query(`ALTER TABLE versedb.audit_log ADD COLUMN entity_mode TEXT`);
+    }
+    // Seed PTU copy
+    await client.query(`
+      INSERT INTO versedb.ships (class_name, mode, data, source, created_at, updated_at)
+      SELECT class_name, 'ptu', data, source, NOW(), NOW() FROM versedb.ships WHERE mode = 'live'
+    `);
+    await client.query(`
+      INSERT INTO versedb.items (class_name, mode, data, source, created_at, updated_at)
+      SELECT class_name, 'ptu', data, source, NOW(), NOW() FROM versedb.items WHERE mode = 'live'
+    `);
+    await client.query('COMMIT');
+    console.log('[db] dual-mode migration complete');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+// Settings helpers ─────────────────────────────────────────────────
+
+const DEFAULT_SETTINGS = {
+  ptu_enabled: false,
+  ptu_label: '',
+};
+
+export async function getSetting(key, fallback = null) {
+  if (!pool) return fallback;
+  const { rows } = await pool.query('SELECT value FROM settings WHERE key = $1', [key]);
+  if (rows.length === 0) return fallback ?? DEFAULT_SETTINGS[key] ?? null;
+  return rows[0].value;
+}
+
+export async function setSetting(key, value) {
+  if (!pool) return;
+  await pool.query(
+    'INSERT INTO settings (key, value, updated_at) VALUES ($1, $2, NOW()) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()',
+    [key, JSON.stringify(value)]
+  );
+}
+
+export async function getConfig() {
+  return {
+    ptuEnabled: await getSetting('ptu_enabled', false),
+    ptuLabel: await getSetting('ptu_label', ''),
+  };
+}
+
+// ─── Changelog history ──────────────────────────────────────────────
+
+const CHANGELOG_RETENTION = 6; // keep this many most-recent entries
+
+function categorizeItem(item) {
+  const t = item?.type || '';
+  if (t === 'WeaponGun' || t === 'WeaponTachyon') return 'weapon';
+  if (t === 'TractorBeam') return 'tractor';
+  if (t === 'Shield') return 'shield';
+  if (t === 'PowerPlant') return 'powerplant';
+  if (t === 'Cooler') return 'cooler';
+  if (t === 'QuantumDrive') return 'quantumdrive';
+  if (t === 'Radar') return 'radar';
+  if (t === 'MissileLauncher' || t === 'BombLauncher') return 'missilelauncher';
+  if (t === 'Missile') return 'missile';
+  return t.toLowerCase() || 'other';
+}
+
+function diffArraysForChangelog(prevArr, nextArr, isShip) {
+  const prevMap = new Map((prevArr || []).map((e) => [e.className, e]));
+  const nextMap = new Map((nextArr || []).map((e) => [e.className, e]));
+  const allKeys = new Set([...prevMap.keys(), ...nextMap.keys()]);
+  const changes = [];
+  const added = [];
+  const removed = [];
+  for (const key of [...allKeys].sort()) {
+    const prev = prevMap.get(key);
+    const next = nextMap.get(key);
+    if (!prev && next) {
+      added.push({
+        category: isShip ? 'ship' : categorizeItem(next),
+        className: key,
+        name: next.name || key,
+      });
+      continue;
+    }
+    if (prev && !next) {
+      removed.push({
+        category: isShip ? 'ship' : categorizeItem(prev),
+        className: key,
+        name: prev.name || key,
+      });
+      continue;
+    }
+    // Compare every top-level field
+    const fieldDiffs = [];
+    const allFieldKeys = new Set([...Object.keys(prev || {}), ...Object.keys(next || {})]);
+    for (const f of allFieldKeys) {
+      const ov = prev[f];
+      const nv = next[f];
+      if (ov === undefined && nv === undefined) continue;
+      if (JSON.stringify(ov) !== JSON.stringify(nv)) {
+        fieldDiffs.push({ field: f, old: ov ?? null, new: nv ?? null });
+      }
+    }
+    if (fieldDiffs.length > 0) {
+      changes.push({
+        category: isShip ? 'ship' : categorizeItem(next),
+        className: key,
+        name: next.name || key,
+        fields: fieldDiffs,
+      });
+    }
+  }
+  return { changes, added, removed };
+}
+
+/** Records a new changelog entry by diffing the supplied build against
+ *  the most recent stored entry's snapshot. Idempotent: if the most
+ *  recent entry already has the same to_version + to_channel, skips.
+ *  Prunes older entries beyond CHANGELOG_RETENTION. */
+export async function recordChangelogEntry({ toVersion, toChannel, ships, items }) {
+  if (!pool) return null;
+  if (!toVersion || !toChannel) {
+    throw new Error('toVersion and toChannel are required');
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const { rows: prevRows } = await client.query(
+      'SELECT id, to_version, to_channel, ship_snapshot, item_snapshot FROM changelog_entries ORDER BY id DESC LIMIT 1'
+    );
+    const prev = prevRows[0] || null;
+
+    if (prev && prev.to_version === toVersion && prev.to_channel === toChannel) {
+      // De-dup: same build re-imported. Skip.
+      await client.query('COMMIT');
+      return { skipped: true, reason: 'duplicate' };
+    }
+
+    const prevShips = prev?.ship_snapshot || [];
+    const prevItems = prev?.item_snapshot || [];
+
+    const shipDiff = diffArraysForChangelog(prevShips, ships, true);
+    const itemDiff = diffArraysForChangelog(prevItems, items, false);
+
+    const insRes = await client.query(
+      `INSERT INTO changelog_entries
+       (from_version, from_channel, to_version, to_channel,
+        ship_changes, item_changes, ship_added, item_added, ship_removed, item_removed,
+        ship_snapshot, item_snapshot)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+       RETURNING id`,
+      [
+        prev?.to_version ?? null,
+        prev?.to_channel ?? null,
+        toVersion,
+        toChannel,
+        JSON.stringify(shipDiff.changes),
+        JSON.stringify(itemDiff.changes),
+        JSON.stringify(shipDiff.added),
+        JSON.stringify(itemDiff.added),
+        JSON.stringify(shipDiff.removed),
+        JSON.stringify(itemDiff.removed),
+        JSON.stringify(ships || []),
+        JSON.stringify(items || []),
+      ]
+    );
+
+    // Prune older entries beyond the retention window
+    await client.query(
+      `DELETE FROM changelog_entries
+       WHERE id NOT IN (
+         SELECT id FROM changelog_entries ORDER BY id DESC LIMIT $1
+       )`,
+      [CHANGELOG_RETENTION]
+    );
+
+    await client.query('COMMIT');
+    return { id: insRes.rows[0].id, skipped: false };
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+/** Returns the most recent changelog entries, newest first.
+ *  Snapshots are not returned (they're internal — used to compute
+ *  the next diff). */
+export async function getChangelogHistory(limit = CHANGELOG_RETENTION) {
+  if (!pool) return [];
+  const { rows } = await pool.query(
+    `SELECT id, from_version, from_channel, to_version, to_channel,
+            imported_at, ship_changes, item_changes,
+            ship_added, item_added, ship_removed, item_removed
+     FROM changelog_entries
+     ORDER BY id DESC
+     LIMIT $1`,
+    [Math.min(limit, CHANGELOG_RETENTION * 2)]
+  );
+  return rows;
+}
+
+// Replace all PTU rows with the current LIVE rows. Used after a CIG
+// patch lands LIVE so PTU starts the next test cycle from a clean
+// baseline. Atomic: either both tables flip together or nothing changes.
+export async function syncPtuFromLive(userName) {
+  if (!pool) throw new Error('Database not configured');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const shipDel = await client.query(`DELETE FROM versedb.ships WHERE mode = 'ptu'`);
+    const itemDel = await client.query(`DELETE FROM versedb.items WHERE mode = 'ptu'`);
+    const shipIns = await client.query(`
+      INSERT INTO versedb.ships (class_name, mode, data, source, created_at, updated_at)
+      SELECT class_name, 'ptu', data, source, NOW(), NOW() FROM versedb.ships WHERE mode = 'live'
+    `);
+    const itemIns = await client.query(`
+      INSERT INTO versedb.items (class_name, mode, data, source, created_at, updated_at)
+      SELECT class_name, 'ptu', data, source, NOW(), NOW() FROM versedb.items WHERE mode = 'live'
+    `);
+    await client.query(
+      `INSERT INTO versedb.audit_log (user_name, action, entity_type, entity_key, entity_mode, new_value)
+       VALUES ($1, 'sync_ptu_from_live', 'system', 'all', 'ptu', $2)`,
+      [userName, `ships:${shipIns.rowCount}, items:${itemIns.rowCount}`]
+    );
+    await client.query('COMMIT');
+    return {
+      shipsDeleted: shipDel.rowCount,
+      shipsCopied: shipIns.rowCount,
+      itemsDeleted: itemDel.rowCount,
+      itemsCopied: itemIns.rowCount,
+    };
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 // One-time importer: if the ships table is empty, populate everything
-// from data/versedb_data.json. Safe to call on every boot.
+// from data/versedb_data.json. Safe to call on every boot. Imports the
+// JSON into BOTH live and ptu modes so a fresh deployment starts with
+// a clone on each side.
 export async function importIfEmpty() {
   if (!pool) return;
   const { rows } = await pool.query('SELECT COUNT(*)::int AS n FROM ships');
@@ -73,24 +350,25 @@ export async function importIfEmpty() {
 
   const jsonPath = join(__dirname, 'data', 'versedb_data.json');
   const data = JSON.parse(readFileSync(jsonPath, 'utf-8'));
-  console.log(`[db] importing ${data.ships.length} ships, ${data.items.length} items...`);
+  console.log(`[db] importing ${data.ships.length} ships, ${data.items.length} items into live + ptu...`);
 
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    for (const ship of data.ships) {
-      await client.query(
-        'INSERT INTO ships (class_name, data, source) VALUES ($1, $2, $3) ON CONFLICT (class_name) DO NOTHING',
-        [ship.className, ship, 'extracted']
-      );
-    }
-
-    for (const item of data.items) {
-      await client.query(
-        'INSERT INTO items (class_name, data, source) VALUES ($1, $2, $3) ON CONFLICT (class_name) DO NOTHING',
-        [item.className, item, 'extracted']
-      );
+    for (const mode of ['live', 'ptu']) {
+      for (const ship of data.ships) {
+        await client.query(
+          'INSERT INTO ships (class_name, mode, data, source) VALUES ($1, $2, $3, $4) ON CONFLICT (class_name, mode) DO NOTHING',
+          [ship.className, mode, ship, 'extracted']
+        );
+      }
+      for (const item of data.items) {
+        await client.query(
+          'INSERT INTO items (class_name, mode, data, source) VALUES ($1, $2, $3, $4) ON CONFLICT (class_name, mode) DO NOTHING',
+          [item.className, mode, item, 'extracted']
+        );
+      }
     }
 
     for (const loc of data.miningLocations || []) {
@@ -119,7 +397,7 @@ export async function importIfEmpty() {
 }
 
 // Check whether the schema/data is present, and run init/import if not.
-// Safe to call repeatedly — both operations are idempotent.
+// Safe to call repeatedly — every step is idempotent.
 export async function ensureReady() {
   if (!pool) return;
   const { rows } = await pool.query(
@@ -129,17 +407,25 @@ export async function ensureReady() {
     console.log('[db] ships table missing, running schema init...');
     await initSchema();
   }
+  await migrateAddModeColumn();
   await importIfEmpty();
 }
 
+/** Coerce arbitrary input into a valid mode value. */
+export function normalizeMode(input) {
+  return input === 'ptu' ? 'ptu' : 'live';
+}
+
 // Assemble the same JSON shape the Angular app expects from versedb_data.json
-export async function exportFullDb() {
+// for the requested mode (defaults to 'live').
+export async function exportFullDb(mode = 'live') {
   if (!pool) throw new Error('Database not configured');
   await ensureReady();
+  const m = normalizeMode(mode);
 
   const [shipsRes, itemsRes, locsRes, elsRes, metaRes] = await Promise.all([
-    pool.query('SELECT data FROM ships ORDER BY class_name'),
-    pool.query('SELECT data FROM items ORDER BY class_name'),
+    pool.query('SELECT data FROM ships WHERE mode = $1 ORDER BY class_name', [m]),
+    pool.query('SELECT data FROM items WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM mining_locations ORDER BY id'),
     pool.query('SELECT data FROM mining_elements ORDER BY id'),
     pool.query('SELECT data FROM meta WHERE id = 1'),

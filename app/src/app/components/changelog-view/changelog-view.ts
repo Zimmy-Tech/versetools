@@ -42,6 +42,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   missile: 'Missiles', missilelauncher: 'Missile Racks', tractor: 'Tractor Beams',
 };
 
+interface ChangelogEntryDisplay extends ChangelogEntry {
+  toChannel?: string;
+  fromChannel?: string;
+}
+
 @Component({
   selector: 'app-changelog-view',
   standalone: true,
@@ -49,61 +54,116 @@ const CATEGORY_LABELS: Record<string, string> = {
   styleUrl: './changelog-view.scss',
 })
 export class ChangelogViewComponent {
-  entries = signal<ChangelogEntry[]>([]);
+  entries = signal<ChangelogEntryDisplay[]>([]);
   loaded = signal(false);
-  selectedIdx = signal(0);
 
-  selectedEntry = computed(() => this.entries()[this.selectedIdx()] ?? null);
+  /** Indices of entries that are currently expanded. The newest entry
+   *  (index 0) is expanded by default. */
+  expanded = signal<Set<number>>(new Set([0]));
 
-  groupedChanges = computed(() => {
-    const entry = this.selectedEntry();
-    if (!entry) return [];
+  toggleExpand(idx: number): void {
+    this.expanded.update((s) => {
+      const next = new Set(s);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
+      return next;
+    });
+  }
+
+  isExpanded(idx: number): boolean {
+    return this.expanded().has(idx);
+  }
+
+  expandAll(): void {
+    this.expanded.set(new Set(this.entries().map((_, i) => i)));
+  }
+
+  collapseAll(): void {
+    this.expanded.set(new Set());
+  }
+
+  groupedChangesFor(entry: ChangelogEntry): { category: string; label: string; items: ChangeEntry[] }[] {
     const groups: Record<string, ChangeEntry[]> = {};
-    for (const c of entry.changes) {
+    for (const c of entry.changes || []) {
       (groups[c.category] ??= []).push(c);
     }
     return CATEGORY_ORDER
       .filter(cat => groups[cat]?.length)
       .map(cat => ({ category: cat, label: CATEGORY_LABELS[cat] ?? cat, items: groups[cat] }));
-  });
+  }
 
-  groupedAdded = computed(() => {
-    const entry = this.selectedEntry();
+  groupedAddedFor(entry: ChangelogEntry): { label: string; items: AddRemoveEntry[] }[] {
     if (!entry?.added?.length) return [];
     const groups: Record<string, AddRemoveEntry[]> = {};
     for (const a of entry.added) (groups[a.category] ??= []).push(a);
     return CATEGORY_ORDER
       .filter(cat => groups[cat]?.length)
       .map(cat => ({ label: CATEGORY_LABELS[cat] ?? cat, items: groups[cat] }));
-  });
+  }
 
-  groupedRemoved = computed(() => {
-    const entry = this.selectedEntry();
+  groupedRemovedFor(entry: ChangelogEntry): { label: string; items: AddRemoveEntry[] }[] {
     if (!entry?.removed?.length) return [];
     const groups: Record<string, AddRemoveEntry[]> = {};
     for (const r of entry.removed) (groups[r.category] ??= []).push(r);
     return CATEGORY_ORDER
       .filter(cat => groups[cat]?.length)
       .map(cat => ({ label: CATEGORY_LABELS[cat] ?? cat, items: groups[cat] }));
-  });
+  }
 
-  totalChanges = computed(() => {
-    const e = this.selectedEntry();
-    return e ? e.changes.length + (e.added?.length ?? 0) + (e.removed?.length ?? 0) : 0;
-  });
+  totalChangesFor(entry: ChangelogEntry): number {
+    return (entry.changes?.length ?? 0) + (entry.added?.length ?? 0) + (entry.removed?.length ?? 0);
+  }
+
+  channelLabel(c: string | undefined): string {
+    if (!c) return '';
+    return c.toUpperCase();
+  }
+
+  fmtDate(d: string): string {
+    if (!d) return '';
+    try {
+      return new Date(d).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+    } catch {
+      return d;
+    }
+  }
 
   constructor(private http: HttpClient, private data: DataService) {
+    // Prefer the API (database-backed, populated by admin imports) and
+    // fall back to the bundled JSON for hosts without an API (GitHub
+    // Pages mirror) or if the API call fails for any reason.
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion(); // track mode changes
       this.loaded.set(false);
-      this.http.get<ChangelogData>(`${prefix}versedb_changelog.json`).subscribe({
-        next: data => {
-          this.entries.set(data.changelog);
-          this.loaded.set(true);
-        },
-        error: () => this.loaded.set(true), // loaded but empty
-      });
+      const fallbackUrl = `${prefix}versedb_changelog.json`;
+      const apply = (data: ChangelogData) => {
+        this.entries.set(data.changelog);
+        this.loaded.set(true);
+      };
+      if (isStaticHost) {
+        this.http.get<ChangelogData>(fallbackUrl).subscribe({
+          next: apply,
+          error: () => this.loaded.set(true),
+        });
+      } else {
+        this.http.get<ChangelogData>('/api/changelog/history').subscribe({
+          next: apply,
+          error: () => {
+            this.http.get<ChangelogData>(fallbackUrl).subscribe({
+              next: apply,
+              error: () => this.loaded.set(true),
+            });
+          },
+        });
+      }
     });
   }
 

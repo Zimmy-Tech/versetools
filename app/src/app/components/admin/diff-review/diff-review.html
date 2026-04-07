@@ -1,0 +1,193 @@
+<div class="diff-review">
+  <div class="page-header">
+    <div>
+      <h1>Diff &amp; Import Review</h1>
+      <p class="subtitle">
+        Upload a freshly-extracted versedb_data.json and pick which changes to apply.
+        Curated rows default to <strong>unselected</strong> so re-extraction never silently
+        overwrites hand-curated data.
+      </p>
+    </div>
+  </div>
+
+  <!-- Upload card -->
+  <div class="upload-card">
+    <label class="file-label">
+      <input type="file" accept="application/json,.json" (change)="onFileSelected($event)" />
+      <span class="file-button">Choose JSON file</span>
+      <span class="file-name">{{ uploadedFileName() ?? 'No file selected' }}</span>
+    </label>
+    <button
+      type="button"
+      class="run-btn"
+      (click)="runDiff()"
+      [disabled]="!uploadedJson() || busy()"
+    >
+      {{ busy() ? 'Computing…' : 'Compute Diff' }}
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="error-banner">{{ error() }}</div>
+  }
+
+  @if (applyResult()) {
+    <div class="success-banner">{{ applyResult() }}</div>
+  }
+
+  @if (diff()) {
+    <!-- Summary -->
+    <div class="summary">
+      <div class="summary-stat">
+        <div class="stat-label">Ship changes</div>
+        <div class="stat-value">{{ diff()?.stats?.shipChanges }}</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-label">Item changes</div>
+        <div class="stat-value">{{ diff()?.stats?.itemChanges }}</div>
+      </div>
+      <div class="summary-stat selected">
+        <div class="stat-label">Selected</div>
+        <div class="stat-value">{{ totalSelected() }}</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <input
+        type="text"
+        placeholder="Search by className…"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+      />
+      <select [ngModel]="filterEntityType()" (ngModelChange)="filterEntityType.set($event)">
+        <option value="all">All entities</option>
+        <option value="ships">Ships only</option>
+        <option value="items">Items only</option>
+      </select>
+      <select [ngModel]="filterAction()" (ngModelChange)="filterAction.set($event)">
+        <option value="all">All actions</option>
+        <option value="create">Creates</option>
+        <option value="modify">Modifies</option>
+        <option value="delete">Deletes</option>
+      </select>
+      <select [ngModel]="filterSource()" (ngModelChange)="filterSource.set($event)">
+        <option value="all">All sources</option>
+        <option value="extracted">Extracted only</option>
+        <option value="curated">Curated only</option>
+        <option value="new">New (not in DB)</option>
+      </select>
+      <button type="button" class="link-btn" (click)="selectAllVisible()">Select all visible</button>
+      <button type="button" class="link-btn" (click)="clearAllSelection()">Clear selection</button>
+    </div>
+
+    <!-- Ship changes -->
+    @if ((filterEntityType() === 'all' || filterEntityType() === 'ships') && visibleShipChanges().length > 0) {
+      <h2 class="group-header">Ships ({{ visibleShipChanges().length }})</h2>
+      <div class="entity-list">
+        @for (e of visibleShipChanges(); track e.className) {
+          <div class="entity-card" [class]="'action-' + e.action">
+            <div class="entity-header">
+              <input
+                type="checkbox"
+                [checked]="isEntitySelected('ship', e.className) === 'all'"
+                (change)="toggleEntityAll('ship', e)"
+              />
+              <span class="action-pill">{{ e.action }}</span>
+              @if (e.currentSource) {
+                <span class="source-pill" [class.curated]="e.currentSource === 'curated'">
+                  {{ e.currentSource }}
+                </span>
+              } @else {
+                <span class="source-pill new">new</span>
+              }
+              <span class="cls">{{ e.className }}</span>
+              <span class="change-count">{{ e.action === 'modify' ? e.changes.length + ' fields' : e.action }}</span>
+            </div>
+            @if (e.action === 'modify') {
+              <div class="changes">
+                @for (c of e.changes; track c.field) {
+                  <label class="change-row">
+                    <input
+                      type="checkbox"
+                      [checked]="isFieldSelected('ship', e.className, c.field)"
+                      (change)="toggleField('ship', e.className, c.field)"
+                    />
+                    <span class="field-name">{{ c.field }}</span>
+                    <span class="old">{{ formatValue(c.oldValue) }}</span>
+                    <span class="arrow">→</span>
+                    <span class="new">{{ formatValue(c.newValue) }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Item changes -->
+    @if ((filterEntityType() === 'all' || filterEntityType() === 'items') && visibleItemChanges().length > 0) {
+      <h2 class="group-header">Items ({{ visibleItemChanges().length }})</h2>
+      <div class="entity-list">
+        @for (e of visibleItemChanges(); track e.className) {
+          <div class="entity-card" [class]="'action-' + e.action">
+            <div class="entity-header">
+              <input
+                type="checkbox"
+                [checked]="isEntitySelected('item', e.className) === 'all'"
+                (change)="toggleEntityAll('item', e)"
+              />
+              <span class="action-pill">{{ e.action }}</span>
+              @if (e.currentSource) {
+                <span class="source-pill" [class.curated]="e.currentSource === 'curated'">
+                  {{ e.currentSource }}
+                </span>
+              } @else {
+                <span class="source-pill new">new</span>
+              }
+              <span class="cls">{{ e.className }}</span>
+              <span class="change-count">{{ e.action === 'modify' ? e.changes.length + ' fields' : e.action }}</span>
+            </div>
+            @if (e.action === 'modify') {
+              <div class="changes">
+                @for (c of e.changes; track c.field) {
+                  <label class="change-row">
+                    <input
+                      type="checkbox"
+                      [checked]="isFieldSelected('item', e.className, c.field)"
+                      (change)="toggleField('item', e.className, c.field)"
+                    />
+                    <span class="field-name">{{ c.field }}</span>
+                    <span class="old">{{ formatValue(c.oldValue) }}</span>
+                    <span class="arrow">→</span>
+                    <span class="new">{{ formatValue(c.newValue) }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (visibleShipChanges().length === 0 && visibleItemChanges().length === 0) {
+      <div class="empty-result">No changes match the current filters.</div>
+    }
+
+    <!-- Apply bar -->
+    <div class="apply-bar">
+      <span class="apply-summary">
+        {{ totalSelected() }} entit{{ totalSelected() === 1 ? 'y' : 'ies' }} selected
+      </span>
+      <button
+        type="button"
+        class="apply-btn"
+        (click)="apply()"
+        [disabled]="totalSelected() === 0 || applying()"
+      >
+        {{ applying() ? 'Applying…' : 'Apply Selected' }}
+      </button>
+    </div>
+  }
+</div>

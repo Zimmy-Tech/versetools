@@ -1,0 +1,157 @@
+<div class="submissions-review">
+  <div class="page-header">
+    <div>
+      <h1>Submissions</h1>
+      <p class="subtitle">Community-tested ship acceleration data, queued for review.</p>
+    </div>
+    <button type="button" class="refresh-btn" (click)="refresh()" [disabled]="loading()">
+      {{ loading() ? 'Loading…' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div class="filter-tabs">
+    <button type="button" [class.active]="status() === 'pending'" (click)="setStatus('pending')">
+      Pending @if (pendingCount() > 0 && status() === 'pending') { ({{ pendingCount() }}) }
+    </button>
+    <button type="button" [class.active]="status() === 'approved'" (click)="setStatus('approved')">Approved</button>
+    <button type="button" [class.active]="status() === 'rejected'" (click)="setStatus('rejected')">Rejected</button>
+    <button type="button" [class.active]="status() === 'all'" (click)="setStatus('all')">All</button>
+  </div>
+
+  @if (error()) {
+    <div class="error-banner">{{ error() }}</div>
+  }
+
+  @if (!loading() && entries().length === 0) {
+    <div class="empty-state">
+      @if (status() === 'pending') {
+        No pending submissions right now.
+      } @else {
+        No {{ status() }} submissions.
+      }
+    </div>
+  }
+
+  <div class="submission-list">
+    @for (sub of entries(); track sub.id) {
+      <div class="submission-card" [class]="'status-' + sub.status">
+        <div class="card-header">
+          <div class="ship-info">
+            <div class="ship-name">{{ shipDisplayName(sub) }}</div>
+            <div class="ship-class">{{ sub.ship_class_name }}</div>
+          </div>
+          <div class="meta">
+            <div class="submitter">by <strong>{{ sub.submitter_name }}</strong></div>
+            <div class="submitted-at">{{ fmtDate(sub.submitted_at) }}</div>
+          </div>
+          @if (sub.status !== 'pending') {
+            <span class="status-pill" [class]="'status-' + sub.status">{{ sub.status }}</span>
+          }
+        </div>
+
+        @if (sub.notes) {
+          <div class="notes-block">
+            <span class="notes-label">Notes:</span>
+            <span class="notes-text">{{ sub.notes }}</span>
+          </div>
+        }
+
+        <div class="diff-grid">
+          <div class="grid-header">
+            <span>Field</span>
+            <span>Current</span>
+            <span>Submitted</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_fwd, currentValue(sub, 'accel_fwd'))">
+            <span class="field">Fwd</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_fwd')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_fwd) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_ab_fwd, currentValue(sub, 'accel_ab_fwd'))">
+            <span class="field">Fwd Boost</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_ab_fwd')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_ab_fwd) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_retro, currentValue(sub, 'accel_retro'))">
+            <span class="field">Retro</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_retro')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_retro) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_ab_retro, currentValue(sub, 'accel_ab_retro'))">
+            <span class="field">Retro Boost</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_ab_retro')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_ab_retro) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_strafe, currentValue(sub, 'accel_strafe'))">
+            <span class="field">Strafe</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_strafe')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_strafe) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_ab_strafe, currentValue(sub, 'accel_ab_strafe'))">
+            <span class="field">Strafe Boost</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_ab_strafe')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_ab_strafe) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_up, currentValue(sub, 'accel_up'))">
+            <span class="field">Up</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_up')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_up) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_ab_up, currentValue(sub, 'accel_ab_up'))">
+            <span class="field">Up Boost</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_ab_up')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_ab_up) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_down, currentValue(sub, 'accel_down'))">
+            <span class="field">Down</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_down')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_down) }}</span>
+          </div>
+          <div class="grid-row" [class]="diffClass(sub.accel_ab_down, currentValue(sub, 'accel_ab_down'))">
+            <span class="field">Down Boost</span>
+            <span class="current">{{ fmt(currentValue(sub, 'accel_ab_down')) }}</span>
+            <span class="submitted">{{ fmt(sub.accel_ab_down) }}</span>
+          </div>
+        </div>
+
+        @if (rowMessage()?.id === sub.id) {
+          <div class="row-msg" [class]="'kind-' + rowMessage()!.kind">{{ rowMessage()!.text }}</div>
+        }
+
+        @if (sub.status === 'pending' && rejectingId() !== sub.id) {
+          <div class="row-actions">
+            <button type="button" class="reject-btn" (click)="startReject(sub)" [disabled]="busyId() !== null">
+              Reject
+            </button>
+            <button type="button" class="approve-btn" (click)="approve(sub)" [disabled]="busyId() !== null">
+              {{ busyId() === sub.id ? 'Working…' : 'Approve & Apply' }}
+            </button>
+          </div>
+        }
+
+        @if (rejectingId() === sub.id) {
+          <div class="reject-form">
+            <input
+              type="text"
+              placeholder="Optional rejection note (visible to admin only)"
+              [ngModel]="rejectNote()"
+              (ngModelChange)="rejectNote.set($event)"
+            />
+            <button type="button" class="cancel-btn" (click)="cancelReject()" [disabled]="busyId() !== null">Cancel</button>
+            <button type="button" class="confirm-reject-btn" (click)="confirmReject(sub)" [disabled]="busyId() !== null">
+              {{ busyId() === sub.id ? 'Rejecting…' : 'Confirm Reject' }}
+            </button>
+          </div>
+        }
+
+        @if (sub.status !== 'pending' && (sub.reviewer_note || sub.reviewed_by)) {
+          <div class="review-meta">
+            Reviewed by <strong>{{ sub.reviewed_by }}</strong>
+            @if (sub.reviewed_at) { on {{ fmtDate(sub.reviewed_at) }} }
+            @if (sub.reviewer_note) { — "{{ sub.reviewer_note }}" }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

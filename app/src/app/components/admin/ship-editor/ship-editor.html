@@ -1,0 +1,184 @@
+<div class="ship-editor">
+  <div class="page-header">
+    <div>
+      <h1>Ship Editor</h1>
+      <p class="subtitle">Edit any flat field on any ship.</p>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: ship picker -->
+    <aside class="picker">
+      <input
+        type="text"
+        placeholder="Search ships…"
+        [ngModel]="search()"
+        (ngModelChange)="search.set($event)"
+      />
+      <button type="button" class="new-btn" (click)="toggleCreate()">
+        {{ createOpen() ? '× Cancel' : '+ New Ship' }}
+      </button>
+      @if (createOpen()) {
+        <div class="create-form">
+          <label>
+            <span>className (required, lowercase)</span>
+            <input
+              type="text"
+              placeholder="e.g. aegs_newship"
+              [ngModel]="createClassName()"
+              (ngModelChange)="createClassName.set($event)"
+            />
+          </label>
+          <label>
+            <span>Display name</span>
+            <input
+              type="text"
+              placeholder="e.g. AEGS New Ship"
+              [ngModel]="createName()"
+              (ngModelChange)="createName.set($event)"
+            />
+          </label>
+          @if (createError()) {
+            <div class="create-error">{{ createError() }}</div>
+          }
+          <button
+            type="button"
+            class="create-submit"
+            (click)="submitCreate()"
+            [disabled]="createBusy() || !createClassName()"
+          >
+            {{ createBusy() ? 'Creating…' : 'Create' }}
+          </button>
+        </div>
+      }
+      <div class="ship-list">
+        @for (s of filteredShips(); track s.className) {
+          <button
+            type="button"
+            class="ship-row"
+            [class.selected]="selectedClassName() === s.className"
+            (click)="selectShip(s.className)"
+          >
+            <span class="ship-name">{{ s.name || s.className }}</span>
+            <span class="ship-mfr">{{ s.manufacturer }}</span>
+          </button>
+        }
+      </div>
+    </aside>
+
+    <!-- RIGHT: form -->
+    <section class="form-panel">
+      @if (!selectedShip()) {
+        <div class="empty-state">Select a ship to edit.</div>
+      } @else {
+        <div class="ship-header">
+          <div>
+            <div class="ship-title">{{ selectedShip()?.name }}</div>
+            <div class="ship-className">{{ selectedShip()?.className }}</div>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="link-btn" (click)="expandAll()">Expand all</button>
+            <button type="button" class="link-btn" (click)="collapseAll()">Collapse all</button>
+          </div>
+        </div>
+
+        <div class="sections">
+          @for (section of sections; track section.id) {
+            <div class="section-card" [class.expanded]="isExpanded(section.id)">
+              <button
+                type="button"
+                class="section-header"
+                (click)="toggleSection(section.id)"
+              >
+                <span class="caret">{{ isExpanded(section.id) ? '▾' : '▸' }}</span>
+                <span class="section-title">{{ section.title }}</span>
+                @if (sectionDirty(section)) {
+                  <span class="dirty-dot" title="Section has unsaved changes"></span>
+                }
+              </button>
+              @if (isExpanded(section.id)) {
+                <div class="section-body">
+                  @for (field of section.fields; track field.key) {
+                    <label class="field">
+                      <span class="field-label">{{ field.label }}</span>
+                      @if (field.kind === 'number') {
+                        <input
+                          type="number"
+                          [step]="field.step ?? 1"
+                          [ngModel]="form()[field.key] ?? null"
+                          (ngModelChange)="updateField(field.key, $event)"
+                        />
+                      } @else if (field.kind === 'date') {
+                        <input
+                          type="date"
+                          [ngModel]="form()[field.key] ?? ''"
+                          (ngModelChange)="updateField(field.key, $event)"
+                        />
+                      } @else {
+                        <input
+                          type="text"
+                          [ngModel]="form()[field.key] ?? ''"
+                          (ngModelChange)="updateField(field.key, $event)"
+                        />
+                      }
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="actions">
+          <button
+            type="button"
+            class="delete-btn"
+            (click)="deleteSelectedShip()"
+            [disabled]="deleteBusy() || status().kind === 'saving'"
+            title="Delete this ship"
+          >
+            {{ deleteBusy() ? 'Deleting…' : 'Delete Ship' }}
+          </button>
+          <button
+            type="button"
+            class="curate-btn"
+            (click)="curateSelectedShip()"
+            [disabled]="curateBusy() || status().kind === 'saving'"
+            title="Mark this ship as curated to protect it from import overwrites"
+          >
+            {{ curateBusy() ? 'Marking…' : 'Mark Curated' }}
+          </button>
+          @if (status().kind === 'success') {
+            <div class="status success">{{ status().message }}</div>
+          } @else if (status().kind === 'error') {
+            <div class="status error">{{ status().message }}</div>
+          } @else if (dirtyCount() > 0) {
+            <div class="status pending">{{ dirtyCount() }} unsaved change{{ dirtyCount() === 1 ? '' : 's' }}</div>
+          }
+          <button
+            type="button"
+            class="reset-btn"
+            (click)="reset()"
+            [disabled]="dirtyCount() === 0 || status().kind === 'saving'"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            class="save-btn"
+            (click)="save()"
+            [disabled]="dirtyCount() === 0 || status().kind === 'saving'"
+          >
+            {{ status().kind === 'saving' ? 'Saving…' : 'Save Changes' }}
+          </button>
+        </div>
+        @if (deleteError()) {
+          <div class="status error" style="margin-top: 8px;">{{ deleteError() }}</div>
+        }
+        @if (curateMessage()) {
+          <div class="status success" style="margin-top: 8px;">{{ curateMessage() }}</div>
+        }
+      }
+    </section>
+  </div>
+</div>

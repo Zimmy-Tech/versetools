@@ -1,0 +1,216 @@
+<div class="item-editor">
+  <div class="page-header">
+    <div>
+      <h1>Item Editor</h1>
+      <p class="subtitle">Edit any field on any item.</p>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: item picker -->
+    <aside class="picker">
+      <input
+        type="text"
+        placeholder="Search items…"
+        [ngModel]="search()"
+        (ngModelChange)="search.set($event)"
+      />
+      <select
+        [ngModel]="typeFilter()"
+        (ngModelChange)="typeFilter.set($event)"
+      >
+        <option value="">All types</option>
+        @for (t of itemTypes(); track t) {
+          <option [value]="t">{{ t }}</option>
+        }
+      </select>
+      <button type="button" class="new-btn" (click)="toggleCreate()">
+        {{ createOpen() ? '× Cancel' : '+ New Item' }}
+      </button>
+      @if (createOpen()) {
+        <div class="create-form">
+          <label>
+            <span>className (required)</span>
+            <input
+              type="text"
+              placeholder="e.g. klwe_newgun_s2"
+              [ngModel]="createClassName()"
+              (ngModelChange)="createClassName.set($event)"
+            />
+          </label>
+          <label>
+            <span>Type (required)</span>
+            <input
+              type="text"
+              placeholder="WeaponGun, Shield, Cooler…"
+              [ngModel]="createType()"
+              (ngModelChange)="createType.set($event)"
+            />
+          </label>
+          <label>
+            <span>Display name</span>
+            <input
+              type="text"
+              placeholder="Name shown in UI"
+              [ngModel]="createName()"
+              (ngModelChange)="createName.set($event)"
+            />
+          </label>
+          @if (createError()) {
+            <div class="create-error">{{ createError() }}</div>
+          }
+          <button
+            type="button"
+            class="create-submit"
+            (click)="submitCreate()"
+            [disabled]="createBusy() || !createClassName() || !createType()"
+          >
+            {{ createBusy() ? 'Creating…' : 'Create' }}
+          </button>
+        </div>
+      }
+      <div class="item-list">
+        @for (i of filteredItems(); track i.className) {
+          <button
+            type="button"
+            class="item-row"
+            [class.selected]="selectedClassName() === i.className"
+            (click)="selectItem(i.className)"
+          >
+            <span class="item-name">{{ i.name || i.className }}</span>
+            <span class="item-meta">
+              <span class="type">{{ i.type }}</span>
+              @if (i.size) {
+                <span class="size">S{{ i.size }}</span>
+              }
+            </span>
+          </button>
+        }
+      </div>
+    </aside>
+
+    <!-- RIGHT: form -->
+    <section class="form-panel">
+      @if (!selectedItem()) {
+        <div class="empty-state">Select an item to edit.</div>
+      } @else {
+        <div class="item-header">
+          <div>
+            <div class="item-title">{{ selectedItem()?.name }}</div>
+            <div class="item-className">
+              {{ selectedItem()?.className }} · {{ selectedItem()?.type }}
+            </div>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="link-btn" (click)="expandAll()">Expand all</button>
+            <button type="button" class="link-btn" (click)="collapseAll()">Collapse all</button>
+          </div>
+        </div>
+
+        <div class="sections">
+          @for (section of sections; track section.id) {
+            <div
+              class="section-card"
+              [class.expanded]="isExpanded(section.id)"
+              [class.relevant]="isRelevantSection(section.id)"
+            >
+              <button
+                type="button"
+                class="section-header"
+                (click)="toggleSection(section.id)"
+              >
+                <span class="caret">{{ isExpanded(section.id) ? '▾' : '▸' }}</span>
+                <span class="section-title">{{ section.title }}</span>
+                @if (isRelevantSection(section.id)) {
+                  <span class="relevance-pill">has data</span>
+                }
+                @if (sectionDirty(section)) {
+                  <span class="dirty-dot" title="Section has unsaved changes"></span>
+                }
+              </button>
+              @if (isExpanded(section.id)) {
+                <div class="section-body">
+                  @for (field of section.fields; track field.key) {
+                    <label class="field">
+                      <span class="field-label">{{ field.label }}</span>
+                      @if (field.kind === 'number') {
+                        <input
+                          type="number"
+                          [step]="field.step ?? 1"
+                          [ngModel]="form()[field.key] ?? null"
+                          (ngModelChange)="updateField(field.key, $event)"
+                        />
+                      } @else if (field.kind === 'boolean') {
+                        <input
+                          type="checkbox"
+                          [checked]="!!form()[field.key]"
+                          (change)="updateField(field.key, $any($event.target).checked)"
+                        />
+                      } @else {
+                        <input
+                          type="text"
+                          [ngModel]="form()[field.key] ?? ''"
+                          (ngModelChange)="updateField(field.key, $event)"
+                        />
+                      }
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="actions">
+          <button
+            type="button"
+            class="delete-btn"
+            (click)="deleteSelectedItem()"
+            [disabled]="deleteBusy() || status().kind === 'saving'"
+            title="Delete this item"
+          >
+            {{ deleteBusy() ? 'Deleting…' : 'Delete Item' }}
+          </button>
+          <button
+            type="button"
+            class="curate-btn"
+            (click)="curateSelectedItem()"
+            [disabled]="curateBusy() || status().kind === 'saving'"
+            title="Mark this item as curated to protect it from import overwrites"
+          >
+            {{ curateBusy() ? 'Marking…' : 'Mark Curated' }}
+          </button>
+          @if (status().kind === 'success') {
+            <div class="status success">{{ status().message }}</div>
+          } @else if (status().kind === 'error') {
+            <div class="status error">{{ status().message }}</div>
+          } @else if (dirtyCount() > 0) {
+            <div class="status pending">{{ dirtyCount() }} unsaved change{{ dirtyCount() === 1 ? '' : 's' }}</div>
+          }
+          <button
+            type="button"
+            class="reset-btn"
+            (click)="reset()"
+            [disabled]="dirtyCount() === 0 || status().kind === 'saving'"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            class="save-btn"
+            (click)="save()"
+            [disabled]="dirtyCount() === 0 || status().kind === 'saving'"
+          >
+            {{ status().kind === 'saving' ? 'Saving…' : 'Save Changes' }}
+          </button>
+        </div>
+        @if (deleteError()) {
+          <div class="status error" style="margin-top: 8px;">{{ deleteError() }}</div>
+        }
+        @if (curateMessage()) {
+          <div class="status success" style="margin-top: 8px;">{{ curateMessage() }}</div>
+        }
+      }
+    </section>
+  </div>
+</div>

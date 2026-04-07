@@ -1,0 +1,37 @@
+<div class="admin-login-page">
+  <form class="login-card" (ngSubmit)="submit()">
+    <h1>VerseTools Admin</h1>
+    <p class="hint">Sign in to manage ships and items.</p>
+
+    <label>
+      <span>Username</span>
+      <input
+        type="text"
+        autocomplete="username"
+        [ngModel]="username()"
+        (ngModelChange)="username.set($event)"
+        name="username"
+        autofocus
+      />
+    </label>
+
+    <label>
+      <span>Password</span>
+      <input
+        type="password"
+        autocomplete="current-password"
+        [ngModel]="password()"
+        (ngModelChange)="password.set($event)"
+        name="password"
+      />
+    </label>
+
+    @if (error()) {
+      <div class="error">{{ error() }}</div>
+    }
+
+    <button type="submit" [disabled]="busy() || !username() || !password()">
+      {{ busy() ? 'Signing in…' : 'Sign in' }}
+    </button>
+  </form>
+</div>

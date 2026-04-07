@@ -20,6 +20,7 @@ import { FpsWeaponsComponent } from './components/fps-weapons/fps-weapons';
 import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
 import { EveStyleComponent } from './components/eve-style/eve-style';
+import { adminGuard } from './components/admin/admin-guard';
 
 export const routes: Routes = [
   { path: 'loadout',            component: LoadoutViewComponent },
@@ -43,6 +44,83 @@ export const routes: Routes = [
   { path: 'eve-style',          component: EveStyleComponent },
   { path: 'updates',            component: UpdatesViewComponent },
   { path: 'changelog',          component: ChangelogViewComponent },
+  {
+    path: 'ptu-changelog',
+    loadComponent: () =>
+      import('./components/changelog-ptu/changelog-ptu').then((m) => m.ChangelogPtuComponent),
+  },
+
+  // Admin section (auth-gated)
+  {
+    path: 'admin/login',
+    loadComponent: () =>
+      import('./components/admin/admin-login/admin-login').then((m) => m.AdminLoginComponent),
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./components/admin/admin-shell/admin-shell').then((m) => m.AdminShellComponent),
+    canActivate: [adminGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./components/admin/admin-dashboard/admin-dashboard').then(
+            (m) => m.AdminDashboardComponent
+          ),
+      },
+      {
+        path: 'ship-accel',
+        loadComponent: () =>
+          import('./components/admin/ship-accel-editor/ship-accel-editor').then(
+            (m) => m.ShipAccelEditorComponent
+          ),
+      },
+      {
+        path: 'ships',
+        loadComponent: () =>
+          import('./components/admin/ship-editor/ship-editor').then(
+            (m) => m.ShipEditorComponent
+          ),
+      },
+      {
+        path: 'hardpoints',
+        loadComponent: () =>
+          import('./components/admin/hardpoint-editor/hardpoint-editor').then(
+            (m) => m.HardpointEditorComponent
+          ),
+      },
+      {
+        path: 'items',
+        loadComponent: () =>
+          import('./components/admin/item-editor/item-editor').then(
+            (m) => m.ItemEditorComponent
+          ),
+      },
+      {
+        path: 'audit',
+        loadComponent: () =>
+          import('./components/admin/audit-log/audit-log').then(
+            (m) => m.AuditLogComponent
+          ),
+      },
+      {
+        path: 'diff',
+        loadComponent: () =>
+          import('./components/admin/diff-review/diff-review').then(
+            (m) => m.DiffReviewComponent
+          ),
+      },
+      {
+        path: 'submissions',
+        loadComponent: () =>
+          import('./components/admin/submissions-review/submissions-review').then(
+            (m) => m.SubmissionsReviewComponent
+          ),
+      },
+    ],
+  },
+
   { path: '',                    redirectTo: 'loadout', pathMatch: 'full' },
   { path: '**',                  redirectTo: 'loadout' },
 ];

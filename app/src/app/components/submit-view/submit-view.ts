@@ -18,7 +18,10 @@ interface AccelForm {
   notes: string;
 }
 
-// Google Apps Script web app URL for submission data
+// Submissions now go to the VerseTools API. The Google Apps Script
+// fallback is kept for hosts without an API (GitHub Pages mirror).
+const API_ACCEL_URL = '/api/submissions/accel';
+const API_FEEDBACK_URL = '/api/submissions/feedback';
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycby-Sbza3UNLXsCehPrlLtviYt8b4cdA5er78Z636kttGRxEuN2lYiczi0i8615psMv5/exec';
 
 @Component({
@@ -155,30 +158,37 @@ export class SubmitViewComponent {
       notes: f.notes.trim(),
     };
 
-    if (!SHEET_URL) {
-      // Fallback to localStorage if Google Sheet not configured
-      const existing = JSON.parse(localStorage.getItem('versetools_submissions') ?? '[]');
-      existing.push(entry);
-      localStorage.setItem('versetools_submissions', JSON.stringify(existing));
+    this.submitting.set(true);
+    this.submitError.set('');
+
+    // GitHub Pages mirror has no API — fall straight back to the sheet.
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
+    const onSuccess = () => {
       this.submitted.set(true);
+      this.submitting.set(false);
       this.resetAfterSubmit();
-    } else {
-      this.submitting.set(true);
-      this.submitError.set('');
-      // POST to Google Apps Script — use no-cors fetch since Apps Script
-      // returns a redirect that browsers handle transparently
+    };
+    const fallbackToSheet = () => {
       fetch(SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(entry),
-      }).then(() => {
-        this.submitted.set(true);
-        this.submitting.set(false);
-        this.resetAfterSubmit();
-      }).catch(() => {
-        this.submitError.set('Submission failed — please try again');
-        this.submitting.set(false);
+      })
+        .then(onSuccess)
+        .catch(() => {
+          this.submitError.set('Submission failed — please try again');
+          this.submitting.set(false);
+        });
+    };
+    if (isStaticHost) {
+      fallbackToSheet();
+    } else {
+      this.http.post(API_ACCEL_URL, entry).subscribe({
+        next: onSuccess,
+        error: () => fallbackToSheet(),
       });
     }
   }
@@ -211,17 +221,31 @@ export class SubmitViewComponent {
     };
 
     this.feedbackSubmitting.set(true);
-    fetch(SHEET_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(entry),
-    }).then(() => {
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
+    const onSuccess = () => {
       this.feedbackSubmitted.set(true);
       this.feedbackSubmitting.set(false);
-    }).catch(() => {
-      this.feedbackSubmitting.set(false);
-    });
+    };
+    const fallbackToSheet = () => {
+      fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry),
+      })
+        .then(onSuccess)
+        .catch(() => this.feedbackSubmitting.set(false));
+    };
+    if (isStaticHost) {
+      fallbackToSheet();
+    } else {
+      this.http.post(API_FEEDBACK_URL, entry).subscribe({
+        next: onSuccess,
+        error: () => fallbackToSheet(),
+      });
+    }
 
     setTimeout(() => {
       this.feedbackSubmitted.set(false);

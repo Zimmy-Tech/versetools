@@ -1,0 +1,130 @@
+<div class="accel-editor">
+  <h1>Ship Acceleration</h1>
+  <p class="subtitle">Update accel data directly. No JSON files, no scripts.</p>
+
+  <div class="layout">
+    <!-- LEFT: ship picker -->
+    <aside class="picker">
+      <input
+        type="text"
+        placeholder="Search ships…"
+        [ngModel]="search()"
+        (ngModelChange)="search.set($event)"
+      />
+      <div class="ship-list">
+        @for (s of filteredShips(); track s.className) {
+          <button
+            type="button"
+            class="ship-row"
+            [class.selected]="selectedClassName() === s.className"
+            (click)="selectShip(s.className)"
+          >
+            <span class="ship-name">{{ s.name || s.className }}</span>
+            <span class="ship-mfr">{{ s.manufacturer }}</span>
+            @if (s.accelFwd) {
+              <span class="badge has-data">data</span>
+            } @else {
+              <span class="badge no-data">empty</span>
+            }
+          </button>
+        }
+      </div>
+    </aside>
+
+    <!-- RIGHT: form -->
+    <section class="form-panel">
+      @if (!selectedShip()) {
+        <div class="empty-state">Select a ship to edit its acceleration data.</div>
+      } @else {
+        <div class="ship-header">
+          <div>
+            <div class="ship-title">{{ selectedShip()?.name }}</div>
+            <div class="ship-className">{{ selectedShip()?.className }}</div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <fieldset>
+            <legend>Forward / Reverse</legend>
+            <label>
+              <span>Fwd</span>
+              <input type="number" step="0.01" [ngModel]="form().accelFwd" (ngModelChange)="updateField('accelFwd', $event)" />
+            </label>
+            <label>
+              <span>Fwd Boost</span>
+              <input type="number" step="0.01" [ngModel]="form().accelAbFwd" (ngModelChange)="updateField('accelAbFwd', $event)" />
+            </label>
+            <label>
+              <span>Retro</span>
+              <input type="number" step="0.01" [ngModel]="form().accelRetro" (ngModelChange)="updateField('accelRetro', $event)" />
+            </label>
+            <label>
+              <span>Retro Boost</span>
+              <input type="number" step="0.01" [ngModel]="form().accelAbRetro" (ngModelChange)="updateField('accelAbRetro', $event)" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Strafe</legend>
+            <label>
+              <span>Strafe</span>
+              <input type="number" step="0.01" [ngModel]="form().accelStrafe" (ngModelChange)="updateField('accelStrafe', $event)" />
+            </label>
+            <label>
+              <span>Strafe Boost</span>
+              <input type="number" step="0.01" [ngModel]="form().accelAbStrafe" (ngModelChange)="updateField('accelAbStrafe', $event)" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Vertical</legend>
+            <label>
+              <span>Up</span>
+              <input type="number" step="0.01" [ngModel]="form().accelUp" (ngModelChange)="updateField('accelUp', $event)" />
+            </label>
+            <label>
+              <span>Up Boost</span>
+              <input type="number" step="0.01" [ngModel]="form().accelAbUp" (ngModelChange)="updateField('accelAbUp', $event)" />
+            </label>
+            <label>
+              <span>Down</span>
+              <input type="number" step="0.01" [ngModel]="form().accelDown" (ngModelChange)="updateField('accelDown', $event)" />
+            </label>
+            <label>
+              <span>Down Boost</span>
+              <input type="number" step="0.01" [ngModel]="form().accelAbDown" (ngModelChange)="updateField('accelAbDown', $event)" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Provenance</legend>
+            <label>
+              <span>Tested Date</span>
+              <input type="date" [ngModel]="form().accelTestedDate" (ngModelChange)="updateField('accelTestedDate', $event)" />
+            </label>
+            <label>
+              <span>Checked By</span>
+              <input type="text" [ngModel]="form().accelCheckedBy" (ngModelChange)="updateField('accelCheckedBy', $event)" />
+            </label>
+          </fieldset>
+        </div>
+
+        <div class="actions">
+          @if (status().kind === 'success') {
+            <div class="status success">{{ status().message }}</div>
+          } @else if (status().kind === 'error') {
+            <div class="status error">{{ status().message }}</div>
+          }
+          <button
+            type="button"
+            class="save-btn"
+            (click)="save()"
+            [disabled]="status().kind === 'saving'"
+          >
+            {{ status().kind === 'saving' ? 'Saving…' : 'Save Changes' }}
+          </button>
+        </div>
+      }
+    </section>
+  </div>
+</div>

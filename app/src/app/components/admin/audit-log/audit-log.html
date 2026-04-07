@@ -1,0 +1,51 @@
+<div class="audit-log">
+  <div class="page-header">
+    <div>
+      <h1>Audit Log</h1>
+      <p class="subtitle">Every change made through the admin panel.</p>
+    </div>
+    <button type="button" class="refresh-btn" (click)="refresh()" [disabled]="loading()">
+      {{ loading() ? 'Loading…' : 'Refresh' }}
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="error-banner">{{ error() }}</div>
+  }
+
+  @if (!loading() && entries().length === 0 && !error()) {
+    <div class="empty-state">No audit entries yet.</div>
+  }
+
+  @if (entries().length > 0) {
+    <table class="entry-table">
+      <thead>
+        <tr>
+          <th>When</th>
+          <th>User</th>
+          <th>Action</th>
+          <th>Entity</th>
+          <th>Field</th>
+          <th>Old</th>
+          <th>New</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (e of entries(); track e.id) {
+          <tr>
+            <td class="when">{{ formatDate(e.created_at) }}</td>
+            <td>{{ e.user_name }}</td>
+            <td><span class="action-pill">{{ e.action }}</span></td>
+            <td class="entity">
+              <div class="entity-type">{{ e.entity_type }}</div>
+              <div class="entity-key">{{ e.entity_key }}</div>
+            </td>
+            <td class="field">{{ e.field_name }}</td>
+            <td class="old">{{ formatValue(e.old_value) }}</td>
+            <td class="new">{{ formatValue(e.new_value) }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -123,35 +123,48 @@ export class DataService {
   readonly ptuLabel = signal('');
 
   constructor(private http: HttpClient) {
-    // Load PTU config
-    this.http.get<{ ptuEnabled: boolean; ptuLabel?: string }>('config.json', { headers: { 'Cache-Control': 'no-cache' } })
-      .subscribe({
-        next: cfg => {
-          this.ptuEnabled.set(cfg.ptuEnabled);
-          this.ptuLabel.set(cfg.ptuLabel ?? '');
-          // Force back to LIVE if PTU is disabled
-          if (!cfg.ptuEnabled && this.dataMode() === 'ptu') {
-            this.dataMode.set('live');
-          }
-        },
-        error: () => {},
-      });
-
-    // React to dataMode changes: reload the main database.
-    // Live mode reads from the API (Postgres-backed) when an API is
-    // available; PTU stays on the static JSON file because the API only
-    // knows about LIVE data. GitHub Pages has no API, so we skip the
-    // network round-trip entirely and read the bundled JSON directly.
-    // On any other host, if the API call fails for any reason, we fall
-    // back to the bundled JSON so the site never breaks.
+    // Load PTU config — prefer the API (admin-toggleable, lives in the DB)
+    // and fall back to the static config.json for hosts without an API
+    // (GitHub Pages mirror).
     const isStaticHost =
       typeof window !== 'undefined' &&
       /github\.io$/i.test(window.location.hostname);
+    const applyCfg = (cfg: { ptuEnabled: boolean; ptuLabel?: string }) => {
+      this.ptuEnabled.set(cfg.ptuEnabled);
+      this.ptuLabel.set(cfg.ptuLabel ?? '');
+      if (!cfg.ptuEnabled && this.dataMode() === 'ptu') {
+        this.dataMode.set('live');
+      }
+    };
+    const loadStatic = () =>
+      this.http
+        .get<{ ptuEnabled: boolean; ptuLabel?: string }>('config.json', {
+          headers: { 'Cache-Control': 'no-cache' },
+        })
+        .subscribe({ next: applyCfg, error: () => {} });
+    if (isStaticHost) {
+      loadStatic();
+    } else {
+      this.http
+        .get<{ ptuEnabled: boolean; ptuLabel?: string }>('/api/config', {
+          headers: { 'Cache-Control': 'no-cache' },
+        })
+        .subscribe({ next: applyCfg, error: () => loadStatic() });
+    }
+
+    // React to dataMode changes: reload the main database.
+    // Both LIVE and PTU now live in the same database — the API serves
+    // them via /api/db?mode=live and /api/db?mode=ptu. GitHub Pages has
+    // no API, so we skip the network round-trip entirely and read the
+    // bundled JSON file directly (PTU support there is read-only). On
+    // any other host, if the API call fails for any reason, we fall
+    // back to the bundled JSON so the site never breaks.
+    // (isStaticHost is already declared above for the config load.)
     effect(() => {
       const mode = this.dataMode();
       const prefix = this.dataPrefix();
       const fallbackUrl = `${prefix}versedb_data.json`;
-      const primaryUrl = mode === 'live' && !isStaticHost ? '/api/db' : fallbackUrl;
+      const primaryUrl = isStaticHost ? fallbackUrl : `/api/db?mode=${mode}`;
 
       const applyDb = (db: VerseDb) => {
         this.db.set(db);
@@ -182,6 +195,34 @@ export class DataService {
   switchMode(mode: DataMode): void {
     if (mode !== this.dataMode()) {
       this.dataMode.set(mode);
+    }
+  }
+
+  /** Re-fetches the database from the current source. Used by the
+   *  admin panel after create/delete operations so the picker reflects
+   *  the new state without a full page reload. Preserves the currently
+   *  selected ship if it still exists.
+   *
+   *  Optional `mode` arg lets the admin panel pull a specific dataset
+   *  (e.g. always 'live' for editor pickers regardless of which mode
+   *  the public toggle is on). Defaults to the current dataMode signal. */
+  async refreshDb(mode?: DataMode): Promise<void> {
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
+    const m = mode ?? this.dataMode();
+    const prefix = this.dataPrefix();
+    const fallbackUrl = `${prefix}versedb_data.json`;
+    const primaryUrl = isStaticHost ? fallbackUrl : `/api/db?mode=${m}`;
+
+    const previousClassName = this.selectedShip()?.className;
+    const db = await this.http.get<VerseDb>(primaryUrl).toPromise();
+    if (!db) return;
+    this.db.set(db);
+    this.modeVersion.update((v) => v + 1);
+    if (previousClassName) {
+      const found = db.ships.find((s) => s.className === previousClassName);
+      if (found) this.selectShip(found);
     }
   }
 

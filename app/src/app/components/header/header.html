@@ -90,6 +90,14 @@
   </nav>
 
   <div class="header-right">
+    @if (admin.isAuthenticated()) {
+      <button class="admin-link"
+              (click)="navigateTo('admin')"
+              [class.active]="currentUrl().startsWith('/admin')"
+              title="Admin panel">
+        ADMIN
+      </button>
+    }
     <div class="data-status">
       <div class="status-dot" [class.live]="data.isLoaded()"></div>
       @if (data.isLoaded()) {
