@@ -164,6 +164,10 @@ export class ShipEditorComponent {
   deleteBusy = signal(false);
   deleteError = signal<string | null>(null);
 
+  // Curate state
+  curateBusy = signal(false);
+  curateMessage = signal<string | null>(null);
+
   search = signal('');
   filteredShips = computed(() => {
     const q = this.search().toLowerCase().trim();
@@ -358,6 +362,22 @@ export class ShipEditorComponent {
   }
 
   // ─── Delete current ship ─────────────────────────────────────────
+
+  async curateSelectedShip(): Promise<void> {
+    const ship = this.selectedShip();
+    if (!ship) return;
+    this.curateBusy.set(true);
+    this.curateMessage.set(null);
+    try {
+      await this.admin.curateShip(ship.className);
+      this.curateMessage.set(`${ship.name || ship.className} marked as curated. Future imports will warn before overwriting.`);
+    } catch (err: any) {
+      const msg = err?.error?.error || err?.message || 'Curate failed';
+      this.curateMessage.set(`Failed: ${msg}`);
+    } finally {
+      this.curateBusy.set(false);
+    }
+  }
 
   async deleteSelectedShip(): Promise<void> {
     const ship = this.selectedShip();

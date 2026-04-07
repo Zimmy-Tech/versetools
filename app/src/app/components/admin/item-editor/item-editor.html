@@ -171,6 +171,15 @@
           >
             {{ deleteBusy() ? 'Deleting…' : 'Delete Item' }}
           </button>
+          <button
+            type="button"
+            class="curate-btn"
+            (click)="curateSelectedItem()"
+            [disabled]="curateBusy() || status().kind === 'saving'"
+            title="Mark this item as curated to protect it from import overwrites"
+          >
+            {{ curateBusy() ? 'Marking…' : 'Mark Curated' }}
+          </button>
           @if (status().kind === 'success') {
             <div class="status success">{{ status().message }}</div>
           } @else if (status().kind === 'error') {
@@ -197,6 +206,9 @@
         </div>
         @if (deleteError()) {
           <div class="status error" style="margin-top: 8px;">{{ deleteError() }}</div>
+        }
+        @if (curateMessage()) {
+          <div class="status success" style="margin-top: 8px;">{{ curateMessage() }}</div>
         }
       }
     </section>

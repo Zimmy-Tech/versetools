@@ -267,6 +267,10 @@ export class ItemEditorComponent {
   deleteBusy = signal(false);
   deleteError = signal<string | null>(null);
 
+  // Curate state
+  curateBusy = signal(false);
+  curateMessage = signal<string | null>(null);
+
   items = computed(() => {
     const all = this.data.db()?.items ?? [];
     return [...all].sort((a, b) =>
@@ -488,6 +492,22 @@ export class ItemEditorComponent {
   }
 
   // ─── Delete current item ─────────────────────────────────────────
+
+  async curateSelectedItem(): Promise<void> {
+    const item = this.selectedItem();
+    if (!item) return;
+    this.curateBusy.set(true);
+    this.curateMessage.set(null);
+    try {
+      await this.admin.curateItem(item.className);
+      this.curateMessage.set(`${item.name || item.className} marked as curated. Future imports will warn before overwriting.`);
+    } catch (err: any) {
+      const msg = err?.error?.error || err?.message || 'Curate failed';
+      this.curateMessage.set(`Failed: ${msg}`);
+    } finally {
+      this.curateBusy.set(false);
+    }
+  }
 
   async deleteSelectedItem(): Promise<void> {
     const item = this.selectedItem();

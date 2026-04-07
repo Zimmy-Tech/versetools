@@ -141,6 +141,25 @@ export class AdminService {
       .toPromise();
   }
 
+  /** Mark a ship as curated without changing its data. Protects it
+   *  from silent overwrites in future diff/import operations. */
+  async curateShip(className: string): Promise<void> {
+    await this.http
+      .post(this.withMode(`/api/admin/ships/${encodeURIComponent(className)}/curate`), {}, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+  }
+
+  /** Mark an item as curated without changing its data. */
+  async curateItem(className: string): Promise<void> {
+    await this.http
+      .post(this.withMode(`/api/admin/items/${encodeURIComponent(className)}/curate`), {}, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+  }
+
   /** Compute a diff between an uploaded versedb_data.json blob and the
    *  current database (in the active admin mode). */
   async previewDiff(uploaded: any): Promise<DiffResult> {

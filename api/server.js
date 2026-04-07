@@ -278,6 +278,64 @@ const createItemHandler = makeCreateHandler({ table: 'items', entityType: 'item'
 const deleteShipHandler = makeDeleteHandler({ table: 'ships', entityType: 'ship' });
 const deleteItemHandler = makeDeleteHandler({ table: 'items', entityType: 'item' });
 
+// Flip an entity's source flag to 'curated' without changing data.
+// Used when an entity has manually-corrected values (e.g., scatterguns
+// with hand-fixed DPS) that should be protected from re-extraction
+// overwrites in the diff/import flow.
+function makeCurateHandler({ table, entityType }) {
+  return async (req, res) => {
+    if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+    const { className } = req.params;
+    const mode = normalizeMode(req.query.mode);
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      const { rows } = await client.query(
+        `SELECT source FROM ${table} WHERE class_name = $1 AND mode = $2 FOR UPDATE`,
+        [className, mode]
+      );
+      if (rows.length === 0) {
+        await client.query('ROLLBACK');
+        return res.status(404).json({ error: `${entityType} not found`, className, mode });
+      }
+      const before = rows[0].source;
+      if (before !== 'curated') {
+        await client.query(
+          `UPDATE ${table} SET source = 'curated', updated_at = NOW() WHERE class_name = $1 AND mode = $2`,
+          [className, mode]
+        );
+        await logAudit(
+          client,
+          req.admin.sub,
+          `mark_curated_${entityType}`,
+          entityType,
+          className,
+          mode,
+          'source',
+          before,
+          'curated'
+        );
+      }
+      await client.query('COMMIT');
+      res.json({ ok: true, className, mode, source: 'curated', alreadyCurated: before === 'curated' });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error(`curate ${entityType} failed:`, err);
+      res.status(500).json({ error: 'Curate failed', detail: err.message });
+    } finally {
+      client.release();
+    }
+  };
+}
+
+const curateShipHandler = makeCurateHandler({ table: 'ships', entityType: 'ship' });
+const curateItemHandler = makeCurateHandler({ table: 'items', entityType: 'item' });
+
+app.post('/admin/ships/:className/curate', requireAdmin, curateShipHandler);
+app.post('/api/admin/ships/:className/curate', requireAdmin, curateShipHandler);
+app.post('/admin/items/:className/curate', requireAdmin, curateItemHandler);
+app.post('/api/admin/items/:className/curate', requireAdmin, curateItemHandler);
+
 app.post('/admin/ships', requireAdmin, createShipHandler);
 app.post('/api/admin/ships', requireAdmin, createShipHandler);
 app.post('/admin/items', requireAdmin, createItemHandler);
