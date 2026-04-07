@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 import { LoadoutCompareComponent, StoredLoadout as StoredLoadoutExport } from '../loadout-compare/loadout-compare';
+import { AdminService } from '../admin/admin.service';
 
 export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle';
 
@@ -47,6 +48,7 @@ const STORAGE_KEY = 'versedb_loadouts';
 export class HeaderComponent implements OnInit, OnDestroy {
   private routerSub?: Subscription;
   private _router = inject(Router);
+  admin = inject(AdminService);
   currentUrl = signal(this._router.url);
   isMobile = signal(window.innerWidth < 768);
   hamburgerOpen = signal(false);
