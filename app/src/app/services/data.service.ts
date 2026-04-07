@@ -138,15 +138,20 @@ export class DataService {
       });
 
     // React to dataMode changes: reload the main database.
-    // Live mode reads from the API (Postgres-backed); PTU stays on the
-    // static JSON file because the API only knows about LIVE data.
-    // If the API call fails for any reason, fall back to the bundled
-    // JSON so the site never breaks.
+    // Live mode reads from the API (Postgres-backed) when an API is
+    // available; PTU stays on the static JSON file because the API only
+    // knows about LIVE data. GitHub Pages has no API, so we skip the
+    // network round-trip entirely and read the bundled JSON directly.
+    // On any other host, if the API call fails for any reason, we fall
+    // back to the bundled JSON so the site never breaks.
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
     effect(() => {
       const mode = this.dataMode();
       const prefix = this.dataPrefix();
       const fallbackUrl = `${prefix}versedb_data.json`;
-      const primaryUrl = mode === 'live' ? '/api/db' : fallbackUrl;
+      const primaryUrl = mode === 'live' && !isStaticHost ? '/api/db' : fallbackUrl;
 
       const applyDb = (db: VerseDb) => {
         this.db.set(db);
