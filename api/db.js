@@ -114,9 +114,24 @@ export async function importIfEmpty() {
   }
 }
 
+// Check whether the schema/data is present, and run init/import if not.
+// Safe to call repeatedly — both operations are idempotent.
+export async function ensureReady() {
+  if (!pool) return;
+  const { rows } = await pool.query(
+    "SELECT to_regclass('public.ships') IS NOT NULL AS has_ships"
+  );
+  if (!rows[0].has_ships) {
+    console.log('[db] ships table missing, running schema init...');
+    await initSchema();
+  }
+  await importIfEmpty();
+}
+
 // Assemble the same JSON shape the Angular app expects from versedb_data.json
 export async function exportFullDb() {
   if (!pool) throw new Error('Database not configured');
+  await ensureReady();
 
   const [shipsRes, itemsRes, locsRes, elsRes, metaRes] = await Promise.all([
     pool.query('SELECT data FROM ships ORDER BY class_name'),
