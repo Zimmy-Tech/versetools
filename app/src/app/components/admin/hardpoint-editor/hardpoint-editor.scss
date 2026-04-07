@@ -12,7 +12,7 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr) 220px;
+  grid-template-columns: 220px minmax(0, 1fr);
   gap: 20px;
   align-items: start;
 }
@@ -347,6 +347,7 @@
   gap: 10px;
   padding: 6px 4px;
   font-size: 0.82rem;
+  min-width: 0;
 
   &.dirty {
     background: rgba(255, 192, 77, 0.06);
@@ -358,7 +359,12 @@
     font-family: monospace;
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.5);
+    flex: 0 0 auto;
     min-width: 140px;
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &.sub {
       padding-left: 12px;
@@ -590,50 +596,63 @@
 }
 
 .type-helper {
-  background: rgba(8, 14, 22, 0.7);
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(80, 180, 255, 0.2);
-  border-radius: 6px;
-  padding: 14px 16px;
-  position: sticky;
-  top: 16px;
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
+  border-radius: 4px;
 
-  .helper-title {
-    font-size: 0.7rem;
+  .helper-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: rgba(159, 223, 255, 0.85);
+    cursor: pointer;
+    font-size: 0.78rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(159, 223, 255, 0.7);
-    margin-bottom: 4px;
-  }
+    letter-spacing: 0.06em;
+    text-align: left;
 
-  .helper-hint {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.45);
-    margin-bottom: 12px;
-    line-height: 1.4;
+    .caret {
+      color: rgba(159, 223, 255, 0.6);
+      font-size: 0.7rem;
+    }
+
+    .helper-hint {
+      flex: 1;
+      text-align: right;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.45);
+    }
   }
 
   .helper-list {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(80, 180, 255, 0.15);
   }
 
   .type-pill-btn {
     background: rgba(80, 180, 255, 0.08);
     border: 1px solid rgba(80, 180, 255, 0.25);
     border-radius: 3px;
-    padding: 5px 8px;
+    padding: 4px 10px;
     color: #9fdfff;
     font-family: monospace;
-    font-size: 0.78rem;
-    text-align: left;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.12s;
 
     &:hover {
-      background: rgba(80, 180, 255, 0.15);
+      background: rgba(80, 180, 255, 0.18);
       border-color: rgba(80, 180, 255, 0.5);
       color: #fff;
     }
@@ -659,17 +678,6 @@
   color: #ffc04d;
   border: 1px solid rgba(255, 192, 77, 0.5);
   border-radius: 2px;
-}
-
-@media (max-width: 1300px) {
-  .layout {
-    grid-template-columns: 240px minmax(0, 1fr);
-  }
-  .type-helper {
-    grid-column: 1 / -1;
-    position: static;
-    max-height: none;
-  }
 }
 
 @media (max-width: 900px) {

@@ -49,6 +49,23 @@
           </div>
         </div>
 
+        <div class="type-helper">
+          <button type="button" class="helper-toggle" (click)="showTypeHelper.set(!showTypeHelper())">
+            <span class="caret">{{ showTypeHelper() ? '▾' : '▸' }}</span>
+            <span>Hardpoint Type Reference</span>
+            <span class="helper-hint">Click any pill to copy. These are valid <strong>Type</strong> values.</span>
+          </button>
+          @if (showTypeHelper()) {
+            <div class="helper-list">
+              @for (t of knownHardpointTypes(); track t) {
+                <button type="button" class="type-pill-btn" (click)="copyType(t)" title="Copy">
+                  {{ t }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+
         <div class="hardpoints-list">
           @for (hp of workingHardpoints(); track hp.id; let i = $index) {
             <div
@@ -283,17 +300,5 @@
       }
     </section>
 
-    <!-- RIGHT: type reference helper -->
-    <aside class="type-helper">
-      <div class="helper-title">Hardpoint Types</div>
-      <div class="helper-hint">Click to copy. These are the values to put in a hardpoint's <strong>Type</strong> field.</div>
-      <div class="helper-list">
-        @for (t of knownHardpointTypes(); track t) {
-          <button type="button" class="type-pill-btn" (click)="copyType(t)" title="Copy">
-            {{ t }}
-          </button>
-        }
-      </div>
-    </aside>
   </div>
 </div>
