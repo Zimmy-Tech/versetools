@@ -278,6 +278,249 @@ app.delete('/api/admin/ships/:className', requireAdmin, deleteShipHandler);
 app.delete('/admin/items/:className', requireAdmin, deleteItemHandler);
 app.delete('/api/admin/items/:className', requireAdmin, deleteItemHandler);
 
+// ─── Diff / import review ────────────────────────────────────────────
+//
+// The pipeline: re-extract the game's data into versedb_data.json,
+// upload it via the admin panel, and compare against the database.
+// The diff endpoint returns a per-field summary; the apply endpoint
+// commits only the changes the admin explicitly selected so curated
+// edits aren't clobbered by extraction.
+
+function diffEntity(uploaded, current) {
+  // Returns a list of { field, oldValue, newValue } describing fields
+  // that differ between the uploaded blob and the current DB blob.
+  const changes = [];
+  const allKeys = new Set([
+    ...Object.keys(uploaded || {}),
+    ...Object.keys(current || {}),
+  ]);
+  for (const key of allKeys) {
+    const a = current ? current[key] : undefined;
+    const b = uploaded ? uploaded[key] : undefined;
+    if (JSON.stringify(a) !== JSON.stringify(b)) {
+      changes.push({
+        field: key,
+        oldValue: a === undefined ? null : a,
+        newValue: b === undefined ? null : b,
+      });
+    }
+  }
+  return changes;
+}
+
+const diffPreviewHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const body = req.body;
+  if (!body || typeof body !== 'object') {
+    return res.status(400).json({ error: 'Body must be an object containing ships and items arrays' });
+  }
+  const uploadedShips = Array.isArray(body.ships) ? body.ships : [];
+  const uploadedItems = Array.isArray(body.items) ? body.items : [];
+
+  try {
+    const [shipRows, itemRows] = await Promise.all([
+      pool.query('SELECT class_name, data, source FROM ships'),
+      pool.query('SELECT class_name, data, source FROM items'),
+    ]);
+
+    const currentShips = new Map(shipRows.rows.map((r) => [r.class_name, { data: r.data, source: r.source }]));
+    const currentItems = new Map(itemRows.rows.map((r) => [r.class_name, { data: r.data, source: r.source }]));
+
+    const result = { ships: [], items: [] };
+
+    // Pass 1: walk uploaded entities (modifies + creates)
+    for (const ship of uploadedShips) {
+      if (!ship || !ship.className) continue;
+      const cur = currentShips.get(ship.className);
+      if (!cur) {
+        result.ships.push({
+          className: ship.className,
+          action: 'create',
+          currentSource: null,
+          changes: [{ field: '*', oldValue: null, newValue: ship }],
+        });
+      } else {
+        const changes = diffEntity(ship, cur.data);
+        if (changes.length > 0) {
+          result.ships.push({
+            className: ship.className,
+            action: 'modify',
+            currentSource: cur.source,
+            changes,
+          });
+        }
+      }
+    }
+
+    for (const item of uploadedItems) {
+      if (!item || !item.className) continue;
+      const cur = currentItems.get(item.className);
+      if (!cur) {
+        result.items.push({
+          className: item.className,
+          action: 'create',
+          currentSource: null,
+          changes: [{ field: '*', oldValue: null, newValue: item }],
+        });
+      } else {
+        const changes = diffEntity(item, cur.data);
+        if (changes.length > 0) {
+          result.items.push({
+            className: item.className,
+            action: 'modify',
+            currentSource: cur.source,
+            changes,
+          });
+        }
+      }
+    }
+
+    // Pass 2: entities in DB but missing from upload (potential deletes)
+    const uploadedShipKeys = new Set(uploadedShips.map((s) => s?.className).filter(Boolean));
+    const uploadedItemKeys = new Set(uploadedItems.map((i) => i?.className).filter(Boolean));
+    for (const [className, cur] of currentShips) {
+      if (!uploadedShipKeys.has(className)) {
+        result.ships.push({
+          className,
+          action: 'delete',
+          currentSource: cur.source,
+          changes: [{ field: '*', oldValue: cur.data, newValue: null }],
+        });
+      }
+    }
+    for (const [className, cur] of currentItems) {
+      if (!uploadedItemKeys.has(className)) {
+        result.items.push({
+          className,
+          action: 'delete',
+          currentSource: cur.source,
+          changes: [{ field: '*', oldValue: cur.data, newValue: null }],
+        });
+      }
+    }
+
+    res.json({
+      ships: result.ships,
+      items: result.items,
+      stats: {
+        shipChanges: result.ships.length,
+        itemChanges: result.items.length,
+      },
+    });
+  } catch (err) {
+    console.error('diff preview failed:', err);
+    res.status(500).json({ error: 'Diff failed', detail: err.message });
+  }
+};
+
+// Apply selected changes from a diff. Body shape:
+//   {
+//     ships: [{ className, action, fields: ['scmSpeed', ...] | '*' }],
+//     items: [...]
+//   }
+// For 'modify': only the listed fields are merged in (or '*' for full).
+// For 'create': inserts the full provided data.
+// For 'delete': deletes the row.
+const diffApplyHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const body = req.body;
+  if (!body || typeof body !== 'object') {
+    return res.status(400).json({ error: 'Body must be an object' });
+  }
+  const ships = Array.isArray(body.ships) ? body.ships : [];
+  const items = Array.isArray(body.items) ? body.items : [];
+
+  const client = await pool.connect();
+  let applied = { ships: 0, items: 0 };
+  try {
+    await client.query('BEGIN');
+
+    for (const change of ships) {
+      await applyEntityChange(client, 'ships', 'ship', change, req.admin.sub);
+      applied.ships++;
+    }
+    for (const change of items) {
+      await applyEntityChange(client, 'items', 'item', change, req.admin.sub);
+      applied.items++;
+    }
+
+    await client.query('COMMIT');
+    res.json({ ok: true, applied });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('diff apply failed:', err);
+    res.status(500).json({ error: 'Apply failed', detail: err.message });
+  } finally {
+    client.release();
+  }
+};
+
+async function applyEntityChange(client, table, entityType, change, userName) {
+  const { className, action, fields, data } = change;
+  if (!className || !action) {
+    throw new Error('change requires className and action');
+  }
+
+  if (action === 'create') {
+    if (!data) throw new Error(`create ${entityType} requires data`);
+    await client.query(
+      `INSERT INTO ${table} (class_name, data, source) VALUES ($1, $2, 'extracted') ON CONFLICT (class_name) DO NOTHING`,
+      [className, data]
+    );
+    await logAudit(client, userName, `import_create_${entityType}`, entityType, className, null, null, JSON.stringify(data));
+    return;
+  }
+
+  if (action === 'delete') {
+    const { rows } = await client.query(`SELECT data FROM ${table} WHERE class_name = $1`, [className]);
+    if (rows.length === 0) return;
+    await client.query(`DELETE FROM ${table} WHERE class_name = $1`, [className]);
+    await logAudit(client, userName, `import_delete_${entityType}`, entityType, className, null, JSON.stringify(rows[0].data), null);
+    return;
+  }
+
+  if (action === 'modify') {
+    if (!data) throw new Error(`modify ${entityType} requires data`);
+    const { rows } = await client.query(
+      `SELECT data FROM ${table} WHERE class_name = $1 FOR UPDATE`,
+      [className]
+    );
+    if (rows.length === 0) {
+      throw new Error(`${entityType} ${className} not found`);
+    }
+    const before = rows[0].data;
+    let after;
+    if (fields === '*' || !Array.isArray(fields)) {
+      after = data;
+    } else {
+      after = { ...before };
+      for (const f of fields) after[f] = data[f];
+    }
+    await client.query(
+      `UPDATE ${table} SET data = $1, updated_at = NOW() WHERE class_name = $2`,
+      [after, className]
+    );
+    await logAudit(
+      client,
+      userName,
+      `import_modify_${entityType}`,
+      entityType,
+      className,
+      Array.isArray(fields) ? fields.join(',') : '*',
+      JSON.stringify(before),
+      JSON.stringify(after)
+    );
+    return;
+  }
+
+  throw new Error(`unknown action: ${action}`);
+}
+
+app.post('/admin/diff/preview', requireAdmin, diffPreviewHandler);
+app.post('/api/admin/diff/preview', requireAdmin, diffPreviewHandler);
+app.post('/admin/diff/apply', requireAdmin, diffApplyHandler);
+app.post('/api/admin/diff/apply', requireAdmin, diffApplyHandler);
+
 // ─── Audit log read ──────────────────────────────────────────────────
 
 const auditHandler = async (req, res) => {

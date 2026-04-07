@@ -120,6 +120,55 @@ export class AdminService {
       })
       .toPromise();
   }
+
+  /** Compute a diff between an uploaded versedb_data.json blob and the
+   *  current database. Returns per-entity per-field changes. */
+  async previewDiff(uploaded: any): Promise<DiffResult> {
+    const resp = await this.http
+      .post<DiffResult>('/api/admin/diff/preview', uploaded, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return resp ?? { ships: [], items: [], stats: { shipChanges: 0, itemChanges: 0 } };
+  }
+
+  /** Apply a set of selected changes from a diff preview. */
+  async applyDiff(payload: { ships: DiffApply[]; items: DiffApply[] }): Promise<{ applied: { ships: number; items: number } }> {
+    const resp = await this.http
+      .post<{ applied: { ships: number; items: number } }>('/api/admin/diff/apply', payload, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return resp ?? { applied: { ships: 0, items: 0 } };
+  }
+}
+
+export interface DiffChange {
+  field: string;
+  oldValue: unknown;
+  newValue: unknown;
+}
+
+export interface DiffEntity {
+  className: string;
+  action: 'create' | 'modify' | 'delete';
+  currentSource: 'extracted' | 'curated' | null;
+  changes: DiffChange[];
+}
+
+export interface DiffResult {
+  ships: DiffEntity[];
+  items: DiffEntity[];
+  stats: { shipChanges: number; itemChanges: number };
+}
+
+export interface DiffApply {
+  className: string;
+  action: 'create' | 'modify' | 'delete';
+  /** For 'modify': either '*' (replace whole entity) or a list of field names. */
+  fields?: string[] | '*';
+  /** For 'create' and 'modify': the full uploaded blob. */
+  data?: Record<string, unknown>;
 }
 
 export interface AuditEntry {

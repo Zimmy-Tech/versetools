@@ -99,6 +99,13 @@ export const routes: Routes = [
             (m) => m.AuditLogComponent
           ),
       },
+      {
+        path: 'diff',
+        loadComponent: () =>
+          import('./components/admin/diff-review/diff-review').then(
+            (m) => m.DiffReviewComponent
+          ),
+      },
     ],
   },
 
