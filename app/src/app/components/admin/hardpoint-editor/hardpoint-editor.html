@@ -1,0 +1,301 @@
+<div class="hardpoint-editor">
+  <div class="page-header">
+    <div>
+      <h1>Hardpoints &amp; Loadout</h1>
+      <p class="subtitle">Edit hardpoint definitions and the default loadout for any ship.</p>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: ship picker -->
+    <aside class="picker">
+      <input
+        type="text"
+        placeholder="Search ships…"
+        [ngModel]="shipSearch()"
+        (ngModelChange)="shipSearch.set($event)"
+      />
+      <div class="ship-list">
+        @for (s of filteredShips(); track s.className) {
+          <button
+            type="button"
+            class="ship-row"
+            [class.selected]="selectedClassName() === s.className"
+            (click)="selectedClassName.set(s.className)"
+          >
+            <span class="ship-name">{{ s.name || s.className }}</span>
+            <span class="ship-mfr">{{ s.manufacturer }}</span>
+          </button>
+        }
+      </div>
+    </aside>
+
+    <!-- RIGHT: editor -->
+    <section class="form-panel">
+      @if (!selectedShip()) {
+        <div class="empty-state">Select a ship to edit its hardpoints.</div>
+      } @else {
+        <div class="ship-header">
+          <div>
+            <div class="ship-title">{{ selectedShip()?.name }}</div>
+            <div class="ship-className">
+              {{ selectedShip()?.className }} · {{ workingHardpoints().length }} hardpoints
+            </div>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="link-btn" (click)="expandAll()">Expand all</button>
+            <button type="button" class="link-btn" (click)="collapseAll()">Collapse all</button>
+          </div>
+        </div>
+
+        <div class="hardpoints-list">
+          @for (hp of workingHardpoints(); track hp.id; let i = $index) {
+            <div
+              class="hardpoint-card"
+              [class.expanded]="isExpanded(hp.id)"
+              [class.dirty]="isHardpointDirty(i)"
+            >
+              <button
+                type="button"
+                class="hardpoint-header"
+                (click)="toggleExpanded(hp.id)"
+              >
+                <span class="caret">{{ isExpanded(hp.id) ? '▾' : '▸' }}</span>
+                <span class="hp-id">{{ hp.id }}</span>
+                <span class="hp-meta">
+                  @if (hp.label) { <span class="hp-label">{{ hp.label }}</span> }
+                  @if (hp.type) { <span class="hp-type">{{ hp.type }}</span> }
+                  @if (hp.minSize != null && hp.maxSize != null) {
+                    <span class="hp-size">S{{ hp.minSize }}-{{ hp.maxSize }}</span>
+                  }
+                </span>
+                @if (isHardpointDirty(i)) {
+                  <span class="dirty-dot" title="Modified"></span>
+                }
+              </button>
+
+              @if (isExpanded(hp.id)) {
+                <div class="hardpoint-body">
+                  <!-- Field grid -->
+                  <div class="field-grid">
+                    <label>
+                      <span>Label</span>
+                      <input
+                        type="text"
+                        [ngModel]="hp.label ?? ''"
+                        (ngModelChange)="updateHardpointField(i, 'label', $event)"
+                      />
+                    </label>
+                    <label>
+                      <span>Type</span>
+                      <input
+                        type="text"
+                        [ngModel]="hp.type ?? ''"
+                        (ngModelChange)="updateHardpointField(i, 'type', $event)"
+                      />
+                    </label>
+                    <label>
+                      <span>Subtypes</span>
+                      <input
+                        type="text"
+                        [ngModel]="hp.subtypes ?? ''"
+                        (ngModelChange)="updateHardpointField(i, 'subtypes', $event)"
+                      />
+                    </label>
+                    <label>
+                      <span>Min Size</span>
+                      <input
+                        type="number"
+                        step="1"
+                        [ngModel]="hp.minSize ?? null"
+                        (ngModelChange)="updateHardpointField(i, 'minSize', toNum($event))"
+                      />
+                    </label>
+                    <label>
+                      <span>Max Size</span>
+                      <input
+                        type="number"
+                        step="1"
+                        [ngModel]="hp.maxSize ?? null"
+                        (ngModelChange)="updateHardpointField(i, 'maxSize', toNum($event))"
+                      />
+                    </label>
+                    <label>
+                      <span>Flags</span>
+                      <input
+                        type="text"
+                        [ngModel]="hp.flags ?? ''"
+                        (ngModelChange)="updateHardpointField(i, 'flags', $event)"
+                      />
+                    </label>
+                    <label>
+                      <span>Controller Tag</span>
+                      <input
+                        type="text"
+                        [ngModel]="hp.controllerTag ?? ''"
+                        (ngModelChange)="updateHardpointField(i, 'controllerTag', $event)"
+                      />
+                    </label>
+                    <label>
+                      <span>Port Tags</span>
+                      <input
+                        type="text"
+                        [ngModel]="hp.portTags ?? ''"
+                        (ngModelChange)="updateHardpointField(i, 'portTags', $event)"
+                      />
+                    </label>
+                  </div>
+
+                  @if (hp.allTypes && hp.allTypes.length > 1) {
+                    <div class="all-types">
+                      <span class="all-types-label">Compatible types:</span>
+                      @for (t of hp.allTypes; track t.type) {
+                        <span class="type-pill">{{ t.type }}{{ t.subtypes ? ' / ' + t.subtypes : '' }}</span>
+                      }
+                    </div>
+                  }
+
+                  <!-- Loadout slots for this hardpoint -->
+                  <div class="loadout-section">
+                    <div class="loadout-header">Loadout</div>
+                    @for (slot of slotsForHardpoint(hp.id); track slot.key) {
+                      <div class="loadout-slot" [class.dirty]="isSlotDirty(slot.key)">
+                        <span class="slot-key" [class.sub]="!slot.isPrimary">
+                          {{ slot.isPrimary ? '(primary)' : slot.key.replace(hp.id + '.', '↳ ') }}
+                        </span>
+                        @if (slot.itemClassName) {
+                          @let item = getItemByClassName(slot.itemClassName);
+                          <span class="slot-item">
+                            {{ item?.name || slot.itemClassName }}
+                            @if (item?.size != null) { <span class="size-pill">S{{ item?.size }}</span> }
+                          </span>
+                        } @else {
+                          <span class="slot-item empty">— empty —</span>
+                        }
+                        <button type="button" class="change-btn" (click)="openPicker(slot.key)">Change</button>
+                        @if (slot.itemClassName) {
+                          <button type="button" class="clear-btn" (click)="clearSlot(slot.key)">Clear</button>
+                        }
+                      </div>
+
+                      @if (pickerOpenForKey() === slot.key) {
+                        <div class="item-picker">
+                          <div class="picker-header">
+                            <input
+                              type="text"
+                              placeholder="Search compatible items…"
+                              [ngModel]="pickerSearch()"
+                              (ngModelChange)="pickerSearch.set($event)"
+                              autofocus
+                            />
+                            <button type="button" class="close-btn" (click)="closePicker()">✕</button>
+                          </div>
+                          <div class="picker-list">
+                            @for (item of compatibleItems(slot.parentId); track item.className) {
+                              <button
+                                type="button"
+                                class="picker-row"
+                                (click)="selectItemForSlot(slot.key, item.className)"
+                              >
+                                <span class="pi-name">{{ item.name }}</span>
+                                <span class="pi-meta">
+                                  {{ item.type }}@if (item.size != null) { · S{{ item.size }} }
+                                  @if (item.manufacturer) { · {{ item.manufacturer }} }
+                                </span>
+                              </button>
+                            }
+                            @if (compatibleItems(slot.parentId).length === 0) {
+                              <div class="picker-empty">No compatible items found.</div>
+                            }
+                          </div>
+                        </div>
+                      }
+                    }
+                    @if (slotsForHardpoint(hp.id).length === 0) {
+                      <div class="loadout-slot">
+                        <span class="slot-key">(no loadout entry)</span>
+                        <button type="button" class="change-btn" (click)="openPicker(hp.id)">Add</button>
+                      </div>
+                      @if (pickerOpenForKey() === hp.id) {
+                        <div class="item-picker">
+                          <div class="picker-header">
+                            <input
+                              type="text"
+                              placeholder="Search compatible items…"
+                              [ngModel]="pickerSearch()"
+                              (ngModelChange)="pickerSearch.set($event)"
+                            />
+                            <button type="button" class="close-btn" (click)="closePicker()">✕</button>
+                          </div>
+                          <div class="picker-list">
+                            @for (item of compatibleItems(hp.id); track item.className) {
+                              <button
+                                type="button"
+                                class="picker-row"
+                                (click)="selectItemForSlot(hp.id, item.className)"
+                              >
+                                <span class="pi-name">{{ item.name }}</span>
+                                <span class="pi-meta">{{ item.type }} · S{{ item.size }}</span>
+                              </button>
+                            }
+                          </div>
+                        </div>
+                      }
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          @if (orphanSlots().length > 0) {
+            <div class="orphan-section">
+              <div class="orphan-header">
+                Loadout entries with no matching hardpoint
+                <span class="count">{{ orphanSlots().length }}</span>
+              </div>
+              @for (slot of orphanSlots(); track slot.key) {
+                <div class="loadout-slot" [class.dirty]="isSlotDirty(slot.key)">
+                  <span class="slot-key">{{ slot.key }}</span>
+                  @if (slot.itemClassName) {
+                    @let item = getItemByClassName(slot.itemClassName);
+                    <span class="slot-item">{{ item?.name || slot.itemClassName }}</span>
+                  } @else {
+                    <span class="slot-item empty">— empty —</span>
+                  }
+                  <button type="button" class="clear-btn" (click)="clearSlot(slot.key)">Remove</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="actions">
+          @if (status().kind === 'success') {
+            <div class="status success">{{ status().message }}</div>
+          } @else if (status().kind === 'error') {
+            <div class="status error">{{ status().message }}</div>
+          } @else if (isDirty()) {
+            <div class="status pending">Unsaved changes</div>
+          }
+          <button
+            type="button"
+            class="reset-btn"
+            (click)="reset()"
+            [disabled]="!isDirty() || status().kind === 'saving'"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            class="save-btn"
+            (click)="save()"
+            [disabled]="!isDirty() || status().kind === 'saving'"
+          >
+            {{ status().kind === 'saving' ? 'Saving…' : 'Save Changes' }}
+          </button>
+        </div>
+      }
+    </section>
+  </div>
+</div>

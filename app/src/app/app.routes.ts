@@ -79,6 +79,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'hardpoints',
+        loadComponent: () =>
+          import('./components/admin/hardpoint-editor/hardpoint-editor').then(
+            (m) => m.HardpointEditorComponent
+          ),
+      },
+      {
         path: 'items',
         loadComponent: () =>
           import('./components/admin/item-editor/item-editor').then(
