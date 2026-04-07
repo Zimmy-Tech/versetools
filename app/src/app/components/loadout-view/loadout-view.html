@@ -905,16 +905,33 @@
                [value]="bulkEquipSearch()"
                (input)="bulkEquipSearch.set($any($event.target).value)">
       </div>
-      <div class="bulk-list">
+      <div class="bulk-list" [class.tab-guns]="bulkEquipTab() === 'guns'" [class.tab-missiles]="bulkEquipTab() === 'missiles'">
+        <div class="bulk-header-row">
+          <span class="bulk-col bulk-col-name sortable" (click)="toggleBulkSort('name')">Name{{ bulkSortIndicator('name') }}</span>
+          @if (bulkEquipTab() === 'guns') {
+            <span class="bulk-col bulk-col-stat sortable" (click)="toggleBulkSort('dps')">DPS{{ bulkSortIndicator('dps') }}</span>
+            <span class="bulk-col bulk-col-stat sortable" (click)="toggleBulkSort('alphaDamage')">Alpha{{ bulkSortIndicator('alphaDamage') }}</span>
+            <span class="bulk-col bulk-col-stat sortable" (click)="toggleBulkSort('projectileSpeed')">Velo{{ bulkSortIndicator('projectileSpeed') }}</span>
+          } @else {
+            <span class="bulk-col bulk-col-stat sortable" (click)="toggleBulkSort('alphaDamage')">Damage{{ bulkSortIndicator('alphaDamage') }}</span>
+            <span class="bulk-col bulk-col-stat sortable" (click)="toggleBulkSort('lockRangeMin')">Min Lock{{ bulkSortIndicator('lockRangeMin') }}</span>
+            <span class="bulk-col bulk-col-stat sortable" (click)="toggleBulkSort('lockRangeMax')">Max Lock{{ bulkSortIndicator('lockRangeMax') }}</span>
+          }
+          <span class="bulk-col bulk-col-tag">Type</span>
+        </div>
         @for (opt of bulkEquipOptions(); track opt.className) {
           <div class="bulk-option" [class.applied]="bulkLastApplied() === opt.className" (click)="applyBulkEquip(opt)">
-            <span class="bulk-opt-name">{{ opt.name }}</span>
+            <span class="bulk-col bulk-col-name">{{ opt.name }}</span>
             @if (bulkEquipTab() === 'guns') {
-              <span class="bulk-opt-dps">{{ (opt.dps ?? 0).toFixed(0) }} DPS</span>
-              <span class="bulk-opt-type">{{ opt.isBallistic ? 'BALLISTIC' : 'ENERGY' }}</span>
+              <span class="bulk-col bulk-col-stat">{{ (opt.dps ?? 0).toFixed(0) }}</span>
+              <span class="bulk-col bulk-col-stat">{{ (opt.alphaDamage ?? 0).toFixed(0) }}</span>
+              <span class="bulk-col bulk-col-stat">{{ opt.projectileSpeed ? opt.projectileSpeed.toFixed(0) : '—' }}</span>
+              <span class="bulk-col bulk-col-tag" [class.ballistic]="opt.isBallistic">{{ opt.isBallistic ? 'BAL' : 'ENG' }}</span>
             } @else {
-              <span class="bulk-opt-dps">{{ (opt.alphaDamage ?? 0).toFixed(0) }} DMG</span>
-              <span class="bulk-opt-type">{{ opt.subType ?? '' }}</span>
+              <span class="bulk-col bulk-col-stat">{{ (opt.alphaDamage ?? 0).toFixed(0) }}</span>
+              <span class="bulk-col bulk-col-stat">{{ opt.lockRangeMin != null ? fmtLockRange(opt.lockRangeMin) : '—' }}</span>
+              <span class="bulk-col bulk-col-stat">{{ opt.lockRangeMax != null ? fmtLockRange(opt.lockRangeMax) : '—' }}</span>
+              <span class="bulk-col bulk-col-tag">{{ opt.subType || 'MSL' }}</span>
             }
           </div>
         }

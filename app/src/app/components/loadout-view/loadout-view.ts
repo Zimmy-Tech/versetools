@@ -62,6 +62,37 @@ export class LoadoutViewComponent {
   bulkEquipSearch = signal('');
   bulkEquipSize = signal<number | null>(null);
 
+  /** Active sort key + direction for the bulk equip list. */
+  bulkSortKey = signal<string>('dps');
+  bulkSortAsc = signal(false); // default descending for numeric stats
+
+  /** Click a column header: toggles direction if same key, otherwise
+   *  switches to the new key with a sensible default direction. */
+  toggleBulkSort(key: string): void {
+    if (this.bulkSortKey() === key) {
+      this.bulkSortAsc.set(!this.bulkSortAsc());
+    } else {
+      this.bulkSortKey.set(key);
+      // Strings default ascending, numbers default descending
+      this.bulkSortAsc.set(key === 'name');
+    }
+  }
+
+  /** Visual indicator next to a column header for the active sort. */
+  bulkSortIndicator(key: string): string {
+    if (this.bulkSortKey() !== key) return '';
+    return this.bulkSortAsc() ? ' ▲' : ' ▼';
+  }
+
+  /** Format a missile lock range (meters) as a compact km string,
+   *  e.g. 1500 → "1.5km", 12000 → "12km". Falls back to raw meters
+   *  for very small values. */
+  fmtLockRange(meters: number): string {
+    if (meters < 1000) return `${meters.toFixed(0)}m`;
+    const km = meters / 1000;
+    return km >= 10 ? `${km.toFixed(0)}km` : `${km.toFixed(1)}km`;
+  }
+
   /** Available gun sizes across all weapon sub-slots. */
   bulkGunSizes = computed(() => {
     const subs = this.subSlotsMap();
@@ -97,6 +128,9 @@ export class LoadoutViewComponent {
     if (!size) return [];
     const tab = this.bulkEquipTab();
     const q = this.bulkEquipSearch().toLowerCase().trim();
+    const sortKey = this.bulkSortKey();
+    const asc = this.bulkSortAsc();
+
     let opts: Item[];
     if (tab === 'guns') {
       opts = this.data.items().filter(i => {
@@ -116,9 +150,20 @@ export class LoadoutViewComponent {
         (o.manufacturer ?? '').toLowerCase().includes(q)
       );
     }
-    return tab === 'guns'
-      ? opts.sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))
-      : opts.sort((a, b) => (b.alphaDamage ?? 0) - (a.alphaDamage ?? 0));
+
+    // Sort by the active key. Strings use locale compare, numbers use
+    // direct subtraction. Nulls are treated as 0/empty so they sort to
+    // the bottom of a descending sort.
+    return [...opts].sort((a, b) => {
+      let va: any = (a as any)[sortKey];
+      let vb: any = (b as any)[sortKey];
+      if (va == null) va = typeof vb === 'string' ? '' : 0;
+      if (vb == null) vb = typeof va === 'string' ? '' : 0;
+      let cmp: number;
+      if (typeof va === 'string') cmp = va.localeCompare(vb);
+      else cmp = (va as number) - (vb as number);
+      return asc ? cmp : -cmp;
+    });
   });
 
   private bulkEquipWatcher = effect(() => {
@@ -244,6 +289,10 @@ export class LoadoutViewComponent {
     this.bulkEquipSearch.set('');
     const sizes = tab === 'guns' ? this.bulkGunSizes() : this.bulkMissileSizes();
     this.bulkEquipSize.set(sizes.length ? sizes[0] : null);
+    // Reset sort to a sensible default for the new tab. Guns default to
+    // DPS desc, missiles to alphaDamage desc (since missiles have no DPS).
+    this.bulkSortKey.set(tab === 'guns' ? 'dps' : 'alphaDamage');
+    this.bulkSortAsc.set(false);
   }
 
   closeBulkEquip(): void {
