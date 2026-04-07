@@ -71,6 +71,13 @@ export const routes: Routes = [
             (m) => m.ShipAccelEditorComponent
           ),
       },
+      {
+        path: 'ships',
+        loadComponent: () =>
+          import('./components/admin/ship-editor/ship-editor').then(
+            (m) => m.ShipEditorComponent
+          ),
+      },
     ],
   },
 
