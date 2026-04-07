@@ -44,6 +44,11 @@ export const routes: Routes = [
   { path: 'eve-style',          component: EveStyleComponent },
   { path: 'updates',            component: UpdatesViewComponent },
   { path: 'changelog',          component: ChangelogViewComponent },
+  {
+    path: 'ptu-changelog',
+    loadComponent: () =>
+      import('./components/changelog-ptu/changelog-ptu').then((m) => m.ChangelogPtuComponent),
+  },
 
   // Admin section (auth-gated)
   {
