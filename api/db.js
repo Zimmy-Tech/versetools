@@ -28,13 +28,23 @@ if (process.env.DATABASE_URL) {
   console.log('[db] DATABASE_URL is not set');
 }
 
-export const pool = process.env.DATABASE_URL
-  ? new Pool({
-      connectionString: process.env.DATABASE_URL,
-      // DigitalOcean managed Postgres requires SSL but uses a self-signed cert
-      ssl: { rejectUnauthorized: false },
-    })
-  : null;
+// Build the pool from parsed URL parts so our SSL config can't be
+// overridden by sslmode= in the connection string. DO's managed Postgres
+// presents a CA-signed cert that Node's default trust store rejects.
+function buildPool() {
+  if (!process.env.DATABASE_URL) return null;
+  const u = new URL(process.env.DATABASE_URL);
+  return new Pool({
+    host: u.hostname,
+    port: u.port ? Number(u.port) : 5432,
+    user: decodeURIComponent(u.username),
+    password: decodeURIComponent(u.password),
+    database: u.pathname.replace(/^\//, '') || 'defaultdb',
+    ssl: { rejectUnauthorized: false },
+  });
+}
+
+export const pool = buildPool();
 
 export const dbEnabled = !!pool;
 
