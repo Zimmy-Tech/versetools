@@ -14,20 +14,28 @@
 CREATE SCHEMA IF NOT EXISTS versedb;
 SET search_path TO versedb;
 
+-- ships and items both keep two complete copies — one per `mode`. The
+-- composite primary key (class_name, mode) lets us treat live and ptu
+-- as fully independent datasets. Most rows are duplicates day-to-day,
+-- which is fine: storage is cheap and the simplicity wins everywhere.
 CREATE TABLE IF NOT EXISTS ships (
-  class_name      TEXT PRIMARY KEY,
+  class_name      TEXT NOT NULL,
+  mode            TEXT NOT NULL DEFAULT 'live',
   data            JSONB NOT NULL,
   source          TEXT NOT NULL DEFAULT 'extracted',
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (class_name, mode)
 );
 
 CREATE TABLE IF NOT EXISTS items (
-  class_name      TEXT PRIMARY KEY,
+  class_name      TEXT NOT NULL,
+  mode            TEXT NOT NULL DEFAULT 'live',
   data            JSONB NOT NULL,
   source          TEXT NOT NULL DEFAULT 'extracted',
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (class_name, mode)
 );
 
 CREATE TABLE IF NOT EXISTS mining_locations (
@@ -47,13 +55,15 @@ CREATE TABLE IF NOT EXISTS meta (
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Audit log (used in Phase 2 once admin writes are added)
+-- Audit log (used in Phase 2 once admin writes are added).
+-- entity_mode lets us see which side (live or ptu) a change touched.
 CREATE TABLE IF NOT EXISTS audit_log (
   id              SERIAL PRIMARY KEY,
   user_name       TEXT,
   action          TEXT NOT NULL,
   entity_type     TEXT NOT NULL,
   entity_key      TEXT,
+  entity_mode     TEXT,
   field_name      TEXT,
   old_value       TEXT,
   new_value       TEXT,

@@ -12,6 +12,9 @@ interface LoginResponse {
 
 const TOKEN_KEY = 'versetools.admin.token';
 const USERNAME_KEY = 'versetools.admin.username';
+const MODE_KEY = 'versetools.admin.mode';
+
+export type AdminMode = 'live' | 'ptu';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -22,6 +25,22 @@ export class AdminService {
   readonly token = signal<string | null>(localStorage.getItem(TOKEN_KEY));
   readonly username = signal<string | null>(localStorage.getItem(USERNAME_KEY));
   readonly isAuthenticated = computed(() => !!this.token());
+
+  /** Which dataset the admin is currently editing — live or ptu.
+   *  Persisted to localStorage so it survives page reloads. */
+  readonly mode = signal<AdminMode>(
+    (localStorage.getItem(MODE_KEY) as AdminMode) || 'live'
+  );
+
+  setMode(mode: AdminMode): void {
+    localStorage.setItem(MODE_KEY, mode);
+    this.mode.set(mode);
+  }
+
+  private withMode(url: string): string {
+    const m = this.mode();
+    return `${url}${url.includes('?') ? '&' : '?'}mode=${m}`;
+  }
 
   private authHeaders(): HttpHeaders {
     const t = this.token();
@@ -61,10 +80,11 @@ export class AdminService {
     }
   }
 
-  /** PATCH a ship's data — merges the provided fields into the JSONB blob. */
+  /** PATCH a ship's data — merges the provided fields into the JSONB blob.
+   *  Targets the currently-selected admin mode (live or ptu). */
   async patchShip(className: string, patch: Record<string, unknown>): Promise<void> {
     await this.http
-      .patch(`/api/admin/ships/${encodeURIComponent(className)}`, patch, {
+      .patch(this.withMode(`/api/admin/ships/${encodeURIComponent(className)}`), patch, {
         headers: this.authHeaders(),
       })
       .toPromise();
@@ -73,7 +93,7 @@ export class AdminService {
   /** PATCH an item's data — same shape as patchShip. */
   async patchItem(className: string, patch: Record<string, unknown>): Promise<void> {
     await this.http
-      .patch(`/api/admin/items/${encodeURIComponent(className)}`, patch, {
+      .patch(this.withMode(`/api/admin/items/${encodeURIComponent(className)}`), patch, {
         headers: this.authHeaders(),
       })
       .toPromise();
@@ -92,21 +112,21 @@ export class AdminService {
   /** Create a new ship. Body must include className. */
   async createShip(data: Record<string, unknown>): Promise<void> {
     await this.http
-      .post('/api/admin/ships', data, { headers: this.authHeaders() })
+      .post(this.withMode('/api/admin/ships'), data, { headers: this.authHeaders() })
       .toPromise();
   }
 
   /** Create a new item. Body must include className. */
   async createItem(data: Record<string, unknown>): Promise<void> {
     await this.http
-      .post('/api/admin/items', data, { headers: this.authHeaders() })
+      .post(this.withMode('/api/admin/items'), data, { headers: this.authHeaders() })
       .toPromise();
   }
 
   /** Delete a ship. The full pre-delete blob is recorded in the audit log. */
   async deleteShip(className: string): Promise<void> {
     await this.http
-      .delete(`/api/admin/ships/${encodeURIComponent(className)}`, {
+      .delete(this.withMode(`/api/admin/ships/${encodeURIComponent(className)}`), {
         headers: this.authHeaders(),
       })
       .toPromise();
@@ -115,17 +135,17 @@ export class AdminService {
   /** Delete an item. */
   async deleteItem(className: string): Promise<void> {
     await this.http
-      .delete(`/api/admin/items/${encodeURIComponent(className)}`, {
+      .delete(this.withMode(`/api/admin/items/${encodeURIComponent(className)}`), {
         headers: this.authHeaders(),
       })
       .toPromise();
   }
 
   /** Compute a diff between an uploaded versedb_data.json blob and the
-   *  current database. Returns per-entity per-field changes. */
+   *  current database (in the active admin mode). */
   async previewDiff(uploaded: any): Promise<DiffResult> {
     const resp = await this.http
-      .post<DiffResult>('/api/admin/diff/preview', uploaded, {
+      .post<DiffResult>(this.withMode('/api/admin/diff/preview'), uploaded, {
         headers: this.authHeaders(),
       })
       .toPromise();
@@ -135,11 +155,22 @@ export class AdminService {
   /** Apply a set of selected changes from a diff preview. */
   async applyDiff(payload: { ships: DiffApply[]; items: DiffApply[] }): Promise<{ applied: { ships: number; items: number } }> {
     const resp = await this.http
-      .post<{ applied: { ships: number; items: number } }>('/api/admin/diff/apply', payload, {
+      .post<{ applied: { ships: number; items: number } }>(this.withMode('/api/admin/diff/apply'), payload, {
         headers: this.authHeaders(),
       })
       .toPromise();
     return resp ?? { applied: { ships: 0, items: 0 } };
+  }
+
+  /** Replace all PTU rows with the current LIVE rows. Used after a CIG
+   *  patch goes LIVE so PTU restarts from a clean baseline. */
+  async syncPtuFromLive(): Promise<{ shipsCopied: number; itemsCopied: number }> {
+    const resp = await this.http
+      .post<{ shipsCopied: number; itemsCopied: number }>('/api/admin/sync-ptu', {}, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return resp ?? { shipsCopied: 0, itemsCopied: 0 };
   }
 }
 
@@ -177,6 +208,7 @@ export interface AuditEntry {
   action: string;
   entity_type: string;
   entity_key: string;
+  entity_mode: string | null;
   field_name: string | null;
   old_value: string | null;
   new_value: string | null;

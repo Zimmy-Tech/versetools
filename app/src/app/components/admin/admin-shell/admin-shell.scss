@@ -33,6 +33,100 @@
   }
 }
 
+.mode-switch {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(80, 180, 255, 0.15);
+
+  &.ptu {
+    background: rgba(255, 192, 77, 0.06);
+  }
+
+  .mode-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(159, 223, 255, 0.6);
+    margin-bottom: 6px;
+  }
+
+  .mode-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+
+    button {
+      padding: 6px 0;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(80, 180, 255, 0.25);
+      border-radius: 3px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(80, 180, 255, 0.08);
+        color: #fff;
+      }
+
+      &.active {
+        background: rgba(80, 180, 255, 0.18);
+        border-color: rgba(80, 180, 255, 0.6);
+        color: #9fdfff;
+      }
+    }
+  }
+
+  &.ptu .mode-buttons button.active {
+    background: rgba(255, 192, 77, 0.18);
+    border-color: rgba(255, 192, 77, 0.6);
+    color: #ffc04d;
+  }
+
+  .sync-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(255, 192, 77, 0.1);
+    border: 1px solid rgba(255, 192, 77, 0.4);
+    border-radius: 3px;
+    color: #ffc04d;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 192, 77, 0.2);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .sync-msg {
+    margin-top: 8px;
+    padding: 6px 8px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+
+    &.success {
+      background: rgba(80, 200, 80, 0.12);
+      border: 1px solid rgba(80, 200, 80, 0.4);
+      color: #80ff80;
+    }
+
+    &.error {
+      background: rgba(255, 60, 60, 0.12);
+      border: 1px solid rgba(255, 60, 60, 0.4);
+      color: #ff9090;
+    }
+  }
+}
+
 nav {
   flex: 1;
   display: flex;
