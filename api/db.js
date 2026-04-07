@@ -13,6 +13,21 @@ const __dirname = dirname(__filename);
 
 const { Pool } = pg;
 
+// Log the DATABASE_URL with the password redacted so we can see what
+// DO is actually injecting at runtime.
+if (process.env.DATABASE_URL) {
+  try {
+    const u = new URL(process.env.DATABASE_URL);
+    const redacted = `${u.protocol}//${u.username}:***@${u.hostname}:${u.port}${u.pathname}${u.search}`;
+    console.log('[db] DATABASE_URL =', redacted);
+  } catch (err) {
+    console.log('[db] DATABASE_URL is set but failed to parse as URL:', err.message);
+    console.log('[db] raw value (first 80 chars):', String(process.env.DATABASE_URL).slice(0, 80));
+  }
+} else {
+  console.log('[db] DATABASE_URL is not set');
+}
+
 export const pool = process.env.DATABASE_URL
   ? new Pool({
       connectionString: process.env.DATABASE_URL,
