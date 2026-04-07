@@ -440,10 +440,11 @@ const diffApplyHandler = async (req, res) => {
   }
   const ships = Array.isArray(body.ships) ? body.ships : [];
   const items = Array.isArray(body.items) ? body.items : [];
+  const meta = body.meta && typeof body.meta === 'object' ? body.meta : null;
   const mode = normalizeMode(req.query.mode);
 
   const client = await pool.connect();
-  let applied = { ships: 0, items: 0 };
+  let applied = { ships: 0, items: 0, meta: false };
   try {
     await client.query('BEGIN');
 
@@ -454,6 +455,33 @@ const diffApplyHandler = async (req, res) => {
     for (const change of items) {
       await applyEntityChange(client, 'items', 'item', change, req.admin.sub, mode);
       applied.items++;
+    }
+
+    // Always overwrite meta when an upload includes it. Meta is pure
+    // extraction metadata (game version, counts, timestamp) — there is
+    // nothing to curate, so no per-field review is needed. This is what
+    // makes the version string in the public header advance after an
+    // import.
+    if (meta) {
+      const oldRes = await client.query('SELECT data FROM meta WHERE id = 1');
+      const before = oldRes.rows[0]?.data ?? null;
+      await client.query(
+        `INSERT INTO meta (id, data, updated_at) VALUES (1, $1, NOW())
+         ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+        [meta]
+      );
+      await logAudit(
+        client,
+        req.admin.sub,
+        'import_meta',
+        'meta',
+        'meta',
+        null,
+        null,
+        before ? JSON.stringify(before) : null,
+        JSON.stringify(meta)
+      );
+      applied.meta = true;
     }
 
     await client.query('COMMIT');
