@@ -520,15 +520,15 @@ export async function migrateExtractShopPrices() {
 
 // Check whether the schema/data is present, and run init/import if not.
 // Safe to call repeatedly — every step is idempotent.
+//
+// initSchema must run on every startup, not just when ships is missing,
+// because schema.sql also defines newer tables (shop_prices) and indexes
+// that existing installs would otherwise never receive. The whole file
+// uses CREATE TABLE / INDEX IF NOT EXISTS so re-running it on a populated
+// database is a no-op for everything that already exists.
 export async function ensureReady() {
   if (!pool) return;
-  const { rows } = await pool.query(
-    "SELECT to_regclass('versedb.ships') IS NOT NULL AS has_ships"
-  );
-  if (!rows[0].has_ships) {
-    console.log('[db] ships table missing, running schema init...');
-    await initSchema();
-  }
+  await initSchema();
   await migrateAddModeColumn();
   await importIfEmpty();
   await migrateExtractShopPrices();
