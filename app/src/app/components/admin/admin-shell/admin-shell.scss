@@ -1,6 +1,9 @@
 .admin-shell {
   display: flex;
-  min-height: calc(100vh - 80px);
+  // Use a fixed height so .content's overflow-y:auto has a bounded
+  // container to scroll within. min-height would let the shell grow
+  // and overflow would never engage.
+  height: calc(100vh - 80px);
 }
 
 .sidebar {
