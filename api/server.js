@@ -92,7 +92,7 @@ app.post('/api/admin/login', loginHandler);
 app.get('/admin/me', requireAdmin, meHandler);
 app.get('/api/admin/me', requireAdmin, meHandler);
 
-// ─── Admin writes: ships ─────────────────────────────────────────────
+// ─── Admin writes ────────────────────────────────────────────────────
 
 async function logAudit(client, userName, action, entityType, entityKey, fieldName, oldValue, newValue) {
   await client.query(
@@ -101,65 +101,87 @@ async function logAudit(client, userName, action, entityType, entityKey, fieldNa
   );
 }
 
-// PATCH a ship: merge the supplied fields into the existing JSON blob.
-// Used by targeted editors (e.g. acceleration form) that only touch a
-// few fields without needing to know the rest of the ship object.
-const patchShipHandler = async (req, res) => {
-  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
-  const { className } = req.params;
-  const patch = req.body;
-  if (!patch || typeof patch !== 'object' || Array.isArray(patch)) {
-    return res.status(400).json({ error: 'Body must be an object of fields to update' });
-  }
-
-  const client = await pool.connect();
-  try {
-    await client.query('BEGIN');
-    const { rows } = await client.query(
-      'SELECT data FROM ships WHERE class_name = $1 FOR UPDATE',
-      [className]
-    );
-    if (rows.length === 0) {
-      await client.query('ROLLBACK');
-      return res.status(404).json({ error: 'Ship not found', className });
+// Generic JSONB patcher used by both ship and item endpoints. Loads the
+// row, merges the supplied fields into the JSON blob, marks source as
+// 'curated', and writes one audit_log entry per field that actually
+// changed value.
+function makePatchHandler({ table, entityType }) {
+  return async (req, res) => {
+    if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+    const { className } = req.params;
+    const patch = req.body;
+    if (!patch || typeof patch !== 'object' || Array.isArray(patch)) {
+      return res.status(400).json({ error: 'Body must be an object of fields to update' });
     }
-    const before = rows[0].data;
-    const after = { ...before, ...patch };
 
-    await client.query(
-      "UPDATE ships SET data = $1, source = 'curated', updated_at = NOW() WHERE class_name = $2",
-      [after, className]
-    );
-
-    // Log each changed field individually so the audit log is searchable
-    for (const key of Object.keys(patch)) {
-      if (JSON.stringify(before[key]) !== JSON.stringify(patch[key])) {
-        await logAudit(
-          client,
-          req.admin.sub,
-          'patch_ship',
-          'ship',
-          className,
-          key,
-          JSON.stringify(before[key] ?? null),
-          JSON.stringify(patch[key] ?? null)
-        );
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      const { rows } = await client.query(
+        `SELECT data FROM ${table} WHERE class_name = $1 FOR UPDATE`,
+        [className]
+      );
+      if (rows.length === 0) {
+        await client.query('ROLLBACK');
+        return res.status(404).json({ error: `${entityType} not found`, className });
       }
-    }
+      const before = rows[0].data;
+      const after = { ...before, ...patch };
 
-    await client.query('COMMIT');
-    res.json({ ok: true, className, updated: Object.keys(patch) });
-  } catch (err) {
-    await client.query('ROLLBACK');
-    console.error('patch ship failed:', err);
-    res.status(500).json({ error: 'Update failed', detail: err.message });
-  } finally {
-    client.release();
-  }
-};
+      await client.query(
+        `UPDATE ${table} SET data = $1, source = 'curated', updated_at = NOW() WHERE class_name = $2`,
+        [after, className]
+      );
+
+      for (const key of Object.keys(patch)) {
+        if (JSON.stringify(before[key]) !== JSON.stringify(patch[key])) {
+          await logAudit(
+            client,
+            req.admin.sub,
+            `patch_${entityType}`,
+            entityType,
+            className,
+            key,
+            JSON.stringify(before[key] ?? null),
+            JSON.stringify(patch[key] ?? null)
+          );
+        }
+      }
+
+      await client.query('COMMIT');
+      res.json({ ok: true, className, updated: Object.keys(patch) });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error(`patch ${entityType} failed:`, err);
+      res.status(500).json({ error: 'Update failed', detail: err.message });
+    } finally {
+      client.release();
+    }
+  };
+}
+
+const patchShipHandler = makePatchHandler({ table: 'ships', entityType: 'ship' });
+const patchItemHandler = makePatchHandler({ table: 'items', entityType: 'item' });
 
 app.patch('/admin/ships/:className', requireAdmin, patchShipHandler);
 app.patch('/api/admin/ships/:className', requireAdmin, patchShipHandler);
+app.patch('/admin/items/:className', requireAdmin, patchItemHandler);
+app.patch('/api/admin/items/:className', requireAdmin, patchItemHandler);
+
+// ─── Audit log read ──────────────────────────────────────────────────
+
+const auditHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const limit = Math.min(parseInt(req.query.limit, 10) || 100, 500);
+  const { rows } = await pool.query(
+    'SELECT id, user_name, action, entity_type, entity_key, field_name, old_value, new_value, created_at FROM audit_log ORDER BY id DESC LIMIT $1',
+    [limit]
+  );
+  res.json({ entries: rows });
+};
+
+app.get('/admin/audit', requireAdmin, auditHandler);
+app.get('/api/admin/audit', requireAdmin, auditHandler);
 
 // Root — useful for sanity checking
 app.get('/', (req, res) => {

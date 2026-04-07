@@ -69,4 +69,35 @@ export class AdminService {
       })
       .toPromise();
   }
+
+  /** PATCH an item's data — same shape as patchShip. */
+  async patchItem(className: string, patch: Record<string, unknown>): Promise<void> {
+    await this.http
+      .patch(`/api/admin/items/${encodeURIComponent(className)}`, patch, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+  }
+
+  /** Fetches the most recent audit log entries. */
+  async getAudit(limit = 100): Promise<AuditEntry[]> {
+    const resp = await this.http
+      .get<{ entries: AuditEntry[] }>(`/api/admin/audit?limit=${limit}`, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return resp?.entries ?? [];
+  }
+}
+
+export interface AuditEntry {
+  id: number;
+  user_name: string;
+  action: string;
+  entity_type: string;
+  entity_key: string;
+  field_name: string | null;
+  old_value: string | null;
+  new_value: string | null;
+  created_at: string;
 }

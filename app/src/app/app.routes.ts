@@ -78,6 +78,20 @@ export const routes: Routes = [
             (m) => m.ShipEditorComponent
           ),
       },
+      {
+        path: 'items',
+        loadComponent: () =>
+          import('./components/admin/item-editor/item-editor').then(
+            (m) => m.ItemEditorComponent
+          ),
+      },
+      {
+        path: 'audit',
+        loadComponent: () =>
+          import('./components/admin/audit-log/audit-log').then(
+            (m) => m.AuditLogComponent
+          ),
+      },
     ],
   },
 
