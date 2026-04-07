@@ -252,6 +252,11 @@
   position: fixed;
   z-index: 500;
   width: max-content;
+  // Lock the picker to a stable minimum on wide viewports so filters
+  // (size, search, velocity) that reduce the row count can't shrink the
+  // box out from under the user's mouse. On viewports narrower than the
+  // floor, the picker fills the screen width as before.
+  min-width: min(1350px, calc(100vw - 24px));
   max-width: calc(100vw - 24px);
   max-height: 70vh;
   overflow: auto;
@@ -328,6 +333,100 @@
     border-color: var(--accent);
     color: var(--accent);
     box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
+  }
+}
+
+/* ── Velocity filter (weapon picker) ─────────────── */
+.picker-velo-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+  padding: 0 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  opacity: 0.55;
+  transition: opacity 0.15s;
+
+  &.active { opacity: 1; }
+
+  .velo-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text2);
+    user-select: none;
+
+    input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    &:hover { color: var(--text); }
+  }
+
+  .velo-slider {
+    width: 130px;
+    height: 4px;
+    cursor: pointer;
+    accent-color: var(--accent);
+
+    &:disabled { cursor: not-allowed; }
+  }
+
+  .velo-value {
+    min-width: 56px;
+    text-align: right;
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .velo-unit {
+    font-size: 9px;
+    color: var(--text3);
+    margin-left: 2px;
+    font-weight: 400;
+  }
+
+  .velo-pm {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    color: var(--text3);
+    margin-left: 2px;
+  }
+
+  .velo-delta {
+    width: 48px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 2px 4px;
+    text-align: right;
+    border-radius: 2px;
+
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--text3);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* Trim browser spinners — they're noisy at this size */
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    -moz-appearance: textfield;
   }
 }
 

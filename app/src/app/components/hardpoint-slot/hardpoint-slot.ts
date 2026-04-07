@@ -331,6 +331,12 @@ export class HardpointSlotComponent {
   pickerSortKey    = signal<string>('');
   pickerSortAsc    = signal(true);
 
+  // Velocity (projectileSpeed) filter for weapon pickers. When enabled,
+  // only shows weapons whose projectileSpeed is within ±delta of setpoint.
+  pickerVeloEnabled  = signal(false);
+  pickerVeloSetpoint = signal(1500);
+  pickerVeloDelta    = signal(200);
+
   toggleSort(key: string): void {
     if (this.pickerSortKey() === key) {
       this.pickerSortAsc.set(!this.pickerSortAsc());
@@ -355,9 +361,22 @@ export class HardpointSlotComponent {
     const sizeFilter = this.pickerSizeFilter();
     const sortKey = this.pickerSortKey();
     const asc = this.pickerSortAsc();
+    const veloEnabled = this.pickerVeloEnabled();
+    const veloSet = this.pickerVeloSetpoint();
+    const veloDelta = this.pickerVeloDelta();
 
     let opts = this.options();
     if (sizeFilter !== null) opts = opts.filter(o => o.size === sizeFilter);
+    if (veloEnabled) {
+      // Drop items missing projectileSpeed entirely (lasers/tachyons/etc
+      // are listed as "instant" and won't have a value). Items outside
+      // ±delta of the setpoint are also dropped.
+      opts = opts.filter(o => {
+        const v = o.projectileSpeed;
+        if (v == null) return false;
+        return Math.abs(v - veloSet) <= veloDelta;
+      });
+    }
     if (q) {
       opts = opts.filter(o =>
         o.name.toLowerCase().includes(q) ||
