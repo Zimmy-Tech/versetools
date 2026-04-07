@@ -1,0 +1,97 @@
+.admin-login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  padding: 32px 28px;
+  background: rgba(8, 14, 22, 0.92);
+  border: 1px solid rgba(80, 180, 255, 0.25);
+  border-radius: 8px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 1.4rem;
+    color: #9fdfff;
+    letter-spacing: 0.05em;
+  }
+
+  .hint {
+    margin: 0 0 24px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 16px;
+
+    span {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(159, 223, 255, 0.7);
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(80, 180, 255, 0.3);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: rgba(80, 180, 255, 0.7);
+        box-shadow: 0 0 0 2px rgba(80, 180, 255, 0.15);
+      }
+    }
+  }
+
+  .error {
+    margin: 12px 0;
+    padding: 8px 12px;
+    background: rgba(255, 60, 60, 0.12);
+    border: 1px solid rgba(255, 60, 60, 0.4);
+    border-radius: 4px;
+    color: #ff9090;
+    font-size: 0.85rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    background: linear-gradient(180deg, #2a7db8, #1a5a8a);
+    border: 1px solid #4ea0d8;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(180deg, #3590cf, #2070a0);
+      box-shadow: 0 0 12px rgba(80, 180, 255, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

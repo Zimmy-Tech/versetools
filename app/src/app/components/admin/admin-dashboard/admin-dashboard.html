@@ -1,0 +1,23 @@
+<div class="dashboard">
+  <h1>Dashboard</h1>
+  <p class="subtitle">Phase 2: admin auth + ship acceleration editor</p>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-label">Ships</div>
+      <div class="stat-value">{{ shipCount() }}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Items</div>
+      <div class="stat-value">{{ itemCount() }}</div>
+    </div>
+  </div>
+
+  <div class="quick-links">
+    <h2>Quick links</h2>
+    <a routerLink="/admin/ship-accel" class="link-card">
+      <strong>Edit Ship Acceleration</strong>
+      <span>Update accel data without touching JSON files.</span>
+    </a>
+  </div>
+</div>

@@ -20,6 +20,7 @@ import { FpsWeaponsComponent } from './components/fps-weapons/fps-weapons';
 import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
 import { EveStyleComponent } from './components/eve-style/eve-style';
+import { adminGuard } from './components/admin/admin-guard';
 
 export const routes: Routes = [
   { path: 'loadout',            component: LoadoutViewComponent },
@@ -43,6 +44,36 @@ export const routes: Routes = [
   { path: 'eve-style',          component: EveStyleComponent },
   { path: 'updates',            component: UpdatesViewComponent },
   { path: 'changelog',          component: ChangelogViewComponent },
+
+  // Admin section (auth-gated)
+  {
+    path: 'admin/login',
+    loadComponent: () =>
+      import('./components/admin/admin-login/admin-login').then((m) => m.AdminLoginComponent),
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./components/admin/admin-shell/admin-shell').then((m) => m.AdminShellComponent),
+    canActivate: [adminGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./components/admin/admin-dashboard/admin-dashboard').then(
+            (m) => m.AdminDashboardComponent
+          ),
+      },
+      {
+        path: 'ship-accel',
+        loadComponent: () =>
+          import('./components/admin/ship-accel-editor/ship-accel-editor').then(
+            (m) => m.ShipAccelEditorComponent
+          ),
+      },
+    ],
+  },
+
   { path: '',                    redirectTo: 'loadout', pathMatch: 'full' },
   { path: '**',                  redirectTo: 'loadout' },
 ];

@@ -1,0 +1,31 @@
+<div class="admin-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-title">ADMIN</div>
+      <div class="brand-user">{{ admin.username() }}</div>
+    </div>
+    <nav>
+      <a routerLink="/admin" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        Dashboard
+      </a>
+      <a routerLink="/admin/ship-accel" routerLinkActive="active">
+        Ship Acceleration
+      </a>
+      <a routerLink="/admin/ships" routerLinkActive="active" class="disabled">
+        Ships <span class="soon">soon</span>
+      </a>
+      <a routerLink="/admin/items" routerLinkActive="active" class="disabled">
+        Items <span class="soon">soon</span>
+      </a>
+      <a routerLink="/admin/audit" routerLinkActive="active" class="disabled">
+        Audit Log <span class="soon">soon</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button (click)="admin.logout()">Sign out</button>
+    </div>
+  </aside>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
