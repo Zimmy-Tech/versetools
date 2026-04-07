@@ -169,6 +169,17 @@ nav {
       border-radius: 3px;
       opacity: 0.6;
     }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      background: #ffc04d;
+      color: #1a1a1a;
+      border-radius: 10px;
+      min-width: 18px;
+      text-align: center;
+    }
   }
 }
 

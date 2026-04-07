@@ -791,6 +791,285 @@ const changelogHistoryHandler = async (req, res) => {
 app.get('/changelog/history', changelogHistoryHandler);
 app.get('/api/changelog/history', changelogHistoryHandler);
 
+// ─── Community submissions ──────────────────────────────────────────
+//
+// Public submission flow for community-tested ship acceleration data.
+// The form is unauthenticated; submissions land in the queue and an
+// admin reviews/approves/rejects from /admin/submissions. Approval
+// applies the values to the ship's LIVE row and marks them curated.
+
+const ACCEL_FIELDS = [
+  'accelFwd', 'accelAbFwd',
+  'accelRetro', 'accelAbRetro',
+  'accelStrafe', 'accelAbStrafe',
+  'accelUp', 'accelAbUp',
+  'accelDown', 'accelAbDown',
+];
+
+const submitAccelHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const body = req.body || {};
+  const shipClassName = String(body.shipClassName || '').trim();
+  const submitterName = String(body.submitterName || '').trim();
+  if (!shipClassName) return res.status(400).json({ error: 'shipClassName is required' });
+  if (!submitterName) return res.status(400).json({ error: 'submitterName is required' });
+
+  const num = (v) => {
+    if (v === null || v === undefined || v === '') return null;
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO accel_submissions
+       (ship_class_name, ship_name, submitter_name,
+        accel_fwd, accel_ab_fwd, accel_retro, accel_ab_retro,
+        accel_strafe, accel_ab_strafe, accel_up, accel_ab_up,
+        accel_down, accel_ab_down, notes)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+       RETURNING id, submitted_at`,
+      [
+        shipClassName,
+        body.shipName || null,
+        submitterName,
+        num(body.accelFwd),
+        num(body.accelAbFwd),
+        num(body.accelRetro),
+        num(body.accelAbRetro),
+        num(body.accelStrafe),
+        num(body.accelAbStrafe),
+        num(body.accelUp),
+        num(body.accelAbUp),
+        num(body.accelDown),
+        num(body.accelAbDown),
+        body.notes ? String(body.notes).trim() : null,
+      ]
+    );
+    res.status(201).json({ ok: true, id: rows[0].id, submittedAt: rows[0].submitted_at });
+  } catch (err) {
+    console.error('submit accel failed:', err);
+    res.status(500).json({ error: 'Submission failed', detail: err.message });
+  }
+};
+
+app.post('/submissions/accel', submitAccelHandler);
+app.post('/api/submissions/accel', submitAccelHandler);
+
+const submitFeedbackHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const body = req.body || {};
+  const text = String(body.feedbackText || '').trim();
+  if (!text) return res.status(400).json({ error: 'feedbackText is required' });
+  try {
+    await pool.query(
+      `INSERT INTO feedback_submissions (feedback_type, feedback_text, submitter_name, submitter_email)
+       VALUES ($1, $2, $3, $4)`,
+      [
+        body.feedbackType || null,
+        text,
+        body.feedbackName ? String(body.feedbackName).trim() : null,
+        body.feedbackEmail ? String(body.feedbackEmail).trim() : null,
+      ]
+    );
+    res.status(201).json({ ok: true });
+  } catch (err) {
+    console.error('submit feedback failed:', err);
+    res.status(500).json({ error: 'Submission failed', detail: err.message });
+  }
+};
+
+app.post('/submissions/feedback', submitFeedbackHandler);
+app.post('/api/submissions/feedback', submitFeedbackHandler);
+
+// Admin: list submissions (default: pending only, query param ?status=all|pending|approved|rejected)
+const listAccelSubmissionsHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const status = String(req.query.status || 'pending').toLowerCase();
+  const where = status === 'all' ? '' : 'WHERE status = $1';
+  const params = status === 'all' ? [] : [status];
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM accel_submissions ${where} ORDER BY submitted_at DESC LIMIT 200`,
+      params
+    );
+    res.json({ entries: rows });
+  } catch (err) {
+    console.error('list submissions failed:', err);
+    res.status(500).json({ error: 'List failed', detail: err.message });
+  }
+};
+
+app.get('/admin/submissions/accel', requireAdmin, listAccelSubmissionsHandler);
+app.get('/api/admin/submissions/accel', requireAdmin, listAccelSubmissionsHandler);
+
+// Admin: pending submission count (cheap call for sidebar badge)
+const submissionCountHandler = async (req, res) => {
+  if (!dbEnabled) return res.json({ pending: 0 });
+  try {
+    const { rows } = await pool.query(
+      `SELECT COUNT(*)::int AS pending FROM accel_submissions WHERE status = 'pending'`
+    );
+    res.json({ pending: rows[0].pending });
+  } catch (err) {
+    res.json({ pending: 0 });
+  }
+};
+
+app.get('/admin/submissions/count', requireAdmin, submissionCountHandler);
+app.get('/api/admin/submissions/count', requireAdmin, submissionCountHandler);
+
+// Admin: approve submission. Body { mode: 'live'|'ptu' (default live) }.
+// Applies the submission's accel values to the ship in the chosen mode,
+// marks the ship as curated, marks the submission approved, and audits.
+const approveAccelHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const id = parseInt(req.params.id, 10);
+  if (!id) return res.status(400).json({ error: 'invalid id' });
+  const mode = normalizeMode((req.body && req.body.mode) || 'live');
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const subRes = await client.query(
+      `SELECT * FROM accel_submissions WHERE id = $1 FOR UPDATE`,
+      [id]
+    );
+    if (subRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'submission not found' });
+    }
+    const sub = subRes.rows[0];
+    if (sub.status !== 'pending') {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ error: `submission already ${sub.status}` });
+    }
+
+    // Build the patch from the submission's accel fields
+    const patch = {
+      accelFwd: sub.accel_fwd,
+      accelAbFwd: sub.accel_ab_fwd,
+      accelRetro: sub.accel_retro,
+      accelAbRetro: sub.accel_ab_retro,
+      accelStrafe: sub.accel_strafe,
+      accelAbStrafe: sub.accel_ab_strafe,
+      accelUp: sub.accel_up,
+      accelAbUp: sub.accel_ab_up,
+      accelDown: sub.accel_down,
+      accelAbDown: sub.accel_ab_down,
+      accelTestedDate: (sub.submitted_at instanceof Date ? sub.submitted_at : new Date(sub.submitted_at))
+        .toISOString().slice(0, 10),
+      accelCheckedBy: sub.submitter_name,
+    };
+    // Drop null/empty entries so we don't overwrite existing values with nulls
+    for (const k of Object.keys(patch)) {
+      if (patch[k] === null || patch[k] === undefined) delete patch[k];
+    }
+
+    // Find and update the ship
+    const shipRes = await client.query(
+      `SELECT data FROM ships WHERE class_name = $1 AND mode = $2 FOR UPDATE`,
+      [sub.ship_class_name, mode]
+    );
+    if (shipRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'ship not found in target mode', shipClassName: sub.ship_class_name, mode });
+    }
+    const before = shipRes.rows[0].data;
+    const after = { ...before, ...patch };
+    await client.query(
+      `UPDATE ships SET data = $1, source = 'curated', updated_at = NOW() WHERE class_name = $2 AND mode = $3`,
+      [after, sub.ship_class_name, mode]
+    );
+
+    // Audit each changed field
+    for (const key of Object.keys(patch)) {
+      if (JSON.stringify(before[key]) !== JSON.stringify(patch[key])) {
+        await logAudit(
+          client,
+          req.admin.sub,
+          'approve_accel_submission',
+          'ship',
+          sub.ship_class_name,
+          mode,
+          key,
+          JSON.stringify(before[key] ?? null),
+          JSON.stringify(patch[key])
+        );
+      }
+    }
+
+    // Mark the submission approved
+    await client.query(
+      `UPDATE accel_submissions SET status = 'approved', reviewed_by = $1, reviewed_at = NOW() WHERE id = $2`,
+      [req.admin.sub, id]
+    );
+
+    await client.query('COMMIT');
+    res.json({ ok: true, id, shipClassName: sub.ship_class_name, mode });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('approve accel failed:', err);
+    res.status(500).json({ error: 'Approve failed', detail: err.message });
+  } finally {
+    client.release();
+  }
+};
+
+app.post('/admin/submissions/accel/:id/approve', requireAdmin, approveAccelHandler);
+app.post('/api/admin/submissions/accel/:id/approve', requireAdmin, approveAccelHandler);
+
+// Admin: reject submission. Body { note: '...' }
+const rejectAccelHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const id = parseInt(req.params.id, 10);
+  if (!id) return res.status(400).json({ error: 'invalid id' });
+  const note = req.body && typeof req.body.note === 'string' ? req.body.note.trim() : null;
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const subRes = await client.query(
+      `SELECT id, status, ship_class_name FROM accel_submissions WHERE id = $1 FOR UPDATE`,
+      [id]
+    );
+    if (subRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'submission not found' });
+    }
+    if (subRes.rows[0].status !== 'pending') {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ error: `submission already ${subRes.rows[0].status}` });
+    }
+    await client.query(
+      `UPDATE accel_submissions SET status = 'rejected', reviewer_note = $1, reviewed_by = $2, reviewed_at = NOW() WHERE id = $3`,
+      [note, req.admin.sub, id]
+    );
+    await logAudit(
+      client,
+      req.admin.sub,
+      'reject_accel_submission',
+      'ship',
+      subRes.rows[0].ship_class_name,
+      null,
+      'submission_id',
+      String(id),
+      note ? `rejected: ${note}` : 'rejected'
+    );
+    await client.query('COMMIT');
+    res.json({ ok: true, id });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('reject accel failed:', err);
+    res.status(500).json({ error: 'Reject failed', detail: err.message });
+  } finally {
+    client.release();
+  }
+};
+
+app.post('/admin/submissions/accel/:id/reject', requireAdmin, rejectAccelHandler);
+app.post('/api/admin/submissions/accel/:id/reject', requireAdmin, rejectAccelHandler);
+
 // ─── Site config (PTU toggle, label) ─────────────────────────────────
 
 const configReadHandler = async (req, res) => {

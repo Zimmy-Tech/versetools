@@ -111,6 +111,13 @@ export const routes: Routes = [
             (m) => m.DiffReviewComponent
           ),
       },
+      {
+        path: 'submissions',
+        loadComponent: () =>
+          import('./components/admin/submissions-review/submissions-review').then(
+            (m) => m.SubmissionsReviewComponent
+          ),
+      },
     ],
   },
 

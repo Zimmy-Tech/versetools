@@ -51,6 +51,12 @@
       <a routerLink="/admin/diff" routerLinkActive="active">
         Diff &amp; Import
       </a>
+      <a routerLink="/admin/submissions" routerLinkActive="active">
+        Submissions
+        @if (pendingSubmissions() > 0) {
+          <span class="badge">{{ pendingSubmissions() }}</span>
+        }
+      </a>
       <a routerLink="/admin/audit" routerLinkActive="active">
         Audit Log
       </a>

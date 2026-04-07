@@ -211,14 +211,53 @@ export class AdminService {
   }
 
   /** Convenience: returns whether the LIVE database currently differs
-   *  from the PTU database in any way. Used by the dashboard to suggest
-   *  enabling the PTU slider when there are real differences to show. */
+   *  from the PTU database in any way. */
   async hasPtuDifferences(): Promise<boolean> {
     const resp = await this.http
       .get<{ stats: { shipChanges: number; itemChanges: number } }>('/api/changelog')
       .toPromise();
     if (!resp) return false;
     return (resp.stats?.shipChanges ?? 0) + (resp.stats?.itemChanges ?? 0) > 0;
+  }
+
+  // ─── Community submissions ────────────────────────────────────────
+
+  async listAccelSubmissions(status: 'pending' | 'approved' | 'rejected' | 'all' = 'pending'): Promise<AccelSubmission[]> {
+    const resp = await this.http
+      .get<{ entries: AccelSubmission[] }>(`/api/admin/submissions/accel?status=${status}`, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return resp?.entries ?? [];
+  }
+
+  async getPendingSubmissionCount(): Promise<number> {
+    try {
+      const resp = await this.http
+        .get<{ pending: number }>('/api/admin/submissions/count', {
+          headers: this.authHeaders(),
+        })
+        .toPromise();
+      return resp?.pending ?? 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  async approveAccelSubmission(id: number, mode: 'live' | 'ptu' = 'live'): Promise<void> {
+    await this.http
+      .post(`/api/admin/submissions/accel/${id}/approve`, { mode }, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+  }
+
+  async rejectAccelSubmission(id: number, note?: string): Promise<void> {
+    await this.http
+      .post(`/api/admin/submissions/accel/${id}/reject`, { note: note ?? '' }, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
   }
 }
 
@@ -261,4 +300,27 @@ export interface AuditEntry {
   old_value: string | null;
   new_value: string | null;
   created_at: string;
+}
+
+export interface AccelSubmission {
+  id: number;
+  ship_class_name: string;
+  ship_name: string | null;
+  submitter_name: string;
+  accel_fwd: number | null;
+  accel_ab_fwd: number | null;
+  accel_retro: number | null;
+  accel_ab_retro: number | null;
+  accel_strafe: number | null;
+  accel_ab_strafe: number | null;
+  accel_up: number | null;
+  accel_ab_up: number | null;
+  accel_down: number | null;
+  accel_ab_down: number | null;
+  notes: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  reviewer_note: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  submitted_at: string;
 }

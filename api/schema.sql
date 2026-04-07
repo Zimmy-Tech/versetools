@@ -86,6 +86,46 @@ CREATE TABLE IF NOT EXISTS settings (
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Community submissions: ship acceleration data tested in-game.
+-- A public POST endpoint inserts pending rows; the admin reviews and
+-- approves or rejects each. Approval applies the values to the ship
+-- and marks the ship's accel fields as curated.
+CREATE TABLE IF NOT EXISTS accel_submissions (
+  id              SERIAL PRIMARY KEY,
+  ship_class_name TEXT NOT NULL,
+  ship_name       TEXT,
+  submitter_name  TEXT NOT NULL,
+  accel_fwd       NUMERIC,
+  accel_ab_fwd    NUMERIC,
+  accel_retro     NUMERIC,
+  accel_ab_retro  NUMERIC,
+  accel_strafe    NUMERIC,
+  accel_ab_strafe NUMERIC,
+  accel_up        NUMERIC,
+  accel_ab_up     NUMERIC,
+  accel_down      NUMERIC,
+  accel_ab_down   NUMERIC,
+  notes           TEXT,
+  status          TEXT NOT NULL DEFAULT 'pending',
+                  -- 'pending', 'approved', 'rejected'
+  reviewer_note   TEXT,
+  reviewed_by     TEXT,
+  reviewed_at     TIMESTAMPTZ,
+  submitted_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS accel_submissions_status_idx ON accel_submissions (status, submitted_at DESC);
+
+-- Generic feedback table for the existing feedback form
+CREATE TABLE IF NOT EXISTS feedback_submissions (
+  id              SERIAL PRIMARY KEY,
+  feedback_type   TEXT,
+  feedback_text   TEXT NOT NULL,
+  submitter_name  TEXT,
+  submitter_email TEXT,
+  submitted_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  acknowledged    BOOLEAN NOT NULL DEFAULT FALSE
+);
+
 -- Build-import changelog. One row per imported build, recorded
 -- automatically when an admin applies a diff. The snapshot columns
 -- store the full ships/items arrays from THIS build so the next

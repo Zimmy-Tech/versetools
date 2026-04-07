@@ -18,7 +18,23 @@ export class AdminShellComponent {
   syncResult = signal<string | null>(null);
   syncError = signal<string | null>(null);
 
+  pendingSubmissions = signal(0);
+
+  private async refreshPendingCount(): Promise<void> {
+    if (!this.admin.isAuthenticated()) return;
+    try {
+      const n = await this.admin.getPendingSubmissionCount();
+      this.pendingSubmissions.set(n);
+    } catch {
+      // ignore — badge just stays at last known value
+    }
+  }
+
   constructor() {
+    this.refreshPendingCount();
+    // Light polling so the badge updates when new submissions come in.
+    // 60s is plenty for an admin panel.
+    setInterval(() => this.refreshPendingCount(), 60000);
     // Whenever the admin's mode signal changes, ask the public data
     // service to load the matching dataset so every editor's picker
     // and form reflect the correct mode without any per-component
