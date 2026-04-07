@@ -168,9 +168,20 @@
                   <div class="loadout-section">
                     <div class="loadout-header">Loadout</div>
                     @for (slot of slotsForHardpoint(hp.id); track slot.key) {
-                      <div class="loadout-slot" [class.dirty]="isSlotDirty(slot.key)">
+                      <div
+                        class="loadout-slot"
+                        [class.dirty]="isSlotDirty(slot.key)"
+                        [class.virtual]="slot.isVirtual"
+                      >
                         <span class="slot-key" [class.sub]="!slot.isPrimary">
-                          {{ slot.isPrimary ? '(primary)' : slot.key.replace(hp.id + '.', '↳ ') }}
+                          @if (slot.isPrimary) {
+                            (primary)
+                          } @else {
+                            ↳ {{ slot.key.substring(hp.id.length + 1) }}
+                          }
+                          @if (slot.isVirtual) {
+                            <span class="virtual-pill" title="Sub-port from equipped item; not yet in loadout">virtual</span>
+                          }
                         </span>
                         @if (slot.itemClassName) {
                           @let item = getItemByClassName(slot.itemClassName);
@@ -181,7 +192,9 @@
                         } @else {
                           <span class="slot-item empty">— empty —</span>
                         }
-                        <button type="button" class="change-btn" (click)="openPicker(slot.key)">Change</button>
+                        <button type="button" class="change-btn" (click)="openPicker(slot.key)">
+                          {{ slot.itemClassName ? 'Change' : 'Equip' }}
+                        </button>
                         @if (slot.itemClassName) {
                           <button type="button" class="clear-btn" (click)="clearSlot(slot.key)">Clear</button>
                         }
@@ -200,48 +213,11 @@
                             <button type="button" class="close-btn" (click)="closePicker()">✕</button>
                           </div>
                           <div class="picker-list">
-                            @for (item of compatibleItems(slot.parentId); track item.className) {
+                            @for (item of compatibleItemsForSlot(slot); track item.className) {
                               <button
                                 type="button"
                                 class="picker-row"
                                 (click)="selectItemForSlot(slot.key, item.className)"
-                              >
-                                <span class="pi-name">{{ item.name }}</span>
-                                <span class="pi-meta">
-                                  {{ item.type }}@if (item.size != null) { · S{{ item.size }} }
-                                  @if (item.manufacturer) { · {{ item.manufacturer }} }
-                                </span>
-                              </button>
-                            }
-                            @if (compatibleItems(slot.parentId).length === 0) {
-                              <div class="picker-empty">No compatible items found.</div>
-                            }
-                          </div>
-                        </div>
-                      }
-                    }
-                    @if (slotsForHardpoint(hp.id).length === 0) {
-                      <div class="loadout-slot">
-                        <span class="slot-key">(no loadout entry)</span>
-                        <button type="button" class="change-btn" (click)="openPicker(hp.id)">Add</button>
-                      </div>
-                      @if (pickerOpenForKey() === hp.id) {
-                        <div class="item-picker">
-                          <div class="picker-header">
-                            <input
-                              type="text"
-                              placeholder="Search compatible items…"
-                              [ngModel]="pickerSearch()"
-                              (ngModelChange)="pickerSearch.set($event)"
-                            />
-                            <button type="button" class="close-btn" (click)="closePicker()">✕</button>
-                          </div>
-                          <div class="picker-list">
-                            @for (item of compatibleItems(hp.id); track item.className) {
-                              <button
-                                type="button"
-                                class="picker-row"
-                                (click)="selectItemForSlot(hp.id, item.className)"
                               >
                                 <span class="pi-name">{{ item.name }}</span>
                                 <span class="pi-meta">{{ item.type }} · S{{ item.size }}</span>
@@ -306,5 +282,18 @@
         </div>
       }
     </section>
+
+    <!-- RIGHT: type reference helper -->
+    <aside class="type-helper">
+      <div class="helper-title">Hardpoint Types</div>
+      <div class="helper-hint">Click to copy. These are the values to put in a hardpoint's <strong>Type</strong> field.</div>
+      <div class="helper-list">
+        @for (t of knownHardpointTypes(); track t) {
+          <button type="button" class="type-pill-btn" (click)="copyType(t)" title="Copy">
+            {{ t }}
+          </button>
+        }
+      </div>
+    </aside>
   </div>
 </div>

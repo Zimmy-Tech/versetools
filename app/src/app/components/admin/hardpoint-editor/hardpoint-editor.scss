@@ -12,8 +12,8 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 24px;
+  grid-template-columns: 240px minmax(0, 1fr) 220px;
+  gap: 20px;
   align-items: start;
 }
 
@@ -164,10 +164,8 @@
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(80, 180, 255, 0.15);
   border-radius: 4px;
-  // Use overflow on the X axis only so the rounded corners stay clean
-  // but a too-wide field grid doesn't get visually clipped.
-  overflow-x: auto;
   transition: border-color 0.15s;
+  min-width: 0;
 
   &.expanded {
     border-color: rgba(80, 180, 255, 0.4);
@@ -591,7 +589,90 @@
   }
 }
 
-@media (max-width: 1100px) {
+.type-helper {
+  background: rgba(8, 14, 22, 0.7);
+  border: 1px solid rgba(80, 180, 255, 0.2);
+  border-radius: 6px;
+  padding: 14px 16px;
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+
+  .helper-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(159, 223, 255, 0.7);
+    margin-bottom: 4px;
+  }
+
+  .helper-hint {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  .helper-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .type-pill-btn {
+    background: rgba(80, 180, 255, 0.08);
+    border: 1px solid rgba(80, 180, 255, 0.25);
+    border-radius: 3px;
+    padding: 5px 8px;
+    color: #9fdfff;
+    font-family: monospace;
+    font-size: 0.78rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.12s;
+
+    &:hover {
+      background: rgba(80, 180, 255, 0.15);
+      border-color: rgba(80, 180, 255, 0.5);
+      color: #fff;
+    }
+  }
+}
+
+.loadout-slot.virtual {
+  opacity: 0.85;
+
+  .slot-key {
+    color: rgba(255, 192, 77, 0.7);
+  }
+}
+
+.virtual-pill {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  font-family: sans-serif;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ffc04d;
+  border: 1px solid rgba(255, 192, 77, 0.5);
+  border-radius: 2px;
+}
+
+@media (max-width: 1300px) {
+  .layout {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .type-helper {
+    grid-column: 1 / -1;
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
   }

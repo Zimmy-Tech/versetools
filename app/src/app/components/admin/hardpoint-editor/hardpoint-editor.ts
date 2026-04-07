@@ -42,6 +42,13 @@ interface LoadoutSlot {
   parentId: string;
   /** Currently equipped item className, or null */
   itemClassName: string | null;
+  /** True if this slot is computed from an equipped item's subPorts and
+   *  doesn't yet exist in the database — equipping into it makes it real */
+  isVirtual?: boolean;
+  /** Type/size constraints when this slot comes from a subPort definition */
+  subPortType?: string;
+  subPortMinSize?: number;
+  subPortMaxSize?: number;
 }
 
 @Component({
@@ -63,6 +70,33 @@ export class HardpointEditorComponent {
       (a.name || a.className).localeCompare(b.name || b.className)
     );
   });
+
+  /** Distinct hardpoint types found across all ships in the database,
+   *  used by the type-reference helper panel. */
+  knownHardpointTypes = computed<string[]>(() => {
+    const all = this.data.db()?.ships ?? [];
+    const set = new Set<string>();
+    for (const s of all) {
+      for (const hp of s.hardpoints || []) {
+        if (hp.type) set.add(hp.type);
+        if (hp.allTypes) {
+          for (const t of hp.allTypes) {
+            if (t.type) set.add(t.type);
+          }
+        }
+      }
+    }
+    return [...set].sort((a, b) => a.localeCompare(b));
+  });
+
+  /** UI toggle for the type-reference helper panel. */
+  showTypeHelper = signal(false);
+
+  copyType(type: string): void {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(type).catch(() => {});
+    }
+  }
 
   shipSearch = signal('');
   filteredShips = computed(() => {
@@ -136,21 +170,75 @@ export class HardpointEditorComponent {
 
   // ─── Loadout slot grouping ──────────────────────────────────────
 
-  /** Returns the loadout slots grouped under each top-level hardpoint id. */
+  /** Returns the loadout slots grouped under each top-level hardpoint id.
+   *  Walks the equipped item subPort tree so child slots that don't yet
+   *  exist in the loadout map appear as virtual rows the user can equip
+   *  into. Equipping into a virtual slot creates a real loadout entry. */
   slotsForHardpoint(hpId: string): LoadoutSlot[] {
     const lo = this.workingLoadout();
     const out: LoadoutSlot[] = [];
+    const seen = new Set<string>();
+
+    // Always include the primary slot, even if empty
+    out.push({
+      key: hpId,
+      isPrimary: true,
+      parentId: hpId,
+      itemClassName: lo[hpId] ?? null,
+    });
+    seen.add(hpId);
+
+    // Real loadout entries that target sub-slots of this hardpoint
     for (const key of Object.keys(lo)) {
-      if (key === hpId || key.startsWith(hpId + '.')) {
+      if (key.startsWith(hpId + '.') && !seen.has(key)) {
         out.push({
           key,
-          isPrimary: key === hpId,
+          isPrimary: false,
           parentId: hpId,
           itemClassName: lo[key] ?? null,
         });
+        seen.add(key);
       }
     }
-    // Primary first, then sub-slots alphabetical
+
+    // Recursively expand virtual sub-slots from equipped items' subPorts.
+    // Walk in BFS order so deeper levels appear after their parents.
+    const queue: { key: string; itemClassName: string }[] = [];
+    for (const slot of out) {
+      if (slot.itemClassName) queue.push({ key: slot.key, itemClassName: slot.itemClassName });
+    }
+    while (queue.length > 0) {
+      const { key, itemClassName } = queue.shift()!;
+      const item = this.getItemByClassName(itemClassName);
+      const subPorts = (item as any)?.subPorts as
+        | { id: string; type?: string; minSize?: number; maxSize?: number }[]
+        | undefined;
+      if (!subPorts || !Array.isArray(subPorts)) continue;
+      for (const sp of subPorts) {
+        if (!sp?.id) continue;
+        const childKey = `${key}.${sp.id}`;
+        if (seen.has(childKey)) {
+          // Already real — but keep walking deeper for its own children
+          const existing = out.find((s) => s.key === childKey);
+          if (existing?.itemClassName) {
+            queue.push({ key: childKey, itemClassName: existing.itemClassName });
+          }
+          continue;
+        }
+        out.push({
+          key: childKey,
+          isPrimary: false,
+          parentId: hpId,
+          itemClassName: null,
+          isVirtual: true,
+          subPortType: sp.type,
+          subPortMinSize: sp.minSize,
+          subPortMaxSize: sp.maxSize,
+        });
+        seen.add(childKey);
+      }
+    }
+
     out.sort((a, b) => {
       if (a.isPrimary !== b.isPrimary) return a.isPrimary ? -1 : 1;
       return a.key.localeCompare(b.key);
@@ -312,29 +400,61 @@ export class HardpointEditorComponent {
     return (this.originalLoadout()[key] ?? null) !== (this.workingLoadout()[key] ?? null);
   }
 
-  /** Returns items compatible with the given hardpoint, or all items if no hardpoint. */
+  /** Returns items compatible with the given top-level hardpoint, or
+   *  all items if no hardpoint id is supplied. */
   compatibleItems(hardpointId: string | null): Item[] {
+    const hp = hardpointId
+      ? this.workingHardpoints().find((h) => h.id === hardpointId)
+      : null;
+    return this.filterItems({
+      types: hp ? this.collectTypes(hp.type, hp.allTypes) : null,
+      minSize: hp?.minSize ?? null,
+      maxSize: hp?.maxSize ?? null,
+    });
+  }
+
+  /** Returns items compatible with a specific slot, honoring sub-port
+   *  constraints when the slot is a virtual child of an equipped item. */
+  compatibleItemsForSlot(slot: LoadoutSlot): Item[] {
+    if (slot.isVirtual) {
+      return this.filterItems({
+        types: slot.subPortType ? new Set([slot.subPortType.toLowerCase()]) : null,
+        minSize: slot.subPortMinSize ?? null,
+        maxSize: slot.subPortMaxSize ?? null,
+      });
+    }
+    if (slot.isPrimary) return this.compatibleItems(slot.parentId);
+    // Existing dotted sub-slot whose parent item we don't have constraints
+    // for — fall back to unfiltered (still searchable).
+    return this.filterItems({ types: null, minSize: null, maxSize: null });
+  }
+
+  private collectTypes(
+    type: string | undefined,
+    allTypes: { type: string }[] | undefined
+  ): Set<string> | null {
+    const s = new Set<string>();
+    if (type) s.add(type.toLowerCase());
+    if (allTypes) allTypes.forEach((t) => t.type && s.add(t.type.toLowerCase()));
+    return s.size > 0 ? s : null;
+  }
+
+  private filterItems(opts: {
+    types: Set<string> | null;
+    minSize: number | null;
+    maxSize: number | null;
+  }): Item[] {
     const all = this.data.db()?.items ?? [];
     const q = this.pickerSearch().toLowerCase().trim();
-
     let filtered = all;
-    if (hardpointId) {
-      const hp = this.workingHardpoints().find((h) => h.id === hardpointId);
-      if (hp) {
-        const types = new Set<string>();
-        if (hp.type) types.add(hp.type.toLowerCase());
-        if (hp.allTypes) hp.allTypes.forEach((t) => t.type && types.add(t.type.toLowerCase()));
-        if (types.size > 0) {
-          filtered = filtered.filter((i) => i.type && types.has(i.type.toLowerCase()));
-        }
-        if (hp.minSize != null && hp.maxSize != null) {
-          filtered = filtered.filter(
-            (i) => i.size != null && i.size >= hp.minSize! && i.size <= hp.maxSize!
-          );
-        }
-      }
+    if (opts.types) {
+      filtered = filtered.filter((i) => i.type && opts.types!.has(i.type.toLowerCase()));
     }
-
+    if (opts.minSize != null && opts.maxSize != null) {
+      filtered = filtered.filter(
+        (i) => i.size != null && i.size >= opts.minSize! && i.size <= opts.maxSize!
+      );
+    }
     if (q) {
       filtered = filtered.filter(
         (i) =>
@@ -343,8 +463,7 @@ export class HardpointEditorComponent {
           (i.manufacturer || '').toLowerCase().includes(q)
       );
     }
-
-    return filtered.slice(0, 200); // cap to keep DOM small
+    return filtered.slice(0, 200);
   }
 
   /** Item lookup by className for displaying current equip. */
