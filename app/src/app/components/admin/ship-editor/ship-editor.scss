@@ -43,6 +43,93 @@
   }
 }
 
+.new-btn {
+  margin: 0 12px 12px;
+  padding: 7px 12px;
+  background: rgba(80, 200, 80, 0.1);
+  border: 1px solid rgba(80, 200, 80, 0.4);
+  border-radius: 3px;
+  color: #80ff80;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(80, 200, 80, 0.2);
+  }
+}
+
+.create-form {
+  margin: 0 12px 12px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(80, 200, 80, 0.3);
+  border-radius: 4px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+
+    span {
+      display: block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 6px 8px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(80, 180, 255, 0.3);
+      border-radius: 3px;
+      color: #fff;
+      font-size: 0.85rem;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: rgba(80, 180, 255, 0.6);
+      }
+    }
+  }
+
+  .create-error {
+    margin: 6px 0;
+    padding: 6px 8px;
+    background: rgba(255, 60, 60, 0.12);
+    border: 1px solid rgba(255, 60, 60, 0.4);
+    border-radius: 3px;
+    color: #ff9090;
+    font-size: 0.78rem;
+  }
+
+  .create-submit {
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px;
+    background: linear-gradient(180deg, #2a8a3a, #1a6020);
+    border: 1px solid #4ec060;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(180deg, #35a04a, #20702a);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
 .ship-list {
   flex: 1;
   overflow-y: auto;
@@ -268,6 +355,7 @@
     }
   }
 
+  .delete-btn,
   .reset-btn,
   .save-btn {
     padding: 10px 18px;
@@ -281,6 +369,18 @@
     &:disabled {
       opacity: 0.4;
       cursor: not-allowed;
+    }
+  }
+
+  .delete-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 80, 80, 0.4);
+    color: rgba(255, 144, 144, 0.85);
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 80, 80, 0.1);
+      border-color: rgba(255, 80, 80, 0.7);
+      color: #ff9090;
     }
   }
 

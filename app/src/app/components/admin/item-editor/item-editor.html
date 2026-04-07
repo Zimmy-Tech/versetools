@@ -24,6 +24,51 @@
           <option [value]="t">{{ t }}</option>
         }
       </select>
+      <button type="button" class="new-btn" (click)="toggleCreate()">
+        {{ createOpen() ? '× Cancel' : '+ New Item' }}
+      </button>
+      @if (createOpen()) {
+        <div class="create-form">
+          <label>
+            <span>className (required)</span>
+            <input
+              type="text"
+              placeholder="e.g. klwe_newgun_s2"
+              [ngModel]="createClassName()"
+              (ngModelChange)="createClassName.set($event)"
+            />
+          </label>
+          <label>
+            <span>Type (required)</span>
+            <input
+              type="text"
+              placeholder="WeaponGun, Shield, Cooler…"
+              [ngModel]="createType()"
+              (ngModelChange)="createType.set($event)"
+            />
+          </label>
+          <label>
+            <span>Display name</span>
+            <input
+              type="text"
+              placeholder="Name shown in UI"
+              [ngModel]="createName()"
+              (ngModelChange)="createName.set($event)"
+            />
+          </label>
+          @if (createError()) {
+            <div class="create-error">{{ createError() }}</div>
+          }
+          <button
+            type="button"
+            class="create-submit"
+            (click)="submitCreate()"
+            [disabled]="createBusy() || !createClassName() || !createType()"
+          >
+            {{ createBusy() ? 'Creating…' : 'Create' }}
+          </button>
+        </div>
+      }
       <div class="item-list">
         @for (i of filteredItems(); track i.className) {
           <button
@@ -117,6 +162,15 @@
         </div>
 
         <div class="actions">
+          <button
+            type="button"
+            class="delete-btn"
+            (click)="deleteSelectedItem()"
+            [disabled]="deleteBusy() || status().kind === 'saving'"
+            title="Delete this item"
+          >
+            {{ deleteBusy() ? 'Deleting…' : 'Delete Item' }}
+          </button>
           @if (status().kind === 'success') {
             <div class="status success">{{ status().message }}</div>
           } @else if (status().kind === 'error') {
@@ -141,6 +195,9 @@
             {{ status().kind === 'saving' ? 'Saving…' : 'Save Changes' }}
           </button>
         </div>
+        @if (deleteError()) {
+          <div class="status error" style="margin-top: 8px;">{{ deleteError() }}</div>
+        }
       }
     </section>
   </div>

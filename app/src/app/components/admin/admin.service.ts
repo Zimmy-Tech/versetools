@@ -88,6 +88,38 @@ export class AdminService {
       .toPromise();
     return resp?.entries ?? [];
   }
+
+  /** Create a new ship. Body must include className. */
+  async createShip(data: Record<string, unknown>): Promise<void> {
+    await this.http
+      .post('/api/admin/ships', data, { headers: this.authHeaders() })
+      .toPromise();
+  }
+
+  /** Create a new item. Body must include className. */
+  async createItem(data: Record<string, unknown>): Promise<void> {
+    await this.http
+      .post('/api/admin/items', data, { headers: this.authHeaders() })
+      .toPromise();
+  }
+
+  /** Delete a ship. The full pre-delete blob is recorded in the audit log. */
+  async deleteShip(className: string): Promise<void> {
+    await this.http
+      .delete(`/api/admin/ships/${encodeURIComponent(className)}`, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+  }
+
+  /** Delete an item. */
+  async deleteItem(className: string): Promise<void> {
+    await this.http
+      .delete(`/api/admin/items/${encodeURIComponent(className)}`, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+  }
 }
 
 export interface AuditEntry {

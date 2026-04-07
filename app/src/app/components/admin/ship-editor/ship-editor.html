@@ -15,6 +15,42 @@
         [ngModel]="search()"
         (ngModelChange)="search.set($event)"
       />
+      <button type="button" class="new-btn" (click)="toggleCreate()">
+        {{ createOpen() ? '× Cancel' : '+ New Ship' }}
+      </button>
+      @if (createOpen()) {
+        <div class="create-form">
+          <label>
+            <span>className (required, lowercase)</span>
+            <input
+              type="text"
+              placeholder="e.g. aegs_newship"
+              [ngModel]="createClassName()"
+              (ngModelChange)="createClassName.set($event)"
+            />
+          </label>
+          <label>
+            <span>Display name</span>
+            <input
+              type="text"
+              placeholder="e.g. AEGS New Ship"
+              [ngModel]="createName()"
+              (ngModelChange)="createName.set($event)"
+            />
+          </label>
+          @if (createError()) {
+            <div class="create-error">{{ createError() }}</div>
+          }
+          <button
+            type="button"
+            class="create-submit"
+            (click)="submitCreate()"
+            [disabled]="createBusy() || !createClassName()"
+          >
+            {{ createBusy() ? 'Creating…' : 'Create' }}
+          </button>
+        </div>
+      }
       <div class="ship-list">
         @for (s of filteredShips(); track s.className) {
           <button
@@ -94,6 +130,15 @@
         </div>
 
         <div class="actions">
+          <button
+            type="button"
+            class="delete-btn"
+            (click)="deleteSelectedShip()"
+            [disabled]="deleteBusy() || status().kind === 'saving'"
+            title="Delete this ship"
+          >
+            {{ deleteBusy() ? 'Deleting…' : 'Delete Ship' }}
+          </button>
           @if (status().kind === 'success') {
             <div class="status success">{{ status().message }}</div>
           } @else if (status().kind === 'error') {
@@ -118,6 +163,9 @@
             {{ status().kind === 'saving' ? 'Saving…' : 'Save Changes' }}
           </button>
         </div>
+        @if (deleteError()) {
+          <div class="status error" style="margin-top: 8px;">{{ deleteError() }}</div>
+        }
       }
     </section>
   </div>

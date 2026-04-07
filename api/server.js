@@ -168,6 +168,116 @@ app.patch('/api/admin/ships/:className', requireAdmin, patchShipHandler);
 app.patch('/admin/items/:className', requireAdmin, patchItemHandler);
 app.patch('/api/admin/items/:className', requireAdmin, patchItemHandler);
 
+// ─── Create / delete ─────────────────────────────────────────────────
+
+// Create a new ship or item. Body must contain `className`. All other
+// fields are optional and stored as the initial JSONB blob.
+function makeCreateHandler({ table, entityType }) {
+  return async (req, res) => {
+    if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+    const body = req.body;
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return res.status(400).json({ error: 'Body must be an object' });
+    }
+    const { className } = body;
+    if (!className || typeof className !== 'string' || !className.trim()) {
+      return res.status(400).json({ error: 'className is required' });
+    }
+
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      const existing = await client.query(
+        `SELECT 1 FROM ${table} WHERE class_name = $1`,
+        [className]
+      );
+      if (existing.rows.length > 0) {
+        await client.query('ROLLBACK');
+        return res.status(409).json({ error: 'Already exists', className });
+      }
+
+      await client.query(
+        `INSERT INTO ${table} (class_name, data, source) VALUES ($1, $2, 'curated')`,
+        [className, body]
+      );
+      await logAudit(
+        client,
+        req.admin.sub,
+        `create_${entityType}`,
+        entityType,
+        className,
+        null,
+        null,
+        JSON.stringify(body)
+      );
+      await client.query('COMMIT');
+      res.status(201).json({ ok: true, className });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error(`create ${entityType} failed:`, err);
+      res.status(500).json({ error: 'Create failed', detail: err.message });
+    } finally {
+      client.release();
+    }
+  };
+}
+
+// Hard-delete a ship or item. The full pre-delete JSON is recorded in
+// the audit log so deletions are recoverable from there.
+function makeDeleteHandler({ table, entityType }) {
+  return async (req, res) => {
+    if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+    const { className } = req.params;
+
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      const { rows } = await client.query(
+        `SELECT data FROM ${table} WHERE class_name = $1 FOR UPDATE`,
+        [className]
+      );
+      if (rows.length === 0) {
+        await client.query('ROLLBACK');
+        return res.status(404).json({ error: `${entityType} not found`, className });
+      }
+      const before = rows[0].data;
+      await client.query(`DELETE FROM ${table} WHERE class_name = $1`, [className]);
+      await logAudit(
+        client,
+        req.admin.sub,
+        `delete_${entityType}`,
+        entityType,
+        className,
+        null,
+        JSON.stringify(before),
+        null
+      );
+      await client.query('COMMIT');
+      res.json({ ok: true, className });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error(`delete ${entityType} failed:`, err);
+      res.status(500).json({ error: 'Delete failed', detail: err.message });
+    } finally {
+      client.release();
+    }
+  };
+}
+
+const createShipHandler = makeCreateHandler({ table: 'ships', entityType: 'ship' });
+const createItemHandler = makeCreateHandler({ table: 'items', entityType: 'item' });
+const deleteShipHandler = makeDeleteHandler({ table: 'ships', entityType: 'ship' });
+const deleteItemHandler = makeDeleteHandler({ table: 'items', entityType: 'item' });
+
+app.post('/admin/ships', requireAdmin, createShipHandler);
+app.post('/api/admin/ships', requireAdmin, createShipHandler);
+app.post('/admin/items', requireAdmin, createItemHandler);
+app.post('/api/admin/items', requireAdmin, createItemHandler);
+app.delete('/admin/ships/:className', requireAdmin, deleteShipHandler);
+app.delete('/api/admin/ships/:className', requireAdmin, deleteShipHandler);
+app.delete('/admin/items/:className', requireAdmin, deleteItemHandler);
+app.delete('/api/admin/items/:className', requireAdmin, deleteItemHandler);
+
 // ─── Audit log read ──────────────────────────────────────────────────
 
 const auditHandler = async (req, res) => {

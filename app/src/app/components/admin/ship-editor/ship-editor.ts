@@ -153,6 +153,17 @@ export class ShipEditorComponent {
     );
   });
 
+  // Create-new state
+  createOpen = signal(false);
+  createClassName = signal('');
+  createName = signal('');
+  createBusy = signal(false);
+  createError = signal<string | null>(null);
+
+  // Delete state
+  deleteBusy = signal(false);
+  deleteError = signal<string | null>(null);
+
   search = signal('');
   filteredShips = computed(() => {
     const q = this.search().toLowerCase().trim();
@@ -310,5 +321,63 @@ export class ShipEditorComponent {
       if (f) return f;
     }
     return undefined;
+  }
+
+  // ─── Create new ship ─────────────────────────────────────────────
+
+  toggleCreate(): void {
+    this.createOpen.update((v) => !v);
+    if (this.createOpen()) {
+      this.createClassName.set('');
+      this.createName.set('');
+      this.createError.set(null);
+    }
+  }
+
+  async submitCreate(): Promise<void> {
+    const cls = this.createClassName().trim();
+    const name = this.createName().trim();
+    if (!cls) {
+      this.createError.set('className is required');
+      return;
+    }
+    this.createBusy.set(true);
+    this.createError.set(null);
+    try {
+      await this.admin.createShip({ className: cls, name: name || cls });
+      await this.data.refreshDb();
+      this.selectedClassName.set(cls);
+      this.createOpen.set(false);
+    } catch (err: any) {
+      const status = err?.status;
+      const msg = err?.error?.error || err?.message || 'Create failed';
+      this.createError.set(status === 409 ? 'A ship with that className already exists' : msg);
+    } finally {
+      this.createBusy.set(false);
+    }
+  }
+
+  // ─── Delete current ship ─────────────────────────────────────────
+
+  async deleteSelectedShip(): Promise<void> {
+    const ship = this.selectedShip();
+    if (!ship) return;
+    const ok = window.confirm(
+      `Delete ${ship.name || ship.className}?\n\nThis cannot be undone from the UI, but the full pre-delete data is recorded in the audit log if you need to recover it manually.`
+    );
+    if (!ok) return;
+
+    this.deleteBusy.set(true);
+    this.deleteError.set(null);
+    try {
+      await this.admin.deleteShip(ship.className);
+      this.selectedClassName.set(null);
+      await this.data.refreshDb();
+    } catch (err: any) {
+      const msg = err?.error?.error || err?.message || 'Delete failed';
+      this.deleteError.set(msg);
+    } finally {
+      this.deleteBusy.set(false);
+    }
   }
 }

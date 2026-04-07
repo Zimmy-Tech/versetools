@@ -185,6 +185,30 @@ export class DataService {
     }
   }
 
+  /** Re-fetches the database from the current source. Used by the
+   *  admin panel after create/delete operations so the picker reflects
+   *  the new state without a full page reload. Preserves the currently
+   *  selected ship if it still exists. */
+  async refreshDb(): Promise<void> {
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
+    const mode = this.dataMode();
+    const prefix = this.dataPrefix();
+    const fallbackUrl = `${prefix}versedb_data.json`;
+    const primaryUrl = mode === 'live' && !isStaticHost ? '/api/db' : fallbackUrl;
+
+    const previousClassName = this.selectedShip()?.className;
+    const db = await this.http.get<VerseDb>(primaryUrl).toPromise();
+    if (!db) return;
+    this.db.set(db);
+    this.modeVersion.update((v) => v + 1);
+    if (previousClassName) {
+      const found = db.ships.find((s) => s.className === previousClassName);
+      if (found) this.selectShip(found);
+    }
+  }
+
   loadFromFile(file: File): void {
     const reader = new FileReader();
     reader.onload = ev => {

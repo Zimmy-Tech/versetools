@@ -255,6 +255,18 @@ export class ItemEditorComponent {
   search = signal('');
   typeFilter = signal<string>('');
 
+  // Create-new state
+  createOpen = signal(false);
+  createClassName = signal('');
+  createName = signal('');
+  createType = signal('');
+  createBusy = signal(false);
+  createError = signal<string | null>(null);
+
+  // Delete state
+  deleteBusy = signal(false);
+  deleteError = signal<string | null>(null);
+
   items = computed(() => {
     const all = this.data.db()?.items ?? [];
     return [...all].sort((a, b) =>
@@ -433,5 +445,69 @@ export class ItemEditorComponent {
       if (f) return f;
     }
     return undefined;
+  }
+
+  // ─── Create new item ─────────────────────────────────────────────
+
+  toggleCreate(): void {
+    this.createOpen.update((v) => !v);
+    if (this.createOpen()) {
+      this.createClassName.set('');
+      this.createName.set('');
+      this.createType.set('');
+      this.createError.set(null);
+    }
+  }
+
+  async submitCreate(): Promise<void> {
+    const cls = this.createClassName().trim();
+    const name = this.createName().trim();
+    const type = this.createType().trim();
+    if (!cls) {
+      this.createError.set('className is required');
+      return;
+    }
+    if (!type) {
+      this.createError.set('type is required (e.g. WeaponGun, Shield, Cooler)');
+      return;
+    }
+    this.createBusy.set(true);
+    this.createError.set(null);
+    try {
+      await this.admin.createItem({ className: cls, name: name || cls, type });
+      await this.data.refreshDb();
+      this.selectedClassName.set(cls);
+      this.createOpen.set(false);
+    } catch (err: any) {
+      const status = err?.status;
+      const msg = err?.error?.error || err?.message || 'Create failed';
+      this.createError.set(status === 409 ? 'An item with that className already exists' : msg);
+    } finally {
+      this.createBusy.set(false);
+    }
+  }
+
+  // ─── Delete current item ─────────────────────────────────────────
+
+  async deleteSelectedItem(): Promise<void> {
+    const item = this.selectedItem();
+    if (!item) return;
+    const ok = window.confirm(
+      `Delete ${item.name || item.className}?\n\nThis cannot be undone from the UI, but the full pre-delete data is recorded in the audit log if you need to recover it manually.`
+    );
+    if (!ok) return;
+
+    this.deleteBusy.set(true);
+    this.deleteError.set(null);
+    try {
+      await this.admin.deleteItem(item.className);
+      this.selectedClassName.set(null);
+      await this.data.refreshDb();
+    } catch (err: any) {
+      const msg = err?.error?.error || err?.message || 'Delete failed';
+      this.deleteError.set(msg);
+    } finally {
+      this.deleteBusy.set(false);
+    }
   }
 }
