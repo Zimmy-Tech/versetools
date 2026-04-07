@@ -1,0 +1,64 @@
+name: Database Backup
+
+# Backs up the Neon Postgres database via pg_dump and uploads the
+# resulting .sql file as a workflow artifact (default 90-day retention).
+#
+# Setup:
+#   1. In repo Settings → Secrets → Actions, add a secret named
+#      DATABASE_URL with the full Neon connection string. This is the
+#      same value already set in DigitalOcean for the API.
+#   2. Run the workflow manually once via the Actions tab to verify it
+#      works, then leave it on the schedule.
+#
+# Recovery:
+#   1. Download the most recent artifact from the Actions tab
+#   2. Provision a new Postgres host (DO managed, Neon project, etc.)
+#   3. psql "$NEW_DATABASE_URL" < versedb-backup.sql
+#   4. Update DATABASE_URL in DO and let the API redeploy
+
+on:
+  schedule:
+    # 03:17 UTC every day. Off-peak time, randomized minute to avoid
+    # the top-of-hour Actions queue spike.
+    - cron: '17 3 * * *'
+  workflow_dispatch: # allow manual runs
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Install postgresql-client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client
+
+      - name: Verify connection
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::DATABASE_URL secret is not set. Add it in repo Settings → Secrets → Actions."
+            exit 1
+          fi
+          psql "$DATABASE_URL" -c "SELECT version();" >/dev/null
+          echo "Connected successfully"
+
+      - name: Dump database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          STAMP=$(date -u +%Y%m%d-%H%M%S)
+          OUT="versedb-backup-${STAMP}.sql"
+          echo "OUT=$OUT" >> $GITHUB_ENV
+          pg_dump --no-owner --no-acl --format=plain --schema=versedb "$DATABASE_URL" > "$OUT"
+          ls -lh "$OUT"
+          # Sanity check: should contain a CREATE TABLE for ships
+          grep -q "CREATE TABLE versedb.ships" "$OUT" || (echo "::error::Dump missing expected schema" && exit 1)
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.OUT }}
+          path: ${{ env.OUT }}
+          retention-days: 90
