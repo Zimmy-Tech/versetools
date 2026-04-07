@@ -150,32 +150,127 @@
 .cart-shops {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(80, 180, 255, 0.18);
 }
 
-.cart-shop-row {
+.cart-shops-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(159, 223, 255, 0.55);
+  margin-bottom: 2px;
+}
+
+.shop-card {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 2px 0;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  color: var(--text3);
+  align-items: stretch;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(8, 14, 22, 0.55);
+  border: 1px solid rgba(80, 180, 255, 0.12);
+  border-left: 2px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    background: rgba(8, 14, 22, 0.75);
+    border-color: rgba(80, 180, 255, 0.22);
+  }
 
   &.cheapest {
-    .shop-name { color: var(--text); }
-    .shop-price { color: var(--accent); }
+    border-left-color: var(--accent);
+    background: rgba(0, 200, 255, 0.06);
+
+    .shop-card-name { color: var(--text); }
+    .shop-card-amount { color: var(--accent); }
   }
 }
 
-.shop-name { flex: 1; }
-.shop-price { flex-shrink: 0; text-align: right; }
+.shop-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.shop-card-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shop-card-loc {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.shop-card-loc-missing {
+    opacity: 0.5;
+    font-style: italic;
+  }
+}
+
+.shop-card-price {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  min-width: 96px;
+}
+
+.shop-card-tag {
+  align-self: flex-end;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.08);
+  padding: 1px 5px;
+  border: 1px solid rgba(0, 200, 255, 0.4);
+  margin-bottom: 2px;
+}
+
+.shop-card-amount {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text3);
+  line-height: 1.1;
+}
+
+.shop-card-currency {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+}
 
 .no-shops {
   font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
   color: var(--text3);
   font-style: italic;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(80, 180, 255, 0.18);
 }
 
 .empty-state {
@@ -248,7 +343,24 @@
     padding: 4px;
   }
 
-  .cart-shop-row {
-    font-size: 12px;
+  .shop-card {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .shop-card-name {
+    font-size: 13px;
+  }
+
+  .shop-card-loc {
+    font-size: 10px;
+  }
+
+  .shop-card-amount {
+    font-size: 14px;
+  }
+
+  .shop-card-price {
+    min-width: 80px;
   }
 }

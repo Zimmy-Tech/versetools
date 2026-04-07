@@ -33,10 +33,22 @@
 
           @if (entry.item.shopPrices?.length) {
             <div class="cart-shops">
-              @for (sp of entry.item.shopPrices; track sp.shop; let i = $index) {
-                <div class="cart-shop-row" [class.cheapest]="sp.price === entry.item.shopPrices![0].price || i === 0">
-                  <span class="shop-name">{{ sp.shop }}</span>
-                  <span class="shop-price">{{ fmtPrice(sp.price) }} aUEC</span>
+              <div class="cart-shops-label">Listings</div>
+              @for (sp of sortedShops(entry.item.shopPrices); track sp.shop; let i = $index) {
+                <div class="shop-card" [class.cheapest]="i === 0">
+                  <div class="shop-card-info">
+                    <div class="shop-card-name">{{ shopLabel(sp) }}</div>
+                    @if (hasLocation(sp)) {
+                      <div class="shop-card-loc">{{ shopLocation(sp) }}</div>
+                    } @else {
+                      <div class="shop-card-loc shop-card-loc-missing">Location pending UEX refresh</div>
+                    }
+                  </div>
+                  <div class="shop-card-price">
+                    @if (i === 0) { <span class="shop-card-tag">CHEAPEST</span> }
+                    <div class="shop-card-amount">{{ fmtPrice(sp.price) }}</div>
+                    <div class="shop-card-currency">aUEC</div>
+                  </div>
                 </div>
               }
             </div>

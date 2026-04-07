@@ -37,4 +37,18 @@
       <button class="update-btn" (click)="refresh()">Got it!</button>
     </div>
   }
+
+  @if (data.cartFeedback(); as fb) {
+    <div class="cart-toast" [class.cart-toast-warning]="fb.kind === 'warning'" [class.cart-toast-info]="fb.kind === 'info'">
+      <div class="cart-toast-body">
+        <div class="cart-toast-msg">{{ fb.message }}</div>
+        @if (fb.detailNames?.length) {
+          <ul class="cart-toast-detail">
+            @for (n of fb.detailNames; track n) { <li>{{ n }}</li> }
+          </ul>
+        }
+      </div>
+      <button class="cart-toast-close" (click)="data.dismissCartFeedback()" aria-label="Dismiss">✕</button>
+    </div>
+  }
 </div>

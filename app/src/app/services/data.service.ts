@@ -1170,6 +1170,27 @@ export class DataService {
     return total;
   });
 
+  /** Transient feedback after a cart action — picked up by the global
+   *  toast in app.html and auto-cleared after a few seconds. */
+  readonly cartFeedback = signal<{
+    kind: 'info' | 'success' | 'warning';
+    message: string;
+    detailNames?: string[];
+  } | null>(null);
+
+  private cartFeedbackTimer: any = null;
+
+  private setCartFeedback(feedback: { kind: 'info' | 'success' | 'warning'; message: string; detailNames?: string[] }): void {
+    this.cartFeedback.set(feedback);
+    clearTimeout(this.cartFeedbackTimer);
+    this.cartFeedbackTimer = setTimeout(() => this.cartFeedback.set(null), 6000);
+  }
+
+  dismissCartFeedback(): void {
+    clearTimeout(this.cartFeedbackTimer);
+    this.cartFeedback.set(null);
+  }
+
   private readonly PURCHASABLE_TYPES = new Set([
     'WeaponGun', 'WeaponTachyon', 'Shield', 'PowerPlant', 'Cooler',
     'QuantumDrive', 'Radar', 'Missile', 'WeaponMining', 'MiningModifier',
@@ -1178,17 +1199,33 @@ export class DataService {
 
   addNonStockToCart(): void {
     const ship = this.selectedShip();
-    if (!ship?.defaultLoadout) return;
+    if (!ship?.defaultLoadout) {
+      this.setCartFeedback({ kind: 'info', message: 'No ship selected.' });
+      return;
+    }
     const loadout = this.loadout();
     const defaults = ship.defaultLoadout;
     const newCart = new Map(this.cart());
 
+    let addedCount = 0;
+    const skippedNames: string[] = [];
+    const seenSkipped = new Set<string>();
+
     for (const [slotId, item] of Object.entries(loadout)) {
       if (!this.PURCHASABLE_TYPES.has(item.type)) continue;
-      if (!item.shopPrices?.length) continue;  // not purchasable in-game
       const defaultCls = defaults[slotId.toLowerCase()];
       if (defaultCls && item.className.toLowerCase() === defaultCls.toLowerCase()) continue;
-      // Non-stock item — add to cart
+
+      // Non-default, purchasable type — but does it actually have shop data?
+      if (!item.shopPrices?.length) {
+        if (!seenSkipped.has(item.className)) {
+          seenSkipped.add(item.className);
+          skippedNames.push(item.name);
+        }
+        continue;
+      }
+
+      // Non-stock and purchasable — add to cart
       const key = item.className;
       const existing = newCart.get(key);
       if (existing) {
@@ -1196,8 +1233,35 @@ export class DataService {
       } else {
         newCart.set(key, { item, quantity: 1 });
       }
+      addedCount++;
     }
     this.cart.set(newCart);
+
+    // Feedback message
+    const skippedCount = skippedNames.length;
+    if (addedCount > 0 && skippedCount === 0) {
+      this.setCartFeedback({
+        kind: 'success',
+        message: `Added ${addedCount} item${addedCount === 1 ? '' : 's'} to cart.`,
+      });
+    } else if (addedCount > 0 && skippedCount > 0) {
+      this.setCartFeedback({
+        kind: 'warning',
+        message: `Added ${addedCount} item${addedCount === 1 ? '' : 's'}. ${skippedCount} item${skippedCount === 1 ? '' : 's'} not for sale in-game ${skippedCount === 1 ? 'was' : 'were'} skipped.`,
+        detailNames: skippedNames,
+      });
+    } else if (addedCount === 0 && skippedCount > 0) {
+      this.setCartFeedback({
+        kind: 'warning',
+        message: `Some items in your loadout are not for sale in-game and were not added to the cart.`,
+        detailNames: skippedNames,
+      });
+    } else {
+      this.setCartFeedback({
+        kind: 'info',
+        message: 'No non-stock items to add — this loadout matches the default.',
+      });
+    }
   }
 
   removeFromCart(className: string): void {

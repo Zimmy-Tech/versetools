@@ -105,6 +105,20 @@ export interface Ship {
 export interface ShopPrice {
   price: number;
   shop: string;
+  // Richer fields appended by the API after the standalone shop_prices
+  // table refactor. All optional — older callers can ignore them and
+  // continue using shop/price unchanged.
+  shopCompany?: string | null;
+  starSystem?: string | null;
+  planet?: string | null;
+  moon?: string | null;
+  orbit?: string | null;
+  spaceStation?: string | null;
+  city?: string | null;
+  outpost?: string | null;
+  priceSell?: number | null;
+  source?: 'uex' | 'manual';
+  notes?: string | null;
 }
 
 export interface CartEntry {
