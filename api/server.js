@@ -26,22 +26,19 @@ app.use(cors({
 
 app.use(express.json({ limit: '10mb' }));
 
-// Note: DigitalOcean strips the /api route prefix before forwarding,
-// so routes here are mounted without it. Externally these are still /api/*.
+// Routes are registered both with and without /api prefix so the server
+// works regardless of whether DigitalOcean strips the route prefix.
 
-// Health check — required by DigitalOcean
-app.get('/health', (req, res) => {
+const healthHandler = (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     version: '0.1.0',
     phase: 'Phase 1 — skeleton',
   });
-});
+};
 
-// Phase 1 Stage A: proxy mode — return static JSON
-// Phase 1 Stage B: replace with database query
-app.get('/db', (req, res) => {
+const dbHandler = (req, res) => {
   try {
     const jsonPath = join(__dirname, 'data', 'versedb_data.json');
     const data = readFileSync(jsonPath, 'utf-8');
@@ -51,11 +48,16 @@ app.get('/db', (req, res) => {
     console.error('Failed to load db:', err);
     res.status(500).json({ error: 'Failed to load database' });
   }
-});
+};
 
-// Catch-all for unimplemented routes
-app.use('/*', (req, res) => {
-  res.status(404).json({ error: 'Not implemented yet', path: req.path });
+app.get('/health', healthHandler);
+app.get('/api/health', healthHandler);
+app.get('/db', dbHandler);
+app.get('/api/db', dbHandler);
+
+// Root — useful for sanity checking
+app.get('/', (req, res) => {
+  res.json({ service: 'versetools-api', see: ['/health', '/db', '/api/health', '/api/db'] });
 });
 
 app.listen(PORT, () => {
