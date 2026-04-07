@@ -137,20 +137,44 @@ export class DataService {
         error: () => {},
       });
 
-    // React to dataMode changes: reload the main database
+    // React to dataMode changes: reload the main database.
+    // Live mode reads from the API (Postgres-backed) when an API is
+    // available; PTU stays on the static JSON file because the API only
+    // knows about LIVE data. GitHub Pages has no API, so we skip the
+    // network round-trip entirely and read the bundled JSON directly.
+    // On any other host, if the API call fails for any reason, we fall
+    // back to the bundled JSON so the site never breaks.
+    const isStaticHost =
+      typeof window !== 'undefined' &&
+      /github\.io$/i.test(window.location.hostname);
     effect(() => {
+      const mode = this.dataMode();
       const prefix = this.dataPrefix();
-      this.http.get<VerseDb>(`${prefix}versedb_data.json`).subscribe({
-        next: db => {
-          this.db.set(db);
-          this.selectedShip.set(null);
-          this.loadout.set({});
-          this.modeVersion.update(v => v + 1);
-          // Auto-select Gladius as default ship
-          const gladius = db.ships.find(s => s.className === 'aegs_gladius');
-          if (gladius) this.selectShip(gladius);
+      const fallbackUrl = `${prefix}versedb_data.json`;
+      const primaryUrl = mode === 'live' && !isStaticHost ? '/api/db' : fallbackUrl;
+
+      const applyDb = (db: VerseDb) => {
+        this.db.set(db);
+        this.selectedShip.set(null);
+        this.loadout.set({});
+        this.modeVersion.update(v => v + 1);
+        const gladius = db.ships.find(s => s.className === 'aegs_gladius');
+        if (gladius) this.selectShip(gladius);
+      };
+
+      this.http.get<VerseDb>(primaryUrl).subscribe({
+        next: applyDb,
+        error: (err) => {
+          if (primaryUrl !== fallbackUrl) {
+            console.warn(`API ${primaryUrl} failed, falling back to ${fallbackUrl}`, err);
+            this.http.get<VerseDb>(fallbackUrl).subscribe({
+              next: applyDb,
+              error: () => console.warn(`Could not load ${fallbackUrl}`),
+            });
+          } else {
+            console.warn(`Could not load ${fallbackUrl}`, err);
+          }
         },
-        error: () => console.warn(`Could not load ${prefix}versedb_data.json`),
       });
     });
   }
