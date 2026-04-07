@@ -121,6 +121,23 @@
   .header-actions {
     display: flex;
     gap: 12px;
+    align-items: center;
+
+    .add-hp-btn {
+      padding: 6px 12px;
+      background: rgba(80, 200, 80, 0.1);
+      border: 1px solid rgba(80, 200, 80, 0.4);
+      border-radius: 3px;
+      color: #80ff80;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(80, 200, 80, 0.2);
+      }
+    }
 
     .link-btn {
       background: transparent;
@@ -217,6 +234,28 @@
     background: #ffc04d;
     box-shadow: 0 0 8px rgba(255, 192, 77, 0.6);
     flex-shrink: 0;
+  }
+
+  .hp-remove {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 80, 80, 0.4);
+    border-radius: 3px;
+    color: rgba(255, 144, 144, 0.85);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: rgba(255, 80, 80, 0.15);
+      color: #ff9090;
+      border-color: rgba(255, 80, 80, 0.7);
+    }
   }
 
   &:hover {

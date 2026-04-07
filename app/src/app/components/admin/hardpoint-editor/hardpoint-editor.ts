@@ -216,6 +216,67 @@ export class HardpointEditorComponent {
     return Number.isNaN(n) ? null : n;
   }
 
+  // ─── Add / remove hardpoints (working copy only — Save persists) ──
+
+  addHardpoint(): void {
+    const id = window.prompt(
+      'New hardpoint ID (used as the unique key, e.g. "hardpoint_weapon_nose")'
+    );
+    if (!id) return;
+    const trimmed = id.trim();
+    if (!trimmed) return;
+    if (this.workingHardpoints().some((h) => h.id === trimmed)) {
+      window.alert(`Hardpoint "${trimmed}" already exists.`);
+      return;
+    }
+    const newHp: Hardpoint = {
+      id: trimmed,
+      label: '',
+      type: '',
+      subtypes: '',
+      minSize: 1,
+      maxSize: 1,
+      flags: '',
+      controllerTag: '',
+      portTags: '',
+      allTypes: [],
+    };
+    this.workingHardpoints.update((arr) => [...arr, newHp]);
+    this.expandedIds.update((s) => {
+      const next = new Set(s);
+      next.add(trimmed);
+      return next;
+    });
+  }
+
+  removeHardpoint(idx: number, $event: MouseEvent): void {
+    $event.stopPropagation();
+    const hp = this.workingHardpoints()[idx];
+    if (!hp) return;
+    const ok = window.confirm(
+      `Remove hardpoint "${hp.id}" from this ship?\n\n` +
+        `Any loadout entries that reference it will also be cleared. ` +
+        `Nothing is saved to the database until you click Save Changes.`
+    );
+    if (!ok) return;
+
+    this.workingHardpoints.update((arr) => arr.filter((_, i) => i !== idx));
+    this.workingLoadout.update((lo) => {
+      const next: Record<string, string> = {};
+      for (const [k, v] of Object.entries(lo)) {
+        if (k !== hp.id && !k.startsWith(hp.id + '.')) {
+          next[k] = v;
+        }
+      }
+      return next;
+    });
+    this.expandedIds.update((s) => {
+      const next = new Set(s);
+      next.delete(hp.id);
+      return next;
+    });
+  }
+
   isHardpointDirty(idx: number): boolean {
     const orig = this.originalHardpoints()[idx];
     const cur = this.workingHardpoints()[idx];

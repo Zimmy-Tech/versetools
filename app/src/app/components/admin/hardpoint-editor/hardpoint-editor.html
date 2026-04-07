@@ -43,6 +43,7 @@
             </div>
           </div>
           <div class="header-actions">
+            <button type="button" class="add-hp-btn" (click)="addHardpoint()">+ Add Hardpoint</button>
             <button type="button" class="link-btn" (click)="expandAll()">Expand all</button>
             <button type="button" class="link-btn" (click)="collapseAll()">Collapse all</button>
           </div>
@@ -72,6 +73,14 @@
                 @if (isHardpointDirty(i)) {
                   <span class="dirty-dot" title="Modified"></span>
                 }
+                <span
+                  class="hp-remove"
+                  title="Remove hardpoint"
+                  role="button"
+                  tabindex="0"
+                  (click)="removeHardpoint(i, $event)"
+                  (keydown.enter)="removeHardpoint(i, $any($event))"
+                >×</span>
               </button>
 
               @if (isExpanded(hp.id)) {
