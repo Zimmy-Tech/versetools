@@ -19,19 +19,17 @@
           (click)="setMode('ptu')"
         >PTU</button>
       </div>
-      @if (admin.mode() === 'ptu') {
-        <button
-          type="button"
-          class="sync-btn"
-          (click)="runSync()"
-          [disabled]="syncing()"
-          title="Replace PTU with current LIVE"
-        >
-          {{ syncing() ? 'Syncing…' : 'Sync PTU = LIVE' }}
-        </button>
-        @if (syncResult()) { <div class="sync-msg success">{{ syncResult() }}</div> }
-        @if (syncError()) { <div class="sync-msg error">{{ syncError() }}</div> }
-      }
+      <button
+        type="button"
+        class="sync-btn"
+        (click)="runSync()"
+        [disabled]="syncing()"
+        title="Replace PTU with current LIVE — use after a patch ships"
+      >
+        {{ syncing() ? 'Syncing…' : 'Sync PTU = LIVE' }}
+      </button>
+      @if (syncResult()) { <div class="sync-msg success">{{ syncResult() }}</div> }
+      @if (syncError()) { <div class="sync-msg error">{{ syncError() }}</div> }
     </div>
 
     <nav>
