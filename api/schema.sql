@@ -7,6 +7,12 @@
 --
 -- Phase 2 will add normalized columns alongside the JSONB blob as the
 -- editor grows — JSONB can be queried with -> / ->> in the meantime.
+--
+-- Tables live in the `versedb` schema because DigitalOcean's dev-tier
+-- Postgres user has no CREATE permission on `public`.
+
+CREATE SCHEMA IF NOT EXISTS versedb;
+SET search_path TO versedb;
 
 CREATE TABLE IF NOT EXISTS ships (
   class_name      TEXT PRIMARY KEY,

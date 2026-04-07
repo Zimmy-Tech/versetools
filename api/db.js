@@ -34,7 +34,7 @@ if (process.env.DATABASE_URL) {
 function buildPool() {
   if (!process.env.DATABASE_URL) return null;
   const u = new URL(process.env.DATABASE_URL);
-  return new Pool({
+  const p = new Pool({
     host: u.hostname,
     port: u.port ? Number(u.port) : 5432,
     user: decodeURIComponent(u.username),
@@ -42,6 +42,13 @@ function buildPool() {
     database: u.pathname.replace(/^\//, '') || 'defaultdb',
     ssl: { rejectUnauthorized: false },
   });
+  // Every new connection should look at our schema first
+  p.on('connect', (client) => {
+    client.query('SET search_path TO versedb, public').catch((err) => {
+      console.error('[db] failed to set search_path:', err.message);
+    });
+  });
+  return p;
 }
 
 export const pool = buildPool();
@@ -119,7 +126,7 @@ export async function importIfEmpty() {
 export async function ensureReady() {
   if (!pool) return;
   const { rows } = await pool.query(
-    "SELECT to_regclass('public.ships') IS NOT NULL AS has_ships"
+    "SELECT to_regclass('versedb.ships') IS NOT NULL AS has_ships"
   );
   if (!rows[0].has_ships) {
     console.log('[db] ships table missing, running schema init...');
