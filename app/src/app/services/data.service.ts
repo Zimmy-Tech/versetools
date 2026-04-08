@@ -313,6 +313,27 @@ export class DataService {
           if (weapon) newLoadout[hpId] = weapon;  // replace turret with weapon
         }
       }
+
+      // Bespoke weapon-locked turrets (Hornet F7C-M Mk2 ball turret, Perseus
+      // S8 main gimbals, etc.): the DCB defaultLoadout includes the turret
+      // entry but not its child weapon assignments because the game engine
+      // auto-fills sub-ports from the turret's weaponLock at runtime. Mirror
+      // that here so the loadout view shows the locked guns equipped on
+      // first selection rather than empty slots.
+      for (const [slotId, item] of Object.entries(newLoadout)) {
+        if (!item.weaponLock || !item.subPorts?.length) continue;
+        const lockedWeapon = this.items().find(
+          i => i.className.toLowerCase() === item.weaponLock!.toLowerCase()
+        );
+        if (!lockedWeapon) continue;
+        for (const sp of item.subPorts) {
+          const isGunPort = sp.type === 'WeaponGun' ||
+            sp.allTypes?.some((t: any) => t.type === 'WeaponGun');
+          if (!isGunPort) continue;
+          const childKey = `${slotId}.${sp.id}`;
+          if (!newLoadout[childKey]) newLoadout[childKey] = lockedWeapon;
+        }
+      }
     }
     this.loadout.set(newLoadout);
 
