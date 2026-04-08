@@ -210,6 +210,33 @@ def resolve_item_name(loc, class_name):
     # Final fallback: humanize class name
     return base.replace('_', ' ').title()
 
+# ── Ship scattergun pellet counts ─────────────────────────────────────────────
+# Ship-side scatterguns fire multiple pellets per trigger pull, but the DCB
+# damage record only stores per-pellet damage. Multiply by the pellet count
+# during extraction so alphaDamage / damage / dps reflect the per-shot total
+# the player actually sees in-game.
+#
+# All known scatterguns fire 8 pellets. Override individual entries here if
+# any future variant differs. Discovered by comparing local extraction
+# (per-pellet) against the curated DB values (per-shot total) for every
+# scattergun in the items table — exact 8x ratio across the board.
+SHIP_PELLET_COUNTS = {
+    "amrs_scattergun_s3":               8,
+    "apar_ballisticscattergun_s1":      8,
+    "apar_ballisticscattergun_s1_shark":8,
+    "apar_ballisticscattergun_s2":      8,
+    "apar_ballisticscattergun_s2_shark":8,
+    "apar_ballisticscattergun_s3":      8,
+    "apar_ballisticscattergun_s3_shark":8,
+    "apar_ballisticscattergun_s6":      8,
+    "hrst_laserscattergun_s1":          8,
+    "hrst_laserscattergun_s2":          8,
+    "hrst_laserscattergun_s3":          8,
+    "prar_distortionscattergun_s4":     8,
+    "prar_distortionscattergun_s5":     8,
+    "prar_distortionscattergun_s6":     8,
+}
+
 # ── Manufacturer resolution ────────────────────────────────────────────────────
 
 MFR_FROM_PREFIX = {
@@ -3913,6 +3940,15 @@ def enrich_from_dcb(items, dcb_path, loc):
             dmg = forge_ammo_damage.get(key) or forge_ammo_damage.get(key+"_ammo") \
                or forge_ammo_damage.get(alias) or forge_ammo_damage.get(alias+"_ammo")
         if not dmg: continue
+        # Scattergun pellet multiplication: the DCB damage record stores
+        # per-pellet damage, but the player-facing alpha is per-shot total.
+        # Multiply each damage component by the pellet count for any weapon
+        # in SHIP_PELLET_COUNTS. Without this, every scattergun's curated DB
+        # values would conflict with the local extraction on every diff.
+        pellets = SHIP_PELLET_COUNTS.get(class_name.lower(), 1)
+        if pellets > 1:
+            dmg = {k: round(v * pellets, 4) for k, v in dmg.items()}
+            item["pelletCount"] = pellets
         item["damage"] = dmg
         item["alphaDamage"] = round(sum(dmg.values()), 4)
         # Detonation params (proximity radius for distortion/scatter weapons)
