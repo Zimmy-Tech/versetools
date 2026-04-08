@@ -616,6 +616,52 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
     # Best fire rate
     best_fire_rate = max((fm["fireRate"] for fm in fire_modes), default=0)
 
+    # Sequence-driven fire rate fallback
+    # Some weapons (Killshot, Ravager, Lumin V, ...) don't store fireRate
+    # inline on the action struct — they use SWeaponSequenceEntryParams with
+    # a delay/unit pair. When unit="RPM", that's the trigger-rate cap.
+    #
+    # IMPORTANT: only trust this when the sequence is homogeneous — i.e. every
+    # entry is RPM-unit (multiple entries usually represent alt-fire modes
+    # repeating the same cap). If any entry uses Seconds with a non-zero
+    # delay, the sequence is a multi-step pipeline (e.g. Animus: 1s arming
+    # wait → fire missile A → fire missile B), and the per-step delays
+    # don't represent a sustained fire rate.
+    seq_entries = []
+    seq_homogeneous = True
+    for m in re.finditer(
+        r'<SWeaponSequenceEntryParams\b[^/>]*delay="([^"]*)"[^/>]*unit="([^"]*)"',
+        xml_text,
+    ):
+        delay = safe_float(m.group(1))
+        unit = m.group(2)
+        seq_entries.append((delay, unit))
+        if unit == "Seconds" and delay > 0:
+            seq_homogeneous = False
+    seq_max_rpm = 0
+    if seq_homogeneous:
+        rpms = [d for d, u in seq_entries if u == "RPM" and d > 0]
+        seq_max_rpm = max(rpms, default=0)
+
+    # Charge-weapon fire rate fallback
+    # Charged weapons (Devastator, Zenith, Salvo, Arrowhead, Scourge) store
+    # chargeTime + cooldownTime on SWeaponActionFireChargedParams. Effective
+    # max RPM = 60 / (chargeTime + cooldownTime).
+    # Note: must require a space before "chargeTime" so we don't match the
+    # substring inside "overchargeTime" / "overchargedTime", which appear
+    # earlier in the same struct.
+    charge_rpm = 0
+    m_ch = re.search(
+        r'<SWeaponActionFireChargedParams\b[^/>]* chargeTime="([^"]*)"[^/>]* cooldownTime="([^"]*)"',
+        xml_text,
+    )
+    if m_ch:
+        ct = safe_float(m_ch.group(1))
+        cd = safe_float(m_ch.group(2))
+        cycle = ct + cd
+        if cycle > 0:
+            charge_rpm = round(60.0 / cycle, 2)
+
     # Get ammoContainerRecord for magazine matching
     m_acr = re.search(r'ammoContainerRecord="([^"]+)"', xml_text)
     ammo_container_guid = m_acr.group(1) if m_acr else ""
@@ -634,6 +680,8 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
         "size": size,
         "fireModes": fire_modes,
         "bestFireRate": best_fire_rate,
+        "seqMaxRpm": seq_max_rpm,
+        "chargeRpm": charge_rpm,
         "ammoContainerGuid": ammo_container_guid,
         "splRefs": spl_refs,
         "beamRefs": beam_refs,
@@ -758,23 +806,31 @@ def extract_fps_weapons():
 
         # Calculate alpha damage and DPS
         alpha_damage = round(sum(damage.values()), 4)
+        # Fire rate resolution order:
+        #   1. Inline SWeaponActionFire(Single|Rapid|Burst)Params fireRate=
+        #   2. SWeaponSequenceEntryParams delay/unit (RPM-unit entries)
+        #   3. SWeaponActionFireChargedParams chargeTime+cooldownTime
+        #   4. FALLBACK_RATES (last resort, see below)
+        # is_charged is set when the rate came from path 3, so the UI can
+        # label these "Charged" instead of just showing a low RPM number.
         fire_rate_rpm = wpn["bestFireRate"]
+        is_charged = False
+        if fire_rate_rpm == 0:
+            fire_rate_rpm = wpn.get("seqMaxRpm", 0)
+        if fire_rate_rpm == 0 and wpn.get("chargeRpm", 0) > 0:
+            fire_rate_rpm = wpn["chargeRpm"]
+            is_charged = True
 
-        # Fallback fire rates for weapons using charge/sequence/beam fire modes
-        # These store fire rate in DCB-referenced structs, not inline XML
+        # Fallback fire rates for weapons whose action params are referenced
+        # via DCB record handles that aren't inlined in the entity XML, and
+        # which therefore can't be parsed without resolving the DCB record
+        # table. Keep this list as small as possible — every entry here is
+        # data we can't diff or correct via the admin panel.
         FALLBACK_RATES = {
-            "ksar_shotgun_energy_01": 60,       # Devastator - charged shotgun
-            "ksar_shotgun_ballistic_01": 120,    # Ravager-212 - pump action
-            "ksar_sniper_ballistic_01": 40,      # Scalpel - bolt action
-            "klwe_smg_energy_01": 600,           # Lumin V - burst energy
-            "klwe_sniper_energy_01": 60,         # Arrowhead - charged sniper
-            "none_rifle_multi_01": 300,          # Killshot - semi-auto
-            "none_shotgun_ballistic_01": 80,     # Deadrig - pump action
-            "volt_shotgun_energy_01": 120,       # Prism - semi-auto energy
-            "volt_sniper_energy_01": 45,         # Zenith - charged sniper
-            "hdgw_pistol_ballistic_01": 120,     # Salvo Frag Pistol
-            "apar_special_ballistic_01": 30,     # Scourge Railgun
-            "apar_special_ballistic_02": 60,     # Animus Missile Launcher
+            "volt_shotgun_energy_01": 120,       # Prism - action params not inlined
+            "ksar_sniper_ballistic_01": 40,      # Scalpel - bolt-action, multi-step
+                                                 #   Seconds sequence; no single value
+                                                 #   meaningfully represents the cycle
         }
         # Beam weapons — continuous DPS, not RPM-based
         BEAM_WEAPONS = {
@@ -850,6 +906,7 @@ def extract_fps_weapons():
             "subType": ammo_type,
             "size": wpn["size"],
             "fireRate": fire_rate_rpm,
+            "isCharged": is_charged or None,
             "fireModes": fire_mode_names,
             "magazineSize": magazine_size,
             "projectileSpeed": projectile_speed,

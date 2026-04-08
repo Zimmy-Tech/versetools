@@ -44,7 +44,7 @@
             <div class="control-label">Weapon Stats</div>
             <div class="weapon-stats">
               <div class="ws-row"><span class="ws-k">Alpha</span><span class="ws-v">{{ w.alphaDamage }}</span></div>
-              <div class="ws-row"><span class="ws-k">Fire Rate</span><span class="ws-v">{{ w.fireRate }} RPM</span></div>
+              <div class="ws-row"><span class="ws-k">Fire Rate</span><span class="ws-v">{{ w.isCharged ? 'Charged' : (w.fireRate + ' RPM') }}</span></div>
               <div class="ws-row"><span class="ws-k">DPS</span><span class="ws-v accent">{{ w.dps.toFixed(1) }}</span></div>
               <div class="ws-row"><span class="ws-k">Type</span><span class="ws-v">{{ w.type }}</span></div>
               <div class="ws-row"><span class="ws-k">Ammo</span><span class="ws-v">{{ w.subType }}</span></div>

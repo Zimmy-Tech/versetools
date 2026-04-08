@@ -11,7 +11,8 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 60,
+      "fireRate": 0,
+      "isCharged": null,
       "fireModes": [],
       "magazineSize": 0,
       "projectileSpeed": 0,
@@ -24,7 +25,7 @@
         "stun": 0
       },
       "alphaDamage": 0,
-      "dps": 0.0,
+      "dps": 0,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Ship"
@@ -36,7 +37,8 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 30,
+      "fireRate": 24.0,
+      "isCharged": true,
       "fireModes": [],
       "magazineSize": 5,
       "projectileSpeed": 50.0,
@@ -49,7 +51,7 @@
         "stun": 0
       },
       "alphaDamage": 6000.0,
-      "dps": 3000.0,
+      "dps": 2400.0,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Ship"
@@ -62,6 +64,7 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 60.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -89,6 +92,7 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 650.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -119,6 +123,7 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 450.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -149,6 +154,7 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 810.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid",
         "Single"
@@ -180,6 +186,7 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 235.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -207,6 +214,7 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 850.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid",
         "Burst"
@@ -238,6 +246,7 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 90.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -265,6 +274,7 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 55.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -292,6 +302,7 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 1200.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -322,6 +333,7 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 950.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -352,6 +364,7 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 500.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -382,6 +395,7 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 925.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -412,6 +426,7 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 150.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -442,6 +457,7 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 225.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -468,7 +484,8 @@
       "type": "Pistol",
       "subType": "Ballistic",
       "size": 1,
-      "fireRate": 120,
+      "fireRate": 60.0,
+      "isCharged": true,
       "fireModes": [],
       "magazineSize": 8,
       "projectileSpeed": 550.0,
@@ -481,7 +498,7 @@
         "stun": 0.0
       },
       "alphaDamage": 45.0,
-      "dps": 90.0,
+      "dps": 45.0,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel"
@@ -494,6 +511,7 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 180.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -524,6 +542,7 @@
       "subType": "Energy",
       "size": 3,
       "fireRate": 600.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -554,6 +573,7 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 800.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -583,7 +603,8 @@
       "type": "Shotgun",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 60,
+      "fireRate": 24.0,
+      "isCharged": true,
       "fireModes": [],
       "magazineSize": 12,
       "projectileSpeed": 300.0,
@@ -596,7 +617,7 @@
         "stun": 0.0
       },
       "alphaDamage": 120.0,
-      "dps": 120.0,
+      "dps": 48.0,
       "pelletCount": 12,
       "isBeam": null,
       "category": "Anti-Personnel",
@@ -611,7 +632,8 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 120,
+      "fireRate": 350.0,
+      "isCharged": null,
       "fireModes": [],
       "magazineSize": 16,
       "projectileSpeed": 300.0,
@@ -624,7 +646,7 @@
         "stun": 0.0
       },
       "alphaDamage": 52.0,
-      "dps": 104.0,
+      "dps": 303.33,
       "pelletCount": 8,
       "isBeam": null,
       "category": "Anti-Personnel",
@@ -640,6 +662,7 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 40,
+      "isCharged": null,
       "fireModes": [],
       "magazineSize": 12,
       "projectileSpeed": 875.0,
@@ -668,6 +691,7 @@
       "subType": "Energy",
       "size": 4,
       "fireRate": 800.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -698,6 +722,7 @@
       "subType": "Energy",
       "size": 1,
       "fireRate": 700.0,
+      "isCharged": null,
       "fireModes": [
         "Burst",
         "Single"
@@ -729,6 +754,7 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 900.0,
+      "isCharged": null,
       "fireModes": [
         "Burst",
         "Burst"
@@ -759,7 +785,8 @@
       "type": "SMG",
       "subType": "Energy",
       "size": 2,
-      "fireRate": 600,
+      "fireRate": 625.0,
+      "isCharged": null,
       "fireModes": [],
       "magazineSize": 45,
       "projectileSpeed": 600.0,
@@ -772,7 +799,7 @@
         "stun": 0.0
       },
       "alphaDamage": 21.0,
-      "dps": 210.0,
+      "dps": 218.75,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
@@ -787,7 +814,8 @@
       "type": "Sniper",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 60,
+      "fireRate": 120.0,
+      "isCharged": true,
       "fireModes": [],
       "magazineSize": 16,
       "projectileSpeed": 1000.0,
@@ -800,7 +828,7 @@
         "stun": 0.0
       },
       "alphaDamage": 50.0,
-      "dps": 50.0,
+      "dps": 100.0,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
@@ -816,6 +844,7 @@
       "subType": "Energy",
       "size": 1,
       "fireRate": 350.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -843,6 +872,7 @@
       "subType": "Energy",
       "size": 3,
       "fireRate": 30.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -870,6 +900,7 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 355.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -900,6 +931,7 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 60.0,
+      "isCharged": null,
       "fireModes": [
         "Single",
         "Single",
@@ -931,7 +963,8 @@
       "type": "Rifle",
       "subType": "Ballistic",
       "size": 2,
-      "fireRate": 300,
+      "fireRate": 535.0,
+      "isCharged": null,
       "fireModes": [],
       "magazineSize": 45,
       "projectileSpeed": 0,
@@ -944,7 +977,7 @@
         "stun": 0
       },
       "alphaDamage": 20.5,
-      "dps": 102.5,
+      "dps": 182.79,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
@@ -960,6 +993,7 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 0,
+      "isCharged": null,
       "fireModes": [
         "Beam"
       ],
@@ -989,7 +1023,8 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 80,
+      "fireRate": 120.0,
+      "isCharged": null,
       "fireModes": [],
       "magazineSize": 8,
       "projectileSpeed": 300.0,
@@ -1002,7 +1037,7 @@
         "stun": 0.0
       },
       "alphaDamage": 72.0,
-      "dps": 96.0,
+      "dps": 144.0,
       "pelletCount": 8,
       "isBeam": null,
       "category": "Anti-Personnel"
@@ -1015,6 +1050,7 @@
       "subType": "Ballistic",
       "size": 5,
       "fireRate": 500.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
@@ -1042,6 +1078,7 @@
       "subType": "Energy",
       "size": 4,
       "fireRate": 0,
+      "isCharged": null,
       "fireModes": [
         "Beam"
       ],
@@ -1069,6 +1106,7 @@
       "subType": "Energy",
       "size": 1,
       "fireRate": 500.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
@@ -1099,6 +1137,7 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 0,
+      "isCharged": null,
       "fireModes": [
         "Beam"
       ],
@@ -1129,6 +1168,7 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 0,
+      "isCharged": null,
       "fireModes": [
         "Beam"
       ],
@@ -1159,6 +1199,7 @@
       "subType": "Energy",
       "size": 3,
       "fireRate": 120,
+      "isCharged": null,
       "fireModes": [],
       "magazineSize": 20,
       "projectileSpeed": 300.0,
@@ -1186,7 +1227,8 @@
       "type": "Sniper",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 45,
+      "fireRate": 16.67,
+      "isCharged": true,
       "fireModes": [],
       "magazineSize": 22,
       "projectileSpeed": 700.0,
@@ -1199,7 +1241,7 @@
         "stun": 0.0
       },
       "alphaDamage": 42.5,
-      "dps": 31.88,
+      "dps": 11.81,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",

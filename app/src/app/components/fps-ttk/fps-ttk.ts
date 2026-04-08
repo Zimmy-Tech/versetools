@@ -8,6 +8,7 @@ interface FpsWeapon {
   type: string;
   subType: string;
   fireRate: number;
+  isCharged?: boolean | null;
   alphaDamage: number;
   dps: number;
 }

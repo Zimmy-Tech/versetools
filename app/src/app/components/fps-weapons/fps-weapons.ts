@@ -9,6 +9,7 @@ interface FpsWeapon {
   subType: string;
   size: number;
   fireRate: number;
+  isCharged?: boolean | null;
   fireModes: string[];
   magazineSize: number;
   projectileSpeed: number;
@@ -99,6 +100,11 @@ export class FpsWeaponsComponent {
   fmt(val: number, decimals = 1): string {
     if (!val) return '\u2014';
     return val.toFixed(decimals);
+  }
+
+  fmtRpm(w: FpsWeapon): string {
+    if (w.isCharged) return 'Charged';
+    return this.fmt(w.fireRate, 0);
   }
 
   dmgType(w: FpsWeapon): string {

@@ -56,7 +56,7 @@
               <td class="col-modes">{{ w.fireModes.join(', ') || '\u2014' }}</td>
               <td class="col-num">{{ fmt(w.dps) }}</td>
               <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
-              <td class="col-num">{{ fmt(w.fireRate, 0) }}</td>
+              <td class="col-num">{{ fmtRpm(w) }}</td>
               <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
               <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
               <td>{{ dmgType(w) }}</td>
@@ -73,7 +73,7 @@
                 <td class="col-modes">{{ w.fireModes.join(', ') || '\u2014' }}</td>
                 <td class="col-num">{{ fmt(w.dps) }}</td>
                 <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
-                <td class="col-num">{{ fmt(w.fireRate, 0) }}</td>
+                <td class="col-num">{{ fmtRpm(w) }}</td>
                 <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
                 <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
                 <td>{{ dmgType(w) }}</td>
