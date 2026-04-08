@@ -14583,8 +14583,7 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
       "repReward": 16000,
       "timeLimitMin": 55,
@@ -15298,10 +15297,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 16000,
+      "repReward": 300,
       "timeLimitMin": 38,
       "missionFlow": [
         "Search & Destroy",
@@ -15331,11 +15329,7 @@
         "Parallax Rifle Battery (80 Cap)"
       ],
       "contractor": "Foxwell Enforcement",
-      "multiSystem": true,
-      "requiresCompletion": [
-        "Red Level Contract: High-Risk Security Patrol"
-      ],
-      "isChain": true
+      "multiSystem": true
     },
     {
       "className": "HeadHunters_Patrol_Stanton_Super",
@@ -15518,10 +15512,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 8000,
+      "repReward": 250,
       "timeLimitMin": 50,
       "missionFlow": [
         "Defend Location",
@@ -17175,10 +17168,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 2000,
+      "repReward": 200,
       "timeLimitMin": 45,
       "missionFlow": [
         "Defend Location",
@@ -17817,10 +17809,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 16000,
+      "repReward": 300,
       "timeLimitMin": 22,
       "missionFlow": [
         "Ambush",
@@ -17963,10 +17954,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 8000,
+      "repReward": 250,
       "timeLimitMin": 29,
       "missionFlow": [
         "Search & Destroy",
@@ -17996,14 +17986,7 @@
         "Parallax Rifle Battery (80 Cap)"
       ],
       "contractor": "Foxwell Enforcement",
-      "multiSystem": true,
-      "requiresCompletion": [
-        "Orange Level Contract: Potential Security Threat"
-      ],
-      "unlocks": [
-        "Red Level Contract: Secure Threatened Space"
-      ],
-      "isChain": true
+      "multiSystem": true
     },
     {
       "className": "HeadHunters_Patrol_Stanton_VeryHard",
@@ -21210,10 +21193,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 2000,
+      "repReward": 200,
       "timeLimitMin": 27,
       "missionFlow": [
         "Search & Destroy",
@@ -21243,14 +21225,7 @@
         "Parallax Rifle Battery (80 Cap)"
       ],
       "contractor": "Foxwell Enforcement",
-      "multiSystem": true,
-      "requiresCompletion": [
-        "Orange Level Contract: Security Patrol"
-      ],
-      "unlocks": [
-        "Red Level Contract: High-Risk Security Patrol"
-      ],
-      "isChain": true
+      "multiSystem": true
     },
     {
       "className": "HeadHunters_Patrol_Stanton_Hard",
@@ -21828,10 +21803,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 8000,
+      "repReward": 250,
       "timeLimitMin": 19,
       "missionFlow": [
         "Ambush",
@@ -22631,10 +22605,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 2000,
+      "repReward": 150,
       "timeLimitMin": 30,
       "missionFlow": [
         "Defend Location",
@@ -24693,7 +24666,7 @@
       "missionFlow": [
         "Wave Attack"
       ],
-      "description": "Orange Level Contract: Destroy Outlaw Threat",
+      "description": "A splinter group of outlaws have broken off from one of the main gangs in the system and have been trying to strike out on their own. With the amount of trouble they've been causing its clear they're looking to establish a name for themselves as quickly as they can. It's going to be up to you and your support crew to put a stop to them.\\n\\nOnce your crew is ready, head over to ~mission(Location|Address) and engage with the gang. Not all of them will just be waiting there on site. Expect reinforcements to arrive once you begin your assault. Just be sure to stay until every last one of them has been take care of.\\n \\nGood luck,\\n\\nMarcus Clenn\\nFoxwell Enforcement\\n'Security, Your Way'\\n\\nFoxwell Enforcement is a bonded security specialist licensed to operate throughout the UEE. We are always looking for new operators to join our family. If you or anyone you know is interested, please reach out to one of our contract representatives.\"",
       "repRequirements": [
         {
           "scope": "Foxwell Enforcement",
@@ -26560,10 +26533,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 2000,
+      "repReward": 150,
       "timeLimitMin": 20,
       "missionFlow": [
         "Search & Destroy",
@@ -26593,14 +26565,7 @@
         "Parallax Rifle Battery (80 Cap)"
       ],
       "contractor": "Foxwell Enforcement",
-      "multiSystem": true,
-      "requiresCompletion": [
-        "Yellow Level Contract: Security Sweep"
-      ],
-      "unlocks": [
-        "Orange Level Contract: Potential Security Threat"
-      ],
-      "isChain": true
+      "multiSystem": true
     },
     {
       "className": "HeadHunters_Patrol_Stanton_Medium",
@@ -26863,10 +26828,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 2000,
+      "repReward": 200,
       "timeLimitMin": 15,
       "missionFlow": [
         "Ambush",
@@ -27993,10 +27957,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 1000,
+      "repReward": 100,
       "timeLimitMin": 25,
       "missionFlow": [
         "Defend Location",
@@ -32207,10 +32170,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 1000,
+      "repReward": 100,
       "timeLimitMin": 18,
       "missionFlow": [
         "Search & Destroy",
@@ -32240,14 +32202,7 @@
         "Parallax Rifle Battery (80 Cap)"
       ],
       "contractor": "Foxwell Enforcement",
-      "multiSystem": true,
-      "requiresCompletion": [
-        "Yellow Level Contract: Routine Patrol"
-      ],
-      "unlocks": [
-        "Orange Level Contract: Security Patrol"
-      ],
-      "isChain": true
+      "multiSystem": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Tungsten",
@@ -34293,10 +34248,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 500,
+      "repReward": 100,
       "timeLimitMin": 20,
       "missionFlow": [
         "Defend Location",
@@ -35837,10 +35791,11 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
+        "Foxwell Enforcement",
         "Security"
       ],
-      "repReward": 500,
-      "repPenalty": -50,
+      "repReward": 100,
+      "repPenalty": 100,
       "timeLimitMin": 13,
       "missionFlow": [
         "FPS Combat"
@@ -36708,7 +36663,7 @@
       "missionFlow": [
         "Wave Attack"
       ],
-      "description": "Yellow Level Contract: Clear Shipjacking Group",
+      "description": "There's a small group of criminals that have been marking their territory, striking out any freighters that get close enough. They got a little too greedy though, because now someone's paying us to go deal with them.\\n\\nOnce you and whoever you're bringing are ready, go to ~mission(Location|Address) and engage with these criminals. Since they like to fly in separate packs, be sure you wait around to clear every last one of them out.\\n \\nGood luck,\\n\\nMarcus Clenn\\nFoxwell Enforcement\\n'Security, Your Way'\\n\\nFoxwell Enforcement is a bonded security specialist licensed to operate throughout the UEE. We are always looking for new operators to join our family. If you or anyone you know is interested, please reach out to one of our contract representatives.",
       "repRequirements": [
         {
           "scope": "Foxwell Enforcement",
@@ -37247,10 +37202,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 1000,
+      "repReward": 100,
       "timeLimitMin": 9,
       "missionFlow": [
         "Ambush",
@@ -37727,10 +37681,9 @@
       "canShare": false,
       "rewardEstimated": true,
       "repScopes": [
-        "Foxwell Enforcement",
-        "Security"
+        "Foxwell Enforcement"
       ],
-      "repReward": 500,
+      "repReward": 100,
       "timeLimitMin": 14,
       "missionFlow": [
         "Search & Destroy",
@@ -37760,11 +37713,7 @@
         "Parallax Rifle Battery (80 Cap)"
       ],
       "contractor": "Foxwell Enforcement",
-      "multiSystem": true,
-      "unlocks": [
-        "Yellow Level Contract: Security Sweep"
-      ],
-      "isChain": true
+      "multiSystem": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton2_Rank0_Local_Choice",
@@ -39858,7 +39807,7 @@
     },
     {
       "className": "Covalex_Stanton_VeryEasy_RecoverCargo",
-      "title": "Covalex_RecoverCargo_VeryEasy_Title",
+      "title": "Extra Small Covalex Shipment Needs Recovering",
       "category": "Contract",
       "generator": "covalex_recovercargo",
       "reward": 20500,
@@ -40834,6 +40783,45 @@
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
+    },
+    {
+      "className": "FTL_Courier_Stanton_LocalDC_Any_Rank0",
+      "title": "ENTRY LVL. COURIER NEEDED IN STANTON",
+      "category": "Contract",
+      "generator": "ftl_courier",
+      "reward": 15750,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Affinity",
+        "FTL Courier"
+      ],
+      "repReward": 500,
+      "timeLimitMin": 7,
+      "description": "AVAILABLE FTL CONTRACT\\nFOR IMMEDIATE ASSIGNMENT\\n\\n**CONTRACT DETAILS** \\nA reliable and hardworking entry-level courier is needed to ferry a delivery in Stanton.\\nYou will be responsible for providing your own transportation.\\nInterested contractors need the <EM4>ability to lift up to .25 SCU boxes</EM4>.\\nContractors are employed on an independent basis and therefore not covered by FTL's company insurance.\\n\\n~mission(Contractor|SignOff)",
+      "repRequirements": [
+        {
+          "scope": "FTL Courier",
+          "minRank": "Neutral",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Stanton",
+      "activity": "Delivery",
+      "contractor": "FTL Courier",
+      "requiresCompletion": [
+        "ENTRY LVL. COURIER NEEDED IN NYX"
+      ],
+      "unlocks": [
+        "JR. LVL. COURIER NEEDED IN STANTON",
+        "Med. Distance Covalex Delivery Stanton",
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "isChain": true
     },
     {
       "className": "WildstarRacing_Race6_YadarValley_OpenTrack",
@@ -42726,13 +42714,6 @@
       "canShare": false,
       "timeLimitMin": 0,
       "description": "Apollo very good ship. Would be much better if ship was red. Wikelo make all things possible. You trade for what I want and we have a deal.",
-      "repRequirements": [
-        {
-          "scope": "wikelo",
-          "minRank": "Very Best Customer",
-          "maxRank": "Very Best Customer"
-        }
-      ],
       "contractor": "Wikelo Emporium"
     },
     {
@@ -43948,44 +43929,6 @@
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar"
-    },
-    {
-      "className": "FTL_Courier_Stanton_LocalDC_Any_Rank0",
-      "title": "ENTRY LVL. COURIER NEEDED IN STANTON",
-      "category": "Contract",
-      "generator": "ftl_courier",
-      "reward": 0,
-      "currency": "UEC",
-      "lawful": true,
-      "difficulty": -1,
-      "maxPlayers": 1,
-      "canShare": false,
-      "repScopes": [
-        "Affinity",
-        "FTL Courier"
-      ],
-      "repReward": 500,
-      "timeLimitMin": 0,
-      "description": "AVAILABLE FTL CONTRACT\\nFOR IMMEDIATE ASSIGNMENT\\n\\n**CONTRACT DETAILS** \\nA reliable and hardworking entry-level courier is needed to ferry a delivery in Stanton.\\nYou will be responsible for providing your own transportation.\\nInterested contractors need the <EM4>ability to lift up to .25 SCU boxes</EM4>.\\nContractors are employed on an independent basis and therefore not covered by FTL's company insurance.\\n\\n~mission(Contractor|SignOff)",
-      "repRequirements": [
-        {
-          "scope": "FTL Courier",
-          "minRank": "Neutral",
-          "maxRank": "Elite Contractor"
-        }
-      ],
-      "system": "Stanton",
-      "activity": "Delivery",
-      "contractor": "FTL Courier",
-      "requiresCompletion": [
-        "ENTRY LVL. COURIER NEEDED IN NYX"
-      ],
-      "unlocks": [
-        "JR. LVL. COURIER NEEDED IN STANTON",
-        "Med. Distance Covalex Delivery Stanton",
-        "Med. Distance Covalex Delivery Nyx"
-      ],
-      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionC_Caves_E_KillAnimals",

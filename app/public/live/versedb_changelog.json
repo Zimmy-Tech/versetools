@@ -1,9 +1,82 @@
 {
   "meta": {
-    "generatedAt": "2026-04-04T18:44:55.577323+00:00",
-    "entries": 7
+    "generatedAt": "2026-04-08T17:30:08.425160+00:00",
+    "entries": 9
   },
   "changelog": [
+    {
+      "fromVersion": "4.7.0-live.11576750",
+      "toVersion": "4.7.0-live.11592622",
+      "date": "2026-04-08",
+      "changes": [],
+      "added": [
+        {
+          "category": "flightcontroller",
+          "className": "controller_flight_misc_hull_b",
+          "name": "Flight Blade"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret_tractor_left",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret_tractor_right",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "missilelauncher",
+          "className": "mrck_s06_misc_hull_b",
+          "name": "MISC S6 Missile Rack"
+        }
+      ],
+      "removed": []
+    },
+    {
+      "fromVersion": "4.7.0-live.11576750",
+      "toVersion": "4.7.0-ptu.11494258",
+      "date": "2026-04-04",
+      "changes": [],
+      "added": [],
+      "removed": [
+        {
+          "category": "ship",
+          "className": "rsi_aurora_gs_se",
+          "name": "RSI Aurora Mk I SE"
+        },
+        {
+          "category": "ship",
+          "className": "rsi_aurora_mk2",
+          "name": "RSI Aurora Mk II"
+        },
+        {
+          "category": "flightcontroller",
+          "className": "controller_flight_rsi_aurora_mk2",
+          "name": "Flight Blade"
+        },
+        {
+          "category": "missilelauncher",
+          "className": "mrck_s01_rsi_aurora_mk2_combat_module_rack",
+          "name": "RSI S1 Missile Rack"
+        },
+        {
+          "category": "module",
+          "className": "rsi_aurora_mk2_module_cargo",
+          "name": "Aurora Mk II TS Module"
+        },
+        {
+          "category": "module",
+          "className": "rsi_aurora_mk2_module_missile",
+          "name": "Aurora Mk II DM Module"
+        }
+      ]
+    },
     {
       "fromVersion": "4.7.0-ptu.11494258",
       "toVersion": "4.7.0-live.11576750",
