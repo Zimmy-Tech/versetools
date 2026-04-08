@@ -941,6 +941,46 @@ export class DataService {
   // Items that should never appear in weapon pickers (locked to specific hardpoints only)
   isBlacklisted(cls: string): boolean { return this.PICKER_BLACKLIST.has(cls); }
 
+  /** Should `item` be excluded from the bulk-equip picker on `shipCls`?
+   *
+   *  Mirrors the ship-specific filtering from getOptionsForSlot so bulk
+   *  equip stays consistent with what the per-slot picker would accept.
+   *
+   *  Rules:
+   *    - Globally blacklisted items: always excluded
+   *    - VNG nose guns: only on Vanguard ships (other ships have no nose-only slots)
+   *    - Wolf hull guns: only on Wolf ships
+   *    - On a Wolf ship: ALL non-Wolf gun weapons excluded (Wolf weapon
+   *      slots don't accept universal guns, so they'd never equip)
+   *    - On a Vanguard: S2 gun weapons must be VNG nose-only (every Vanguard
+   *      variant's only S2 gun slots are the 4 locked nose-fixed slots,
+   *      which only accept VNG nose weapons)
+   */
+  isItemExcludedFromBulkEquip(cls: string, shipCls: string, item?: Item): boolean {
+    if (this.PICKER_BLACKLIST.has(cls)) return true;
+    const ship = shipCls.toLowerCase();
+    const isWolf = ship.includes('wolf') || ship.includes('alphawolf') || ship.includes('alpha_wolf');
+    const isVanguard = ship.includes('vanguard');
+
+    if (this.VANGUARD_NOSE_ONLY.has(cls)) return !isVanguard;
+    if (this.WOLF_WEAPONS.has(cls)) return !isWolf;
+
+    // On a Wolf ship, every non-Wolf gun is excluded from bulk equip because
+    // no Wolf hull slot would accept it (matches getOptionsForSlot:1121).
+    if (isWolf && item && (item.type === 'WeaponGun' || item.type === 'WeaponTachyon')) {
+      return true;
+    }
+
+    // On a Vanguard, S2 guns must be VNG nose-only — the only S2 slots on
+    // every Vanguard variant are the 4 locked nose-fixed slots, restricted
+    // to the 6 VNG nose weapons.
+    if (isVanguard && item && item.size === 2 &&
+        (item.type === 'WeaponGun' || item.type === 'WeaponTachyon')) {
+      return true;
+    }
+    return false;
+  }
+
   private readonly PICKER_BLACKLIST = new Set([
     // Jericho rocket pods
     'rpod_s3_fski_9x_s3',
@@ -955,6 +995,11 @@ export class DataService {
     'vncl_lasercannon_s1',      // WEAK Repeater
     'vncl_lasercannon_s2',      // WASP Repeater
     'vncl_neutroncannon_s5',    // WAR Cannon
+    'misl_s10_ir_vncl_cleaver', // Vanduul Cleaver torpedo (ship-locked)
+    // Internal / event / duplicate missile variants — no real localization,
+    // never appear in player pickers
+    'misl_s02_cs_fski_tempest_citcon',  // CitizenCon promotional Tempest variant
+    'misl_s09_cs_taln_argos_2',         // Argos torpedo duplicate (_2 suffix)
     // Capital/ground vehicle weapons (not player-equippable on ships)
     'bengal_turret_ballisticcannon_s8', // Slayer Cannon (Bengal turret)
     'hrst_nova_ballisticcannon_s5',     // Slayer Cannon (Nova tank)
@@ -967,15 +1012,12 @@ export class DataService {
     'rpod_s3_thcn_12x_s2',        // Liberator Ultra
     // AI/NPC weapon variants
     'amrs_aagun_cc_s3',                // PyroBurst AA variant (NPC only)
-    // Wolf-exclusive weapons (handled by WOLF_WEAPONS in picker, but also blacklisted for bulk)
-    'krig_ballisticgatling_bespoke_s4', // Relentless L-21 Gatling (Wolf only)
-    'krig_laserrepeater_bespoke_s4',    // Axiom L-22 Repeater (Wolf only)
-    // Vanguard nose-exclusive weapons
-    'behr_ballisticrepeater_vng_s2',    // BRVS Repeater
-    'behr_laserrepeater_vng_s2',        // GVSR Repeater (S2)
-    'behr_lasercannon_vng_s2',          // MVSA Cannon
-    'behr_ballisticcannon_vng_s2',      // CVSA Cannon
-    'behr_distortionrepeater_vng_s2',   // ATVS Repeater
+    // NOTE: ship-exclusive weapons (Wolf hull guns, Vanguard nose guns) used
+    // to live here for "bulk equip cleanup" but caused a regression — the
+    // picker's per-ship exception logic at VANGUARD_NOSE_ONLY / WOLF_WEAPONS
+    // never fired because PICKER_BLACKLIST is checked first, so they were
+    // hidden from pickers on the ships that should have them. They're now
+    // filtered from bulk equip via isItemExcludedFromBulkEquip() instead.
     // Capital/security network weapons
     'behr_laserrepeater_s10',               // GVSR Repeater (S10)
     'behr_laserrepeater_s10_securitynetwork',      // GVSR Security Network
@@ -1099,6 +1141,10 @@ export class DataService {
 
         const clsL = i.className.toLowerCase();
         if (this.PICKER_BLACKLIST.has(clsL)) return false;
+        // Ground-vehicle missile variants (gmisl_*, "-G" name suffix) are
+        // parallel duplicates of the ship missile lineup, restricted to
+        // ground vehicle hardpoints. Never show them in ship pickers.
+        if (i.type === 'Missile' && clsL.startsWith('gmisl_')) return false;
         // Filter out manned-turret structural items. These are extracted so
         // their subPort flags are visible to the loadout sub-slot synthesiser
         // (e.g. Polaris Maris cannon locks), but they aren't picker-equippable

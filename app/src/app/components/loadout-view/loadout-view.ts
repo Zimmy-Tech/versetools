@@ -132,17 +132,29 @@ export class LoadoutViewComponent {
     const asc = this.bulkSortAsc();
 
     let opts: Item[];
+    const shipCls = this.data.selectedShip()?.className ?? '';
     if (tab === 'guns') {
       opts = this.data.items().filter(i => {
         if (i.type !== 'WeaponGun' && i.type !== 'WeaponTachyon') return false;
         if (i.size !== size || (i.dps ?? 0) <= 0) return false;
         const cls = i.className.toLowerCase();
         if (cls.endsWith('_turret') || cls.includes('_aagun_')) return false;
-        // Use same blacklist as main picker
-        return !this.data.isBlacklisted(cls);
+        // Ship-aware exclusion: hides PICKER_BLACKLIST entries plus
+        // ship-exclusive guns when not on the matching ship, and (on
+        // Wolf ships) every non-Wolf gun.
+        return !this.data.isItemExcludedFromBulkEquip(cls, shipCls, i);
       });
     } else {
-      opts = this.data.items().filter(i => i.type === 'Missile' && i.size === size);
+      opts = this.data.items().filter(i => {
+        if (i.type !== 'Missile' || i.size !== size) return false;
+        const cls = i.className.toLowerCase();
+        // Ground-vehicle missile variants (gmisl_*) are parallel duplicates
+        // restricted to ground vehicle hardpoints — never show on ships.
+        if (cls.startsWith('gmisl_')) return false;
+        // Honour the same blacklist used by per-slot pickers
+        if (this.data.isBlacklisted(cls)) return false;
+        return true;
+      });
     }
     if (q) {
       opts = opts.filter(o =>
