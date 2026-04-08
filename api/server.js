@@ -379,6 +379,36 @@ app.post('/api/admin/shop-prices/refresh', requireAdmin, refreshShopPricesHandle
 // commits only the changes the admin explicitly selected so curated
 // edits aren't clobbered by extraction.
 
+// Order-insensitive deep equals: object keys are compared as sets (key
+// order doesn't matter), arrays are compared positionally (element order
+// matters). Used by diffEntity below to avoid flagging cosmetic JSON
+// key-order differences as field modifications, which previously
+// generated dozens of false-positive review entries during admin import
+// (the extractor and Postgres JSONB don't preserve key insertion order
+// across writes, so the same data round-trips through different orderings).
+function deepEqualUnordered(a, b) {
+  if (a === b) return true;
+  if (a === null || b === null) return a === b;
+  if (typeof a !== typeof b) return false;
+  if (typeof a !== 'object') return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a)) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!deepEqualUnordered(a[i], b[i])) return false;
+    }
+    return true;
+  }
+  const ak = Object.keys(a);
+  const bk = Object.keys(b);
+  if (ak.length !== bk.length) return false;
+  for (const k of ak) {
+    if (!Object.prototype.hasOwnProperty.call(b, k)) return false;
+    if (!deepEqualUnordered(a[k], b[k])) return false;
+  }
+  return true;
+}
+
 function diffEntity(uploaded, current) {
   // Returns a list of { field, oldValue, newValue } describing fields
   // that differ between the uploaded blob and the current DB blob.
@@ -390,7 +420,7 @@ function diffEntity(uploaded, current) {
   for (const key of allKeys) {
     const a = current ? current[key] : undefined;
     const b = uploaded ? uploaded[key] : undefined;
-    if (JSON.stringify(a) !== JSON.stringify(b)) {
+    if (!deepEqualUnordered(a, b)) {
       changes.push({
         field: key,
         oldValue: a === undefined ? null : a,
