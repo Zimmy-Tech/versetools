@@ -4681,6 +4681,21 @@ def main(mode: str = "live"):
                 if k not in dl:
                     dl[k] = v
 
+    # Sabre Firebird: CIG's loadout has the Mantis gatling on the wing slot
+    # directly, with a self-referencing child entry under .hardpoint_class_2 —
+    # an artefact of how their data was edited at some point. The in-game
+    # state is gimballed: VariPuck S3 mount with the Mantis on its child slot.
+    # Patch the parent entry so the loadout view renders the correct shape.
+    if "aegs_sabre_firebird" in ships:
+        dl = ships["aegs_sabre_firebird"].setdefault("defaultLoadout", {})
+        for wing in ("hardpoint_weapon_left_wing", "hardpoint_weapon_right_wing"):
+            child = f"{wing}.hardpoint_class_2"
+            # Only patch when the parent slot is the bare gun and the child
+            # entry already has the gun — avoids stomping any future CIG fix.
+            if (dl.get(wing) == "gats_ballisticgatling_s3" and
+                    dl.get(child) == "gats_ballisticgatling_s3"):
+                dl[wing] = "mount_gimbal_s3"
+
     # F7C-R Tracker & F7C-S Ghost Mk I: nose is empty by default, can equip F7C Nose Turret
     for hcls in ("anvl_hornet_f7cr", "anvl_hornet_f7cs"):
         if hcls not in ships:
