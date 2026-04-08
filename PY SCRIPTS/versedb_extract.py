@@ -1859,12 +1859,64 @@ def parse_quantumdrive_item(root, class_name, loc):
         **parse_power_ranges(root),
     }
 
+# Sub-port types we want to expose as loadout sub-slots. Manned turret
+# entities also declare Display/Room/Light/etc. ports which aren't
+# user-equippable; filtering them here keeps the JSON clean.
+WEAPON_SUBPORT_TYPES = frozenset({
+    "Turret", "WeaponGun", "WeaponMining", "MiningModifier",
+    "SalvageHead", "SalvageModifier", "TractorBeam",
+    "MissileLauncher", "BombLauncher", "Missile", "Bomb", "Module",
+})
+
+def _build_subport_dict(port_el, port_name, port_types):
+    """Build a sub-port dict for a turret/mount/module's SItemPortDef.
+
+    Note on `Flags`: the source XML uses `Flags="uneditable"` (or
+    `$uneditable`) for two distinct concepts:
+
+      1. Engine-structural lock: "this attachment is rigidly mounted on
+         the parent and cannot be detached at the simulation level."
+         Polaris top turrets, Hammerhead upper guns, etc. all have this
+         flag, but those slots are user-swappable in-game.
+      2. User-customisation lock: the slot is bespoke to a specific
+         ship-tagged item and the player can't replace it (Polaris
+         lower-front Maris cannons, Idris main guns).
+
+    The discriminator is `RequiredPortTags`. Case (2) always pairs the
+    engine flag with a non-empty bespoke tag filter; case (1) leaves
+    the tag fields blank. So we only forward the `uneditable` flag to
+    the runtime when both signals are present.
+    """
+    raw_flags = port_el.get("Flags", "") or ""
+    required_tags = port_el.get("RequiredPortTags", "") or ""
+    port_tags = port_el.get("PortTags", "") or ""
+    sp = {
+        "id": port_name,
+        "type": port_types[0],
+        "minSize": int(port_el.get("MinSize", 0)),
+        "maxSize": int(port_el.get("MaxSize", 0)),
+        "allTypes": [{"type": t} for t in port_types],
+    }
+    is_user_locked = "uneditable" in raw_flags and bool(required_tags.strip())
+    if is_user_locked:
+        sp["flags"] = "$uneditable"
+    if port_tags.strip():
+        sp["portTags"] = port_tags
+    if required_tags.strip():
+        sp["requiredPortTags"] = required_tags
+    return sp
+
 def parse_weapon_mount_item(root, class_name, loc):
     info = parse_attachdef(root)
-    if not info or info["type"] != "Turret":
+    if not info or info["type"] not in ("Turret", "TurretBase"):
         return None
-    # Accept gimbals/fixed mounts, ball turrets, canard (nose) turrets, and PDC turrets
-    if info["subType"] not in ("GunTurret", "Gun", "BallTurret", "CanardTurret", "PDCTurret"):
+    # Accept: gimbals/fixed mounts, ball turrets, canard (nose) turrets,
+    # PDC turrets, and bespoke manned turret structures (Polaris, Hammerhead,
+    # Idris, etc.). Manned turrets are TurretBase + MannedTurret in the XML
+    # and were previously skipped, leaving their sub-port `Flags` (e.g.
+    # uneditable bespoke gun mounts) invisible to the runtime.
+    is_manned_turret = info["type"] == "TurretBase" and info["subType"] == "MannedTurret"
+    if not is_manned_turret and info["subType"] not in ("GunTurret", "Gun", "BallTurret", "CanardTurret", "PDCTurret"):
         return None
     # Use the XML's Localization Name ref to check for a real display name.
     # Falling back to class-name derivation misses items whose loc key doesn't
@@ -1894,6 +1946,8 @@ def parse_weapon_mount_item(root, class_name, loc):
 
     # Extract sub-hardpoints this turret/mount provides (gun slots, missile rack slots, etc.)
     # Same pattern as parse_module_item — rich structured data for dynamic UI slot generation.
+    # Only include weapon-relevant port types — manned turret entities also expose Display
+    # and Room sub-ports (screens, ops centres) which we don't want as loadout slots.
     sub_ports = []
     for port_el in root.iter("SItemPortDef"):
         port_name = port_el.get("Name", "")
@@ -1903,13 +1957,29 @@ def parse_weapon_mount_item(root, class_name, loc):
         port_types = [t.get("Type", "") for t in types_el if t.get("Type")]
         if not port_types:
             continue
-        sub_ports.append({
-            "id": port_name,
-            "type": port_types[0],
-            "minSize": int(port_el.get("MinSize", 0)),
-            "maxSize": int(port_el.get("MaxSize", 0)),
-            "allTypes": [{"type": t} for t in port_types],
-        })
+        if port_types[0] not in WEAPON_SUBPORT_TYPES:
+            continue
+        sp = _build_subport_dict(port_el, port_name, port_types)
+        sub_ports.append(sp)
+
+    # Manned turret structures (Polaris, Hammerhead, Idris, etc.). Expose
+    # them as TurretBase items so the runtime can find their subPorts and
+    # honour any per-port `Flags="uneditable"` set in the source XML.
+    if is_manned_turret:
+        result = {
+            "className":    class_name,
+            "name":         display,
+            "manufacturer": mfr_from_classname(class_name),
+            "type":         "TurretBase",
+            "subType":      "MannedTurret",
+            "size":         info["size"],
+            "grade":        info["grade"],
+        }
+        if sub_ports:
+            result["subPorts"] = sub_ports
+        if item_tags:
+            result["itemTags"] = item_tags
+        return result
 
     # Ball/Canard turrets are full turrets (equip to Turret-type hardpoints)
     # Gimbals/fixed mounts are weapon mounts (equip to WeaponGun-type hardpoints)
@@ -1977,13 +2047,10 @@ def parse_module_item(root, class_name, loc):
         port_types = [t.get("Type", "") for t in types_el if t.get("Type")]
         if not port_types:
             continue
-        sub_ports.append({
-            "id": port_name,
-            "type": port_types[0],
-            "minSize": int(port_el.get("MinSize", 0)),
-            "maxSize": int(port_el.get("MaxSize", 0)),
-            "allTypes": [{"type": t} for t in port_types],
-        })
+        if port_types[0] not in WEAPON_SUBPORT_TYPES:
+            continue
+        sp = _build_subport_dict(port_el, port_name, port_types)
+        sub_ports.append(sp)
 
     # Extract item tags for port-tag filtering
     attach_el = root.find(".//AttachDef")

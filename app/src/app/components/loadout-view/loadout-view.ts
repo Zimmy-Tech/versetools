@@ -837,6 +837,13 @@ export class LoadoutViewComponent {
             ?? (defaultChildCls ? items.find(i => i.className.toLowerCase() === defaultChildCls.toLowerCase()) : null);
           const isGimbal = childItem?.type === 'WeaponMount';
 
+          // Bespoke per-sub-port lock: extracted from the source XML when a
+          // sub-port pairs Flags="uneditable" with a non-empty RequiredPortTags
+          // (e.g. Polaris lower front Maris cannons). This propagates through
+          // both the gimbal-wrapped and direct-mount branches below so the
+          // synthesised weapon slot inherits the lock.
+          const subPortLocked = (sp as any).flags?.includes('uneditable') ?? false;
+
           if (isGimbal && childItem?.subPorts?.length) {
             // Gimbal equipped: build the gun slot from the gimbal's own subPorts
             const gimbalPort = childItem.subPorts[0];
@@ -844,14 +851,17 @@ export class LoadoutViewComponent {
             const gunCls = defaultLoadout[gunLeafId.toLowerCase()] ?? currentLoadout[gunLeafId]?.className ?? currentLoadout[gunLeafId.toLowerCase()]?.className;
             const gunItem = gunCls ? items.find(i => i.className.toLowerCase() === gunCls.toLowerCase()) : null;
             const gunSize = lockedWeapon?.size ?? gunItem?.size ?? gimbalPort.maxSize;
+            const gunFlags = weaponLock
+              ? `weaponLock:${weaponLock}`
+              : (subPortLocked ? '$uneditable' : '');
             subSlots.push({
               id: gunLeafId,
               label: `Gun ${gunIdx++}`,
               type: 'WeaponGun',
               subtypes: '',
-              minSize: lockedWeapon ? gunSize : Math.max(1, gunSize - 1),
+              minSize: lockedWeapon || subPortLocked ? gunSize : Math.max(1, gunSize - 1),
               maxSize: gunSize,
-              flags: weaponLock ? `weaponLock:${weaponLock}` : '',
+              flags: gunFlags,
               allTypes: [{ type: 'WeaponGun', subtypes: '' }],
             });
           } else {
@@ -868,6 +878,10 @@ export class LoadoutViewComponent {
               : slotType === 'SalvageModifier' ? `Salvage Tool ${gunIdx++}`
               : `Gun ${gunIdx++}`;
             const slotSize = lockedWeapon?.size ?? sp.maxSize;
+            const directFlags = weaponLock
+              ? `weaponLock:${weaponLock}`
+              : (subPortLocked ? '$uneditable'
+                  : (sp.type === 'TractorBeam' && hp.flags?.includes('uneditable') ? '$uneditable' : ''));
             subSlots.push({
               id: subId,
               label: slotLabel,
@@ -875,7 +889,7 @@ export class LoadoutViewComponent {
               subtypes: '',
               minSize: lockedWeapon ? slotSize : sp.minSize,
               maxSize: slotSize,
-              flags: weaponLock ? `weaponLock:${weaponLock}` : (sp.type === 'TractorBeam' && hp.flags?.includes('uneditable') ? '$uneditable' : ''),
+              flags: directFlags,
               allTypes: sp.allTypes.map((t: any) => ({ type: t.type, subtypes: '' })),
             });
           }

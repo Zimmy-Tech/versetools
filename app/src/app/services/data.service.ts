@@ -1078,6 +1078,11 @@ export class DataService {
 
         const clsL = i.className.toLowerCase();
         if (this.PICKER_BLACKLIST.has(clsL)) return false;
+        // Filter out manned-turret structural items. These are extracted so
+        // their subPort flags are visible to the loadout sub-slot synthesiser
+        // (e.g. Polaris Maris cannon locks), but they aren't picker-equippable
+        // — every TurretBase ship hardpoint is fixed-fitment.
+        if (i.subType === 'MannedTurret') return false;
         // Filter out turret-internal weapon variants (lower stats, not player-equippable)
         if ((i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && clsL.endsWith('_turret')) return false;
         // Filter out 0-DPS weapon variants (turret/lowpoly/dummy internals)
