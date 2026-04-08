@@ -5940,20 +5940,17 @@ def main(mode: str = "live"):
     else:
         print(f"  WARNING: {crafting_script} not found — skipping crafting extraction")
 
-    # 10. Shop Prices (UEX Corp API)
-    print("\n[10/10] Fetching shop prices from UEX…")
-    shop_script = Path(__file__).parent / "versedb_shop_scrape.py"
-    if shop_script.exists():
-        result = subprocess.run([sys.executable, str(shop_script)], capture_output=True, text=True, env=sub_env)
-        for line in result.stdout.splitlines():
-            if any(kw in line for kw in ['matched', 'Done', 'Copied', 'WARNING', 'ERROR']):
-                print(f"  {line.strip()}")
-        if result.returncode != 0:
-            print(f"  WARNING: Shop price fetch failed")
-            if result.stderr:
-                print(f"  {result.stderr[:200]}")
-    else:
-        print(f"  WARNING: {shop_script} not found — skipping shop prices")
+    # Shop prices were previously fetched here (step [10/10]) and embedded
+    # into each ship/item's JSONB row. Removed: the canonical source is now
+    # the standalone `shop_prices` table managed by the admin "Refresh UEX
+    # Prices" button, and the API's exportFullDb (api/db.js) joins from
+    # that table at serve time so the frontend payload shape is unchanged.
+    # Embedding shopPrices in the extractor produced a large diff-noise
+    # surface on every admin import (49/199 ships didn't match UEX in any
+    # given run, so the diff would propose to overwrite the cached snapshot
+    # with empty). The standalone-table architecture solves this cleanly.
+    #
+    # versedb_shop_scrape.py is preserved for manual use if needed.
 
 if __name__ == "__main__":
     import argparse

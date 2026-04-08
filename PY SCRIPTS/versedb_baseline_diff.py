@@ -578,12 +578,13 @@ def apply_to_baseline(baseline, scrape_ships, scrape_items,
 def generate_output(baseline):
     """Generate the app-facing output from the baseline.
 
-    Strips _baseline metadata and produces the same format as before.
+    Strips _baseline metadata and shopPrices (now sourced from the
+    standalone shop_prices table; the API's exportFullDb reattaches
+    them at serve time, so embedding is redundant + diff-noisy).
     """
+    STRIPPED = {"_baseline", "_stale", "_staleDate", "shopPrices"}
     def strip_baseline(entity):
-        copy = {k: v for k, v in entity.items()
-                if k not in ("_baseline", "_stale", "_staleDate")}
-        return copy
+        return {k: v for k, v in entity.items() if k not in STRIPPED}
 
     ships = [strip_baseline(s) for s in baseline["ships"]]
     items = [strip_baseline(i) for i in baseline["items"]]
