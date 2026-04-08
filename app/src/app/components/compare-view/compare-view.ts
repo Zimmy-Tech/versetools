@@ -1,8 +1,9 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect, viewChild, ElementRef, HostListener } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Item } from '../../models/db.models';
 
 type RowDef = [string, (i: Item) => string, ((v: string) => number) | null, boolean | null];
+type PickerSortKey = 'size' | 'name' | 'dps' | 'alphaDamage' | 'fireRate' | 'projectileSpeed' | 'range' | 'powerDraw';
 
 // Slot colors matching the radar chart
 const SLOT_COLORS = ['#00c8ff', '#4aff7a', '#ffaa4a', '#e87ae8'];
@@ -24,10 +25,55 @@ export class CompareViewComponent {
   slots = signal<(Item | null)[]>([null, null, null, null]);
   readonly slotColors = SLOT_COLORS;
 
+  // ── Picker state ───────────────────────────────────────────────
+  pickerSlot = signal<number | null>(null);   // which slot index is being edited (null = closed)
+  pickerSearch = signal('');
+  pickerSizeFilter = signal<number | null>(null);
+  pickerSortBy = signal<PickerSortKey>('dps');
+  pickerSortDir = signal<'asc' | 'desc'>('desc');
+  pickerSearchInput = viewChild<ElementRef<HTMLInputElement>>('pickerSearchInput');
+
   weaponItems = computed(() =>
     this.data.items().filter(i => i.type === 'WeaponGun' && (i.dps ?? 0) > 0 && !i.name.includes('PLACEHOLDER'))
       .sort((a, b) => (a.size ?? 0) - (b.size ?? 0) || a.name.localeCompare(b.name))
   );
+
+  availableSizes = computed(() => {
+    const sizes = new Set<number>();
+    for (const w of this.weaponItems()) if (w.size) sizes.add(w.size);
+    return [...sizes].sort((a, b) => a - b);
+  });
+
+  filteredOptions = computed(() => {
+    const q = this.pickerSearch().toLowerCase().trim();
+    const sz = this.pickerSizeFilter();
+    const sortBy = this.pickerSortBy();
+    const dir = this.pickerSortDir();
+
+    let list = this.weaponItems();
+    if (sz !== null) list = list.filter(w => w.size === sz);
+    if (q) list = list.filter(w => w.name.toLowerCase().includes(q) || (w.manufacturer ?? '').toLowerCase().includes(q));
+
+    const get = (w: Item): number | string => {
+      switch (sortBy) {
+        case 'name': return w.name;
+        case 'size': return w.size ?? 0;
+        case 'dps': return w.dps ?? 0;
+        case 'alphaDamage': return w.alphaDamage ?? 0;
+        case 'fireRate': return w.fireRate ?? 0;
+        case 'projectileSpeed': return w.projectileSpeed ?? 0;
+        case 'range': return w.range ?? 0;
+        case 'powerDraw': return w.powerDraw ?? 0;
+      }
+    };
+    return [...list].sort((a, b) => {
+      const av = get(a), bv = get(b);
+      if (typeof av === 'string' && typeof bv === 'string') {
+        return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      }
+      return dir === 'asc' ? (av as number) - (bv as number) : (bv as number) - (av as number);
+    });
+  });
 
   private commonRows: RowDef[] = [
     ['Name',         i => i.name,                        null,              null],
@@ -40,11 +86,11 @@ export class CompareViewComponent {
     WeaponGun: [
       ['DPS',           i => (i.dps ?? 0) > 0 ? i.dps!.toFixed(1) : '—',                         v => parseFloat(v) || 0, true],
       ['Alpha Damage',  i => (i.alphaDamage ?? 0) > 0 ? i.alphaDamage!.toFixed(2) : '—',          v => parseFloat(v) || 0, true],
-      ['Fire Rate',     i => (i.fireRate ?? 0) > 0 ? i.fireRate!.toFixed(0) + ' rpm' : '—',       null, null],
+      ['Fire Rate',     i => (i.fireRate ?? 0) > 0 ? i.fireRate!.toFixed(0) + ' rpm' : '—',       v => parseFloat(v) || 0, true],
       ['Physical',      i => (i.damage?.physical ?? 0) > 0 ? i.damage!.physical!.toFixed(2) : '—', null, null],
       ['Energy',        i => (i.damage?.energy ?? 0) > 0 ? i.damage!.energy!.toFixed(2) : '—',   null, null],
       ['Distortion',    i => (i.damage?.distortion ?? 0) > 0 ? i.damage!.distortion!.toFixed(2) : '—', null, null],
-      ['Speed',         i => (i.projectileSpeed ?? 0) > 0 ? i.projectileSpeed!.toFixed(0) + ' m/s' : '—', null, null],
+      ['Speed',         i => (i.projectileSpeed ?? 0) > 0 ? i.projectileSpeed!.toFixed(0) + ' m/s' : '—', v => parseFloat(v) || 0, true],
       ['Range',         i => (i.range ?? 0) > 0 ? ((i.range! / 1000).toFixed(1) + ' km') : '—',  v => parseFloat(v) || 0, true],
       ['Pen. Distance',   i => (i.penetrationDistance ?? 0) > 0 ? i.penetrationDistance!.toFixed(2) + 'm' : '—', v => parseFloat(v) || 0, true],
       ['Pen. Radius',     i => (i.penetrationMaxRadius ?? 0) > 0 ? i.penetrationMinRadius!.toFixed(2) + '–' + i.penetrationMaxRadius!.toFixed(2) + 'm' : '—', v => parseFloat(v) || 0, true],
@@ -73,8 +119,8 @@ export class CompareViewComponent {
   // Extra radar-only axes per type (numeric data not in the table, excluding ammo)
   private radarExtras: Record<string, { label: string; get: (i: Item) => number; higherBetter: boolean }[]> = {
     WeaponGun: [
-      { label: 'Fire Rate',     get: i => i.fireRate ?? 0,           higherBetter: true },
-      { label: 'Proj. Speed',   get: i => i.projectileSpeed ?? 0,   higherBetter: true },
+      // Fire Rate and Speed are now sourced from typeRows (so they highlight
+      // best-in-row in the comparison table). No extras needed here.
     ],
     Shield: [
       { label: 'Phys Resist',   get: i => i.resistPhysMax ?? 0,     higherBetter: true },
@@ -233,8 +279,46 @@ export class CompareViewComponent {
   });
 
   constructor(public data: DataService) {
-    const top4 = this.weaponItems().slice(0, 4);
-    this.slots.set([top4[0] ?? null, top4[1] ?? null, top4[2] ?? null, top4[3] ?? null]);
+    // Auto-focus the search input when the picker opens. Angular destroys
+    // and re-creates the input each time the @if branch toggles, so the
+    // native autofocus attribute doesn't fire on subsequent opens.
+    effect(() => {
+      if (this.pickerSlot() === null) return;
+      const ref = this.pickerSearchInput();
+      if (ref) queueMicrotask(() => ref.nativeElement.focus());
+    });
+
+    // Pre-fill slots once item data has loaded. weaponItems() is empty during
+    // the synchronous constructor pass because data.items() loads async, so
+    // we need an effect that re-runs when items arrive.
+    effect(() => {
+      const items = this.weaponItems();
+      if (!items.length) return;
+      if (this.slots().every(s => s === null)) {
+        // Pick four spread across sizes for visual variety
+        const bySize = new Map<number, typeof items>();
+        for (const w of items) {
+          const sz = w.size ?? 0;
+          if (!bySize.has(sz)) bySize.set(sz, []);
+          bySize.get(sz)!.push(w);
+        }
+        const sizes = [...bySize.keys()].sort((a, b) => a - b);
+        const picks: (typeof items[0] | null)[] = [];
+        // Round-robin across sizes, taking the highest-DPS weapon from each
+        for (const sz of sizes) {
+          const top = [...bySize.get(sz)!].sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))[0];
+          if (top) picks.push(top);
+          if (picks.length >= 4) break;
+        }
+        // Pad with extras from the largest size if we didn't fill 4
+        while (picks.length < 4 && sizes.length) {
+          const last = bySize.get(sizes[sizes.length - 1])!;
+          const next = [...last].sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))[picks.length];
+          picks.push(next ?? null);
+        }
+        this.slots.set([picks[0] ?? null, picks[1] ?? null, picks[2] ?? null, picks[3] ?? null]);
+      }
+    });
   }
 
   setSlot(index: number, className: string): void {
@@ -242,6 +326,61 @@ export class CompareViewComponent {
     const updated = [...this.slots()];
     updated[index] = item;
     this.slots.set(updated);
+  }
+
+  // ── Picker controls ─────────────────────────────────────────────
+  openPicker(index: number, evt?: Event): void {
+    evt?.stopPropagation();
+    this.pickerSlot.set(index);
+    this.pickerSearch.set('');
+  }
+
+  closePicker(): void {
+    this.pickerSlot.set(null);
+  }
+
+  selectFromPicker(item: Item | null): void {
+    const slot = this.pickerSlot();
+    if (slot === null) return;
+    const updated = [...this.slots()];
+    updated[slot] = item;
+    this.slots.set(updated);
+    this.closePicker();
+  }
+
+  togglePickerSort(col: PickerSortKey): void {
+    if (this.pickerSortBy() === col) {
+      this.pickerSortDir.set(this.pickerSortDir() === 'desc' ? 'asc' : 'desc');
+    } else {
+      this.pickerSortBy.set(col);
+      this.pickerSortDir.set(col === 'name' || col === 'powerDraw' ? 'asc' : 'desc');
+    }
+  }
+
+  pickerSortIndicator(col: PickerSortKey): string {
+    if (this.pickerSortBy() !== col) return '';
+    return this.pickerSortDir() === 'desc' ? ' \u25BE' : ' \u25B4';
+  }
+
+  @HostListener('document:keydown.escape')
+  onEsc(): void {
+    if (this.pickerSlot() !== null) this.closePicker();
+  }
+
+  // ── Trigger card helpers ────────────────────────────────────────
+  fmtNum(v: number | undefined | null, decimals = 0): string {
+    if (!v) return '\u2014';
+    return v.toFixed(decimals);
+  }
+
+  weaponDmgTag(w: Item): string {
+    if (w.isBallistic) return 'Phys';
+    const d = w.damage;
+    if (!d) return '';
+    if ((d.energy ?? 0) > 0 && (d.physical ?? 0) === 0) return 'Enrg';
+    if ((d.distortion ?? 0) > 0) return 'Dist';
+    if ((d.physical ?? 0) > 0 && (d.energy ?? 0) > 0) return 'Mixed';
+    return '';
   }
 
   getCellValue(row: RowDef, item: Item | null): string {

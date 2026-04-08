@@ -9,17 +9,20 @@
             <th></th>
             @for (slot of slots(); track $index; let i = $index) {
               <th>
-                <div class="selector-wrap">
-                  <div class="slot-color" [style.background]="slotColors[i]"></div>
-                  <select class="compare-slot-select" (change)="setSlot(i, $any($event.target).value)">
-                    <option value="">— Select —</option>
-                    @for (item of weaponItems(); track item.className) {
-                      <option [value]="item.className" [selected]="slot?.className === item.className">
-                        {{ item.name }} (S{{ item.size }})
-                      </option>
-                    }
-                  </select>
-                </div>
+                <button type="button"
+                        class="slot-trigger"
+                        [class.empty]="!slot"
+                        [style.--slot-color]="slotColors[i]"
+                        (click)="openPicker(i, $event)">
+                  <span class="slot-color-bar"></span>
+                  @if (slot; as w) {
+                    <span class="slot-sz">S{{ w.size }}</span>
+                    <span class="slot-name">{{ w.name }}</span>
+                  } @else {
+                    <span class="slot-empty">— Select Weapon —</span>
+                  }
+                  <span class="slot-arrow">▸</span>
+                </button>
               </th>
             }
           </tr>
@@ -56,7 +59,7 @@
   <!-- Radar chart below table -->
   @if (radarAxes().length >= 3) {
     <div class="radar-wrap">
-      <svg class="radar-svg" viewBox="0 0 300 300">
+      <svg class="radar-svg" viewBox="-70 -10 440 320">
         @for (ring of radarGrid(); track $index) {
           <polygon [attr.points]="ring" class="radar-ring" />
         }
@@ -85,6 +88,77 @@
             </div>
           }
         }
+      </div>
+    </div>
+  }
+
+  <!-- Picker modal -->
+  @if (pickerSlot() !== null) {
+    <div class="picker-backdrop" (click)="closePicker()">
+      <div class="picker-modal" (click)="$event.stopPropagation()">
+        <div class="picker-header">
+          <span class="picker-title">
+            <span class="picker-slot-tag" [style.background]="slotColors[pickerSlot()!]"></span>
+            Select Weapon — Slot {{ pickerSlot()! + 1 }}
+          </span>
+          <button type="button" class="picker-close" (click)="closePicker()" title="Close (Esc)">×</button>
+        </div>
+
+        <div class="picker-controls">
+          <input #pickerSearchInput class="picker-search" type="text" placeholder="Search weapons or manufacturer..."
+                 [value]="pickerSearch()"
+                 (input)="pickerSearch.set($any($event.target).value)">
+          <div class="picker-size-filters">
+            <button type="button" class="size-btn" [class.active]="pickerSizeFilter() === null"
+                    (click)="pickerSizeFilter.set(null)">All</button>
+            @for (sz of availableSizes(); track sz) {
+              <button type="button" class="size-btn" [class.active]="pickerSizeFilter() === sz"
+                      (click)="pickerSizeFilter.set(sz)">S{{ sz }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="picker-table-wrap">
+          <table class="picker-table">
+            <thead>
+              <tr>
+                <th class="sortable" (click)="togglePickerSort('size')">Sz{{ pickerSortIndicator('size') }}</th>
+                <th class="col-name sortable" (click)="togglePickerSort('name')">Name{{ pickerSortIndicator('name') }}</th>
+                <th>Mfr</th>
+                <th class="sortable" (click)="togglePickerSort('dps')">DPS{{ pickerSortIndicator('dps') }}</th>
+                <th class="sortable" (click)="togglePickerSort('alphaDamage')">Alpha{{ pickerSortIndicator('alphaDamage') }}</th>
+                <th class="sortable" (click)="togglePickerSort('fireRate')">RPM{{ pickerSortIndicator('fireRate') }}</th>
+                <th class="sortable" (click)="togglePickerSort('projectileSpeed')">Vel{{ pickerSortIndicator('projectileSpeed') }}</th>
+                <th class="sortable" (click)="togglePickerSort('range')">Range{{ pickerSortIndicator('range') }}</th>
+                <th class="sortable" (click)="togglePickerSort('powerDraw')">Pwr{{ pickerSortIndicator('powerDraw') }}</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="picker-clear" (click)="selectFromPicker(null)">
+                <td colspan="10">— Empty Slot —</td>
+              </tr>
+              @for (opt of filteredOptions(); track opt.className) {
+                <tr [class.selected]="slots()[pickerSlot()!]?.className === opt.className"
+                    (click)="selectFromPicker(opt)">
+                  <td>S{{ opt.size }}</td>
+                  <td class="col-name">{{ opt.name }}</td>
+                  <td class="col-mfr">{{ opt.manufacturer ?? '—' }}</td>
+                  <td>{{ fmtNum(opt.dps, 1) }}</td>
+                  <td>{{ fmtNum(opt.alphaDamage, 1) }}</td>
+                  <td>{{ fmtNum(opt.fireRate, 0) }}</td>
+                  <td>{{ fmtNum(opt.projectileSpeed, 0) }}</td>
+                  <td>{{ opt.range ? (opt.range / 1000).toFixed(1) + 'km' : '—' }}</td>
+                  <td>{{ fmtNum(opt.powerDraw, 2) }}</td>
+                  <td>{{ weaponDmgTag(opt) || '—' }}</td>
+                </tr>
+              }
+              @if (!filteredOptions().length) {
+                <tr><td colspan="10" class="picker-empty">No weapons match these filters</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   }
