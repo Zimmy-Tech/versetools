@@ -40,6 +40,24 @@ interface OreLocationEntry {
   percent: number;
 }
 
+/** Maps raw mining-location names from the data feed to friendlier
+ *  display strings. CIG hasn't shipped formal localization for the
+ *  Pyro bodies yet, so the data file has procedural keys ("Pyro Va")
+ *  while in-game they're known by names like "Vuur" and "Ignis".
+ *  Add entries here as new locations get named. */
+const LOCATION_DISPLAY_NAMES: Record<string, string> = {
+  // Pyro system bodies
+  'Pyro II': 'Pyro II - Monox',
+  'Pyro III': 'Pyro III - Bloom',
+  'Pyro Va': 'Pyro V-a - Ignis',
+  'Pyro Vb': 'Pyro V-b - Vatra',
+  'Pyro Vc': 'Pyro V-c - Adir',
+  'Pyro Vd': 'Pyro V-d - Fairo',
+  'Pyro Ve': 'Pyro V-e - Fuego',
+  'Pyro Vf': 'Pyro V-f - Vuur',
+  'Pyro VI': 'Pyro VI - Terminus',
+};
+
 @Component({
   selector: 'app-mining-view',
   standalone: true,
@@ -47,6 +65,13 @@ interface OreLocationEntry {
   styleUrl: './mining-view.scss',
 })
 export class MiningViewComponent {
+  /** Returns the display name for a raw mining location, falling back
+   *  to the raw value when no mapping exists. */
+  displayLocation(name: string | undefined | null): string {
+    if (!name) return '';
+    return LOCATION_DISPLAY_NAMES[name] ?? name;
+  }
+
   // Navigation mode: 'system' (default) or 'ore'
   mode = signal<'system' | 'ore'>('system');
 

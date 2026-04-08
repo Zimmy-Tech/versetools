@@ -15,7 +15,7 @@
     }
     @if (selectedLocation()) {
       <span class="bc-sep">/</span>
-      <button class="bc-item" [class.active]="selectedLocation() && !selectedMineral()" (click)="selectedMineral.set(null)">{{ selectedLocation()!.location }}</button>
+      <button class="bc-item" [class.active]="selectedLocation() && !selectedMineral()" (click)="selectedMineral.set(null)">{{ displayLocation(selectedLocation()!.location) }}</button>
     }
     @if (selectedMineral()) {
       <span class="bc-sep">/</span>
@@ -61,7 +61,7 @@
           </div>
           @for (entry of oreLocations(); track entry.location + entry.method) {
             <div class="mt-row ore-row">
-              <span class="mt-name">{{ entry.location }}</span>
+              <span class="mt-name">{{ displayLocation(entry.location) }}</span>
               <span class="mt-system">{{ entry.system }}</span>
               <span class="mt-method"><span class="method-tag">{{ entry.method }}</span></span>
               <span class="mt-tier" [class]="tierClass(entry.tier)">{{ entry.tier }}</span>
@@ -79,7 +79,7 @@
         <div class="card-grid">
           @for (loc of bodies(); track loc.id) {
             <button class="location-card body-card" (click)="selectBody(loc)">
-              <span class="card-name">{{ loc.location }}</span>
+              <span class="card-name">{{ displayLocation(loc.location) }}</span>
               <span class="card-sub">
                 @if (loc.mining['ship']) { <span class="method-tag">Ship</span> }
                 @if (loc.mining['roc']) { <span class="method-tag">ROC</span> }
@@ -94,7 +94,7 @@
     <!-- ═══════════ TIER 3: Location Minerals ═══════════ -->
     @if (selectedLocation() && !selectedMineral()) {
       <div class="detail-panel">
-        <h2>{{ selectedLocation()!.location }}</h2>
+        <h2>{{ displayLocation(selectedLocation()!.location) }}</h2>
 
         @if (selectedLocation()!.mining['ship']; as ship) {
           <div class="mining-group">
