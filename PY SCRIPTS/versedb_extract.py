@@ -4681,6 +4681,48 @@ def main(mode: str = "live"):
                 if k not in dl:
                     dl[k] = v
 
+    # Origin 890 Jump: CIG flagged the radar slot `invisible uneditable` in
+    # build 4.7.0-live.11592622, so the extractor's invisible+uneditable
+    # filter at parse_vehicle_xml drops it entirely (only FlightController
+    # and BombLauncher are exempt from that filter). The radar is gone from
+    # the parsed hardpoints list — we can't modify it, we have to re-add
+    # it. Restores yesterday's shape so the 890 still shows its radar slot.
+    # The broader fix (exposing all 192 critical capital-ship hardpoints
+    # flagged invisible+uneditable across the fleet — Idris, Javelin,
+    # Cutter, MOLE, etc.) is tracked separately and will land in its own
+    # session.
+    if "ORIG_890Jump" in ships:
+        ship = ships["ORIG_890Jump"]
+        hps = ship.setdefault("hardpoints", [])
+        if not any(hp["id"].lower() == "hardpoint_radar_01" for hp in hps):
+            hps.append({
+                "id": "hardpoint_radar_01",
+                "label": "Radar",
+                "type": "Radar",
+                "subtypes": "",
+                "minSize": 1,
+                "maxSize": 3,
+                "flags": "invisible",
+                "allTypes": [{"type": "Radar", "subtypes": ""}],
+            })
+
+    # Aegis Aurora Mk II: CIG removed the module slot's port-tag filter in
+    # build 4.7.0-live.11592622, leaving the slot untagged while the Aurora
+    # cargo/combat module items still carry their RSI_Aurora_Mk2_Module
+    # itemTags. The picker's "tagged item + untagged slot → reject" rule
+    # would then empty the Aurora module picker entirely, breaking the
+    # existing Aurora module workflow. Restore the canonical tag filter so
+    # the slot keeps accepting (only) Aurora-tagged modules. The pattern
+    # also serves as the reference shape for any future modular ship.
+    if "rsi_aurora_mk2" in ships:
+        for hp in ships["rsi_aurora_mk2"].get("hardpoints", []):
+            if hp["id"].lower() == "hardpoint_module":
+                if not hp.get("portTags"):
+                    hp["portTags"] = "RSI_Aurora_Mk2_Module"
+                fl = hp.get("flags") or ""
+                if "exclusive_tags" not in fl:
+                    hp["flags"] = (fl + " exclusive_tags").strip()
+
     # Sabre Firebird: CIG's loadout has the Mantis gatling on the wing slot
     # directly, with a self-referencing child entry under .hardpoint_class_2 —
     # an artefact of how their data was edited at some point. The in-game
