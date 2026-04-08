@@ -8,6 +8,9 @@ type PickerSortKey = 'size' | 'name' | 'dps' | 'alphaDamage' | 'fireRate' | 'pro
 // Slot colors matching the radar chart
 const SLOT_COLORS = ['#00c8ff', '#4aff7a', '#ffaa4a', '#e87ae8'];
 
+// localStorage key for persisting selected weapons across visits
+const STORAGE_KEY = 'compareView.slots.v1';
+
 interface RadarAxis {
   label: string;
   values: (number | null)[];       // raw values per slot
@@ -290,35 +293,73 @@ export class CompareViewComponent {
 
     // Pre-fill slots once item data has loaded. weaponItems() is empty during
     // the synchronous constructor pass because data.items() loads async, so
-    // we need an effect that re-runs when items arrive.
+    // we need an effect that re-runs when items arrive. Restores from
+    // localStorage when available, otherwise picks a size-spread default.
     effect(() => {
       const items = this.weaponItems();
       if (!items.length) return;
-      if (this.slots().every(s => s === null)) {
-        // Pick four spread across sizes for visual variety
-        const bySize = new Map<number, typeof items>();
-        for (const w of items) {
-          const sz = w.size ?? 0;
-          if (!bySize.has(sz)) bySize.set(sz, []);
-          bySize.get(sz)!.push(w);
-        }
-        const sizes = [...bySize.keys()].sort((a, b) => a - b);
-        const picks: (typeof items[0] | null)[] = [];
-        // Round-robin across sizes, taking the highest-DPS weapon from each
-        for (const sz of sizes) {
-          const top = [...bySize.get(sz)!].sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))[0];
-          if (top) picks.push(top);
-          if (picks.length >= 4) break;
-        }
-        // Pad with extras from the largest size if we didn't fill 4
-        while (picks.length < 4 && sizes.length) {
-          const last = bySize.get(sizes[sizes.length - 1])!;
-          const next = [...last].sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))[picks.length];
-          picks.push(next ?? null);
-        }
-        this.slots.set([picks[0] ?? null, picks[1] ?? null, picks[2] ?? null, picks[3] ?? null]);
+      if (!this.slots().every(s => s === null)) return;
+
+      // Try restoring from localStorage first
+      const restored = this.loadSlotsFromStorage(items);
+      if (restored) {
+        this.slots.set(restored);
+        return;
       }
+
+      // Default: pick four spread across sizes for visual variety
+      const bySize = new Map<number, typeof items>();
+      for (const w of items) {
+        const sz = w.size ?? 0;
+        if (!bySize.has(sz)) bySize.set(sz, []);
+        bySize.get(sz)!.push(w);
+      }
+      const sizes = [...bySize.keys()].sort((a, b) => a - b);
+      const picks: (typeof items[0] | null)[] = [];
+      // Round-robin across sizes, taking the highest-DPS weapon from each
+      for (const sz of sizes) {
+        const top = [...bySize.get(sz)!].sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))[0];
+        if (top) picks.push(top);
+        if (picks.length >= 4) break;
+      }
+      // Pad with extras from the largest size if we didn't fill 4
+      while (picks.length < 4 && sizes.length) {
+        const last = bySize.get(sizes[sizes.length - 1])!;
+        const next = [...last].sort((a, b) => (b.dps ?? 0) - (a.dps ?? 0))[picks.length];
+        picks.push(next ?? null);
+      }
+      this.slots.set([picks[0] ?? null, picks[1] ?? null, picks[2] ?? null, picks[3] ?? null]);
     });
+
+    // Persist slot selection to localStorage whenever it changes. Skip the
+    // initial all-null state so we don't clobber a saved selection during
+    // the brief window before data loads.
+    effect(() => {
+      const slots = this.slots();
+      if (slots.every(s => s === null)) return;
+      try {
+        const classNames = slots.map(s => s?.className ?? null);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(classNames));
+      } catch { /* localStorage may be unavailable (private mode, etc.) */ }
+    });
+  }
+
+  private loadSlotsFromStorage(items: Item[]): (Item | null)[] | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const classNames = JSON.parse(raw);
+      if (!Array.isArray(classNames) || classNames.length !== 4) return null;
+      const restored = classNames.map((cn: unknown) =>
+        typeof cn === 'string' ? (items.find(i => i.className === cn) ?? null) : null
+      );
+      // Only honor the restore if at least one slot resolved — otherwise
+      // the saved data is stale (renamed/removed weapons) and we should
+      // fall through to defaults.
+      return restored.some(s => s !== null) ? restored : null;
+    } catch {
+      return null;
+    }
   }
 
   setSlot(index: number, className: string): void {

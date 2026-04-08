@@ -1,10 +1,13 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Ship, Item, Hardpoint } from '../../models/db.models';
 
 type RowDef = [string, (s: Ship) => string, ((v: string) => number) | null, boolean | null];
 
 const SLOT_COLORS = ['#00c8ff', '#4aff7a', '#ffaa4a', '#e87ae8'];
+
+// localStorage key for persisting selected ships across visits
+const STORAGE_KEY = 'shipCompare.slots.v1';
 
 @Component({
   selector: 'app-ship-compare',
@@ -138,7 +141,44 @@ export class ShipCompareComponent {
     ];
   });
 
-  constructor(public data: DataService) {}
+  constructor(public data: DataService) {
+    // Restore slot selection from localStorage once ship data has loaded.
+    // data.ships() is empty during the synchronous constructor pass.
+    effect(() => {
+      const ships = this.data.ships();
+      if (!ships.length) return;
+      if (!this.slots().every(s => s === null)) return;
+      const restored = this.loadSlotsFromStorage(ships);
+      if (restored) this.slots.set(restored);
+    });
+
+    // Persist slot selection whenever it changes. Skip the initial all-null
+    // state so we don't clobber a saved selection during the brief window
+    // before data loads.
+    effect(() => {
+      const slots = this.slots();
+      if (slots.every(s => s === null)) return;
+      try {
+        const classNames = slots.map(s => s?.className ?? null);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(classNames));
+      } catch { /* localStorage may be unavailable (private mode, etc.) */ }
+    });
+  }
+
+  private loadSlotsFromStorage(ships: Ship[]): (Ship | null)[] | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const classNames = JSON.parse(raw);
+      if (!Array.isArray(classNames) || classNames.length !== 4) return null;
+      const restored = classNames.map((cn: unknown) =>
+        typeof cn === 'string' ? (ships.find(s => s.className === cn) ?? null) : null
+      );
+      return restored.some(s => s !== null) ? restored : null;
+    } catch {
+      return null;
+    }
+  }
 
   setSlot(index: number, className: string): void {
     const ship = className ? (this.data.ships().find(s => s.className === className) ?? null) : null;
