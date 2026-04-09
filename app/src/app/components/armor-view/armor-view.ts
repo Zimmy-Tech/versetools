@@ -8,9 +8,20 @@ type ShipSize = '' | 'small' | 'medium' | 'large' | 'capital';
 interface ShipRow {
   ship: Ship;
   deflect: number;
-  deflected: boolean;
-  effectiveAlpha?: number;
+  alpha: number;            // raw weapon alpha (constant per row, kept for the table)
+  shieldedAlpha: number;    // alpha × size-class avg bleed (rounded for display)
+  armorPenetrates: boolean; // raw alpha > deflect
+  shieldPenetrates: boolean;// shieldedAlpha > deflect
 }
+
+// Display labels for ship size classes — game uses "small/medium/large/capital"
+// internally but the players think in S1/S2/S3/S4 shorthand.
+const SHIP_SIZE_LABELS: Record<string, string> = {
+  small:   'S1',
+  medium:  'S2',
+  large:   'S3',
+  capital: 'S4',
+};
 
 @Component({
   selector: 'app-armor-view',
@@ -76,24 +87,46 @@ export class ArmorViewComponent {
     return cls ? this.data.items().find(i => i.className === cls) ?? null : null;
   });
 
-  /** Get the default shield absorption for a ship (max power, averaged across shields). */
-  private getShieldAbsorption(ship: Ship, dmgType: DmgType): number {
-    const dl = ship.defaultLoadout;
-    if (!dl) return 0;
+  /** Average shield bleedthrough per ship size class.
+   *
+   *  For each size class (small/medium/large/capital), walks every ship in
+   *  that class, looks up its default-loadout shields, and averages the
+   *  physical/energy absorption rates across all those shields. Returns
+   *  bleedthrough = 1 − absorption.
+   *
+   *  The result is one approximate "typical shield" per size class, used
+   *  by the armor view's shielded penetration check so we don't have to
+   *  show per-ship shield variation in the threat table. */
+  shieldBleedByClass = computed(() => {
     const items = this.data.items();
-    const absKey = dmgType === 'physical' ? 'absPhysMax' : 'absEnrgMax';
-    let totalAbs = 0;
-    let count = 0;
-    for (const [slot, cls] of Object.entries(dl)) {
-      if (!slot.toLowerCase().includes('shield_generator')) continue;
-      const item = items.find(i => i.className.toLowerCase() === cls.toLowerCase());
-      if (item && item.type === 'Shield') {
-        totalAbs += (item as any)[absKey] ?? 0;
-        count++;
+    const itemByCls = new Map(items.map(i => [i.className.toLowerCase(), i]));
+    const totals: Record<string, { phys: number; enrg: number; shields: number }> = {
+      small:   { phys: 0, enrg: 0, shields: 0 },
+      medium:  { phys: 0, enrg: 0, shields: 0 },
+      large:   { phys: 0, enrg: 0, shields: 0 },
+      capital: { phys: 0, enrg: 0, shields: 0 },
+    };
+    for (const ship of this.data.ships()) {
+      if (!ship.size || !ship.defaultLoadout || !totals[ship.size]) continue;
+      for (const [slot, cls] of Object.entries(ship.defaultLoadout)) {
+        if (!slot.toLowerCase().includes('shield_generator')) continue;
+        const item = itemByCls.get((cls ?? '').toLowerCase());
+        if (item?.type !== 'Shield') continue;
+        totals[ship.size].phys += (item as any).absPhysMax ?? 0;
+        totals[ship.size].enrg += (item as any).absEnrgMax ?? 0;
+        totals[ship.size].shields += 1;
       }
     }
-    return count > 0 ? totalAbs / count : 0;
-  }
+    const result: Record<string, { physBleed: number; enrgBleed: number; shields: number }> = {};
+    for (const [k, v] of Object.entries(totals)) {
+      result[k] = {
+        physBleed: v.shields > 0 ? 1 - (v.phys / v.shields) : 1,
+        enrgBleed: v.shields > 0 ? 1 - (v.enrg / v.shields) : 1,
+        shields: v.shields,
+      };
+    }
+    return result;
+  });
 
   nearbyShips = computed<ShipRow[]>(() => {
     const weapon = this.activeWeapon();
@@ -101,44 +134,55 @@ export class ArmorViewComponent {
     const dt = this.dmgType();
     const rawAlpha = weapon.damage[dt] ?? 0;
     const deflectKey = dt === 'physical' ? 'armorDeflectPhys' : 'armorDeflectEnrg';
-    const withShields = this.shieldsUp();
+    const bleeds = this.shieldBleedByClass();
 
     const sizeFilter = this.shipSize();
-    const ships = this.data.ships()
+    const candidates = this.data.ships()
       .filter(s => ((s as any)[deflectKey] ?? 0) > 0)
-      .filter(s => !sizeFilter || s.size === sizeFilter)
-      .map(s => {
-        const deflect = (s as any)[deflectKey] as number;
-        // With shields up, effective alpha is reduced by shield absorption
-        const absorption = withShields ? this.getShieldAbsorption(s, dt) : 0;
-        const effectiveAlpha = rawAlpha * (1 - absorption);
-        return { ship: s, deflect, deflected: effectiveAlpha <= deflect, dist: Math.abs(effectiveAlpha - deflect), effectiveAlpha };
-      });
+      .filter(s => !sizeFilter || s.size === sizeFilter);
 
-    const sizeActive = this.shipSize();
-    if (sizeActive) {
-      return ships
-        .sort((a, b) => b.deflect - a.deflect)
-        .map(s => ({ ship: s.ship, deflect: s.deflect, deflected: s.deflected, effectiveAlpha: s.effectiveAlpha }));
+    const buildRow = (s: Ship): ShipRow => {
+      const deflect = (s as any)[deflectKey] as number;
+      const classBleed = (s.size && bleeds[s.size])
+        ? (dt === 'physical' ? bleeds[s.size].physBleed : bleeds[s.size].enrgBleed)
+        : 1;
+      const shieldedAlpha = rawAlpha * classBleed;
+      return {
+        ship: s,
+        deflect,
+        alpha: rawAlpha,
+        shieldedAlpha,
+        armorPenetrates: rawAlpha > deflect,
+        shieldPenetrates: shieldedAlpha > deflect,
+      };
+    };
+
+    if (sizeFilter) {
+      // Size filter active — show all ships in that class, sorted high→low
+      return candidates
+        .map(buildRow)
+        .sort((a, b) => b.deflect - a.deflect);
     }
 
-    // No size filter: show 3 closest above and 3 closest below
-    const above = ships
-      .filter(s => s.deflected)
-      .sort((a, b) => a.deflect - b.deflect)
-      .slice(0, 3);
+    // No filter — pick the 3 closest ships above and 3 closest below the
+    // weapon's alpha, then merge into a single list sorted high→low so the
+    // result reads as one continuous threshold ladder.
+    const sorted = candidates
+      .map(buildRow)
+      .sort((a, b) => Math.abs(a.deflect - rawAlpha) - Math.abs(b.deflect - rawAlpha));
 
-    const below = ships
-      .filter(s => !s.deflected)
-      .sort((a, b) => b.deflect - a.deflect)
-      .slice(0, 3);
-
-    return [
-      ...below.map(s => ({ ship: s.ship, deflect: s.deflect, deflected: false, effectiveAlpha: s.effectiveAlpha })),
-      ...above.map(s => ({ ship: s.ship, deflect: s.deflect, deflected: true, effectiveAlpha: s.effectiveAlpha })),
-    ];
+    const picked: ShipRow[] = [];
+    let aboveCount = 0;
+    let belowCount = 0;
+    for (const r of sorted) {
+      if (r.armorPenetrates && belowCount < 3) { picked.push(r); belowCount++; }
+      else if (!r.armorPenetrates && aboveCount < 3) { picked.push(r); aboveCount++; }
+      if (aboveCount >= 3 && belowCount >= 3) break;
+    }
+    return picked.sort((a, b) => b.deflect - a.deflect);
   });
 
-  penetrateCount = computed(() => this.nearbyShips().filter(s => !s.deflected).length);
-  deflectCount = computed(() => this.nearbyShips().filter(s => s.deflected).length);
+  shipSizeLabel(size: string | undefined): string {
+    return size ? (SHIP_SIZE_LABELS[size] ?? size) : '';
+  }
 }

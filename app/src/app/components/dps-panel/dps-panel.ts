@@ -539,14 +539,21 @@ export class DpsPanelComponent {
 
   // ── Armor Check ─────────────────────────────────────────
 
-  private readonly pinnedWeaponNames = ['NDB-26 Repeater', 'NDB-28 Repeater', 'NDB-30 Repeater'];
-
   armorCheck = computed(() => {
     const ship = this.data.selectedShip();
     if (!ship) return null;
     const physDeflect = ship.armorDeflectPhys ?? 0;
     const enrgDeflect = ship.armorDeflectEnrg ?? 0;
     if (physDeflect <= 0 && enrgDeflect <= 0) return null;
+
+    // Shield bleedthrough multipliers from the equipped shields. When shields
+    // are up, effective alpha reaching the hull = alpha × bleedthrough.
+    // If that effective alpha is still above the armor deflect threshold
+    // the weapon penetrates the shield→armor combination; otherwise it's
+    // deflected by the shielded-armor check.
+    const sr = this.shieldResists();
+    const physBleed = sr ? sr.physToHull : 1;
+    const enrgBleed = sr ? sr.enrgToHull : 1;
 
     // Only include weapons that appear in at least one ship's default loadout
     const loadoutWeapons = new Set<string>();
@@ -560,49 +567,35 @@ export class DpsPanelComponent {
       loadoutWeapons.has(i.className.toLowerCase())
     );
 
-    const buildList = (deflect: number, dmgType: 'physical' | 'energy') => {
+    // 3 closest weapons to the deflect threshold (by absolute distance)
+    // — these are the borderline cases the player most needs to know about.
+    const buildList = (deflect: number, dmgType: 'physical' | 'energy', bleed: number) => {
       if (deflect <= 0) return [];
-      const relevant = allWeapons.filter(w => (w.damage![dmgType] ?? 0) >= 1);
-
-      // Pinned weapons
-      const pinned = new Set<string>();
-      for (const name of this.pinnedWeaponNames) {
-        const w = relevant.find(w => w.name === name);
-        if (w) pinned.add(w.className);
-      }
-
-      // 3 closest weapons to the deflect threshold (by absolute distance to deflect)
-      const sorted = [...relevant].sort((a, b) =>
-        Math.abs((a.damage![dmgType] ?? 0) - deflect) - Math.abs((b.damage![dmgType] ?? 0) - deflect)
-      );
-      for (const w of sorted) {
-        if (pinned.size >= pinned.size + 3 - (pinned.size - this.pinnedWeaponNames.length)) break;
-        pinned.add(w.className);
-        if ([...pinned].filter(cn => !this.pinnedWeaponNames.includes(relevant.find(r => r.className === cn)?.name ?? '')).length >= 3) break;
-      }
-
-      // Actually, simpler approach: get pinned + 3 closest non-pinned
-      const closestNonPinned = sorted.filter(w => !pinned.has(w.className)).slice(0, 3);
-      closestNonPinned.forEach(w => pinned.add(w.className));
-
-      const result = relevant
-        .filter(w => pinned.has(w.className))
-        .map(w => ({
-          name: w.name,
-          size: w.size ?? 0,
-          alpha: w.damage![dmgType] ?? 0,
-          penetrates: (w.damage![dmgType] ?? 0) > deflect,
-        }))
+      return allWeapons
+        .filter(w => (w.damage![dmgType] ?? 0) >= 1)
+        .sort((a, b) =>
+          Math.abs((a.damage![dmgType] ?? 0) - deflect) -
+          Math.abs((b.damage![dmgType] ?? 0) - deflect)
+        )
+        .slice(0, 3)
+        .map(w => {
+          const alpha = w.damage![dmgType] ?? 0;
+          return {
+            name: w.name,
+            size: w.size ?? 0,
+            alpha,
+            armorPenetrates: alpha > deflect,
+            shieldPenetrates: alpha * bleed > deflect,
+          };
+        })
         .sort((a, b) => a.alpha - b.alpha);
-
-      return result;
     };
 
     return {
       physDeflect,
       enrgDeflect,
-      physical: buildList(physDeflect, 'physical'),
-      energy: buildList(enrgDeflect, 'energy'),
+      physical: buildList(physDeflect, 'physical', physBleed),
+      energy: buildList(enrgDeflect, 'energy', enrgBleed),
     };
   });
 
@@ -626,24 +619,44 @@ export class DpsPanelComponent {
       loadoutWeapons.has(i.className.toLowerCase())
     );
 
-    const buildFull = (deflect: number, dmgType: 'physical' | 'energy') => {
+    const sr = this.shieldResists();
+    const physBleed = sr ? sr.physToHull : 1;
+    const enrgBleed = sr ? sr.enrgToHull : 1;
+
+    const buildFull = (deflect: number, dmgType: 'physical' | 'energy', bleed: number) => {
       if (deflect <= 0) return [];
       return allWeapons
         .filter(w => (w.damage![dmgType] ?? 0) >= 1)
-        .map(w => ({
-          name: w.name,
-          size: w.size ?? 0,
-          alpha: w.damage![dmgType] ?? 0,
-          penetrates: (w.damage![dmgType] ?? 0) > deflect,
-        }))
+        .map(w => {
+          const alpha = w.damage![dmgType] ?? 0;
+          return {
+            name: w.name,
+            size: w.size ?? 0,
+            alpha,
+            penetrates: alpha > deflect, // legacy field, kept for any other consumers
+            armorPenetrates: alpha > deflect,
+            shieldPenetrates: alpha * bleed > deflect,
+          };
+        })
         .sort((a, b) => a.size - b.size || a.alpha - b.alpha);
     };
+
+    // Shield-modified deflect thresholds: the RAW alpha a weapon needs to
+    // exceed to penetrate when the equipped shields are up. Derived from
+    // alpha × bleedthrough > armorDeflect → alpha > armorDeflect / bleed.
+    // When no shield is equipped (bleed = 1), this equals the armor threshold.
+    const physShieldDeflect = physBleed > 0 ? physDeflect / physBleed : physDeflect;
+    const enrgShieldDeflect = enrgBleed > 0 ? enrgDeflect / enrgBleed : enrgDeflect;
+    const hasShields = !!sr;
 
     return {
       physDeflect,
       enrgDeflect,
-      physical: buildFull(physDeflect, 'physical'),
-      energy: buildFull(enrgDeflect, 'energy'),
+      physShieldDeflect,
+      enrgShieldDeflect,
+      hasShields,
+      physical: buildFull(physDeflect, 'physical', physBleed),
+      energy: buildFull(enrgDeflect, 'energy', enrgBleed),
     };
   });
 

@@ -46,16 +46,10 @@
       </div>
       <div class="wh-center">
         <div class="wh-alpha-val">{{ (w.damage![dmgType()] ?? 0).toFixed(1) }}</div>
-        <div class="wh-alpha-label">{{ shieldsUp() ? 'Raw Alpha' : 'Alpha Damage' }}</div>
+        <div class="wh-alpha-label">Alpha Damage</div>
       </div>
       <div class="wh-right">
         <div class="wh-controls">
-          <label class="wh-shield-toggle" (click)="shieldsUp.set(!shieldsUp())">
-            <span class="wh-toggle-track" [class.on]="shieldsUp()">
-              <span class="wh-toggle-thumb"></span>
-            </span>
-            <span class="wh-toggle-label">Shields {{ shieldsUp() ? 'Up' : 'Down' }}</span>
-          </label>
           <div class="wh-size-filters">
             @for (opt of shipSizeOptions; track opt.value) {
               <button class="wh-size-btn" [class.active]="shipSize() === opt.value"
@@ -67,59 +61,133 @@
     </div>
 
     <!-- Explainer -->
-    <div class="armor-explainer">Weapons below a ship's armor deflect value are stopped — damage reduced to zero. Weapons above it penetrate and deal full alpha damage.</div>
-
-    <!-- Unified Results Panel -->
-    <div class="results-panel">
-      <div class="results-header">
-        <div class="rh-col pen">
-          <span class="rh-icon">✓</span>
-          <span class="rh-label">Penetrates</span>
-          <span class="rh-count">{{ penetrateCount() }}</span>
-        </div>
-        <div class="rh-divider"></div>
-        <div class="rh-col def">
-          <span class="rh-icon">✗</span>
-          <span class="rh-label">Deflected</span>
-          <span class="rh-count">{{ deflectCount() }}</span>
-        </div>
-      </div>
-      <div class="results-body">
-        <!-- Penetrates Column -->
-        <div class="results-col pen-col">
-          @for (row of nearbyShips(); track row.ship.className) {
-            @if (!row.deflected) {
-              <div class="result-row pen">
-                <span class="rr-name">{{ row.ship.name }}</span>
-                @if (shieldsUp()) { <span class="rr-eff">{{ row.effectiveAlpha?.toFixed(1) }}</span> }
-                <span class="rr-deflect">{{ row.deflect }}</span>
-                <span class="rr-margin negative">{{ (row.deflect - (row.effectiveAlpha ?? (w.damage![dmgType()] ?? 0))).toFixed(1) }}</span>
-              </div>
-            }
-          }
-          @if (penetrateCount() === 0) {
-            <div class="result-empty">No ships penetrated</div>
-          }
-        </div>
-        <div class="results-divider"></div>
-        <!-- Deflected Column -->
-        <div class="results-col def-col">
-          @for (row of nearbyShips(); track row.ship.className) {
-            @if (row.deflected) {
-              <div class="result-row def">
-                <span class="rr-name">{{ row.ship.name }}</span>
-                @if (shieldsUp()) { <span class="rr-eff">{{ row.effectiveAlpha?.toFixed(1) }}</span> }
-                <span class="rr-deflect">{{ row.deflect }}</span>
-                <span class="rr-margin positive">+{{ (row.deflect - (row.effectiveAlpha ?? (w.damage![dmgType()] ?? 0))).toFixed(1) }}</span>
-              </div>
-            }
-          }
-          @if (deflectCount() === 0) {
-            <div class="result-empty">No ships deflected</div>
-          }
-        </div>
-      </div>
+    <div class="armor-explainer">
+      Weapons below a ship's armor deflect value are stopped — damage reduced to zero. Weapons above it penetrate and deal full alpha damage. The shielded check is approximate: each ship size class (S1 small, S2 medium, S3 large, S4 capital) uses the average shield bleedthrough across all ships in that class, not the specific ship's equipped shield.
     </div>
+
+    <!-- Threat Matrix Card -->
+    <div class="armor-results-card">
+      <div class="arc-corner arc-corner-tl"></div>
+      <div class="arc-corner arc-corner-tr"></div>
+      <div class="arc-corner arc-corner-bl"></div>
+      <div class="arc-corner arc-corner-br"></div>
+
+      <header class="arc-header">
+        <span class="arc-title">Threat Matrix</span>
+      </header>
+
+      <div class="arc-col-headers">
+        <span class="arc-col-label arc-col-label-name">Ship</span>
+        <span class="arc-col-label">Deflect</span>
+        <span class="arc-col-icon armor-icon" title="Raw Armor">
+          <svg viewBox="0 0 24 24" fill="none">
+            <defs>
+              <linearGradient id="armorPlateGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#fff1b0"/>
+                <stop offset="35%"  stop-color="#f5c542"/>
+                <stop offset="80%"  stop-color="#9a6a14"/>
+                <stop offset="100%" stop-color="#5a3a08"/>
+              </linearGradient>
+              <linearGradient id="armorPlateHL" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+                <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Shield body with metallic gradient -->
+            <path d="M12 2 L20 5 V11 Q20 17.5 12 22 Q4 17.5 4 11 V5 Z"
+                  fill="url(#armorPlateGrad)"
+                  stroke="#3d2706" stroke-width="1" stroke-linejoin="round"/>
+            <!-- Top-left specular highlight -->
+            <path d="M12 3 L19 5.5 V10 Q19 13 16 15"
+                  fill="none" stroke="url(#armorPlateHL)"
+                  stroke-width="1.3" stroke-linecap="round"/>
+            <!-- Engraved cross emblem -->
+            <path d="M12 8 V15 M9 11.5 H15"
+                  stroke="#3d2706" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M12 8.4 V14.6 M9.4 11.5 H14.6"
+                  stroke="#fff5cc" stroke-width="0.5" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="arc-col-icon shield-icon" title="Shielded Armor (size-class average)">
+          <svg viewBox="0 0 24 24" fill="none">
+            <defs>
+              <radialGradient id="energyShldGrad" cx="38%" cy="32%" r="78%">
+                <stop offset="0%"   stop-color="#e8faff"/>
+                <stop offset="25%"  stop-color="#7ce8ff"/>
+                <stop offset="65%"  stop-color="#1c9ad6"/>
+                <stop offset="100%" stop-color="#062338"/>
+              </radialGradient>
+              <radialGradient id="energyShldHL" cx="35%" cy="28%" r="35%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- Outer dome -->
+            <circle cx="12" cy="12" r="9.2"
+                    fill="url(#energyShldGrad)"
+                    stroke="#0a3a55" stroke-width="0.9"/>
+            <!-- Inner energy band -->
+            <circle cx="12" cy="12" r="6"
+                    fill="none" stroke="#bff2ff" stroke-width="0.7" stroke-opacity="0.55"/>
+            <!-- Equator line for sphere read -->
+            <ellipse cx="12" cy="12" rx="9" ry="2.6"
+                     fill="none" stroke="#0a3a55" stroke-width="0.5" stroke-opacity="0.7"/>
+            <!-- Specular highlight -->
+            <ellipse cx="9" cy="8.5" rx="3.4" ry="2.2"
+                     fill="url(#energyShldHL)"/>
+            <!-- Tiny rim glint -->
+            <circle cx="6.4" cy="6.4" r="0.6" fill="#ffffff" fill-opacity="0.9"/>
+          </svg>
+        </span>
+      </div>
+
+      @for (row of nearbyShips(); track row.ship.className) {
+        <div class="arc-row">
+          <span class="arcr-name">
+            {{ row.ship.name }}
+            @if (shipSizeLabel(row.ship.size); as sl) { <span class="arcr-class">{{ sl }}</span> }
+          </span>
+          <span class="arcr-deflect">{{ row.deflect }}</span>
+          <span class="arcr-status" [class.pen]="row.armorPenetrates" [class.def]="!row.armorPenetrates">
+            @if (row.armorPenetrates) {
+              <svg viewBox="0 0 24 24" fill="none">
+                <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none">
+                <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+          </span>
+          <span class="arcr-status" [class.pen]="row.shieldPenetrates" [class.def]="!row.shieldPenetrates">
+            @if (row.shieldPenetrates) {
+              <svg viewBox="0 0 24 24" fill="none">
+                <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none">
+                <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+          </span>
+        </div>
+      }
+
+      @if (nearbyShips().length === 0) {
+        <div class="arc-empty">No ships match the current filter</div>
+      }
+    </div>
+
 
   } @else {
     <div class="empty-state">

@@ -571,10 +571,9 @@
   margin-bottom: 4px;
 }
 
-.armor-check-block {
-  gap: 4px;
-}
-
+// Legacy classes from the old layout — kept for the popout which still
+// references them. The in-panel card uses the .armor-check-card scope below.
+.armor-check-block { gap: 4px; }
 .armor-icon {
   font-size: 12px;
   font-weight: 700;
@@ -582,12 +581,293 @@
   &.pen { color: var(--green); }
   &.def { color: var(--red); }
 }
-
 .armor-size {
   font-family: 'Share Tech Mono', monospace;
   font-size: 10px;
   color: var(--text3);
   margin-left: 2px;
+}
+
+// ── Armor Check threat-matrix card ─────────────────────────
+//
+// One cohesive card with corner-cut frame, integrated section header,
+// per-damage-type subsections with inline deflect threshold, and
+// inline-SVG status icons.
+
+$accent-warn: #ff8a4a;     // amber — penetration / threat
+$accent-safe: #4adfd2;     // cyan-teal — deflection / covered
+
+.armor-check-card {
+  position: relative;
+  margin-top: 8px;
+  padding: 14px 12px 12px;
+  background:
+    linear-gradient(180deg, rgba(0, 200, 255, 0.025) 0%, rgba(0, 0, 0, 0) 60%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.018) 0px,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(160deg, rgba(19, 26, 36, 0.85) 0%, rgba(8, 12, 18, 0.85) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.18);
+  border-top: 1px solid rgba(0, 200, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+// Decorative corner brackets — sci-fi HUD framing
+.acc-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+.acc-corner-tl { top: -1px; left: -1px;
+  border-top: 1px solid rgba(0, 200, 255, 0.7);
+  border-left: 1px solid rgba(0, 200, 255, 0.7); }
+.acc-corner-tr { top: -1px; right: -1px;
+  border-top: 1px solid rgba(0, 200, 255, 0.7);
+  border-right: 1px solid rgba(0, 200, 255, 0.7); }
+.acc-corner-bl { bottom: -1px; left: -1px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.4);
+  border-left: 1px solid rgba(0, 200, 255, 0.4); }
+.acc-corner-br { bottom: -1px; right: -1px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.4);
+  border-right: 1px solid rgba(0, 200, 255, 0.4); }
+
+// Header bar with title + detail button
+.acc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.12);
+}
+
+.acc-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  position: relative;
+  padding-left: 10px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 12px;
+    background: var(--accent);
+    box-shadow: 0 0 6px rgba(0, 200, 255, 0.6);
+  }
+}
+
+.acc-detail-btn {
+  background: rgba(0, 200, 255, 0.08);
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  color: var(--accent);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    background: rgba(0, 200, 255, 0.18);
+    border-color: rgba(0, 200, 255, 0.6);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.25);
+  }
+}
+
+// Column headers row — armor + shield icons aligned over the cells below
+.acc-col-headers {
+  display: grid;
+  grid-template-columns: 1fr 44px 44px;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+
+.acc-col-spacer { display: block; }
+
+.acc-col-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin: 0 auto;
+  color: var(--text3);
+  background: transparent;
+  border: none;
+
+  svg {
+    width: 26px;
+    height: 26px;
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+  }
+
+  &.armor-icon svg {
+    filter:
+      drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6))
+      drop-shadow(0 0 4px rgba(245, 197, 66, 0.25));
+  }
+
+  &.shield-icon svg {
+    filter:
+      drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6))
+      drop-shadow(0 0 5px rgba(74, 223, 255, 0.35));
+  }
+}
+
+// Per-damage-type subsection
+.acc-section {
+  margin-bottom: 10px;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.acc-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  padding: 0 2px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.accs-type {
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.accs-divider {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 200, 255, 0.25) 0%, rgba(0, 200, 255, 0.04) 100%);
+}
+
+.accs-deflect {
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+
+  strong {
+    color: var(--text);
+    font-weight: 700;
+    margin-left: 2px;
+  }
+}
+
+// Per-weapon row
+.acc-row {
+  display: grid;
+  grid-template-columns: 1fr 44px 44px;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 2px;
+  border-radius: 2px;
+  position: relative;
+
+  &:nth-child(even of .acc-row) {
+    background: rgba(255, 255, 255, 0.018);
+  }
+
+  &:hover {
+    background: rgba(0, 200, 255, 0.06);
+  }
+}
+
+.accr-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 4px;
+  letter-spacing: 0.3px;
+}
+
+.accr-size {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text3);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+// Status icon cell — color changes based on penetrate vs deflect
+.accr-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+
+  &.pen {
+    color: $accent-warn;
+    border-color: rgba(255, 138, 74, 0.35);
+    background: rgba(255, 138, 74, 0.06);
+  }
+
+  &.def {
+    color: $accent-safe;
+    border-color: rgba(74, 223, 210, 0.3);
+    background: rgba(74, 223, 210, 0.05);
+  }
+}
+
+.acc-row:hover .accr-status {
+  &.pen {
+    background: rgba(255, 138, 74, 0.12);
+    border-color: rgba(255, 138, 74, 0.55);
+    box-shadow: 0 0 6px rgba(255, 138, 74, 0.2);
+  }
+  &.def {
+    background: rgba(74, 223, 210, 0.1);
+    border-color: rgba(74, 223, 210, 0.5);
+    box-shadow: 0 0 6px rgba(74, 223, 210, 0.18);
+  }
 }
 
 .detail-btn {
@@ -721,7 +1001,59 @@
 }
 
 .armor-popout {
-  width: 720px;
+  width: 520px;
+}
+
+// Popout context overrides for the shared armor card classes.
+// In the popout, the column header row sits flush against the section
+// (no card frame above it), so we add a touch of breathing room and
+// align it with the content padding.
+.popout-body .acc-col-headers-popout {
+  grid-template-columns: 1fr 56px 44px 44px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  padding: 6px 4px 8px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.12);
+}
+
+.acc-col-alpha-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: right;
+  padding-right: 6px;
+}
+
+.popout-body .acc-section {
+  margin-bottom: 16px;
+  &:last-child { margin-bottom: 0; }
+}
+
+// Alpha column variant — adds a slim numeric column between the size badge
+// and the status icon cells. Used in the popout where horizontal space allows.
+.acc-row.has-alpha {
+  grid-template-columns: 1fr 56px 44px 44px;
+}
+
+.accr-alpha {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+  padding-right: 6px;
+  letter-spacing: 0.5px;
+}
+
+// Shield-modified deflect threshold — shown next to the armor deflect
+// in the section label as "Deflect 11 / 15.7" where the second value is
+// the raw alpha threshold WITH the equipped shields' bleedthrough applied.
+.accs-shield-deflect {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 .armor-explainer {

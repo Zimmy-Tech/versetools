@@ -298,36 +298,164 @@
       </div>
     }
 
-    <!-- Armor Check -->
+    <!-- Armor Check — threat matrix card -->
     @if (armorCheck(); as ac) {
-      <div>
-        <div class="section-title">Armor Check
-          <button class="detail-btn" (click)="showArmorDetail.set(true)">Detail</button>
+      <div class="armor-check-card">
+        <div class="acc-corner acc-corner-tl"></div>
+        <div class="acc-corner acc-corner-tr"></div>
+        <div class="acc-corner acc-corner-bl"></div>
+        <div class="acc-corner acc-corner-br"></div>
+
+        <header class="acc-header">
+          <span class="acc-title">Armor Check</span>
+          <button class="acc-detail-btn" (click)="showArmorDetail.set(true)">Detail</button>
+        </header>
+
+        <div class="acc-col-headers">
+          <span class="acc-col-spacer"></span>
+          <span class="acc-col-icon armor-icon" title="Armor Deflect">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="dpsArmorGradCard" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#fff1b0"/>
+                  <stop offset="35%"  stop-color="#f5c542"/>
+                  <stop offset="80%"  stop-color="#9a6a14"/>
+                  <stop offset="100%" stop-color="#5a3a08"/>
+                </linearGradient>
+                <linearGradient id="dpsArmorHLCard" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+                  <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M12 2 L20 5 V11 Q20 17.5 12 22 Q4 17.5 4 11 V5 Z"
+                    fill="url(#dpsArmorGradCard)"
+                    stroke="#3d2706" stroke-width="1" stroke-linejoin="round"/>
+              <path d="M12 3 L19 5.5 V10 Q19 13 16 15"
+                    fill="none" stroke="url(#dpsArmorHLCard)"
+                    stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M12 8 V15 M9 11.5 H15"
+                    stroke="#3d2706" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M12 8.4 V14.6 M9.4 11.5 H14.6"
+                    stroke="#fff5cc" stroke-width="0.5" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="acc-col-icon shield-icon" title="Shield Deflect">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <radialGradient id="dpsShldGradCard" cx="38%" cy="32%" r="78%">
+                  <stop offset="0%"   stop-color="#e8faff"/>
+                  <stop offset="25%"  stop-color="#7ce8ff"/>
+                  <stop offset="65%"  stop-color="#1c9ad6"/>
+                  <stop offset="100%" stop-color="#062338"/>
+                </radialGradient>
+                <radialGradient id="dpsShldHLCard" cx="35%" cy="28%" r="35%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <circle cx="12" cy="12" r="9.2"
+                      fill="url(#dpsShldGradCard)"
+                      stroke="#0a3a55" stroke-width="0.9"/>
+              <circle cx="12" cy="12" r="6"
+                      fill="none" stroke="#bff2ff" stroke-width="0.7" stroke-opacity="0.55"/>
+              <ellipse cx="12" cy="12" rx="9" ry="2.6"
+                       fill="none" stroke="#0a3a55" stroke-width="0.5" stroke-opacity="0.7"/>
+              <ellipse cx="9" cy="8.5" rx="3.4" ry="2.2"
+                       fill="url(#dpsShldHLCard)"/>
+              <circle cx="6.4" cy="6.4" r="0.6" fill="#ffffff" fill-opacity="0.9"/>
+            </svg>
+          </span>
         </div>
+
         @if (ac.physical.length > 0) {
-          <div class="armor-type-label">Physical Deflect: {{ ac.physDeflect }}</div>
-          <div class="stat-block armor-check-block">
+          <div class="acc-section">
+            <div class="acc-section-label">
+              <span class="accs-type">Physical</span>
+              <span class="accs-divider"></span>
+              <span class="accs-deflect">Deflect <strong>{{ ac.physDeflect }}</strong></span>
+            </div>
             @for (w of ac.physical; track w.name) {
-              <div class="stat-row">
-                <span class="stat-label">
-                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
-                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+              <div class="acc-row">
+                <span class="accr-name">{{ w.name }}<span class="accr-size">s{{ w.size }}</span></span>
+                <span class="accr-status" [class.pen]="w.armorPenetrates" [class.def]="!w.armorPenetrates">
+                  @if (w.armorPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  }
                 </span>
-                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+                <span class="accr-status" [class.pen]="w.shieldPenetrates" [class.def]="!w.shieldPenetrates">
+                  @if (w.shieldPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  }
+                </span>
               </div>
             }
           </div>
         }
+
         @if (ac.energy.length > 0) {
-          <div class="armor-type-label">Energy Deflect: {{ ac.enrgDeflect }}</div>
-          <div class="stat-block armor-check-block">
+          <div class="acc-section">
+            <div class="acc-section-label">
+              <span class="accs-type">Energy</span>
+              <span class="accs-divider"></span>
+              <span class="accs-deflect">Deflect <strong>{{ ac.enrgDeflect }}</strong></span>
+            </div>
             @for (w of ac.energy; track w.name) {
-              <div class="stat-row">
-                <span class="stat-label">
-                  <span class="armor-icon" [class.pen]="!w.penetrates" [class.def]="w.penetrates">{{ w.penetrates ? '\u2717' : '\u2713' }}</span>
-                  {{ w.name }} <span class="armor-size">S{{ w.size }}</span>
+              <div class="acc-row">
+                <span class="accr-name">{{ w.name }}<span class="accr-size">s{{ w.size }}</span></span>
+                <span class="accr-status" [class.pen]="w.armorPenetrates" [class.def]="!w.armorPenetrates">
+                  @if (w.armorPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  }
                 </span>
-                <span class="mono">{{ w.alpha.toFixed(1) }}</span>
+                <span class="accr-status" [class.pen]="w.shieldPenetrates" [class.def]="!w.shieldPenetrates">
+                  @if (w.shieldPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  }
+                </span>
               </div>
             }
           </div>
@@ -350,72 +478,156 @@
     <div class="popout-body">
       <div class="armor-explainer">Weapons below your armor's deflect threshold are stopped — damage reduced to zero. Weapons above it penetrate and deal full alpha damage per shot. These values are calculated against raw armor with no shields active. With shields up, absorption reduces the effective alpha reaching the hull, which may cause additional weapons to be deflected.</div>
       @if (armorDetailList(); as dl) {
+        <div class="acc-col-headers acc-col-headers-popout">
+          <span class="acc-col-spacer"></span>
+          <span class="acc-col-alpha-label">Alpha</span>
+          <span class="acc-col-icon armor-icon" title="Armor Deflect">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="dpsArmorGradPop" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#fff1b0"/>
+                  <stop offset="35%"  stop-color="#f5c542"/>
+                  <stop offset="80%"  stop-color="#9a6a14"/>
+                  <stop offset="100%" stop-color="#5a3a08"/>
+                </linearGradient>
+                <linearGradient id="dpsArmorHLPop" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+                  <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M12 2 L20 5 V11 Q20 17.5 12 22 Q4 17.5 4 11 V5 Z"
+                    fill="url(#dpsArmorGradPop)"
+                    stroke="#3d2706" stroke-width="1" stroke-linejoin="round"/>
+              <path d="M12 3 L19 5.5 V10 Q19 13 16 15"
+                    fill="none" stroke="url(#dpsArmorHLPop)"
+                    stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M12 8 V15 M9 11.5 H15"
+                    stroke="#3d2706" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M12 8.4 V14.6 M9.4 11.5 H14.6"
+                    stroke="#fff5cc" stroke-width="0.5" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="acc-col-icon shield-icon" title="Shield Deflect">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <radialGradient id="dpsShldGradPop" cx="38%" cy="32%" r="78%">
+                  <stop offset="0%"   stop-color="#e8faff"/>
+                  <stop offset="25%"  stop-color="#7ce8ff"/>
+                  <stop offset="65%"  stop-color="#1c9ad6"/>
+                  <stop offset="100%" stop-color="#062338"/>
+                </radialGradient>
+                <radialGradient id="dpsShldHLPop" cx="35%" cy="28%" r="35%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <circle cx="12" cy="12" r="9.2"
+                      fill="url(#dpsShldGradPop)"
+                      stroke="#0a3a55" stroke-width="0.9"/>
+              <circle cx="12" cy="12" r="6"
+                      fill="none" stroke="#bff2ff" stroke-width="0.7" stroke-opacity="0.55"/>
+              <ellipse cx="12" cy="12" rx="9" ry="2.6"
+                       fill="none" stroke="#0a3a55" stroke-width="0.5" stroke-opacity="0.7"/>
+              <ellipse cx="9" cy="8.5" rx="3.4" ry="2.2"
+                       fill="url(#dpsShldHLPop)"/>
+              <circle cx="6.4" cy="6.4" r="0.6" fill="#ffffff" fill-opacity="0.9"/>
+            </svg>
+          </span>
+        </div>
+
         @if (dl.physical.length > 0) {
-          <div class="armor-type-section">
-            <div class="ats-header">
-              <span class="ats-type phys">Physical</span>
-              <span class="ats-deflect">Deflect Threshold: <strong>{{ dl.physDeflect }}</strong></span>
+          <div class="acc-section">
+            <div class="acc-section-label">
+              <span class="accs-type">Physical</span>
+              <span class="accs-deflect">Deflect <strong>{{ dl.physDeflect }}</strong>@if (dl.hasShields) {<span class="accs-shield-deflect"> / {{ dl.physShieldDeflect.toFixed(1) }}</span>}</span>
+              <span class="accs-divider"></span>
             </div>
-            <div class="armor-columns">
-              <div class="armor-col safe">
-                <div class="armor-col-header deflected">Deflected</div>
-                @for (w of dl.physical; track w.name) {
-                  @if (!w.penetrates) {
-                    <div class="armor-weapon-row safe">
-                      <span class="aw-name">{{ w.name }}</span>
-                      <span class="aw-size">S{{ w.size }}</span>
-                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
-                    </div>
+            @for (w of dl.physical; track w.name) {
+              <div class="acc-row has-alpha">
+                <span class="accr-name">{{ w.name }}<span class="accr-size">s{{ w.size }}</span></span>
+                <span class="accr-alpha">{{ w.alpha.toFixed(1) }}</span>
+                <span class="accr-status" [class.pen]="w.armorPenetrates" [class.def]="!w.armorPenetrates">
+                  @if (w.armorPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   }
-                }
-              </div>
-              <div class="armor-col danger">
-                <div class="armor-col-header penetrates">Penetrates</div>
-                @for (w of dl.physical; track w.name) {
-                  @if (w.penetrates) {
-                    <div class="armor-weapon-row danger">
-                      <span class="aw-name">{{ w.name }}</span>
-                      <span class="aw-size">S{{ w.size }}</span>
-                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
-                    </div>
+                </span>
+                <span class="accr-status" [class.pen]="w.shieldPenetrates" [class.def]="!w.shieldPenetrates">
+                  @if (w.shieldPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   }
-                }
+                </span>
               </div>
-            </div>
+            }
           </div>
         }
+
         @if (dl.energy.length > 0) {
-          <div class="armor-type-section">
-            <div class="ats-header">
-              <span class="ats-type enrg">Energy</span>
-              <span class="ats-deflect">Deflect Threshold: <strong>{{ dl.enrgDeflect }}</strong></span>
+          <div class="acc-section">
+            <div class="acc-section-label">
+              <span class="accs-type">Energy</span>
+              <span class="accs-deflect">Deflect <strong>{{ dl.enrgDeflect }}</strong>@if (dl.hasShields) {<span class="accs-shield-deflect"> / {{ dl.enrgShieldDeflect.toFixed(1) }}</span>}</span>
+              <span class="accs-divider"></span>
             </div>
-            <div class="armor-columns">
-              <div class="armor-col safe">
-                <div class="armor-col-header deflected">Deflected</div>
-                @for (w of dl.energy; track w.name) {
-                  @if (!w.penetrates) {
-                    <div class="armor-weapon-row safe">
-                      <span class="aw-name">{{ w.name }}</span>
-                      <span class="aw-size">S{{ w.size }}</span>
-                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
-                    </div>
+            @for (w of dl.energy; track w.name) {
+              <div class="acc-row has-alpha">
+                <span class="accr-name">{{ w.name }}<span class="accr-size">s{{ w.size }}</span></span>
+                <span class="accr-alpha">{{ w.alpha.toFixed(1) }}</span>
+                <span class="accr-status" [class.pen]="w.armorPenetrates" [class.def]="!w.armorPenetrates">
+                  @if (w.armorPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   }
-                }
-              </div>
-              <div class="armor-col danger">
-                <div class="armor-col-header penetrates">Penetrates</div>
-                @for (w of dl.energy; track w.name) {
-                  @if (w.penetrates) {
-                    <div class="armor-weapon-row danger">
-                      <span class="aw-name">{{ w.name }}</span>
-                      <span class="aw-size">S{{ w.size }}</span>
-                      <span class="aw-alpha">{{ w.alpha.toFixed(1) }}</span>
-                    </div>
+                </span>
+                <span class="accr-status" [class.pen]="w.shieldPenetrates" [class.def]="!w.shieldPenetrates">
+                  @if (w.shieldPenetrates) {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   }
-                }
+                </span>
               </div>
-            </div>
+            }
           </div>
         }
       }
