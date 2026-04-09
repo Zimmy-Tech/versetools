@@ -262,7 +262,8 @@
           @if (missileSlots().length) {
             <div class="slot-group-label">Missiles <span class="collapse-btn" (click)="toggleSection('missiles')">{{ isCollapsed('missiles') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of missileSlots(); track hp.id) {
-              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('missiles')" />
+              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('missiles')"
+                                  [rackLeafIds]="rackLeafIdsMap()[hp.id] ?? []" />
               @for (sub of subSlotsMap()[hp.id] ?? []; track sub.id) {
                 <div class="sub-slot-indent">
                   <app-hardpoint-slot [hardpoint]="sub" [collapsed]="isCollapsed('missiles')"
