@@ -847,6 +847,29 @@ const changelogHistoryHandler = async (req, res) => {
 app.get('/changelog/history', changelogHistoryHandler);
 app.get('/api/changelog/history', changelogHistoryHandler);
 
+// ─── Admin: clear changelog entries ────────────────────────────────────
+// DELETE /api/admin/changelog/clear — wipes all changelog_entries rows
+app.delete('/admin/changelog/clear', requireAdmin, async (req, res) => {
+  try {
+    const { pool } = await import('./db.js');
+    await pool.query('DELETE FROM changelog_entries');
+    res.json({ ok: true, message: 'All changelog entries cleared' });
+  } catch (err) {
+    console.error('changelog clear failed:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+app.delete('/api/admin/changelog/clear', requireAdmin, async (req, res) => {
+  try {
+    const { pool } = await import('./db.js');
+    await pool.query('DELETE FROM changelog_entries');
+    res.json({ ok: true, message: 'All changelog entries cleared' });
+  } catch (err) {
+    console.error('changelog clear failed:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─── Community submissions ──────────────────────────────────────────
 //
 // Public submission flow for community-tested ship acceleration data.
