@@ -222,8 +222,13 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items 
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
+    // Only compare against previous BUILD entries — skip price_refresh
+    // entries so UEX price updates don't pollute the build changelog.
     const { rows: prevRows } = await client.query(
-      'SELECT id, to_version, to_channel, ship_snapshot, item_snapshot FROM changelog_entries ORDER BY id DESC LIMIT 1'
+      `SELECT id, to_version, to_channel, ship_snapshot, item_snapshot
+       FROM changelog_entries
+       WHERE entry_type IS DISTINCT FROM 'price_refresh'
+       ORDER BY id DESC LIMIT 1`
     );
     const prev = prevRows[0] || null;
 
@@ -286,11 +291,13 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items 
  *  the next diff). */
 export async function getChangelogHistory(limit = CHANGELOG_RETENTION) {
   if (!pool) return [];
+  // Only return build entries — price_refresh entries are separate
   const { rows } = await pool.query(
     `SELECT id, from_version, from_channel, to_version, to_channel,
             imported_at, ship_changes, item_changes,
             ship_added, item_added, ship_removed, item_removed
      FROM changelog_entries
+     WHERE entry_type IS DISTINCT FROM 'price_refresh'
      ORDER BY id DESC
      LIMIT $1`,
     [Math.min(limit, CHANGELOG_RETENTION * 2)]
