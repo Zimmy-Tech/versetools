@@ -134,7 +134,6 @@
   padding: 12px 10px 10px;
   background: linear-gradient(160deg, rgba(0, 200, 255, 0.06) 0%, rgba(0, 0, 0, 0.15) 100%);
   border: 1px solid var(--border2);
-  border-left: 3px solid var(--accent);
   border-radius: 4px;
   margin-bottom: 6px;
   cursor: help;
@@ -223,7 +222,6 @@
   padding: 12px 10px 10px;
   background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
   border: 1px solid var(--border2);
-  border-left: 3px solid var(--phys);
   border-radius: 4px;
   margin-bottom: 6px;
   cursor: help;
@@ -261,7 +259,6 @@
   padding: 8px 4px 6px;
   background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
   border: 1px solid var(--border);
-  border-top: 2px solid var(--accent2);
   border-radius: 4px;
   cursor: help;
 }
@@ -357,184 +354,67 @@
   text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
 }
 
-.resist-row {
+// ── In-block divider header (e.g. "Resistances" inside Shields) ──
+.block-divider {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 13px;
-  padding: 1px 0;
-}
-
-// ── Shield Resistance Panel ─────────────────────────────
-.resist-panel-title {
+  gap: 6px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--text2);
-  margin-top: 6px;
-  margin-bottom: 4px;
-}
-
-.resist-values {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 6px;
-}
-
-.rv-row {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  padding: 2px 8px;
-}
-
-.rv-type {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  width: 36px;
-  flex-shrink: 0;
-  color: var(--text2);
-}
-
-.rv-val {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  color: var(--text2);
-  flex: 1;
-  text-align: center;
-
-  &.negative { color: var(--red); }
-}
-
-.rv-abs {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
   color: var(--text3);
-  flex: 1;
-  text-align: center;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.resist-panel {
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 4px;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.15);
-}
-
-.resist-panel-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-
-  // Spacer matching .rc-type width
-  &::before {
-    content: '';
-    width: 36px;
-    flex-shrink: 0;
-  }
-}
-
-.rph-cols {
-  flex: 1;
-  display: flex;
-  gap: 6px;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text3);
-
-  span { flex: 1; text-align: center; }
-}
-
-.resist-channel {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-  &:last-child { border-bottom: none; }
-}
-
-.rc-type {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  width: 36px;
-  flex-shrink: 0;
-  color: var(--text2);
-}
-
-.rc-bars {
-  flex: 1;
-  display: flex;
-  gap: 6px;
-}
-
-.rc-bar {
-  flex: 1;
-  height: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 2px;
-  position: relative;
-  overflow: hidden;
-}
-
-.rc-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  border-radius: 2px;
-  transition: width 0.4s ease;
-
-  .phys & { background: linear-gradient(90deg, rgba(255, 68, 68, 0.5), rgba(255, 68, 68, 0.25)); }
-  .enrg & { background: linear-gradient(90deg, rgba(0, 230, 118, 0.5), rgba(0, 230, 118, 0.25)); }
-  .dist & { background: linear-gradient(90deg, rgba(68, 136, 255, 0.5), rgba(68, 136, 255, 0.25)); }
-
-  .rc-bar.hull & {
-    opacity: 0.5;
-  }
-}
-
-.rc-pct {
-  position: absolute;
-  inset: 0;
-  display: flex;
+.block-divider-info {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Share Tech Mono', monospace;
+  width: 14px;
+  height: 14px;
   font-size: 10px;
-  color: var(--text);
-  z-index: 1;
-
-  .rc-bar.hull & { color: var(--text3); }
+  font-weight: 700;
+  border-radius: 50%;
+  border: 1px solid var(--green);
+  color: var(--green);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  &:hover { background: var(--green); color: var(--bg2); }
 }
 
-// Keep old classes for compatibility if referenced elsewhere
-.resist-grid { display: none; }
-.resist-header, .resist-type, .resist-val, .hull-val { display: none; }
-
 .stat-block {
+  position: relative;
+  overflow: hidden;
   padding: 8px 10px 8px 12px;
   background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-left: 3px solid var(--accent);
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   min-width: 160px;
+
+  // Scanline texture pulled from .popout-panel::after (Armor Check detail).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.018) 2px,
+      rgba(255, 255, 255, 0.018) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  > * { position: relative; z-index: 1; }
 }
 .stat-row {
   display: flex;
@@ -1002,6 +882,65 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .armor-popout {
   width: 520px;
+}
+
+// ── Shield Resist Explainer Popout ───────────────────────
+.shield-resist-popout {
+  width: 540px;
+}
+
+.shield-resist-body {
+  font-family: 'Exo 2', sans-serif;
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.6;
+
+  p { margin: 8px 0; }
+
+  h4 {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--accent2);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 16px 0 4px;
+  }
+
+  strong { color: var(--text); }
+  em     { color: var(--text); font-style: italic; }
+
+  .srx-defs,
+  .srx-math {
+    list-style: none;
+    padding: 8px 12px;
+    margin: 8px 0;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 4px;
+
+    li {
+      padding: 3px 0;
+      strong:first-child { color: var(--accent); }
+    }
+  }
+
+  .srx-math {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+  }
+
+  .srx-formula {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    background: rgba(0, 255, 120, 0.04);
+    border: 1px solid rgba(0, 255, 120, 0.12);
+    border-radius: 4px;
+    padding: 8px 12px;
+    text-align: center;
+    margin: 8px 0;
+  }
 }
 
 // Popout context overrides for the shared armor card classes.

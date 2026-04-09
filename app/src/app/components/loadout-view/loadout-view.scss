@@ -439,6 +439,29 @@
   }
 }
 
+// Scanline texture experiment — applied to selected sidebar stat-blocks
+// (Flight Data, Hull Data, Misc) to test the look pulled from
+// .popout-panel::after / DPS panel stat-blocks.
+.stat-block.scanline-block {
+  overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.018) 2px,
+      rgba(255, 255, 255, 0.018) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  > * { position: relative; z-index: 1; }
+}
+
 .stat-row {
   display: flex;
   justify-content: space-between;

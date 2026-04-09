@@ -11,6 +11,7 @@ import { Hardpoint, Item, calcWeaponAmmo, calcMaxPips, bandModAt, coolerSupply, 
 })
 export class DpsPanelComponent {
   showRealDpsInfo = signal(false);
+  showShieldResistInfo = signal(false);
 
   /** HUD vs Flat display mode — shared via DataService. */
   get displayMode() { return this.data.dpsPanelMode; }

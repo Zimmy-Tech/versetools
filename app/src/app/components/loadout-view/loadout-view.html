@@ -70,7 +70,7 @@
           <div>
             <div class="stats-block-title" (click)="toggleSection('sb-flight')">Flight Data <span class="collapse-arrow">{{ isCollapsed('sb-flight') ? '▸' : '▾' }}</span></div>
             @if (!isCollapsed('sb-flight')) {
-              <div class="stat-block">
+              <div class="stat-block scanline-block">
                 <div class="stat-group-header">Speed (m/s)</div>
                 <div class="stat-row"><span class="stat-label">SCM</span><span class="mono">{{ flightScmSpeed() }}</span></div>
                 <div class="stat-row"><span class="stat-label">NAV</span><span class="mono">{{ flightNavSpeed() }}</span></div>
@@ -121,7 +121,7 @@
           <div>
             <div class="stats-block-title" (click)="toggleSection('sb-hull')">Hull Data <button class="hull-tree-btn" (click)="hullTreeOpen.set(true); $event.stopPropagation()">&#9776; PARTS</button> <span class="collapse-arrow">{{ isCollapsed('sb-hull') ? '▸' : '▾' }}</span></div>
             @if (!isCollapsed('sb-hull') && data.selectedShip()!.totalHp) {
-              <div class="stat-block">
+              <div class="stat-block scanline-block">
                 <div class="stat-group-header">Hull (HP)</div>
                 <div class="stat-row"><span class="stat-label">Total HP</span><span class="mono">{{ data.selectedShip()!.totalHp }}</span></div>
                 <div class="stat-row"><span class="stat-label">Armor HP</span><span class="mono">{{ data.selectedShip()!.armorHp }}</span></div>
@@ -174,7 +174,7 @@
             @if (!isCollapsed('sb-misc')) {
               @if (data.selectedShip()!.insuranceStandardMinutes) {
                 <div class="section-subtitle">Insurance</div>
-                <div class="stat-block">
+                <div class="stat-block scanline-block">
                   <div class="stat-row"><span class="stat-label">Standard</span><span class="mono">{{ data.selectedShip()!.insuranceStandardMinutes }}m</span></div>
                   <div class="stat-row"><span class="stat-label">Expedite</span><span class="mono">{{ data.selectedShip()!.insuranceExpediteMinutes }}m</span></div>
                   <div class="stat-row"><span class="stat-label">Cost</span><span class="mono accent">{{ data.selectedShip()!.insuranceExpediteCost }} aUEC</span></div>
@@ -182,7 +182,7 @@
               }
               @if (shipBuyPrices().length) {
                 <div class="section-subtitle">Buy Price</div>
-                <div class="stat-block">
+                <div class="stat-block scanline-block">
                   @for (bp of shipBuyPrices(); track bp.shop) {
                     <div class="stat-row"><span class="stat-label">{{ bp.shop }}</span><span class="mono">{{ bp.price.toLocaleString('en-US') }} aUEC</span></div>
                   }

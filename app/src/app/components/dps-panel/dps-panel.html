@@ -148,7 +148,7 @@
           </div>
         }
 
-        <div class="stat-block">
+        <div class="stat-block shields-block">
           <!-- Flat: inline shield HP -->
           @if (displayMode() === 'flat') {
             <div class="stat-row" title="Combined shield HP from all equipped shields. Primary shields (first 2) regen and absorb damage. Excess shields (3rd+) contribute HP only.">
@@ -171,67 +171,21 @@
             <span class="mono">{{ shieldFaceType() }}</span>
           </div>
           @if (shieldResists(); as r) {
-            <div class="resist-panel-title">Shield Resist / Damage Per Shot</div>
-            <div class="resist-values">
-              <div class="rv-row">
-                <span class="rv-type phys">PHYS</span>
-                <span class="rv-val">{{ (r.resistPhys * 100).toFixed(0) }}% resist</span>
-                <span class="rv-abs">{{ (r.absPhys * 100).toFixed(0) }}% absorbed</span>
-              </div>
-              <div class="rv-row">
-                <span class="rv-type enrg">ENRG</span>
-                <span class="rv-val" [class.negative]="r.resistEnrg < 0">{{ (r.resistEnrg * 100).toFixed(0) }}% resist</span>
-                <span class="rv-abs">{{ (r.absEnrg * 100).toFixed(0) }}% absorbed</span>
-              </div>
-              <div class="rv-row">
-                <span class="rv-type dist">DIST</span>
-                <span class="rv-val">{{ (r.resistDist * 100).toFixed(0) }}% resist</span>
-                <span class="rv-abs">{{ (r.absDist * 100).toFixed(0) }}% absorbed</span>
-              </div>
+            <div class="block-divider">
+              <span>Resistances</span>
+              <span class="block-divider-info" (click)="showShieldResistInfo.set(true)" title="How shield resistances work">?</span>
             </div>
-            <div class="resist-panel">
-              <div class="resist-panel-header">
-                <span class="rph-cols"><span>To Shield</span><span>To Armor/Hull</span></span>
-              </div>
-              <div class="resist-channel phys">
-                <span class="rc-type">PHYS</span>
-                <div class="rc-bars">
-                  <div class="rc-bar">
-                    <div class="rc-fill" [style.width.%]="r.physToShield * 100"></div>
-                    <span class="rc-pct">{{ (r.physToShield * 100).toFixed(0) }}%</span>
-                  </div>
-                  <div class="rc-bar hull">
-                    <div class="rc-fill" [style.width.%]="r.physToHull * 100"></div>
-                    <span class="rc-pct">{{ (r.physToHull * 100).toFixed(0) }}%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="resist-channel enrg">
-                <span class="rc-type">ENRG</span>
-                <div class="rc-bars">
-                  <div class="rc-bar">
-                    <div class="rc-fill" [style.width.%]="r.enrgToShield * 100"></div>
-                    <span class="rc-pct">{{ (r.enrgToShield * 100).toFixed(0) }}%</span>
-                  </div>
-                  <div class="rc-bar hull">
-                    <div class="rc-fill" [style.width.%]="r.enrgToHull * 100"></div>
-                    <span class="rc-pct">{{ (r.enrgToHull * 100).toFixed(0) }}%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="resist-channel dist">
-                <span class="rc-type">DIST</span>
-                <div class="rc-bars">
-                  <div class="rc-bar">
-                    <div class="rc-fill" [style.width.%]="r.distToShield * 100"></div>
-                    <span class="rc-pct">{{ (r.distToShield * 100).toFixed(0) }}%</span>
-                  </div>
-                  <div class="rc-bar hull">
-                    <div class="rc-fill" [style.width.%]="r.distToHull * 100"></div>
-                    <span class="rc-pct">{{ (r.distToHull * 100).toFixed(0) }}%</span>
-                  </div>
-                </div>
-              </div>
+            <div class="stat-row">
+              <span class="stat-label">Phys. Resist/Absorb</span>
+              <span class="mono">{{ (r.resistPhys * 100).toFixed(0) }}% / {{ (r.absPhys * 100).toFixed(0) }}%</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Enrg. Resist/Absorb</span>
+              <span class="mono">{{ (r.resistEnrg * 100).toFixed(0) }}% / {{ (r.absEnrg * 100).toFixed(0) }}%</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Dist. Resist/Absorb</span>
+              <span class="mono">{{ (r.resistDist * 100).toFixed(0) }}% / {{ (r.absDist * 100).toFixed(0) }}%</span>
             </div>
           }
           @if (shieldedPhysDeflect(); as spd) {
@@ -466,6 +420,41 @@
   </div>
 
 </div>
+
+<!-- Shield Resist Explainer Popout -->
+@if (showShieldResistInfo()) {
+  <div class="popout-overlay" (click)="showShieldResistInfo.set(false)"></div>
+  <div class="popout-panel shield-resist-popout">
+    <div class="popout-header">
+      <span class="popout-title">How Shield Resistances Work</span>
+      <span class="popout-close" (click)="showShieldResistInfo.set(false)">&times;</span>
+    </div>
+    <div class="popout-body shield-resist-body">
+      <p>Every incoming shot is reduced by <strong>two independent</strong> mitigations from your shields:</p>
+      <ul class="srx-defs">
+        <li><strong>Resist</strong> &mdash; reduces the damage your shield itself takes from the shot.</li>
+        <li><strong>Absorb</strong> &mdash; reduces the damage that bleeds through to your hull from the shot.</li>
+      </ul>
+      <p>Both apply to the <em>same shot at the same time</em>. The shield and the hull are each hit, just for different (smaller) amounts.</p>
+
+      <h4>Worked Example</h4>
+      <p>A weapon hits you for <strong>100 physical damage</strong>. Your shield is up with <strong>17% Resist</strong> and <strong>30% Absorb</strong>:</p>
+      <ul class="srx-math">
+        <li>Shield takes <strong>100 &times; (1 &minus; 0.17) = 83</strong> damage</li>
+        <li>Hull takes <strong>100 &times; (1 &minus; 0.30) = 70</strong> damage</li>
+      </ul>
+      <p>So a 100&#8209;damage shot deals 83 to the shield and 70 to the hull on the very same trigger pull. They are <em>not</em> a chain &mdash; they are two separate reductions.</p>
+
+      <h4>Why Some Resists Are Negative</h4>
+      <p>Ballistic shields favour stopping bullets (high physical resist) but are vulnerable to energy weapons. A negative energy resist means the shield takes <em>more</em> than 100% of the incoming energy damage &mdash; the shot is amplified against the shield itself.</p>
+
+      <h4>Shielded Phys Deflect</h4>
+      <p>Your armor's physical deflect threshold says "any shot with less than X alpha bounces off". With shields up, only the <em>bleedthrough</em> portion (governed by Absorb) ever reaches the armor in the first place, so a much bigger raw shot is required to push enough through to penetrate.</p>
+      <p class="srx-formula">Shielded Phys Deflect = Armor Phys Deflect &divide; (1 &minus; Phys Absorb)</p>
+      <p>Example: Armor deflect 80, Phys Absorb 30% &rarr; raw alpha needed = 80 &divide; 0.70 &asymp; <strong>114</strong>. Anything below that is fully blocked while shields are holding.</p>
+    </div>
+  </div>
+}
 
 <!-- Armor Detail Popout -->
 @if (showArmorDetail()) {
