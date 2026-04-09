@@ -114,7 +114,7 @@
 }
 
 .ship-side-panel {
-  background: linear-gradient(180deg, rgba(19, 26, 36, 0.4) 0%, transparent 100%);
+  background: transparent;
   border: none;
   border-right: none;
   padding: 10px 14px;
@@ -148,13 +148,7 @@
   flex-direction: column;
   gap: 10px;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-  }
+  &::before { display: none; }
 }
 
 .ship-image {

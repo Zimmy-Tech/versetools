@@ -1,7 +1,9 @@
 <div class="hardpoint-slot">
   @if (!hideLabel()) {
     <div class="slot-label">
-      <span class="slot-size-tag">S{{ hardpoint().maxSize }}</span>
+      @if (hardpoint().type !== 'JumpDrive') {
+        <span class="slot-size-tag">S{{ hardpoint().maxSize }}</span>
+      }
       {{ hardpoint().label }}
     </div>
   }
