@@ -685,11 +685,12 @@ def parse_vehicle_xml(xml_path, loc):
 
         flags = item_port.get("flags", "")
 
-        # Skip invisible+uneditable (internal systems) — except FlightController and BombLauncher
+        # Skip invisible+uneditable (internal systems) — except critical component types
         if "uneditable" in flags and "invisible" in flags:
+            _allowed_invis = {"FlightController", "BombLauncher", "Shield", "PowerPlant", "Cooler", "Radar", "QuantumDrive", "LifeSupportGenerator"}
             types_el_peek = item_port.find("Types")
             is_allowed = types_el_peek is not None and any(
-                t.get("type") in ("FlightController", "BombLauncher") for t in types_el_peek.findall("Type")
+                t.get("type") in _allowed_invis for t in types_el_peek.findall("Type")
             )
             if not is_allowed:
                 continue
@@ -2760,7 +2761,12 @@ def enrich_ships_from_dcb(ships, forge_dir, loc):
                     continue
                 flags = port_def.get("Flags", "")
                 if "invisible" in flags and "uneditable" in flags:
-                    continue
+                    _allowed_invis_forge = {"FlightController", "BombLauncher", "Shield", "PowerPlant", "Cooler", "Radar", "QuantumDrive", "LifeSupportGenerator"}
+                    types_el_chk = port_def.find("Types")
+                    if not (types_el_chk is not None and any(
+                        t.get("Type") in _allowed_invis_forge for t in types_el_chk.findall("SItemPortDefTypes")
+                    )):
+                        continue
                 min_size = safe_int(port_def.get("MinSize", 0))
                 max_size = safe_int(port_def.get("MaxSize", 0))
                 if max_size == 0:
@@ -4717,30 +4723,49 @@ def main(mode: str = "live"):
                 if k not in dl:
                     dl[k] = v
 
-    # Origin 890 Jump: CIG flagged the radar slot `invisible uneditable` in
-    # build 4.7.0-live.11592622, so the extractor's invisible+uneditable
-    # filter at parse_vehicle_xml drops it entirely (only FlightController
-    # and BombLauncher are exempt from that filter). The radar is gone from
-    # the parsed hardpoints list — we can't modify it, we have to re-add
-    # it. Restores yesterday's shape so the 890 still shows its radar slot.
-    # The broader fix (exposing all 192 critical capital-ship hardpoints
-    # flagged invisible+uneditable across the fleet — Idris, Javelin,
-    # Cutter, MOLE, etc.) is tracked separately and will land in its own
-    # session.
-    if "ORIG_890Jump" in ships:
-        ship = ships["ORIG_890Jump"]
-        hps = ship.setdefault("hardpoints", [])
-        if not any(hp["id"].lower() == "hardpoint_radar_01" for hp in hps):
-            hps.append({
-                "id": "hardpoint_radar_01",
-                "label": "Radar",
-                "type": "Radar",
-                "subtypes": "",
-                "minSize": 1,
-                "maxSize": 3,
-                "flags": "invisible",
-                "allTypes": [{"type": "Radar", "subtypes": ""}],
-            })
+    # Origin 890 Jump radar: previously needed a manual patch here because the
+    # invisible+uneditable filter dropped it. Now that the filter allows Radar
+    # (and other critical component types) through, the radar flows naturally
+    # from parse_vehicle_xml. Patch removed 2026-04-09.
+
+    # Drake Cutter Rambler / Scout: variant-specific hardpoints live on child
+    # geometry parts (roof, scout console) not on the vehicle XML itself, so
+    # the parser never sees them. Synthesize from default loadout item sizes.
+    _cutter_variant_patches = {
+        "drak_cutter_rambler": [
+            {"id": "hardpoint_expo_shield", "label": "Shield Generator", "type": "Shield", "size": 1},
+            {"id": "hardpoint_expo_powerplant", "label": "Power Plant", "type": "PowerPlant", "size": 1},
+        ],
+        "drak_cutter_scout": [
+            {"id": "hardpoint_scout_shieldgen", "label": "Shield Generator", "type": "Shield", "size": 1},
+            {"id": "hardpoint_scout_powerplant", "label": "Power Plant", "type": "PowerPlant", "size": 2},
+            {"id": "hardpoint_scout_cooler", "label": "Cooler", "type": "Cooler", "size": 2},
+            {"id": "hardpoint_scout_radar", "label": "Radar", "type": "Radar", "size": 2},
+            {"id": "hardpoint_scout_quantumdrive", "label": "Quantum Drive", "type": "QuantumDrive", "size": 1},
+        ],
+    }
+    for cls, patches in _cutter_variant_patches.items():
+        if cls in ships:
+            hps = ships[cls].setdefault("hardpoints", [])
+            existing = {hp["id"].lower() for hp in hps}
+            patch_ids = {p["id"].lower() for p in patches}
+            for p in patches:
+                if p["id"].lower() not in existing:
+                    hps.append({
+                        "id": p["id"],
+                        "label": p["label"],
+                        "type": p["type"],
+                        "subtypes": "",
+                        "minSize": p["size"],
+                        "maxSize": p["size"],
+                        "flags": "",
+                        "allTypes": [{"type": p["type"], "subtypes": ""}],
+                    })
+            # Clear CIG's invisible+uneditable flags on these ports — they're
+            # swappable in-game despite what the XML says
+            for hp in hps:
+                if hp["id"].lower() in patch_ids and ("invisible" in hp.get("flags", "") or "uneditable" in hp.get("flags", "")):
+                    hp["flags"] = ""
 
     # Aegis Aurora Mk II: CIG removed the module slot's port-tag filter in
     # build 4.7.0-live.11592622, leaving the slot untagged while the Aurora

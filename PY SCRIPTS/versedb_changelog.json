@@ -1,9 +1,37 @@
 {
   "meta": {
-    "generatedAt": "2026-04-08T17:30:08.425160+00:00",
-    "entries": 9
+    "generatedAt": "2026-04-09T17:20:11.488332+00:00",
+    "entries": 11
   },
   "changelog": [
+    {
+      "fromVersion": "4.7.0-ptu.11494258",
+      "toVersion": "4.7.0-live.11592622",
+      "date": "2026-04-09",
+      "changes": [],
+      "added": [
+        {
+          "category": "module",
+          "className": "rsi_aurora_mk2_module_missile",
+          "name": "Aurora Mk II DM Module"
+        }
+      ],
+      "removed": []
+    },
+    {
+      "fromVersion": "4.7.0-live.11592622",
+      "toVersion": "4.7.0-ptu.11494258",
+      "date": "2026-04-09",
+      "changes": [],
+      "added": [],
+      "removed": [
+        {
+          "category": "module",
+          "className": "rsi_aurora_mk2_module_missile",
+          "name": "Aurora Mk II DM Module"
+        }
+      ]
+    },
     {
       "fromVersion": "4.7.0-live.11576750",
       "toVersion": "4.7.0-live.11592622",

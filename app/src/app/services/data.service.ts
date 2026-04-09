@@ -25,6 +25,7 @@ export class DataService {
     'mrai_pulse', 'mrai_pulse_lx',
     'anvl_lightning_f8',  // F8A Lightning — not player-owned
     'anvl_carrack_expedition',  // just a paintjob of the Carrack
+    'aegs_javelin',  // not player-usable, missing shield hardpoints
   ]);
   readonly ships = computed(() =>
     (this.db()?.ships ?? []).filter(s => !this.hiddenShips.has(s.className.toLowerCase()))

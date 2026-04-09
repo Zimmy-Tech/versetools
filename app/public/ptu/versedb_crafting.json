@@ -1,9 +1,9 @@
 {
   "meta": {
-    "totalRecipes": 1040,
+    "totalRecipes": 1031,
     "categories": {
-      "FPSWeapons": 195,
-      "FPSArmours": 845
+      "FPSWeapons": 192,
+      "FPSArmours": 839
     }
   },
   "recipes": [
@@ -18689,111 +18689,6 @@
       ]
     },
     {
-      "className": "ksar_sniper_ballistic_01_white_blue_01",
-      "itemName": "Scalpel Sniper Rifle",
-      "category": "FPSWeapons",
-      "subtype": "Sniper",
-      "tier": 0,
-      "craftTimeSeconds": 180,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Taranite",
-          "quantity": 0.06,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Recoil Smoothness",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Handling",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Kick",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Hephaestanite",
-          "quantity": 0.02,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Recoil Smoothness",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Handling",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Kick",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Iron",
-          "quantity": 0.03,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Impact Force",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.9,
-              "modifierAtEnd": 1.1,
-              "unit": "%+.2f %%"
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "resource": "Hadanite",
-          "quantity": 1,
-          "qualityModifiers": [
-            {
-              "property": "Impact Force",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.9,
-              "modifierAtEnd": 1.1,
-              "unit": "%+.2f %%"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "className": "ksar_smg_energy_01_white02",
       "itemName": "Custodian \"Boneyard\" SMG",
       "category": "FPSWeapons",
@@ -19388,79 +19283,6 @@
         {
           "type": "resource",
           "resource": "Corundum",
-          "quantity": 0.03,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Recoil Smoothness",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.4,
-              "modifierAtEnd": 0.6,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Handling",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.4,
-              "modifierAtEnd": 0.6,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Kick",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.4,
-              "modifierAtEnd": 0.6,
-              "unit": "%+.2f %%"
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Copper",
-          "quantity": 0.01,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Fire Rate",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.88,
-              "modifierAtEnd": 1.12,
-              "unit": "%.2f RPM"
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "resource": "Aphorite",
-          "quantity": 2,
-          "qualityModifiers": [
-            {
-              "property": "Impact Force",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.925,
-              "modifierAtEnd": 1.075,
-              "unit": "%+.2f %%"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "className": "klwe_smg_energy_01_blue_gold",
-      "itemName": "Lumin V SMG",
-      "category": "FPSWeapons",
-      "subtype": "SMG",
-      "tier": 0,
-      "craftTimeSeconds": 120,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Riccite",
           "quantity": 0.03,
           "minQuality": 0,
           "qualityModifiers": [
@@ -22060,104 +21882,6 @@
     {
       "className": "gmni_lmg_ballistic_01_firerats01",
       "itemName": "F55 \"Scorched\" LMG",
-      "category": "FPSWeapons",
-      "subtype": "LMG",
-      "tier": 0,
-      "craftTimeSeconds": 240,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Lindinium",
-          "quantity": 0.06,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Recoil Smoothness",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Handling",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Kick",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Hephaestanite",
-          "quantity": 0.04,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Recoil Smoothness",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Handling",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Recoil Kick",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 1.2,
-              "modifierAtEnd": 0.8,
-              "unit": "%+.2f %%"
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Iron",
-          "quantity": 0.03,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Impact Force",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.925,
-              "modifierAtEnd": 1.075,
-              "unit": "%+.2f %%"
-            },
-            {
-              "property": "Fire Rate",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.88,
-              "modifierAtEnd": 1.12,
-              "unit": "%.2f RPM"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "className": "gmni_lmg_ballistic_01_blue_gold",
-      "itemName": "F55 LMG",
       "category": "FPSWeapons",
       "subtype": "LMG",
       "tier": 0,
@@ -41658,56 +41382,6 @@
       ]
     },
     {
-      "className": "slaver_armor_medium_legs_01_01_15",
-      "itemName": "DustUp Legs Desert",
-      "category": "FPSArmours",
-      "subtype": "Legs",
-      "tier": 0,
-      "craftTimeSeconds": 180,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Ouratite",
-          "quantity": 0.04,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Damage Mitigation",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.85,
-              "modifierAtEnd": 1.15,
-              "unit": ""
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Aslarite",
-          "quantity": 0.02,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Min Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            },
-            {
-              "property": "Max Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "className": "slaver_armor_light_legs_01_01_15",
       "itemName": "Calico Legs Desert",
       "category": "FPSArmours",
@@ -49088,56 +48762,6 @@
       ]
     },
     {
-      "className": "vgl_armor_light_legs_01_01_11",
-      "itemName": "TrueDef-Pro Legs Black/Silver",
-      "category": "FPSArmours",
-      "subtype": "Legs",
-      "tier": 0,
-      "craftTimeSeconds": 120,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Laranite",
-          "quantity": 0.03,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Damage Mitigation",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.85,
-              "modifierAtEnd": 1.15,
-              "unit": ""
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Aslarite",
-          "quantity": 0.02,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Max Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            },
-            {
-              "property": "Min Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "className": "vgl_armor_light_legs_01_01_16",
       "itemName": "TrueDef-Pro Legs Black/Silver/Green",
       "category": "FPSArmours",
@@ -50516,56 +50140,6 @@
       ]
     },
     {
-      "className": "vgl_armor_light_helmet_01_01_15",
-      "itemName": "Argus Helmet Black/Silver",
-      "category": "FPSArmours",
-      "subtype": "Helmet",
-      "tier": 0,
-      "craftTimeSeconds": 120,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Laranite",
-          "quantity": 0.02,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Damage Mitigation",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.85,
-              "modifierAtEnd": 1.15,
-              "unit": ""
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Aslarite",
-          "quantity": 0.01,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Max Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            },
-            {
-              "property": "Min Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "className": "vgl_armor_light_helmet_01_01_02",
       "itemName": "Argus Helmet Red/Silver",
       "category": "FPSArmours",
@@ -51632,56 +51206,6 @@
     {
       "className": "vgl_armor_light_core_01_01_19",
       "itemName": "TrueDef-Pro Core Black/Silver/Yellow",
-      "category": "FPSArmours",
-      "subtype": "Core",
-      "tier": 0,
-      "craftTimeSeconds": 120,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Laranite",
-          "quantity": 0.04,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Damage Mitigation",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.85,
-              "modifierAtEnd": 1.15,
-              "unit": ""
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Aslarite",
-          "quantity": 0.02,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Max Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            },
-            {
-              "property": "Min Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "className": "vgl_armor_light_core_01_01_11",
-      "itemName": "TrueDef-Pro Core Black/Silver",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,
@@ -58598,56 +58122,6 @@
       ]
     },
     {
-      "className": "vgl_armor_light_arms_01_01_11",
-      "itemName": "TrueDef-Pro Arms Black/Silver",
-      "category": "FPSArmours",
-      "subtype": "Arms",
-      "tier": 0,
-      "craftTimeSeconds": 120,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Laranite",
-          "quantity": 0.03,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Damage Mitigation",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.85,
-              "modifierAtEnd": 1.15,
-              "unit": ""
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Aslarite",
-          "quantity": 0.02,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Max Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            },
-            {
-              "property": "Min Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "className": "vgl_armor_light_arms_01_01_07",
       "itemName": "TrueDef-Pro Arms Gold/Grey/Black",
       "category": "FPSArmours",
@@ -62100,72 +61574,6 @@
     {
       "className": "qrt_specialist_medium_core_01_01_04",
       "itemName": "Artimex Core Chairman's Club",
-      "category": "FPSArmours",
-      "subtype": "Core",
-      "tier": 0,
-      "craftTimeSeconds": 200,
-      "ingredients": [
-        {
-          "type": "resource",
-          "resource": "Taranite",
-          "quantity": 0.05,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Damage Mitigation",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.9,
-              "modifierAtEnd": 1.1,
-              "unit": ""
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Aslarite",
-          "quantity": 0.02,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Max Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            },
-            {
-              "property": "Min Temp",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.8,
-              "modifierAtEnd": 1.2,
-              "unit": "%+.2f \u00baC"
-            }
-          ]
-        },
-        {
-          "type": "resource",
-          "resource": "Lindinium",
-          "quantity": 0.05,
-          "minQuality": 0,
-          "qualityModifiers": [
-            {
-              "property": "Damage Mitigation",
-              "startQuality": 0,
-              "endQuality": 1000,
-              "modifierAtStart": 0.95,
-              "modifierAtEnd": 1.05,
-              "unit": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "className": "qrt_specialist_medium_core_01_9tails_01",
-      "itemName": "Artimex Core",
       "category": "FPSArmours",
       "subtype": "Core",
       "tier": 0,

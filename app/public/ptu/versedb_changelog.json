@@ -1,9 +1,57 @@
 {
   "meta": {
-    "generatedAt": "2026-04-04T18:57:07.274845+00:00",
-    "entries": 8
+    "generatedAt": "2026-04-09T17:03:00.386974+00:00",
+    "entries": 10
   },
   "changelog": [
+    {
+      "fromVersion": "4.7.0-live.11592622",
+      "toVersion": "4.7.0-ptu.11494258",
+      "date": "2026-04-09",
+      "changes": [],
+      "added": [],
+      "removed": [
+        {
+          "category": "module",
+          "className": "rsi_aurora_mk2_module_missile",
+          "name": "Aurora Mk II DM Module"
+        }
+      ]
+    },
+    {
+      "fromVersion": "4.7.0-live.11576750",
+      "toVersion": "4.7.0-live.11592622",
+      "date": "2026-04-08",
+      "changes": [],
+      "added": [
+        {
+          "category": "flightcontroller",
+          "className": "controller_flight_misc_hull_b",
+          "name": "Flight Blade"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret_tractor_left",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret_tractor_right",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "missilelauncher",
+          "className": "mrck_s06_misc_hull_b",
+          "name": "MISC S6 Missile Rack"
+        }
+      ],
+      "removed": []
+    },
     {
       "fromVersion": "4.7.0-live.11576750",
       "toVersion": "4.7.0-ptu.11494258",
