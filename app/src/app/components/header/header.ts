@@ -120,10 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   // Messages to display based on equipped items in the current loadout
-  private readonly ITEM_MESSAGES: Record<string, string> = {
-    'behr_ballisticrepeater_s2': 'Sawbuck fire rate (618 RPM) is game-tested — other tools may report different values.',
-    'behr_ballisticrepeater_s3': 'Shredder fire rate (618 RPM) is game-tested — other tools may report different values.',
-  };
+  private readonly ITEM_MESSAGES: Record<string, string> = {};
 
   loadoutMessages = computed(() => {
     const loadout = this.data.loadout();

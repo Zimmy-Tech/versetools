@@ -5441,19 +5441,6 @@ def main(mode: str = "live"):
         if cls in items:
             items[cls].update(overrides)
 
-    # Fire rate overrides: in-game tested values that differ from DCB sequence entries
-    # Behring ballistic repeaters: DCB shows 750/825 RPM per barrel, actual ~618 RPM (game-tested)
-    FIRE_RATE_OVERRIDES = {
-        "behr_ballisticrepeater_s2": 618,  # Sawbuck
-        "behr_ballisticrepeater_s3": 618,  # Shredder
-    }
-    for cls, rpm in FIRE_RATE_OVERRIDES.items():
-        if cls in items:
-            items[cls]["fireRate"] = rpm
-            alpha = items[cls].get("alphaDamage", 0)
-            if alpha > 0:
-                items[cls]["dps"] = round(alpha * rpm / 60, 1)
-
     # Name overrides for items with auto-generated names
     NAME_OVERRIDES = {
         "mrck_s10_aegs_idris_nose_s12_torpedo": 'HMF-T12 "Hammerfall" Torpedo Launcher',
