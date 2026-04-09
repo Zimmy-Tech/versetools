@@ -14,7 +14,7 @@
         <div class="ship-header-row">
         <div class="ship-header-content">
         <div class="ship-title">
-          <div class="ship-name-big">{{ data.selectedShip()!.name }}</div>
+          <div class="ship-name-big">{{ data.selectedShip()!.name.replace(data.selectedShip()!.manufacturer.split(' ')[0] + ' ', '') }}</div>
           <div class="ship-mfr-big">{{ data.selectedShip()!.manufacturer }}</div>
           <div class="ship-stats-row">
             <div class="stat-pill">
