@@ -586,98 +586,164 @@
   &.sz { width: 28px; }
 }
 
-// ── CENTER: Loadout ─────────────────────────────────────
+// ── CENTER: Circular Loadout ────────────────────────────
 
 .ef-loadout {
   flex: 1;
-  min-width: 280px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
 }
 
-.ef-loadout-list {
+.ef-lv {
   flex: 1;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar { width: 3px; }
-  &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-}
-
-.ef-loadout-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 10px;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-  transition: all 0.1s;
-
-  &:hover { background: rgba(255, 255, 255, 0.03); }
-  &.selected {
-    background: rgba(0, 200, 255, 0.05);
-    border-left: 2px solid var(--accent);
-  }
-  &.depth-1 { padding-left: 26px; }
-  &.depth-2 { padding-left: 42px; }
-}
-
-.ef-lr-name.empty { color: var(--text3); font-style: italic; }
-
-.ef-lr-cat {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text3);
-  width: 60px;
-  flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 2px;
-  padding: 0 4px;
-  text-align: center;
-}
-
-.ef-lr-slot {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text3);
-  width: 80px;
-  flex-shrink: 0;
-}
-
-.ef-lr-name {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  flex: 1;
-  white-space: nowrap;
+  justify-content: center;
+  padding: 12px;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.ef-lr-size {
+// Ring container: positions icons around the ship circle
+.ef-lv-ring {
+  position: relative;
+  width: clamp(400px, 90vh, 800px);
+  aspect-ratio: 1;
+  // Orbit radius for icon placement (used by children via inherit)
+  --ring-size: 100%;
+}
+
+// Ship image circle
+.ef-lv-ship-circle {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 65%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 200, 255, 0.15);
+  background: radial-gradient(circle, rgba(19, 26, 36, 0.6) 0%, var(--bg) 80%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 40px rgba(0, 200, 255, 0.06), inset 0 0 30px rgba(0, 0, 0, 0.5);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+  }
+}
+
+.ef-lv-ship-label {
+  position: absolute;
+  bottom: 12%;
+  left: 0; right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+.ef-lv-ship-name {
+  display: block;
+  font-family: 'Electrolize', sans-serif;
+  font-size: 15px;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.4), 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.ef-lv-ship-mfr {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  color: var(--accent2);
+  letter-spacing: 1px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+// Icon badge: positioned radially via --angle custom property
+// Uses rotate + translate to orbit around the ring center
+.ef-lv-icon {
+  --angle: 0deg;
+  position: absolute;
+  // Place on circle edge using CSS trig: 48% orbit radius
+  top: calc(50% + 48% * sin(var(--angle)) - 17px);
+  left: calc(50% + 48% * cos(var(--angle)) - 17px);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 17, 23, 0.9);
+  border: 1.5px solid rgba(0, 200, 255, 0.12);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  z-index: 1;
+
+  &:hover {
+    border-color: var(--accent);
+    background: rgba(0, 200, 255, 0.12);
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+    z-index: 2;
+  }
+
+  &.selected {
+    border-color: var(--accent);
+    background: rgba(0, 200, 255, 0.15);
+    box-shadow: 0 0 14px rgba(0, 200, 255, 0.25);
+    z-index: 2;
+  }
+
+  &.empty {
+    opacity: 0.45;
+    &:hover { opacity: 1; }
+  }
+
+  // Category colors
+  &.weapon { border-color: rgba(255, 68, 68, 0.2);
+    &:hover, &.selected { border-color: var(--red); box-shadow: 0 0 8px rgba(255, 68, 68, 0.15); }
+  }
+  &.shield { border-color: rgba(0, 230, 118, 0.2);
+    &:hover, &.selected { border-color: var(--green); box-shadow: 0 0 8px rgba(0, 230, 118, 0.15); }
+  }
+  &.power { border-color: rgba(240, 165, 0, 0.2);
+    &:hover, &.selected { border-color: var(--gold); box-shadow: 0 0 8px rgba(240, 165, 0, 0.15); }
+  }
+  &.cooler { border-color: rgba(0, 200, 255, 0.2);
+    &:hover, &.selected { border-color: var(--accent); }
+  }
+  &.quantum { border-color: rgba(180, 122, 255, 0.2);
+    &:hover, &.selected { border-color: var(--purple); box-shadow: 0 0 8px rgba(180, 122, 255, 0.15); }
+  }
+  &.missile { border-color: rgba(255, 140, 0, 0.2);
+    &:hover, &.selected { border-color: var(--orange); box-shadow: 0 0 8px rgba(255, 140, 0, 0.15); }
+  }
+  &.avionics { border-color: rgba(0, 200, 255, 0.15); }
+}
+
+.ef-lv-icon-glyph {
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text2);
+
+  .weapon & { color: var(--red); }
+  .shield & { color: var(--green); }
+  .power & { color: var(--gold); }
+  .cooler & { color: var(--accent); }
+  .quantum & { color: var(--purple); }
+  .missile & { color: var(--orange); }
+  .avionics & { color: var(--accent2); }
+}
+
+.ef-lv-icon-sz {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
+  font-size: 9px;
   color: var(--text3);
-  flex-shrink: 0;
-}
-
-.ef-lr-stat {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
-  flex-shrink: 0;
-  min-width: 60px;
-  text-align: right;
-
-  &.accent { color: var(--accent); font-weight: 700; }
-  &.shield { color: var(--green); }
-  &.power { color: var(--gold); }
-  &.cooling { color: var(--accent); }
-  &.muted { color: var(--text3); opacity: 0.3; }
+  line-height: 1;
 }
 
 // ── Loadout Summary ─────────────────────────────────────

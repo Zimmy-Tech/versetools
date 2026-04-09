@@ -535,6 +535,127 @@ export class EveStyleComponent {
     this.selectedSlotId.set(null);
   }
 
+  // ── Center column: visual layout ──────────────────────
+
+  /** True when ship qualifies for multi-crew collapsed layout */
+  isMultiCrew = computed(() => {
+    const ship = this.data.selectedShip();
+    if (!ship) return false;
+    const crew = ship.crew ?? 1;
+    const weaponLeafCount = this.weaponLeafNodes().length;
+    return crew > 2 && weaponLeafCount > 6;
+  });
+
+  /** All leaf weapon nodes (actual guns, not turret parents) */
+  weaponLeafNodes = computed(() =>
+    this.allFlatNodes().filter(n =>
+      n.category === 'weapons' && n.children.length === 0 && n.item?.type !== 'WeaponMount'
+    )
+  );
+
+  /** Shield, PP, cooler, QD, radar/avionics nodes */
+  systemNodes = computed(() =>
+    this.allFlatNodes().filter(n =>
+      ['shields', 'power', 'cooling', 'quantum', 'avionics'].includes(n.category)
+    )
+  );
+
+  /** Missile nodes (already collapsed per rack by slotTree) */
+  missileLeafNodes = computed(() =>
+    this.allFlatNodes().filter(n => n.category === 'missiles')
+  );
+
+  /** Group same-size slots for multi-crew bulk display */
+  weaponBulkGroups = computed(() => this.buildBulkGroups(this.weaponLeafNodes()));
+  missileBulkGroups = computed(() => this.buildBulkGroups(this.missileLeafNodes()));
+
+  private buildBulkGroups(nodes: SlotNode[]): { label: string; size: number; count: number; equippedItem: Item | null; allSame: boolean; slotIds: string[]; rackLeafIds?: string[][]; category: CategoryId }[] {
+    const buckets = new Map<number, SlotNode[]>();
+    for (const n of nodes) {
+      const sz = n.hardpoint.maxSize;
+      if (!buckets.has(sz)) buckets.set(sz, []);
+      buckets.get(sz)!.push(n);
+    }
+    const groups: { label: string; size: number; count: number; equippedItem: Item | null; allSame: boolean; slotIds: string[]; rackLeafIds?: string[][]; category: CategoryId }[] = [];
+    for (const [sz, slots] of [...buckets.entries()].sort((a, b) => b[0] - a[0])) {
+      const firstItem = slots[0].item;
+      const allSame = slots.every(s => (s.item?.className ?? null) === (firstItem?.className ?? null));
+      const rackLeafs = slots.filter(s => s.rackLeafIds).map(s => s.rackLeafIds!);
+      groups.push({
+        label: `${slots.length}× S${sz}`,
+        size: sz,
+        count: slots.length,
+        equippedItem: firstItem,
+        allSame,
+        slotIds: slots.map(s => s.slotId),
+        ...(rackLeafs.length ? { rackLeafIds: rackLeafs } : {}),
+        category: slots[0].category,
+      });
+    }
+    return groups;
+  }
+
+  /** Ship image for the center visual */
+  shipImageSrc = computed(() => {
+    const cls = this.data.selectedShip()?.className ?? '';
+    return `ship-images/${cls}.webp`;
+  });
+
+  onShipImageError(img: HTMLImageElement): void {
+    const cls = this.data.selectedShip()?.className ?? '';
+    if (img.src.includes('.webp')) img.src = `ship-images/${cls}.png`;
+    else if (img.src.includes('.png')) img.src = `ship-images/${cls.toUpperCase()}.png`;
+    else img.style.opacity = '0';
+  }
+
+  /** All icons arranged in circular order with angle positions */
+  radialSlots = computed<{ node: SlotNode; angle: number; category: CategoryId }[]>(() => {
+    const weapons = this.weaponLeafNodes();
+    const missiles = this.missileLeafNodes();
+    const systems = this.systemNodes();
+
+    // Order: weapons (top), right systems, missiles (bottom), left systems
+    const leftSys = systems.filter(n => n.category === 'shields' || n.category === 'power');
+    const rightSys = systems.filter(n => n.category === 'cooling' || n.category === 'quantum' || n.category === 'avionics');
+
+    const segments: { nodes: SlotNode[]; category: CategoryId }[] = [];
+    if (weapons.length) segments.push({ nodes: weapons, category: 'weapons' });
+    if (rightSys.length) segments.push({ nodes: rightSys, category: 'cooling' });
+    if (missiles.length) segments.push({ nodes: missiles, category: 'missiles' });
+    if (leftSys.length) segments.push({ nodes: leftSys, category: 'shields' });
+
+    const allNodes: { node: SlotNode; category: CategoryId }[] = [];
+    for (const seg of segments) {
+      for (const n of seg.nodes) allNodes.push({ node: n, category: n.category });
+    }
+
+    if (!allNodes.length) return [];
+
+    const total = allNodes.length;
+    // Start at top (-90deg) and go clockwise
+    const startAngle = -90;
+    const step = 360 / total;
+
+    return allNodes.map((entry, i) => ({
+      ...entry,
+      angle: startAngle + i * step,
+    }));
+  });
+
+  /** Equip an item to all slots in a bulk group */
+  equipBulkGroup(group: { slotIds: string[]; rackLeafIds?: string[][] }, item: Item): void {
+    for (const slotId of group.slotIds) {
+      if (group.rackLeafIds) {
+        // Missile bulk group
+        for (const leafIds of group.rackLeafIds) {
+          this.data.setRackItems(leafIds, item);
+        }
+      } else {
+        this.data.setLoadoutItem(slotId, item);
+      }
+    }
+  }
+
   // Additional stats for right panel
   totalMissileDmg = computed(() =>
     this.allFlatNodes().filter(n => n.item?.type === 'Missile')

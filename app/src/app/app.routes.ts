@@ -20,6 +20,7 @@ import { FpsWeaponsComponent } from './components/fps-weapons/fps-weapons';
 import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
 import { EveStyleComponent } from './components/eve-style/eve-style';
+import { AltLayoutComponent } from './components/alt-layout/alt-layout';
 import { adminGuard } from './components/admin/admin-guard';
 
 export const routes: Routes = [
@@ -42,6 +43,7 @@ export const routes: Routes = [
   { path: 'mining-signatures',  component: MiningSignaturesComponent },
   { path: 'compact',            component: CompactViewComponent },
   { path: 'eve-style',          component: EveStyleComponent },
+  { path: 'alt-layout',         component: AltLayoutComponent },
   { path: 'updates',            component: UpdatesViewComponent },
   { path: 'changelog',          component: ChangelogViewComponent },
   {

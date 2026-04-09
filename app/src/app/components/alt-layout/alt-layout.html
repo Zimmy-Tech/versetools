@@ -1,0 +1,265 @@
+<div class="mfd">
+
+  <!-- Scanline overlay -->
+  <div class="mfd-scanlines"></div>
+
+  <!-- ═══ TOP STRIP: Ship ID + Key Metrics ═══ -->
+  <header class="mfd-header">
+    <div class="mfd-id">
+      <button class="mfd-ship-btn" (click)="shipPickerOpen.set(!shipPickerOpen())">
+        <span class="mfd-ship-name">{{ data.selectedShip()?.name?.replace(data.selectedShip()!.manufacturer.split(' ')[0] + ' ', '') ?? 'NO VESSEL' }}</span>
+        <span class="mfd-ship-mfr">{{ data.selectedShip()?.manufacturer ?? '' }}</span>
+        <span class="mfd-caret">{{ shipPickerOpen() ? '\u25B4' : '\u25BE' }}</span>
+      </button>
+      @if (shipPickerOpen()) {
+        <div class="mfd-ship-dropdown">
+          <input class="mfd-input" type="text" placeholder="SEARCH VESSEL..."
+                 [value]="shipSearch()" (input)="shipSearch.set($any($event.target).value)" (click)="$event.stopPropagation()">
+          <div class="mfd-ship-list">
+            @for (ship of filteredShips(); track ship.className) {
+              <div class="mfd-ship-opt" [class.active]="data.selectedShip()?.className === ship.className"
+                   (click)="selectShip(ship)">
+                <span>{{ ship.name }}</span>
+                <span class="mfd-ship-opt-meta">{{ ship.manufacturer }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <div class="mfd-metrics">
+      <div class="mfd-metric red"><span class="mfd-metric-val">{{ fmt(totalDps()) }}</span><span class="mfd-metric-label">DPS</span></div>
+      <div class="mfd-metric green"><span class="mfd-metric-val">{{ fmt(totalShieldHp()) }}</span><span class="mfd-metric-label">SHP</span></div>
+      <div class="mfd-metric gold"><span class="mfd-metric-val">{{ fmt(totalAlpha(), 1) }}</span><span class="mfd-metric-label">ALPHA</span></div>
+      <div class="mfd-metric"><span class="mfd-metric-val">{{ data.selectedShip()?.scmSpeed ?? '—' }}</span><span class="mfd-metric-label">SCM</span></div>
+      <div class="mfd-metric accent"><span class="mfd-metric-val">{{ data.selectedShip()?.boostSpeedFwd ?? '—' }}</span><span class="mfd-metric-label">BOOST</span></div>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN VIEWPORT ═══ -->
+  <div class="mfd-viewport">
+
+    <!-- Ship display: full bleed background image -->
+    <div class="mfd-ship-display">
+      <img [src]="shipImageSrc()" [alt]="data.selectedShip()?.name ?? ''"
+           (error)="onShipImageError($any($event.target))">
+      <div class="mfd-ship-vignette"></div>
+    </div>
+
+    <!-- ═══ LEFT INSTRUMENT CLUSTER: Weapons + Missiles ═══ -->
+    <div class="mfd-cluster left">
+      <div class="mfd-cluster-title">
+        <span class="mfd-ct-icon">\u2694</span> WEAPONS
+      </div>
+      @for (node of weaponLeafNodes(); track node.slotId) {
+        <div class="mfd-slot"
+             [class.selected]="selectedSlotId() === node.slotId"
+             [class.empty]="!node.item"
+             (click)="selectSlot(node.slotId)">
+          <div class="mfd-slot-header">
+            <span class="mfd-slot-sz">S{{ node.hardpoint.maxSize }}</span>
+            <span class="mfd-slot-label">{{ node.label }}</span>
+          </div>
+          @if (node.item) {
+            <div class="mfd-slot-body">
+              <span class="mfd-slot-item">{{ node.item.name }}</span>
+              @if (node.item.dps) {
+                <span class="mfd-slot-stat red">{{ fmt(node.item.dps) }} DPS</span>
+              }
+            </div>
+          } @else {
+            <div class="mfd-slot-body empty">
+              <span class="mfd-slot-item">— VACANT —</span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (missileLeafNodes().length) {
+        <div class="mfd-cluster-title missile-title">
+          <span class="mfd-ct-icon">\u25C6</span> ORDNANCE
+        </div>
+        @for (node of missileLeafNodes(); track node.slotId) {
+          <div class="mfd-slot missile"
+               [class.selected]="selectedSlotId() === node.slotId"
+               [class.empty]="!node.item"
+               (click)="selectSlot(node.slotId)">
+            <div class="mfd-slot-header">
+              <span class="mfd-slot-sz">S{{ node.hardpoint.maxSize }}</span>
+              <span class="mfd-slot-label">{{ node.label }}</span>
+            </div>
+            @if (node.item) {
+              <div class="mfd-slot-body">
+                <span class="mfd-slot-item">{{ node.item.name }}</span>
+                <span class="mfd-slot-stat orange">{{ fmt(node.item.alphaDamage) }}</span>
+              </div>
+            } @else {
+              <div class="mfd-slot-body empty"><span class="mfd-slot-item">— VACANT —</span></div>
+            }
+          </div>
+        }
+      }
+    </div>
+
+    <!-- ═══ RIGHT INSTRUMENT CLUSTER: Systems ═══ -->
+    <div class="mfd-cluster right">
+
+      <!-- Shield gauge -->
+      <div class="mfd-gauge-panel">
+        <div class="mfd-cluster-title"><span class="mfd-ct-icon">\u25C8</span> SHIELDS</div>
+        <div class="mfd-gauge-bar">
+          <div class="mfd-gauge-fill green" [style.width.%]="100"></div>
+          <span class="mfd-gauge-text">{{ fmt(totalShieldHp()) }} HP</span>
+        </div>
+        <div class="mfd-gauge-sub">REGEN {{ fmt(totalShieldRegen()) }}/s &middot; FULL {{ fmt(shieldRegenTime(), 1) }}s</div>
+      </div>
+
+      @for (node of systemNodes(); track node.slotId) {
+        @if (node.category === 'shields') {
+          <div class="mfd-slot system shield-slot"
+               [class.selected]="selectedSlotId() === node.slotId"
+               [class.empty]="!node.item"
+               (click)="selectSlot(node.slotId)">
+            <div class="mfd-slot-header">
+              <span class="mfd-slot-sz">S{{ node.hardpoint.maxSize }}</span>
+              <span class="mfd-slot-label">SHD</span>
+            </div>
+            <div class="mfd-slot-body">
+              <span class="mfd-slot-item">{{ node.item?.name ?? '— VACANT —' }}</span>
+              @if (node.item?.hp) { <span class="mfd-slot-stat green">{{ fmt(node.item!.hp) }}</span> }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Power gauge -->
+      <div class="mfd-gauge-panel">
+        <div class="mfd-cluster-title"><span class="mfd-ct-icon">\u26A1</span> POWER</div>
+        <div class="mfd-gauge-bar">
+          <div class="mfd-gauge-fill" [class.gold]="powerPct() < 80" [class.red]="powerPct() >= 80" [style.width.%]="powerPct()"></div>
+          <span class="mfd-gauge-text">{{ fmt(powerPct(), 0) }}%</span>
+        </div>
+        <div class="mfd-gauge-sub">{{ fmt(totalPowerDraw()) }} / {{ fmt(totalPowerOutput()) }}</div>
+      </div>
+
+      @for (node of systemNodes(); track node.slotId) {
+        @if (node.category === 'power') {
+          <div class="mfd-slot system"
+               [class.selected]="selectedSlotId() === node.slotId"
+               (click)="selectSlot(node.slotId)">
+            <div class="mfd-slot-header">
+              <span class="mfd-slot-sz">S{{ node.hardpoint.maxSize }}</span>
+              <span class="mfd-slot-label">PWR</span>
+            </div>
+            <div class="mfd-slot-body">
+              <span class="mfd-slot-item">{{ node.item?.name ?? '— VACANT —' }}</span>
+              @if (node.item?.powerOutput) { <span class="mfd-slot-stat gold">{{ fmt(node.item!.powerOutput) }}</span> }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Cooling -->
+      @for (node of systemNodes(); track node.slotId) {
+        @if (node.category === 'cooling') {
+          <div class="mfd-slot system"
+               [class.selected]="selectedSlotId() === node.slotId"
+               (click)="selectSlot(node.slotId)">
+            <div class="mfd-slot-header">
+              <span class="mfd-slot-sz">S{{ node.hardpoint.maxSize }}</span>
+              <span class="mfd-slot-label">CLR</span>
+            </div>
+            <div class="mfd-slot-body">
+              <span class="mfd-slot-item">{{ node.item?.name ?? '— VACANT —' }}</span>
+              @if (node.item?.coolingRate) { <span class="mfd-slot-stat accent">{{ fmt(node.item!.coolingRate) }}</span> }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- QD -->
+      @for (node of systemNodes(); track node.slotId) {
+        @if (node.category === 'quantum') {
+          <div class="mfd-slot system"
+               [class.selected]="selectedSlotId() === node.slotId"
+               (click)="selectSlot(node.slotId)">
+            <div class="mfd-slot-header">
+              <span class="mfd-slot-sz">S{{ node.hardpoint.maxSize }}</span>
+              <span class="mfd-slot-label">QDR</span>
+            </div>
+            <div class="mfd-slot-body">
+              <span class="mfd-slot-item">{{ node.item?.name ?? '— VACANT —' }}</span>
+              @if (node.item?.speed) { <span class="mfd-slot-stat purple">{{ fmt(node.item!.speed) }} m/s</span> }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Avionics -->
+      @for (node of systemNodes(); track node.slotId) {
+        @if (node.category === 'avionics') {
+          <div class="mfd-slot system"
+               [class.selected]="selectedSlotId() === node.slotId"
+               (click)="selectSlot(node.slotId)">
+            <div class="mfd-slot-header">
+              <span class="mfd-slot-sz">S{{ node.hardpoint.maxSize }}</span>
+              <span class="mfd-slot-label">AVN</span>
+            </div>
+            <div class="mfd-slot-body">
+              <span class="mfd-slot-item">{{ node.item?.name ?? '— VACANT —' }}</span>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- ═══ BOTTOM: Flight Telemetry Strip ═══ -->
+    @if (data.selectedShip(); as ship) {
+      <div class="mfd-telemetry">
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ ship.scmSpeed ?? '—' }}</span><span class="mfd-telem-unit">SCM m/s</span></div>
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ ship.navSpeed ?? '—' }}</span><span class="mfd-telem-unit">NAV m/s</span></div>
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ fmt(ship.pitch, 1) }}</span><span class="mfd-telem-unit">PITCH \u00b0/s</span></div>
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ fmt(ship.yaw, 1) }}</span><span class="mfd-telem-unit">YAW \u00b0/s</span></div>
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ fmt(ship.roll, 1) }}</span><span class="mfd-telem-unit">ROLL \u00b0/s</span></div>
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ fmt(ship.totalHp) }}</span><span class="mfd-telem-unit">HULL HP</span></div>
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ fmt(ship.armorHp) }}</span><span class="mfd-telem-unit">ARMOR</span></div>
+        <div class="mfd-telem-cell"><span class="mfd-telem-val">{{ ship.crew }}</span><span class="mfd-telem-unit">CREW</span></div>
+      </div>
+    }
+  </div>
+
+  <!-- ═══ PICKER DRAWER: Slides up from bottom ═══ -->
+  @if (drawerOpen() && selectedSlot(); as slot) {
+    <div class="mfd-drawer-backdrop" (click)="closeDrawer()"></div>
+    <div class="mfd-drawer">
+      <div class="mfd-drawer-header">
+        <span class="mfd-drawer-title">{{ catLabel(slot.category) }} // S{{ slot.hardpoint.maxSize }} // {{ slot.label }}</span>
+        <input class="mfd-input drawer-search" type="text" placeholder="FILTER..."
+               [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)">
+        <button class="mfd-drawer-close" (click)="closeDrawer()">\u2715</button>
+      </div>
+      <div class="mfd-drawer-grid">
+        @for (item of pickerItems(); track item.className) {
+          <div class="mfd-drawer-card"
+               [class.equipped]="slot.item?.className === item.className"
+               (click)="equipAndClose(item)">
+            <div class="mfd-dc-top">
+              <span class="mfd-dc-name">{{ item.name }}</span>
+              <span class="mfd-dc-sz">S{{ item.size }}</span>
+            </div>
+            <div class="mfd-dc-stats">
+              @if (item.dps) { <span class="mfd-dc-stat red">{{ fmt(item.dps) }} DPS</span> }
+              @if (item.alphaDamage && !item.dps) { <span class="mfd-dc-stat orange">{{ fmt(item.alphaDamage) }} DMG</span> }
+              @if (item.hp) { <span class="mfd-dc-stat green">{{ fmt(item.hp) }} HP</span> }
+              @if (item.powerOutput) { <span class="mfd-dc-stat gold">{{ fmt(item.powerOutput) }} PWR</span> }
+              @if (item.coolingRate) { <span class="mfd-dc-stat accent">{{ fmt(item.coolingRate) }} COOL</span> }
+              @if (item.speed) { <span class="mfd-dc-stat purple">{{ fmt(item.speed) }} m/s</span> }
+            </div>
+            <div class="mfd-dc-mfr">{{ item.manufacturer }}</div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+</div>

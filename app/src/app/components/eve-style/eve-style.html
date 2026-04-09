@@ -159,40 +159,52 @@
 
     </div>
 
-    <!-- ═══ CENTER: Full Loadout ═══ -->
+    <!-- ═══ CENTER: Visual Loadout ═══ -->
     <div class="ef-panel ef-loadout">
-      <div class="ef-panel-title">Fitted Loadout — {{ data.selectedShip()?.name ?? 'None' }}</div>
-      <div class="ef-loadout-list">
-        @for (node of allFlatNodes(); track node.slotId) {
-          <div class="ef-loadout-row"
-               [class.selected]="selectedSlotId() === node.slotId"
-               [class.depth-1]="node.depth === 1"
-               [class.depth-2]="node.depth >= 2"
-               (click)="selectSlot(node.slotId)">
-            <span class="ef-lr-cat">{{ node.category }}</span>
-            @if (node.item) {
-              <span class="ef-lr-name">{{ node.item.name }}</span>
-              <span class="ef-lr-size">S{{ node.item.size }}</span>
-              @if (node.item.dps) {
-                <span class="ef-lr-stat accent">{{ fmt(node.item.dps) }} DPS</span>
-              } @else if (node.item.hp) {
-                <span class="ef-lr-stat shield">{{ fmt(node.item.hp) }} HP</span>
-              } @else if (node.item.powerOutput) {
-                <span class="ef-lr-stat power">{{ fmt(node.item.powerOutput) }} pwr</span>
-              } @else if (node.item.coolingRate) {
-                <span class="ef-lr-stat cooling">{{ fmt(node.item.coolingRate) }}</span>
-              } @else {
-                <span class="ef-lr-stat muted">—</span>
-              }
-            } @else {
-              <span class="ef-lr-name empty">{{ node.label }} — Empty</span>
-              <span class="ef-lr-size">S{{ node.hardpoint.maxSize }}</span>
-              <span class="ef-lr-stat muted">—</span>
-            }
+      <div class="ef-panel-title">{{ data.selectedShip()?.name ?? 'None' }}</div>
+
+      <div class="ef-lv">
+
+        <!-- Circular ship display with radial slot icons -->
+        <div class="ef-lv-ring">
+
+          <!-- Ship image in circle -->
+          <div class="ef-lv-ship-circle">
+            <img [src]="shipImageSrc()"
+                 [alt]="data.selectedShip()?.name ?? ''"
+                 (error)="onShipImageError($any($event.target))">
+            <div class="ef-lv-ship-label">
+              <span class="ef-lv-ship-name">{{ data.selectedShip()!.name.replace(data.selectedShip()!.manufacturer.split(' ')[0] + ' ', '') }}</span>
+              <span class="ef-lv-ship-mfr">{{ data.selectedShip()?.manufacturer }}</span>
+            </div>
           </div>
-        }
+
+          <!-- Radial icons placed around the circle edge -->
+          @for (slot of radialSlots(); track slot.node.slotId) {
+            <div class="ef-lv-icon"
+                 [class]="'ef-lv-icon ' + slot.category"
+                 [class.selected]="selectedSlotId() === slot.node.slotId"
+                 [class.empty]="!slot.node.item"
+                 [style.--angle]="slot.angle + 'deg'"
+                 (click)="selectSlot(slot.node.slotId)"
+                 [title]="(slot.node.item?.name ?? 'Empty') + ' S' + slot.node.hardpoint.maxSize">
+              <span class="ef-lv-icon-glyph">{{
+                slot.category === 'weapons' ? '\u2694' :
+                slot.category === 'shields' ? '\u25C8' :
+                slot.category === 'power' ? '\u26A1' :
+                slot.category === 'cooling' ? '\u2744' :
+                slot.category === 'quantum' ? '\u25C9' :
+                slot.category === 'missiles' ? '\u25C6' :
+                '\u25CE'
+              }}</span>
+              <span class="ef-lv-icon-sz">{{ slot.node.hardpoint.maxSize }}</span>
+            </div>
+          }
+
+        </div>
       </div>
 
+      <!-- Summary bar -->
       <div class="ef-summary">
         <div class="ef-summary-row">
           <span class="ef-sum-val accent">{{ fmt(totalDps()) }}</span>
