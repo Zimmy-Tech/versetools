@@ -958,6 +958,9 @@ def main():
                 if desc:
                     entry["description"] = desc
                 if rep_reqs:
+                    # Filter out placeholder/unresolved rep requirements
+                    rep_reqs = [r for r in rep_reqs if "PLACEHOLDER" not in r.get("minRank", "") and "PLACEHOLDER" not in r.get("maxRank", "")]
+                if rep_reqs:
                     entry["repRequirements"] = rep_reqs
                 system = infer_system(debug_name)
                 if system:
@@ -1383,8 +1386,47 @@ def main():
     # Sort by category then reward
     all_entries.sort(key=lambda m: (m["category"], -(m.get("reward", 0))))
 
+    # Clean up placeholder titles and rep requirements across ALL entries
+    _CLASSNAME_TITLE_MAP = {
+        "bounty": "Bounty", "assassination": "Assassination", "eliminateall": "Eliminate All",
+        "eliminatespecific": "Eliminate Target", "delivery": "Delivery", "deploy": "Deploy Probe",
+        "commarrayrepair": "Comm Array Repair", "commarrayhack": "Comm Array Hack",
+        "recovery": "Recovery", "cave_recovery": "Cave Recovery", "derelict": "Derelict Exploration",
+        "missingperson": "Missing Person", "destroy_items": "Destroy Items",
+        "destroynarcotics": "Destroy Narcotics", "dataheist": "Data Heist",
+        "retakelocation": "Retake Location", "scavenge": "Scavenge",
+        "destroy_satellite": "Destroy Satellite", "syncedassassination": "Synced Assassination",
+        "stealstash": "Steal Stash", "recoverstash": "Recover Stash",
+        "timesensitive": "Time-Sensitive Delivery", "drugproduction": "Drug Production",
+        "surfacerelay": "Surface Relay",
+    }
+    placeholder_fixed = 0
+    for m in all_entries:
+        title = m.get("title", "")
+        if title.startswith("[Contractor]"):
+            cn = m.get("className", "").lower().replace("pu_", "")
+            new_title = None
+            for pattern, label in _CLASSNAME_TITLE_MAP.items():
+                if pattern in cn:
+                    new_title = label
+                    break
+            if new_title:
+                m["title"] = new_title
+            else:
+                m["title"] = cn.replace("_", " ").title()
+            placeholder_fixed += 1
+        # Strip PLACEHOLDER rep requirements
+        if m.get("repRequirements"):
+            m["repRequirements"] = [r for r in m["repRequirements"]
+                                    if "PLACEHOLDER" not in r.get("minRank", "")
+                                    and "PLACEHOLDER" not in r.get("maxRank", "")]
+            if not m["repRequirements"]:
+                del m["repRequirements"]
+    if placeholder_fixed:
+        print(f"  Fixed {placeholder_fixed} placeholder titles")
+
     # ── Reputation ladders ───────────────────────────────────
-    print("\n[7/7] Extracting reputation ladders...")
+    print("\n[7/8] Extracting reputation ladders...")
     scope_dir = FORGE_DIR / "reputation" / "scopes"
     standing_base = FORGE_DIR / "reputation" / "standings"
     rep_ladders = {}
@@ -1399,14 +1441,28 @@ def main():
                 sdisplay = re.search(r'displayName="@([^"]+)"', stxt)
                 smin = re.search(r'minReputation="([^"]+)"', stxt)
                 sgated = re.search(r'gated="([^"]+)"', stxt)
+                sperk = re.search(r'perkDescription="@([^"]+)"', stxt)
+                sdrift = re.search(r'driftReputation="([^"]+)"', stxt)
+                sdrift_hrs = re.search(r'driftTimeHours="([^"]+)"', stxt)
                 if sref:
                     gk = guid_key(sref.group(1))
                     display = loc_lookup(loc, "@" + sdisplay.group(1)) if sdisplay else sf.stem
-                    all_standings[gk] = {
+                    info = {
                         "name": display,
                         "minRep": int(smin.group(1)) if smin else 0,
                         "gated": sgated.group(1) == "1" if sgated else False,
                     }
+                    # Perk description (e.g. "+5% bonus")
+                    if sperk:
+                        perk = loc_lookup(loc, "@" + sperk.group(1))
+                        if perk and perk not in ("", " "):
+                            info["perk"] = perk
+                    # Drift/decay (rep auto-decays toward this rank)
+                    drift_amt = int(sdrift.group(1)) if sdrift else 0
+                    drift_hrs = int(float(sdrift_hrs.group(1))) if sdrift_hrs else 0
+                    if drift_amt and drift_hrs:
+                        info["driftPerHour"] = drift_amt
+                    all_standings[gk] = info
             except Exception:
                 pass
 
@@ -1460,6 +1516,187 @@ def main():
                 pass
     print(f"  Extracted {len(rep_ladders)} reputation ladders ({sum(len(l['ranks']) for l in rep_ladders.values())} total ranks)")
 
+    # ── Factions ─────────────────────────────────────────────
+    print("\n[8/8] Extracting factions...")
+    factions_dir = FORGE_DIR / "factions"
+    factions = {}
+    faction_guid_to_key = {}  # __ref GUID → faction key (for resolving allies/enemies)
+
+    # Also load factionreputation records for display names & logos
+    faction_rep_info = {}  # __ref GUID → {displayName, logo}
+    faction_rep_dir = factions_dir / "factionreputation"
+    if faction_rep_dir.exists():
+        for ff in faction_rep_dir.glob("*.xml.xml"):
+            try:
+                ftxt = open(ff, encoding="utf-8").read()
+                fref = re.search(r'__ref="([^"]+)"', ftxt)
+                fdisplay = re.search(r'displayName="@([^"]+)"', ftxt)
+                flogo = re.search(r'logo="([^"]*)"', ftxt)
+                if fref:
+                    info = {}
+                    if fdisplay:
+                        info["displayName"] = loc_lookup(loc, "@" + fdisplay.group(1))
+                    if flogo and flogo.group(1):
+                        info["logo"] = flogo.group(1)
+                    faction_rep_info[guid_key(fref.group(1))] = info
+            except Exception:
+                pass
+
+    # First pass: build GUID → key map for all factions
+    if factions_dir.exists():
+        for ff in factions_dir.glob("faction_*.xml.xml"):
+            try:
+                ftxt = open(ff, encoding="utf-8").read()
+                fref = re.search(r'__ref="([^"]+)"', ftxt)
+                fname = re.search(r' name="@([^"]+)"', ftxt)
+                if fref and fname:
+                    display = loc_lookup(loc, "@" + fname.group(1))
+                    key = ff.stem.replace(".xml", "").replace("faction_", "")
+                    faction_guid_to_key[guid_key(fref.group(1))] = key
+            except Exception:
+                pass
+
+    # Second pass: extract full faction info
+    if factions_dir.exists():
+        for ff in factions_dir.glob("faction_*.xml.xml"):
+            try:
+                root = ET.parse(ff).getroot()
+                ref = root.get("__ref", "")
+                name_loc = root.get("name", "")
+                desc_loc = root.get("description", "")
+                faction_type = root.get("factionType", "")
+                default_reaction = root.get("defaultReaction", "Neutral")
+                able_arrest = root.get("ableToArrest", "0") == "1"
+                polices_trespass = root.get("policesLawfulTrespass", "0") == "1"
+                polices_crime = root.get("policesCriminality", "0") == "1"
+                no_legal_rights = root.get("noLegalRights", "0") == "1"
+                rep_ref = root.get("factionReputationRef", "")
+
+                display_name = loc_lookup(loc, name_loc) if name_loc.startswith("@") else name_loc
+                description = loc_lookup(loc, desc_loc) if desc_loc.startswith("@") else ""
+                key = ff.stem.replace(".xml", "").replace("faction_", "")
+
+                # Skip template/generic/internal factions
+                if "template" in key or "generic" in key or "friendlytoall" in key or "hostiletoall" in key:
+                    continue
+                if "hostiletoxt" in key or key == "creature_hostile_kopion":
+                    continue
+                # Skip creature factions
+                if faction_type == "Creature":
+                    continue
+
+                # Fix unresolved localization (<=...=> or raw loc keys)
+                _FACTION_NAME_OVERRIDES = {
+                    "unlawful_shatteredblade": "Shattered Blade",
+                    "curelife": "Alliance Aid",
+                }
+                if not display_name or "<=" in display_name or "RepUI_Name" in display_name:
+                    if key in _FACTION_NAME_OVERRIDES:
+                        display_name = _FACTION_NAME_OVERRIDES[key]
+                    else:
+                        clean = key.split("_", 1)[-1] if "_" in key else key
+                        display_name = clean.replace("_", " ").title()
+                if not description or "<=" in description:
+                    description = ""
+
+                entry = {
+                    "name": display_name or key.replace("_", " ").title(),
+                    "type": faction_type,
+                    "defaultReaction": default_reaction,
+                }
+                if description:
+                    entry["description"] = description
+                if able_arrest or polices_trespass or polices_crime:
+                    entry["lawEnforcement"] = True
+                if no_legal_rights:
+                    entry["outlaw"] = True
+
+                # Resolve factionReputation for display name override + logo
+                if rep_ref and rep_ref != "null":
+                    rep_info = faction_rep_info.get(guid_key(rep_ref))
+                    if rep_info:
+                        if rep_info.get("displayName"):
+                            entry["name"] = rep_info["displayName"]
+
+                # Allies and enemies (resolve to faction keys)
+                # Filter out internal/generic factions that aren't meaningful to players
+                _SKIP_RELATIONS = {"creature_hostile_generic", "creature_hostile_generic_vlk_asd_align",
+                                   "creature_hostile_kopion", "creature_hostile_vanduul",
+                                   "special_friendlytoall", "special_hostiletoall"}
+                allies = []
+                for a_ref in root.findall(".//alliedFactions/Reference"):
+                    if a_ref.text:
+                        ally_key = faction_guid_to_key.get(guid_key(a_ref.text))
+                        if ally_key and ally_key not in _SKIP_RELATIONS:
+                            allies.append(ally_key)
+                enemies = []
+                for e_ref in root.findall(".//enemyFactions/Reference"):
+                    if e_ref.text:
+                        enemy_key = faction_guid_to_key.get(guid_key(e_ref.text))
+                        if enemy_key and enemy_key not in _SKIP_RELATIONS:
+                            enemies.append(enemy_key)
+                if allies:
+                    entry["allies"] = allies
+                if enemies:
+                    entry["enemies"] = enemies
+
+                factions[key] = entry
+            except Exception:
+                pass
+
+    # All factions use the shared factionreputation ladder
+    for entry in factions.values():
+        entry["repLadder"] = "factionreputation"
+
+    print(f"  Extracted {len(factions)} factions")
+
+    # ── Scope-to-ladder mapping ──────────────────────────────
+    # Maps repScope display names to their reputationLadders key
+    # so the frontend can always find the right ladder for a contract.
+    scope_to_ladder = {}
+    # Activity scopes → ladder keys (from scope file names vs ladder keys)
+    _SCOPE_LADDER_MAP = {
+        "bounty": "bountyhunter",
+        "bounty_bountyhuntersguild": "bountyhunter_bountyhuntersguild",
+        "Bounty Hunting": "bountyhunter",
+        "Bounty Hunting (Guild)": "bountyhunter_bountyhuntersguild",
+        "Racing (Ship)": "racingship",
+        "Faction Standing": "factionreputation",
+        "Wikelo": "wikelo",
+        "InterSec": "factionreputation",
+        "FPS Combat": "fps_combat",
+        "Ship Combat": "shipcombat",
+        "Ship Combat (Headhunters)": "shipcombat_headhunters",
+        "Ship Combat (Rough & Ready)": "shipcombat_roughandready",
+        "Ship Combat (XenoThreat)": "shipcombat_xenothreat",
+    }
+    for display, lk in _SCOPE_LADDER_MAP.items():
+        if lk in rep_ladders:
+            scope_to_ladder[display] = lk
+
+    # Faction org names → factionreputation ladder
+    for fk, fv in factions.items():
+        scope_to_ladder[fv["name"]] = "factionreputation"
+
+    # Also map factionreputation display names (some orgs only exist as rep records)
+    for gk, info in faction_rep_info.items():
+        dn = info.get("displayName", "")
+        if dn and dn not in scope_to_ladder:
+            scope_to_ladder[dn] = "factionreputation"
+
+    # Ladders that match their own display name
+    for lk, lv in rep_ladders.items():
+        scope_to_ladder[lv["displayName"]] = lk
+        scope_to_ladder[lk] = lk
+
+    # ── Reputation reward tiers ──────────────────────────────
+    # Build sorted tier list from already-loaded rep_reward_amounts
+    rep_tiers = sorted(
+        [{"amount": v} for v in set(rep_reward_amounts.values()) if v != 0],
+        key=lambda t: t["amount"]
+    )
+    print(f"  {len(rep_tiers)} reputation reward tiers")
+
     # Stats
     categories = {}
     for m in all_entries:
@@ -1470,10 +1707,14 @@ def main():
             "totalContracts": len(all_entries),
             "categories": categories,
             "missionGivers": len(givers),
+            "factions": len(factions),
         },
         "missionGivers": givers,
+        "factions": factions,
         "reputationRanks": standing_display,
         "reputationLadders": rep_ladders,
+        "reputationTiers": rep_tiers,
+        "scopeToLadder": scope_to_ladder,
         "contracts": all_entries,
     }
 

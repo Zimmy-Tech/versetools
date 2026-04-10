@@ -20,7 +20,8 @@
       "Theft": 21,
       "Tutorial": 3
     },
-    "missionGivers": 12
+    "missionGivers": 12,
+    "factions": 43
   },
   "missionGivers": {
     "constantinehurston": {
@@ -82,6 +83,353 @@
       "name": "XenoThreat",
       "description": "XenoThreat believes that the UEE's continued acceptance of aliens has set Humanity on a path towards destruction. Rather than protecting its citizens, the UEE has given in to greed and has shown a complete disregard for the values that made Humanity great in the first place. In response, XenoThreat is attempting to lead a revolution to take back the soul of the Empire.",
       "headquarters": "Pyro System"
+    }
+  },
+  "factions": {
+    "lawful_aciedo": {
+      "name": "Aciedo Communications",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "Following the conclusion of the First Tevarin War, Humanity was eager to begin exploring the stars again. Aciedo began life as fledging ship manufacturer focused on creating long-range exploration vessels. While they saw moderate success with their initial ship design, it was the included communication drones that stood out for their reliability and transmission success. Captains across the newly formed Empire began asking Aciedo to sell them commdrones directly. Within the first year of offering them, sales skyrocketed, and it wasn't long before Aciedo decided to stop manufacturing ships entirely. Today, they are the UEE's largest communication service provider, handling over 70% of all comms, and operate commrelays, commarrays, and commdrones across the Empire.",
+      "repLadder": "factionreputation"
+    },
+    "unlawful_asd": {
+      "name": "ASD",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "repLadder": "factionreputation"
+    },
+    "lawenforcement_ueenavy": {
+      "name": "UEE Navy",
+      "type": "LawEnforcement",
+      "defaultReaction": "Neutral",
+      "description": "The largest branch and public face of the UEE military. The Navy is responsible for transportation of military resources, maintaining the borders, waging security operations throughout the UEE, and are currently engaged in a war against the Vanduul.",
+      "lawEnforcement": true,
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_covalexshipping": {
+      "name": "Covalex",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "Covalex is one of the largest hauling companies in the ’verse; thanks to its policy of contracting with independent ship operators. They learned early on that owners who fly their own ships are more invested in the success of the company and this commitment ensures a higher level of performance. In most systems, at any given time, a large percentage of the ships flying are working under contract to Covalex.",
+      "lawEnforcement": true,
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_rayariinc": {
+      "name": "Rayari Incorporated",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "unlawful_firerats": {
+      "name": "Fire Rats",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "description": "These criminals are unaffiliated with any of the known gangs or syndicates, but still pose a threat to individuals across the empire.",
+      "enemies": [
+        "unlawful_horizon"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "lawfulsecurity_blacjac": {
+      "name": "BlacJac",
+      "type": "PrivateSecurity",
+      "defaultReaction": "Neutral",
+      "description": "BlacJac was founded on Tram by local Jac Ngo as a protection service for businesses struggling with the growing outlaw problem there. Before long, the security group earned a reputation for effectiveness and larger corporations began contracting BlacJac to look after matters on other worlds. At the same time, ArcCorp had tried to establish their own security force to look at their newly purchased world, Stanton III, but after a series of setbacks and budget issues, made the decision to employ BlacJac, who had assisted the company in several other security matters, to take over policing duties for the planet in 2906.",
+      "lawEnforcement": true,
+      "allies": [
+        "lawful_hurstondynamics"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "unlawful_dusters": {
+      "name": "Dusters",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "description": "A criminal gang based in the Stanton System specializing in mining related crimes such as robbing miners and illegally operating on other people's claims.",
+      "enemies": [
+        "unlawful_ninetails"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "reputation_unlawful_bitzeros": {
+      "name": "Bit Zeros",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "description": "A brazen hacker collective rumored to have been started by a group disaffected teens on microTech who bonded over their affinity for old technology. Bored by more serious criminals, they are thrill seekers out to make some money, live large, and stick it to the major corporations in Stanton. With a strong preference for digital infiltration and subterfuge, they have been known to bring in outside help when jobs require a more direct approach.",
+      "repLadder": "factionreputation"
+    },
+    "unlawful_xenothreat": {
+      "name": "XenoThreat",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "description": "XenoThreat believes that the UEE's continued acceptance of aliens has set Humanity on a path towards destruction. Rather than protecting its citizens, the UEE has given in to greed and has shown a complete disregard for the values that made Humanity great in the first place. In response, XenoThreat is attempting to lead a revolution to take back the soul of the Empire.",
+      "enemies": [
+        "reputation_lawful_citizensforprosperity",
+        "reputation_unlawful_headhunters"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "unlawful_ruto": {
+      "name": "Ruto",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "lawful_hurstondynamics": {
+      "name": "Hurston Dynamics",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "With a history stretching back over five hundred years, Hurston Dynamics is noteworthy for being not only one of the oldest continuously-operated family businesses in the Empire, but more recently for owning its own planet in the Stanton system. Over the course of fifteen generations of Hurstons, the company made its fortune selling a wide range of weapons to the military and civilians. In addition, Hurston Dynamics produces many of the refined materials and components that other weapon manufacturers rely on.",
+      "allies": [
+        "lawfulsecurity_hurstonsecurity"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "reputation_unlawful_tarpits": {
+      "name": "Tar Pits",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "unlawful_shatteredblade": {
+      "name": "Shattered Blade",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "description": "ShatteredBlade_RepUI_Decription",
+      "enemies": [
+        "lawenforcement_ueenavy"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "unlawful_outlaws": {
+      "name": "Outlaws",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "description": "These criminals are unaffiliated with any of the known gangs or syndicates, but still pose a threat to individuals across the empire.",
+      "outlaw": true,
+      "repLadder": "factionreputation"
+    },
+    "lawenforcement_advocacy": {
+      "name": "UEE Advocacy",
+      "type": "LawEnforcement",
+      "defaultReaction": "Neutral",
+      "description": "he Advocacy is an inter-system police force overseeing law enforcement in the UEE. Advocacy agents are authorized pursue crimes across jurisdictions within the empire, and often coordinate large scale investigations targeting some of Humanity's worst offenders.",
+      "lawEnforcement": true,
+      "repLadder": "factionreputation"
+    },
+    "unlawful_frontierfighters": {
+      "name": "Frontier Fighters",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "outlaw": true,
+      "allies": [
+        "unlawful_ninetails",
+        "unlawful_outlaws",
+        "unlawful_firerats",
+        "unlawful_horizon"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "unlawful_roughandready": {
+      "name": "Rough & Ready",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "description": "In a play off of the popular Rest & Relax stations found throughout the UEE, this gang has established itself by running the largest fuel operations in Pyro. While their prices may not be fair, you can at least count on them having fuel and services on offer. Individuals who cross them often find life in Pyro much harder than it already was.",
+      "repLadder": "factionreputation"
+    },
+    "lawful_civilian": {
+      "name": "Civilian",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "A member of the general population, civilians can be found living in almost every star system visited by Humanity.",
+      "repLadder": "factionreputation"
+    },
+    "lawful_clovusdarneely": {
+      "name": "Clovus Darneely",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_adagioholdings": {
+      "name": "Adagio Holdings",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "Founded by retired Naval logistics personnel, Adagio found success supporting the voracious resource appetite of the Messer-era military-industrial complex through their salvaging operations. After the end of the Messer regime, Adagio, like many other military contractors, lost their contract, and the company was forced to find new sources of revenue. This ultimately led Adagio begin reselling salvage rights they’ve acquired to independent captains and other enterprises of various sizes.",
+      "repLadder": "factionreputation"
+    },
+    "lawful_arccorp": {
+      "name": "ArcCorp",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "ArcCorp was previously known as the manufacturer of immensely popular quantum drives and thrusters, however, since their purchase of Stanton III from the UEE, their dedication to the creation of a privately-owned manufacturing world has overshadowed the company's other accomplishments.",
+      "allies": [
+        "lawfulsecurity_blacjac"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "reputation_unlawful_headhunters": {
+      "name": "Headhunters",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "description": "One of the oldest gangs in the Pyro System, the Headhunters have earned themselves a reputation for being ruthless and respected. Unlike many outlaws, when the Headhunters strike a deal they're known for keeping their word. Especially if they promise to kill someone. They are currently seeking to wrest control of Ruin Station away from XenoThreat.",
+      "allies": [
+        "unlawful_roughandready"
+      ],
+      "enemies": [
+        "unlawful_xenothreat",
+        "reputation_lawful_citizensforprosperity"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "lawfulsecurity_crusadersecurity": {
+      "name": "Crusader Security",
+      "type": "PrivateSecurity",
+      "defaultReaction": "Neutral",
+      "description": "A subdivision of Crusader Industries, Crusader Security was created after the company purchased Stanton II from UEE in 2865 to perform general policing duties for Orison and the surrounding sector. Preferring to maintain a streamlined protective force, Crusader Security relies heavily on security contractors to bolster their peacekeeping efforts. They strive to maintain a professional and courteous demeanor that will make Crusader employees and visitors feel safe and comfortable.",
+      "lawEnforcement": true,
+      "repLadder": "factionreputation"
+    },
+    "reputation_unlawful_vaughn": {
+      "name": "Vaughn",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "unlawful_horizon": {
+      "name": "Horizon",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "description": "These criminals are unaffiliated with any of the known gangs or syndicates, but still pose a threat to individuals across the empire.",
+      "enemies": [
+        "unlawful_firerats"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "unlawful_ninetails": {
+      "name": "Nine Tails",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "description": "A criminal organization that has been gaining a larger foothold in the Stanton System from its base of operations, the infamous Grim HEX station near Crusader. They are organized and ruthless, but are willing to share the wealth as long as other outlaws contract with them.",
+      "allies": [
+        "unlawful_frontierfighters"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_lingfamilyhauling": {
+      "name": "Ling Family Hauling",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_eckhartsecurity": {
+      "name": "Eckhart Security",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_shubininterstellar": {
+      "name": "Shubin Interstellar",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "lawfulsecurity_microtechprotectionservices": {
+      "name": "MT Protection Services",
+      "type": "PrivateSecurity",
+      "defaultReaction": "Neutral",
+      "description": "When the city of New Babbage was first designed, microTech had hoped that they would be able to use advanced monitoring systems combined with automatic response units to handle most security issues that would arise. Unfortunately, as the city flourished so to did criminal elements looking to take advantage of the growing wealth and affluence there.  To more efficiently deal with this growing criminal trend, in 2891 MT Protection Services was formed. While they still rely heavily on tech and remote monitoring, MT Protection Services employs a small force of security professionals who are able to deal with matters requiring a more hands on approach.",
+      "lawEnforcement": true,
+      "repLadder": "factionreputation"
+    },
+    "unlawful_civilian": {
+      "name": "Civilian",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "description": "A member of the general population, civilians can be found living in almost every star system visited by Humanity.",
+      "repLadder": "factionreputation"
+    },
+    "lawful_crusaderindustries": {
+      "name": "Crusader Industries",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "Makers of an extensive fleet of cutting edge vehicles, Crusader Industries is a titan of the aerospace industry. The prominent company purchased a gas giant in the Stanton system to house its current headquarters and is striving to expand its already prolific profile of ships while dedicating itself to numerous charitable works.",
+      "repLadder": "factionreputation"
+    },
+    "lawful_microtech": {
+      "name": "microTech",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "Ubiquitous around the Empire, microTech and their range of electronics, datapads, mobile interfaces, handheld sensors and computer software upgrades for starships are used daily by almost everyone. Their line of mobiGlas personal computers have become an integral part of daily life for millions of people. Additionally, the company purchased the rights to planet Stanton IV and use the icy world as their current headquarters.",
+      "repLadder": "factionreputation"
+    },
+    "curelife": {
+      "name": "Alliance Aid",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "special_kleschersecurity": {
+      "name": "Klescher Rehabilitation Facilities",
+      "type": "LawEnforcement",
+      "defaultReaction": "Neutral",
+      "description": "Klescher Rehabilitation Facilities is a private corrections provider who's committed to building secure sites that ensure their incarcerated guests safe housing with multiple work release opportunities; allowing them to be productive while paying their debt to society.",
+      "lawEnforcement": true,
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_foxwellenforcement": {
+      "name": "Foxwell Enforcement",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_citizensforprosperity": {
+      "name": "Citizens For Prosperity",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "description": "Citizens for Prosperity is a concerned group of civilians who have taken it upon themselves to tame infamous outlaw systems once and for all. What started as a small posse making occasional forays into Pyro to hunt down criminals has grown into a full resettlement plan across multiple systems. Working closely with local residents, the group provides protection and logistical support to the survivors who call the unclaimed frontier home.",
+      "enemies": [
+        "unlawful_xenothreat",
+        "reputation_unlawful_headhunters"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_bountyhuntersguild": {
+      "name": "Bounty Hunters Guild",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "creature_hostile_vanduul": {
+      "name": "Vanduul",
+      "type": "Unlawful",
+      "defaultReaction": "Hostile",
+      "description": "[PH] Vanduul Description",
+      "outlaw": true,
+      "repLadder": "factionreputation"
+    },
+    "lawfulsecurity_hurstonsecurity": {
+      "name": "Hurston Security",
+      "type": "PrivateSecurity",
+      "defaultReaction": "Neutral",
+      "description": "As Hurston Dynamics continued to expand their manufacturing operations in the 25th century, it became necessary to hire more security personnel to protect valuable stock, monitor employee safety, and guard shipments. Rather than shoulder the continued expense of outsourcing, Hurston would create an internal security force to take over these duties. When Hurston acquired the rights to Stanton I in 2865, it was only natural for their own security personnel to take over the responsibility of ensuring the peace and safety of the planet. A common sight on the streets of Lorville, members of Hurston Security are an imposing presence able to quickly respond when the need arises.",
+      "lawEnforcement": true,
+      "allies": [
+        "lawful_hurstondynamics"
+      ],
+      "repLadder": "factionreputation"
+    },
+    "unlawful_wallaceklim": {
+      "name": "Wallace Klim",
+      "type": "Unlawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
+    },
+    "reputation_lawful_wildstarracing": {
+      "name": "Wildstar Racing",
+      "type": "Lawful",
+      "defaultReaction": "Neutral",
+      "repLadder": "factionreputation"
     }
   },
   "reputationRanks": {
@@ -469,7 +817,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -491,7 +840,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -533,7 +883,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -543,32 +894,38 @@
         {
           "name": "Rank I",
           "minRep": 1,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Rank II",
           "minRep": 3000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Rank III",
           "minRep": 10000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Rank IV",
           "minRep": 40000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Rank V",
           "minRep": 200000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Rank VI",
           "minRep": 480000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         }
       ]
     },
@@ -580,7 +937,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Racing Enthusiast",
@@ -595,7 +953,8 @@
         {
           "name": "Rookie Racer",
           "minRep": 1000,
-          "gated": false
+          "gated": false,
+          "perk": "New Tracks Unlocked"
         },
         {
           "name": "Racer",
@@ -605,7 +964,8 @@
         {
           "name": "Practiced Racer",
           "minRep": 4000,
-          "gated": false
+          "gated": false,
+          "perk": "New Tracks Unlocked"
         },
         {
           "name": "Dedicated Racer",
@@ -632,7 +992,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -654,7 +1015,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -676,7 +1038,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Apprentice",
@@ -718,7 +1081,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -740,7 +1104,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -804,7 +1169,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -831,7 +1197,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -853,7 +1220,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -875,7 +1243,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 200
         },
         {
           "name": "Trainee",
@@ -922,7 +1291,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -932,32 +1302,38 @@
         {
           "name": "Probationary Guild Member",
           "minRep": 1,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Junior Guild Member",
           "minRep": 3000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Guild Member",
           "minRep": 10000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Senior Guild Member",
           "minRep": 40000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Veteran Guild Member",
           "minRep": 200000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         },
         {
           "name": "Guild Steward",
           "minRep": 480000,
-          "gated": false
+          "gated": false,
+          "perk": "Additional Contracts"
         }
       ]
     },
@@ -969,7 +1345,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 200
         },
         {
           "name": "Trainee",
@@ -1021,12 +1398,14 @@
         {
           "name": "Very Good Customer",
           "minRep": 340,
-          "gated": false
+          "gated": false,
+          "perk": "Special Wolf Barter Contract"
         },
         {
           "name": "Very Best Customer",
           "minRep": 999,
-          "gated": false
+          "gated": false,
+          "perk": "Special Idris-P Barter Contract"
         }
       ]
     },
@@ -1038,7 +1417,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "RacingRep_GravLev_Rank0",
@@ -1090,12 +1470,14 @@
         {
           "name": "Disliked",
           "minRep": -10000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Disliked",
           "minRep": -9000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Neutral",
@@ -1105,7 +1487,8 @@
         {
           "name": "Exalted",
           "minRep": 10000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": -100
         }
       ]
     },
@@ -1149,7 +1532,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1169,22 +1553,26 @@
         {
           "name": "Rank III",
           "minRep": 30000,
-          "gated": false
+          "gated": false,
+          "perk": "+5% Payment Bonus"
         },
         {
           "name": "Rank IV",
           "minRep": 120000,
-          "gated": false
+          "gated": false,
+          "perk": "+10% Payment Bonus"
         },
         {
           "name": "Rank V",
           "minRep": 480000,
-          "gated": false
+          "gated": false,
+          "perk": "+15% Payment Bonus"
         },
         {
           "name": "Rank VI",
           "minRep": 1600000,
-          "gated": false
+          "gated": false,
+          "perk": "+20% Payment Bonus"
         }
       ]
     },
@@ -1196,7 +1584,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1216,22 +1605,26 @@
         {
           "name": "Tracker",
           "minRep": 30000,
-          "gated": false
+          "gated": false,
+          "perk": "+5% Payment Bonus"
         },
         {
           "name": "Advanced Tracker",
           "minRep": 120000,
-          "gated": false
+          "gated": false,
+          "perk": "+10% Payment Bonus"
         },
         {
           "name": "Senior Tracker",
           "minRep": 480000,
-          "gated": false
+          "gated": false,
+          "perk": "+15% Payment Bonus"
         },
         {
           "name": "Master Tracker",
           "minRep": 1600000,
-          "gated": false
+          "gated": false,
+          "perk": "+20% Payment Bonus"
         }
       ]
     },
@@ -1243,7 +1636,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -1265,7 +1659,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1285,22 +1680,26 @@
         {
           "name": "Rank III",
           "minRep": 30000,
-          "gated": false
+          "gated": false,
+          "perk": "+5% Payment Bonus"
         },
         {
           "name": "Rank IV",
           "minRep": 120000,
-          "gated": false
+          "gated": false,
+          "perk": "+10% Payment Bonus"
         },
         {
           "name": "Rank V",
           "minRep": 480000,
-          "gated": false
+          "gated": false,
+          "perk": "+15% Payment Bonus"
         },
         {
           "name": "Rank VI",
           "minRep": 1600000,
-          "gated": false
+          "gated": false,
+          "perk": "+20% Payment Bonus"
         }
       ]
     },
@@ -1312,7 +1711,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1359,7 +1759,8 @@
         {
           "name": "Not Eligible",
           "minRep": -320000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 160000
         },
         {
           "name": "Applicant",
@@ -1369,17 +1770,20 @@
         {
           "name": "First Responder Trainee",
           "minRep": 5000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": -50
         },
         {
           "name": "First Responder",
           "minRep": 20000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": -200
         },
         {
           "name": "Veteran First Responder",
           "minRep": 80000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": -800
         }
       ]
     },
@@ -1391,7 +1795,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -1413,7 +1818,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 200
         },
         {
           "name": "Trainee",
@@ -1460,7 +1866,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -1544,7 +1951,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Under Review",
@@ -1628,7 +2036,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1655,7 +2064,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -1677,7 +2087,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 100
         },
         {
           "name": "Applicant",
@@ -1714,7 +2125,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1761,7 +2173,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1781,22 +2194,26 @@
         {
           "name": "Rank III",
           "minRep": 30000,
-          "gated": false
+          "gated": false,
+          "perk": "+5% Payment Bonus"
         },
         {
           "name": "Rank IV",
           "minRep": 120000,
-          "gated": false
+          "gated": false,
+          "perk": "+10% Payment Bonus"
         },
         {
           "name": "Rank V",
           "minRep": 480000,
-          "gated": false
+          "gated": false,
+          "perk": "+15% Payment Bonus"
         },
         {
           "name": "Rank VI",
           "minRep": 1600000,
-          "gated": false
+          "gated": false,
+          "perk": "+20% Payment Bonus"
         }
       ]
     },
@@ -1808,7 +2225,8 @@
         {
           "name": "Not Eligible",
           "minRep": -1000,
-          "gated": false
+          "gated": false,
+          "driftPerHour": 250
         },
         {
           "name": "Applicant",
@@ -1847,6 +2265,264 @@
         }
       ]
     }
+  },
+  "reputationTiers": [
+    {
+      "amount": -640000
+    },
+    {
+      "amount": -190500
+    },
+    {
+      "amount": -160000
+    },
+    {
+      "amount": -64000
+    },
+    {
+      "amount": -40000
+    },
+    {
+      "amount": -32000
+    },
+    {
+      "amount": -16000
+    },
+    {
+      "amount": -10000
+    },
+    {
+      "amount": -8000
+    },
+    {
+      "amount": -4000
+    },
+    {
+      "amount": -2000
+    },
+    {
+      "amount": -1000
+    },
+    {
+      "amount": -500
+    },
+    {
+      "amount": -250
+    },
+    {
+      "amount": -100
+    },
+    {
+      "amount": -50
+    },
+    {
+      "amount": 10
+    },
+    {
+      "amount": 20
+    },
+    {
+      "amount": 25
+    },
+    {
+      "amount": 30
+    },
+    {
+      "amount": 50
+    },
+    {
+      "amount": 75
+    },
+    {
+      "amount": 100
+    },
+    {
+      "amount": 150
+    },
+    {
+      "amount": 200
+    },
+    {
+      "amount": 250
+    },
+    {
+      "amount": 300
+    },
+    {
+      "amount": 400
+    },
+    {
+      "amount": 500
+    },
+    {
+      "amount": 600
+    },
+    {
+      "amount": 800
+    },
+    {
+      "amount": 1000
+    },
+    {
+      "amount": 1200
+    },
+    {
+      "amount": 1500
+    },
+    {
+      "amount": 2000
+    },
+    {
+      "amount": 2251
+    },
+    {
+      "amount": 2400
+    },
+    {
+      "amount": 3200
+    },
+    {
+      "amount": 4000
+    },
+    {
+      "amount": 8000
+    },
+    {
+      "amount": 16000
+    },
+    {
+      "amount": 32000
+    },
+    {
+      "amount": 64000
+    }
+  ],
+  "scopeToLadder": {
+    "bounty": "bountyhunter",
+    "bounty_bountyhuntersguild": "bountyhunter_bountyhuntersguild",
+    "Bounty Hunting": "bountyhunter",
+    "Bounty Hunting (Guild)": "bountyhunter_bountyhuntersguild",
+    "Racing (Ship)": "racingship",
+    "Faction Standing": "factionreputation",
+    "Wikelo": "wikelo",
+    "InterSec": "factionreputation",
+    "FPS Combat": "fps_combat",
+    "Ship Combat": "shipcombat",
+    "Ship Combat (Headhunters)": "shipcombat_headhunters",
+    "Ship Combat (Rough & Ready)": "shipcombat_roughandready",
+    "Ship Combat (XenoThreat)": "shipcombat_xenothreat",
+    "Aciedo Communications": "factionreputation",
+    "ASD": "factionreputation",
+    "UEE Navy": "factionreputation",
+    "Covalex": "factionreputation",
+    "Rayari Incorporated": "factionreputation",
+    "Fire Rats": "factionreputation",
+    "BlacJac": "factionreputation",
+    "Dusters": "factionreputation",
+    "Bit Zeros": "factionreputation",
+    "XenoThreat": "factionreputation",
+    "Ruto": "factionreputation",
+    "Hurston Dynamics": "factionreputation",
+    "Tar Pits": "factionreputation",
+    "Shattered Blade": "factionreputation",
+    "Outlaws": "factionreputation",
+    "UEE Advocacy": "factionreputation",
+    "Frontier Fighters": "factionreputation",
+    "Rough & Ready": "factionreputation",
+    "Civilian": "factionreputation",
+    "Clovus Darneely": "factionreputation",
+    "Adagio Holdings": "factionreputation",
+    "ArcCorp": "factionreputation",
+    "Headhunters": "factionreputation",
+    "Crusader Security": "factionreputation",
+    "Vaughn": "factionreputation",
+    "Horizon": "factionreputation",
+    "Nine Tails": "factionreputation",
+    "Ling Family Hauling": "factionreputation",
+    "Eckhart Security": "factionreputation",
+    "Shubin Interstellar": "factionreputation",
+    "MT Protection Services": "factionreputation",
+    "Crusader Industries": "factionreputation",
+    "microTech": "factionreputation",
+    "Alliance Aid": "factionreputation",
+    "Klescher Rehabilitation Facilities": "factionreputation",
+    "Foxwell Enforcement": "factionreputation",
+    "Citizens For Prosperity": "factionreputation",
+    "Bounty Hunters Guild": "factionreputation",
+    "Vanduul": "factionreputation",
+    "Hurston Security": "factionreputation",
+    "Wallace Klim": "factionreputation",
+    "Wildstar Racing": "factionreputation",
+    "<= PLACEHOLDER =>": "factionreputation",
+    "Civilian Defense Force": "factionreputation",
+    "FTL Courier": "factionreputation",
+    "Dead Saints": "factionreputation",
+    "Unified Distribution Management": "factionreputation",
+    "InterSec Defense Solutions": "factionreputation",
+    "Northrock Service Group": "factionreputation",
+    "Hockrow Agency": "factionreputation",
+    "Red Wind Linehaul": "factionreputation",
+    "Tecia \"Twitch\" Pacheco": "factionreputation",
+    "Wikelo Emporium": "factionreputation",
+    "Salvage": "handyman",
+    "handyman": "handyman",
+    "Technician": "technician",
+    "technician": "technician",
+    "shipcombat_headhunters": "shipcombat_headhunters",
+    "Spaceship": "racingship",
+    "racingship": "racingship",
+    "Hired Muscle": "hiredmuscle",
+    "worker_roughandready": "worker_roughandready",
+    "fps_combat": "fps_combat",
+    "Maintenance": "maintenance",
+    "maintenance": "maintenance",
+    "Mercenary": "fps_combat_xenothreat",
+    "fps_combat_headhunter": "fps_combat_headhunter",
+    "Worker": "worker",
+    "worker": "worker",
+    "Standing": "factionreputation",
+    "factionreputation": "factionreputation",
+    "Courier": "courier_transportguild",
+    "courier": "courier",
+    "fps_combat_roughandready": "fps_combat_roughandready",
+    "fps_combat_citizensforpyro": "fps_combat_citizensforpyro",
+    "Hauling": "hauling",
+    "hauling": "hauling",
+    "bountyhunter_bountyhuntersguild": "bountyhunter_bountyhuntersguild",
+    "delivery_citizensforpyro": "delivery_citizensforpyro",
+    "Barter & Trade": "wikelo",
+    "wikelo": "wikelo",
+    "Racing (Hover)": "hovertimetrial",
+    "hovertimetrial": "hovertimetrial",
+    "Confidence": "npc_reliability",
+    "npc_reliability": "npc_reliability",
+    "Affinity": "affinity",
+    "affinity": "affinity",
+    "shipcombat_xenothreat": "shipcombat_xenothreat",
+    "bountyhunter": "bountyhunter",
+    "fps_combat_xenothreat": "fps_combat_xenothreat",
+    "shipcombat": "shipcombat",
+    "Security": "security",
+    "security_mercenaryguild": "security_mercenaryguild",
+    "Emergency Support": "emergency",
+    "emergency": "emergency",
+    "Racing (Headhunters)": "racing_headhunter",
+    "racing_headhunter": "racing_headhunter",
+    "delivery_roughandready": "delivery_roughandready",
+    "smuggling": "smuggling",
+    "Racing (Wheeled)": "wheeledtimetrial",
+    "wheeledtimetrial": "wheeledtimetrial",
+    "Assassination": "assassination",
+    "assassination": "assassination",
+    "Salvaging": "salvaging",
+    "salvaging": "salvaging",
+    "courier_transportguild": "courier_transportguild",
+    "handyman_citizensforpyro": "handyman_citizensforpyro",
+    "Theft": "theft",
+    "theft": "theft",
+    "hiredmuscle": "hiredmuscle",
+    "shipcombat_roughandready": "shipcombat_roughandready",
+    "security": "security"
   },
   "contracts": [
     {
@@ -2668,7 +3344,7 @@
     },
     {
       "className": "pu_assassination_syncedassassination_stanton2",
-      "title": "[Contractor]",
+      "title": "Assassination",
       "category": "Bounty",
       "reward": 28000,
       "currency": "UEC",
@@ -2688,13 +3364,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -2706,6 +3375,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -3093,7 +3769,7 @@
     },
     {
       "className": "pu_assassination_fps_pve_cave_stanton2",
-      "title": "[Contractor]",
+      "title": "Assassination",
       "category": "Bounty",
       "reward": 24000,
       "currency": "UEC",
@@ -3116,13 +3792,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -3134,6 +3803,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -3851,7 +4527,7 @@
     },
     {
       "className": "pu_assassination_syncedassassination",
-      "title": "[Contractor]",
+      "title": "Assassination",
       "category": "Bounty",
       "reward": 12000,
       "currency": "UEC",
@@ -3871,13 +4547,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -3889,6 +4558,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -4689,7 +5365,7 @@
     },
     {
       "className": "pu_bounty_pve_stanton1",
-      "title": "[Contractor]",
+      "title": "Bounty",
       "category": "Bounty",
       "reward": 5000,
       "currency": "UEC",
@@ -4708,13 +5384,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -4726,6 +5395,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -5626,7 +6302,7 @@
     },
     {
       "className": "pu_assassination_fps_pve_cave",
-      "title": "[Contractor]",
+      "title": "Assassination",
       "category": "Bounty",
       "reward": 2000,
       "currency": "UEC",
@@ -5644,13 +6320,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -5662,6 +6331,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -5734,7 +6410,7 @@
     },
     {
       "className": "pu_bounty",
-      "title": "[Contractor]",
+      "title": "Bounty",
       "category": "Bounty",
       "reward": 1890,
       "currency": "UEC",
@@ -5752,13 +6428,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -5770,6 +6439,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -11319,13 +11995,6 @@
       ],
       "system": "ArcCorp",
       "multiSystem": true,
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50
     },
@@ -11427,13 +12096,6 @@
       ],
       "system": "Crusader",
       "multiSystem": true,
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50
     },
@@ -11516,13 +12178,6 @@
       ],
       "system": "ArcCorp",
       "multiSystem": true,
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50
     },
@@ -12041,13 +12696,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50
     },
@@ -12093,13 +12741,6 @@
       "multiSystem": true,
       "missionFlow": [
         "FPS Combat"
-      ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
       ],
       "repReward": 100,
       "repPenalty": -50
@@ -12267,13 +12908,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50
     },
@@ -12359,13 +12993,6 @@
       "multiSystem": true,
       "missionFlow": [
         "FPS Combat"
-      ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
       ],
       "repReward": 100,
       "repPenalty": -50
@@ -12894,7 +13521,7 @@
     },
     {
       "className": "pu_eliminateall_stations_hatch",
-      "title": "[Contractor]",
+      "title": "Eliminate All",
       "category": "Combat",
       "reward": 14000,
       "currency": "UEC",
@@ -12917,13 +13544,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -12935,6 +13555,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -13163,7 +13790,7 @@
     },
     {
       "className": "pu_eliminateall_caves_pyro",
-      "title": "[Contractor]",
+      "title": "Eliminate All",
       "category": "Combat",
       "reward": 12000,
       "currency": "UEC",
@@ -13180,13 +13807,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -13198,6 +13818,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -13629,7 +14256,7 @@
     },
     {
       "className": "pu_eliminatespecific_lawful_standard",
-      "title": "[Contractor]",
+      "title": "Eliminate Target",
       "category": "Combat",
       "reward": 9000,
       "currency": "UEC",
@@ -13645,13 +14272,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -13663,6 +14283,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -13814,13 +14441,6 @@
       ],
       "system": "ArcCorp",
       "multiSystem": true,
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50
     },
@@ -13867,7 +14487,7 @@
     },
     {
       "className": "pu_destroy_items_stanton_distributioncentres",
-      "title": "[Contractor]",
+      "title": "Destroy Items",
       "category": "Combat",
       "reward": 8000,
       "currency": "UEC",
@@ -13884,13 +14504,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -13902,6 +14515,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -22935,13 +23555,6 @@
       "repReward": 100,
       "timeLimitMin": 40,
       "description": "Hi there. We haven’t had a chance to work together yet but I’m in a bit of a bind here and I could use another body. Not for nothing, of course. I’m all for a good quid pro quo.\\n\\nOne of my associates who was serving some time in Klescher was supposed to bring me a datachip, but then they went quiet. Now I’m assuming they’re dead, but here’s the deal: if you finish his job, I wipe your crimestat. Not bad, right?\\n\\nYour predecessor was apparently planning on using some old tunnels to make his escape. He made it sound like they weren't exactly the easiest thing to access, but I trust you can figure it out. I'm guessing you'll find his body somewhere in there and if we’re lucky, he'll still have the chip on him.\\n\\nOnce you get it, finish getting out however you can. Then get the data to me. There’s a spot nearby you can upload the chip’s contents. You might want to watch out for Hurston Security, though. They've been a hassle lately, so I wouldn't be surprised if you ran into them. After I get the data and validate it, I’ll wipe your crimestat. \\n\\nThen you can go and enjoy your newfound freedom. If you do this right, maybe I’ll have more lucrative work for you down the line.",
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "system": "Stanton",
       "danger": "Low",
       "cooldownMin": 1,
@@ -22965,13 +23578,6 @@
       "repReward": 100,
       "timeLimitMin": 40,
       "description": "Hey there. I heard you ended up in Klescher which is a real drag. But it might actually be a lucky day for both of us.\\n\\nLong story short, I had somebody sneaking a datachip out of the prison, but they never got back to me. I know for a fact they haven’t left the facility, so I think something might have happened to them. While tragic, business must carry on. If you can get the chip and finish the job, I can clear your crimestat for you. What do you say?\\n\\nOf course, I don't know exactly how far they got, but I can tell you that the prison's got a whole network of hidden tunnels my guy was planning on using to make his escape. My guess is his corpse is rotting away somewhere there.\\n\\nOnce you find the body, I’m hoping the chip will still be on him. When you’ve got it, finish escaping and get the data to me. There’s a spot nearby you can upload the chip’s contents. \\n\\nOne warning though, you might want to watch out for Hurston Security. They've been a hassle lately, so I wouldn't be surprised if you ran into them.\\n\\nWhen I've got the data I’ll wipe your crimestat and then, voila, you’ll be free and clear. What you do after that is entirely up to you.",
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "system": "Stanton"
     },
     {
@@ -43045,13 +43651,6 @@
       ],
       "timeLimitMin": 0,
       "description": "Fortune has shined upon us once again. I’ve just learned of a battle near ~mission(Location) that’s just transpired far from the prying eyes of any meddlesome comm arrays, and reinforcements from either of the forces involved have yet to be dispatched. This means that there is a window of opportunity for an enterprising soul to pick the graveyard clean.\\n \\nI’d like to extend this opportunity to all my trusted contacts. Any and all interested parties can have the location… for the right price. Coordinates will be provided once you accept the contract and will remain available until you choose to terminate it.\\n\\nOf course, speed will be of the essence as you will not only face potential competition from other salvagers, but also the looming possibility of reinforcements arriving to survey the battlefield. \\n\\nIf you’re still hesitating, just remember, fortune favors the bold.\\n\\n-cd",
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "activity": "Salvage"
     },
     {
@@ -44281,7 +44880,7 @@
     },
     {
       "className": "pu_delivery_local_stealstash_stanton2",
-      "title": "[Contractor] - [Reward]",
+      "title": "Delivery",
       "category": "Delivery",
       "reward": 15000,
       "currency": "UEC",
@@ -44441,14 +45040,7 @@
         "affinity"
       ],
       "system": "microTech",
-      "activity": "Delivery",
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ]
+      "activity": "Delivery"
     },
     {
       "className": "pu_delivery_local_legal_deliver_4",
@@ -44472,7 +45064,7 @@
     },
     {
       "className": "pu_delivery_local_recoverstash_stanton3",
-      "title": "[Contractor] - [Reward]",
+      "title": "Delivery",
       "category": "Delivery",
       "reward": 12000,
       "currency": "UEC",
@@ -44639,7 +45231,7 @@
     },
     {
       "className": "pu_delivery_local_timesensitive_stanton3",
-      "title": "[Contractor] - [Reward]",
+      "title": "Delivery",
       "category": "Delivery",
       "reward": 11000,
       "currency": "UEC",
@@ -44812,7 +45404,7 @@
     },
     {
       "className": "pu_delivery_local_drugproduction_stanton3",
-      "title": "[Contractor] - [Reward]",
+      "title": "Delivery",
       "category": "Delivery",
       "reward": 9000,
       "currency": "UEC",
@@ -46083,7 +46675,7 @@
     },
     {
       "className": "pu_derelict_eliminatespecific_unlawful_stanton",
-      "title": "[Contractor]",
+      "title": "Eliminate Target",
       "category": "Derelict",
       "reward": 15000,
       "currency": "UEC",
@@ -46108,13 +46700,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -46126,6 +46711,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -46256,7 +46848,7 @@
     },
     {
       "className": "pu_derelict_recovery_blackbox_lawful_stanton1",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Derelict",
       "reward": 9000,
       "currency": "UEC",
@@ -46275,13 +46867,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -46293,6 +46878,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -46588,7 +47180,7 @@
     },
     {
       "className": "pu_missingperson_derelictoutpost_pyro_cfp",
-      "title": "[Contractor]",
+      "title": "Derelict Exploration",
       "category": "Investigation",
       "reward": 8000,
       "currency": "UEC",
@@ -46610,13 +47202,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -46628,6 +47213,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -47085,7 +47677,7 @@
     },
     {
       "className": "pu_scavenge_surfacerelay_prevent_mp",
-      "title": "[Contractor]",
+      "title": "Scavenge",
       "category": "Other",
       "reward": 30000,
       "currency": "UEC",
@@ -47101,13 +47693,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47119,6 +47704,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -47226,7 +47818,7 @@
     },
     {
       "className": "pu_commarrayhack_stanton4",
-      "title": "[Contractor]",
+      "title": "Comm Array Hack",
       "category": "Other",
       "reward": 25000,
       "currency": "UEC",
@@ -47244,13 +47836,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47262,6 +47847,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -47325,7 +47917,7 @@
     },
     {
       "className": "pu_recovery_ugf_intro",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 22500,
       "currency": "UEC",
@@ -47346,13 +47938,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47364,6 +47949,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -47417,7 +48009,7 @@
     },
     {
       "className": "destroy_satellite_lawful_stanton3",
-      "title": "[Contractor]",
+      "title": "Destroy Satellite",
       "category": "Other",
       "reward": 15000,
       "currency": "UEC",
@@ -47440,13 +48032,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47458,6 +48043,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -47606,7 +48198,7 @@
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton4c",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 14250,
       "currency": "UEC",
@@ -47623,13 +48215,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47641,6 +48226,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -47661,7 +48253,7 @@
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton4b",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 13750,
       "currency": "UEC",
@@ -47678,13 +48270,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47696,11 +48281,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton4",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 12500,
       "currency": "UEC",
@@ -47718,13 +48310,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47736,11 +48321,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_deploy_lawful_stanton4",
-      "title": "[Contractor]",
+      "title": "Deploy Probe",
       "category": "Other",
       "reward": 12000,
       "currency": "UEC",
@@ -47757,13 +48349,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47775,11 +48360,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_deploy_lawful_stanton3",
-      "title": "[Contractor]",
+      "title": "Deploy Probe",
       "category": "Other",
       "reward": 11000,
       "currency": "UEC",
@@ -47796,13 +48388,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47814,11 +48399,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_commarrayrepair_stanton2",
-      "title": "[Contractor]",
+      "title": "Comm Array Repair",
       "category": "Other",
       "reward": 10000,
       "currency": "UEC",
@@ -47840,13 +48432,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47858,6 +48443,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -47922,7 +48514,7 @@
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton1d",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 9750,
       "currency": "UEC",
@@ -47939,13 +48531,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47957,11 +48542,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_deploy_lawful_stanton1",
-      "title": "[Contractor]",
+      "title": "Deploy Probe",
       "category": "Other",
       "reward": 9500,
       "currency": "UEC",
@@ -47978,13 +48570,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -47996,11 +48581,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton1c",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 9000,
       "currency": "UEC",
@@ -48018,13 +48610,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48036,11 +48621,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton1",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 8750,
       "currency": "UEC",
@@ -48058,13 +48650,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48076,6 +48661,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -48261,7 +48853,7 @@
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton2b",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 7500,
       "currency": "UEC",
@@ -48279,13 +48871,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48297,6 +48882,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -48357,7 +48949,7 @@
     },
     {
       "className": "destroy_satellite_lawful",
-      "title": "[Contractor]",
+      "title": "Destroy Satellite",
       "category": "Other",
       "reward": 5000,
       "currency": "UEC",
@@ -48373,13 +48965,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48391,6 +48976,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -48431,7 +49023,7 @@
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 4000,
       "currency": "UEC",
@@ -48447,13 +49039,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48465,11 +49050,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "pu_cave_recovery_missingperson",
-      "title": "[Contractor]",
+      "title": "Recovery",
       "category": "Other",
       "reward": 3000,
       "currency": "UEC",
@@ -48485,13 +49077,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48503,6 +49088,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -48669,7 +49261,7 @@
     },
     {
       "className": "retakelocation",
-      "title": "[Contractor]",
+      "title": "Retake Location",
       "category": "PvP",
       "reward": 10000,
       "currency": "UEC",
@@ -48683,13 +49275,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48701,6 +49286,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -48735,7 +49327,7 @@
     },
     {
       "className": "dataheist_unlawful_vh_stanton1",
-      "title": "[Contractor]",
+      "title": "Data Heist",
       "category": "Theft",
       "reward": 500000,
       "currency": "UEC",
@@ -48758,13 +49350,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48776,11 +49361,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "dataheist_unlawful_h_stanton4",
-      "title": "[Contractor]",
+      "title": "Data Heist",
       "category": "Theft",
       "reward": 300000,
       "currency": "UEC",
@@ -48803,13 +49395,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48821,6 +49406,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -48849,7 +49441,7 @@
     },
     {
       "className": "dataheist_unlawful_m_stanton1",
-      "title": "[Contractor]",
+      "title": "Data Heist",
       "category": "Theft",
       "reward": 120000,
       "currency": "UEC",
@@ -48872,13 +49464,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48890,11 +49475,18 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
       "className": "dataheist_unlawful_e_stanton1",
-      "title": "[Contractor]",
+      "title": "Data Heist",
       "category": "Theft",
       "reward": 60000,
       "currency": "UEC",
@@ -48917,13 +49509,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -48935,6 +49520,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {
@@ -48960,7 +49552,7 @@
     },
     {
       "className": "dataheist_unlawful_ve_stanton1",
-      "title": "[Contractor]",
+      "title": "Data Heist",
       "category": "Theft",
       "reward": 30000,
       "currency": "UEC",
@@ -48983,13 +49575,6 @@
       "missionFlow": [
         "FPS Combat"
       ],
-      "repRequirements": [
-        {
-          "scope": "affinity",
-          "minRank": "<= PLACEHOLDER =>",
-          "maxRank": "Exalted"
-        }
-      ],
       "repReward": 100,
       "repPenalty": -50,
       "blueprintRewards": [
@@ -49001,6 +49586,13 @@
         "Antium Arms Moss Camo",
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Applicant",
+          "maxRank": "Elite Security Contractor"
+        }
       ]
     },
     {

@@ -95,31 +95,18 @@
       @for (m of filteredMissions(); track m.className) {
         <div class="mission-card" [class.unlawful]="!m.lawful" [class.selected]="selectedMission()?.className === m.className" (click)="selectMission(m, $event)">
           <div class="mission-header">
-            <div class="mission-cat">{{ m.category }}</div>
             <div class="mission-title">{{ m.title }}</div>
             <div class="mission-reward">
               <span class="reward-val" [class.estimated]="m.rewardEstimated">{{ fmtReward(m.reward) }}</span>
-              <span class="reward-unit">{{ m.currency }}@if (m.rewardEstimated) { <span class="est-tag">(est)</span>}</span>
+              <span class="reward-unit">{{ m.currency }}</span>
             </div>
           </div>
           <div class="mission-meta">
-            @if (m.boss) {
-              <span class="meta-tag boss">BOSS</span>
-            }
-            @if (m.onceOnly) {
-              <span class="meta-tag unique">UNIQUE</span>
-            }
-            <span class="meta-inline"><!--
-              -->@if (m.contractor) {<span class="mi-item contractor">{{ m.contractor }}</span>}<!--
-              -->@if (m.system) {<span class="mi-item system">{{ m.system }}</span>}<!--
-              -->@if (m.activity) {<span class="mi-item activity">{{ m.activity }}</span>}<!--
-              -->@if (m.danger) {<span class="mi-item danger">{{ m.danger }}</span>}<!--
-              -->@if (m.isChain) {<span class="mi-item chain">Chain</span>}<!--
-              -->@if (m.canShare) {<span class="mi-item share">Shareable</span>}<!--
-              -->@if (m.multiSystem) {<span class="mi-item multi">Multi-System</span>}<!--
-            --></span>
+            @if (m.contractor) {<span class="mi-item contractor">{{ m.contractor }}</span>}<!--
+            -->@if (m.system) {<span class="mi-item system">{{ m.system }}</span>}<!--
+            -->@if (m.danger) {<span class="mi-item danger">{{ m.danger }}</span>}<!--
+            -->@if (m.boss) {<span class="meta-tag boss">BOSS</span>}
           </div>
-
         </div>
       }
     </div>
@@ -282,17 +269,29 @@
             @for (ladder of getLadders(sm); track ladder.name) {
               <div class="popout-section">
                 <div class="popout-section-title">{{ ladder.displayName }} Ranks</div>
-                <div class="rep-ladder">
-                  @for (rank of ladder.ranks; track rank.minRep) {
-                    <div class="ladder-row"
-                         [class.active-rank]="isActiveRank(sm, ladder, rank)"
-                         [class.gated]="rank.gated">
-                      <span class="ladder-rep">{{ fmtRep(rank.minRep) }}</span>
-                      <span class="ladder-name">{{ rank.name }}</span>
-                      @if (rank.gated) { <span class="ladder-gated">GATED</span> }
+                @if (sm.repReward) {
+                  <div class="popout-stat"><span class="ps-label">Rep / Mission</span><span class="ps-val rep-positive">+{{ sm.repReward | number }}</span></div>
+                }
+                <div class="rep-calc-table">
+                  <div class="rep-calc-header">
+                    <span class="rc-rank">Rank</span>
+                    <span class="rc-xp">XP to Fill</span>
+                    <span class="rc-missions">Missions</span>
+                  </div>
+                  @for (row of calcLadder(sm, ladder); track row.minRep) {
+                    <div class="rep-calc-row"
+                         [class.active-rank]="row.active"
+                         [class.gated]="row.gated">
+                      <span class="rc-rank">
+                        {{ row.name }}
+                        @if (row.perk) { <span class="rc-perk">{{ row.perk }}</span> }
+                        @if (row.gated) { <span class="ladder-gated">GATED</span> }
+                      </span>
+                      <span class="rc-xp">{{ row.xpToFill > 0 ? (row.xpToFill | number) : '—' }}</span>
+                      <span class="rc-missions">{{ row.missions !== null ? (row.missions | number) : '—' }}</span>
                     </div>
                   }
-                  <div class="ladder-ceiling">Ceiling: {{ fmtRep(ladder.ceiling) }}</div>
+                  <div class="ladder-ceiling">Ceiling: {{ ladder.ceiling | number }}</div>
                 </div>
               </div>
             }
