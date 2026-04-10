@@ -1,0 +1,275 @@
+.cooling-observations {
+  h1 { margin: 0; color: #9fdfff; }
+  h2 { margin: 0 0 12px; font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); }
+  .subtitle { margin: 4px 0 0; color: rgba(255, 255, 255, 0.5); font-size: 0.9rem; }
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+
+  .refresh-btn {
+    padding: 8px 16px;
+    background: rgba(80, 180, 255, 0.1);
+    border: 1px solid rgba(80, 180, 255, 0.4);
+    border-radius: 4px;
+    color: #9fdfff;
+    cursor: pointer;
+    font-size: 0.85rem;
+    &:hover:not(:disabled) { background: rgba(80, 180, 255, 0.2); }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}
+
+// ── Form ──
+.form-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+
+  label {
+    width: 140px;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    padding-top: 6px;
+    text-align: right;
+  }
+
+  input, textarea {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-family: inherit;
+
+    &:focus { outline: none; border-color: rgba(80, 180, 255, 0.4); }
+    &::placeholder { color: rgba(255, 255, 255, 0.25); }
+  }
+
+  input[type="number"] { max-width: 120px; }
+}
+
+.ship-picker {
+  flex: 1;
+  position: relative;
+}
+
+.picked-ship {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(80, 180, 255, 0.3);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: #9fdfff;
+  font-size: 0.9rem;
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 100, 100, 0.7);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0 4px;
+  &:hover { color: #ff6666; }
+}
+
+.ship-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #1a1f2a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.ship-option {
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  &:hover { background: rgba(80, 180, 255, 0.1); color: #fff; }
+}
+
+.pip-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.pip-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  &.na { opacity: 0.4; }
+
+  .pip-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+  }
+
+  input[type="number"] {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #fff;
+    font-size: 0.85rem;
+    width: 100%;
+    text-align: center;
+    &:focus { outline: none; border-color: rgba(80, 180, 255, 0.4); }
+    &::placeholder { color: rgba(255, 255, 255, 0.2); }
+  }
+}
+
+.pip-na {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.na-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  margin-top: 2px;
+
+  input[type="checkbox"] {
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+  }
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding-left: 152px; // align with inputs
+}
+
+.submit-btn {
+  padding: 8px 20px;
+  background: rgba(74, 255, 122, 0.1);
+  border: 1px solid rgba(74, 255, 122, 0.4);
+  border-radius: 4px;
+  color: #4aff7a;
+  cursor: pointer;
+  font-size: 0.9rem;
+  &:hover:not(:disabled) { background: rgba(74, 255, 122, 0.2); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.submit-result {
+  font-size: 0.85rem;
+  color: #4aff7a;
+  &.error { color: #ff6666; }
+}
+
+// ── Observations Table ──
+.obs-table {
+  margin-top: 8px;
+}
+
+.obs-header, .obs-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+}
+
+.obs-header {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.obs-row {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  &:hover { background: rgba(255, 255, 255, 0.02); }
+}
+
+.obs-ship      { flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.obs-build     { width: 60px; flex-shrink: 0; }
+.obs-reported  { width: 70px; flex-shrink: 0; text-align: right; color: #9fdfff; }
+.obs-predicted { width: 70px; flex-shrink: 0; text-align: right; color: rgba(255, 255, 255, 0.5); }
+.obs-residual  { width: 70px; flex-shrink: 0; text-align: right; color: #e8c86a; }
+.obs-date      { width: 140px; flex-shrink: 0; font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
+.obs-actions   { width: 30px; flex-shrink: 0; text-align: center; }
+
+.del-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 100, 100, 0.5);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  &:hover { color: #ff6666; background: rgba(255, 100, 100, 0.1); }
+}
+
+.obs-notes {
+  padding: 2px 10px 6px 18px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+
+  .note-label {
+    font-style: normal;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+  }
+}
+
+.error-msg {
+  padding: 10px;
+  background: rgba(255, 68, 68, 0.08);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  border-radius: 4px;
+  color: #ff6666;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+}

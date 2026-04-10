@@ -120,6 +120,13 @@ export const routes: Routes = [
             (m) => m.SubmissionsReviewComponent
           ),
       },
+      {
+        path: 'cooling',
+        loadComponent: () =>
+          import('./components/admin/cooling-observations/cooling-observations').then(
+            (m) => m.CoolingObservationsComponent
+          ),
+      },
     ],
   },
 

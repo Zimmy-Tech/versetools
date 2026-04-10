@@ -197,3 +197,24 @@ CREATE INDEX IF NOT EXISTS shop_prices_nickname_idx ON shop_prices (shop_nicknam
 CREATE INDEX IF NOT EXISTS shop_prices_company_idx  ON shop_prices (shop_company);
 CREATE INDEX IF NOT EXISTS shop_prices_system_idx   ON shop_prices (star_system);
 CREATE INDEX IF NOT EXISTS shop_prices_source_idx   ON shop_prices (source);
+
+-- Cooling observations: admin-submitted in-game cooling gauge readings.
+-- Used to validate and refit the cooling demand weight formula.
+-- Default loadout is assumed unless noted; pip_allocation captures the
+-- power distribution state at time of observation.
+CREATE TABLE IF NOT EXISTS cooling_observations (
+  id                   SERIAL PRIMARY KEY,
+  ship_class_name      TEXT NOT NULL,
+  ship_name            TEXT,                          -- display name at time of submission
+  build_version        TEXT NOT NULL,                 -- SC build version (e.g. '4.0.2')
+  pip_allocation       JSONB,                         -- {slotId: pipCount} snapshot
+  reported_cooling_pct INTEGER NOT NULL,              -- in-game gauge reading (0-100+)
+  predicted_cooling_pct INTEGER,                      -- what our formula predicts (computed on insert)
+  loadout_note         TEXT,                          -- "swapped coolers to XYZ" etc.
+  notes                TEXT,                          -- general observations
+  submitter            TEXT NOT NULL DEFAULT 'admin',
+  status               TEXT NOT NULL DEFAULT 'active',-- 'active', 'outlier', 'rejected'
+  submitted_at         TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS cooling_obs_ship_idx ON cooling_observations (ship_class_name);
+CREATE INDEX IF NOT EXISTS cooling_obs_status_idx ON cooling_observations (status);

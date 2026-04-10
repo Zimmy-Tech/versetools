@@ -1149,6 +1149,71 @@ const rejectAccelHandler = async (req, res) => {
 app.post('/admin/submissions/accel/:id/reject', requireAdmin, rejectAccelHandler);
 app.post('/api/admin/submissions/accel/:id/reject', requireAdmin, rejectAccelHandler);
 
+// ─── Cooling observations (admin-only) ───────────────────────────────
+
+const listCoolingObsHandler = async (req, res) => {
+  if (!dbEnabled) return res.json({ observations: [] });
+  try {
+    const status = req.query.status || 'all';
+    const where = status === 'all' ? '' : `WHERE status = $1`;
+    const params = status === 'all' ? [] : [status];
+    const { rows } = await pool.query(
+      `SELECT * FROM versedb.cooling_observations ${where} ORDER BY submitted_at DESC LIMIT 200`,
+      params
+    );
+    res.json({ observations: rows });
+  } catch (err) {
+    console.error('list cooling obs failed:', err);
+    res.status(500).json({ error: 'List failed', detail: err.message });
+  }
+};
+
+app.get('/admin/cooling-observations', requireAdmin, listCoolingObsHandler);
+app.get('/api/admin/cooling-observations', requireAdmin, listCoolingObsHandler);
+
+const createCoolingObsHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  const { shipClassName, shipName, buildVersion, pipAllocation, reportedCoolingPct,
+          predictedCoolingPct, loadoutNote, notes } = req.body || {};
+  if (!shipClassName || !buildVersion || reportedCoolingPct == null) {
+    return res.status(400).json({ error: 'shipClassName, buildVersion, and reportedCoolingPct are required' });
+  }
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO versedb.cooling_observations
+       (ship_class_name, ship_name, build_version, pip_allocation,
+        reported_cooling_pct, predicted_cooling_pct, loadout_note, notes, submitter)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'admin')
+       RETURNING id`,
+      [shipClassName, shipName || null, buildVersion,
+       pipAllocation ? JSON.stringify(pipAllocation) : null,
+       reportedCoolingPct, predictedCoolingPct || null,
+       loadoutNote || null, notes || null]
+    );
+    res.json({ id: rows[0].id, ok: true });
+  } catch (err) {
+    console.error('create cooling obs failed:', err);
+    res.status(500).json({ error: 'Insert failed', detail: err.message });
+  }
+};
+
+app.post('/admin/cooling-observations', requireAdmin, createCoolingObsHandler);
+app.post('/api/admin/cooling-observations', requireAdmin, createCoolingObsHandler);
+
+const deleteCoolingObsHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  try {
+    await pool.query('DELETE FROM versedb.cooling_observations WHERE id = $1', [req.params.id]);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('delete cooling obs failed:', err);
+    res.status(500).json({ error: 'Delete failed', detail: err.message });
+  }
+};
+
+app.delete('/admin/cooling-observations/:id', requireAdmin, deleteCoolingObsHandler);
+app.delete('/api/admin/cooling-observations/:id', requireAdmin, deleteCoolingObsHandler);
+
 // ─── Site config (PTU toggle, label) ─────────────────────────────────
 
 const configReadHandler = async (req, res) => {

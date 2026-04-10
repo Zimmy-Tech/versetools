@@ -271,6 +271,34 @@ export class AdminService {
       })
       .toPromise();
   }
+
+  // ─── Cooling observations ────────────────────────────────────────
+
+  async listCoolingObservations(status = 'all'): Promise<CoolingObservation[]> {
+    const resp = await this.http
+      .get<{ observations: CoolingObservation[] }>(`/api/admin/cooling-observations?status=${status}`, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return resp?.observations ?? [];
+  }
+
+  async createCoolingObservation(obs: Partial<CoolingObservation>): Promise<{ id: number }> {
+    const resp = await this.http
+      .post<{ id: number; ok: boolean }>('/api/admin/cooling-observations', obs, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    return { id: resp?.id ?? 0 };
+  }
+
+  async deleteCoolingObservation(id: number): Promise<void> {
+    await this.http
+      .delete(`/api/admin/cooling-observations/${id}`, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+  }
 }
 
 export interface DiffChange {
@@ -347,5 +375,27 @@ export interface AccelSubmission {
   reviewer_note: string | null;
   reviewed_by: string | null;
   reviewed_at: string | null;
+  submitted_at: string;
+}
+
+export interface CoolingObservation {
+  id: number;
+  ship_class_name: string;
+  shipClassName?: string;  // camelCase alias for POST body
+  ship_name: string | null;
+  shipName?: string;
+  build_version: string;
+  buildVersion?: string;
+  pip_allocation: Record<string, number | string> | null;
+  pipAllocation?: Record<string, number | string>;
+  reported_cooling_pct: number;
+  reportedCoolingPct?: number;
+  predicted_cooling_pct: number | null;
+  predictedCoolingPct?: number;
+  loadout_note: string | null;
+  loadoutNote?: string;
+  notes: string | null;
+  submitter: string;
+  status: string;
   submitted_at: string;
 }

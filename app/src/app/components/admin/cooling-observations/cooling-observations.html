@@ -1,0 +1,162 @@
+<div class="cooling-observations">
+  <div class="page-header">
+    <div>
+      <h1>Cooling Observations</h1>
+      <p class="subtitle">Record in-game cooling gauge readings to validate and refit the demand formula.</p>
+    </div>
+    <button class="refresh-btn" (click)="refresh()" [disabled]="loading()">
+      {{ loading() ? 'Loading...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <!-- ═══ Submission Form ═══ -->
+  <div class="form-card">
+    <h2>New Observation</h2>
+
+    <div class="form-row">
+      <label>Ship</label>
+      <div class="ship-picker">
+        @if (selectedShip(); as ship) {
+          <div class="picked-ship">
+            <span>{{ ship.name || ship.className }}</span>
+            <button class="clear-btn" (click)="clearShip()">x</button>
+          </div>
+        } @else {
+          <input
+            type="text"
+            placeholder="Search ships..."
+            [ngModel]="shipSearch()"
+            (ngModelChange)="shipSearch.set($event)"
+          />
+          @if (filteredShips().length) {
+            <div class="ship-dropdown">
+              @for (s of filteredShips(); track s.className) {
+                <div class="ship-option" (click)="pickShip(s)">{{ s.name || s.className }}</div>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>SC Build Version</label>
+      <input type="text" [ngModel]="buildVersion()" (ngModelChange)="buildVersion.set($event)" placeholder="e.g. 4.0.2" />
+    </div>
+
+    <div class="form-row">
+      <label>Power Pips</label>
+      <div class="pip-grid">
+        @for (g of pipGroups; track g.key) {
+          <div class="pip-field" [class.na]="isNA(g.key)">
+            <span class="pip-label">{{ g.label }}</span>
+            @if (isNA(g.key)) {
+              <div class="pip-na">N/A</div>
+            } @else {
+              <input
+                type="number"
+                min="0"
+                max="20"
+                [ngModel]="pipValues()[g.key] ?? null"
+                (ngModelChange)="setPip(g.key, $event)"
+                placeholder="—"
+              />
+            }
+            @if (g.optional) {
+              <label class="na-toggle">
+                <input type="checkbox" [checked]="isNA(g.key)" (change)="setNA(g.key, !isNA(g.key))" />
+                N/A
+              </label>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Cooling Gauge %</label>
+      <input
+        type="number"
+        min="0"
+        max="200"
+        [ngModel]="reportedCoolingPct()"
+        (ngModelChange)="reportedCoolingPct.set($event)"
+        placeholder="In-game reading (0-100+)"
+      />
+    </div>
+
+    <div class="form-row">
+      <label>Loadout Changes</label>
+      <input
+        type="text"
+        [ngModel]="loadoutNote()"
+        (ngModelChange)="loadoutNote.set($event)"
+        placeholder="Default loadout, or describe swaps (e.g. 'coolers swapped to Bracer')"
+      />
+    </div>
+
+    <div class="form-row">
+      <label>Notes</label>
+      <textarea
+        rows="2"
+        [ngModel]="notes()"
+        (ngModelChange)="notes.set($event)"
+        placeholder="Any additional context..."
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button
+        class="submit-btn"
+        (click)="submit()"
+        [disabled]="submitting() || !selectedShip() || reportedCoolingPct() === null"
+      >
+        {{ submitting() ? 'Saving...' : 'Save Observation' }}
+      </button>
+      @if (submitResult()) {
+        <span class="submit-result" [class.error]="submitResult()!.startsWith('Error')">{{ submitResult() }}</span>
+      }
+    </div>
+  </div>
+
+  <!-- ═══ Observations Table ═══ -->
+  @if (error()) {
+    <div class="error-msg">{{ error() }}</div>
+  }
+
+  @if (observations().length) {
+    <div class="obs-table">
+      <div class="obs-header">
+        <span class="obs-ship">Ship</span>
+        <span class="obs-build">Build</span>
+        <span class="obs-reported">Reported</span>
+        <span class="obs-predicted">Predicted</span>
+        <span class="obs-residual">Residual</span>
+        <span class="obs-date">Date</span>
+        <span class="obs-actions"></span>
+      </div>
+      @for (obs of observations(); track obs.id) {
+        <div class="obs-row">
+          <span class="obs-ship" [title]="obs.ship_class_name">{{ obs.ship_name || obs.ship_class_name }}</span>
+          <span class="obs-build">{{ obs.build_version }}</span>
+          <span class="obs-reported">{{ obs.reported_cooling_pct }}%</span>
+          <span class="obs-predicted">{{ obs.predicted_cooling_pct != null ? obs.predicted_cooling_pct + '%' : '—' }}</span>
+          <span class="obs-residual">{{ residual(obs) }}</span>
+          <span class="obs-date">{{ fmtDate(obs.submitted_at) }}</span>
+          <span class="obs-actions">
+            <button class="del-btn" (click)="deleteObs(obs.id)" title="Delete">x</button>
+          </span>
+        </div>
+        @if (obs.loadout_note || obs.notes) {
+          <div class="obs-notes">
+            @if (obs.loadout_note) { <span class="note-label">Loadout:</span> {{ obs.loadout_note }} }
+            @if (obs.loadout_note && obs.notes) { &mdash; }
+            @if (obs.notes) { {{ obs.notes }} }
+          </div>
+        }
+      }
+    </div>
+  } @else if (!loading()) {
+    <div class="empty-state">No observations yet. Submit your first reading above.</div>
+  }
+</div>
