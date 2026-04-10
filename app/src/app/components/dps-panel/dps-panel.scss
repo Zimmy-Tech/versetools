@@ -26,7 +26,7 @@
   display: flex;
   align-items: center;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--text3);
@@ -51,7 +51,7 @@
 
 .gimbal-btn {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--text3);
@@ -66,7 +66,7 @@
 }
 
 .chevron {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text3);
 }
 
@@ -86,9 +86,9 @@
 }
 
 .dps-label {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text3);
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Exo 2', sans-serif;
   letter-spacing: 1px;
   margin-top: 2px;
 }
@@ -99,8 +99,8 @@
 .bar-label {
   display: flex;
   justify-content: space-between;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
 }
 .bar-track { height: 4px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
@@ -115,7 +115,7 @@
 // ── Mode toggle button ──────────────────────────────────
 .mode-toggle {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -179,7 +179,7 @@
 .dps-hero-label {
   display: block;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 3px;
   color: var(--text2);
@@ -189,28 +189,28 @@
 
 // ── Flat mode inline hero values ────────────────────────
 .peak-val {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--accent);
   text-shadow: 0 0 8px rgba(0, 200, 255, 0.2);
 }
 
 .real-val {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--green);
   text-shadow: 0 0 8px rgba(0, 255, 120, 0.2);
 }
 
 .shield-flat-val {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--phys);
   text-shadow: 0 0 8px rgba(68, 136, 255, 0.2);
 }
 
 .hull-flat-val {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--text);
   &.deflect-phys { color: var(--red); }
@@ -239,7 +239,7 @@
 .shield-hero-label {
   display: block;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 3px;
   color: var(--text2);
@@ -277,7 +277,7 @@
 .hull-hero-label {
   display: block;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -285,11 +285,11 @@
   margin-top: 2px;
 }
 
-.mono { font-family: 'Share Tech Mono', monospace; }
+.mono { font-family: 'Exo 2', sans-serif; }
 
 .no-weapons {
   color: var(--text3);
-  font-size: 13px;
+  font-size: 14px;
   text-align: center;
   padding: 8px;
 }
@@ -304,18 +304,18 @@
   border-left: 2px solid var(--border2);
 }
 .weapon-name {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 1;
 }
-.weapon-stat { font-size: 13px; color: var(--text); margin-left: 8px; white-space: nowrap; }
+.weapon-stat { font-size: 14px; color: var(--text); margin-left: 8px; white-space: nowrap; }
 
 .section-subtitle {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -339,7 +339,7 @@
 
 .sd-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -348,7 +348,7 @@
 
 .sd-val {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 700;
   color: var(--accent);
   text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
@@ -360,7 +360,7 @@
   align-items: center;
   gap: 6px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -376,7 +376,7 @@
   justify-content: center;
   width: 14px;
   height: 14px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   border-radius: 50%;
   border: 1px solid var(--green);
@@ -420,7 +420,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   gap: 16px;
   &[title] {
     cursor: help;
@@ -430,7 +430,7 @@
 .stat-label { color: var(--text2); white-space: nowrap; }
 
 .hover-hint {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 400;
   letter-spacing: 1px;
   color: var(--text3);
@@ -442,7 +442,7 @@
 
 .armor-type-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -455,15 +455,15 @@
 // references them. The in-panel card uses the .armor-check-card scope below.
 .armor-check-block { gap: 4px; }
 .armor-icon {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   margin-right: 4px;
   &.pen { color: var(--green); }
   &.def { color: var(--red); }
 }
 .armor-size {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
   color: var(--text3);
   margin-left: 2px;
 }
@@ -530,7 +530,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .acc-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -556,7 +556,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   border: 1px solid rgba(0, 200, 255, 0.3);
   color: var(--accent);
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -628,7 +628,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   margin-bottom: 4px;
   padding: 0 2px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -648,8 +648,8 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .accs-deflect {
   color: var(--text3);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
   letter-spacing: 0.5px;
 
   strong {
@@ -680,7 +680,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .accr-name {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
@@ -694,8 +694,8 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   display: inline-block;
   margin-left: 6px;
   padding: 1px 5px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
   font-weight: 700;
   color: var(--text3);
   background: rgba(255, 255, 255, 0.05);
@@ -752,7 +752,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .detail-btn {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -836,7 +836,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .popout-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: 1px;
@@ -845,7 +845,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 .popout-close {
   cursor: pointer;
   color: var(--text3);
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1;
   border-radius: 4px;
   transition: all 0.15s;
@@ -863,7 +863,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .popout-section-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -892,7 +892,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 .shield-resist-body {
   font-family: 'Exo 2', sans-serif;
   color: var(--text2);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
 
   p { margin: 8px 0; }
@@ -900,7 +900,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   h4 {
     font-family: 'Rajdhani', sans-serif;
     color: var(--accent2);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -926,13 +926,13 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   }
 
   .srx-math {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
   }
 
   .srx-formula {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 14px;
     color: var(--green);
     background: rgba(0, 255, 120, 0.04);
     border: 1px solid rgba(0, 255, 120, 0.12);
@@ -957,7 +957,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .acc-col-alpha-label {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -978,8 +978,8 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 }
 
 .accr-alpha {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text);
   text-align: right;
@@ -997,7 +997,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .armor-explainer {
   font-family: 'Exo 2', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text2);
   margin-bottom: 14px;
   padding: 10px 14px;
@@ -1027,7 +1027,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .ats-type {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -1037,13 +1037,13 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 }
 
 .ats-deflect {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
   color: var(--text3);
 
   strong {
     color: var(--text);
-    font-size: 14px;
+    font-size: 15px;
   }
 }
 
@@ -1069,7 +1069,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .armor-col-header {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -1096,21 +1096,21 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
 .aw-name {
   font-family: 'Exo 2', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   flex: 1;
 }
 
 .aw-size {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
   color: var(--text3);
   flex-shrink: 0;
 }
 
 .aw-alpha {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
   font-weight: 700;
   flex-shrink: 0;
   min-width: 40px;
@@ -1125,7 +1125,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   justify-content: center;
   width: 14px;
   height: 14px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   border-radius: 50%;
   border: 1px solid var(--green);
@@ -1165,12 +1165,12 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
   h3, h4 { font-family: 'Rajdhani', sans-serif; color: var(--accent); margin: 0; }
-  h3 { font-size: 20px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
-  h4 { font-size: 14px; letter-spacing: 1px; text-transform: uppercase; margin-top: 16px; margin-bottom: 6px; color: var(--accent2); }
+  h3 { font-size: 21px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  h4 { font-size: 15px; letter-spacing: 1px; text-transform: uppercase; margin-top: 16px; margin-bottom: 6px; color: var(--accent2); }
 
   p {
     font-family: 'Exo 2', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text2);
     line-height: 1.6;
     margin: 8px 0;
@@ -1180,8 +1180,8 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
     list-style: none;
     padding: 0;
     margin: 8px 0;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
     color: var(--text2);
     background: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
@@ -1203,7 +1203,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
   background: none;
   border: none;
   color: var(--text3);
-  font-size: 22px;
+  font-size: 23px;
   cursor: pointer;
   line-height: 1;
   padding: 0;
@@ -1215,8 +1215,8 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 }
 
 .real-dps-formula {
-  font-family: 'Share Tech Mono', monospace !important;
-  font-size: 14px !important;
+  font-family: 'Exo 2', sans-serif !important;
+  font-size: 15px !important;
   color: var(--green) !important;
   background: rgba(0, 255, 120, 0.04);
   border: 1px solid rgba(0, 255, 120, 0.1);
@@ -1228,14 +1228,14 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 .real-dps-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
   margin: 8px 0;
 
   thead {
     th {
       font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -1260,7 +1260,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 }
 
 .real-dps-disclaimer {
-  font-size: 11px !important;
+  font-size: 12px !important;
   color: var(--accent2) !important;
   font-style: italic;
   background: rgba(0, 200, 255, 0.03);
@@ -1271,7 +1271,7 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 }
 
 .real-dps-note {
-  font-size: 11px !important;
+  font-size: 12px !important;
   color: var(--text3) !important;
   font-style: italic;
   margin-top: 14px !important;

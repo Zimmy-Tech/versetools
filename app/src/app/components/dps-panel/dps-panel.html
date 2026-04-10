@@ -241,8 +241,8 @@
               </div>
             }
           }
-          <div class="stat-row"><span class="stat-label">Total HP</span><span class="mono">{{ data.selectedShip()!.totalHp }}</span></div>
-          <div class="stat-row"><span class="stat-label">Armor HP</span><span class="mono">{{ data.selectedShip()!.armorHp }}</span></div>
+          <div class="stat-row"><span class="stat-label">Total Hull HP</span><span class="mono">{{ data.selectedShip()!.totalHp }}</span></div>
+          <div class="stat-row"><span class="stat-label">Total Armor HP</span><span class="mono">{{ data.selectedShip()!.armorHp }}</span></div>
           @if (data.selectedShip()!.hullDmgPhys !== undefined) {
             <div class="stat-row" title="Armor damage multiplier — confirmed in-game"><span class="stat-label">Dmg Mod Phys</span><span class="mono">{{ (data.selectedShip()!.hullDmgPhys! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgPhys! - 1) * 100).toFixed(0) }}%</span></div>
             <div class="stat-row" title="Armor damage multiplier — confirmed in-game"><span class="stat-label">Dmg Mod Enrg</span><span class="mono">{{ (data.selectedShip()!.hullDmgEnrg! >= 1 ? '+' : '') }}{{ ((data.selectedShip()!.hullDmgEnrg! - 1) * 100).toFixed(0) }}%</span></div>
