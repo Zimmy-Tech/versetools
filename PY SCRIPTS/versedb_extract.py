@@ -1894,6 +1894,7 @@ WEAPON_SUBPORT_TYPES = frozenset({
     "Turret", "WeaponGun", "WeaponMining", "MiningModifier",
     "SalvageHead", "SalvageModifier", "TractorBeam",
     "MissileLauncher", "BombLauncher", "Missile", "Bomb", "Module",
+    "Shield",
 })
 
 def _build_subport_dict(port_el, port_name, port_types):
@@ -4518,6 +4519,7 @@ def main(mode: str = "live"):
             "hardpoint_remote_turret_bottom",                       # Nose turret (M2+A2 only)
             "hardpoint_bombrack_left",                              # Bomb racks A2-only
             "hardpoint_bombrack_right",
+            "hardpoint_shield_generator_c",                         # 3rd shield A2-only
         },
         "crus_starlifter_m2": {                                     # A2-only turrets
             "hardpoint_bridge_remote_turret",                       # Turret 6
@@ -4527,6 +4529,7 @@ def main(mode: str = "live"):
             "hardpoint_rear_right_remote_turret",                   # Turret 5
             "hardpoint_bombrack_left",                              # Bomb racks A2-only
             "hardpoint_bombrack_right",
+            "hardpoint_shield_generator_c",                         # 3rd shield A2-only
         },
         "cnou_mustang_alpha": {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},  # rockets only on Delta
         "cnou_mustang_beta":  {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},
@@ -5758,6 +5761,80 @@ def main(mode: str = "live"):
         return sum(1 for i in item_list if i.get("type") == t)
 
     dps_count = sum(1 for i in item_list if i.get("dps", 0) > 0)
+
+    # ── Post-extraction integrity checks ─────────────────────────────────
+    # Hard assertions for data that has been accidentally lost before.
+    # If ANY check fails the extractor refuses to write output.
+    # Add new entries whenever a fragile data point is fixed so it can
+    # never silently regress again.
+
+    def _find_ship(cls):
+        return next((s for s in ship_list if s["className"] == cls), None)
+
+    def _find_item(cls):
+        return next((i for i in item_list if i["className"] == cls), None)
+
+    def _ship_has_hp(cls, hp_id):
+        s = _find_ship(cls)
+        return s and any(h["id"] == hp_id for h in s.get("hardpoints", []))
+
+    def _ship_lacks_hp(cls, hp_id):
+        s = _find_ship(cls)
+        return s and not any(h["id"] == hp_id for h in s.get("hardpoints", []))
+
+    def _item_has_subport(cls, sp_id):
+        i = _find_item(cls)
+        return i and any(sp["id"] == sp_id for sp in i.get("subPorts", []))
+
+    def _ship_hp_count(cls, id_fragment):
+        s = _find_ship(cls)
+        if not s: return -1
+        return sum(1 for h in s.get("hardpoints", []) if id_fragment in h["id"])
+
+    INTEGRITY_CHECKS = [
+        # Aurora Mk II: DM module shield lives on the MODULE, not the ship
+        ("Aurora DM shield on module",
+         lambda: _item_has_subport("rsi_aurora_mk2_module_missile", "hardpoint_shield_generator_back")),
+        ("Aurora ship has exactly 2 shields",
+         lambda: _ship_hp_count("rsi_aurora_mk2", "shield_generator") == 2),
+
+        # Hercules: C2/M2 must NOT have A2-only hardpoints
+        ("C2 lacks bridge turret",
+         lambda: _ship_lacks_hp("crus_starlifter_c2", "hardpoint_bridge_remote_turret")),
+        ("C2 lacks forward turrets",
+         lambda: _ship_lacks_hp("crus_starlifter_c2", "hardpoint_forward_left_remote_turret")),
+        ("C2 has exactly 2 shields",
+         lambda: _ship_hp_count("crus_starlifter_c2", "shield_generator") == 2),
+        ("M2 lacks bridge turret",
+         lambda: _ship_lacks_hp("crus_starlifter_m2", "hardpoint_bridge_remote_turret")),
+        ("M2 lacks forward turrets",
+         lambda: _ship_lacks_hp("crus_starlifter_m2", "hardpoint_forward_left_remote_turret")),
+        ("M2 has exactly 2 shields",
+         lambda: _ship_hp_count("crus_starlifter_m2", "shield_generator") == 2),
+        ("A2 has exactly 3 shields",
+         lambda: _ship_hp_count("crus_starlifter_a2", "shield_generator") == 3),
+    ]
+
+    integrity_failures = []
+    for label, check in INTEGRITY_CHECKS:
+        try:
+            if not check():
+                integrity_failures.append(label)
+        except Exception as e:
+            integrity_failures.append(f"{label} (error: {e})")
+
+    if integrity_failures:
+        print("\n" + "=" * 60)
+        print("  INTEGRITY CHECK FAILED — output NOT written")
+        print("=" * 60)
+        for f in integrity_failures:
+            print(f"  ✗ {f}")
+        print("\nFix the above before re-running. These checks exist because")
+        print("this data has been accidentally lost in previous extractions.")
+        print("=" * 60)
+        sys.exit(1)
+    else:
+        print(f"\n  Integrity checks passed: {len(INTEGRITY_CHECKS)}/{len(INTEGRITY_CHECKS)}")
 
     output = {
         "meta": {
