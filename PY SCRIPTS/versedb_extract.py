@@ -4509,7 +4509,25 @@ def main(mode: str = "live"):
         "orig_350r":   {"hardpoint_tractor"},
         "espr_talon":        {"hardpoint_leg_blankingplate_right", "hardpoint_leg_blankingplate_left"},  # blankingplate racks only on Shrike
         "espr_talon_shrike": {"hardpoint_missile_right", "hardpoint_missile_left"},  # S3 missile racks only on Talon
-        "crus_starlifter_c2": {"hardpoint_bridge_remote_turret"},  # Turret 6 only on M2
+        "crus_starlifter_c2": {                                     # A2-only turrets
+            "hardpoint_bridge_remote_turret",                       # Turret 6
+            "hardpoint_forward_left_remote_turret",                 # Turret 2
+            "hardpoint_forward_right_remote_turret",                # Turret 3
+            "hardpoint_rear_left_remote_turret",                    # Turret 4
+            "hardpoint_rear_right_remote_turret",                   # Turret 5
+            "hardpoint_remote_turret_bottom",                       # Nose turret (M2+A2 only)
+            "hardpoint_bombrack_left",                              # Bomb racks A2-only
+            "hardpoint_bombrack_right",
+        },
+        "crus_starlifter_m2": {                                     # A2-only turrets
+            "hardpoint_bridge_remote_turret",                       # Turret 6
+            "hardpoint_forward_left_remote_turret",                 # Turret 2
+            "hardpoint_forward_right_remote_turret",                # Turret 3
+            "hardpoint_rear_left_remote_turret",                    # Turret 4
+            "hardpoint_rear_right_remote_turret",                   # Turret 5
+            "hardpoint_bombrack_left",                              # Bomb racks A2-only
+            "hardpoint_bombrack_right",
+        },
         "cnou_mustang_alpha": {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},  # rockets only on Delta
         "cnou_mustang_beta":  {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},
         "cnou_mustang_gamma": {"hardpoint_rocket_wing_left", "hardpoint_rocket_wing_right"},
