@@ -16,6 +16,7 @@ export class AdminLoginComponent {
 
   username = signal('');
   password = signal('');
+  totpCode = signal('');
   error = signal<string | null>(null);
   busy = signal(false);
 
@@ -24,12 +25,20 @@ export class AdminLoginComponent {
     this.error.set(null);
     this.busy.set(true);
     try {
-      await this.admin.login(this.username(), this.password());
+      await this.admin.login(this.username(), this.password(), this.totpCode() || undefined);
       this.router.navigate(['/admin']);
     } catch (err: any) {
       const status = err?.status;
-      const msg = err?.error?.error || err?.message || 'Login failed';
-      this.error.set(status === 401 ? 'Invalid username or password' : msg);
+      const body = err?.error || {};
+      if (status === 429) {
+        this.error.set(`Too many attempts. Try again in ${body.retryAfterSec || 60} seconds.`);
+      } else if (status === 401 && body.totpRequired) {
+        this.error.set('Valid credentials, but 2FA code is required.');
+      } else if (status === 401) {
+        this.error.set('Invalid username, password, or 2FA code');
+      } else {
+        this.error.set(body.error || err?.message || 'Login failed');
+      }
     } finally {
       this.busy.set(false);
     }

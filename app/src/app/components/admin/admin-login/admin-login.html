@@ -26,6 +26,21 @@
       />
     </label>
 
+    <label>
+      <span>2FA Code</span>
+      <input
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        maxlength="6"
+        autocomplete="one-time-code"
+        [ngModel]="totpCode()"
+        (ngModelChange)="totpCode.set($event)"
+        name="totp"
+        placeholder="6-digit code"
+      />
+    </label>
+
     @if (error()) {
       <div class="error">{{ error() }}</div>
     }

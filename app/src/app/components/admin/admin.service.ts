@@ -47,9 +47,9 @@ export class AdminService {
     return new HttpHeaders(t ? { Authorization: `Bearer ${t}` } : {});
   }
 
-  async login(username: string, password: string): Promise<void> {
+  async login(username: string, password: string, totp?: string): Promise<void> {
     const resp = await this.http
-      .post<LoginResponse>('/api/admin/login', { username, password })
+      .post<LoginResponse>('/api/admin/login', { username, password, totp: totp || undefined })
       .toPromise();
     if (!resp?.token) throw new Error('Login response missing token');
     localStorage.setItem(TOKEN_KEY, resp.token);

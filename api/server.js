@@ -13,13 +13,16 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { dbEnabled, ensureReady, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting, recordChangelogEntry, getChangelogHistory, refreshUexShopPrices } from './db.js';
-import { authConfigured, verifyCredentials, issueToken, requireAdmin } from './auth.js';
+import { authConfigured, totpConfigured, verifyCredentials, verifyTotp, generateTotpSetup, issueToken, requireAdmin, checkRateLimit, recordFailedAttempt, clearRateLimit } from './auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Trust proxy headers (DigitalOcean load balancer sets X-Forwarded-For)
+app.set('trust proxy', 1);
 
 // CORS — allow the frontend (DO static site + GitHub Pages + localhost dev)
 app.use(cors({
@@ -79,23 +82,57 @@ const loginHandler = (req, res) => {
   if (!authConfigured) {
     return res.status(503).json({ error: 'Admin auth not configured on server' });
   }
-  const { username, password } = req.body || {};
+
+  // Rate limit check
+  const ip = req.ip || 'unknown';
+  const rl = checkRateLimit(ip);
+  if (!rl.allowed) {
+    return res.status(429).json({
+      error: `Too many login attempts. Try again in ${rl.retryAfterSec} seconds.`,
+      retryAfterSec: rl.retryAfterSec,
+    });
+  }
+
+  const { username, password, totp } = req.body || {};
   if (!username || !password) {
     return res.status(400).json({ error: 'username and password required' });
   }
   if (!verifyCredentials(username, password)) {
+    recordFailedAttempt(ip);
     return res.status(401).json({ error: 'Invalid credentials' });
   }
+  if (!verifyTotp(totp)) {
+    recordFailedAttempt(ip);
+    return res.status(401).json({ error: 'Invalid or missing 2FA code', totpRequired: true });
+  }
+
+  clearRateLimit(ip);
   const token = issueToken(username);
-  res.json({ token, username, role: 'admin' });
+  res.json({ token, username, role: 'admin', totpEnabled: totpConfigured });
+};
+
+// TOTP setup — generates a secret and provisioning URI for scanning with
+// an authenticator app. Only works when TOTP is not yet configured.
+const totpSetupHandler = (req, res) => {
+  if (totpConfigured) {
+    return res.status(400).json({ error: 'TOTP is already configured. To reconfigure, remove TOTP_SECRET env var and restart.' });
+  }
+  const setup = generateTotpSetup();
+  res.json({
+    secret: setup.secret,
+    uri: setup.uri,
+    instructions: 'Scan the URI as a QR code in your authenticator app, then set TOTP_SECRET=' + setup.secret + ' in your server environment variables and restart.',
+  });
 };
 
 const meHandler = (req, res) => {
-  res.json({ ok: true, username: req.admin.sub, role: req.admin.role });
+  res.json({ ok: true, username: req.admin.sub, role: req.admin.role, totpEnabled: totpConfigured });
 };
 
 app.post('/admin/login', loginHandler);
 app.post('/api/admin/login', loginHandler);
+app.get('/admin/totp/setup', requireAdmin, totpSetupHandler);
+app.get('/api/admin/totp/setup', requireAdmin, totpSetupHandler);
 app.get('/admin/me', requireAdmin, meHandler);
 app.get('/api/admin/me', requireAdmin, meHandler);
 
