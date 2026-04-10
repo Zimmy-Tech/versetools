@@ -5747,16 +5747,6 @@ def main(mode: str = "live"):
 
     item_list = list(items.values())
 
-    # ── Baseline diff & merge ────────────────────────────────────────────────
-    # Compare scrape against saved baseline. Auto-accept stat changes,
-    # prompt for structural changes (hardpoint add/remove, ship add/remove).
-    from versedb_baseline_diff import run_baseline_update
-    ship_list, item_list = run_baseline_update(
-        ship_list, item_list, GAME_VERSION,
-        mining_locations=mining_locations.get("locations", []),
-        mining_elements=mining_locations.get("elements", []),
-    )
-
     def count_type(t):
         return sum(1 for i in item_list if i.get("type") == t)
 
@@ -5938,8 +5928,8 @@ def main(mode: str = "live"):
             new_version = output["meta"]["version"]
 
             if prev_version != new_version:
-                prev_ships = {s["className"]: s for s in prev.get("ships", []) if not s.get("_stale")}
-                new_ships = {s["className"]: s for s in ship_list if not s.get("_stale")}
+                prev_ships = {s["className"]: s for s in prev.get("ships", [])}
+                new_ships = {s["className"]: s for s in ship_list}
                 prev_items = {i["className"]: i for i in prev.get("items", [])}
                 new_items = {i["className"]: i for i in item_list}
 
@@ -5993,7 +5983,7 @@ def main(mode: str = "live"):
         except Exception as e:
             print(f"\n[CHANGELOG] Error generating changelog: {e}")
     else:
-        print(f"\n[CHANGELOG] No previous data found, baseline established")
+        print(f"\n[CHANGELOG] No previous extraction found, changelog generation skipped")
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
