@@ -531,6 +531,18 @@ export async function migrateExtractShopPrices() {
 // initSchema must run on every startup, not just when ships is missing,
 // because schema.sql also defines newer tables (shop_prices) and indexes
 // that existing installs would otherwise never receive. The whole file
+// Add reported_ir_value column to cooling_observations if it doesn't exist.
+async function migrateCoolingIrColumn() {
+  if (!pool) return;
+  const { rows } = await pool.query(`
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'versedb' AND table_name = 'cooling_observations' AND column_name = 'reported_ir_value'
+  `);
+  if (rows.length > 0) return;
+  await pool.query(`ALTER TABLE versedb.cooling_observations ADD COLUMN reported_ir_value REAL`);
+  console.log('[db] added reported_ir_value to cooling_observations');
+}
+
 // uses CREATE TABLE / INDEX IF NOT EXISTS so re-running it on a populated
 // database is a no-op for everything that already exists.
 export async function ensureReady() {
@@ -539,6 +551,7 @@ export async function ensureReady() {
   await migrateAddModeColumn();
   await importIfEmpty();
   await migrateExtractShopPrices();
+  await migrateCoolingIrColumn();
 }
 
 /** Coerce arbitrary input into a valid mode value. */

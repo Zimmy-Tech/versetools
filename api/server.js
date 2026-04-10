@@ -1174,7 +1174,7 @@ app.get('/api/admin/cooling-observations', requireAdmin, listCoolingObsHandler);
 const createCoolingObsHandler = async (req, res) => {
   if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
   const { shipClassName, shipName, buildVersion, pipAllocation, reportedCoolingPct,
-          predictedCoolingPct, loadoutNote, notes } = req.body || {};
+          predictedCoolingPct, reportedIrValue, loadoutNote, notes } = req.body || {};
   if (!shipClassName || !buildVersion || reportedCoolingPct == null) {
     return res.status(400).json({ error: 'shipClassName, buildVersion, and reportedCoolingPct are required' });
   }
@@ -1182,12 +1182,13 @@ const createCoolingObsHandler = async (req, res) => {
     const { rows } = await pool.query(
       `INSERT INTO versedb.cooling_observations
        (ship_class_name, ship_name, build_version, pip_allocation,
-        reported_cooling_pct, predicted_cooling_pct, loadout_note, notes, submitter)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'admin')
+        reported_cooling_pct, predicted_cooling_pct, reported_ir_value, loadout_note, notes, submitter)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'admin')
        RETURNING id`,
       [shipClassName, shipName || null, buildVersion,
        pipAllocation ? JSON.stringify(pipAllocation) : null,
        reportedCoolingPct, predictedCoolingPct || null,
+       reportedIrValue != null ? reportedIrValue : null,
        loadoutNote || null, notes || null]
     );
     res.json({ id: rows[0].id, ok: true });

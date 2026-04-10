@@ -25,6 +25,7 @@ export class CoolingObservationsComponent {
   selectedShip = signal<Ship | null>(null);
   buildVersion = signal('4.0.2');
   reportedCoolingPct = signal<number | null>(null);
+  reportedIrValue = signal<number | null>(null);
   loadoutNote = signal('');
   notes = signal('');
   submitting = signal(false);
@@ -116,12 +117,14 @@ export class CoolingObservationsComponent {
         buildVersion: this.buildVersion(),
         pipAllocation: Object.keys(pipAllocation).length ? pipAllocation : undefined,
         reportedCoolingPct: this.reportedCoolingPct()!,
+        reportedIrValue: this.reportedIrValue() ?? undefined,
         loadoutNote: this.loadoutNote() || undefined,
         notes: this.notes() || undefined,
       });
       this.submitResult.set(`Saved observation for ${ship.name}`);
       // Reset form
       this.reportedCoolingPct.set(null);
+      this.reportedIrValue.set(null);
       this.loadoutNote.set('');
       this.notes.set('');
       this.pipValues.set({});

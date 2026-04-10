@@ -228,6 +228,7 @@
 .obs-ship      { flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .obs-build     { width: 60px; flex-shrink: 0; }
 .obs-reported  { width: 70px; flex-shrink: 0; text-align: right; color: #9fdfff; }
+.obs-ir        { width: 60px; flex-shrink: 0; text-align: right; color: #ffb87a; }
 .obs-predicted { width: 70px; flex-shrink: 0; text-align: right; color: rgba(255, 255, 255, 0.5); }
 .obs-residual  { width: 70px; flex-shrink: 0; text-align: right; color: #e8c86a; }
 .obs-date      { width: 140px; flex-shrink: 0; font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }

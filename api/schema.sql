@@ -209,6 +209,7 @@ CREATE TABLE IF NOT EXISTS cooling_observations (
   build_version        TEXT NOT NULL,                 -- SC build version (e.g. '4.0.2')
   pip_allocation       JSONB,                         -- {slotId: pipCount} snapshot
   reported_cooling_pct INTEGER NOT NULL,              -- in-game gauge reading (0-100+)
+  reported_ir_value    REAL,                          -- in-game IR signature reading
   predicted_cooling_pct INTEGER,                      -- what our formula predicts (computed on insert)
   loadout_note         TEXT,                          -- "swapped coolers to XYZ" etc.
   notes                TEXT,                          -- general observations

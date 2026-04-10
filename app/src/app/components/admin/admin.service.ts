@@ -390,6 +390,8 @@ export interface CoolingObservation {
   pipAllocation?: Record<string, number | string>;
   reported_cooling_pct: number;
   reportedCoolingPct?: number;
+  reported_ir_value: number | null;
+  reportedIrValue?: number;
   predicted_cooling_pct: number | null;
   predictedCoolingPct?: number;
   loadout_note: string | null;
