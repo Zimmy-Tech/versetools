@@ -47,13 +47,19 @@
             </ul>
             <p>Instead of 80ms between shots, you get 100ms. That's <strong>600 RPM instead of 750</strong>.</p>
             <h4>Which Weapons Are Affected?</h4>
-            <p><strong>Repeaters</strong> (multi-barrel cycling weapons) are affected. <strong>Gatlings</strong> and <strong>cannons</strong> use a different firing mechanism and are not affected &mdash; their listed rates are accurate.</p>
+            <p>Any weapon that fires from a <strong>cycling sequence</strong> of 2 or more shots is affected. This includes obvious repeaters <em>and</em> some weapons labeled "Cannon" in-game that are actually 2-entry sequences under the hood (like Lightstrike Cannons).</p>
+            <p>Not affected: <strong>Gatlings</strong> (continuous spin) and <strong>true single-shot cannons</strong> (1-entry sequences like M-Series). Their listed rates are accurate.</p>
+            <p class="real-dps-note" style="margin-top: 8px;"><strong>Rule of thumb:</strong> if the listed RPM doesn't divide evenly into 1800, the weapon is probably a sequence weapon being quantized down.</p>
+            <h4>Why Some RPMs Land Cleanly</h4>
+            <p>A weapon at 100 RPM, 225 RPM, 300 RPM, 450 RPM, 600 RPM, 900 RPM, or 1800 RPM lands exactly on a tick boundary &mdash; no loss. A weapon at 240 RPM, 350 RPM, 500 RPM, 750 RPM, or 825 RPM does <em>not</em>, and gets rounded down to the next clean value.</p>
             <h4>The Formula</h4>
             <p class="real-dps-formula">Real RPM = 1800 / ceil(1800 / Listed RPM)</p>
+            <p>Example: Lightstrike Cannon listed at 240 RPM. 1800 / 240 = 7.5 &rarr; rounds up to 8 ticks per shot &rarr; 1800 / 8 = <strong>225 RPM</strong> (a 6.3% loss).</p>
             <h4>Tested &amp; Validated</h4>
             <table class="real-dps-table">
               <thead><tr><th>Weapon</th><th>Listed</th><th>Predicted</th><th>Measured</th></tr></thead>
               <tbody>
+                <tr><td>Lightstrike</td><td>240</td><td>225</td><td>~224</td></tr>
                 <tr><td>Attrition-4</td><td>350</td><td>300</td><td>299</td></tr>
                 <tr><td>NDB-28</td><td>500</td><td>450</td><td>446</td></tr>
                 <tr><td>Panther</td><td>750</td><td>600</td><td>595</td></tr>
