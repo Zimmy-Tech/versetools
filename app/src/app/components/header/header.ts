@@ -170,6 +170,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.hamburgerOpen.set(false);
   }
 
+  /** Logo click — navigate to loadout page. If already there, reset the
+   *  loadout state to its initial fresh-load condition (Gladius + defaults). */
+  onLogoClick(): void {
+    if (this.isOnLoadout()) {
+      const gladius = this.data.ships().find(s => s.className === 'aegs_gladius');
+      if (gladius) this.data.selectShip(gladius);
+    } else {
+      this.navigateTo('loadout');
+    }
+  }
+
   @HostListener('document:click', ['$event'])
   onDocClick(e: MouseEvent): void {
     const target = e.target as HTMLElement;

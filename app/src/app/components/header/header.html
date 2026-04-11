@@ -1,5 +1,5 @@
 <header [class.mobile-header]="isMobile()">
-  <div class="logo" (click)="navigateTo('loadout')">Verse<span>Tools</span></div>
+  <div class="logo" (click)="onLogoClick()" title="Reset to fresh loadout">Verse<span>Tools</span></div>
 
   <!-- Mobile hamburger (narrow viewport) -->
   @if (isMobile()) {
