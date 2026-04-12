@@ -7,8 +7,7 @@
   </div>
 
   <!-- Rankings Panel -->
-  @if (activePanel() === 'rankings') {
-    <div class="panel panel-rankings">
+  <div class="panel panel-rankings" [class.panel-hidden]="activePanel() !== 'rankings'">
       <div class="filter-bar">
         <div class="sort-buttons">
           <span class="filter-label">ROT</span>
@@ -65,35 +64,34 @@
           </div>
         }
       </div>
-    </div>
-  }
+  </div>
 
   <!-- Flight Profile Panel (10-axis) -->
-  @if (activePanel() === 'acceleration') {
-    <div class="panel panel-radar">
+  <div class="panel panel-radar" [class.panel-hidden]="activePanel() !== 'acceleration'">
       <div class="radar-box">
         <div class="radar-title-row">
           <div class="radar-title">FLIGHT PROFILE</div>
           <div class="profile-legend">
             <span class="legend-item"><span class="legend-line legend-solid"></span> Normal</span>
             <span class="legend-item"><span class="legend-line legend-dashed"></span> Boosted</span>
+            <span class="legend-item"><span class="legend-line legend-ghost"></span> Fleet Avg</span>
           </div>
         </div>
         <div class="radar-pickers">
           @for (slot of accelSlots(); track $index) {
             <div class="picker-row">
               <div class="picker-color" [style.background]="slotColors[$index]"></div>
-              <select class="picker-select" [value]="slot?.className ?? ''"
+              <select class="picker-select"
                       (change)="setAccelSlot($index, $any($event.target).value)">
-                <option value="">— select ship —</option>
+                <option value="" [selected]="!slot">— select ship —</option>
                 @for (s of shipsWithAccel(); track s.className) {
-                  <option [value]="s.className">{{ s.name }}</option>
+                  <option [value]="s.className" [selected]="slot?.className === s.className">{{ s.name }}</option>
                 }
               </select>
             </div>
           }
         </div>
-        <div class="profile-note"><span class="note-purple">Purple</span> values at each axis indicate fleet maximum</div>
+        <div class="profile-note"><span class="note-purple">Purple</span> values at each axis indicate boosted fleet maximums (outer ring)</div>
         <div class="radar-and-stats">
           <div class="radar-wrap">
             <svg viewBox="-20 -20 440 440" class="radar-svg">
@@ -103,26 +101,41 @@
               @for (spoke of profileSpokes; track $index) {
                 <line [attr.x1]="200" [attr.y1]="200" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
               }
-              @for (poly of profileBoostedPolygons(); track $index) {
-                @if (poly) {
-                  <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
-                           fill="none" class="radar-line radar-line-dashed" />
-                  @for (v of poly.vertices; track $index) {
-                    <circle [attr.cx]="v.x" [attr.cy]="v.y" r="2"
-                            fill="none" [attr.stroke]="poly.color"
-                            class="radar-dot-hollow" />
-                  }
+              <!-- Fleet average (ghost) -->
+              @if (fleetAvgBoosted(); as ghost) {
+                <polygon [attr.points]="ghost.points" stroke="#888"
+                         fill="none" class="radar-line radar-line-dashed radar-ghost" />
+              }
+              @if (fleetAvgNormal(); as ghost) {
+                <polygon [attr.points]="ghost.points" stroke="#888"
+                         fill="none" class="radar-line radar-ghost" />
+              }
+              <!-- Boosted (dashed) layer -->
+              @for (i of [0, 1, 2]; track i) {
+                @if (profileBoostedPolygons()[i]; as poly) {
+                  <g>
+                    <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
+                             fill="none" class="radar-line radar-line-dashed" />
+                    @for (v of poly.vertices; track $index) {
+                      <circle [attr.cx]="v.x" [attr.cy]="v.y" r="2"
+                              fill="none" [attr.stroke]="poly.color"
+                              class="radar-dot-hollow" />
+                    }
+                  </g>
                 }
               }
-              @for (poly of profilePolygons(); track $index) {
-                @if (poly) {
-                  <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
-                           fill="none" class="radar-line" />
-                  @for (v of poly.vertices; track $index) {
-                    <circle [attr.cx]="v.x" [attr.cy]="v.y" r="3"
-                            [attr.fill]="poly.color" [attr.stroke]="poly.color"
-                            class="radar-dot" />
-                  }
+              <!-- Normal (solid) layer -->
+              @for (i of [0, 1, 2]; track i) {
+                @if (profilePolygons()[i]; as poly) {
+                  <g>
+                    <polygon [attr.points]="poly.points" [attr.stroke]="poly.color"
+                             fill="none" class="radar-line" />
+                    @for (v of poly.vertices; track $index) {
+                      <circle [attr.cx]="v.x" [attr.cy]="v.y" r="3"
+                              [attr.fill]="poly.color" [attr.stroke]="poly.color"
+                              class="radar-dot" />
+                    }
+                  </g>
                 }
               }
               @for (lbl of profileAxisLabels; track $index) {
@@ -155,7 +168,6 @@
           </div>
         </div>
       </div>
-    </div>
-  }
+  </div>
 
 </div>

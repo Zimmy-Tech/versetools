@@ -48,8 +48,8 @@ export class RankingsViewComponent {
       const accelShips = this.shipsWithAccel();
       if (accelShips.length === 0) return;
       this.slotsInitialized = true;
-      const slots: (Ship | null)[] = [accelShips[0] ?? null, accelShips[1] ?? null, accelShips[2] ?? null];
-      this.accelSlots.set(slots);
+      const find = (name: string) => accelShips.find(s => s.name.includes(name)) ?? null;
+      this.accelSlots.set([find('Gladius'), find('Hawk'), find('Arrow')]);
     });
   }
 
@@ -191,7 +191,7 @@ export class RankingsViewComponent {
 
   /** Formatted max-value labels positioned at each spoke tip. */
   profileMaxLabels = computed(() => {
-    const maxVals = this.profileGlobalMax();
+    const maxVals = this.profileGlobalMaxBoosted();
     return this.profileSpokes.map((spoke, i) => {
       const val = maxVals[i];
       const text = `${this.fmtVal(val)} ${this.profileUnits[i]}`;
@@ -205,16 +205,19 @@ export class RankingsViewComponent {
     });
   });
 
-  /** Global max across ALL ships (both normal and boosted) for percentile normalization. */
+  /** Global max per axis — normal and boosted computed independently. */
   profileGlobalMax = computed(() => {
     const allShips = this.data.ships();
-    return this.profileFields.map((f, i) => {
-      const bf = this.profileFieldsBoosted[i];
-      return Math.max(
-        ...allShips.map(s => Math.max((s as any)[f] ?? 0, (s as any)[bf] ?? 0)),
-        1
-      );
-    });
+    return this.profileFields.map(f =>
+      Math.max(...allShips.map(s => (s as any)[f] ?? 0), 1)
+    );
+  });
+
+  profileGlobalMaxBoosted = computed(() => {
+    const allShips = this.data.ships();
+    return this.profileFieldsBoosted.map(f =>
+      Math.max(...allShips.map(s => (s as any)[f] ?? 0), 1)
+    );
   });
 
   private buildProfilePoly(fields: (keyof Ship)[], maxVals: number[], ship: Ship, color: string) {
@@ -225,21 +228,42 @@ export class RankingsViewComponent {
     return { points, color, values, vertices, pcts };
   }
 
-  /** Normal (solid) lines. */
+  /** Normal (solid) lines — scaled against boosted max so they sit inside the dashed lines. */
   profilePolygons = computed(() => {
-    const maxVals = this.profileGlobalMax();
+    const maxVals = this.profileGlobalMaxBoosted();
     return this.accelSlots().map((ship, i) =>
       ship ? this.buildProfilePoly(this.profileFields, maxVals, ship, SLOT_COLORS[i]) : null
     );
   });
 
-  /** Boosted (dashed) lines. */
+  /** Boosted (dashed) lines — same scale, fills to outer ring. */
   profileBoostedPolygons = computed(() => {
-    const maxVals = this.profileGlobalMax();
+    const maxVals = this.profileGlobalMaxBoosted();
     return this.accelSlots().map((ship, i) =>
       ship ? this.buildProfilePoly(this.profileFieldsBoosted, maxVals, ship, SLOT_COLORS[i]) : null
     );
   });
+
+  // ── Fleet average (ghost) ───────────────────────────────
+
+  private buildAvgPoly(fields: (keyof Ship)[], maxVals: number[], color: string) {
+    const allShips = this.shipsWithAccel();
+    if (allShips.length === 0) return null;
+    const n = allShips.length;
+    const values = fields.map(f => allShips.reduce((sum, s) => sum + ((s as any)[f] ?? 0), 0) / n);
+    const pcts = values.map((v, j) => maxVals[j] > 0 ? v / maxVals[j] : 0);
+    const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, p)));
+    const points = vertices.map(p => `${p.x},${p.y}`).join(' ');
+    return { points, color, values, vertices, pcts };
+  }
+
+  fleetAvgNormal = computed(() =>
+    this.buildAvgPoly(this.profileFields, this.profileGlobalMaxBoosted(), '#888')
+  );
+
+  fleetAvgBoosted = computed(() =>
+    this.buildAvgPoly(this.profileFieldsBoosted, this.profileGlobalMaxBoosted(), '#888')
+  );
 
   // ── Ship pickers ───────────────────────────────────────
 
