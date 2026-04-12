@@ -18,9 +18,9 @@ interface RankedShip {
 interface RadarPoint { x: number; y: number; }
 
 const SLOT_COLORS = ['#00c8ff', '#4aff7a', '#ffaa4a'];
-const CX = 150, CY = 150, R = 110;
+const CX = 200, CY = 200, R = 160;
 
-type PanelMode = 'rankings' | 'rotation' | 'acceleration';
+type PanelMode = 'rankings' | 'acceleration';
 
 @Component({
   selector: 'app-rankings-view',
@@ -35,12 +35,9 @@ export class RankingsViewComponent {
   sizeFilter = signal('');
   searchQuery = signal('');
   listBoosted = signal(false);
-  rotBoosted = signal(false);
   accelBoosted = signal(false);
   readonly slotColors = SLOT_COLORS;
 
-  // Radar ship pickers (3 slots each)
-  rotSlots = signal<(Ship | null)[]>([null, null, null]);
   accelSlots = signal<(Ship | null)[]>([null, null, null]);
 
   private slotsInitialized = false;
@@ -48,29 +45,15 @@ export class RankingsViewComponent {
   constructor(public data: DataService) {
     effect(() => {
       if (this.slotsInitialized) return;
-      const rotShips = this.shipsWithRotation();
       const accelShips = this.shipsWithAccel();
-      if (rotShips.length === 0 && accelShips.length === 0) return;
+      if (accelShips.length === 0) return;
       this.slotsInitialized = true;
-      if (rotShips.length > 0) {
-        const slots: (Ship | null)[] = [rotShips[0] ?? null, rotShips[1] ?? null, rotShips[2] ?? null];
-        this.rotSlots.set(slots);
-      }
-      if (accelShips.length > 0) {
-        const slots: (Ship | null)[] = [accelShips[0] ?? null, accelShips[1] ?? null, accelShips[2] ?? null];
-        this.accelSlots.set(slots);
-      }
+      const slots: (Ship | null)[] = [accelShips[0] ?? null, accelShips[1] ?? null, accelShips[2] ?? null];
+      this.accelSlots.set(slots);
     });
   }
 
   readonly sizeOptions = ['', 'Small', 'Medium', 'Large', 'Capital'];
-
-  /** Ships that have rotation data, sorted by name. */
-  shipsWithRotation = computed(() =>
-    this.data.ships()
-      .filter(s => (s.pitch ?? 0) > 0)
-      .sort((a, b) => a.name.localeCompare(b.name))
-  );
 
   /** Ships that have acceleration data, sorted by name. */
   shipsWithAccel = computed(() =>
@@ -174,68 +157,75 @@ export class RankingsViewComponent {
     }).join(' ');
   }
 
-  // ── Rotation radar ─────────────────────────────────────
+  // ── Flight profile radar (10-axis clock-face layout) ───
+  //
+  // Clock positions:  12=Fwd  1=Retro  2=Up  4=Down
+  //   5=Left  6=Right  7=Pitch  8=Yaw  10=Roll  11=SCM
 
-  private readonly rotAxes = ['Pitch', 'Yaw', 'Roll'];
-  private readonly rotFields: (keyof Ship)[] = ['pitch', 'yaw', 'roll'];
-  private readonly rotFieldsBoosted: (keyof Ship)[] = ['pitchBoosted', 'yawBoosted', 'rollBoosted'];
+  private readonly profileAngles = Array.from({ length: 10 }, (_, i) => (2 * Math.PI * i / 10) - Math.PI / 2);
+  private readonly profileLabels10 = ['Fwd', 'Retro', 'Up', 'Down', 'Left', 'Right', 'Pitch', 'Yaw', 'Roll', 'SCM'];
+  private readonly profileFields: (keyof Ship)[] =
+    ['accelFwd', 'accelRetro', 'accelUp', 'accelDown', 'accelStrafe', 'accelStrafe', 'pitch', 'yaw', 'roll', 'scmSpeed'];
+  private readonly profileFieldsBoosted: (keyof Ship)[] =
+    ['accelAbFwd', 'accelAbRetro', 'accelAbUp', 'accelAbDown', 'accelAbStrafe', 'accelAbStrafe', 'pitchBoosted', 'yawBoosted', 'rollBoosted', 'scmSpeed'];
 
-  rotGrid   = this.buildGrid(3);
-  rotSpokes = this.buildSpokes(3);
-  rotLabels = this.buildLabels(this.rotAxes, 3);
+  private profilePoint(axisIdx: number, norm: number): RadarPoint {
+    const a = this.profileAngles[axisIdx];
+    return { x: CX + Math.cos(a) * R * norm, y: CY + Math.sin(a) * R * norm };
+  }
 
-  private rotActiveFields = computed(() => this.rotBoosted() ? this.rotFieldsBoosted : this.rotFields);
-
-  rotMaxValues = computed(() => {
-    const fields = this.rotActiveFields();
-    const ships = this.rotSlots().filter(Boolean) as Ship[];
-    return fields.map(f => Math.max(...ships.map(s => (s as any)[f] ?? 0), 1));
+  profileGrid = [0.25, 0.5, 0.75, 1.0].map(frac => {
+    const pts = this.profileAngles.map((_, i) => this.profilePoint(i, frac));
+    return pts.map(p => `${p.x},${p.y}`).join(' ');
   });
 
-  rotPolygons = computed(() => {
-    const fields = this.rotActiveFields();
-    const maxVals = this.rotMaxValues();
-    return this.rotSlots().map((ship, i) => {
-      if (!ship) return null;
-      const values = fields.map(f => (ship as any)[f] ?? 0);
-      return { points: this.buildPolygon(values, maxVals), color: SLOT_COLORS[i], values };
-    });
+  profileSpokes = this.profileAngles.map((_, i) => this.profilePoint(i, 1));
+
+  profileAxisLabels = this.profileLabels10.map((name, i) => {
+    const p = this.profilePoint(i, 1.22);
+    const anchor = p.x < CX - 5 ? 'end' : p.x > CX + 5 ? 'start' : 'middle';
+    return { x: p.x, y: p.y, text: name, anchor };
   });
 
-  // ── Acceleration radar ─────────────────────────────────
-
-  private readonly accelAxes = ['Fwd', 'Retro', 'Strafe', 'Up', 'Down'];
-  private readonly accelFields: (keyof Ship)[] = ['accelFwd', 'accelRetro', 'accelStrafe', 'accelUp', 'accelDown'];
-  private readonly accelFieldsBoosted: (keyof Ship)[] = ['accelAbFwd', 'accelAbRetro', 'accelAbStrafe', 'accelAbUp', 'accelAbDown'];
-
-  accelGrid   = this.buildGrid(5);
-  accelSpokes = this.buildSpokes(5);
-  accelLabels = this.buildLabels(this.accelAxes, 5);
-
-  private accelActiveFields = computed(() => this.accelBoosted() ? this.accelFieldsBoosted : this.accelFields);
-
-  accelMaxValues = computed(() => {
-    const fields = this.accelActiveFields();
+  /** Max values across both normal and boosted for consistent scale. */
+  profileMaxValues = computed(() => {
     const ships = this.accelSlots().filter(Boolean) as Ship[];
-    return fields.map(f => Math.max(...ships.map(s => (s as any)[f] ?? 0), 1));
+    return this.profileFields.map((f, i) => {
+      const bf = this.profileFieldsBoosted[i];
+      return Math.max(
+        ...ships.map(s => Math.max((s as any)[f] ?? 0, (s as any)[bf] ?? 0)),
+        1
+      );
+    });
   });
 
-  accelPolygons = computed(() => {
-    const fields = this.accelActiveFields();
-    const maxVals = this.accelMaxValues();
-    return this.accelSlots().map((ship, i) => {
-      if (!ship) return null;
-      const values = fields.map(f => (ship as any)[f] ?? 0);
-      return { points: this.buildPolygon(values, maxVals), color: SLOT_COLORS[i], values };
+  private buildProfilePoly(fields: (keyof Ship)[], maxVals: number[], ship: Ship, color: string) {
+    const values = fields.map(f => (ship as any)[f] ?? 0);
+    const vertices = values.map((v, j) => {
+      const norm = maxVals[j] > 0 ? Math.max(0.06, v / maxVals[j]) : 0.06;
+      return this.profilePoint(j, norm);
     });
+    const points = vertices.map(p => `${p.x},${p.y}`).join(' ');
+    return { points, color, values, vertices };
+  }
+
+  /** Normal (solid) lines. */
+  profilePolygons = computed(() => {
+    const maxVals = this.profileMaxValues();
+    return this.accelSlots().map((ship, i) =>
+      ship ? this.buildProfilePoly(this.profileFields, maxVals, ship, SLOT_COLORS[i]) : null
+    );
+  });
+
+  /** Boosted (dashed) lines. */
+  profileBoostedPolygons = computed(() => {
+    const maxVals = this.profileMaxValues();
+    return this.accelSlots().map((ship, i) =>
+      ship ? this.buildProfilePoly(this.profileFieldsBoosted, maxVals, ship, SLOT_COLORS[i]) : null
+    );
   });
 
   // ── Ship pickers ───────────────────────────────────────
-
-  setRotSlot(index: number, className: string): void {
-    const ship = this.data.ships().find(s => s.className === className) ?? null;
-    this.rotSlots.update(s => { const n = [...s]; n[index] = ship; return n; });
-  }
 
   setAccelSlot(index: number, className: string): void {
     const ship = this.data.ships().find(s => s.className === className) ?? null;
