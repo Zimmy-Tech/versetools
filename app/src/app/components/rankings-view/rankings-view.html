@@ -93,6 +93,7 @@
             </div>
           }
         </div>
+        <div class="profile-note"><span class="note-purple">Purple</span> values at each axis indicate fleet maximum</div>
         <div class="radar-and-stats">
           <div class="radar-wrap">
             <svg viewBox="-20 -20 440 440" class="radar-svg">
@@ -127,6 +128,8 @@
               @for (lbl of profileAxisLabels; track $index) {
                 <text [attr.x]="lbl.x" [attr.y]="lbl.y" [attr.text-anchor]="lbl.anchor"
                       dominant-baseline="central" class="radar-label">{{ lbl.text }}</text>
+                <text [attr.x]="lbl.x" [attr.y]="lbl.y + 12" [attr.text-anchor]="lbl.anchor"
+                      dominant-baseline="central" class="radar-max-label">{{ profileMaxLabels()[$index].text }}</text>
               }
             </svg>
           </div>
@@ -144,7 +147,7 @@
                     <div class="jane-spec"><span class="jane-spec-k">Pitch</span><span class="jane-spec-v">{{ fmtVal(slot.pitch ?? 0) }} <span class="boost-val">{{ fmtVal(slot.pitchBoosted ?? 0) }}</span> °/s</span></div>
                     <div class="jane-spec"><span class="jane-spec-k">Yaw</span><span class="jane-spec-v">{{ fmtVal(slot.yaw ?? 0) }} <span class="boost-val">{{ fmtVal(slot.yawBoosted ?? 0) }}</span> °/s</span></div>
                     <div class="jane-spec"><span class="jane-spec-k">Roll</span><span class="jane-spec-v">{{ fmtVal(slot.roll ?? 0) }} <span class="boost-val">{{ fmtVal(slot.rollBoosted ?? 0) }}</span> °/s</span></div>
-                    <div class="jane-spec"><span class="jane-spec-k">SCM</span><span class="jane-spec-v">{{ fmtVal(slot.scmSpeed ?? 0) }} m/s</span></div>
+                    <div class="jane-spec"><span class="jane-spec-k">SCM</span><span class="jane-spec-v">{{ fmtVal(slot.scmSpeed ?? 0) }} <span class="boost-val">{{ fmtVal(slot.boostSpeedFwd ?? 0) }}</span> m/s</span></div>
                   </div>
                 </div>
               }

@@ -361,6 +361,19 @@
   fill: var(--text2); text-transform: uppercase; letter-spacing: 1px;
 }
 
+.radar-max-label {
+  font-family: 'Share Tech Mono', monospace; font-size: 8px;
+  fill: #b380ff;
+}
+
+.profile-note {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 8px;
+  .note-purple { color: #b380ff; font-weight: 700; }
+}
+
 // ── Ship stats cards ────────────────────────────────────
 
 .ship-stats-card {

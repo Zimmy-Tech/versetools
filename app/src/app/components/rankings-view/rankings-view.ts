@@ -167,7 +167,7 @@ export class RankingsViewComponent {
   private readonly profileFields: (keyof Ship)[] =
     ['accelFwd', 'accelRetro', 'accelUp', 'accelDown', 'accelStrafe', 'accelStrafe', 'pitch', 'yaw', 'roll', 'scmSpeed'];
   private readonly profileFieldsBoosted: (keyof Ship)[] =
-    ['accelAbFwd', 'accelAbRetro', 'accelAbUp', 'accelAbDown', 'accelAbStrafe', 'accelAbStrafe', 'pitchBoosted', 'yawBoosted', 'rollBoosted', 'scmSpeed'];
+    ['accelAbFwd', 'accelAbRetro', 'accelAbUp', 'accelAbDown', 'accelAbStrafe', 'accelAbStrafe', 'pitchBoosted', 'yawBoosted', 'rollBoosted', 'boostSpeedFwd'];
 
   private profilePoint(axisIdx: number, norm: number): RadarPoint {
     const a = this.profileAngles[axisIdx];
@@ -187,13 +187,31 @@ export class RankingsViewComponent {
     return { x: p.x, y: p.y, text: name, anchor };
   });
 
-  /** Max values across both normal and boosted for consistent scale. */
-  profileMaxValues = computed(() => {
-    const ships = this.accelSlots().filter(Boolean) as Ship[];
+  private readonly profileUnits = ['G', 'G', 'G', 'G', 'G', 'G', '°/s', '°/s', '°/s', 'm/s'];
+
+  /** Formatted max-value labels positioned at each spoke tip. */
+  profileMaxLabels = computed(() => {
+    const maxVals = this.profileGlobalMax();
+    return this.profileSpokes.map((spoke, i) => {
+      const val = maxVals[i];
+      const text = `${this.fmtVal(val)} ${this.profileUnits[i]}`;
+      const anchor = spoke.x < CX - 5 ? 'end' : spoke.x > CX + 5 ? 'start' : 'middle';
+      // Nudge outward slightly from the spoke endpoint
+      const a = this.profileAngles[i];
+      const nudge = 8;
+      const x = spoke.x + Math.cos(a) * nudge;
+      const y = spoke.y + Math.sin(a) * nudge;
+      return { x, y, text, anchor };
+    });
+  });
+
+  /** Global max across ALL ships (both normal and boosted) for percentile normalization. */
+  profileGlobalMax = computed(() => {
+    const allShips = this.data.ships();
     return this.profileFields.map((f, i) => {
       const bf = this.profileFieldsBoosted[i];
       return Math.max(
-        ...ships.map(s => Math.max((s as any)[f] ?? 0, (s as any)[bf] ?? 0)),
+        ...allShips.map(s => Math.max((s as any)[f] ?? 0, (s as any)[bf] ?? 0)),
         1
       );
     });
@@ -201,17 +219,15 @@ export class RankingsViewComponent {
 
   private buildProfilePoly(fields: (keyof Ship)[], maxVals: number[], ship: Ship, color: string) {
     const values = fields.map(f => (ship as any)[f] ?? 0);
-    const vertices = values.map((v, j) => {
-      const norm = maxVals[j] > 0 ? Math.max(0.06, v / maxVals[j]) : 0.06;
-      return this.profilePoint(j, norm);
-    });
+    const pcts = values.map((v, j) => maxVals[j] > 0 ? v / maxVals[j] : 0);
+    const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, p)));
     const points = vertices.map(p => `${p.x},${p.y}`).join(' ');
-    return { points, color, values, vertices };
+    return { points, color, values, vertices, pcts };
   }
 
   /** Normal (solid) lines. */
   profilePolygons = computed(() => {
-    const maxVals = this.profileMaxValues();
+    const maxVals = this.profileGlobalMax();
     return this.accelSlots().map((ship, i) =>
       ship ? this.buildProfilePoly(this.profileFields, maxVals, ship, SLOT_COLORS[i]) : null
     );
@@ -219,7 +235,7 @@ export class RankingsViewComponent {
 
   /** Boosted (dashed) lines. */
   profileBoostedPolygons = computed(() => {
-    const maxVals = this.profileMaxValues();
+    const maxVals = this.profileGlobalMax();
     return this.accelSlots().map((ship, i) =>
       ship ? this.buildProfilePoly(this.profileFieldsBoosted, maxVals, ship, SLOT_COLORS[i]) : null
     );
