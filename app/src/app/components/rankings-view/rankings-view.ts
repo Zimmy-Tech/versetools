@@ -246,24 +246,27 @@ export class RankingsViewComponent {
 
   // ── Fleet average (ghost) ───────────────────────────────
 
-  private buildAvgPoly(fields: (keyof Ship)[], maxVals: number[], color: string) {
-    const allShips = this.shipsWithAccel();
-    if (allShips.length === 0) return null;
-    const n = allShips.length;
-    const values = fields.map(f => allShips.reduce((sum, s) => sum + ((s as any)[f] ?? 0), 0) / n);
+  private buildAvgPoly(fields: (keyof Ship)[], maxVals: number[], ships: Ship[], color: string) {
+    if (ships.length === 0) return null;
+    const n = ships.length;
+    const values = fields.map(f => ships.reduce((sum, s) => sum + ((s as any)[f] ?? 0), 0) / n);
     const pcts = values.map((v, j) => maxVals[j] > 0 ? v / maxVals[j] : 0);
     const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, p)));
     const points = vertices.map(p => `${p.x},${p.y}`).join(' ');
     return { points, color, values, vertices, pcts };
   }
 
-  fleetAvgNormal = computed(() =>
-    this.buildAvgPoly(this.profileFields, this.profileGlobalMaxBoosted(), '#888')
-  );
+  fleetAvgNormal = computed(() => {
+    const ships = this.shipsWithAccel();
+    const maxVals = this.profileGlobalMaxBoosted();
+    return this.buildAvgPoly(this.profileFields, maxVals, ships, '#888');
+  });
 
-  fleetAvgBoosted = computed(() =>
-    this.buildAvgPoly(this.profileFieldsBoosted, this.profileGlobalMaxBoosted(), '#888')
-  );
+  fleetAvgBoosted = computed(() => {
+    const ships = this.shipsWithAccel();
+    const maxVals = this.profileGlobalMaxBoosted();
+    return this.buildAvgPoly(this.profileFieldsBoosted, maxVals, ships, '#888');
+  });
 
   // ── Ship pickers ───────────────────────────────────────
 
