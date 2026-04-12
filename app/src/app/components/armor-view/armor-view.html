@@ -141,51 +141,53 @@
         </span>
       </div>
 
-      @for (row of nearbyShips(); track row.ship.className) {
-        <div class="arc-row">
-          <span class="arcr-name">
-            {{ row.ship.name }}
-            @if (shipSizeLabel(row.ship.size); as sl) { <span class="arcr-class">{{ sl }}</span> }
-          </span>
-          <span class="arcr-deflect">{{ row.deflect }}</span>
-          <span class="arcr-status" [class.pen]="row.armorPenetrates" [class.def]="!row.armorPenetrates">
-            @if (row.armorPenetrates) {
-              <svg viewBox="0 0 24 24" fill="none">
-                <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            } @else {
-              <svg viewBox="0 0 24 24" fill="none">
-                <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            }
-          </span>
-          <span class="arcr-status" [class.pen]="row.shieldPenetrates" [class.def]="!row.shieldPenetrates">
-            @if (row.shieldPenetrates) {
-              <svg viewBox="0 0 24 24" fill="none">
-                <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            } @else {
-              <svg viewBox="0 0 24 24" fill="none">
-                <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            }
-          </span>
-        </div>
-      }
+      <div class="arc-rows">
+        @for (row of nearbyShips(); track row.ship.className) {
+          <div class="arc-row">
+            <span class="arcr-name">
+              {{ row.ship.name }}
+              @if (shipSizeLabel(row.ship.size); as sl) { <span class="arcr-class">{{ sl }}</span> }
+            </span>
+            <span class="arcr-deflect">{{ row.deflect }}</span>
+            <span class="arcr-status" [class.pen]="row.armorPenetrates" [class.def]="!row.armorPenetrates">
+              @if (row.armorPenetrates) {
+                <svg viewBox="0 0 24 24" fill="none">
+                  <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none">
+                  <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              }
+            </span>
+            <span class="arcr-status" [class.pen]="row.shieldPenetrates" [class.def]="!row.shieldPenetrates">
+              @if (row.shieldPenetrates) {
+                <svg viewBox="0 0 24 24" fill="none">
+                  <line x1="2" y1="12" x2="8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="16" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 3 V21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M6 15 L12 21 L18 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none">
+                  <line x1="2" y1="18" x2="22" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 5 L12 18 L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 7 L19 5 L19 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              }
+            </span>
+          </div>
+        }
 
-      @if (nearbyShips().length === 0) {
-        <div class="arc-empty">No ships match the current filter</div>
-      }
+        @if (nearbyShips().length === 0) {
+          <div class="arc-empty">No ships match the current filter</div>
+        }
+      </div>
     </div>
 
 

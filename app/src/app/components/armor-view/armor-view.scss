@@ -514,6 +514,16 @@ $accent-safe: #4adfd2;   // deflect   — cyan-teal
   }
 }
 
+.arc-rows {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+}
+
 .arc-row {
   display: grid;
   grid-template-columns: 1fr 80px 44px 44px;
