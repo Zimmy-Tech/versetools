@@ -249,7 +249,7 @@ export class RankingsViewComponent {
   private buildAvgPoly(fields: (keyof Ship)[], maxVals: number[], ships: Ship[], color: string) {
     if (ships.length === 0) return null;
     const n = ships.length;
-    const values = fields.map(f => ships.reduce((sum, s) => sum + ((s as any)[f] || 0), 0) / n);
+    const values = fields.map(f => ships.reduce((sum, s) => sum + (Number((s as any)[f]) || 0), 0) / n);
     const pcts = values.map((v, j) => maxVals[j] > 0 ? v / maxVals[j] : 0);
     const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, p)));
     const points = vertices.map(p => `${p.x},${p.y}`).join(' ');
