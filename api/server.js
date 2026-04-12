@@ -1062,17 +1062,19 @@ const approveAccelHandler = async (req, res) => {
     }
 
     // Build the patch from the submission's accel fields
+    // Postgres NUMERIC columns arrive as strings in node-pg — coerce to numbers.
+    const num = (v) => { const n = Number(v); return Number.isFinite(n) ? n : null; };
     const patch = {
-      accelFwd: sub.accel_fwd,
-      accelAbFwd: sub.accel_ab_fwd,
-      accelRetro: sub.accel_retro,
-      accelAbRetro: sub.accel_ab_retro,
-      accelStrafe: sub.accel_strafe,
-      accelAbStrafe: sub.accel_ab_strafe,
-      accelUp: sub.accel_up,
-      accelAbUp: sub.accel_ab_up,
-      accelDown: sub.accel_down,
-      accelAbDown: sub.accel_ab_down,
+      accelFwd: num(sub.accel_fwd),
+      accelAbFwd: num(sub.accel_ab_fwd),
+      accelRetro: num(sub.accel_retro),
+      accelAbRetro: num(sub.accel_ab_retro),
+      accelStrafe: num(sub.accel_strafe),
+      accelAbStrafe: num(sub.accel_ab_strafe),
+      accelUp: num(sub.accel_up),
+      accelAbUp: num(sub.accel_ab_up),
+      accelDown: num(sub.accel_down),
+      accelAbDown: num(sub.accel_ab_down),
       accelTestedDate: (sub.submitted_at instanceof Date ? sub.submitted_at : new Date(sub.submitted_at))
         .toISOString().slice(0, 10),
       accelCheckedBy: sub.submitter_name,
