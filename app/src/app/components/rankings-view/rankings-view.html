@@ -102,14 +102,10 @@
                 <line [attr.x1]="200" [attr.y1]="200" [attr.x2]="spoke.x" [attr.y2]="spoke.y" class="radar-spoke" />
               }
               <!-- Fleet average (ghost) -->
-              @if (fleetAvgBoosted(); as ghost) {
-                <polygon [attr.points]="ghost.points" stroke="#888"
-                         fill="none" class="radar-line radar-line-dashed radar-ghost" />
-              }
-              @if (fleetAvgNormal(); as ghost) {
-                <polygon [attr.points]="ghost.points" stroke="#888"
-                         fill="none" class="radar-line radar-ghost" />
-              }
+              <polygon [attr.points]="fleetAvgBoosted()?.points ?? ''" stroke="#888"
+                       fill="none" class="radar-line radar-line-dashed radar-ghost" />
+              <polygon [attr.points]="fleetAvgNormal()?.points ?? ''" stroke="#888"
+                       fill="none" class="radar-line radar-ghost" />
               <!-- Boosted (dashed) layer -->
               @for (i of [0, 1, 2]; track i) {
                 @if (profileBoostedPolygons()[i]; as poly) {
