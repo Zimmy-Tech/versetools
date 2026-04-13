@@ -843,14 +843,22 @@ def extract_fps_weapons():
         # which therefore can't be parsed without resolving the DCB record
         # table. Keep this list as small as possible — every entry here is
         # data we can't diff or correct via the admin panel.
+        # Forced fire rate overrides — these replace whatever the extractor
+        # parsed, because the raw value is misleading (e.g. single-shot
+        # weapons whose real cycle time is dominated by reload animation).
+        OVERRIDE_RATES = {
+            "none_special_ballistic_01": 37,     # Boomtube - single-shot rocket, 1.5s
+                                                 #   unstow reload + fire = ~1.62s cycle
+                                                 #   = 37 effective RPM
+        }
+        if class_name in OVERRIDE_RATES:
+            fire_rate_rpm = OVERRIDE_RATES[class_name]
+
         FALLBACK_RATES = {
             "volt_shotgun_energy_01": 120,       # Prism - action params not inlined
             "ksar_sniper_ballistic_01": 40,      # Scalpel - bolt-action, multi-step
                                                  #   Seconds sequence; no single value
                                                  #   meaningfully represents the cycle
-            "none_special_ballistic_01": 37,     # Boomtube - single-shot rocket, 1.5s
-                                                 #   unstow reload + fire = ~1.62s cycle
-                                                 #   = 37 effective RPM
         }
         # Beam weapons — continuous DPS, not RPM-based
         BEAM_WEAPONS = {
