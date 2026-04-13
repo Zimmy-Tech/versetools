@@ -73,18 +73,18 @@
         "Single"
       ],
       "magazineSize": 6,
-      "projectileSpeed": 0,
-      "range": 0,
+      "projectileSpeed": 50.0,
+      "range": 200.0,
       "damage": {
-        "physical": 3.0,
-        "energy": 0.0,
-        "distortion": 0.0,
-        "thermal": 0.0,
-        "biochemical": 0.0,
-        "stun": 0.0
+        "physical": 15.5,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
       },
-      "alphaDamage": 3.0,
-      "dps": 3.0,
+      "alphaDamage": 15.5,
+      "dps": 15.5,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,

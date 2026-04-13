@@ -287,8 +287,16 @@ def build_ammo_index(ammo_dir: Path) -> dict:
     return index
 
 
+AMMO_ALIASES = {
+    "behr_glauncher_ballistic_01": "behr_glauncher_ballistic_ammo_01_40mm",
+}
+
 def find_ammo_for_weapon(weapon_class: str, ammo_index: dict) -> dict | None:
     """Find matching ammo entry for a weapon className."""
+    # Manual alias
+    if weapon_class in AMMO_ALIASES:
+        return ammo_index.get(AMMO_ALIASES[weapon_class])
+
     # Direct match: {weapon_class}_ammo_*
     for key, val in ammo_index.items():
         if key.startswith(weapon_class + "_ammo"):
@@ -789,6 +797,7 @@ def extract_fps_weapons():
             "none_rifle_multi_01": {"physical": 11.0, "energy": 9.5, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
             "apar_special_ballistic_01": {"physical": 6000.0, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},  # Scourge: 20 base × 300 charge mult
             "none_special_ballistic_01": {"physical": 1000.0, "energy": 0, "distortion": 0, "thermal": 500.0, "biochemical": 0, "stun": 0},  # Boomtube: explosion DamageInfo[0191]
+            "behr_glauncher_ballistic_01": {"physical": 15.5, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},  # GP-33: explosion damage, in-game tested
         }
         # Anti-ship weapons (vs anti-personnel)
         ANTI_SHIP = {"apar_special_ballistic_01", "apar_special_ballistic_02", "none_special_ballistic_01"}

@@ -62,6 +62,14 @@ interface LoadoutStats {
   roll: number;
   // Weapon velocity
   avgProjectileSpeed: number;
+  // Industrial
+  miningLaserCount: number;
+  miningMinPower: number;
+  miningMaxPower: number;
+  miningOptimalRange: number;
+  miningMaxRange: number;
+  salvageHeadCount: number;
+  cargoCapacity: number;
 }
 
 @Component({
@@ -174,6 +182,14 @@ export class LoadoutCompareComponent {
       // Quantum
       { label: 'QT Speed', values: cols.map(c => c.qtSpeed), unit: ' m/s', invert: false, section: 'Quantum' },
       { label: 'QT Range', values: cols.map(c => c.qtRange), unit: ' Gm', invert: false },
+      // Industrial
+      { label: 'Mining Lasers', values: cols.map(c => c.miningLaserCount), unit: '', invert: false, section: 'Industrial' },
+      { label: 'Mining Min Power', values: cols.map(c => c.miningMinPower), unit: '', invert: false },
+      { label: 'Mining Max Power', values: cols.map(c => c.miningMaxPower), unit: '', invert: false },
+      { label: 'Mining Opt Range', values: cols.map(c => c.miningOptimalRange), unit: ' m', invert: false },
+      { label: 'Mining Max Range', values: cols.map(c => c.miningMaxRange), unit: ' m', invert: false },
+      { label: 'Salvage Heads', values: cols.map(c => c.salvageHeadCount), unit: '', invert: false },
+      { label: 'Cargo', values: cols.map(c => c.cargoCapacity), unit: ' SCU', invert: false },
     ];
 
     // Add crew DPS row only if any column has crew weapons
@@ -223,6 +239,9 @@ export class LoadoutCompareComponent {
     let qtSpeed = 0, qtRange = 0;
     let resistPhysSum = 0, resistEnrgSum = 0, resistDistSum = 0;
     let velocitySum = 0, velocityCount = 0;
+    let miningLaserCount = 0, miningMinPower = 0, miningMaxPower = 0;
+    let miningOptimalRange = 0, miningMaxRange = 0;
+    let salvageHeadCount = 0;
 
     for (const [slotId, item] of entries) {
       const isGun = item.type === 'WeaponGun' || item.type === 'WeaponTachyon';
@@ -282,6 +301,18 @@ export class LoadoutCompareComponent {
         qtSpeed = item.speed ?? 0;
         qtRange = item.range ?? 0;
       }
+
+      if (item.type === 'WeaponMining') {
+        miningLaserCount++;
+        miningMinPower += item.miningMinPower ?? 0;
+        miningMaxPower += item.miningMaxPower ?? 0;
+        miningOptimalRange = Math.max(miningOptimalRange, item.optimalRange ?? 0);
+        miningMaxRange = Math.max(miningMaxRange, item.maxRange ?? 0);
+      }
+
+      if (item.type === 'SalvageHead') {
+        salvageHeadCount++;
+      }
     }
 
     return {
@@ -311,6 +342,13 @@ export class LoadoutCompareComponent {
       yaw: ship.yaw ?? 0,
       roll: ship.roll ?? 0,
       avgProjectileSpeed: velocityCount > 0 ? Math.round(velocitySum / velocityCount) : 0,
+      miningLaserCount,
+      miningMinPower: Math.round(miningMinPower),
+      miningMaxPower: Math.round(miningMaxPower),
+      miningOptimalRange: Math.round(miningOptimalRange),
+      miningMaxRange: Math.round(miningMaxRange),
+      salvageHeadCount,
+      cargoCapacity: ship.cargoCapacity ?? 0,
     };
   }
 
