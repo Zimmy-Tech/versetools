@@ -845,10 +845,10 @@ export class DataService {
         newAlloc[hpId] = 0;
       }
     }
-    // Phase 2: distribute remaining as extras up to each shield's max
+    // Phase 2: distribute remaining as extras up to each shield's max (powerMax - 1)
     for (const { hpId, item } of slots) {
       if (newAlloc[hpId] === 0 || remaining <= 0) continue;
-      const pMax = item.powerMax ?? 0;
+      const pMax = Math.max(1, (item.powerMax ?? 0) - 1);
       const extra = Math.min(remaining, pMax - newAlloc[hpId]);
       if (extra > 0) {
         newAlloc[hpId] += extra;

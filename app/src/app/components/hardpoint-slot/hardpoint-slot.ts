@@ -518,6 +518,20 @@ export class HardpointSlotComponent {
         rows.push({ label: 'Resist Enrg', value: p(item.resistEnrgMax) + ' / ' + p(item.resistEnrgMin), cls: 'enrg' });
         rows.push({ label: 'Resist Dist', value: p(item.resistDistMax) + ' / ' + p(item.resistDistMin), cls: 'dist' });
       }
+      if ((item.absPhysMax ?? 0) !== 0 || (item.absEnrgMax ?? 0) !== 0) {
+        rows.push({ label: '', value: '', divider: true });
+        rows.push({ label: 'Absorb Phys', value: p(item.absPhysMax) + ' / ' + p(item.absPhysMin), cls: 'phys' });
+        rows.push({ label: 'Absorb Enrg', value: p(item.absEnrgMax) + ' / ' + p(item.absEnrgMin), cls: 'enrg' });
+        rows.push({ label: 'Absorb Dist', value: p(item.absDistMax) + ' / ' + p(item.absDistMin), cls: 'dist' });
+      }
+      if (item.componentHp || item.distortionMax || item.emMax) {
+        rows.push({ label: '', value: '', divider: true });
+        if (item.componentHp) rows.push({ label: 'Comp HP', value: f(item.componentHp)! });
+        if (item.distortionMax) rows.push({ label: 'Dist Max', value: f(item.distortionMax)! });
+        if (item.distortionDecayDelay) rows.push({ label: 'Dist Delay', value: f(item.distortionDecayDelay, 1) + 's' });
+        if (item.distortionDecayRate) rows.push({ label: 'Dist Decay', value: f(item.distortionDecayRate) + '/s' });
+        if (item.emMax) rows.push({ label: 'EM', value: f(item.emMax)! });
+      }
     } else if (item.type === 'PowerPlant') {
       if (item.powerOutput) rows.push({ label: 'Output', value: item.powerOutput + ' seg' });
       if (item.emMax) rows.push({ label: 'EM', value: f(item.emMax)! });

@@ -405,7 +405,9 @@ export class DpsPanelComponent {
     return physHullBleed > 0 ? Math.round(physDeflect / physHullBleed * 10) / 10 : null;
   });
 
-  // Shield resists/absorption at current power pip allocation (averaged across primary shields)
+  // Shield resists/absorption at current power pip allocation (averaged across primary shields).
+  // Resist scales with pips. Absorb is constant at max whenever the shield is powered on
+  // (validated via in-game deflect testing: Mantis vs Gladius at all pip levels).
   shieldResists = computed(() => {
     const entries = this.primaryShieldEntries();
     const alloc = this.data.powerAlloc();
@@ -422,9 +424,10 @@ export class DpsPanelComponent {
       resistPhys += (item.resistPhysMin ?? 0) + ((item.resistPhysMax ?? 0) - (item.resistPhysMin ?? 0)) * t;
       resistEnrg += (item.resistEnrgMin ?? 0) + ((item.resistEnrgMax ?? 0) - (item.resistEnrgMin ?? 0)) * t;
       resistDist += (item.resistDistMin ?? 0) + ((item.resistDistMax ?? 0) - (item.resistDistMin ?? 0)) * t;
-      absPhys += (item.absPhysMin ?? 0) + ((item.absPhysMax ?? 0) - (item.absPhysMin ?? 0)) * t;
-      absEnrg += (item.absEnrgMin ?? 0) + ((item.absEnrgMax ?? 0) - (item.absEnrgMin ?? 0)) * t;
-      absDist += (item.absDistMin ?? 0) + ((item.absDistMax ?? 0) - (item.absDistMin ?? 0)) * t;
+      // Absorb is always at max when shield is powered on
+      absPhys += pips > 0 ? (item.absPhysMax ?? 0) : 0;
+      absEnrg += pips > 0 ? (item.absEnrgMax ?? 0) : 0;
+      absDist += pips > 0 ? (item.absDistMax ?? 0) : 0;
     }
 
     const n = entries.length;
