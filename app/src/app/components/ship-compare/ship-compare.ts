@@ -82,7 +82,6 @@ export class ShipCompareComponent {
     ['Crew Weapons',      s => this.countHardpoints(s, 'crew').toString(),    v => parseInt(v) || 0, true],
     ['Missiles',          s => this.countHardpoints(s, 'missile').toString(), v => parseInt(v) || 0, true],
     ['Shields',           s => this.countHardpoints(s, 'shield').toString(),  v => parseInt(v) || 0, true],
-    ['Total Hardpoints',  s => this.countHardpoints(s, 'all').toString(),     v => parseInt(v) || 0, true],
   ];
 
   private hullRows: RowDef[] = [
@@ -246,14 +245,29 @@ export class ShipCompareComponent {
   }
 
   private countHardpoints(ship: Ship, category: string): number {
-    const hps = ship.hardpoints;
     const dl = ship.defaultLoadout ?? {};
+    const items = this.data.itemMap();
+    const turretBaseIds = new Set(ship.hardpoints.filter(h => h.type === 'TurretBase').map(h => h.id));
+
+    let pilotWeapons = 0, crewWeapons = 0, missiles = 0, shields = 0;
+    for (const [key, cls] of Object.entries(dl)) {
+      const item = items.get((cls as string).toLowerCase());
+      if (!item) continue;
+      if (item.type === 'WeaponGun' || item.type === 'WeaponTachyon') {
+        const topHp = key.split('.')[0];
+        if (turretBaseIds.has(topHp)) crewWeapons++;
+        else pilotWeapons++;
+      }
+      if (item.type === 'MissileLauncher') missiles++;
+      if (item.type === 'Shield') shields++;
+    }
+
     switch (category) {
-      case 'pilot': return hps.filter(h => h.type === 'WeaponGun' || (h.type === 'Turret' && !h.id.includes('crew'))).length;
-      case 'crew': return hps.filter(h => h.type === 'Turret' && h.id.includes('crew')).length;
-      case 'missile': return hps.filter(h => h.type === 'MissileLauncher').length;
-      case 'shield': return hps.filter(h => h.type === 'Shield').length;
-      case 'all': return hps.filter(h => !['FlightController', 'LifeSupportGenerator'].includes(h.type)).length;
+      case 'pilot': return pilotWeapons;
+      case 'crew': return crewWeapons;
+      case 'missile': return missiles;
+      case 'shield': return shields;
+      case 'all': return pilotWeapons + crewWeapons + missiles + shields;
       default: return 0;
     }
   }

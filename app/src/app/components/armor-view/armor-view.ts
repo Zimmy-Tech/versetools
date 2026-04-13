@@ -58,7 +58,7 @@ export class ArmorViewComponent {
 
   weapons = computed(() =>
     this.data.items()
-      .filter(i => i.type === 'WeaponGun' && i.damage && (i.damage[this.dmgType()] ?? 0) >= 1 && !i.name.includes('PLACEHOLDER'))
+      .filter(i => i.type === 'WeaponGun' && i.damage && (i.damage[this.dmgType()] ?? 0) >= 1 && !i.name.includes('PLACEHOLDER') && !i.className.startsWith('rpod_'))
       .sort((a, b) => (a.size ?? 0) - (b.size ?? 0) || (a.damage![this.dmgType()] ?? 0) - (b.damage![this.dmgType()] ?? 0))
   );
 

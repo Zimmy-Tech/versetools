@@ -1032,6 +1032,7 @@ export class DataService {
     'brra_lasercannon_ap_automatedturret', // Automated turret placeholder
     // Ship-locked weapons
     'krig_ballisticgatling_s2',        // Tigerstrike T-19P (Merlin-only)
+    'rpod_s1_fski_3x_s3',             // Yebira I (ship-locked rocket pod)
     'rpod_s2_fski_6x_s3',             // Yebira II (ship-locked rocket pod)
     'behr_ballisticgatling_hornet_bespoke', // TMSB-5 Gatling (Hornet ball turret only)
     // Internal shield variants

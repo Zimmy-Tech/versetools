@@ -85,7 +85,7 @@ export class RankingsViewComponent {
     const ships = this.data.ships().filter(s => {
       const val = (s as any)[field];
       if (val == null || val <= 0) return false;
-      if (size && s.size !== size) return false;
+      if (size && s.size?.toLowerCase() !== size.toLowerCase()) return false;
       if (search && !s.name.toLowerCase().includes(search) &&
           !s.manufacturer.toLowerCase().includes(search)) return false;
       return true;
