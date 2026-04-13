@@ -948,13 +948,16 @@
     <div class="focus-overlay" (click)="hullTreeOpen.set(false)"></div>
     <div class="hull-tree-panel">
       <div class="hull-tree-header">
-        <span class="hull-tree-title">{{ ship.name }} — Structure</span>
+        <div class="hull-tree-header-left">
+          <span class="hull-tree-title">{{ ship.name }}</span>
+          <span class="hull-tree-subtitle">STRUCTURE BREAKDOWN</span>
+        </div>
         <span class="hull-tree-close" (click)="hullTreeOpen.set(false)">&#x2715;</span>
       </div>
 
       <!-- Legend -->
       <div class="hull-tree-legend">
-        <span class="htl-item"><span class="ht-icon vital">&#10022;</span> Vital</span>
+        <span class="htl-item vital"><span class="ht-icon vital">&#10022;</span> Vital</span>
         <span class="htl-item"><span class="ht-icon secondary">&#9900;</span> Secondary</span>
         <span class="htl-item"><span class="ht-icon breakable">&#8644;</span> Breakable</span>
         <span class="htl-item"><span class="ht-icon sub">&#8866;</span> SubPart</span>
@@ -965,10 +968,10 @@
       <div class="hull-tree-body">
         @if (getVitalPartsList(ship).length) {
           @for (entry of getVitalPartsList(ship); track entry.name) {
-            <div class="ht-row" [class]="'depth-' + entry.depth">
+            <div class="ht-row" [class]="'depth-' + entry.depth + ' ' + entry.category">
               <span class="ht-icon" [class]="entry.category">{{ entry.icon }}</span>
               <span class="ht-name">{{ entry.name }}</span>
-              <span class="ht-hp">{{ entry.hp.toLocaleString() }} HP</span>
+              <span class="ht-hp">{{ entry.hp.toLocaleString() }}</span>
             </div>
           }
         }
