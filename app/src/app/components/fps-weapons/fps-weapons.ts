@@ -13,6 +13,7 @@ interface FpsWeapon {
   fireModes: string[];
   magazineSize: number;
   projectileSpeed: number;
+  range: number;
   damage: { physical: number; energy: number; distortion: number; thermal: number; biochemical: number; stun: number };
   alphaDamage: number;
   dps: number;

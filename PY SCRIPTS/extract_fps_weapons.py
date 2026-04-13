@@ -910,6 +910,7 @@ def extract_fps_weapons():
             "fireModes": fire_mode_names,
             "magazineSize": magazine_size,
             "projectileSpeed": projectile_speed,
+            "range": round(projectile_speed * ammo_lifetime, 0) if projectile_speed and ammo_lifetime else 0,
             "damage": damage,
             "alphaDamage": alpha_damage,
             "dps": dps,

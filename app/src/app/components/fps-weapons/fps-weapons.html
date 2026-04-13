@@ -42,11 +42,12 @@
             <th class="sortable" (click)="toggleSort('fireRate')">RPM{{ sortIndicator('fireRate') }}</th>
             <th class="sortable" (click)="toggleSort('magazineSize')">Mag{{ sortIndicator('magazineSize') }}</th>
             <th>Speed</th>
+            <th>Range</th>
             <th>Dmg Type</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="section-header"><td colspan="11">Anti-Personnel</td></tr>
+          <tr class="section-header"><td colspan="12">Anti-Personnel</td></tr>
           @for (w of antiPersonnel(); track w.className) {
             <tr>
               <td class="col-name">{{ w.name }}</td>
@@ -59,11 +60,12 @@
               <td class="col-num">{{ fmtRpm(w) }}</td>
               <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
               <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
+              <td class="col-num">{{ w.range ? w.range + 'm' : '\u2014' }}</td>
               <td>{{ dmgType(w) }}</td>
             </tr>
           }
           @if (antiShip().length) {
-            <tr class="section-header"><td colspan="11">Anti-Ship</td></tr>
+            <tr class="section-header"><td colspan="12">Anti-Ship</td></tr>
             @for (w of antiShip(); track w.className) {
               <tr>
                 <td class="col-name">{{ w.name }}</td>

@@ -16,6 +16,7 @@
       "fireModes": [],
       "magazineSize": 0,
       "projectileSpeed": 0,
+      "range": 0,
       "damage": {
         "physical": 0,
         "energy": 0,
@@ -42,6 +43,7 @@
       "fireModes": [],
       "magazineSize": 5,
       "projectileSpeed": 50.0,
+      "range": 200.0,
       "damage": {
         "physical": 6000.0,
         "energy": 0,
@@ -70,6 +72,7 @@
       ],
       "magazineSize": 6,
       "projectileSpeed": 0,
+      "range": 0,
       "damage": {
         "physical": 3.0,
         "energy": 0.0,
@@ -98,6 +101,7 @@
       ],
       "magazineSize": 75,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 14.5,
         "energy": 0.0,
@@ -129,6 +133,7 @@
       ],
       "magazineSize": 20,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 22.5,
         "energy": 0.0,
@@ -161,6 +166,7 @@
       ],
       "magazineSize": 40,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 12.0,
         "energy": 0.0,
@@ -192,6 +198,7 @@
       ],
       "magazineSize": 15,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 18.0,
         "energy": 0.0,
@@ -221,6 +228,7 @@
       ],
       "magazineSize": 45,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 13.75,
         "energy": 0.0,
@@ -252,6 +260,7 @@
       ],
       "magazineSize": 12,
       "projectileSpeed": 225.0,
+      "range": 450.0,
       "damage": {
         "physical": 88.0,
         "energy": 0.0,
@@ -280,6 +289,7 @@
       ],
       "magazineSize": 8,
       "projectileSpeed": 725.0,
+      "range": 1450.0,
       "damage": {
         "physical": 100.0,
         "energy": 0.0,
@@ -308,6 +318,7 @@
       ],
       "magazineSize": 150,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 10.0,
         "energy": 0.0,
@@ -339,6 +350,7 @@
       ],
       "magazineSize": 25,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 13.0,
         "energy": 0.0,
@@ -370,6 +382,7 @@
       ],
       "magazineSize": 30,
       "projectileSpeed": 1200.0,
+      "range": 2400.0,
       "damage": {
         "physical": 21.5,
         "energy": 0.0,
@@ -401,6 +414,7 @@
       ],
       "magazineSize": 50,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 11.5,
         "energy": 0.0,
@@ -432,6 +446,7 @@
       ],
       "magazineSize": 18,
       "projectileSpeed": 225.0,
+      "range": 450.0,
       "damage": {
         "physical": 48.0,
         "energy": 0.0,
@@ -463,6 +478,7 @@
       ],
       "magazineSize": 15,
       "projectileSpeed": 800.0,
+      "range": 1600.0,
       "damage": {
         "physical": 42.5,
         "energy": 0.0,
@@ -489,6 +505,7 @@
       "fireModes": [],
       "magazineSize": 8,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 45.0,
         "energy": 0.0,
@@ -517,6 +534,7 @@
       ],
       "magazineSize": 6,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 60.0,
         "energy": 0.0,
@@ -548,6 +566,7 @@
       ],
       "magazineSize": 35,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 17.5,
@@ -579,6 +598,7 @@
       ],
       "magazineSize": 60,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 13.0,
@@ -608,6 +628,7 @@
       "fireModes": [],
       "magazineSize": 12,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 0.0,
         "energy": 120.0,
@@ -637,6 +658,7 @@
       "fireModes": [],
       "magazineSize": 16,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 52.0,
         "energy": 0.0,
@@ -666,6 +688,7 @@
       "fireModes": [],
       "magazineSize": 12,
       "projectileSpeed": 875.0,
+      "range": 1750.0,
       "damage": {
         "physical": 45.0,
         "energy": 0.0,
@@ -697,6 +720,7 @@
       ],
       "magazineSize": 100,
       "projectileSpeed": 600.0,
+      "range": 2400.0,
       "damage": {
         "physical": 0.0,
         "energy": 11.5,
@@ -729,6 +753,7 @@
       ],
       "magazineSize": 30,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 18.0,
@@ -761,6 +786,7 @@
       ],
       "magazineSize": 45,
       "projectileSpeed": 1200.0,
+      "range": 4800.0,
       "damage": {
         "physical": 0.0,
         "energy": 21.0,
@@ -790,6 +816,7 @@
       "fireModes": [],
       "magazineSize": 45,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 21.0,
@@ -819,6 +846,7 @@
       "fireModes": [],
       "magazineSize": 16,
       "projectileSpeed": 1000.0,
+      "range": 4000.0,
       "damage": {
         "physical": 0.0,
         "energy": 50.0,
@@ -850,6 +878,7 @@
       ],
       "magazineSize": 10,
       "projectileSpeed": 500.0,
+      "range": 1000.0,
       "damage": {
         "physical": 0.0,
         "energy": 32.5,
@@ -878,6 +907,7 @@
       ],
       "magazineSize": 8,
       "projectileSpeed": 500.0,
+      "range": 1000.0,
       "damage": {
         "physical": 0.0,
         "energy": 120.0,
@@ -906,6 +936,7 @@
       ],
       "magazineSize": 120,
       "projectileSpeed": 1050.0,
+      "range": 2100.0,
       "damage": {
         "physical": 27.0,
         "energy": 0.0,
@@ -939,6 +970,7 @@
       ],
       "magazineSize": 12,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 36.0,
         "energy": 0.0,
@@ -968,6 +1000,7 @@
       "fireModes": [],
       "magazineSize": 45,
       "projectileSpeed": 0,
+      "range": 0,
       "damage": {
         "physical": 11.0,
         "energy": 9.5,
@@ -999,6 +1032,7 @@
       ],
       "magazineSize": 60,
       "projectileSpeed": 0,
+      "range": 0,
       "damage": {
         "physical": 0.0,
         "energy": 165.0,
@@ -1028,6 +1062,7 @@
       "fireModes": [],
       "magazineSize": 8,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 72.0,
         "energy": 0.0,
@@ -1056,6 +1091,7 @@
       ],
       "magazineSize": 0,
       "projectileSpeed": 135.0,
+      "range": 2160.0,
       "damage": {
         "physical": 1000.0,
         "energy": 0,
@@ -1084,6 +1120,7 @@
       ],
       "magazineSize": 165,
       "projectileSpeed": 1100.0,
+      "range": 4400.0,
       "damage": {
         "physical": 0.0,
         "energy": 225.0,
@@ -1112,6 +1149,7 @@
       ],
       "magazineSize": 60,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 11.75,
@@ -1143,6 +1181,7 @@
       ],
       "magazineSize": 80,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 210.0,
@@ -1174,6 +1213,7 @@
       ],
       "magazineSize": 45,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 225.0,
@@ -1203,6 +1243,7 @@
       "fireModes": [],
       "magazineSize": 20,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 0.0,
         "energy": 46.0,
@@ -1232,6 +1273,7 @@
       "fireModes": [],
       "magazineSize": 22,
       "projectileSpeed": 700.0,
+      "range": 1400.0,
       "damage": {
         "physical": 0.0,
         "energy": 42.5,
