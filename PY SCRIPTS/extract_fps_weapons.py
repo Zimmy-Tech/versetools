@@ -779,6 +779,13 @@ def extract_fps_weapons():
             base = re.sub(r'_(civilian|ai)$', '', class_name)
             mag_info = mag_index.get(base)
         magazine_size = mag_info[0] if mag_info else 0
+        # Manual magazine overrides for weapons whose mag tag doesn't match
+        # the weapon class_name (e.g. tag is "..._rocket" not "...")
+        MANUAL_MAG_SIZE = {
+            "none_special_ballistic_01": 1,     # Boomtube: single rocket, tag=..._rocket
+        }
+        if magazine_size == 0 and class_name in MANUAL_MAG_SIZE:
+            magazine_size = MANUAL_MAG_SIZE[class_name]
 
         # Find ammo data
         ammo_data = find_ammo_for_weapon(class_name, ammo_index)
@@ -841,6 +848,9 @@ def extract_fps_weapons():
             "ksar_sniper_ballistic_01": 40,      # Scalpel - bolt-action, multi-step
                                                  #   Seconds sequence; no single value
                                                  #   meaningfully represents the cycle
+            "none_special_ballistic_01": 37,     # Boomtube - single-shot rocket, 1.5s
+                                                 #   unstow reload + fire = ~1.62s cycle
+                                                 #   = 37 effective RPM
         }
         # Beam weapons — continuous DPS, not RPM-based
         BEAM_WEAPONS = {

@@ -1119,12 +1119,12 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 500.0,
+      "fireRate": 37,
       "isCharged": null,
       "fireModes": [
         "Single"
       ],
-      "magazineSize": 0,
+      "magazineSize": 1,
       "projectileSpeed": 135.0,
       "range": 2160.0,
       "damage": {
@@ -1136,7 +1136,7 @@
         "stun": 0
       },
       "alphaDamage": 1500.0,
-      "dps": 12500.0,
+      "dps": 925.0,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
