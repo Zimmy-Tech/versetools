@@ -279,7 +279,7 @@ def match_enemy_pool(class_name, wave_pools):
     return None
 
 
-def parse_mission(xml_path, loc, scope_map=None):
+def parse_mission(xml_path, loc, scope_map=None, rep_req_rank_map=None):
     """Parse a single mission broker XML file."""
     try:
         root = ET.parse(xml_path).getroot()
@@ -340,6 +340,14 @@ def parse_mission(xml_path, loc, scope_map=None):
             if scope_name and scope_name not in rep_scopes:
                 rep_scopes.append(scope_name)
 
+    # Reputation rank from DCB binary (SReputationMissionRequirementsParams)
+    rep_rank = None
+    rep_req_attr = root.get("reputationRequirements", "")
+    if rep_req_rank_map and rep_req_attr:
+        req_m = re.search(r'\[([0-9A-Fa-f]+)\]', rep_req_attr)
+        if req_m:
+            rep_rank = rep_req_rank_map.get(req_m.group(1).upper())
+
     category = infer_category(str(xml_path), class_name)
 
     # Chain: mission's own GUID and required mission GUIDs
@@ -379,6 +387,10 @@ def parse_mission(xml_path, loc, scope_map=None):
         result["prison"] = True
     if rep_scopes:
         result["repScopes"] = rep_scopes
+    if rep_rank:
+        # Determine scope from repScopes if available
+        scope = rep_scopes[0] if rep_scopes else "hauling"
+        result["repRequirements"] = [{"scope": scope, "minRank": rep_rank, "maxRank": rep_rank}]
     system = infer_system(class_name)
     if system:
         result["system"] = system
@@ -565,6 +577,82 @@ def main():
     difficulty_table = build_contract_difficulty_table(DCB_FILE)
     print(f"  {len(difficulty_table)} ContractDifficulty entries loaded")
 
+    # ── DCB binary rank resolution ──────────────────────────────────────
+    # Build map: SReputationMissionRequirementsParams index → rank display name
+    # Chain: ReqParams[idx] → strong pointer → SReputationMissionGiverRequirementParams
+    #        → maxStanding GUID at byte offset 48 → standing XML displayName → localization
+    rep_req_rank_map = {}  # hex index string -> rank display name (e.g. "0606" -> "Master")
+    if DCB_FILE.exists():
+        try:
+            sys.path.insert(0, str(Path(__file__).parent))
+            from versedb_extract import _dcb_parse_header
+            with open(DCB_FILE, 'rb') as f:
+                dcb_d = f.read()
+            h = _dcb_parse_header(dcb_d)
+            _sbn = h["struct_by_name"]
+            _sd = h["struct_data"]
+            _sdefs = h["struct_defs"]
+
+            req_si = _sbn.get("SReputationMissionRequirementsParams")
+            giver_si = _sbn.get("SReputationMissionGiverRequirementParams")
+
+            if req_si is not None and giver_si is not None and req_si in _sd and giver_si in _sd:
+                import struct as _st
+                req_off, req_cnt = _sd[req_si]
+                req_rs = _sdefs[req_si][4]  # 8
+                giver_off, giver_cnt = _sd[giver_si]
+                giver_rs = _sdefs[giver_si][4]  # 64
+
+                # Calculate strong value array offset
+                _p = 4
+                _ver = _st.unpack_from("<i", dcb_d, _p)[0]; _p += 4
+                if _ver >= 6: _p += 8
+                _p += 20
+                _counts = [_st.unpack_from("<i", dcb_d, _p + i * 4)[0] for i in range(19)]; _p += 76
+                (c_bool, c_i8, c_i16, c_i32, c_i64, c_u8, c_u16, c_u32, c_u64, c_f32,
+                 c_f64, c_guid, c_str, c_loc, c_enum, c_strong, c_weak, c_ref, c_enum_opts) = _counts
+                va_strong = (h["va_f32"] - c_i8 - c_i16*2 - c_i32*4 - c_i64*8
+                             - c_u8 - c_u16*2 - c_u32*4 - c_u64*8 - c_bool
+                             + c_bool + c_i8 + c_i16*2 + c_i32*4 + c_i64*8
+                             + c_u8 + c_u16*2 + c_u32*4 + c_u64*8
+                             + c_f32*4 + c_f64*8 + c_guid*16 + c_str*4 + c_loc*4 + c_enum*4)
+
+                # Build standing GUID → display name map
+                _standing_guids = {}  # sorted_hex → display name
+                standings_dir = FORGE_DIR / "reputation" / "standings"
+                for sf in standings_dir.rglob("*.xml.xml"):
+                    try:
+                        stxt = open(sf, encoding="utf-8", errors="replace").read()
+                        sref = re.search(r'__ref="([^"]+)"', stxt)
+                        sdisp = re.search(r'displayName="@([^"]+)"', stxt)
+                        if sref and sdisp:
+                            display = loc.get(sdisp.group(1).lower(), sdisp.group(1))
+                            _standing_guids[guid_key(sref.group(1))] = display
+                    except Exception:
+                        pass
+
+                # Resolve each req entry
+                for ri in range(req_cnt):
+                    inst = req_off + ri * req_rs
+                    _, strong_idx = _st.unpack_from("<II", dcb_d, inst)
+                    if strong_idx >= c_strong:
+                        continue
+                    s_off = va_strong + strong_idx * 8
+                    s_si = _st.unpack_from("<H", dcb_d, s_off)[0]
+                    s_ii = _st.unpack_from("<I", dcb_d, s_off + 4)[0]
+                    if s_si != giver_si or s_ii >= giver_cnt:
+                        continue
+                    g_inst = giver_off + s_ii * giver_rs
+                    guid_hex = dcb_d[g_inst + 48:g_inst + 64].hex()
+                    rank = _standing_guids.get(guid_key(guid_hex))
+                    if rank:
+                        rep_req_rank_map[format(ri, "04X")] = rank
+
+                print(f"  DCB rank resolution: {len(rep_req_rank_map)} mission requirement → rank mappings")
+            del dcb_d
+        except Exception as e:
+            print(f"  WARNING: DCB rank resolution failed: {e}")
+
     # Mission givers
     print("\n[3/8] Parsing mission givers...")
     giver_dir = FORGE_DIR / "missiongiver"
@@ -745,6 +833,7 @@ def main():
                 title_m = re.search(r'param="Title"\s+value="([^"]+)"', body)
                 desc_m = re.search(r'param="Description"\s+value="([^"]+)"', body)
                 title = loc_lookup(loc, title_m.group(1)) if title_m else ""
+                title_loc_key = title_m.group(1).lstrip("@").lower() if title_m else ""
                 desc = loc_lookup(loc, desc_m.group(1)) if desc_m else ""
 
                 # Try debug-name-based localization lookup (strip suffixes like -Stanton4)
@@ -752,6 +841,9 @@ def main():
                     base_name = debug_name.split("-")[0] if "-" in debug_name else debug_name
                     for suffix in ["_title", "_title,p", "_title,P"]:
                         title = loc.get((base_name + suffix).lower(), "")
+                        if title:
+                            title_loc_key = (base_name + suffix).lower()
+                            break
                         if title:
                             break
                 if not desc:
@@ -957,6 +1049,8 @@ def main():
                     entry["missionFlow"] = flow
                 if desc:
                     entry["description"] = desc
+                if title_loc_key:
+                    entry["_titleLocKey"] = title_loc_key
                 if rep_reqs:
                     # Filter out placeholder/unresolved rep requirements
                     rep_reqs = [r for r in rep_reqs if "PLACEHOLDER" not in r.get("minRank", "") and "PLACEHOLDER" not in r.get("maxRank", "")]
@@ -997,14 +1091,14 @@ def main():
             # Build handler-level title map: for each Contract, find the nearest
             # ancestor contractParams Title (handler-level fallback)
             def _handler_title_for(contract_start):
-                """Find the nearest contractParams Title before this contract position."""
+                """Find the nearest contractParams Title before this contract position.
+                Returns (resolved_title, loc_key)."""
                 pre = txt[:contract_start]
-                # Search backwards for the last contractParams Title
                 for m in reversed(list(re.finditer(r'param="Title"\s+value="([^"]+)"', pre))):
                     resolved = loc_lookup(loc, m.group(1))
                     if resolved:
-                        return resolved
-                return ""
+                        return resolved, m.group(1).lstrip("@").lower()
+                return "", ""
 
             def _handler_desc_for(contract_start):
                 """Find the nearest contractParams Description before this contract position."""
@@ -1018,12 +1112,16 @@ def main():
             # Parse top-level Contracts
             for cm in re.finditer(r'<Contract\s([^>]+)>(.*?)</Contract>', txt, re.S):
                 # Use handler-level title as fallback, then generator-level
-                handler_title = _handler_title_for(cm.start()) or gen_title
+                handler_title, handler_title_key = _handler_title_for(cm.start())
+                handler_title = handler_title or gen_title
                 entry = parse_contract_element(cm.group(1), cm.group(2), gen_name, handler_title)
                 if entry:
+                    if handler_title_key and "_titleLocKey" not in entry:
+                        entry["_titleLocKey"] = handler_title_key
                     _apply_gen_cooldown(entry)
                     contracts.append(entry)
                     contract_title = entry["title"]
+                    contract_title_key = entry.get("_titleLocKey", handler_title_key)
 
                     # Parse nested SubContracts
                     for sm in re.finditer(r'<SubContract\s([^>]+)>(.*?)</SubContract>', cm.group(2), re.S):
@@ -1036,6 +1134,8 @@ def main():
                     for cc in re.finditer(r'<CareerContract\s([^>]+)>(.*?)</CareerContract>', cm.group(2), re.S):
                         career = parse_contract_element(cc.group(1), cc.group(2), gen_name, contract_title)
                         if career:
+                            if contract_title_key and "_titleLocKey" not in career:
+                                career["_titleLocKey"] = contract_title_key
                             contracts.append(career)
 
             # Parse top-level CareerContracts (some files have them outside Contract elements)
@@ -1045,8 +1145,11 @@ def main():
             for cc in top_career:
                 inside = any(s <= cc.start() and cc.end() <= e for s, e in contract_spans)
                 if not inside:
-                    career = parse_contract_element(cc.group(1), cc.group(2), gen_name)
+                    handler_t, handler_tk = _handler_title_for(cc.start())
+                    career = parse_contract_element(cc.group(1), cc.group(2), gen_name, handler_t or gen_title)
                     if career:
+                        if handler_tk and "_titleLocKey" not in career:
+                            career["_titleLocKey"] = handler_tk
                         contracts.append(career)
 
     # Post-process: fix titles for known contract patterns
@@ -1114,6 +1217,7 @@ def main():
                 for s in c["repScopes"]
             ]
 
+
     # Supplement: add template-spawned sub-missions that aren't standalone Contract elements.
     # These are multi-mission children whose data lives in localization but not in generator XMLs.
     _existing_classes = {c["className"].lower() for c in contracts}
@@ -1178,7 +1282,7 @@ def main():
     missions = []
     skipped = 0
     for xml_file in mission_dir.rglob("*.xml.xml"):
-        result = parse_mission(xml_file, loc, scope_map)
+        result = parse_mission(xml_file, loc, scope_map, rep_req_rank_map)
         if result:
             missions.append(result)
         else:
@@ -1197,6 +1301,18 @@ def main():
         if m.get("description") and "~mission(" in m["description"]:
             m["description"] = re.sub(r'~mission\(([^|)]+)(?:\|[^)]+)?\)', r'[\1]', m["description"])
 
+    # Normalize verbose internal token names to user-friendly equivalents
+    _TOKEN_RENAMES = {
+        "[DefendLocationWrapperLocation]": "[Location]",
+        "[DistractionKillDescription]": "",
+    }
+    for m in missions + contracts:
+        title = m.get("title", "")
+        for old, new in _TOKEN_RENAMES.items():
+            if old in title:
+                title = title.replace(old, new).strip()
+        m["title"] = title
+
     # Match enemy pools to bounty missions
     pool_count = 0
     for m in missions:
@@ -1208,14 +1324,130 @@ def main():
                 pool_count += 1
     print(f"  Matched enemy pools to {pool_count} bounty missions")
 
-    # Substitute known template variables into titles
-    for m in missions:
+    # Substitute known template variables into titles (missions AND contracts)
+    for m in missions + contracts:
         title = m.get("title", "")
         if "[Contractor]" in title and m.get("contractor"):
             title = title.replace("[Contractor]", m["contractor"])
         if "[Danger]" in title and m.get("danger"):
             title = title.replace("[Danger]", m["danger"])
+
+        # Derive CargoGradeToken from className for cargo haul missions
+        # Maps to localization: HaulCargo_CargoGrade_ExtraSmall, _Small, _Supply(=Medium), _Bulk(=Large)
+        if "[CargoGradeToken]" in title:
+            cn_l = m.get("className", "").lower()
+            if "bulkgrade" in cn_l or "_bulk_" in cn_l or "_latebulk_" in cn_l:
+                cargo_grade = "Large"
+            elif "supplygrade" in cn_l or "_supply_" in cn_l:
+                cargo_grade = "Medium"
+            elif "smallgrade" in cn_l or "_small_" in cn_l:
+                cargo_grade = "Small"
+            elif "_large_" in cn_l:
+                cargo_grade = "Large"
+            elif "_medium_" in cn_l:
+                cargo_grade = "Medium"
+            else:
+                cargo_grade = "Extra Small"
+            title = title.replace("[CargoGradeToken]", cargo_grade)
+
+        # Derive ReputationRank from repRequirements minRank
+        if "[ReputationRank]" in title:
+            reqs = m.get("repRequirements", [])
+            rank = reqs[0].get("minRank", "") if reqs else ""
+            if rank:
+                title = title.replace("[ReputationRank]", rank)
+
+        # Resolve [Title] / [title] from className-based localization lookup
+        if "[Title]" in title or "[title]" in title:
+            cn_l = m.get("className", "").lower()
+            base = re.sub(r'_stanton\d?.*$', '', cn_l)
+            for suffix in ["_title", "_title,p", "_title_01"]:
+                resolved = loc.get(cn_l + suffix, "") or loc.get(base + suffix, "")
+                if resolved and "~mission(" not in resolved:
+                    title = resolved
+                    break
+
         m["title"] = title
+
+    # ── Contractor sign-off substitution in descriptions ─────────────
+    # Replace ~mission(Contractor|SignOff) with the first sign-off text
+    # from localization for each known contractor.
+    _SIGNOFF_MAP = {}
+    for lk, lv in loc.items():
+        if "_signoff_001" in lk:
+            prefix = lk.replace("_signoff_001", "")
+            _SIGNOFF_MAP[prefix] = lv
+    signoff_fixed = 0
+    for m in missions + contracts:
+        desc = m.get("description", "")
+        if "~mission(Contractor|SignOff)" in desc or "[Contractor|SignOff]" in desc:
+            contractor = m.get("contractor", "").lower().replace(" ", "")
+            # Match contractor name to signoff key prefix
+            signoff = None
+            for prefix, text in _SIGNOFF_MAP.items():
+                if contractor and prefix in contractor or contractor in prefix:
+                    signoff = text
+                    break
+            if signoff:
+                desc = desc.replace("~mission(Contractor|SignOff)", signoff)
+                desc = desc.replace("[Contractor|SignOff]", signoff)
+                m["description"] = desc
+                signoff_fixed += 1
+    if signoff_fixed:
+        print(f"  Resolved {signoff_fixed} contractor sign-offs in descriptions")
+
+    # ── Description fallback ────────────────────────────────────────────
+    # Contracts whose description is just a template token (e.g. [Contractor],
+    # ~mission(Contractor|SignOff)) get matched to their narrative text in
+    # localization via the title key pattern: {prefix}_title → {prefix}_desc_01.
+    # Runs AFTER ~mission() cleanup and template substitution so all titles/descs
+    # are in their final [...] form.
+    _DESC_TITLE_PREFIXES = {}
+    for lk in loc:
+        if lk.endswith("_desc_01") or lk.endswith("_desc,p"):
+            base = lk.rsplit("_desc", 1)[0]
+            title_key = base + "_title"
+            if title_key in loc:
+                _DESC_TITLE_PREFIXES[title_key] = lk
+    for lk in loc:
+        if lk.endswith("_desc_01"):
+            base = lk.rsplit("_desc", 1)[0]
+            for tsuf in ["_title_01", "_title_02"]:
+                tk = base + tsuf
+                if tk in loc:
+                    _DESC_TITLE_PREFIXES[tk] = lk
+    _TITLE_TEXT_TO_DESC = {}
+    for title_key, desc_key in _DESC_TITLE_PREFIXES.items():
+        title_text = loc.get(title_key, "")
+        if title_text:
+            _TITLE_TEXT_TO_DESC[title_text.lower()] = desc_key
+
+    desc_fixed = 0
+    for c in missions + contracts:
+        desc = c.get("description", "")
+        if desc and len(desc) < 120 and re.match(r'^\s*[\[\~]', desc):
+            desc = ""
+            c.pop("description", None)
+        if not desc:
+            title_loc_key = c.get("_titleLocKey", "")
+            if title_loc_key:
+                dk = _DESC_TITLE_PREFIXES.get(title_loc_key.lower())
+                if dk:
+                    c["description"] = loc.get(dk, "")
+                    if c["description"]:
+                        desc_fixed += 1
+                        continue
+            raw_title = c.get("title", "")
+            for pattern_title, dk in _TITLE_TEXT_TO_DESC.items():
+                replaced = re.sub(r'~mission\([^)]+\)', 'PLACEHOLDER', pattern_title)
+                norm_pattern = re.escape(replaced).replace('PLACEHOLDER', '.*')
+                if re.match(norm_pattern, raw_title.lower()):
+                    c["description"] = loc.get(dk, "")
+                    if c["description"]:
+                        desc_fixed += 1
+                        break
+    if desc_fixed:
+        print(f"  Fixed {desc_fixed} missing descriptions from localization fallback")
 
     # Deduplicate: same title + category + reward = same mission (different locations)
     # Mark duplicates with "multiSystem" flag
@@ -1717,6 +1949,10 @@ def main():
         "scopeToLadder": scope_to_ladder,
         "contracts": all_entries,
     }
+
+    # Strip internal keys before writing
+    for entry in all_entries:
+        entry.pop("_titleLocKey", None)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)

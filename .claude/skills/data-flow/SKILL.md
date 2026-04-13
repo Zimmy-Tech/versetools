@@ -87,7 +87,7 @@ This updates the static fallback files on the deployed site.
 1. Open the admin panel on the production site
 2. Navigate to Diff Review
 3. Upload the new `versedb_data.json`
-4. Review the diff — accept/reject individual changes
+4. Review the diff — accept/reject individual changes. Note: harmless hardpoint reordering (same data, different array order due to CIG's XML iteration) is suppressed by `deepEqualUnordered()` in `api/server.js`, which sorts arrays by `id` before comparing. See admin-panel skill for details.
 5. Apply selected changes
 
 This is the step that actually updates what production users see (since the frontend reads from the API/database).
