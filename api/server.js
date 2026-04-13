@@ -431,6 +431,21 @@ function deepEqualUnordered(a, b) {
   if (Array.isArray(a) !== Array.isArray(b)) return false;
   if (Array.isArray(a)) {
     if (a.length !== b.length) return false;
+    // If every element has an 'id' field, compare by id-match instead of
+    // position so that harmless reordering (e.g. hardpoints) doesn't
+    // register as a change.
+    const allHaveId = a.length > 0
+      && a.every(el => el && typeof el === 'object' && 'id' in el)
+      && b.every(el => el && typeof el === 'object' && 'id' in el);
+    if (allHaveId) {
+      const sortById = (x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0);
+      const sa = [...a].sort(sortById);
+      const sb = [...b].sort(sortById);
+      for (let i = 0; i < sa.length; i++) {
+        if (!deepEqualUnordered(sa[i], sb[i])) return false;
+      }
+      return true;
+    }
     for (let i = 0; i < a.length; i++) {
       if (!deepEqualUnordered(a[i], b[i])) return false;
     }
