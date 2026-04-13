@@ -38,6 +38,7 @@
             <th>Ammo</th>
             <th>Modes</th>
             <th class="sortable" (click)="toggleSort('dps')">DPS{{ sortIndicator('dps') }}</th>
+            <th class="real-dps-header">Real DPS <button class="info-btn" (click)="showRealDpsModal.set(true)">?</button></th>
             <th class="sortable" (click)="toggleSort('alphaDamage')">Alpha{{ sortIndicator('alphaDamage') }}</th>
             <th class="sortable" (click)="toggleSort('fireRate')">RPM{{ sortIndicator('fireRate') }}</th>
             <th class="sortable" (click)="toggleSort('magazineSize')">Mag{{ sortIndicator('magazineSize') }}</th>
@@ -47,7 +48,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="section-header"><td colspan="12">Anti-Personnel</td></tr>
+          <tr class="section-header"><td colspan="13">Anti-Personnel</td></tr>
           @for (w of antiPersonnel(); track w.className) {
             <tr>
               <td class="col-name">{{ w.name }}</td>
@@ -56,6 +57,7 @@
               <td>{{ w.subType }}</td>
               <td class="col-modes">{{ w.fireModes.join(', ') || '\u2014' }}</td>
               <td class="col-num">{{ fmt(w.dps) }}</td>
+              <td class="col-num col-real-dps">@if (realDps(w); as rd) { {{ fmt(rd) }} } @else { — }</td>
               <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
               <td class="col-num">{{ fmtRpm(w) }}</td>
               <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
@@ -65,7 +67,7 @@
             </tr>
           }
           @if (antiShip().length) {
-            <tr class="section-header"><td colspan="12">Anti-Ship</td></tr>
+            <tr class="section-header"><td colspan="13">Anti-Ship</td></tr>
             @for (w of antiShip(); track w.className) {
               <tr>
                 <td class="col-name">{{ w.name }}</td>
@@ -86,5 +88,23 @@
       </table>
     </div>
 
+  }
+
+  @if (showRealDpsModal()) {
+    <div class="modal-overlay" (click)="showRealDpsModal.set(false)">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title">Real DPS — Server Tick Quantization</span>
+          <button class="modal-close" (click)="showRealDpsModal.set(false)">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Some weapons use <strong>sequence firing</strong> (multi-barrel repeaters), where each shot is scheduled on the server's 30 Hz tick clock. This quantizes the fire rate to discrete steps:</p>
+          <p class="formula">effective RPM = 1800 &divide; ceil(1800 &divide; listed RPM)</p>
+          <p>If the listed RPM doesn't land exactly on a tick boundary, the weapon fires slower than advertised. <strong>Real DPS</strong> reflects this actual in-game fire rate.</p>
+          <p><strong>Example:</strong> The Killshot Rifle lists 535 RPM, but ceil(1800/535) = 4 ticks per shot, giving an effective 450 RPM — a 15.9% DPS loss.</p>
+          <p>Weapons showing <strong>—</strong> in this column are unaffected (single-shot cannons, gatlings, or weapons that already sit on a tick boundary).</p>
+        </div>
+      </div>
+    </div>
   }
 </div>

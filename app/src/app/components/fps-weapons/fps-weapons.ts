@@ -17,6 +17,7 @@ interface FpsWeapon {
   damage: { physical: number; energy: number; distortion: number; thermal: number; biochemical: number; stun: number };
   alphaDamage: number;
   dps: number;
+  sequenceEntries?: number | null;
   category?: string;
 }
 
@@ -107,6 +108,16 @@ export class FpsWeaponsComponent {
     if (w.isCharged) return 'Charged';
     return this.fmt(w.fireRate, 0);
   }
+
+  realDps(w: FpsWeapon): number | null {
+    if (!w.sequenceEntries || w.sequenceEntries < 2 || !w.fireRate) return null;
+    const ticks = Math.ceil(1800 / w.fireRate);
+    const effRPM = 1800 / ticks;
+    if (effRPM === w.fireRate) return null;  // no loss, don't show
+    return w.alphaDamage * effRPM / 60;
+  }
+
+  showRealDpsModal = signal(false);
 
   dmgType(w: FpsWeapon): string {
     const d = w.damage;
