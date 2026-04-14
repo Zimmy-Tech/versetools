@@ -32,9 +32,25 @@ export class App implements OnInit, OnDestroy {
 
   private notifyUpdate(newVersion?: string): void {
     if (this.updateAvailable()) return;
+    // Ignore if we already have this version loaded (SW activating the same
+    // version we just reloaded into)
+    if (newVersion && this.loadedVersion === newVersion) return;
+    // For SW-triggered notifications without a version, verify against current
+    // version.json — skip if we're already on the latest
+    if (!newVersion) {
+      this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
+        .subscribe({ next: r => {
+          if (this.loadedVersion && r.v === this.loadedVersion) return;
+          const acked = localStorage.getItem('versetools_update_acked');
+          if (acked === r.v) return;
+          this.updateAvailable.set(true);
+          clearInterval(this.versionCheckInterval);
+        }, error: () => {} });
+      return;
+    }
     this.updateAvailable.set(true);
     clearInterval(this.versionCheckInterval);
-    if (newVersion) localStorage.setItem('versetools_update_acked', newVersion);
+    localStorage.setItem('versetools_update_acked', newVersion);
   }
 
   ngOnInit(): void {
