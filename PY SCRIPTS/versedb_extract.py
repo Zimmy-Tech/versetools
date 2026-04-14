@@ -506,7 +506,14 @@ def parse_vehicle_xml(xml_path, loc):
     is_ground_vehicle = vehicle_subtype == "Vehicle_GroundVehicle"
 
     # Display name from localization
-    loc_key = f"vehicle_name{class_name.lower()}"
+    # Some vehicles have classNames that don't match their localization key
+    _VEHICLE_NAME_LOC = {
+        "argo_mpuv_1t": "vehicle_nameargo_mpuv_tractor",
+        "crus_spirit_a1": "vehicle_namecrus_a1_spirit",
+        "crus_spirit_c1": "vehicle_namecrus_c1_spirit",
+        "crus_spirit_e1": "vehicle_namecrus_e1_spirit",
+    }
+    loc_key = _VEHICLE_NAME_LOC.get(class_name.lower(), f"vehicle_name{class_name.lower()}")
     display_name = loc.get(loc_key, class_name.replace("_", " "))
 
     # Mass from main animated Part
@@ -2493,6 +2500,16 @@ def resolve_role(val, loc):
 
 def _resolve_variant_name(variant_cls, loc):
     """Try multiple localization key patterns for a variant class name."""
+    # Explicit overrides for classNames that don't match localization key format
+    _NAME_OVERRIDES = {
+        "argo_mpuv_1t":    "vehicle_nameargo_mpuv_tractor",
+        "crus_spirit_a1":  "vehicle_namecrus_a1_spirit",
+        "crus_spirit_c1":  "vehicle_namecrus_c1_spirit",
+        "crus_spirit_e1":  "vehicle_namecrus_e1_spirit",
+    }
+    override_key = _NAME_OVERRIDES.get(variant_cls.lower())
+    if override_key and override_key in loc:
+        return loc[override_key]
     # Direct match: vehicle_namersi_constellation_andromeda
     key = f"vehicle_name{variant_cls}".lower()
     if key in loc:
@@ -2535,6 +2552,10 @@ def expand_ship_variants(ships, forge_dir, loc):
     expanded = {}
     variants_added = 0
 
+    # Build set of all base ship classNames (from vehicle XMLs) for dedup.
+    # If a forge entity matches an existing vehicle XML, it's its own ship, not a variant.
+    all_base_lower = {k.lower() for k in ships}
+
     for base_cls, base_ship in ships.items():
         base_lower = base_cls.lower()
         # Find all forge entity XMLs that start with this base class name
@@ -2550,6 +2571,10 @@ def expand_ship_variants(ships, forge_dir, loc):
             suffix = stem[len(base_lower):]  # e.g., "_andromeda"
             # Skip non-player variants
             if SKIP_SUFFIXES.search(suffix):
+                continue
+            # Skip if this entity already exists as its own vehicle XML
+            # (e.g., ARGO_MPUV_1T has its own XML — don't clone it from ARGO_MPUV)
+            if suffix and stem.lower() in all_base_lower:
                 continue
             player_variants.append(stem)
 
@@ -2932,6 +2957,11 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
     FORGE_ALIASES = {
         "anvl_c8_pisces":       "ANVL_Pisces",
         "krig_l22_alphawolf":   "KRIG_L22_alpha_wolf",
+    }
+
+    # Vehicle XML className -> localization key overrides (when className ≠ display name key)
+    NAME_ALIASES = {
+        "argo_mpuv_1t": "vehicle_nameargo_mpuv_tractor",
     }
 
     enriched = 0

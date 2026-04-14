@@ -355,9 +355,14 @@ export class LoadoutViewComponent {
     'aegs_redeemer': new Set(['hardpoint_turret_remote_front']),
   };
 
+  private readonly FORCE_CREW_HARDPOINTS: Record<string, Set<string>> = {
+    'crus_spirit_a1': new Set(['hardpoint_turret_rear']),  // remote turret with Badgers, crew-operated
+  };
+
   private isCrewHardpoint(hp: Hardpoint): boolean {
-    // Check ship-specific pilot overrides first
     const shipCls = this.data.selectedShip()?.className?.toLowerCase() ?? '';
+    // Check ship-specific overrides first
+    if (this.FORCE_CREW_HARDPOINTS[shipCls]?.has(hp.id.toLowerCase())) return true;
     if (this.FORCE_PILOT_HARDPOINTS[shipCls]?.has(hp.id.toLowerCase())) return false;
 
     if (hp.type === 'TurretBase') return true;
@@ -365,7 +370,7 @@ export class LoadoutViewComponent {
       const ct = hp.controllerTag?.toLowerCase() ?? '';
       // gunNacelle = pilot-controlled weapon nacelle (e.g., Constellation nose guns)
       // Note: 'copilotSeat' is crew, 'pilotSeat' is pilot — match exact token, not substring
-      return !!ct && !ct.includes('remote_turret') && !ct.startsWith('pilotseat') && !ct.includes('gunnacelle') && !ct.includes('gunnose') && !ct.includes('weaponpilot');
+      return !!ct && !ct.includes('remote_turret') && !ct.startsWith('pilotseat') && !ct.includes('gunnacelle') && !ct.includes('gunnose') && !ct.includes('weaponpilot') && !ct.includes('weapon_controller_pilot');
     }
     return false;
   }
@@ -375,7 +380,19 @@ export class LoadoutViewComponent {
   }
 
   private isTractorTurret(hp: Hardpoint): boolean {
-    return hp.type === 'Turret' && hp.id.toLowerCase().includes('tractor');
+    if (hp.type === 'TractorBeam') return true;
+    if (hp.type === 'Turret' && hp.id.toLowerCase().includes('tractor')) return true;
+    if (hp.type === 'Turret') {
+      const lo = this.data.selectedShip()?.defaultLoadout ?? {};
+      // Check if turret's equipped item or any sub-slot weapon is a tractor beam
+      const equipped = lo[hp.id.toLowerCase()] ?? '';
+      if (equipped.toLowerCase().includes('tractor')) return true;
+      const subKey = hp.id.toLowerCase() + '.';
+      for (const [k, v] of Object.entries(lo)) {
+        if (k.startsWith(subKey) && v.toLowerCase().includes('tractorbeam')) return true;
+      }
+    }
+    return false;
   }
 
   gunSlots = computed(() => {
@@ -556,9 +573,11 @@ export class LoadoutViewComponent {
     const utilities = this.utilitySlots();
     const pdcs = this.pdcSlots();
     const modules = this.moduleSlots();
+    const tractors = this.tractorSlots();
     return ship.hardpoints.filter(hp =>
       !guns.includes(hp) && !missiles.includes(hp) && !utilities.includes(hp) &&
-      !pdcs.includes(hp) && !modules.includes(hp) && !this.isPdc(hp) &&
+      !pdcs.includes(hp) && !modules.includes(hp) && !tractors.includes(hp) &&
+      !this.isPdc(hp) &&
       !['Radar', 'Sensor', 'QuantumFuelTank', 'Paints'].includes(hp.type)
     );
   });
