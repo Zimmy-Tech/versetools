@@ -92,6 +92,14 @@ export class App implements OnInit, OnDestroy {
   }
 
   refresh(): void {
-    window.location.reload();
+    // If the SW has a pending update, activate it before reloading so
+    // the reload picks up fresh content instead of the cached version.
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.activateUpdate()
+        .catch(() => {})
+        .finally(() => window.location.reload());
+    } else {
+      window.location.reload();
+    }
   }
 }
