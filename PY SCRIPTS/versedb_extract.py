@@ -5697,12 +5697,19 @@ def main(mode: str = "live"):
                 del ships[cls]
         else:
             seen_names[name] = cls
-    skip_lower = {s.lower() for s in SKIP_SHIPS}
-    ship_list = [s for s in ships.values() if s["className"].lower() not in skip_lower]
+    ship_list = [s for s in ships.values() if s["className"] not in SKIP_SHIPS]
 
-    # Normalize classNames to lowercase for consistency with database
+    # Fix classNames that changed case due to our variant expansion fix.
+    # These ships previously came through forge entity expansion (lowercase)
+    # but now come from vehicle XML modifications (mixed case). Force them
+    # back to lowercase to match what the database already has.
+    _FORCE_LOWERCASE_CLS = {
+        "AEGS_Sabre_Firebird", "AEGS_Sabre_Peregrine", "AEGS_Sabre_Raven",
+        "MISC_Fury_LX",
+    }
     for ship in ship_list:
-        ship["className"] = ship["className"].lower()
+        if ship["className"] in _FORCE_LOWERCASE_CLS:
+            ship["className"] = ship["className"].lower()
 
     # ── Deduplicate ship-specific gimbal mounts ──────────────────────────────
     # Many ships have their own gimbal variant (e.g., mount_gimbal_s3_perseus)
