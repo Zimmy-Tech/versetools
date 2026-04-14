@@ -30,24 +30,26 @@ export class App implements OnInit, OnDestroy {
     private swUpdate: SwUpdate,
   ) {}
 
-  private notifyUpdate(newVersion?: string): void {
+  private pendingVersion = '';
+
+  /**
+   * Show the "update available" popup. Only called from the service worker's
+   * VERSION_READY event — which guarantees the new bundle is fully downloaded
+   * and cached by the SW. That makes the subsequent reload reliable: the SW
+   * can immediately serve the new version without another network round-trip.
+   *
+   * Previously we also showed the popup from version.json polling, which
+   * could fire before the SW had finished fetching the new bundle. Clicking
+   * "Got it" then reloaded into the still-cached old version, and users had
+   * to Ctrl+Shift+R. That path is removed; polling now only nudges the SW
+   * to check for updates.
+   */
+  private notifyUpdate(newVersion: string): void {
     if (this.updateAvailable()) return;
-    // Ignore if we already have this version loaded (SW activating the same
-    // version we just reloaded into)
-    if (newVersion && this.loadedVersion === newVersion) return;
-    // For SW-triggered notifications without a version, verify against current
-    // version.json — skip if we're already on the latest
-    if (!newVersion) {
-      this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
-        .subscribe({ next: r => {
-          if (this.loadedVersion && r.v === this.loadedVersion) return;
-          const acked = localStorage.getItem('versetools_update_acked');
-          if (acked === r.v) return;
-          this.updateAvailable.set(true);
-          clearInterval(this.versionCheckInterval);
-        }, error: () => {} });
-      return;
-    }
+    if (!newVersion || this.loadedVersion === newVersion) return;
+    const acked = localStorage.getItem('versetools_update_acked');
+    if (acked === newVersion) return;
+    this.pendingVersion = newVersion;
     this.updateAvailable.set(true);
     clearInterval(this.versionCheckInterval);
     localStorage.setItem('versetools_update_acked', newVersion);
@@ -64,13 +66,15 @@ export class App implements OnInit, OnDestroy {
         if (acked && acked === r.v) localStorage.removeItem('versetools_update_acked');
       }, error: () => {} });
 
+    // Poll version.json every 5 minutes. If it changed, nudge the SW to
+    // check for a new bundle — we do NOT show the popup from this path,
+    // because version.json can flip before the SW has cached the new assets.
+    // The popup will appear via VERSION_READY once the SW has the bundle ready.
     this.versionCheckInterval = setInterval(() => {
       this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
         .subscribe({ next: r => {
-          if (this.loadedVersion && r.v !== this.loadedVersion) {
-            const acked = localStorage.getItem('versetools_update_acked');
-            if (acked === r.v) return;
-            this.notifyUpdate(r.v);
+          if (this.loadedVersion && r.v !== this.loadedVersion && this.swUpdate.isEnabled) {
+            this.swUpdate.checkForUpdate().catch(() => {});
           }
         }, error: () => {} });
     }, 5 * 60 * 1000);
@@ -78,7 +82,12 @@ export class App implements OnInit, OnDestroy {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.pipe(
         filter((e): e is VersionReadyEvent => e.type === 'VERSION_READY')
-      ).subscribe(() => this.notifyUpdate());
+      ).subscribe(e => {
+        const v = (e.latestVersion && (e.latestVersion as any).hash)
+          ? (e.latestVersion as any).hash
+          : (this.loadedVersion ? this.loadedVersion + '+new' : 'new');
+        this.notifyUpdate(v);
+      });
     }
   }
 
@@ -96,11 +105,18 @@ export class App implements OnInit, OnDestroy {
     // SW activation takes a moment or fails.
     this.updateAvailable.set(false);
 
-    // Try to activate a pending SW update (if any) before reload so the
-    // fresh content is served. Time-box to 2s — if activation hangs, reload
-    // anyway. The reload will hit the service worker's new version on the
-    // next SW cycle.
-    const doReload = () => window.location.reload();
+    // After activateUpdate() resolves, the new SW version is in control and
+    // will serve the new bundle on the next fetch. We still append a cache-
+    // busting query string to the URL on reload so any browser HTTP cache
+    // for index.html is bypassed — the combination guarantees the user
+    // lands on the new version without needing Ctrl+Shift+R.
+    const tag = this.pendingVersion || Date.now().toString();
+    const doReload = () => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('_v', tag);
+      window.location.replace(url.toString());
+    };
+
     if (this.swUpdate.isEnabled) {
       const timer = setTimeout(doReload, 2000);
       this.swUpdate.activateUpdate()
