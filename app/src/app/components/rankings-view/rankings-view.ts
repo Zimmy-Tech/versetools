@@ -205,25 +205,41 @@ export class RankingsViewComponent {
     });
   });
 
-  /** Global max per axis — normal and boosted computed independently. */
+  /**
+   * Per-axis scale: 90th percentile of non-zero values, inflated by
+   * PROFILE_HEADROOM so the outer ring sits above typical top-tier
+   * values. Using the absolute max produces "pointy" polygons because
+   * a single fleet outlier on one axis pinches every other ship down
+   * to near-zero. The percentile approach gives rounder, more
+   * representative shapes with visible breathing room at the edge.
+   */
+  private readonly PROFILE_HEADROOM = 1.15;
+
+  private percentile(values: number[], p: number): number {
+    const sorted = values.filter(v => v > 0).sort((a, b) => a - b);
+    if (sorted.length === 0) return 1;
+    const idx = Math.min(sorted.length - 1, Math.floor(sorted.length * p));
+    return Math.max(1, sorted[idx]);
+  }
+
   profileGlobalMax = computed(() => {
     const allShips = this.data.ships();
     return this.profileFields.map(f =>
-      Math.max(...allShips.map(s => (s as any)[f] ?? 0), 1)
+      this.percentile(allShips.map(s => (s as any)[f] ?? 0), 0.90) * this.PROFILE_HEADROOM
     );
   });
 
   profileGlobalMaxBoosted = computed(() => {
     const allShips = this.data.ships();
     return this.profileFieldsBoosted.map(f =>
-      Math.max(...allShips.map(s => (s as any)[f] ?? 0), 1)
+      this.percentile(allShips.map(s => (s as any)[f] ?? 0), 0.90) * this.PROFILE_HEADROOM
     );
   });
 
   private buildProfilePoly(fields: (keyof Ship)[], maxVals: number[], ship: Ship, color: string) {
     const values = fields.map(f => (ship as any)[f] ?? 0);
     const pcts = values.map((v, j) => maxVals[j] > 0 ? v / maxVals[j] : 0);
-    const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, p)));
+    const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, Math.min(1, p))));
     const points = vertices.map(p => `${p.x},${p.y}`).join(' ');
     return { points, color, values, vertices, pcts };
   }
@@ -251,7 +267,7 @@ export class RankingsViewComponent {
     const n = ships.length;
     const values = fields.map(f => ships.reduce((sum, s) => sum + (Number((s as any)[f]) || 0), 0) / n);
     const pcts = values.map((v, j) => maxVals[j] > 0 ? v / maxVals[j] : 0);
-    const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, p)));
+    const vertices = pcts.map((p, j) => this.profilePoint(j, Math.max(0.03, Math.min(1, p))));
     const points = vertices.map(p => `${p.x},${p.y}`).join(' ');
     return { points, color, values, vertices, pcts };
   }
