@@ -92,14 +92,22 @@ export class App implements OnInit, OnDestroy {
   }
 
   refresh(): void {
-    // If the SW has a pending update, activate it before reloading so
-    // the reload picks up fresh content instead of the cached version.
+    // Close the popup immediately so the UI feels responsive even if the
+    // SW activation takes a moment or fails.
+    this.updateAvailable.set(false);
+
+    // Try to activate a pending SW update (if any) before reload so the
+    // fresh content is served. Time-box to 2s — if activation hangs, reload
+    // anyway. The reload will hit the service worker's new version on the
+    // next SW cycle.
+    const doReload = () => window.location.reload();
     if (this.swUpdate.isEnabled) {
+      const timer = setTimeout(doReload, 2000);
       this.swUpdate.activateUpdate()
         .catch(() => {})
-        .finally(() => window.location.reload());
+        .finally(() => { clearTimeout(timer); doReload(); });
     } else {
-      window.location.reload();
+      doReload();
     }
   }
 }
