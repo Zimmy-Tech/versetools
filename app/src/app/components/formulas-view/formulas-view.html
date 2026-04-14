@@ -763,6 +763,68 @@ where Max Pips = radar's total power cost</pre>
         </div>
       }
 
+      <!-- ═══════════════════ QUANTUM TRAVEL ═══════════════════ -->
+      @case ('quantum') {
+        <div class="section">
+          <h2>Quantum Travel</h2>
+          <p class="intro">Quantum range is determined by the ship's fuel tank and the
+            equipped drive's consumption rate. Each drive has a fixed fuel cost
+            expressed as <strong>mSCU per Gm</strong> (milli-SCU per gigameter) of
+            travel.</p>
+
+          <div class="formula-card">
+            <h3>Range</h3>
+            <pre class="formula">Range (Gm) = Quantum Fuel Capacity (SCU) / Fuel Rate (SCU/Gm)
+
+Fuel Rate (SCU/Gm) = mSCU per Gm &div; 1000</pre>
+            <p>A ship's fuel tank capacity divided by the drive's per-Gm fuel cost
+              gives maximum range. Stored internally as an integer mSCU/Gm and
+              converted to SCU/Gm for the math.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Fuel Used on a Trip</h3>
+            <pre class="formula">Fuel Used (SCU) = Distance (Gm) &times; Fuel Rate (SCU/Gm)
+Tank %           = Fuel Used / Quantum Fuel Capacity</pre>
+            <p>Consumption is linear with distance. A 32 Gm trip at 0.016 SCU/Gm burns
+              0.512 SCU — about 9% of a 5.7 SCU tank, matching in-game displays.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Travel Time (approximate)</h3>
+            <pre class="formula">Cruise Time  = Distance / Drive Speed
+Overhead     = Spool Time + Calibration Delay + Cooldown
+Total Time   &asymp; Cruise Time + Overhead</pre>
+            <p>Drive speed is stored in km/s (e.g., 171,000 km/s = 0.171 Gm/s). The
+              approximation ignores the stage-one/stage-two acceleration ramp at the
+              start and end of a jump, which adds a few seconds on short hops and is
+              negligible on long ones.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Typical Rates by Drive Class</h3>
+            <pre class="formula">Military     10 &ndash; 14 mSCU/Gm   (most efficient)
+Competition  ~16 mSCU/Gm
+Civilian     ~18 mSCU/Gm
+Industrial   ~26 mSCU/Gm         (thirstiest)
+Capital S4   47 &ndash; 120 mSCU/Gm  (890J, Idris, Javelin)</pre>
+            <p>Drive class is the dominant factor. Ship mass has essentially no direct
+              effect on SCU/Gm — a 23,000 kg Wolf and a 10 million kg Polaris both burn
+              within the same narrow band when using drives of comparable class.</p>
+          </div>
+
+          <div class="formula-card">
+            <h3>Notes &amp; Corrections</h3>
+            <p>Earlier versions of this tool used a quantum fuel field that turned out
+              not to represent fuel-per-Gm; its relationship to the real consumption
+              rate was inconsistent (observed ratios ranged 0.36&times; to 2.94&times;
+              of the true value). The current values are sourced from the actual
+              per-Gm consumption the game uses at runtime, so range numbers now match
+              in-game displays to the integer mSCU/Gm.</p>
+          </div>
+        </div>
+      }
+
       <!-- ═══════════════════ CARGO ═══════════════════ -->
       @case ('cargo') {
         <div class="section">

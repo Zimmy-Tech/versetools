@@ -16,6 +16,7 @@ import { CompactViewComponent } from './components/compact-view/compact-view';
 import { UpdatesViewComponent } from './components/updates-view/updates-view';
 import { ChangelogViewComponent } from './components/changelog-view/changelog-view';
 import { ShipCompareComponent } from './components/ship-compare/ship-compare';
+import { QtRangeViewComponent } from './components/qt-range-view/qt-range-view';
 import { FpsWeaponsComponent } from './components/fps-weapons/fps-weapons';
 import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
@@ -36,6 +37,7 @@ export const routes: Routes = [
   { path: 'blueprints',         component: BlueprintFinderComponent },
   { path: 'crafting',           component: CraftingViewComponent },
   { path: 'rankings',           component: RankingsViewComponent },
+  { path: 'qt-range',           component: QtRangeViewComponent },
   { path: 'armor',              component: ArmorViewComponent },
   { path: 'submit',             component: SubmitViewComponent },
   { path: 'formulas',           component: FormulasViewComponent },

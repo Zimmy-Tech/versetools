@@ -1861,6 +1861,17 @@ def parse_quantumdrive_item(root, class_name, loc):
     if m_sru:
         sru_ref = m_sru.group(1)
 
+    # SMicroResourceUnit ref for QuantumFuel consumption — this is the TRUE
+    # fuel cost expressed as integer milli-SCU per Gm of travel. The
+    # quantumFuelRequirement attribute above is NOT per-Gm; ignore it.
+    # Enriched in DCB phase -> fuelRate = smru_value / 1000 (SCU/Gm).
+    qf_smru_ref = ""
+    m_qf = re.search(r'resource="QuantumFuel"[^>]*resourceAmountPerSecond="SMicroResourceUnit\[([0-9A-Fa-f]+)\]"', txt)
+    if not m_qf:
+        m_qf = re.search(r'SMicroResourceUnit\[([0-9A-Fa-f]+)\][^<]*resource="QuantumFuel"', txt)
+    if m_qf:
+        qf_smru_ref = m_qf.group(1)
+
     display = resolve_item_name(loc, class_name)
     grade_letter, item_class = resolve_grade_and_class(loc, class_name)
     return {
@@ -1872,6 +1883,7 @@ def parse_quantumdrive_item(root, class_name, loc):
         "grade":            grade_letter or info["grade"],
         "itemClass":        item_class,
         "sruRef":           sru_ref,
+        "qfSmruRef":        qf_smru_ref,
         # Travel (normal)
         "speed":            round(speed, 0),
         "spoolTime":        round(spool_time, 1),
@@ -4286,6 +4298,31 @@ def enrich_from_dcb(items, dcb_path, loc):
                 item["powerDraw"] = round(val)  # integer pip count for QDs
                 qd_pwr_enriched += 1
         print(f"  QDs enriched with power draw: {qd_pwr_enriched}")
+
+    # ── Enrich QDs with the TRUE quantum fuel rate from SMicroResourceUnit ─────
+    # The SCItemQuantumDriveParams.quantumFuelRequirement attribute we initially
+    # captured is NOT per-Gm — it has no clean relationship to the game's real
+    # consumption. The real cost is stored as an integer mSCU/Gm in the
+    # SMicroResourceUnit array, referenced from the drive's Travelling state
+    # <consumption resource="QuantumFuel" resourceAmountPerSecond="SMicroResourceUnit[HEX]"/>.
+    # Overwrite fuelRate with SCU/Gm (smru_value / 1000) so downstream
+    # range = fuelCapacity / fuelRate is correct.
+    smru_si = h["struct_by_name"].get("SMicroResourceUnit")
+    if smru_si and smru_si in sd:
+        smru_off, smru_cnt = sd[smru_si]
+        def get_smru(idx):
+            return struct.unpack_from("<I", d, smru_off + idx*4)[0] if idx < smru_cnt else 0
+        qd_fuel_enriched = 0
+        for item in items.values():
+            if item.get("type") != "QuantumDrive": continue
+            ref = item.pop("qfSmruRef", "")
+            if not ref: continue
+            idx = int(ref, 16)
+            mscu = get_smru(idx)
+            if mscu > 0:
+                item["fuelRate"] = round(mscu / 1000.0, 4)  # SCU per Gm
+                qd_fuel_enriched += 1
+        print(f"  QDs enriched with quantum fuel rate (SCU/Gm): {qd_fuel_enriched}")
 
     # ── Enrich power plants with power output from SPowerSegmentResourceUnit ──
     # PSRU stores direct u32 integer values (power segment count), not f32

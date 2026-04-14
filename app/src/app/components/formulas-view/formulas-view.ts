@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 
-type Section = 'about' | 'power' | 'weapons' | 'rof' | 'shields' | 'signatures' | 'armor' | 'cooling' | 'flight' | 'mining' | 'radar' | 'cargo' | 'crafting' | 'contracts';
+type Section = 'about' | 'power' | 'weapons' | 'rof' | 'shields' | 'signatures' | 'armor' | 'cooling' | 'flight' | 'mining' | 'radar' | 'quantum' | 'cargo' | 'crafting' | 'contracts';
 
 @Component({
   selector: 'app-formulas-view',
@@ -23,6 +23,7 @@ export class FormulasViewComponent {
     { id: 'flight', label: 'Flight & Thrusters' },
     { id: 'mining', label: 'Mining' },
     { id: 'radar', label: 'Radar' },
+    { id: 'quantum', label: 'Quantum Travel' },
     { id: 'cargo', label: 'Cargo' },
     { id: 'crafting', label: 'Crafting' },
     { id: 'contracts', label: 'Contracts' },

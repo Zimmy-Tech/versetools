@@ -7,7 +7,7 @@ import { Ship, Item } from '../../models/db.models';
 import { LoadoutCompareComponent, StoredLoadout as StoredLoadoutExport } from '../loadout-compare/loadout-compare';
 import { AdminService } from '../admin/admin.service';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle';
+export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'qtRange' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
@@ -17,6 +17,7 @@ const TAB_ROUTES: Record<string, string> = {
   fpsArmor: 'fps-armor',
   fpsTtk: 'fps-ttk',
   eveStyle: 'eve-style',
+  qtRange: 'qt-range',
 };
 
 function tabToRoute(id: string): string {
@@ -77,6 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly shipToolsTabs: { id: TabName; label: string }[] = [
     { id: 'shipCompare', label: 'Ship Comparator' },
     { id: 'rankings', label: 'Flight Performance' },
+    { id: 'qtRange', label: 'Quantum Travel Range' },
     { id: 'armor', label: 'Armor Damage' },
     { id: 'compare', label: 'Weapon Performance' },
     { id: 'finder', label: 'Default Loadout Finder' },

@@ -48,6 +48,7 @@ export class UpdatesViewComponent {
           'Flight Profile Radar — 10-axis chart with fleet average ghost overlay and global percentile normalization',
           'Ship Rankings — sortable tables across all performance categories',
           'Component Finder — search ships by factory-default loadouts',
+          'Quantum Travel Range — every ship ranked by maximum Gm range, with class + grade filters that refit each ship with the best Military/Civilian/Stealth/Competition/Industrial drive of the matching size. Fuel rate expressed in SCU per Gm so ranges match in-game values.',
         ]},
         { title: 'FPS Combat', items: [
           'FPS Weapons Database — damage types, fire rates, Real DPS, max range, recoil, magazine sizes',
