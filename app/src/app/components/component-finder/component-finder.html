@@ -10,13 +10,30 @@
       <div class="selected-chip">
         <span class="chip-name">{{ selectedItem()!.name }}</span>
         <span class="chip-meta">{{ selectedItem()!.type }} · S{{ selectedItem()!.size ?? '?' }}</span>
-        <span class="chip-close" (click)="selectedItem.set(null); searchQuery.set('')">✕</span>
+        <span class="chip-close" (click)="clearSelection()">✕</span>
+      </div>
+    }
+    @if (typeFilter()) {
+      <div class="selected-chip">
+        <span class="chip-name">{{ typeFilter()!.label }}</span>
+        <span class="chip-meta">All ships</span>
+        <span class="chip-close" (click)="clearSelection()">✕</span>
       </div>
     }
   </div>
 
+  <!-- Quick filters -->
+  <div class="quick-filters">
+    <span class="qf-label">Quick Filters:</span>
+    @for (f of quickFilters; track f.label) {
+      <button class="qf-btn"
+              [class.active]="typeFilter()?.label === f.label"
+              (click)="selectQuickFilter(f)">{{ f.label }}</button>
+    }
+  </div>
+
   <!-- Search results dropdown (only when typing and no item selected) -->
-  @if (searchQuery().length >= 2 && !selectedItem()) {
+  @if (searchQuery().length >= 2 && !selectedItem() && !typeFilter()) {
     <div class="search-results">
       @if (matchedItems().length === 0) {
         <div class="no-results">No items found</div>
@@ -31,7 +48,7 @@
   }
 
   <!-- Results: ships with this default component -->
-  @if (selectedItem()) {
+  @if (selectedItem() || typeFilter()) {
     <div class="results-header">
       <span class="results-title">Default on {{ uniqueShipCount() }} ship{{ uniqueShipCount() === 1 ? '' : 's' }}</span>
       <span class="results-count">{{ results().length }} slot{{ results().length === 1 ? '' : 's' }}</span>
@@ -50,7 +67,7 @@
         }
       </div>
     }
-  } @else if (searchQuery().length < 2) {
+  } @else if (searchQuery().length < 2 && !typeFilter()) {
     <div class="empty-state">
       <div class="empty-icon">&#x1F50D;</div>
       <div class="empty-title">Default Component Finder</div>

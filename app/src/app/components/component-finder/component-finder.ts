@@ -31,18 +31,37 @@ export class ComponentFinderComponent {
   /** Currently selected item to find. */
   selectedItem = signal<Item | null>(null);
 
+  /** Active type+size filter (e.g. {type:'Shield', size:3}), mutually exclusive with selectedItem. */
+  typeFilter = signal<{ type: string; size: number; label: string } | null>(null);
+
+  /** Quick-filter presets for finding ships by component type + size. */
+  readonly quickFilters = [
+    { type: 'Shield', size: 3, label: 'S3 Shield' },
+    { type: 'QuantumDrive', size: 2, label: 'S2 Quantum' },
+  ];
+
   /** Ships that have the selected item in their default loadout. */
   results = computed<FinderResult[]>(() => {
     const item = this.selectedItem();
-    if (!item) return [];
-    const cls = item.className.toLowerCase();
+    const filter = this.typeFilter();
+    if (!item && !filter) return [];
+
+    const itemsByClass = new Map(this.data.items().map(i => [i.className.toLowerCase(), i]));
     const results: FinderResult[] = [];
+
     for (const ship of this.data.ships()) {
       const lo = ship.defaultLoadout;
       if (!lo) continue;
       for (const [slotId, itemCls] of Object.entries(lo)) {
-        if (itemCls.toLowerCase() === cls) {
-          results.push({ ship, slotId });
+        if (item) {
+          if (itemCls.toLowerCase() === item.className.toLowerCase()) {
+            results.push({ ship, slotId });
+          }
+        } else if (filter) {
+          const equipped = itemsByClass.get(itemCls.toLowerCase());
+          if (equipped && equipped.type === filter.type && equipped.size === filter.size) {
+            results.push({ ship, slotId });
+          }
         }
       }
     }
@@ -58,6 +77,19 @@ export class ComponentFinderComponent {
 
   selectItem(item: Item): void {
     this.selectedItem.set(item);
+    this.typeFilter.set(null);
+  }
+
+  selectQuickFilter(filter: { type: string; size: number; label: string }): void {
+    this.typeFilter.set(filter);
+    this.selectedItem.set(null);
+    this.searchQuery.set('');
+  }
+
+  clearSelection(): void {
+    this.selectedItem.set(null);
+    this.typeFilter.set(null);
+    this.searchQuery.set('');
   }
 
   fmtSlot(slotId: string): string {
