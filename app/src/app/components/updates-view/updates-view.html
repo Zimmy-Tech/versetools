@@ -15,14 +15,32 @@
           </div>
         }
 
-        <div class="update-list">
-          @for (f of update.features; track f) {
-            <div class="update-item">
-              <span class="update-bullet"></span>
-              <span class="update-text">{{ f }}</span>
+        @if (update.sections?.length) {
+          @for (section of update.sections; track section.title) {
+            <div class="update-section">
+              <div class="update-section-title">{{ section.title }}</div>
+              <div class="update-list">
+                @for (f of section.items; track f) {
+                  <div class="update-item">
+                    <span class="update-bullet"></span>
+                    <span class="update-text">{{ f }}</span>
+                  </div>
+                }
+              </div>
             </div>
           }
-        </div>
+        }
+
+        @if (update.features.length) {
+          <div class="update-list">
+            @for (f of update.features; track f) {
+              <div class="update-item">
+                <span class="update-bullet"></span>
+                <span class="update-text">{{ f }}</span>
+              </div>
+            }
+          </div>
+        }
       </div>
     }
   </div>

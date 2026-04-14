@@ -72,6 +72,22 @@
   border-radius: 2px;
 }
 
+.update-section {
+  margin-bottom: 16px;
+}
+
+.update-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  padding: 6px 0 4px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.12);
+  margin-bottom: 6px;
+}
+
 .update-list {
   display: flex;
   flex-direction: column;
