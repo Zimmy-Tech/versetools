@@ -5705,7 +5705,7 @@ def main(mode: str = "live"):
     # back to lowercase to match what the database already has.
     _FORCE_LOWERCASE_CLS = {
         "AEGS_Sabre_Firebird", "AEGS_Sabre_Peregrine", "AEGS_Sabre_Raven",
-        "MISC_Fury_LX",
+        "MISC_Fury_LX", "ARGO_MPUV_1T",
     }
     for ship in ship_list:
         if ship["className"] in _FORCE_LOWERCASE_CLS:
