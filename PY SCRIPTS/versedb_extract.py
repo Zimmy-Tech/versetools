@@ -508,14 +508,17 @@ def parse_vehicle_xml(xml_path, loc):
     # Display name from localization
     # Some vehicles have classNames that don't match their localization key
     _VEHICLE_NAME_LOC = {
-        "argo_mpuv_1t":         "vehicle_nameargo_mpuv_tractor",
-        "crus_spirit_a1":       "vehicle_namecrus_a1_spirit",
-        "crus_spirit_c1":       "vehicle_namecrus_c1_spirit",
-        "crus_spirit_e1":       "vehicle_namecrus_e1_spirit",
-        "anvl_hornet_f7a_mk1":  "vehicle_nameanvl_hornet_f7a",
+        "argo_mpuv_1t":                     "vehicle_nameargo_mpuv_tractor",
+        "argo_csv":                         "vehicle_nameargo_csv_cargo",
+        "anvl_pisces":                      "vehicle_nameanvl_c8_pisces",
+        "crus_spirit_a1":                   "vehicle_namecrus_a1_spirit",
+        "crus_spirit_c1":                   "vehicle_namecrus_c1_spirit",
+        "crus_spirit_e1":                   "vehicle_namecrus_e1_spirit",
+        "anvl_hornet_f7a_mk1":              "vehicle_nameanvl_hornet_f7a",
+        "anvl_hornet_f7cm_mk2_heartseeker": "vehicle_nameanvl_hornet_f7cm_heartseeker_mk2",
     }
     loc_key = _VEHICLE_NAME_LOC.get(class_name.lower(), f"vehicle_name{class_name.lower()}")
-    display_name = loc.get(loc_key, class_name.replace("_", " "))
+    display_name = loc.get(loc_key, class_name.replace("_", " ")).replace("\\n", "").strip()
 
     # Mass from main animated Part
     mass = 0.0
@@ -2503,11 +2506,13 @@ def _resolve_variant_name(variant_cls, loc):
     """Try multiple localization key patterns for a variant class name."""
     # Explicit overrides for classNames that don't match localization key format
     _NAME_OVERRIDES = {
-        "argo_mpuv_1t":         "vehicle_nameargo_mpuv_tractor",
-        "crus_spirit_a1":       "vehicle_namecrus_a1_spirit",
-        "crus_spirit_c1":       "vehicle_namecrus_c1_spirit",
-        "crus_spirit_e1":       "vehicle_namecrus_e1_spirit",
-        "anvl_hornet_f7a_mk1":  "vehicle_nameanvl_hornet_f7a",
+        "argo_mpuv_1t":                     "vehicle_nameargo_mpuv_tractor",
+        "crus_spirit_a1":                   "vehicle_namecrus_a1_spirit",
+        "crus_spirit_c1":                   "vehicle_namecrus_c1_spirit",
+        "crus_spirit_e1":                   "vehicle_namecrus_e1_spirit",
+        "anvl_hornet_f7a_mk1":              "vehicle_nameanvl_hornet_f7a",
+        "anvl_hornet_f7cm_mk2_heartseeker": "vehicle_nameanvl_hornet_f7cm_heartseeker_mk2",
+        "anvl_c8r_pisces":                  "vehicle_nameanvl_c8r_pisces_rescue",
     }
     override_key = _NAME_OVERRIDES.get(variant_cls.lower())
     if override_key and override_key in loc:
@@ -2610,6 +2615,7 @@ def expand_ship_variants(ships, forge_dir, loc):
         "rsi_apollo_medivac": ["rsi_hermes"],  # Hermes uses Apollo vehicle XML with modification="Hermes"
         "RSI_Ursa_Rover": ["rsi_ursa_medivac"],
         "TMBL_Storm": ["tmbl_storm_aa"],
+        "ANVL_Pisces": ["anvl_c8x_pisces_expedition", "anvl_c8r_pisces"],
     }
     for base_cls, variant_list in MANUAL_VARIANTS.items():
         base_ship = expanded.get(base_cls)
@@ -2959,6 +2965,7 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
     FORGE_ALIASES = {
         "anvl_c8_pisces":       "ANVL_Pisces",
         "krig_l22_alphawolf":   "KRIG_L22_alpha_wolf",
+        "argo_csv_cargo":       "argo_csv",
     }
 
     # Vehicle XML className -> localization key overrides (when className ≠ display name key)
@@ -5706,7 +5713,7 @@ def main(mode: str = "live"):
     # back to lowercase to match what the database already has.
     _FORCE_LOWERCASE_CLS = {
         "AEGS_Sabre_Firebird", "AEGS_Sabre_Peregrine", "AEGS_Sabre_Raven",
-        "MISC_Fury_LX", "ARGO_MPUV_1T",
+        "MISC_Fury_LX", "ARGO_MPUV_1T", "ANVL_Hornet_F7A_MK1",
     }
     for ship in ship_list:
         if ship["className"] in _FORCE_LOWERCASE_CLS:
