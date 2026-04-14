@@ -17,7 +17,7 @@
 
       <div class="filter-group">
         <span class="filter-label">Category</span>
-        <select class="filter-select" (change)="categoryFilter.set($any($event.target).value)">
+        <select class="filter-select" [value]="categoryFilter()" (change)="categoryFilter.set($any($event.target).value); resetPage()">
           @for (cat of categories(); track cat) {
             <option [value]="cat">{{ cat || 'All' }}</option>
           }
@@ -26,7 +26,7 @@
 
       <div class="filter-group">
         <span class="filter-label">Lawful</span>
-        <select class="filter-select" (change)="lawfulFilter.set($any($event.target).value); resetPage()">
+        <select class="filter-select" [value]="lawfulFilter()" (change)="lawfulFilter.set($any($event.target).value); resetPage()">
           <option value="">All</option>
           <option value="lawful">Lawful</option>
           <option value="unlawful">Unlawful</option>
@@ -35,7 +35,7 @@
 
       <div class="filter-group">
         <span class="filter-label">System</span>
-        <select class="filter-select" (change)="systemFilter.set($any($event.target).value); resetPage()">
+        <select class="filter-select" [value]="systemFilter()" (change)="systemFilter.set($any($event.target).value); resetPage()">
           @for (sys of systems(); track sys) {
             <option [value]="sys">{{ sys || 'All' }}</option>
           }
@@ -44,7 +44,7 @@
 
       <div class="filter-group">
         <span class="filter-label">Activity</span>
-        <select class="filter-select" (change)="activityFilter.set($any($event.target).value); resetPage()">
+        <select class="filter-select" [value]="activityFilter()" (change)="activityFilter.set($any($event.target).value); resetPage()">
           @for (act of activities(); track act) {
             <option [value]="act">{{ act || 'All' }}</option>
           }
@@ -53,7 +53,7 @@
 
       <div class="filter-group">
         <span class="filter-label">Contractor</span>
-        <select class="filter-select" (change)="contractorFilter.set($any($event.target).value); resetPage()">
+        <select class="filter-select" [value]="contractorFilter()" (change)="contractorFilter.set($any($event.target).value); resetPage()">
           @for (ct of contractors(); track ct) {
             <option [value]="ct">{{ ct || 'All' }}</option>
           }
