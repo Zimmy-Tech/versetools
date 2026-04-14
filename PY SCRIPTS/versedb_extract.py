@@ -508,10 +508,11 @@ def parse_vehicle_xml(xml_path, loc):
     # Display name from localization
     # Some vehicles have classNames that don't match their localization key
     _VEHICLE_NAME_LOC = {
-        "argo_mpuv_1t": "vehicle_nameargo_mpuv_tractor",
-        "crus_spirit_a1": "vehicle_namecrus_a1_spirit",
-        "crus_spirit_c1": "vehicle_namecrus_c1_spirit",
-        "crus_spirit_e1": "vehicle_namecrus_e1_spirit",
+        "argo_mpuv_1t":         "vehicle_nameargo_mpuv_tractor",
+        "crus_spirit_a1":       "vehicle_namecrus_a1_spirit",
+        "crus_spirit_c1":       "vehicle_namecrus_c1_spirit",
+        "crus_spirit_e1":       "vehicle_namecrus_e1_spirit",
+        "anvl_hornet_f7a_mk1":  "vehicle_nameanvl_hornet_f7a",
     }
     loc_key = _VEHICLE_NAME_LOC.get(class_name.lower(), f"vehicle_name{class_name.lower()}")
     display_name = loc.get(loc_key, class_name.replace("_", " "))
@@ -2502,10 +2503,11 @@ def _resolve_variant_name(variant_cls, loc):
     """Try multiple localization key patterns for a variant class name."""
     # Explicit overrides for classNames that don't match localization key format
     _NAME_OVERRIDES = {
-        "argo_mpuv_1t":    "vehicle_nameargo_mpuv_tractor",
-        "crus_spirit_a1":  "vehicle_namecrus_a1_spirit",
-        "crus_spirit_c1":  "vehicle_namecrus_c1_spirit",
-        "crus_spirit_e1":  "vehicle_namecrus_e1_spirit",
+        "argo_mpuv_1t":         "vehicle_nameargo_mpuv_tractor",
+        "crus_spirit_a1":       "vehicle_namecrus_a1_spirit",
+        "crus_spirit_c1":       "vehicle_namecrus_c1_spirit",
+        "crus_spirit_e1":       "vehicle_namecrus_e1_spirit",
+        "anvl_hornet_f7a_mk1":  "vehicle_nameanvl_hornet_f7a",
     }
     override_key = _NAME_OVERRIDES.get(variant_cls.lower())
     if override_key and override_key in loc:
@@ -5678,7 +5680,6 @@ def main(mode: str = "live"):
     SKIP_SHIPS = {
         "AEGS_Idris_FW_25", "RSI_Bengal",               # capitals — no usable loadout data
         "aegs_idris_m_pu",                               # NPC PU variant of Idris-M
-        "ANVL_Hornet_F7A_MK1",                           # NPC F7A variant (no loadout)
         "EA_destructable_probe", "Low_Poly_Ship",        # not real ships
         "probe_turret_1_a", "probe_comms_1_a",           # probes / turret entities
     }
