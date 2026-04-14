@@ -68,10 +68,19 @@ export class ComponentFinderComponent {
     return results;
   });
 
-  /** Unique ships count (a ship may have multiple slots with the same item). */
-  uniqueShipCount = computed(() => {
-    return new Set(this.results().map(r => r.ship.className)).size;
+  /** Unique ships (deduped — a ship may have multiple slots with the same item). */
+  uniqueShips = computed(() => {
+    const seen = new Set<string>();
+    const out: Ship[] = [];
+    for (const r of this.results()) {
+      if (seen.has(r.ship.className)) continue;
+      seen.add(r.ship.className);
+      out.push(r.ship);
+    }
+    return out;
   });
+
+  uniqueShipCount = computed(() => this.uniqueShips().length);
 
   constructor(public data: DataService) {}
 

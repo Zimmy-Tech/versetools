@@ -58,11 +58,10 @@
       <div class="no-results">No ships use this item as default equipment.</div>
     } @else {
       <div class="results-grid">
-        @for (r of results(); track r.ship.className + r.slotId) {
+        @for (ship of uniqueShips(); track ship.className) {
           <div class="result-card">
-            <div class="result-ship-name">{{ r.ship.name }}</div>
-            <div class="result-ship-meta">{{ r.ship.manufacturer }} · {{ r.ship.size | uppercase }} · {{ r.ship.role || '—' }}</div>
-            <div class="result-slot">{{ fmtSlot(r.slotId) }}</div>
+            <div class="result-ship-name">{{ ship.name }}</div>
+            <div class="result-ship-meta">{{ ship.manufacturer }}</div>
           </div>
         }
       </div>
