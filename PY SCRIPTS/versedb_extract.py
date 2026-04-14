@@ -5697,7 +5697,12 @@ def main(mode: str = "live"):
                 del ships[cls]
         else:
             seen_names[name] = cls
-    ship_list = [s for s in ships.values() if s["className"] not in SKIP_SHIPS]
+    skip_lower = {s.lower() for s in SKIP_SHIPS}
+    ship_list = [s for s in ships.values() if s["className"].lower() not in skip_lower]
+
+    # Normalize classNames to lowercase for consistency with database
+    for ship in ship_list:
+        ship["className"] = ship["className"].lower()
 
     # ── Deduplicate ship-specific gimbal mounts ──────────────────────────────
     # Many ships have their own gimbal variant (e.g., mount_gimbal_s3_perseus)
