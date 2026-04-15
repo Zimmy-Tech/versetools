@@ -49,14 +49,6 @@
     <div class="settings-actions">
       <button
         type="button"
-        class="detect-btn"
-        (click)="detectFromChangelog()"
-        [disabled]="detectingDiff() || configSaving()"
-      >
-        {{ detectingDiff() ? 'Checking…' : 'Detect from changelog' }}
-      </button>
-      <button
-        type="button"
         class="save-btn"
         (click)="saveConfig()"
         [disabled]="configSaving()"

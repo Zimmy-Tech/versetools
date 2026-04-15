@@ -210,16 +210,6 @@ export class AdminService {
     return resp ?? { ptuEnabled: false, ptuLabel: '' };
   }
 
-  /** Convenience: returns whether the LIVE database currently differs
-   *  from the PTU database in any way. */
-  async hasPtuDifferences(): Promise<boolean> {
-    const resp = await this.http
-      .get<{ stats: { shipChanges: number; itemChanges: number } }>('/api/changelog')
-      .toPromise();
-    if (!resp) return false;
-    return (resp.stats?.shipChanges ?? 0) + (resp.stats?.itemChanges ?? 0) > 0;
-  }
-
   // ─── Shop prices: UEX refresh ─────────────────────────────────────
 
   async refreshShopPrices(): Promise<ShopPriceRefreshSummary> {

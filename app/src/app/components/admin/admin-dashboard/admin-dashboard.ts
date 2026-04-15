@@ -25,7 +25,6 @@ export class AdminDashboardComponent {
   configSaving = signal(false);
   configMessage = signal<string | null>(null);
   configError = signal<string | null>(null);
-  detectingDiff = signal(false);
 
   // Shop price refresh state
   shopRefreshing = signal(false);
@@ -94,25 +93,4 @@ export class AdminDashboardComponent {
     }
   }
 
-  /** Inspect the changelog and toggle PTU enabled based on whether
-   *  PTU and LIVE actually differ. Saves immediately. */
-  async detectFromChangelog(): Promise<void> {
-    this.detectingDiff.set(true);
-    this.configMessage.set(null);
-    this.configError.set(null);
-    try {
-      const hasDiff = await this.admin.hasPtuDifferences();
-      this.ptuEnabled.set(hasDiff);
-      await this.saveConfig();
-      this.configMessage.set(
-        hasDiff
-          ? 'PTU has differences from LIVE — slider enabled.'
-          : 'PTU is identical to LIVE — slider disabled.'
-      );
-    } catch (err: any) {
-      this.configError.set(err?.error?.error || err?.message || 'Detection failed');
-    } finally {
-      this.detectingDiff.set(false);
-    }
-  }
 }
