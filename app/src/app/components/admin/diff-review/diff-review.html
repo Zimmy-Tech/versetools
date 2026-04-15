@@ -184,9 +184,9 @@
         type="button"
         class="apply-btn"
         (click)="apply()"
-        [disabled]="totalSelected() === 0 || applying()"
+        [disabled]="applying()"
       >
-        {{ applying() ? 'Applying…' : 'Apply Selected' }}
+        {{ applying() ? 'Applying…' : (totalSelected() === 0 ? 'Record Build (No Changes)' : 'Apply Selected') }}
       </button>
     </div>
   }

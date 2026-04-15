@@ -199,16 +199,14 @@ export class DiffReviewComponent {
     const diff = this.diff();
     if (!diff) return;
     const sel = this.selection();
-    if (Object.keys(sel).length === 0) {
-      this.error.set('Nothing selected');
-      return;
-    }
+    const nothingSelected = this.totalSelected() === 0;
 
-    const ok = window.confirm(
-      `Apply ${this.totalSelected()} entity changes to the database?\n\n` +
+    const confirmMsg = nothingSelected
+      ? 'No entity changes selected. Record this build in the changelog and update the version metadata without modifying any ships/items?'
+      : `Apply ${this.totalSelected()} entity changes to the database?\n\n` +
         'Modifications and creates are persisted directly. Deletes remove the row. ' +
-        'Every change is recorded in the audit log.'
-    );
+        'Every change is recorded in the audit log.';
+    const ok = window.confirm(confirmMsg);
     if (!ok) return;
 
     const payload: {

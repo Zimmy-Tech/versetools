@@ -160,6 +160,30 @@ function categorizeItem(item) {
   return t.toLowerCase() || 'other';
 }
 
+// Whitelist of fields that produce changelog entries. Keep in sync with
+// TRACKED_FIELDS in PY SCRIPTS/versedb_extract.py. Anything not listed
+// here is treated as internal/metadata and won't generate noise.
+const CHANGELOG_TRACKED_FIELDS = {
+  ship: ['mass', 'hp', 'cargoCapacity', 'weaponPowerPoolSize', 'thrusterPowerBars',
+         'armorPhysical', 'armorEnergy', 'armorDistortion', 'armorThermal'],
+  WeaponGun: ['dps', 'alphaDamage', 'fireRate', 'projectileSpeed', 'range',
+              'maxHeat', 'heatPerShot', 'overheatCooldown', 'ammoCount',
+              'maxRegenPerSec', 'powerDraw'],
+  WeaponTachyon: ['dps', 'alphaDamage', 'fireRate', 'projectileSpeed', 'range',
+                  'maxHeat', 'heatPerShot', 'overheatCooldown', 'ammoCount',
+                  'maxRegenPerSec', 'powerDraw'],
+  TractorBeam: ['dps', 'alphaDamage', 'fireRate', 'powerDraw'],
+  Shield: ['hp', 'regenRate', 'damagedRegenDelay', 'downedRegenDelay',
+           'resistPhysMax', 'resistPhysMin', 'resistEnrgMax', 'resistEnrgMin',
+           'resistDistMax', 'resistDistMin'],
+  PowerPlant: ['powerOutput'],
+  Cooler: ['coolingRate'],
+  QuantumDrive: ['speed', 'spoolTime', 'fuelRate'],
+  Radar: ['aimMin', 'aimMax'],
+  MissileLauncher: ['missileSize', 'capacity'],
+  Missile: ['alphaDamage', 'speed', 'lockTime', 'lockRangeMax'],
+};
+
 function diffArraysForChangelog(prevArr, nextArr, isShip) {
   const prevMap = new Map((prevArr || []).map((e) => [e.className, e]));
   const nextMap = new Map((nextArr || []).map((e) => [e.className, e]));
@@ -186,10 +210,10 @@ function diffArraysForChangelog(prevArr, nextArr, isShip) {
       });
       continue;
     }
-    // Compare every top-level field
+    const trackedKey = isShip ? 'ship' : (next?.type || prev?.type || '');
+    const fieldsToCheck = CHANGELOG_TRACKED_FIELDS[trackedKey] || [];
     const fieldDiffs = [];
-    const allFieldKeys = new Set([...Object.keys(prev || {}), ...Object.keys(next || {})]);
-    for (const f of allFieldKeys) {
+    for (const f of fieldsToCheck) {
       const ov = prev[f];
       const nv = next[f];
       if (ov === undefined && nv === undefined) continue;
