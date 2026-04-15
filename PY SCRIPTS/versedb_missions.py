@@ -40,6 +40,41 @@ def load_localization(ini_path):
     print(f"  Loaded {len(loc):,} localization entries")
     return loc
 
+_NARR_CLS_RE = re.compile(
+    r"^(?P<faction>[A-Za-z]+)_(?P<genre>BlackBoxRecovery|RecoverItem)_"
+    r"(?P<system>Stanton|Nyx|Pyro)_(?P<rest>.+)$"
+)
+_NARR_DIFF = {"Intro": "Intro", "VeryEasy": "VE", "Easy": "E", "Medium": "M",
+              "Hard": "H", "VeryHard": "VH", "Super": "S"}
+_NARR_GENRE = {"BlackBoxRecovery": "blackbox", "RecoverItem": "RecoverItem_Generic"}
+_NARR_EM_RE = re.compile(r"</?EM\d+>")
+_NARR_MISSION_RE = re.compile(r'~mission\(([^|)]+)(?:\|[^)]+)?\)')
+
+def resolve_procedural_narrative(class_name, loc):
+    """For contractor-generator contracts whose title/description stay as
+    runtime templates, compose the faction-specific localization key from
+    the className and pull the concrete narrative. Returns (title, desc)
+    or (None, None). Covers BitZeros/Hockrow/DeadSaints generators."""
+    m = _NARR_CLS_RE.match(class_name)
+    if not m: return None, None
+    fac = m.group("faction"); gen = m.group("genre"); rest = m.group("rest")
+    genre = _NARR_GENRE[gen]
+    if gen == "BlackBoxRecovery":
+        if rest not in _NARR_DIFF: return None, None
+        code = _NARR_DIFF[rest]
+        t = loc.get(f"{fac}_{genre}_{code}_title_001".lower(), "")
+        d = loc.get(f"{fac}_{genre}_{code}_desc_001".lower(), "")
+    else:  # RecoverItem — deterministic variant 001 from the 001-003 pool
+        t = loc.get(f"{fac}_{genre}_title_001".lower(), "")
+        d = loc.get(f"{fac}_{genre}_desc_001".lower(), "")
+    def clean(s):
+        if not s: return ""
+        s = s.replace("\\n", "\n").strip()
+        s = _NARR_EM_RE.sub("", s)
+        s = _NARR_MISSION_RE.sub(lambda mm: f"[{mm.group(1)}]", s)
+        return s
+    return (clean(t) or None, clean(d) or None)
+
 def build_contractor_profiles(loc, contracts):
     """Group global.ini {key}_RepUI_* fields into profile dicts, then map
     them to the contractor display-names actually used by the given
@@ -1976,6 +2011,27 @@ def main():
     categories = {}
     for m in all_entries:
         categories[m["category"]] = categories.get(m["category"], 0) + 1
+
+    # ── Resolve procedurally-generated contract narratives ──────────
+    # Generator contracts (BitZeros / Hockrow / DeadSaints BlackBoxRecovery +
+    # RecoverItem families) ship with unresolved runtime templates like
+    # "~mission(Contractor|RecoverSpaceDescription)". Compose the
+    # faction-specific localization key from the className and pull the
+    # concrete narrative text.
+    narr_fixed = 0
+    for entry in all_entries:
+        t, d = resolve_procedural_narrative(entry.get("className", ""), loc)
+        desc = entry.get("description", "") or ""
+        title = entry.get("title", "") or ""
+        needs_desc = (desc.startswith("~mission(") or desc.startswith("[Contractor")
+                      or not desc)
+        needs_title = (title == entry.get("contractor", "") or
+                       title.startswith("~mission(") or not title)
+        if t and needs_title: entry["title"] = t
+        if d and needs_desc:  entry["description"] = d
+        if (t and needs_title) or (d and needs_desc): narr_fixed += 1
+    if narr_fixed:
+        print(f"  Resolved narrative for {narr_fixed} procedural contracts")
 
     # ── Contractor profiles from RepUI localization ────────────────
     # Each in-game faction/NPC has a narrative card in global.ini as

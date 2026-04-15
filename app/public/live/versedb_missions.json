@@ -26965,7 +26965,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Super",
-      "title": "Bit Zeros",
+      "title": "Bad at Goodbyes",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 85500,
@@ -27007,7 +27007,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Got a big job for a big player. We’re in the process of making someone disappear, like completely vanish, and a part of that is recovering the blackbox from the “accident” that they had recently over at [Location].\nOnly problem is, seems the people this person hired to stage the accident have gotten it in their heads that there’s more money to be made. So much so that they’re still keeping tabs on the now deceased’s ship.\nThese guys aren’t playing around either. You’ll need a couple of friends to help you do this. But if you can get the blackbox out of there and into our hands by dropping it at [Destination], we can really make it worth your while.\n\n-Bit Zeros"
     },
     {
       "className": "HH_Pyro_RegionB_H_XTXSOutposts_EliminateAll",
@@ -27421,7 +27421,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Super",
-      "title": "Bit Zeros",
+      "title": "Bad at Goodbyes",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 80750,
@@ -27463,7 +27463,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Got a big job for a big player. We’re in the process of making someone disappear, like completely vanish, and a part of that is recovering the blackbox from the “accident” that they had recently over at [Location].\nOnly problem is, seems the people this person hired to stage the accident have gotten it in their heads that there’s more money to be made. So much so that they’re still keeping tabs on the now deceased’s ship.\nThese guys aren’t playing around either. You’ll need a couple of friends to help you do this. But if you can get the blackbox out of there and into our hands by dropping it at [Destination], we can really make it worth your while.\n\n-Bit Zeros"
     },
     {
       "className": "CFP_Pyro_RegionB_M_2AsteroidBase_Criminals_DefendShip",
@@ -28260,7 +28260,7 @@
       "system": "Nyx",
       "danger": "Very High",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "FTL_RecoverItem_Space_Nyx_VeryHard",
@@ -28296,7 +28296,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_VeryHard",
-      "title": "Bit Zeros",
+      "title": "Our Version of The Truth",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 77000,
@@ -28338,7 +28338,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "I’m not gonna give you the whole backstory of what this person has done to us, but all you need to know is that some scumbag is trying to get a payout for a ship crash and the insurance company wants to see the blackbox recording to make sure everything is “above board”.\n\nWe’re not gonna let that happen though.\n\nSnatch that blackbox at [Location] and bring it to us instead so we can do some “creative editing” on the recording.\n\nApparently, this area is a bit of a hot zone. Probably why they staged the accident there. You should probably bring some backup so you don’t get ghosted before you can bring the blackbox to us at [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "Shubin_RG_Discovery_FPSMine_Pyro_Rank2_MediumQuantity_Apho_Had",
@@ -29039,7 +29039,7 @@
       "system": "Stanton",
       "danger": "Very High",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "Adagio_RG_ShipSalvage_Nyx_Rank1_RMCMedium",
@@ -29141,7 +29141,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_VeryHard",
-      "title": "Bit Zeros",
+      "title": "Our Version of The Truth",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 72500,
@@ -29183,7 +29183,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "I’m not gonna give you the whole backstory of what this person has done to us, but all you need to know is that some scumbag is trying to get a payout for a ship crash and the insurance company wants to see the blackbox recording to make sure everything is “above board”.\n\nWe’re not gonna let that happen though.\n\nSnatch that blackbox at [Location] and bring it to us instead so we can do some “creative editing” on the recording.\n\nApparently, this area is a bit of a hot zone. Probably why they staged the accident there. You should probably bring some backup so you don’t get ghosted before you can bring the blackbox to us at [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "Eckhart_Nyx_MRT_DefendShip",
@@ -29989,7 +29989,7 @@
     },
     {
       "className": "DeadSaints_RecoverItem_Nyx_Maze_1Box",
-      "title": "Dead Saints",
+      "title": "Getting Our Gear Back",
       "category": "Contract",
       "generator": "deadsaints_recoveritem",
       "reward": 67500,
@@ -30026,7 +30026,7 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Dead Saints",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "If you want something done right, you gotta do it yourself. That's what they say, right? Wish I had the time for that, but I have a business to run.\n\nSome of our goods have been mislaid and I need a contractor to put this right for me. Got some info that the guys at [Location] ghosted one of my gang and got their hands on our gear. I need you to grab the stuff, deal with anyone at the location and take it to the drop-off at [Destination] for me. Get it done and I'll sort out your payment.\n\n-Twitch",
       "multiSystem": true
     },
     {
@@ -31527,7 +31527,7 @@
     },
     {
       "className": "BitZeros_RecoverItem_Nyx_MicroSatellite_1Box",
-      "title": "Bit Zeros",
+      "title": "Bleeding Edge Tech",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 60250,
@@ -31572,7 +31572,7 @@
         "Custodian SMG Magazine (60 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "Managed to hunt down a rare piece of tech only for it to get snagged by someone right at the last second. Tracking it isn't exactly hard, but I'd rather not keeping chasing this thing.\n\nHead to [Location] and get it back for us. The people over there probably don't even know what it is, so let's do them a favor and take it off their hands. No idea if it's being guarded, so up to you how you wanna deal with any potential threats.\n\nOnce you've got it, take it to [Destination] and then we'll send over the creds.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {
@@ -32115,7 +32115,7 @@
       "system": "Nyx",
       "danger": "High",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "FTL_RecoverItem_Space_Nyx_Hard",
@@ -32151,7 +32151,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Hard",
-      "title": "Bit Zeros",
+      "title": "Legendary Info?",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 58500,
@@ -32193,7 +32193,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Don’t know if you’ve heard, but there’s a bunch of ships over at [Location] surrounding a burnt-out ship. You curious why? I know we are.\nThink you can get in that wreck, grab the blackbox, and get out? We’ll pay you for it.\n\nBased on the number of sketchy ships in the area, you should bring some friends with to watch your ass, unless you’re some crazy solo act, but we’d prefer if you actually survived this so you can drop off the blackbox at [Destination] for us. \n\nBut hey, your call. As long as it gets done.\n\n-Bit Zeros"
     },
     {
       "className": "HH_Pyro_RegionB_M_GenericXSOutposts_EliminateSpecific",
@@ -33539,7 +33539,7 @@
       "system": "Stanton",
       "danger": "High",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Beryl",
@@ -33614,7 +33614,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Hard",
-      "title": "Bit Zeros",
+      "title": "Legendary Info?",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 54500,
@@ -33656,7 +33656,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Don’t know if you’ve heard, but there’s a bunch of ships over at [Location] surrounding a burnt-out ship. You curious why? I know we are.\nThink you can get in that wreck, grab the blackbox, and get out? We’ll pay you for it.\n\nBased on the number of sketchy ships in the area, you should bring some friends with to watch your ass, unless you’re some crazy solo act, but we’d prefer if you actually survived this so you can drop off the blackbox at [Destination] for us. \n\nBut hey, your call. As long as it gets done.\n\n-Bit Zeros"
     },
     {
       "className": "CFP_Pyro_RegionA_Rank5_JacksonsSwap_Local_Handyman",
@@ -36696,7 +36696,7 @@
       "system": "Nyx",
       "danger": "Medium",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "FTL_RecoverItem_Space_Nyx_Medium",
@@ -36732,7 +36732,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Medium",
-      "title": "Bit Zeros",
+      "title": "Too Smart For Our Own Good",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 41750,
@@ -36774,7 +36774,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "We were a little too smart with this one and it’s kinda backfired. Sometimes you gotta dream big, you know? Anyway. we were looking to move some encrypted data to one of our data havens and decided to hide it in a ship’s blackbox. They filled the ship with “valuable” stuff as a decoy in case it got attacked. The plan worked a little too well and the cargo might have attracted the wrong kind of attention. They stole all the cargo but missed the blackbox. Bad news is the ship is now swarming with outlaws.\n\nThe data on that blackbox is useless to them, but we need it. If you can get it back for us, we can give you a nice cut from what we make. Seems like a fair deal, right?\n\nHead to [Location] and after you’ve done your thing take the flight recorder to [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "EckhartSecurity_EscortShips_Nyx_VeryEasy",
@@ -37567,7 +37567,7 @@
     },
     {
       "className": "BitZeros_RecoverItem_Stanton_MicroSatellite_1Box",
-      "title": "Bit Zeros",
+      "title": "Bleeding Edge Tech",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 39000,
@@ -37602,7 +37602,7 @@
         "Lumin V SMG Battery (45 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "Managed to hunt down a rare piece of tech only for it to get snagged by someone right at the last second. Tracking it isn't exactly hard, but I'd rather not keeping chasing this thing.\n\nHead to [Location] and get it back for us. The people over there probably don't even know what it is, so let's do them a favor and take it off their hands. No idea if it's being guarded, so up to you how you wanna deal with any potential threats.\n\nOnce you've got it, take it to [Destination] and then we'll send over the creds.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {
@@ -37635,7 +37635,7 @@
       "system": "Stanton",
       "danger": "Medium",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "FTL_RecoverItem_Space_Stanton_Medium",
@@ -37744,7 +37744,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Medium",
-      "title": "Bit Zeros",
+      "title": "Too Smart For Our Own Good",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 38500,
@@ -37786,7 +37786,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "We were a little too smart with this one and it’s kinda backfired. Sometimes you gotta dream big, you know? Anyway. we were looking to move some encrypted data to one of our data havens and decided to hide it in a ship’s blackbox. They filled the ship with “valuable” stuff as a decoy in case it got attacked. The plan worked a little too well and the cargo might have attracted the wrong kind of attention. They stole all the cargo but missed the blackbox. Bad news is the ship is now swarming with outlaws.\n\nThe data on that blackbox is useless to them, but we need it. If you can get it back for us, we can give you a nice cut from what we make. Seems like a fair deal, right?\n\nHead to [Location] and after you’ve done your thing take the flight recorder to [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "HH_Pyro_RegionD_HHXSOutpost_EliminateAll",
@@ -39213,7 +39213,7 @@
       "system": "Nyx",
       "danger": "Low",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "FTL_RecoverItem_Space_Nyx_Easy",
@@ -39280,7 +39280,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Easy",
-      "title": "Bit Zeros",
+      "title": "Getting To the Bottom of It",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 34500,
@@ -39322,7 +39322,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "So we were expecting a pretty important package earlier today but turns out the pilot got ghosted and they ripped the tracking chip from it and got away. Pretty clever right? Not really, because they forgot to take the flight recorder too.\n\nGet the blackbox from the wreck at [Location] and take it to [Destination]. We’ll send you the creds when you’re done.\n\nOh and watch out for scavs, people are pretty desperate these days, even if it just some busted courier ship.\n\n-Bit Zeros"
     },
     {
       "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_2Box",
@@ -39979,7 +39979,7 @@
       "system": "Stanton",
       "danger": "Low",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "[Contractor]",
       "multiSystem": true
     },
     {
@@ -40082,7 +40082,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Easy",
-      "title": "Bit Zeros",
+      "title": "Getting To the Bottom of It",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 31750,
@@ -40124,7 +40124,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "So we were expecting a pretty important package earlier today but turns out the pilot got ghosted and they ripped the tracking chip from it and got away. Pretty clever right? Not really, because they forgot to take the flight recorder too.\n\nGet the blackbox from the wreck at [Location] and take it to [Destination]. We’ll send you the creds when you’re done.\n\nOh and watch out for scavs, people are pretty desperate these days, even if it just some busted courier ship.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {
@@ -41528,7 +41528,7 @@
       "system": "Stanton",
       "danger": "Very Low",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "[Contractor]"
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Aluminium",
@@ -41673,7 +41673,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Intro",
-      "title": "Bit Zeros",
+      "title": "Data Transfer",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 29000,
@@ -41715,7 +41715,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "Who we are and what we do is not important. All you gotta know is that we need things to get done and we pay people to do it.\n\nIf everything goes well, we don’t ever have to meet. Doesn’t that sound good?\n\nGot a good one to start you off, nice and simple. There’s a blackbox from a downed ship at [Location] that we want.\n\nAll you have to do is take it to [Destination] and you get paid. Easy right? Watch out for scavs, you never know what kind of weirdos are hanging around these abandoned ships.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {
