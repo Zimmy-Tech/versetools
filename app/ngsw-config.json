@@ -25,10 +25,24 @@
       "resources": {
         "files": [
           "/ship-images/**",
-          "/power-icons/**",
-          "/**/versedb_*.json",
-          "/**/config.json"
+          "/power-icons/**"
         ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "app-data",
+      "urls": [
+        "/**/versedb_*.json",
+        "/config.json",
+        "/version.json"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 32,
+        "maxAge": "1h",
+        "timeout": "10s"
       }
     }
   ]

@@ -176,12 +176,17 @@ export class DataService {
         if (gladius) this.selectShip(gladius);
       };
 
-      this.http.get<VerseDb>(primaryUrl).subscribe({
+      // No-cache header forces the browser HTTP cache to revalidate. The
+      // service worker's dataGroup for this URL uses `freshness` strategy
+      // (network-first) so it won't serve a stale copy either — data
+      // updates now propagate on the very next page load after deploy.
+      const noCache = { headers: { 'Cache-Control': 'no-cache' } };
+      this.http.get<VerseDb>(primaryUrl, noCache).subscribe({
         next: applyDb,
         error: (err) => {
           if (primaryUrl !== fallbackUrl) {
             console.warn(`API ${primaryUrl} failed, falling back to ${fallbackUrl}`, err);
-            this.http.get<VerseDb>(fallbackUrl).subscribe({
+            this.http.get<VerseDb>(fallbackUrl, noCache).subscribe({
               next: applyDb,
               error: () => console.warn(`Could not load ${fallbackUrl}`),
             });
@@ -217,7 +222,9 @@ export class DataService {
     const primaryUrl = isStaticHost ? fallbackUrl : `/api/db?mode=${m}`;
 
     const previousClassName = this.selectedShip()?.className;
-    const db = await this.http.get<VerseDb>(primaryUrl).toPromise();
+    const db = await this.http.get<VerseDb>(primaryUrl, {
+      headers: { 'Cache-Control': 'no-cache' },
+    }).toPromise();
     if (!db) return;
     this.db.set(db);
     this.modeVersion.update((v) => v + 1);
