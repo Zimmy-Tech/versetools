@@ -21,7 +21,8 @@
       "Tutorial": 3
     },
     "missionGivers": 12,
-    "factions": 43
+    "factions": 43,
+    "contractorProfiles": 27
   },
   "missionGivers": {
     "constantinehurston": {
@@ -430,6 +431,251 @@
       "type": "Lawful",
       "defaultReaction": "Neutral",
       "repLadder": "factionreputation"
+    }
+  },
+  "contractorProfiles": {
+    "Adagio Holdings": {
+      "name": "Adagio Holdings",
+      "description": "Founded by retired Naval logistics personnel, Adagio found success supporting the voracious resource appetite of the Messer-era military-industrial complex through their salvaging operations. After the end of the Messer regime, Adagio, like many other military contractors, lost their contract, and the company was forced to find new sources of revenue. This ultimately led Adagio begin reselling salvage rights they’ve acquired to independent captains and other enterprises of various sizes.",
+      "area": "UEE",
+      "focus": "Salvaging",
+      "founded": "2577",
+      "hq": "Keene, Killian System",
+      "leadership": "Samoht Rhine, CEO"
+    },
+    "Bit Zeros": {
+      "name": "Bit Zeros",
+      "description": "A brazen hacker collective rumored to have been started by a group disaffected teens on microTech who bonded over their affinity for old technology. Bored by more serious criminals, they are thrill seekers out to make some money, live large, and stick it to the major corporations in Stanton. With a strong preference for digital infiltration and subterfuge, they have been known to bring in outside help when jobs require a more direct approach.",
+      "area": "Stanton",
+      "focus": "Espionage, Theft, Hacking",
+      "founded": "2951",
+      "hq": "microTech, Stanton System",
+      "leadership": "Weevil"
+    },
+    "BlacJac Security": {
+      "name": "BlacJac",
+      "description": "BlacJac was founded on Tram by local Jac Ngo as a protection service for businesses struggling with the growing outlaw problem there. Before long, the security group earned a reputation for effectiveness and larger corporations began contracting BlacJac to look after matters on other worlds. At the same time, ArcCorp had tried to establish their own security force to look at their newly purchased world, Stanton III, but after a series of setbacks and budget issues, made the decision to employ BlacJac, who had assisted the company in several other security matters, to take over policing duties for the planet in 2906.",
+      "area": "Stanton III, Various",
+      "focus": "Private Security Firm",
+      "founded": "2885",
+      "hq": "Tram, Asura, Ferron System",
+      "leadership": "Jac Ngo, Jr., CEO"
+    },
+    "Bounty Hunters Guild": {
+      "name": "Bounty Hunters Guild",
+      "description": "Operating for well over five centuries, the Bounty Hunters Guild has been active for almost as long as there have been outlaws in space. It is primarily a service union that provides its Bounty Hunter members with various resources and benefits such as discounts on supplies, vetting suitable contracts, and career training. Security forces tend to prefer using guild members for bounty work owing to the high standards maintained through their certification program.",
+      "area": "UEE",
+      "focus": "Service Union, Training, and Certification",
+      "founded": "2387",
+      "hq": "New York City, Earth, Sol System",
+      "leadership": "Kristin Sobotka, President"
+    },
+    "Citizens For Prosperity": {
+      "name": "Citizens For Prosperity",
+      "description": "Citizens for Prosperity is a concerned group of civilians who have taken it upon themselves to tame infamous outlaw systems once and for all. What started as a small posse making occasional forays into Pyro to hunt down criminals has grown into a full resettlement plan across multiple systems. Working closely with local residents, the group provides protection and logistical support to the survivors who call the unclaimed frontier home.",
+      "area": "Unclaimed Systems",
+      "focus": "Security, Community Service",
+      "founded": "2950",
+      "hq": "Lorville, Hurston",
+      "leadership": "Madge \"Dash\" Harford"
+    },
+    "Civilian Defense Force": {
+      "name": "Civilian Defense Force",
+      "description": "Created as part of the Militia Mobilization Initiative, the Civilian Defense Force (CDF) is a volunteer militia that can be called upon by the UEE to provide support during times of crisis and large scale threats. The group is not intended to replace existing security forces, but rather temporarily bolster efforts during emergencies. CDF volunteers are called upon to fulfill a variety of roles from combat to support positions.",
+      "area": "UEE",
+      "focus": "Emergency Support",
+      "founded": "2947",
+      "hq": "Stalford, Rytif, Bremen System",
+      "leadership": "Bryce Balewa, Director"
+    },
+    "Covalex": {
+      "name": "Covalex",
+      "description": "Covalex is one of the largest hauling companies in the ’verse; thanks to its policy of contracting with independent ship operators. They learned early on that owners who fly their own ships are more invested in the success of the company and this commitment ensures a higher level of performance. In most systems, at any given time, a large percentage of the ships flying are working under contract to Covalex.",
+      "area": "UEE",
+      "focus": "Delivery, Hauling, Courier Services",
+      "founded": "2782",
+      "hq": "Angeli, Croshaw System",
+      "leadership": "Gilbert Malagon, CEO"
+    },
+    "Crusader Security": {
+      "name": "Crusader Security",
+      "description": "A subdivision of Crusader Industries, Crusader Security was created after the company purchased Stanton II from UEE in 2865 to perform general policing duties for Orison and the surrounding sector. Preferring to maintain a streamlined protective force, Crusader Security relies heavily on security contractors to bolster their peacekeeping efforts. They strive to maintain a professional and courteous demeanor that will make Crusader employees and visitors feel safe and comfortable.",
+      "area": "Stanton II",
+      "focus": "Police Force",
+      "founded": "2865",
+      "hq": "Orison, Crusader, Stanton System",
+      "leadership": "Sasha Rust, Director"
+    },
+    "Dead Saints": {
+      "name": "Dead Saints",
+      "description": "The Dead Saints are a notorious criminal organization involved in smuggling and drug trafficking throughout the UEE and beyond.",
+      "area": "N/A",
+      "focus": "Smuggling, Drug Trafficking",
+      "founded": "2932",
+      "hq": "Area18, ArcCorp, Stanton System",
+      "leadership": "Tecia \"Twitch\" Pacheco"
+    },
+    "Eckhart Security": {
+      "name": "Eckhart Security",
+      "description": "Founded by Army veteran Miles Eckhart, Eckhart Security offers a wide variety of mercenary services across multiple systems - from security escorts, to defensive outpost deployments, to theft prevention and recovery. With over two decades of experience, Eckhart Security has earned itself a reputation for taking on the jobs that other security firms would shy away from.",
+      "area": "UEE",
+      "focus": "Private Security Firm",
+      "founded": "2929",
+      "hq": "Lorville, Hurston, Stanton System",
+      "leadership": "Miles Eckhart, CEO"
+    },
+    "FTL Courier": {
+      "name": "FTL Courier",
+      "description": "WIP",
+      "area": "WIP",
+      "focus": "WIP",
+      "founded": "WIP",
+      "hq": "WIP",
+      "leadership": "WIP"
+    },
+    "Foxwell Enforcement": {
+      "name": "Foxwell Enforcement",
+      "description": "Founded by retired police officers in Lo, Corel system, Foxwell Enforcement provides low-cost security consultancy to those who need it most. The company hoped this altruism would lead to financial reward, but instead they’ve been forced to cut corners and loosen hiring practices to survive. Many companies still hire Foxwell because they’re affordable, but their low wages makes it hard to retain skilled security contractors.",
+      "area": "UEE",
+      "focus": "Private Security Firm",
+      "founded": "2928",
+      "hq": "Lo, Corel System",
+      "leadership": "Banco Foxwell, CEO"
+    },
+    "Headhunters": {
+      "name": "Headhunters",
+      "description": "One of the oldest gangs in the Pyro System, the Headhunters have earned themselves a reputation for being ruthless and respected. Unlike many outlaws, when the Headhunters strike a deal they're known for keeping their word. Especially if they promise to kill someone. They are currently seeking to wrest control of Ruin Station away from XenoThreat.",
+      "area": "Pyro",
+      "focus": "Piracy, Racketeering",
+      "founded": "27th Century",
+      "hq": "N/A",
+      "leadership": "Kima \"Bats\" Farrell"
+    },
+    "Hockrow Agency": {
+      "name": "Hockrow Agency",
+      "description": "Formed by a group of former Advocacy Agents dissatisfied with the corrupt Messer regime, this investigation firm has built their reputation around refusing to back down no matter where the case leads, tackling everything from corrupt government officials to powerful criminal syndicates.",
+      "area": "UEE",
+      "focus": "Investigation",
+      "founded": "2790",
+      "hq": "Quinton, Angelia, Croshaw System",
+      "leadership": "Paul McWaters, Commissioner"
+    },
+    "Hurston Security": {
+      "name": "Hurston Security",
+      "description": "As Hurston Dynamics continued to expand their manufacturing operations in the 25th century, it became necessary to hire more security personnel to protect valuable stock, monitor employee safety, and guard shipments. Rather than shoulder the continued expense of outsourcing, Hurston would create an internal security force to take over these duties. When Hurston acquired the rights to Stanton I in 2865, it was only natural for their own security personnel to take over the responsibility of ensuring the peace and safety of the planet. A common sight on the streets of Lorville, members of Hurston Security are an imposing presence able to quickly respond when the need arises.",
+      "area": "Stanton I",
+      "focus": "Corporate and Planetary Security",
+      "founded": "2446",
+      "hq": "Lorville, Hurston, Stanton System",
+      "leadership": "Calah Hurston, Inspector General"
+    },
+    "InterSec": {
+      "name": "InterSec Defense Solutions",
+      "description": "This top-of-the-line defense contractor has a long history of working with the UEE military on a variety of operations.",
+      "area": "All Systems",
+      "focus": "Military Operations",
+      "founded": "2762",
+      "hq": "Mars, Sol System",
+      "leadership": "Petra Domal, CEO"
+    },
+    "Ling Family Hauling": {
+      "name": "Ling Family Hauling",
+      "description": "Founded by Davi Ling, Ling Family Hauling has been making a name for itself delivering packages and hauling shipments in the greater Crusader area. An experienced hauling pilot with over 30 years of experience, Davi decided to start his own shipping company in Crusader in order to spend more time with his family and less time flying.",
+      "area": "Stanton II",
+      "focus": "Delivery, Hauling, Courier Services",
+      "founded": "2945",
+      "hq": "Daymar (Stanton 2b), Crusader, Stanton System",
+      "leadership": "Davi Ling, Proprietor"
+    },
+    "MT Protection Services": {
+      "name": "MT Protection Services",
+      "description": "When the city of New Babbage was first designed, microTech had hoped that they would be able to use advanced monitoring systems combined with automatic response units to handle most security issues that would arise. Unfortunately, as the city flourished so to did criminal elements looking to take advantage of the growing wealth and affluence there.  To more efficiently deal with this growing criminal trend, in 2891 MT Protection Services was formed. While they still rely heavily on tech and remote monitoring, MT Protection Services employs a small force of security professionals who are able to deal with matters requiring a more hands on approach.",
+      "area": "Stanton IV",
+      "focus": "Police Force",
+      "founded": "2891",
+      "hq": "New Babbage, microTech, Stanton System",
+      "leadership": "Yann Bostrom, Lead Administrator"
+    },
+    "Northrock Service Group": {
+      "name": "Northrock Service Group",
+      "description": "Dedicated to sourcing only the most qualified, trained personnel, Northrock has a proven track record of providing the highest level of protection to their exclusive clientele. Started primarily as bodyguard service, Northrock has expanded their operations to also offer bounty hunting and mercenary services. Many police forces and corporations have come to trust Northrock to handle more difficult cases that they might not otherwise have the resources to deal with.",
+      "area": "Various",
+      "focus": "Private Security Firm",
+      "founded": "2846",
+      "hq": "New Austin, Terra, Terra System",
+      "leadership": "Earl Chisum, CEO"
+    },
+    "Rayari Incorporated": {
+      "name": "Rayari Incorporated",
+      "description": "Rayari Incorporated is a Human research company that specializes in agriculture and bio-engineering. Founded in 2803, it first came to prominence when the founders recreated a complete line of plants from the genetic code of ones indigenous to the then recently-massacred planet Garron II. In 2863, the company expanded into social engineering, creating large arcologies such as Reza's Landing designed for planets with hostile environments. The company maintains many labs throughout the United Empire of Earth (UEE).",
+      "area": "UEE",
+      "focus": "Scientific Research, Gathering, Crafting",
+      "founded": "2803",
+      "hq": "Vosca, Elysium System",
+      "leadership": "Michael Vicar, CEO"
+    },
+    "Red Wind Linehaul": {
+      "name": "Red Wind Linehaul",
+      "description": "Red Wind Linehaul prides itself on its fleet of experienced pilots and contractors, many of who are Naval veterans, that is able to provide service to sectors other companies may shy away from. Because they don't restrict pick up and delivery locations, they have carved a unique niche for themselves in the competitive world of shipping as a company willing to deliver to locations that others won't.",
+      "area": "Various",
+      "focus": "Delivery, Hauling, Courier Services",
+      "founded": "2913",
+      "hq": "Area18, ArcCorp, Stanton System",
+      "leadership": "Kay Farrah, Owner"
+    },
+    "Rough & Ready": {
+      "name": "Rough & Ready",
+      "description": "In a play off of the popular Rest & Relax stations found throughout the UEE, this gang has established itself by running the largest fuel operations in Pyro. While their prices may not be fair, you can at least count on them having fuel and services on offer. Individuals who cross them often find life in Pyro much harder than it already was.",
+      "area": "Pyro Rest Stops",
+      "focus": "Refueling, Black Marketeering",
+      "founded": "2939",
+      "hq": "Checkmate Station",
+      "leadership": "The Garvaris Brothers"
+    },
+    "Shubin Interstellar": {
+      "name": "Shubin Interstellar",
+      "description": "Shubin Interstellar is a massive corporation overseeing thousands of mining sites across dozens of star systems, a varitable army of contractors, and an entire manufacturing division that specializes in producing mining equipment.",
+      "area": "UEE",
+      "focus": "Mining",
+      "founded": "2410",
+      "hq": "New Babbage, microTech, Stanton System",
+      "leadership": "Gavin Arlington, CEO"
+    },
+    "Tar Pits": {
+      "name": "Tar Pits",
+      "description": "Known for their namesake Tow And Repair scams, the Tar Pits run illegal salvage operations, stripping distressed or otherwise unattended ships before their rightful owners can reclaim them. By selling these stolen parts to other criminal groups, the Tar Pits have managed to maintain good relationships with the other larger gangs in Stanton.",
+      "area": "Stanton",
+      "focus": "Piracy, Salvage",
+      "founded": "N/A",
+      "hq": "N/A",
+      "leadership": "N/A"
+    },
+    "Vaughn": {
+      "name": "Vaughn",
+      "description": "Investigated by authorities in connection to dozens of assassinations, the identity of this shadowy individual or group of individuals known as Vaughn remains unknown. Vaughn keeps clients and contractors completely separate and deals with both only through spectrum, which has made it extremely difficult for law enforcement to learn the identity of the person(s) behind this broker service.",
+      "area": "UEE",
+      "focus": "Assassination Broker",
+      "founded": "Information Blocked",
+      "hq": "Information Blocked",
+      "leadership": "Information Blocked"
+    },
+    "Wikelo Emporium": {
+      "name": "Wikelo Emporium",
+      "description": "After many successful cycles at the head of a fabrication souli, Wikelo found themselves lacking in the drive that had defined their early career. In a shock to many, the Banu decided to divest from their souli early and follow their true passion - collecting and fabricating unique items and vehicles. Drawn to manufacturing-style of Humans, it wasn't long before Wikelo had established a remote trading shop inside Human-space, Wikelo Emporium, where they could grow their collection and barter with those who shared their passions.",
+      "area": "UEE",
+      "focus": "Barter",
+      "founded": "N/A",
+      "hq": "Wikelo Emporium Station",
+      "leadership": "Wikelo"
+    },
+    "XenoThreat": {
+      "name": "XenoThreat",
+      "description": "XenoThreat believes that the UEE's continued acceptance of aliens has set Humanity on a path towards destruction. Rather than protecting its citizens, the UEE has given in to greed and has shown a complete disregard for the values that made Humanity great in the first place. In response, XenoThreat is attempting to lead a revolution to take back the soul of the Empire.",
+      "area": "Pyro",
+      "focus": "Piracy, Terrorism",
+      "founded": "N/A",
+      "hq": "Pyro System",
+      "leadership": "The Commander"
     }
   },
   "reputationRanks": {
@@ -26965,7 +27211,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Super",
-      "title": "Bit Zeros",
+      "title": "Bad at Goodbyes",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 85500,
@@ -27007,7 +27253,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Got a big job for a big player. We’re in the process of making someone disappear, like completely vanish, and a part of that is recovering the blackbox from the “accident” that they had recently over at [Location].\nOnly problem is, seems the people this person hired to stage the accident have gotten it in their heads that there’s more money to be made. So much so that they’re still keeping tabs on the now deceased’s ship.\nThese guys aren’t playing around either. You’ll need a couple of friends to help you do this. But if you can get the blackbox out of there and into our hands by dropping it at [Destination], we can really make it worth your while.\n\n-Bit Zeros"
     },
     {
       "className": "HH_Pyro_RegionB_H_XTXSOutposts_EliminateAll",
@@ -27421,7 +27667,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Super",
-      "title": "Bit Zeros",
+      "title": "Bad at Goodbyes",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 80750,
@@ -27463,7 +27709,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Got a big job for a big player. We’re in the process of making someone disappear, like completely vanish, and a part of that is recovering the blackbox from the “accident” that they had recently over at [Location].\nOnly problem is, seems the people this person hired to stage the accident have gotten it in their heads that there’s more money to be made. So much so that they’re still keeping tabs on the now deceased’s ship.\nThese guys aren’t playing around either. You’ll need a couple of friends to help you do this. But if you can get the blackbox out of there and into our hands by dropping it at [Destination], we can really make it worth your while.\n\n-Bit Zeros"
     },
     {
       "className": "CFP_Pyro_RegionB_M_2AsteroidBase_Criminals_DefendShip",
@@ -28296,7 +28542,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_VeryHard",
-      "title": "Bit Zeros",
+      "title": "Our Version of The Truth",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 77000,
@@ -28338,7 +28584,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "I’m not gonna give you the whole backstory of what this person has done to us, but all you need to know is that some scumbag is trying to get a payout for a ship crash and the insurance company wants to see the blackbox recording to make sure everything is “above board”.\n\nWe’re not gonna let that happen though.\n\nSnatch that blackbox at [Location] and bring it to us instead so we can do some “creative editing” on the recording.\n\nApparently, this area is a bit of a hot zone. Probably why they staged the accident there. You should probably bring some backup so you don’t get ghosted before you can bring the blackbox to us at [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "Shubin_RG_Discovery_FPSMine_Pyro_Rank2_MediumQuantity_Apho_Had",
@@ -29141,7 +29387,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_VeryHard",
-      "title": "Bit Zeros",
+      "title": "Our Version of The Truth",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 72500,
@@ -29183,7 +29429,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "I’m not gonna give you the whole backstory of what this person has done to us, but all you need to know is that some scumbag is trying to get a payout for a ship crash and the insurance company wants to see the blackbox recording to make sure everything is “above board”.\n\nWe’re not gonna let that happen though.\n\nSnatch that blackbox at [Location] and bring it to us instead so we can do some “creative editing” on the recording.\n\nApparently, this area is a bit of a hot zone. Probably why they staged the accident there. You should probably bring some backup so you don’t get ghosted before you can bring the blackbox to us at [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "Eckhart_Nyx_MRT_DefendShip",
@@ -29989,7 +30235,7 @@
     },
     {
       "className": "DeadSaints_RecoverItem_Nyx_Maze_1Box",
-      "title": "Dead Saints",
+      "title": "Getting Our Gear Back",
       "category": "Contract",
       "generator": "deadsaints_recoveritem",
       "reward": 67500,
@@ -30026,7 +30272,7 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Dead Saints",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "If you want something done right, you gotta do it yourself. That's what they say, right? Wish I had the time for that, but I have a business to run.\n\nSome of our goods have been mislaid and I need a contractor to put this right for me. Got some info that the guys at [Location] ghosted one of my gang and got their hands on our gear. I need you to grab the stuff, deal with anyone at the location and take it to the drop-off at [Destination] for me. Get it done and I'll sort out your payment.\n\n-Twitch",
       "multiSystem": true
     },
     {
@@ -31527,7 +31773,7 @@
     },
     {
       "className": "BitZeros_RecoverItem_Nyx_MicroSatellite_1Box",
-      "title": "Bit Zeros",
+      "title": "Bleeding Edge Tech",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 60250,
@@ -31572,7 +31818,7 @@
         "Custodian SMG Magazine (60 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "Managed to hunt down a rare piece of tech only for it to get snagged by someone right at the last second. Tracking it isn't exactly hard, but I'd rather not keeping chasing this thing.\n\nHead to [Location] and get it back for us. The people over there probably don't even know what it is, so let's do them a favor and take it off their hands. No idea if it's being guarded, so up to you how you wanna deal with any potential threats.\n\nOnce you've got it, take it to [Destination] and then we'll send over the creds.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {
@@ -32151,7 +32397,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Hard",
-      "title": "Bit Zeros",
+      "title": "Legendary Info?",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 58500,
@@ -32193,7 +32439,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Don’t know if you’ve heard, but there’s a bunch of ships over at [Location] surrounding a burnt-out ship. You curious why? I know we are.\nThink you can get in that wreck, grab the blackbox, and get out? We’ll pay you for it.\n\nBased on the number of sketchy ships in the area, you should bring some friends with to watch your ass, unless you’re some crazy solo act, but we’d prefer if you actually survived this so you can drop off the blackbox at [Destination] for us. \n\nBut hey, your call. As long as it gets done.\n\n-Bit Zeros"
     },
     {
       "className": "HH_Pyro_RegionB_M_GenericXSOutposts_EliminateSpecific",
@@ -33614,7 +33860,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Hard",
-      "title": "Bit Zeros",
+      "title": "Legendary Info?",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 54500,
@@ -33656,7 +33902,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "Don’t know if you’ve heard, but there’s a bunch of ships over at [Location] surrounding a burnt-out ship. You curious why? I know we are.\nThink you can get in that wreck, grab the blackbox, and get out? We’ll pay you for it.\n\nBased on the number of sketchy ships in the area, you should bring some friends with to watch your ass, unless you’re some crazy solo act, but we’d prefer if you actually survived this so you can drop off the blackbox at [Destination] for us. \n\nBut hey, your call. As long as it gets done.\n\n-Bit Zeros"
     },
     {
       "className": "CFP_Pyro_RegionA_Rank5_JacksonsSwap_Local_Handyman",
@@ -36732,7 +36978,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Medium",
-      "title": "Bit Zeros",
+      "title": "Too Smart For Our Own Good",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 41750,
@@ -36774,7 +37020,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "We were a little too smart with this one and it’s kinda backfired. Sometimes you gotta dream big, you know? Anyway. we were looking to move some encrypted data to one of our data havens and decided to hide it in a ship’s blackbox. They filled the ship with “valuable” stuff as a decoy in case it got attacked. The plan worked a little too well and the cargo might have attracted the wrong kind of attention. They stole all the cargo but missed the blackbox. Bad news is the ship is now swarming with outlaws.\n\nThe data on that blackbox is useless to them, but we need it. If you can get it back for us, we can give you a nice cut from what we make. Seems like a fair deal, right?\n\nHead to [Location] and after you’ve done your thing take the flight recorder to [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "EckhartSecurity_EscortShips_Nyx_VeryEasy",
@@ -37567,7 +37813,7 @@
     },
     {
       "className": "BitZeros_RecoverItem_Stanton_MicroSatellite_1Box",
-      "title": "Bit Zeros",
+      "title": "Bleeding Edge Tech",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 39000,
@@ -37602,7 +37848,7 @@
         "Lumin V SMG Battery (45 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "Managed to hunt down a rare piece of tech only for it to get snagged by someone right at the last second. Tracking it isn't exactly hard, but I'd rather not keeping chasing this thing.\n\nHead to [Location] and get it back for us. The people over there probably don't even know what it is, so let's do them a favor and take it off their hands. No idea if it's being guarded, so up to you how you wanna deal with any potential threats.\n\nOnce you've got it, take it to [Destination] and then we'll send over the creds.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {
@@ -37744,7 +37990,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Medium",
-      "title": "Bit Zeros",
+      "title": "Too Smart For Our Own Good",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 38500,
@@ -37786,7 +38032,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "We were a little too smart with this one and it’s kinda backfired. Sometimes you gotta dream big, you know? Anyway. we were looking to move some encrypted data to one of our data havens and decided to hide it in a ship’s blackbox. They filled the ship with “valuable” stuff as a decoy in case it got attacked. The plan worked a little too well and the cargo might have attracted the wrong kind of attention. They stole all the cargo but missed the blackbox. Bad news is the ship is now swarming with outlaws.\n\nThe data on that blackbox is useless to them, but we need it. If you can get it back for us, we can give you a nice cut from what we make. Seems like a fair deal, right?\n\nHead to [Location] and after you’ve done your thing take the flight recorder to [Destination].\n\n-Bit Zeros"
     },
     {
       "className": "HH_Pyro_RegionD_HHXSOutpost_EliminateAll",
@@ -39280,7 +39526,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Nyx_Easy",
-      "title": "Bit Zeros",
+      "title": "Getting To the Bottom of It",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 34500,
@@ -39322,7 +39568,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "So we were expecting a pretty important package earlier today but turns out the pilot got ghosted and they ripped the tracking chip from it and got away. Pretty clever right? Not really, because they forgot to take the flight recorder too.\n\nGet the blackbox from the wreck at [Location] and take it to [Destination]. We’ll send you the creds when you’re done.\n\nOh and watch out for scavs, people are pretty desperate these days, even if it just some busted courier ship.\n\n-Bit Zeros"
     },
     {
       "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_2Box",
@@ -40082,7 +40328,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Easy",
-      "title": "Bit Zeros",
+      "title": "Getting To the Bottom of It",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 31750,
@@ -40124,7 +40370,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "So we were expecting a pretty important package earlier today but turns out the pilot got ghosted and they ripped the tracking chip from it and got away. Pretty clever right? Not really, because they forgot to take the flight recorder too.\n\nGet the blackbox from the wreck at [Location] and take it to [Destination]. We’ll send you the creds when you’re done.\n\nOh and watch out for scavs, people are pretty desperate these days, even if it just some busted courier ship.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {
@@ -41673,7 +41919,7 @@
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Intro",
-      "title": "Bit Zeros",
+      "title": "Data Transfer",
       "category": "Contract",
       "generator": "bitzeros_recoveritem",
       "reward": 29000,
@@ -41715,7 +41961,7 @@
         "Arrowhead Sniper Rifle Battery (16 cap)"
       ],
       "contractor": "Bit Zeros",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "Who we are and what we do is not important. All you gotta know is that we need things to get done and we pay people to do it.\n\nIf everything goes well, we don’t ever have to meet. Doesn’t that sound good?\n\nGot a good one to start you off, nice and simple. There’s a blackbox from a downed ship at [Location] that we want.\n\nAll you have to do is take it to [Destination] and you get paid. Easy right? Watch out for scavs, you never know what kind of weirdos are hanging around these abandoned ships.\n\n-Bit Zeros",
       "multiSystem": true
     },
     {

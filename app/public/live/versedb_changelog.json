@@ -1,1 +1,906 @@
-{"meta":{"generatedAt":"2026-04-09T17:20:11.488332+00:00","entries":1},"changelog":[{"fromVersion":"4.7.0-live.11576750","toVersion":"4.7.0-live.11592622","date":"2026-04-08","changes":[],"added":[{"category":"flightcontroller","className":"controller_flight_misc_hull_b","name":"Flight Blade"},{"category":"weaponmount","className":"misc_hull_b_scitem_remote_turret","name":"Remote Turret"},{"category":"weaponmount","className":"misc_hull_b_scitem_remote_turret_tractor_left","name":"Remote Turret"},{"category":"weaponmount","className":"misc_hull_b_scitem_remote_turret_tractor_right","name":"Remote Turret"},{"category":"missilelauncher","className":"mrck_s06_misc_hull_b","name":"MISC S6 Missile Rack"}],"removed":[]}]}
+{
+  "meta": {
+    "generatedAt": "2026-04-15T18:39:05.483848+00:00",
+    "entries": 3
+  },
+  "changelog": [
+    {
+      "fromVersion": "4.7.0-live.11617053",
+      "toVersion": "4.7.0-live.11638371",
+      "date": "2026-04-15",
+      "changes": [
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s01_foxfire_scitem",
+          "name": "FoxFire Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00588,
+              "new": 0.012
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s01_lightfire_scitem",
+          "name": "LightFire Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0049,
+              "new": 0.01
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s02_sparkfire_scitem",
+          "name": "SparkFire",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00545,
+              "new": 0.016
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s02_sunfire_scitem",
+          "name": "SunFire",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00654,
+              "new": 0.013
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_aegs_s04_javelin_scitem",
+          "name": "Aegis S4 Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0613,
+              "new": 0.12
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s01_burst_scitem",
+          "name": "Burst",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01137,
+              "new": 0.012
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s01_flood_scitem",
+          "name": "Flood",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01009,
+              "new": 0.008
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s01_rush_scitem",
+          "name": "Rush",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01068,
+              "new": 0.01
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s02_cascade_scitem",
+          "name": "Cascade",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01123,
+              "new": 0.019
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s02_flash_scitem",
+          "name": "Flash",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01264,
+              "new": 0.013
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s02_torrent_scitem",
+          "name": "Torrent",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01188,
+              "new": 0.016
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s03_echo_scitem",
+          "name": "Echo",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.04959,
+              "new": 0.031
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s03_fissure_scitem",
+          "name": "Fissure",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0702,
+              "new": 0.026
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s03_impulse_scitem",
+          "name": "Impulse",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0747,
+              "new": 0.021
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s01_colossus_scitem",
+          "name": "Colossus",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00549,
+              "new": 0.012
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s01_goliath_scitem",
+          "name": "Goliath",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0058,
+              "new": 0.01
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s01_vulcan_scitem",
+          "name": "Vulcan",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00608,
+              "new": 0.008
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s02_bolon_scitem",
+          "name": "Bolon",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00654,
+              "new": 0.016
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s02_huracan_scitem",
+          "name": "Huracan",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0061,
+              "new": 0.013
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s02_yaluk_scitem",
+          "name": "Yaluk",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00676,
+              "new": 0.019
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s03_agni_scitem",
+          "name": "Agni",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.03606,
+              "new": 0.021
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s03_kama_scitem",
+          "name": "Kama",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.03864,
+              "new": 0.026
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s03_vesta_scitem",
+          "name": "Vesta",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.03993,
+              "new": 0.031
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_orig_s04_890j_scitem",
+          "name": "Allegro",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0613,
+              "new": 0.047
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s01_drift_scitem",
+          "name": "Drift",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01666,
+              "new": 0.01
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s01_spectre_scitem",
+          "name": "Spectre",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01862,
+              "new": 0.014
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s01_zephyr_scitem",
+          "name": "Zephyr",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01764,
+              "new": 0.012
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s02_bolt_scitem",
+          "name": "Bolt",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01962,
+              "new": 0.013
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s02_nova_scitem",
+          "name": "Nova",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01853,
+              "new": 0.016
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s02_spicule_scitem",
+          "name": "Spicule",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.02071,
+              "new": 0.011
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s01_atlas_scitem",
+          "name": "Atlas",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00755,
+              "new": 0.014
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s01_eos_scitem",
+          "name": "Eos",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00911,
+              "new": 0.01
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s01_hyperion_scitem",
+          "name": "Hyperion",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00823,
+              "new": 0.012
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s02_aither_scitem",
+          "name": "Aither",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00916,
+              "new": 0.013
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s02_hemera_scitem",
+          "name": "Hemera",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00839,
+              "new": 0.011
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s02_khaos_scitem",
+          "name": "Khaos",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01014,
+              "new": 0.016
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s03_erebos_scitem",
+          "name": "Erebos",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.04959,
+              "new": 0.018
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s03_metis_scitem",
+          "name": "Metis",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.05989,
+              "new": 0.026
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s03_tyche_scitem",
+          "name": "Tyche",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0541,
+              "new": 0.021
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s01_template",
+          "name": "S1 Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 1.0,
+              "new": 0.014
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s02_template",
+          "name": "S2 Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 1.0,
+              "new": 0.014
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s03_template",
+          "name": "S3 Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 1.0,
+              "new": 0.014
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s04_template",
+          "name": "S4 Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 1.0,
+              "new": 0.014
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s01_expedition_scitem",
+          "name": "Expedition",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0098,
+              "new": 0.01
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s01_voyage_scitem",
+          "name": "Voyage",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.00911,
+              "new": 0.012
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s01_wayfare_scitem",
+          "name": "Wayfare",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01009,
+              "new": 0.008
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s02_odyssey_scitem",
+          "name": "Odyssey",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0109,
+              "new": 0.016
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s02_quest_scitem",
+          "name": "Quest",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01123,
+              "new": 0.019
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s02_sojourn_scitem",
+          "name": "Sojourn",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01035,
+              "new": 0.013
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s03_drifter_scitem",
+          "name": "Drifter",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.06633,
+              "new": 0.031
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s03_ranger_scitem",
+          "name": "Ranger",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.06118,
+              "new": 0.021
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s03_wanderer_scitem",
+          "name": "Wanderer",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0644,
+              "new": 0.026
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s01_beacon_scitem",
+          "name": "Beacon",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.01862,
+              "new": 0.01
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s01_siren_scitem",
+          "name": "Siren",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.02058,
+              "new": 0.012
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s01_vk00_scitem",
+          "name": "VK-00",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.02156,
+              "new": 0.014
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s02_crossfield_scitem",
+          "name": "Crossfield",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.02071,
+              "new": 0.016
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s02_xl1_scitem",
+          "name": "XL-1",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.02398,
+              "new": 0.011
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s02_yeager_scitem",
+          "name": "Yeager",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.02289,
+              "new": 0.013
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s03_balandin_scitem",
+          "name": "Balandin",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.13524,
+              "new": 0.021
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s03_pontes_scitem",
+          "name": "Pontes",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.12236,
+              "new": 0.026
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s03_ts2_scitem",
+          "name": "TS-2",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.14168,
+              "new": 0.018
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s04_idris_temp",
+          "name": "S4 Quantum Drive",
+          "fields": [
+            {
+              "field": "fuelRate",
+              "old": 0.0613,
+              "new": 0.075
+            }
+          ]
+        }
+      ],
+      "added": [],
+      "removed": []
+    },
+    {
+      "fromVersion": "4.7.0-ptu.11494258",
+      "toVersion": "4.7.0-live.11617053",
+      "date": "2026-04-14",
+      "changes": [
+        {
+          "category": "ship",
+          "className": "aegs_sabre_firebird",
+          "name": "Aegis Sabre Firebird",
+          "fields": [
+            {
+              "field": "mass",
+              "old": 83093,
+              "new": 73493.0
+            },
+            {
+              "field": "weaponPowerPoolSize",
+              "old": null,
+              "new": 4
+            }
+          ]
+        },
+        {
+          "category": "ship",
+          "className": "aegs_sabre_peregrine",
+          "name": "Aegis Sabre Peregrine",
+          "fields": [
+            {
+              "field": "mass",
+              "old": 83093,
+              "new": 73493.0
+            },
+            {
+              "field": "weaponPowerPoolSize",
+              "old": null,
+              "new": 4
+            }
+          ]
+        },
+        {
+          "category": "ship",
+          "className": "aegs_sabre_raven",
+          "name": "Aegis Sabre Raven",
+          "fields": [
+            {
+              "field": "mass",
+              "old": 83093,
+              "new": 68711.0
+            },
+            {
+              "field": "weaponPowerPoolSize",
+              "old": null,
+              "new": 4
+            }
+          ]
+        },
+        {
+          "category": "ship",
+          "className": "argo_mpuv_1t",
+          "name": "Argo MPUV Tractor",
+          "fields": [
+            {
+              "field": "mass",
+              "old": 9210,
+              "new": 6195.0
+            },
+            {
+              "field": "weaponPowerPoolSize",
+              "old": null,
+              "new": 2
+            }
+          ]
+        },
+        {
+          "category": "ship",
+          "className": "misc_fury_lx",
+          "name": "Mirai Fury LX",
+          "fields": [
+            {
+              "field": "mass",
+              "old": 13939,
+              "new": 12832.0
+            },
+            {
+              "field": "weaponPowerPoolSize",
+              "old": null,
+              "new": 4
+            }
+          ]
+        }
+      ],
+      "added": [
+        {
+          "category": "ship",
+          "className": "ANVL_Hornet_F7A_MK1",
+          "name": "ANVL Hornet F7A MK1"
+        }
+      ],
+      "removed": [
+        {
+          "category": "ship",
+          "className": "ARGO_MPUV_1T",
+          "name": "ARGO MPUV 1T"
+        },
+        {
+          "category": "ship",
+          "className": "anvl_hornet_f7a_mk1",
+          "name": "Anvl Hornet F7A Mk1"
+        }
+      ]
+    },
+    {
+      "fromVersion": "4.7.0-live.11576750",
+      "toVersion": "4.7.0-live.11592622",
+      "date": "2026-04-08",
+      "changes": [],
+      "added": [
+        {
+          "category": "flightcontroller",
+          "className": "controller_flight_misc_hull_b",
+          "name": "Flight Blade"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret_tractor_left",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weaponmount",
+          "className": "misc_hull_b_scitem_remote_turret_tractor_right",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "missilelauncher",
+          "className": "mrck_s06_misc_hull_b",
+          "name": "MISC S6 Missile Rack"
+        }
+      ],
+      "removed": []
+    }
+  ]
+}
