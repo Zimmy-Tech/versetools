@@ -5915,30 +5915,6 @@ def main(mode: str = "live"):
                         if hp["id"].lower() in {h.lower() for h in hp_ids}:
                             hp["portTags"] = tag
 
-    # Drop placeholder/template items leaked from DCB — classNames ending
-    # in "_template" (e.g. shld_s01_template, cool_s03_template) plus
-    # Banu-family placeholder items whose names were never overridden
-    # (e.g. shld_banu_s01_placeholder_scitem is generic "S1 Shield"; its
-    # s02 sibling is aliased to "Sukoran Shield" and stays). Not filtered
-    # by display name because legitimate items like JUST CoolCore
-    # ("S2 Cooler") and the Idris radar ("S3 Radar") share the shape.
-    _PLACEHOLDER_CLS_RE = re.compile(r'_template$|_placeholder_scitem$', re.IGNORECASE)
-    _GENERIC_NAME_RE = re.compile(r'^S\d+\s+\w+(\s+\w+)?$', re.IGNORECASE)
-    def _is_placeholder(cls, name):
-        cls_l = (cls or "").lower()
-        n = (name or "")
-        if cls_l.endswith("_template"):
-            return True
-        if "_placeholder_scitem" in cls_l and _GENERIC_NAME_RE.match(n):
-            return True
-        return False
-    _before = len(items)
-    items = {k: v for k, v in items.items()
-             if not _is_placeholder(k, v.get("name"))}
-    _dropped = _before - len(items)
-    if _dropped:
-        print(f"  Dropped {_dropped} placeholder/template items")
-
     item_list = list(items.values())
 
     def count_type(t):

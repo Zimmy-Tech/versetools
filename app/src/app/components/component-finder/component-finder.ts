@@ -15,6 +15,18 @@ interface FinderResult {
   templateUrl: './component-finder.html',
   styleUrl: './component-finder.scss',
 })
+/** Item types surfaced in the finder's search — interchangeable equipment
+ *  players actually care about. Excludes mount points (WeaponMount,
+ *  Turret, TurretBase), salvage sub-components, and DCB templates whose
+ *  display names collide (e.g. 100+ bespoke per-ship "Remote Turret"
+ *  records). */
+const FINDER_SEARCH_TYPES = new Set([
+  'WeaponGun', 'WeaponTachyon',
+  'Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar',
+  'Missile', 'MissileLauncher',
+  'TractorBeam', 'WeaponMining', 'Module',
+]);
+
 export class ComponentFinderComponent {
   searchQuery = signal('');
 
@@ -23,8 +35,9 @@ export class ComponentFinderComponent {
     const q = this.searchQuery().toLowerCase().trim();
     if (q.length < 2) return [];
     return this.data.items()
-      .filter(i => i.name.toLowerCase().includes(q) ||
-                   i.className.toLowerCase().includes(q))
+      .filter(i => FINDER_SEARCH_TYPES.has(i.type) &&
+                   (i.name.toLowerCase().includes(q) ||
+                    i.className.toLowerCase().includes(q)))
       .slice(0, 50);
   });
 
