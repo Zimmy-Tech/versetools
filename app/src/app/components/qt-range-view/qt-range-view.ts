@@ -68,8 +68,30 @@ export class QtRangeViewComponent {
 
   constructor(public data: DataService) {}
 
-  /** Find the quantum drive slot size for a ship via its hardpoints. */
+  /** The ship's currently-fitted default quantum drive, if any.
+   *  Walks every entry in defaultLoadout (including dotted sub-paths like
+   *  "hardpoint_body_int_rear.hardpoint_rear_quantum_drive") and returns the
+   *  first value that resolves to a QuantumDrive item. Required for ships
+   *  whose QD port lives on a sub-entity rather than the main hull, e.g.
+   *  MISC Hull C whose drive is attached to its detachable rear module. */
+  private stockDrive(ship: Ship): Item | null {
+    const dl = ship.defaultLoadout ?? {};
+    const imap = this.data.itemMap();
+    for (const cls of Object.values(dl)) {
+      if (!cls) continue;
+      const item = imap.get(cls.toLowerCase());
+      if (item?.type === 'QuantumDrive') return item;
+    }
+    return null;
+  }
+
+  /** Find the quantum drive slot size for a ship. Prefers the equipped
+   *  stock drive's size (works even when the QD port is on a sub-entity
+   *  and therefore not in ship.hardpoints). Falls back to the ship's own
+   *  declared QuantumDrive hardpoint for ships without a stock QD. */
   private qdSlotSize(ship: Ship): number {
+    const stock = this.stockDrive(ship);
+    if (stock?.size) return stock.size;
     const hp = ship.hardpoints?.find(h =>
       h.type === 'QuantumDrive' ||
       h.allTypes?.some(t => t.type === 'QuantumDrive') ||
@@ -77,13 +99,6 @@ export class QtRangeViewComponent {
     );
     if (!hp) return 0;
     return hp.maxSize ?? hp.minSize ?? 0;
-  }
-
-  /** The ship's currently-fitted default quantum drive, if any. */
-  private stockDrive(ship: Ship): Item | null {
-    const cls = ship.defaultLoadout?.['hardpoint_quantum_drive'];
-    if (!cls) return null;
-    return this.data.itemMap().get(cls.toLowerCase()) ?? null;
   }
 
   /** Map of best drive (lowest fuelRate) keyed by `${itemClass}|${grade}|${size}`. */
