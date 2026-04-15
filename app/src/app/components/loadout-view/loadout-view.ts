@@ -562,7 +562,24 @@ export class LoadoutViewComponent {
   utilitySlots = computed(() => {
     const ship = this.data.selectedShip();
     if (!ship) return [];
-    return ship.hardpoints.filter(hp => this.utilityTypes.includes(hp.type));
+    const all = ship.hardpoints.filter(hp => this.utilityTypes.includes(hp.type));
+    // Hide internal slots (invisible+uneditable) that the player can't
+    // interact with — e.g. MOLE mining-pod sub-radars. Preserve them
+    // only when their type group has no user-visible alternative on
+    // the ship (capital ships like the Javelin/890 Jump surface their
+    // critical components exclusively through these flags).
+    const isHiddenInternal = (hp: Hardpoint) => {
+      const f = (hp.flags ?? '').toLowerCase();
+      if (!f.includes('uneditable')) return false;
+      return f.includes('invisible') || f.includes('start_hidden');
+    };
+    const visibleByType = new Map<string, number>();
+    for (const hp of all) {
+      if (!isHiddenInternal(hp)) {
+        visibleByType.set(hp.type, (visibleByType.get(hp.type) ?? 0) + 1);
+      }
+    }
+    return all.filter(hp => !isHiddenInternal(hp) || (visibleByType.get(hp.type) ?? 0) === 0);
   });
 
   otherSlots = computed(() => {
