@@ -4852,15 +4852,6 @@ def main(mode: str = "live"):
                     ]
                     break
 
-    # Idris M/P: add Hammerfall torpedo default loadout keys so missiles populate when equipped
-    for idris_cls in ("aegs_idris_m", "aegs_idris_p"):
-        if idris_cls in ships:
-            dl = ships[idris_cls].setdefault("defaultLoadout", {})
-            for n in range(1, 21):  # 20 torpedoes
-                key = f"hardpoint_nose_railgun.missile_{n:02d}_attach"
-                if key not in dl:
-                    dl[key] = "misl_s12_cs_taln_calamity"
-
     # Idris-P: nose weapon not in DCB loadout — equip Exodus-10 Laser Beam
     if "aegs_idris_p" in ships:
         idris_p_dl = ships["aegs_idris_p"].setdefault("defaultLoadout", {})
@@ -5641,12 +5632,29 @@ def main(mode: str = "live"):
         "qtMassLimit": 500000,
     }
 
+    # Polaris torpedo racks: DCB lists capacity 8 but in-game only fires 7
+    # per tube (known CIG launcher bug — the MFD shows 8 but the 8th never
+    # releases). Match reality so ×7 displays everywhere and damage sums
+    # reflect the 28 torpedoes actually carried.
+    for cls in ("mrck_s10_rsi_polaris_torpedo_lb", "mrck_s10_rsi_polaris_torpedo_lt",
+                "mrck_s10_rsi_polaris_torpedo_rb", "mrck_s10_rsi_polaris_torpedo_rt"):
+        if cls in items:
+            items[cls]["capacity"] = 7
+
     # Beam weapon overrides (damage not extractable from standard ammo chain)
     BEAM_OVERRIDES = {
         "hrst_laserbeam_bespoke": {
             "damage": {"physical": 0, "energy": 15000, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
             "alphaDamage": 15000, "dps": 15000, "fireRate": 60,
             "penetrationDistance": 29.4, "penetrationMinRadius": 1.47, "penetrationMaxRadius": 2.94,
+        },
+        # Idris-M S10 "Destroyer" Mass Driver — charge weapon. DCB base alpha
+        # (144,160 @ 1.9 RPM) reflects uncharged shot. maxChargeModifier
+        # damageMultiplier=2 doubles alpha on a full charge, the way players
+        # actually fire it. Erkul and SPViewer report the max-charge number.
+        "klwe_massdriver_s10": {
+            "damage": {"physical": 288320, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
+            "alphaDamage": 288320, "dps": 9610.67, "fireRate": 2.0,
         },
     }
     for cls, overrides in BEAM_OVERRIDES.items():
