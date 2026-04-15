@@ -4651,6 +4651,67 @@ def main(mode: str = "live"):
                 if hp["id"].lower() not in {x.lower() for x in excluded_ids}
             ]
 
+    # ── Hardpoint promotions ────────────────────────────────────────────────
+    # Some ships are physically split into multiple DCB entities (front/back
+    # hulls connected at a structural joint). Their component hardpoints live
+    # on a sub-entity's forge XML and surface in defaultLoadout as dotted
+    # paths like "hardpoint_body_int_rear.hardpoint_rear_quantum_drive".
+    # The split is a game-engine implementation detail, not a swappable
+    # modular system — the "back half" is permanent hardware. For these
+    # ships we synthesize top-level hardpoints and mirror the default-loadout
+    # entries so the loadout UI, picker, and stat calcs can treat them as
+    # normal components.
+    #
+    # Entry format:
+    #   ship_class -> list of promotions
+    #     source_path:    dotted defaultLoadout key to pull the equipped item from
+    #     target_id:      synthetic top-level hardpoint id to create
+    #     label:          human-readable slot name
+    #     type:           hardpoint Type (QuantumDrive, Cooler, Shield, etc.)
+    #     subtypes:       hardpoint SubTypes (e.g. "QDrive")
+    #     size:           min/max size (same value both)
+    #     controllerTag:  game controller tag (optional)
+    HP_PROMOTIONS = {
+        "MISC_Hull_C": [
+            {
+                "source_path": "hardpoint_body_int_rear.hardpoint_rear_quantum_drive",
+                "target_id": "hardpoint_quantum_drive",
+                "label": "Quantum Drive",
+                "type": "QuantumDrive",
+                "subtypes": "QDrive",
+                "size": 3,
+                "controllerTag": "quantum_drive",
+            },
+        ],
+    }
+    for ship_cls, promotions in HP_PROMOTIONS.items():
+        ship = ships.get(ship_cls)
+        if not ship:
+            continue
+        dl = ship.setdefault("defaultLoadout", {})
+        hardpoints = ship.setdefault("hardpoints", [])
+        existing_ids = {h.get("id", "").lower() for h in hardpoints}
+        for p in promotions:
+            equipped = dl.get(p["source_path"])
+            # Synthesize the hardpoint entry even if nothing is equipped —
+            # the slot exists on the ship regardless of factory fitment.
+            tid = p["target_id"]
+            if tid.lower() not in existing_ids:
+                hardpoints.append({
+                    "id": tid,
+                    "label": p.get("label", tid),
+                    "type": p["type"],
+                    "subtypes": p.get("subtypes", ""),
+                    "minSize": p["size"],
+                    "maxSize": p["size"],
+                    "flags": p.get("flags", ""),
+                    "allTypes": [{"type": p["type"], "subtypes": p.get("subtypes", "")}],
+                    **({"controllerTag": p["controllerTag"]} if p.get("controllerTag") else {}),
+                })
+            # Mirror the equipped item to the top-level key if present.
+            if equipped and tid not in dl:
+                dl[tid] = equipped
+
     # Hornet Mk I: nose turret is bespoke (not swappable) — mark as uneditable
     _hornet_mk1_lock_nose = [
         "anvl_hornet_f7c", "anvl_hornet_f7c_wildfire",
