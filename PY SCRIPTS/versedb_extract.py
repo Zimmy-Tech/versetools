@@ -5612,6 +5612,27 @@ def main(mode: str = "live"):
         if "ANVL_Hornet_F7C_Mk2_Nose" not in tags:
             tags.append("ANVL_Hornet_F7C_Mk2_Nose")
 
+    # Argo SRV towing beam — not extracted from DCB (item record missing),
+    # equipped via the SRV's nested remote turret loadout.
+    items["argo_towingbeam_s3"] = {
+        "className": "argo_towingbeam_s3",
+        "name": "SafeTow S3 Towing Beam",
+        "manufacturer": "Argo Astronautics",
+        "type": "TractorBeam",
+        "subType": "Towing",
+        "size": 3,
+        "grade": "1",
+        "maxForce": 5000000,
+        "minForce": 1.5,
+        "maxDistance": 300,
+        "maxAngle": 90,
+        "maxVolume": 300000,
+        "towForce": 120000,
+        "towMaxAccel": 70,
+        "towMaxDist": 125,
+        "qtMassLimit": 500000,
+    }
+
     # Beam weapon overrides (damage not extractable from standard ammo chain)
     BEAM_OVERRIDES = {
         "hrst_laserbeam_bespoke": {
