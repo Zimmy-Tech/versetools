@@ -157,7 +157,16 @@ export class MissionsViewComponent {
   });
 
   private allFiltered = computed(() => {
-    const search = this.searchQuery().toLowerCase();
+    // Title-only search with word-boundary prefix matching. The previous
+    // substring search across title + description + giver + category
+    // produced massive false-positive counts for short queries (e.g. "king"
+    // returned 627 hits because it's a substring of looking/taking/seeking/
+    // making/etc.). Narrative text is no longer indexed — category / system /
+    // activity / contractor all have dedicated dropdown filters.
+    const q = this.searchQuery().toLowerCase().trim();
+    const titleRx = q
+      ? new RegExp('\\b' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
+      : null;
     const cat = this.categoryFilter();
     const law = this.lawfulFilter();
     const sys = this.systemFilter();
@@ -179,14 +188,7 @@ export class MissionsViewComponent {
     else if (bp) missions = missions.filter(m => m.blueprintRewards?.length);
     if (chain) missions = missions.filter(m => m.isChain);
     if (ct) missions = missions.filter(m => m.contractor === ct);
-    if (search) {
-      missions = missions.filter(m =>
-        m.title.toLowerCase().includes(search) ||
-        (m.description?.toLowerCase().includes(search)) ||
-        (m.giver?.toLowerCase().includes(search)) ||
-        m.category.toLowerCase().includes(search)
-      );
-    }
+    if (titleRx) missions = missions.filter(m => titleRx.test(m.title ?? ''));
 
     if (sort === 'reward') missions = [...missions].sort((a, b) => b.reward - a.reward);
     else if (sort === 'title') missions = [...missions].sort((a, b) => a.title.localeCompare(b.title));
