@@ -25,6 +25,7 @@ export class App implements OnInit, OnDestroy {
   loadedVersion = signal('');
 
   private versionCheckInterval: any;
+  private onVisibility: (() => void) | null = null;
 
   constructor(
     public data: DataService,
@@ -69,18 +70,28 @@ export class App implements OnInit, OnDestroy {
         if (acked && acked === r.v) localStorage.removeItem('versetools_update_acked');
       }, error: () => {} });
 
-    // Poll version.json every 5 minutes. If it changed, nudge the SW to
+    // Poll version.json every 60s. If it changed, nudge the SW to
     // check for a new bundle — we do NOT show the popup from this path,
     // because version.json can flip before the SW has cached the new assets.
     // The popup will appear via VERSION_READY once the SW has the bundle ready.
-    this.versionCheckInterval = setInterval(() => {
+    const nudgeUpdate = () => {
       this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
         .subscribe({ next: r => {
           if (this.loadedVersion() && r.v !== this.loadedVersion() && this.swUpdate.isEnabled) {
             this.swUpdate.checkForUpdate().catch(() => {});
           }
         }, error: () => {} });
-    }, 5 * 60 * 1000);
+    };
+    this.versionCheckInterval = setInterval(nudgeUpdate, 60 * 1000);
+
+    // Also nudge when the tab regains focus/visibility — users who left
+    // the site open in a background tab get an update check as soon as
+    // they come back instead of waiting up to a full poll cycle.
+    this.onVisibility = () => {
+      if (document.visibilityState === 'visible') nudgeUpdate();
+    };
+    document.addEventListener('visibilitychange', this.onVisibility);
+    window.addEventListener('focus', this.onVisibility);
 
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.pipe(
@@ -91,11 +102,18 @@ export class App implements OnInit, OnDestroy {
           : (this.loadedVersion() ? this.loadedVersion() + '+new' : 'new');
         this.notifyUpdate(v);
       });
+      // Kick off an immediate check on load so returning users don't
+      // wait for the first 60s tick.
+      this.swUpdate.checkForUpdate().catch(() => {});
     }
   }
 
   ngOnDestroy(): void {
     clearInterval(this.versionCheckInterval);
+    if (this.onVisibility) {
+      document.removeEventListener('visibilitychange', this.onVisibility);
+      window.removeEventListener('focus', this.onVisibility);
+    }
   }
 
   /**
