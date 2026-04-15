@@ -263,3 +263,40 @@
     max-width: none;
   }
 }
+
+/* Build badge — a small fixed tag showing the deployed version hash +
+   timestamp. Lets anyone tell at a glance which build the browser is
+   currently running. Hover for the full version string. */
+.build-badge {
+  position: fixed;
+  bottom: 6px;
+  right: 8px;
+  z-index: 50;
+  pointer-events: auto;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  padding: 2px 6px;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+  user-select: text;
+
+  &:hover {
+    opacity: 1;
+    color: var(--accent);
+    border-color: rgba(0, 200, 255, 0.25);
+  }
+}
+
+@media (max-width: 767px) {
+  .build-badge {
+    bottom: 4px;
+    right: 4px;
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+}

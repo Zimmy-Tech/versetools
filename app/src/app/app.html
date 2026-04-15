@@ -7,6 +7,10 @@
     </div>
   </div>
 
+  @if (buildTag()) {
+    <div class="build-badge" [title]="'Build: ' + loadedVersion()">{{ buildTag() }}</div>
+  }
+
   @if (showWelcome()) {
     <div class="welcome-overlay" (click)="dismissWelcome()"></div>
     <div class="welcome-popup">

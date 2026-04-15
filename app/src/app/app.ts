@@ -19,9 +19,12 @@ import { HeaderComponent } from './components/header/header';
 export class App implements OnInit, OnDestroy {
   updateAvailable = signal(false);
   showWelcome = signal(false);
+  /** Build tag from version.json — hash + ISO timestamp. Exposed for the
+   *  build badge so users (and us) can see at a glance which deploy the
+   *  browser is currently running. */
+  loadedVersion = signal('');
 
   private versionCheckInterval: any;
-  private loadedVersion = '';
 
   constructor(
     public data: DataService,
@@ -46,7 +49,7 @@ export class App implements OnInit, OnDestroy {
    */
   private notifyUpdate(newVersion: string): void {
     if (this.updateAvailable()) return;
-    if (!newVersion || this.loadedVersion === newVersion) return;
+    if (!newVersion || this.loadedVersion() === newVersion) return;
     const acked = localStorage.getItem('versetools_update_acked');
     if (acked === newVersion) return;
     this.pendingVersion = newVersion;
@@ -61,7 +64,7 @@ export class App implements OnInit, OnDestroy {
     }
     this.http.get<{ v: string }>('version.json', { headers: { 'Cache-Control': 'no-cache' } })
       .subscribe({ next: r => {
-        this.loadedVersion = r.v;
+        this.loadedVersion.set(r.v);
         const acked = localStorage.getItem('versetools_update_acked');
         if (acked && acked === r.v) localStorage.removeItem('versetools_update_acked');
       }, error: () => {} });
@@ -73,7 +76,7 @@ export class App implements OnInit, OnDestroy {
     this.versionCheckInterval = setInterval(() => {
       this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
         .subscribe({ next: r => {
-          if (this.loadedVersion && r.v !== this.loadedVersion && this.swUpdate.isEnabled) {
+          if (this.loadedVersion() && r.v !== this.loadedVersion() && this.swUpdate.isEnabled) {
             this.swUpdate.checkForUpdate().catch(() => {});
           }
         }, error: () => {} });
@@ -85,7 +88,7 @@ export class App implements OnInit, OnDestroy {
       ).subscribe(e => {
         const v = (e.latestVersion && (e.latestVersion as any).hash)
           ? (e.latestVersion as any).hash
-          : (this.loadedVersion ? this.loadedVersion + '+new' : 'new');
+          : (this.loadedVersion() ? this.loadedVersion() + '+new' : 'new');
         this.notifyUpdate(v);
       });
     }
@@ -93,6 +96,25 @@ export class App implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.versionCheckInterval);
+  }
+
+  /**
+   * Short build tag for the badge — "hash · MM-DD HH:MM" pulled from
+   * `version.json` whose format is "HASH-ISO8601". Returns empty until
+   * the first load resolves.
+   */
+  buildTag(): string {
+    const v = this.loadedVersion();
+    if (!v) return '';
+    // "18e2aed-2026-04-09T06:56:19Z" -> ["18e2aed", "2026-04-09T06:56:19Z"]
+    const dash = v.indexOf('-');
+    if (dash < 0) return v;
+    const hash = v.slice(0, dash);
+    const iso = v.slice(dash + 1);
+    // MM-DD HH:MM
+    const m = iso.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+    const when = m ? `${m[1]}-${m[2]} ${m[3]}:${m[4]}` : iso;
+    return `${hash} · ${when}`;
   }
 
   dismissWelcome(): void {
