@@ -906,3 +906,73 @@
     padding: 6px 12px;
   }
 }
+
+/* ═════════════════ Faction Profile Card ═════════════════
+   Rendered at the top of the Reputation popout tab for any contract
+   whose contractor has a RepUI profile in global.ini. */
+.faction-card {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(0, 200, 255, 0.05), rgba(0, 200, 255, 0.01));
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  position: relative;
+}
+
+.fc-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+}
+
+.fc-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.fc-desc {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text2);
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+
+.fc-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 4px 14px;
+}
+
+.fc-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.3;
+  padding: 2px 0;
+}
+
+.fcs-k {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  min-width: 72px;
+  flex-shrink: 0;
+}
+
+.fcs-v {
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+}

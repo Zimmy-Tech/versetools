@@ -73,11 +73,23 @@ interface RepLadder {
   ranks: RepRank[];
 }
 
+interface ContractorProfile {
+  name: string;
+  description?: string;
+  area?: string;
+  focus?: string;
+  founded?: string;
+  hq?: string;
+  leadership?: string;
+  association?: string;
+}
+
 interface MissionData {
   meta: { totalContracts: number; categories: Record<string, number>; missionGivers: number };
   missionGivers: Record<string, MissionGiver>;
   reputationLadders?: Record<string, RepLadder>;
   scopeToLadder?: Record<string, string>;
+  contractorProfiles?: Record<string, ContractorProfile>;
   contracts: Mission[];
   missions?: Mission[];  // legacy fallback
 }
@@ -194,6 +206,16 @@ export class MissionsViewComponent {
   expandedId = signal<string | null>(null);
   selectedMission = signal<Mission | null>(null);
   popoutTab = signal<'info' | 'reputation'>('info');
+  private contractorProfiles = signal<Record<string, ContractorProfile>>({});
+
+  /** Look up the faction/contractor profile card (description, HQ, focus…)
+   *  for the currently-selected mission's contractor. Returns null if the
+   *  contract has no named contractor or no profile is available. */
+  selectedProfile = computed<ContractorProfile | null>(() => {
+    const m = this.selectedMission();
+    if (!m?.contractor) return null;
+    return this.contractorProfiles()[m.contractor] ?? null;
+  });
 
   constructor(private http: HttpClient, private data: DataService) {
     effect(() => {
@@ -205,6 +227,7 @@ export class MissionsViewComponent {
         this.missionGivers.set(data.missionGivers);
         this.repLadders.set(data.reputationLadders ?? {});
         this.scopeToLadder.set(data.scopeToLadder ?? {});
+        this.contractorProfiles.set(data.contractorProfiles ?? {});
         this.loaded.set(true);
       });
     });

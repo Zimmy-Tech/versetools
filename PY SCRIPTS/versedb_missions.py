@@ -40,6 +40,49 @@ def load_localization(ini_path):
     print(f"  Loaded {len(loc):,} localization entries")
     return loc
 
+def build_contractor_profiles(loc, contracts):
+    """Group global.ini {key}_RepUI_* fields into profile dicts, then map
+    them to the contractor display-names actually used by the given
+    contracts list. Returns dict keyed by contractor name."""
+    import collections as _c
+    import re as _re
+    groups = _c.defaultdict(dict)
+    for k, v in loc.items():
+        if "_repui_" not in k: continue
+        fac, _, field = k.partition("_repui_")
+        groups[fac][field] = v
+    profiles = {}
+    for fac, fields in groups.items():
+        name = fields.get("displayname") or fields.get("name") or ""
+        if name.startswith("@") or not name:
+            continue
+        p = {"name": name.replace("\\n", "\n").strip()}
+        pairs = [
+            ("description", "description"), ("biography", "description"),
+            ("area", "area"), ("location", "area"),
+            ("focus", "focus"), ("occupation", "focus"),
+            ("founded", "founded"),
+            ("hq", "hq"), ("headquarters", "hq"), ("headquaters", "hq"),
+            ("leadership", "leadership"), ("association", "association"),
+        ]
+        for src, dst in pairs:
+            v = fields.get(src)
+            if v and not v.startswith("@") and dst not in p:
+                p[dst] = v.replace("\\n", "\n").strip()
+        profiles[fac] = p
+    # contractor-name → profile
+    ALIASES = {"intersec": "intersecdefensesolutions", "blacjacsecurity": "blacjac"}
+    norm = lambda s: _re.sub(r"[^a-z0-9]", "", s.lower())
+    by_name = {norm(p["name"]): p for p in profiles.values()}
+    by_key  = {norm(k): p for k, p in profiles.items()}
+    contractors = {c["contractor"] for c in contracts if c.get("contractor")}
+    out = {}
+    for name in contractors:
+        n = norm(name)
+        p = by_name.get(n) or by_key.get(ALIASES.get(n, "")) or by_key.get(n)
+        if p: out[name] = p
+    return dict(sorted(out.items()))
+
 def loc_lookup(loc, key):
     if not key:
         return ""
@@ -1934,15 +1977,25 @@ def main():
     for m in all_entries:
         categories[m["category"]] = categories.get(m["category"], 0) + 1
 
+    # ── Contractor profiles from RepUI localization ────────────────
+    # Each in-game faction/NPC has a narrative card in global.ini as
+    # {key}_RepUI_Description/Area/Focus/Founded/HQ/Leadership (or the
+    # Biography/Location/Occupation/Association variants for individuals).
+    # We keep a top-level map keyed by the contractor display-name exactly
+    # as it appears on contracts, so the UI can do a direct lookup.
+    contractor_profiles = build_contractor_profiles(loc, all_entries)
+
     output = {
         "meta": {
             "totalContracts": len(all_entries),
             "categories": categories,
             "missionGivers": len(givers),
             "factions": len(factions),
+            "contractorProfiles": len(contractor_profiles),
         },
         "missionGivers": givers,
         "factions": factions,
+        "contractorProfiles": contractor_profiles,
         "reputationRanks": standing_display,
         "reputationLadders": rep_ladders,
         "reputationTiers": rep_tiers,

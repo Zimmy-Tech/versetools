@@ -228,7 +228,24 @@
 
           <!-- ═══ Reputation Tab ═══ -->
           @if (popoutTab() === 'reputation') {
-            @if (sm.contractor) {
+            @if (selectedProfile(); as prof) {
+              <div class="faction-card">
+                <div class="fc-header">
+                  <div class="fc-name">{{ prof.name }}</div>
+                </div>
+                @if (prof.description) {
+                  <div class="fc-desc">{{ prof.description }}</div>
+                }
+                <div class="fc-stats">
+                  @if (prof.hq)         { <div class="fc-stat"><span class="fcs-k">HQ</span><span class="fcs-v">{{ prof.hq }}</span></div> }
+                  @if (prof.area)       { <div class="fc-stat"><span class="fcs-k">Area</span><span class="fcs-v">{{ prof.area }}</span></div> }
+                  @if (prof.focus)      { <div class="fc-stat"><span class="fcs-k">Focus</span><span class="fcs-v">{{ prof.focus }}</span></div> }
+                  @if (prof.founded)    { <div class="fc-stat"><span class="fcs-k">Founded</span><span class="fcs-v">{{ prof.founded }}</span></div> }
+                  @if (prof.leadership) { <div class="fc-stat"><span class="fcs-k">Leadership</span><span class="fcs-v">{{ prof.leadership }}</span></div> }
+                  @if (prof.association){ <div class="fc-stat"><span class="fcs-k">Association</span><span class="fcs-v">{{ prof.association }}</span></div> }
+                </div>
+              </div>
+            } @else if (sm.contractor) {
               <div class="popout-section">
                 <div class="popout-section-title">Contractor</div>
                 <div class="popout-stat"><span class="ps-label">Faction</span><span class="ps-val">{{ sm.contractor }}</span></div>
