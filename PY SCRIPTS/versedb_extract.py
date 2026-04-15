@@ -4867,6 +4867,14 @@ def main(mode: str = "live"):
         if "hardpoint_nose_railgun" not in idris_p_dl:
             idris_p_dl["hardpoint_nose_railgun"] = "hrst_laserbeam_bespoke"
 
+    # Argo MOTH: turret top slot references a non-extracted turret item
+    # (argo_moth_remote_turret). Replace it with the bespoke S4/16×S2 rack
+    # (extracted) so the 16 Tempest II missiles render as a "Missiles ×16"
+    # child slot (same pattern as Polaris hardpoint_turret_remote_top).
+    if "argo_moth" in ships:
+        moth_dl = ships["argo_moth"].setdefault("defaultLoadout", {})
+        moth_dl["hardpoint_turret_top"] = "mrck_s04_argo_moth_16_s02"
+
     # Hornet Mk I variants: nose turret loadout missing from DCB
     # The class_4_nose hardpoint should have the nose turret with 2× S1 laser repeaters
     _hornet_mk1_nose = {
