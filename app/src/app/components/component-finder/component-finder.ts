@@ -8,13 +8,6 @@ interface FinderResult {
   slotId: string;
 }
 
-@Component({
-  selector: 'app-component-finder',
-  standalone: true,
-  imports: [UpperCasePipe],
-  templateUrl: './component-finder.html',
-  styleUrl: './component-finder.scss',
-})
 /** Item types surfaced in the finder's search — interchangeable equipment
  *  players actually care about. Excludes mount points (WeaponMount,
  *  Turret, TurretBase), salvage sub-components, and DCB templates whose
@@ -27,6 +20,13 @@ const FINDER_SEARCH_TYPES = new Set([
   'TractorBeam', 'WeaponMining', 'Module',
 ]);
 
+@Component({
+  selector: 'app-component-finder',
+  standalone: true,
+  imports: [UpperCasePipe],
+  templateUrl: './component-finder.html',
+  styleUrl: './component-finder.scss',
+})
 export class ComponentFinderComponent {
   searchQuery = signal('');
 
