@@ -36,7 +36,11 @@ export class ComponentFinderComponent {
 
   /** Quick-filter presets for finding ships by component type + size. */
   readonly quickFilters = [
+    { type: 'Shield', size: 1, label: 'S1 Shield' },
     { type: 'Shield', size: 3, label: 'S3 Shield' },
+    { type: 'WeaponGun', size: 4, label: 'S4 Guns' },
+    { type: 'WeaponGun', size: 5, label: 'S5 Guns' },
+    { type: 'Missile', size: 3, label: 'S3 Missiles' },
     { type: 'QuantumDrive', size: 2, label: 'S2 Quantum' },
   ];
 
