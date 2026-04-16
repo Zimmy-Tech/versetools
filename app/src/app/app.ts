@@ -24,7 +24,6 @@ export class App implements OnInit, OnDestroy {
   loadedVersion = signal('');
 
   private versionCheckInterval: any;
-  private onVisibility: (() => void) | null = null;
 
   constructor(
     public data: DataService,
@@ -33,11 +32,11 @@ export class App implements OnInit, OnDestroy {
     private swUpdate: SwUpdate,
   ) {}
 
-
-  private notifyUpdate(): void {
+  private notifyUpdate(newVersion?: string): void {
     if (this.updateAvailable()) return;
     this.updateAvailable.set(true);
     clearInterval(this.versionCheckInterval);
+    if (newVersion) localStorage.setItem('versetools_update_acked', newVersion);
   }
 
   ngOnInit(): void {
@@ -57,38 +56,37 @@ export class App implements OnInit, OnDestroy {
     this.http.get<{ v: string }>('version.json', { headers: { 'Cache-Control': 'no-cache' } })
       .subscribe({ next: r => {
         this.loadedVersion.set(r.v);
+        const acked = localStorage.getItem('versetools_update_acked');
+        if (acked && acked === r.v) localStorage.removeItem('versetools_update_acked');
       }, error: () => {} });
 
-    // Ask the SW every 60s (and on tab focus) whether a new version
-    // exists. checkForUpdate() compares ngsw.json hashes server-side,
-    // bypassing any CDN or SW caching of version.json. If it resolves
-    // true, show the popup immediately — don't wait for VERSION_READY.
-    // The reload handler does activateUpdate() + cache-busted URL to
-    // guarantee the user lands on fresh assets.
-    const checkForNew = () => {
-      if (!this.swUpdate.isEnabled) return;
-      this.swUpdate.checkForUpdate()
-        .then(hasUpdate => { if (hasUpdate) this.notifyUpdate(); })
-        .catch(() => {});
-    };
-    this.versionCheckInterval = setInterval(checkForNew, 60 * 1000);
-
-    this.onVisibility = () => {
-      if (document.visibilityState === 'visible') checkForNew();
-    };
-    document.addEventListener('visibilitychange', this.onVisibility);
-    window.addEventListener('focus', this.onVisibility);
-
-    // Kick off an immediate check on page load.
-    checkForNew();
+    // Single-path update detection: poll version.json every 10 min.
+    // ngsw-config.json caches version.json with a freshness-first strategy
+    // (10s network timeout) so the poll sees fresh content in normal
+    // network conditions. localStorage ack prevents a re-fire after
+    // refresh for the version the user just dismissed.
+    //
+    // History: the SW-driven VERSION_READY subscription was dropped here
+    // because it fires with no ack awareness — it would re-show the popup
+    // after a reload if the SW finished caching during/after the refresh.
+    // See research_cooling_declared_model.md style notes for the prior
+    // dual-path rationale; that variant is retrievable from git history
+    // if single-path proves unreliable. Trading up-to-10-min detection
+    // latency for zero double-popup complexity.
+    this.versionCheckInterval = setInterval(() => {
+      this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
+        .subscribe({ next: r => {
+          if (this.loadedVersion() && r.v !== this.loadedVersion()) {
+            const acked = localStorage.getItem('versetools_update_acked');
+            if (acked === r.v) return;
+            this.notifyUpdate(r.v);
+          }
+        }, error: () => {} });
+    }, 10 * 60 * 1000);
   }
 
   ngOnDestroy(): void {
     clearInterval(this.versionCheckInterval);
-    if (this.onVisibility) {
-      document.removeEventListener('visibilitychange', this.onVisibility);
-      window.removeEventListener('focus', this.onVisibility);
-    }
   }
 
   /**
