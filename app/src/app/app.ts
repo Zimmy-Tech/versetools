@@ -41,6 +41,16 @@ export class App implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Clean up the ?_v= cache-buster left behind by refresh() so it
+    // doesn't linger in the URL and trip up any query-param-sensitive
+    // code (e.g. header isOnLoadout / isTabActive).
+    if (typeof window !== 'undefined' && window.location.search.includes('_v=')) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('_v');
+      const clean = url.pathname + (url.search || '') + url.hash;
+      window.history.replaceState(null, '', clean);
+    }
+
     if (!localStorage.getItem('versetools_welcomed')) {
       this.showWelcome.set(true);
     }

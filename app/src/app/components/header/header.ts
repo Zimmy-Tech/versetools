@@ -108,7 +108,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   fpsGearOpen = signal(false);
 
   isTabActive(id: string): boolean {
-    return this.currentUrl() === '/' + tabToRoute(id);
+    const path = this.currentUrl().split('?')[0].split('#')[0];
+    return path === '/' + tabToRoute(id);
   }
 
   isShipToolActive = computed(() => { this.currentUrl(); return this.shipToolsTabs.some(t => this.isTabActive(t.id)); });
@@ -117,8 +118,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isFpsGearActive = computed(() => { this.currentUrl(); return this.fpsGearTabs.some(t => this.isTabActive(t.id)); });
 
   isOnLoadout(): boolean {
-    const url = this.currentUrl();
-    return url === '/' || url === '/loadout';
+    const path = this.currentUrl().split('?')[0].split('#')[0];
+    return path === '/' || path === '/loadout';
   }
 
   // Messages to display based on equipped items in the current loadout
