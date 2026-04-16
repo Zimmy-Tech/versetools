@@ -1,6 +1,7 @@
 import { Injectable, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { VerseDb, Ship, Item, CartEntry, calcMaxPips } from '../models/db.models';
+import { applyDataOverrides } from './data-overrides';
 
 export type DataMode = 'live' | 'ptu';
 
@@ -168,7 +169,7 @@ export class DataService {
       const primaryUrl = isStaticHost ? fallbackUrl : `/api/db?mode=${mode}`;
 
       const applyDb = (db: VerseDb) => {
-        this.db.set(db);
+        this.db.set(applyDataOverrides(db));
         this.selectedShip.set(null);
         this.loadout.set({});
         this.modeVersion.update(v => v + 1);
@@ -226,7 +227,7 @@ export class DataService {
       headers: { 'Cache-Control': 'no-cache' },
     }).toPromise();
     if (!db) return;
-    this.db.set(db);
+    this.db.set(applyDataOverrides(db));
     this.modeVersion.update((v) => v + 1);
     if (previousClassName) {
       const found = db.ships.find((s) => s.className === previousClassName);
@@ -239,7 +240,7 @@ export class DataService {
     reader.onload = ev => {
       try {
         const db = JSON.parse(ev.target!.result as string) as VerseDb;
-        this.db.set(db);
+        this.db.set(applyDataOverrides(db));
         this.selectedShip.set(null);
         this.loadout.set({});
       } catch (e) {

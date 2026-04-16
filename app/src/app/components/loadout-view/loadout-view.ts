@@ -758,6 +758,35 @@ export class LoadoutViewComponent {
           allTypes: [{ type: 'WeaponGun', subtypes: '' }],
         }];
         continue;
+      } else if (!childKeys.length && isRack && (parentItem?.capacity ?? 0) > 0) {
+        // Rack equipped on a hardpoint whose ship-default was NOT a rack (e.g.
+        // Idris-M nose: default = Destroyer Mass Driver, player-swapped = Hammerfall
+        // torpedo launcher). No child keys exist in either loadout — synthesize
+        // leaves from the rack's capacity so the collapsed "Missiles/Torpedoes ×N"
+        // entry renders.
+        const isBombRack = parentItem!.type === 'BombLauncher';
+        const capacity   = parentItem!.capacity!;
+        const slotSize   = parentItem!.missileSize ?? hp.maxSize;
+        const missileLeaves: string[] = [];
+        const basePrefix = hp.id.toLowerCase();
+        for (let n = 1; n <= capacity; n++) {
+          const padded = String(n).padStart(2, '0');
+          missileLeaves.push(`${basePrefix}.missile_${padded}_attach`);
+        }
+        const firstLeaf = missileLeaves[0];
+        slots[hp.id] = [{
+          id: firstLeaf,
+          label: isBombRack ? `Bombs ×${capacity}`
+                 : (slotSize >= 5 ? `Torpedoes ×${capacity}` : `Missiles ×${capacity}`),
+          type: isBombRack ? 'Bomb' : 'Missile',
+          subtypes: '',
+          minSize: slotSize,
+          maxSize: slotSize,
+          flags: '',
+          allTypes: [{ type: isBombRack ? 'Bomb' : 'Missile', subtypes: '' }],
+        }];
+        rackLeafs[firstLeaf] = missileLeaves;
+        continue;
       } else if (!childKeys.length) {
         continue;
       }
