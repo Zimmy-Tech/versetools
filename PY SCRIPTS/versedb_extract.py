@@ -128,17 +128,44 @@ def _run_p4k_extraction() -> None:
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.move(str(entry), str(dest))
 
-    # Forge DCB into XML records
+    # Forge DCB into XML records. StarBreaker handles DataCore v8 (4.8+);
+    # unp4k's `dcb` subcommand panics on v8, so prefer StarBreaker when
+    # available. The --format=unp4k output layout matches our parsers'
+    # directory expectations.
     dcb_path = dcb_dir / "Data/Game2.dcb"
     if dcb_path.exists():
         print("  Forging DCB into XML records…")
-        result = sp.run(["unp4k", "dcb", str(dcb_path), "-o", str(forge_dir)],
-                        capture_output=True, text=True)
-        for line in result.stdout.splitlines():
-            if "Exported" in line or "records" in line.lower():
-                print(f"    {line.strip()}")
-        if result.returncode != 0:
-            print(f"    ERROR: {result.stderr[:200]}")
+        sb_exe = Path.home() / "tools" / "starbreaker"
+        if sb_exe.exists():
+            print(f"    Using StarBreaker ({sb_exe})")
+            result = sp.run([str(sb_exe), "dcb", "extract",
+                             "--dcb", str(dcb_path),
+                             "--output", str(forge_dir),
+                             "--format", "unp4k"],
+                            capture_output=True, text=True)
+            for line in result.stdout.splitlines():
+                if "records" in line.lower() or "Exporting" in line or "Done" in line:
+                    print(f"    {line.strip()}")
+            if result.returncode != 0:
+                print(f"    ERROR: {result.stderr[:200]}")
+            else:
+                # StarBreaker emits .xml; rename to .xml.xml to match our globs
+                renamed = 0
+                for p in forge_dir.rglob("*.xml"):
+                    if p.name.endswith(".xml.xml"): continue
+                    p.rename(p.with_suffix(".xml.xml"))
+                    renamed += 1
+                if renamed:
+                    print(f"    Renamed {renamed} files to .xml.xml")
+        else:
+            print("    StarBreaker not found; falling back to unp4k dcb (may panic on v8)")
+            result = sp.run(["unp4k", "dcb", str(dcb_path), "-o", str(forge_dir)],
+                            capture_output=True, text=True)
+            for line in result.stdout.splitlines():
+                if "Exported" in line or "records" in line.lower():
+                    print(f"    {line.strip()}")
+            if result.returncode != 0:
+                print(f"    ERROR: {result.stderr[:200]}")
     else:
         print(f"  ERROR: {dcb_path} not found after extraction")
 
@@ -889,6 +916,41 @@ def get_power_draw(root):
                                     return safe_float(v)
     return 0.0
 
+def _inline_resource_unit_value(root, struct_type, resource, value_attr):
+    """Find an inline resource-unit struct inside a consumption/generation block
+    for a specific resource. Returns its value attribute as float, or 0.0.
+    StarBreaker forge output inlines these as child elements; legacy unp4k
+    output uses ref indices which this helper ignores (callers fall back)."""
+    for node in root.iter():
+        if node.tag not in ("consumption", "generation"):
+            continue
+        if node.get("resource") != resource:
+            continue
+        ru = node.find(f".//{struct_type}")
+        if ru is not None:
+            v = ru.get(value_attr)
+            if v is not None:
+                return safe_float(v)
+    return 0.0
+
+
+def _inline_psru(root, resource):
+    """Inline SPowerSegmentResourceUnit units (integer power segments)."""
+    return int(_inline_resource_unit_value(root, "SPowerSegmentResourceUnit", resource, "units"))
+
+
+def _inline_sru(root, resource):
+    """Inline SStandardResourceUnit standardResourceUnits (f32)."""
+    return _inline_resource_unit_value(root, "SStandardResourceUnit", resource, "standardResourceUnits")
+
+
+def _inline_smru(root, resource):
+    """Inline SMicroResourceUnit microResourceUnits (integer milli-units).
+    StarBreaker uses `microResourceUnits` on this struct; the `microSCU`
+    attribute is only on the separate SMicroCargoUnit struct."""
+    return int(_inline_resource_unit_value(root, "SMicroResourceUnit", resource, "microResourceUnits"))
+
+
 def parse_cooling_demand(root):
     """
     Extract cooling demand fields from a component's ItemResourceState(Online).
@@ -898,7 +960,6 @@ def parse_cooling_demand(root):
     """
     mcf = 0.0
     psru_ref = ""
-    txt = ET.tostring(root, encoding='unicode')
     # MCF from any delta that consumes Power (Conversion first, then Consumption)
     for tag in ("ItemResourceDeltaConversion", "ItemResourceDeltaConsumption"):
         for delta in root.iter(tag):
@@ -908,13 +969,20 @@ def parse_cooling_demand(root):
                 break
         if mcf > 0:
             break
-    # PSRU ref from consumption resource="Power"
-    m = re.search(r'<consumption\s+resource="Power"[^>]*SPowerSegmentResourceUnit\[([0-9A-Fa-f]+)\]', txt)
-    if not m:
-        m = re.search(r'SPowerSegmentResourceUnit\[([0-9A-Fa-f]+)\][^<]*resource="Power"', txt)
-    if m:
-        psru_ref = m.group(1)
-    return {"minConsumptionFraction": round(mcf, 6), "psruRef": psru_ref}
+    # Inline-first (StarBreaker): read SPowerSegmentResourceUnit.units directly
+    psru_inline = _inline_psru(root, "Power")
+    power_draw = 0
+    if psru_inline > 0:
+        power_draw = psru_inline  # already resolved, byte-scan will skip
+    else:
+        # Legacy (unp4k) fallback: capture ref index for later byte-scan
+        txt = ET.tostring(root, encoding='unicode')
+        m = re.search(r'<consumption\s+resource="Power"[^>]*SPowerSegmentResourceUnit\[([0-9A-Fa-f]+)\]', txt)
+        if not m:
+            m = re.search(r'SPowerSegmentResourceUnit\[([0-9A-Fa-f]+)\][^<]*resource="Power"', txt)
+        if m:
+            psru_ref = m.group(1)
+    return {"minConsumptionFraction": round(mcf, 6), "psruRef": psru_ref, "powerDraw": power_draw}
 
 
 def parse_power_ranges(root):
@@ -1232,6 +1300,7 @@ def parse_shield_item(root, class_name, loc):
         "grade":              grade_letter or info["grade"],
         "itemClass":          item_class,
         "psruRef":            cooling["psruRef"],
+        "powerDraw":          cooling["powerDraw"],
         "minConsumptionFraction": cooling["minConsumptionFraction"],
         # Shield pool
         "hp":                 safe_float(sg.get("MaxShieldHealth", 0)),
@@ -1385,6 +1454,7 @@ def parse_cooler_item(root, class_name, loc):
         "coolingRate":  round(cooling_rate, 1),
         "sruRef":       sru_ref,
         "psruRef":      cooling["psruRef"],
+        "powerDraw":    cooling["powerDraw"],
         "minConsumptionFraction": cooling["minConsumptionFraction"],
         # Power segments
         **parse_power_ranges(root),
@@ -1428,6 +1498,7 @@ def parse_lifesupport_item(root, class_name, loc):
         "size":         info["size"],
         "grade":        info["grade"],
         "psruRef":      cooling["psruRef"],
+        "powerDraw":    cooling["powerDraw"],
         "minConsumptionFraction": cooling["minConsumptionFraction"],
         "componentHp":          round(component_hp, 0),
         "emMax":                round(em_max, 0),
@@ -1531,13 +1602,19 @@ def parse_miningarm_item(root, class_name, loc):
         charges = re.search(r'charges="(\d+)"', txt)
         if charges:
             result["charges"] = int(charges.group(1))
-        # Extract damageMultiplier (power boost) from first showInUI=1 phase
-        dms = [(float(m.group(1)), m.start()) for m in re.finditer(r'damageMultiplier="([^"]+)"', txt) if float(m.group(1)) != 1.0]
-        for dm_val, pos in dms:
-            ctx = txt[max(0, pos - 300):pos]
-            if 'showInUI="1"' in ctx:
-                result["miningPowerMult"] = round(dm_val, 2)
-                break
+        # Extract damageMultiplier (power boost) from the ItemWeaponModifiersParams
+        # block that has showInUI="1". StarBreaker tags children by field name
+        # (<weaponStats> with __type="SWeaponStats"), not by type name — and
+        # pretty-printing broke the old proximity-regex approach. Walk the UI-
+        # visible modifier params and pull its nested weaponStats.damageMultiplier.
+        for mp in root.iter("ItemWeaponModifiersParams"):
+            if mp.get("showInUI") != "1": continue
+            for ws in mp.iter("weaponStats"):
+                dm = safe_float(ws.get("damageMultiplier", 1))
+                if dm != 1.0 and dm > 0:
+                    result["miningPowerMult"] = round(dm, 2)
+                    break
+            if "miningPowerMult" in result: break
     # Salvage modifier stats (scraper/tractor tools)
     if item_type == "SalvageModifier":
         txt = ET.tostring(root, encoding='unicode')
@@ -1623,6 +1700,7 @@ def parse_qed_item(root, class_name, loc):
         "size":         info["size"],
         "grade":        info["grade"],
         "psruRef":      cooling["psruRef"],
+        "powerDraw":    cooling["powerDraw"],
         "basePowerDrawFraction": round(safe_float(qed.get("basePowerDrawFraction", 0)), 2) if qed is not None else 0,
         **parse_power_ranges(root),
     }
@@ -1782,6 +1860,7 @@ def parse_radar_item(root, class_name, loc):
         "grade":        grade_letter or info["grade"],
         "itemClass":    item_class,
         "psruRef":      cooling["psruRef"],
+        "powerDraw":    cooling["powerDraw"],
         "minConsumptionFraction": cooling["minConsumptionFraction"],
         # Aim assist
         "aimMin":       round(aim_min, 0),
@@ -2268,17 +2347,13 @@ def extract_mining_locations(forge_dir, dcb_path):
     hpp_base = forge_dir / "harvestable" / "providerpresets"
     if not hpp_base.exists():
         print("  WARNING: harvestable/providerpresets not found")
-        return []
+        return {"locations": [], "elements": []}
 
-    # Build HarvestablePreset GUID → name map from DCB
-    with open(dcb_path, "rb") as f:
-        d = f.read()
-    h = _dcb_parse_header(d)
-    hp_si = h["struct_by_name"].get("HarvestablePreset")
-    if hp_si is None:
-        print("  WARNING: HarvestablePreset struct not found in DCB")
-        return []
-
+    # Build HarvestablePreset GUID → preset-name map from forge XMLs.
+    # StarBreaker emits one XML per preset under harvestable/harvestablepresets/;
+    # each file has a __ref (GUID) and the root tag encodes the preset name as
+    # HarvestablePreset.<name>. We key by GUID bytes (mixed little-endian like
+    # the providerpreset XMLs use) so the existing provider parser can match.
     def _uuid_to_mixed_le(uuid_str):
         clean = uuid_str.replace('-', '')
         if len(clean) != 32: return None
@@ -2287,14 +2362,23 @@ def extract_mining_locations(forge_dir, dcb_path):
         return b[3::-1] + b[5:3:-1] + b[7:5:-1] + b[8:16]
 
     hp_guid_to_name = {}
-    for ri in range(h["n_records"]):
-        rp = h["rec_start"] + ri * 32
-        if struct.unpack_from("<I", d, rp + 8)[0] != hp_si: continue
-        guid_raw = d[rp + 12: rp + 28]
-        try:
-            rname = h["blob"](struct.unpack_from("<I", d, rp)[0])
-            hp_guid_to_name[guid_raw] = rname.replace("HarvestablePreset.", "")
-        except: pass
+    hp_dir = forge_dir / "harvestable" / "harvestablepresets"
+    if hp_dir.exists():
+        for fp in hp_dir.glob("*.xml.xml"):
+            try:
+                root = ET.parse(fp).getroot()
+                ref = root.get("__ref", "")
+                if not ref: continue
+                guid_raw = _uuid_to_mixed_le(ref)
+                if guid_raw is None: continue
+                tag = root.tag  # e.g. "HarvestablePreset.Mining_Igneous_Quartz"
+                name = tag.split(".", 1)[1] if "." in tag else tag
+                hp_guid_to_name[guid_raw] = name
+            except Exception:
+                pass
+    if not hp_guid_to_name:
+        print("  WARNING: no HarvestablePreset XMLs found")
+        return {"locations": [], "elements": []}
 
     # Location display name mapping
     LOC_NAMES = {
@@ -2352,34 +2436,32 @@ def extract_mining_locations(forge_dir, dcb_path):
         "FPS_Mineables": "hand",
     }
 
-    # Extract MineableElement properties (instability, resistance, etc.)
-    sdefs = h["struct_defs"]
-    me_si = h["struct_by_name"].get("MineableElement")
+    # Extract MineableElement properties (instability, resistance, etc.) from
+    # StarBreaker forge XMLs. Each element is a standalone record with all
+    # fields as attributes.
     element_props = {}
-    if me_si and me_si in h["struct_data"]:
-        me_off2, me_cnt2 = h["struct_data"][me_si]
-        me_rs2 = sdefs[me_si][4]
-        for ri in range(h["n_records"]):
-            rp = h["rec_start"] + ri * 32
-            if struct.unpack_from("<I", d, rp + 8)[0] != me_si: continue
-            variant = struct.unpack_from("<H", d, rp + 28)[0]
-            try: rname = h["blob"](struct.unpack_from("<I", d, rp)[0])
-            except: continue
-            name = rname.split(".")[-1].replace("_Ore","").replace("_Raw","")
-            # Strip prefixes for consistency
+    me_dir = forge_dir / "mining" / "mineableelements"
+    if me_dir.exists():
+        for fp in me_dir.glob("*.xml.xml"):
+            try:
+                root = ET.parse(fp).getroot()
+            except Exception:
+                continue
+            tag = root.tag
+            rname = tag.split(".", 1)[1] if "." in tag else tag
+            name = rname.replace("_Ore", "").replace("_Raw", "")
             for pfx in ("MinableElement_FPS_", "MinableElement_GroundVehicle_", "MinableElement_"):
                 if name.startswith(pfx): name = name[len(pfx):]
             if "template" in name.lower() or "Test" in name: continue
-            inst = me_off2 + variant * me_rs2
             element_props[name.lower()] = {
                 "name": name,
-                "instability": round(struct.unpack_from("<f", d, inst + 20)[0], 1),
-                "resistance": round(struct.unpack_from("<f", d, inst + 24)[0], 2),
-                "optimalWindow": round(struct.unpack_from("<f", d, inst + 28)[0], 2),
-                "optimalWindowRand": round(struct.unpack_from("<f", d, inst + 32)[0], 2),
-                "optimalThinness": round(struct.unpack_from("<f", d, inst + 36)[0], 2),
-                "explosionMultiplier": round(struct.unpack_from("<f", d, inst + 40)[0], 2),
-                "clusterFactor": round(struct.unpack_from("<f", d, inst + 44)[0], 2),
+                "instability":         round(safe_float(root.get("elementInstability", 0)), 1),
+                "resistance":          round(safe_float(root.get("elementResistance", 0)), 2),
+                "optimalWindow":       round(safe_float(root.get("elementOptimalWindowMidpoint", 0)), 2),
+                "optimalWindowRand":   round(safe_float(root.get("elementOptimalWindowMidpointRandomness", 0)), 2),
+                "optimalThinness":     round(safe_float(root.get("elementOptimalWindowThinness", 0)), 2),
+                "explosionMultiplier": round(safe_float(root.get("elementExplosionMultiplier", 0)), 2),
+                "clusterFactor":       round(safe_float(root.get("elementClusterFactor", 0)), 2),
             }
         print(f"  Mineral element properties: {len(element_props)}")
 
@@ -3811,6 +3893,314 @@ def enrich_fuel_capacity(ships, forge_dir, dcb_path=None):
     print(f"  Fuel capacity enriched: {enriched} ships")
 
 
+def _enrich_inline_from_forge(items, forge_dir):
+    """StarBreaker forge output inlines every sub-struct that unp4k used to
+    emit as a ref index. Walk the component XMLs once, pull the resolved
+    values directly, and populate item fields. The byte-scan enrichment
+    that follows will naturally skip anything already populated (its
+    guards check `if not ref: continue`, and inline reads clear refs).
+    This is the forward-path for DataCore v8 and beyond; the byte-scan
+    remains as a fallback for legacy unp4k-format forge output.
+    """
+    if not forge_dir.exists():
+        return
+
+    # Build GUID -> ammoparams XML path map so weapon.ammoParamsRecord can
+    # be resolved without scanning every ammoparams file per weapon.
+    ammo_by_guid = {}
+    ammo_dir = forge_dir / "ammoparams" / "vehicle"
+    if ammo_dir.exists():
+        for fp in ammo_dir.glob("*.xml.xml"):
+            try:
+                root = ET.parse(fp).getroot()
+                ref = (root.get("__ref") or "").lower()
+                if ref:
+                    ammo_by_guid[ref] = (fp, root)
+            except Exception:
+                pass
+
+    def _first_damage_info(elem):
+        """Return dict of Damage{Physical,Energy,Distortion,Thermal,Biochemical,Stun}
+        from the first inline <DamageInfo> descendant, or None."""
+        for di in elem.iter("DamageInfo"):
+            dmg = {
+                "physical":    safe_float(di.get("DamagePhysical", 0)),
+                "energy":      safe_float(di.get("DamageEnergy", 0)),
+                "distortion":  safe_float(di.get("DamageDistortion", 0)),
+                "thermal":     safe_float(di.get("DamageThermal", 0)),
+                "biochemical": safe_float(di.get("DamageBiochemical", 0)),
+                "stun":        safe_float(di.get("DamageStun", 0)),
+            }
+            if any(v > 0 for v in dmg.values()):
+                return dmg
+        return None
+
+    # ── Weapons: damage (via ammoparams GUID), SSRU power draw, heat, regen ──
+    weapons_dir = forge_dir / "entities/scitem/ships/weapons"
+    wpn_dmg = wpn_pwr = wpn_heat = wpn_regen = 0
+    if weapons_dir.exists():
+        for xml_file in weapons_dir.rglob("*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item: continue
+            try:
+                root = ET.parse(xml_file).getroot()
+            except Exception:
+                continue
+
+            # Weapon power draw: <SStandardResourceUnit standardResourceUnits="N"/>
+            # inside <consumption resource="Power">
+            if item.get("type") in ("WeaponGun", "WeaponTachyon", "WeaponMining"):
+                sru = _inline_sru(root, "Power")
+                if sru > 0:
+                    item["powerDraw"] = round(sru, 4)
+                    item.pop("sruRef", None)
+                    wpn_pwr += 1
+
+            # Heat params
+            shp = root.find(".//SWeaponSimplifiedHeatParams")
+            if shp is not None and item.get("type") in ("WeaponGun", "WeaponTachyon"):
+                max_heat      = safe_float(shp.get("overheatTemperature", 0))
+                cooling_rate  = safe_float(shp.get("coolingPerSecond", 0))
+                cooling_delay = safe_float(shp.get("timeTillCoolingStarts", 0))
+                overheat_time = safe_float(shp.get("overheatFixTime", 0))
+                if max_heat > 0:
+                    item["maxHeat"]          = round(max_heat, 2)
+                    item["coolingRate"]      = round(cooling_rate, 2)
+                    item["coolingDelay"]     = round(cooling_delay, 4)
+                    item["overheatCooldown"] = round(overheat_time, 2)
+                    item.pop("heatRef", None)
+                    wpn_heat += 1
+
+            # Regen params (energy weapons)
+            if item.get("type") in ("WeaponGun", "WeaponTachyon") and not item.get("isBallistic"):
+                regen = root.find(".//SWeaponRegenConsumerParams")
+                if regen is not None:
+                    max_ammo = safe_float(regen.get("maxAmmoLoad", 0))
+                    if max_ammo > 0:
+                        item["ammoCount"]         = round(max_ammo)
+                        item["regenCooldown"]     = round(safe_float(regen.get("regenerationCooldown", 0)), 4)
+                        item["costPerBullet"]     = round(safe_float(regen.get("regenerationCostPerBullet", 0)), 2)
+                        item["requestedAmmoLoad"] = round(safe_float(regen.get("requestedAmmoLoad", 0)), 2)
+                        item["maxAmmoLoad"]       = round(max_ammo)
+                        item["maxRegenPerSec"]    = round(safe_float(regen.get("maxRegenPerSec", 0)), 2)
+                        wpn_regen += 1
+
+            # Damage via ammo GUID
+            ammo_ref = (item.get("ammoRef") or "").lower()
+            if ammo_ref and item.get("type") in ("WeaponGun", "WeaponTachyon"):
+                entry = ammo_by_guid.get(ammo_ref)
+                if entry is not None:
+                    _, ammo_root = entry
+                    # Prefer bullet DamageInfo (inside BulletProjectileParams/damage)
+                    dmg = None
+                    for bpp in ammo_root.iter("BulletProjectileParams"):
+                        dmg_elem = bpp.find("./damage")
+                        if dmg_elem is not None:
+                            dmg = _first_damage_info(dmg_elem)
+                            if dmg and sum(dmg.values()) > 0.01:
+                                break
+                            # Bullet damage near-zero → use explosion damage
+                            det = bpp.find(".//ProjectileDetonationParams")
+                            if det is not None:
+                                dmg = _first_damage_info(det)
+                                if dmg and sum(dmg.values()) > 0.01:
+                                    break
+                    if not dmg:
+                        dmg = _first_damage_info(ammo_root)
+                    if dmg:
+                        pellets = SHIP_PELLET_COUNTS.get(class_name.lower(), 1)
+                        if pellets > 1:
+                            dmg = {k: round(v * pellets, 4) for k, v in dmg.items()}
+                            item["pelletCount"] = pellets
+                        item["damage"] = dmg
+                        item["alphaDamage"] = round(sum(dmg.values()), 4)
+                        wpn_dmg += 1
+                    # Penetration/detonation (any weapon)
+                    for bpp in ammo_root.iter("BulletProjectileParams"):
+                        pp = bpp.find("./penetrationParams")
+                        if pp is not None:
+                            d_dist = safe_float(pp.get("basePenetrationDistance", 0))
+                            n_rad  = safe_float(pp.get("nearRadius", 0))
+                            f_rad  = safe_float(pp.get("farRadius", 0))
+                            if d_dist > 0 or n_rad > 0 or f_rad > 0:
+                                item["penetrationDistance"]  = round(d_dist, 4)
+                                item["penetrationMinRadius"] = round(n_rad, 4)
+                                item["penetrationMaxRadius"] = round(f_rad, 4)
+                        ep = bpp.find(".//explosionParams")
+                        if ep is not None:
+                            min_r = safe_float(ep.get("minRadius", 0))
+                            max_r = safe_float(ep.get("maxRadius", 0))
+                            if max_r > 0:
+                                item["detonationMinRadius"] = round(min_r, 2)
+                                item["detonationMaxRadius"] = round(max_r, 2)
+                        break
+
+    print(f"  [inline] Weapons: damage={wpn_dmg}, power={wpn_pwr}, heat={wpn_heat}, regen={wpn_regen}")
+
+    # ── Missiles/bombs: damage from inline DamageInfo in explosionParams ──────
+    msl_dmg = 0
+    msl_dir = forge_dir / "entities/scitem/ships/weapons/missiles"
+    if msl_dir.exists():
+        for xml_file in msl_dir.rglob("*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item or item.get("type") not in ("Missile", "Bomb"):
+                continue
+            try:
+                root = ET.parse(xml_file).getroot()
+            except Exception:
+                continue
+            ep = root.find(".//explosionParams")
+            if ep is not None:
+                dmg = _first_damage_info(ep)
+                if dmg:
+                    item["damage"] = dmg
+                    item["alphaDamage"] = round(sum(dmg.values()), 4)
+                    msl_dmg += 1
+    print(f"  [inline] Missiles/bombs damage: {msl_dmg}")
+
+    # ── Power plants: PSRU.units inside <generation resource="Power"> ──────────
+    pp_dir = forge_dir / "entities/scitem/ships/powerplant"
+    pp_out = 0
+    if pp_dir.exists():
+        for xml_file in pp_dir.glob("*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item or item.get("type") != "PowerPlant": continue
+            try:
+                root = ET.parse(xml_file).getroot()
+            except Exception:
+                continue
+            psru = _inline_psru(root, "Power")
+            if psru > 0:
+                item["powerOutput"] = psru
+                item.pop("psruRef", None)
+                pp_out += 1
+    print(f"  [inline] Power plants output: {pp_out}")
+
+    # ── Coolers: SStandardResourceUnit in <generation resource="Coolant"> ─────
+    cool_dir = forge_dir / "entities/scitem/ships/cooler"
+    cool_n = 0
+    if cool_dir.exists():
+        for xml_file in cool_dir.glob("*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item or item.get("type") != "Cooler": continue
+            try:
+                root = ET.parse(xml_file).getroot()
+            except Exception:
+                continue
+            sru = _inline_sru(root, "Coolant")
+            if sru > 0:
+                item["coolingRate"] = round(sru, 2)
+                item.pop("sruRef", None)
+                cool_n += 1
+    print(f"  [inline] Coolers rate: {cool_n}")
+
+    # ── Mining lasers: max/min power + modifiers from inline structs ──────────
+    def _fmm_value(container):
+        """Find <FloatModifierMultiplicative value="N"/> descendant, return value or None."""
+        for fmm in container.iter("FloatModifierMultiplicative"):
+            v = fmm.get("value")
+            if v is not None:
+                return safe_float(v)
+        return None
+
+    MOD_TAG_TO_FIELD = {
+        "laserInstability":                    "miningInstability",
+        "optimalChargeWindowSizeModifier":     "miningOptimalWindow",
+        "optimalChargeWindowRateModifier":     "miningOptimalRate",
+        "resistanceModifier":                  "miningResistance",
+        "shatterdamageModifier":               "miningShatterDamage",
+        "filterModifier":                      "miningInertMaterials",
+        "catastrophicChargeWindowRateModifier": "miningOvercharge",
+        # Mining modules also expose a powerConsumption multiplier via FMM
+        "powerConsumptionModifier":            "miningPowerMult",
+    }
+
+    def _apply_mining_modifiers(root, item):
+        """Walk the mining-modifier parent tags and write each resolved FMM value
+        to the item's corresponding field. No-op when a tag isn't present."""
+        for tag, field in MOD_TAG_TO_FIELD.items():
+            for parent in root.iter(tag):
+                val = _fmm_value(parent)
+                if val is not None:
+                    item[field] = round(val, 2)
+                    break
+
+    laser_n = 0
+    for laser_dir in (forge_dir / "entities/scitem/ships/weapons",
+                      forge_dir / "entities/scitem/ships/utility/mining/miningarm"):
+        if not laser_dir.exists(): continue
+        for xml_file in laser_dir.rglob("mining_laser*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item or item.get("type") != "WeaponMining": continue
+            try:
+                root = ET.parse(xml_file).getroot()
+            except Exception:
+                continue
+            # Max power = sum of first <damagePerSecond><DamageInfo .../></damagePerSecond>
+            dps_wrap = root.find(".//damagePerSecond")
+            if dps_wrap is not None:
+                di = dps_wrap.find("DamageInfo")
+                if di is not None:
+                    total = sum(safe_float(di.get(a, 0)) for a in
+                        ("DamagePhysical", "DamageEnergy", "DamageDistortion",
+                         "DamageThermal", "DamageBiochemical", "DamageStun"))
+                    if total > 0:
+                        item["miningMaxPower"] = round(total, 1)
+                        tmin = item.get("throttleMin", 0) or 0
+                        if tmin > 0:
+                            item["miningMinPower"] = round(total * tmin, 1)
+                        item.pop("_miningDpsRef", None)
+            _apply_mining_modifiers(root, item)
+            item.pop("miningModRefs", None)
+            laser_n += 1
+    print(f"  [inline] Mining lasers: {laser_n}")
+
+    mod_n = 0
+    mmod_dir = forge_dir / "entities/scitem/ships/utility/mining/miningarm"
+    if mmod_dir.exists():
+        for xml_file in mmod_dir.rglob("mining_modules*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item or item.get("type") != "MiningModifier": continue
+            try:
+                root = ET.parse(xml_file).getroot()
+            except Exception:
+                continue
+            _apply_mining_modifiers(root, item)
+            item.pop("_miningModRefs", None)
+            mod_n += 1
+    print(f"  [inline] Mining modules: {mod_n}")
+
+    # ── QDs: power draw (SSRU) + fuel rate (SMRU in QuantumFuel consumption) ──
+    qd_dir = forge_dir / "entities/scitem/ships/quantumdrive"
+    qd_pwr = qd_fuel = 0
+    if qd_dir.exists():
+        for xml_file in qd_dir.glob("*.xml.xml"):
+            class_name = xml_file.stem.removesuffix(".xml")
+            item = items.get(class_name)
+            if not item or item.get("type") != "QuantumDrive": continue
+            try:
+                root = ET.parse(xml_file).getroot()
+            except Exception:
+                continue
+            sru = _inline_sru(root, "Power")
+            if sru > 0:
+                item["powerDraw"] = round(sru)
+                item.pop("sruRef", None)
+                qd_pwr += 1
+            smru = _inline_smru(root, "QuantumFuel")
+            if smru > 0:
+                item["fuelRate"] = round(smru / 1000.0, 4)
+                item.pop("qfSmruRef", None)
+                qd_fuel += 1
+    print(f"  [inline] QDs: power={qd_pwr}, fuel={qd_fuel}")
+
+
 def enrich_from_dcb(items, dcb_path, loc):
     """
     Enrich weapons with damage+fireRate+DPS using verified DCB data chain:
@@ -3819,6 +4209,10 @@ def enrich_from_dcb(items, dcb_path, loc):
 
     Also enriches shields and QD components with DCB stats.
     """
+    # Inline-first: pull StarBreaker-resolved values directly from forge XMLs.
+    # Byte-scan below handles anything the inline pass can't resolve (legacy unp4k).
+    _enrich_inline_from_forge(items, FORGE_DIR)
+
     print(f"  Reading DCB binary ({dcb_path.stat().st_size/1e6:.0f} MB)…")
     with open(dcb_path,"rb") as f:
         d = f.read()
@@ -3958,7 +4352,11 @@ def enrich_from_dcb(items, dcb_path, loc):
             try:
                 root = ET.parse(xml_file).getroot()
                 # Look for damageInfo child element (explosive/detonation damage)
+                # Accept both unp4k-style lowercase <damageInfo> and
+                # StarBreaker-style capitalized <DamageInfo> child element.
                 di_el = root.find(".//damageInfo")
+                if di_el is None:
+                    di_el = root.find(".//DamageInfo")
                 if di_el is None: continue
                 dmg = {
                     "physical":    safe_float(di_el.get("DamagePhysical",   di_el.get("damagePhysical",   0))),
@@ -4060,30 +4458,36 @@ def enrich_from_dcb(items, dcb_path, loc):
             try:
                 root = ET.parse(xml_file).getroot()
                 rpm = 0.0
-                # Pattern 1: looping sequence (laser repeaters)
+                # Pattern 1: looping sequence. unit="RPM" → delay is already RPM;
+                # unit="Seconds" → delay is seconds-per-shot, convert to RPM.
+                # (On unp4k output the inner SWeaponActionFireSingleParams was only
+                # referenced, so Pattern 3 below never fired for single-fire cannons
+                # and their sequence-delay rate was preserved. StarBreaker inlines
+                # that struct, so we must prefer the sequence rate explicitly.)
                 for seq in root.iter("SWeaponSequenceEntryParams"):
-                    if seq.get("unit","").upper() == "RPM":
-                        rpm = safe_float(seq.get("delay", 0))
-                        if rpm > 0: break
+                    unit = seq.get("unit", "").upper()
+                    delay = safe_float(seq.get("delay", 0))
+                    if unit == "RPM" and delay > 0:
+                        rpm = delay
+                        break
+                    if unit == "SECONDS" and delay > 0:
+                        rpm = round(60.0 / delay, 1)
+                        break
                 # Pattern 2: rapid fire action (gatlings, ballistic repeaters)
                 if rpm == 0:
                     for el in root.iter("SWeaponActionFireRapidParams"):
                         rpm = safe_float(el.get("fireRate", 0))
                         if rpm > 0: break
-                # Pattern 3: single fire action (cannons)
-                if rpm == 0:
-                    for el in root.iter("SWeaponActionFireSingleParams"):
-                        rpm = safe_float(el.get("fireRate", 0))
-                        if rpm > 0: break
-                # Pattern 4: charged fire action (tachyon/singe cannons, mass drivers)
-                # Total cycle = chargeTime + cooldownTime + innerFireDelay
-                # Inner fire rate is per-weapon, stored in DCB struct (not in forge XML).
-                # Validated against SPViewer:
-                #   Singe S1-S3: inner=89  → S2=24.8, S3=18.9 RPM
-                #   KLWE Sledge S1-S3: inner=30  → S2=17.1, S3=13.3 RPM
-                #   APAR Strife S2: inner=60  → 17.1 RPM
+                # Pattern 3: charged fire action (tachyon/singe cannons, mass drivers).
+                # MUST run before the single-fire fallback because StarBreaker inlines
+                # the charged-action's inner SWeaponActionFireSingleParams — grabbing
+                # its raw fireRate would overstate sustained DPS. We compute the real
+                # cycle: chargeTime + cooldownTime + 60/innerRate.
+                # Inner rate source: the Charged element's nested SWeaponActionFireSingleParams
+                # (StarBreaker inlines it). Legacy fallback uses hardcoded per-family
+                # rates validated against SPViewer for unp4k-format output.
                 CHARGED_INNER_RATES = {
-                    "tachyoncannon": 89.0,   # Singe (Banu)
+                    "tachyoncannon":   89.0,  # Singe (Banu)
                     "klwe_massdriver": 30.0,  # Sledge (Klaus & Werner)
                     "apar_massdriver": 60.0,  # Strife (Apocalypse Arms)
                 }
@@ -4091,15 +4495,28 @@ def enrich_from_dcb(items, dcb_path, loc):
                     for el in root.iter("SWeaponActionFireChargedParams"):
                         charge = safe_float(el.get("chargeTime", 0))
                         cooldown = safe_float(el.get("cooldownTime", 0))
-                        if charge > 0:
+                        if charge <= 0: continue
+                        inner = 0.0
+                        # Prefer inner rate from the nested single-fire element
+                        inner_el = el.find(".//SWeaponActionFireSingleParams")
+                        if inner_el is not None:
+                            inner = safe_float(inner_el.get("fireRate", 0))
+                        if inner <= 0:
                             inner = 89.0  # default
                             for prefix, rate in CHARGED_INNER_RATES.items():
                                 if prefix in class_name.lower():
                                     inner = rate
                                     break
-                            cycle = charge + cooldown + 60.0 / inner
-                            rpm = round(60.0 / cycle, 1)
-                            break
+                        cycle = charge + cooldown + 60.0 / inner
+                        rpm = round(60.0 / cycle, 1)
+                        break
+                # Pattern 4: single fire action (cannons). Only fires if earlier
+                # patterns didn't match — charged weapons' inner single-fire will
+                # never reach this branch.
+                if rpm == 0:
+                    for el in root.iter("SWeaponActionFireSingleParams"):
+                        rpm = safe_float(el.get("fireRate", 0))
+                        if rpm > 0: break
                 if rpm > 0:
                     item["fireRate"] = round(rpm, 1)
                     alpha = item.get("alphaDamage", 0)
