@@ -528,6 +528,13 @@ export class PowerBarsComponent {
     ['shld_basl_s03_stronghold_scitem', 4], // Stronghold S3
     ['shld_behr_s03_5ca_scitem', 2],        // 5CA 'Akura' S3
     ['shld_orig_s04_890j_scitem', 5],       // Glacis S4 (890 Jump)
+    // Basilisk S1 Industrial line — all share bands [{1, 0.85}, {3, 1.0}],
+    // reach full-power mod at pip 3. Confirmed in-game on Palisade; the other
+    // three have identical band structure and require the same merged block.
+    ['shld_basl_s01_palisade_scitem', 2],
+    ['shld_basl_s01_guardian_scitem', 2],
+    ['shld_basl_s01_bulwark_scitem', 2],
+    ['shld_basl_s01_steward_scitem', 2],
   ]);
 
   /** Origin 600i cooling demand. Calibrated to match third-party tools (3 configs, max 1% error). */
