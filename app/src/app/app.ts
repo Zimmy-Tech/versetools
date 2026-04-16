@@ -1,8 +1,7 @@
 import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterOutlet } from '@angular/router';
-import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { filter } from 'rxjs/operators';
+import { SwUpdate } from '@angular/service-worker';
 import { DataService } from './services/data.service';
 import { HeaderComponent } from './components/header/header';
 
@@ -36,18 +35,10 @@ export class App implements OnInit, OnDestroy {
 
   private pendingVersion = '';
 
-  /**
-   * Show the "update available" popup. Only called from the service worker's
-   * VERSION_READY event — which guarantees the new bundle is fully downloaded
-   * and cached by the SW. That makes the subsequent reload reliable: the SW
-   * can immediately serve the new version without another network round-trip.
-   *
-   * Previously we also showed the popup from version.json polling, which
-   * could fire before the SW had finished fetching the new bundle. Clicking
-   * "Got it" then reloaded into the still-cached old version, and users had
-   * to Ctrl+Shift+R. That path is removed; polling now only nudges the SW
-   * to check for updates.
-   */
+  /** Show the "update available" popup. Called directly from the
+   *  version.json poll the moment the version string changes. The
+   *  reload handler (refresh()) takes care of bypassing any stale SW
+   *  cache via activateUpdate() + cache-busting URL param. */
   private notifyUpdate(newVersion: string): void {
     if (this.updateAvailable()) return;
     if (!newVersion || this.loadedVersion() === newVersion) return;
@@ -70,42 +61,30 @@ export class App implements OnInit, OnDestroy {
         if (acked && acked === r.v) localStorage.removeItem('versetools_update_acked');
       }, error: () => {} });
 
-    // Poll version.json every 60s. If it changed, nudge the SW to
-    // check for a new bundle — we do NOT show the popup from this path,
-    // because version.json can flip before the SW has cached the new assets.
-    // The popup will appear via VERSION_READY once the SW has the bundle ready.
-    const nudgeUpdate = () => {
+    // Poll version.json every 60s. When the version string changes,
+    // show the popup directly and also nudge the SW to start fetching
+    // the new bundle so it's cached by the time the user clicks "Got
+    // it". The reload handler does a cache-busted hard reload either
+    // way, so a slightly-behind SW can't land the user on stale assets.
+    const checkVersion = () => {
       this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
         .subscribe({ next: r => {
-          if (this.loadedVersion() && r.v !== this.loadedVersion() && this.swUpdate.isEnabled) {
-            this.swUpdate.checkForUpdate().catch(() => {});
+          if (this.loadedVersion() && r.v !== this.loadedVersion()) {
+            if (this.swUpdate.isEnabled) this.swUpdate.checkForUpdate().catch(() => {});
+            this.notifyUpdate(r.v);
           }
         }, error: () => {} });
     };
-    this.versionCheckInterval = setInterval(nudgeUpdate, 60 * 1000);
+    this.versionCheckInterval = setInterval(checkVersion, 60 * 1000);
 
-    // Also nudge when the tab regains focus/visibility — users who left
-    // the site open in a background tab get an update check as soon as
-    // they come back instead of waiting up to a full poll cycle.
+    // Also check when the tab regains focus/visibility — users who left
+    // the site open in a background tab see the popup as soon as they
+    // come back instead of waiting up to a full poll cycle.
     this.onVisibility = () => {
-      if (document.visibilityState === 'visible') nudgeUpdate();
+      if (document.visibilityState === 'visible') checkVersion();
     };
     document.addEventListener('visibilitychange', this.onVisibility);
     window.addEventListener('focus', this.onVisibility);
-
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.versionUpdates.pipe(
-        filter((e): e is VersionReadyEvent => e.type === 'VERSION_READY')
-      ).subscribe(e => {
-        const v = (e.latestVersion && (e.latestVersion as any).hash)
-          ? (e.latestVersion as any).hash
-          : (this.loadedVersion() ? this.loadedVersion() + '+new' : 'new');
-        this.notifyUpdate(v);
-      });
-      // Kick off an immediate check on load so returning users don't
-      // wait for the first 60s tick.
-      this.swUpdate.checkForUpdate().catch(() => {});
-    }
   }
 
   ngOnDestroy(): void {
