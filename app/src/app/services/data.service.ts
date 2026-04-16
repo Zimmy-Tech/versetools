@@ -1168,6 +1168,12 @@ export class DataService {
         if (i.subType === 'MannedTurret') return false;
         // Filter out turret-internal weapon variants (lower stats, not player-equippable)
         if ((i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && clsL.endsWith('_turret')) return false;
+        // Filter out _lowpoly variants across the board. These are lower-poly
+        // model duplicates used for distant-render conditions — they share
+        // ammoparams with their full-detail counterpart (same damage, same
+        // ammoRef), so they'd appear as identical-looking duplicate picker
+        // entries next to the real weapon.
+        if (clsL.endsWith('_lowpoly')) return false;
         // Filter out 0-DPS weapon variants (turret/lowpoly/dummy internals)
         if ((i.type === 'WeaponGun' || i.type === 'WeaponTachyon') && (i.dps ?? 0) <= 0) return false;
         const nameL = (i.name ?? '').toLowerCase();
