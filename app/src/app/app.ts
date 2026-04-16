@@ -33,21 +33,11 @@ export class App implements OnInit, OnDestroy {
     private swUpdate: SwUpdate,
   ) {}
 
-  private pendingVersion = '';
 
-  /** Show the "update available" popup. Called directly from the
-   *  version.json poll the moment the version string changes. The
-   *  reload handler (refresh()) takes care of bypassing any stale SW
-   *  cache via activateUpdate() + cache-busting URL param. */
-  private notifyUpdate(newVersion: string): void {
+  private notifyUpdate(): void {
     if (this.updateAvailable()) return;
-    if (!newVersion || this.loadedVersion() === newVersion) return;
-    const acked = localStorage.getItem('versetools_update_acked');
-    if (acked === newVersion) return;
-    this.pendingVersion = newVersion;
     this.updateAvailable.set(true);
     clearInterval(this.versionCheckInterval);
-    localStorage.setItem('versetools_update_acked', newVersion);
   }
 
   ngOnInit(): void {
@@ -57,34 +47,30 @@ export class App implements OnInit, OnDestroy {
     this.http.get<{ v: string }>('version.json', { headers: { 'Cache-Control': 'no-cache' } })
       .subscribe({ next: r => {
         this.loadedVersion.set(r.v);
-        const acked = localStorage.getItem('versetools_update_acked');
-        if (acked && acked === r.v) localStorage.removeItem('versetools_update_acked');
       }, error: () => {} });
 
-    // Poll version.json every 60s. When the version string changes,
-    // show the popup directly and also nudge the SW to start fetching
-    // the new bundle so it's cached by the time the user clicks "Got
-    // it". The reload handler does a cache-busted hard reload either
-    // way, so a slightly-behind SW can't land the user on stale assets.
-    const checkVersion = () => {
-      this.http.get<{ v: string }>(`version.json?t=${Date.now()}`)
-        .subscribe({ next: r => {
-          if (this.loadedVersion() && r.v !== this.loadedVersion()) {
-            if (this.swUpdate.isEnabled) this.swUpdate.checkForUpdate().catch(() => {});
-            this.notifyUpdate(r.v);
-          }
-        }, error: () => {} });
+    // Ask the SW every 60s (and on tab focus) whether a new version
+    // exists. checkForUpdate() compares ngsw.json hashes server-side,
+    // bypassing any CDN or SW caching of version.json. If it resolves
+    // true, show the popup immediately — don't wait for VERSION_READY.
+    // The reload handler does activateUpdate() + cache-busted URL to
+    // guarantee the user lands on fresh assets.
+    const checkForNew = () => {
+      if (!this.swUpdate.isEnabled) return;
+      this.swUpdate.checkForUpdate()
+        .then(hasUpdate => { if (hasUpdate) this.notifyUpdate(); })
+        .catch(() => {});
     };
-    this.versionCheckInterval = setInterval(checkVersion, 60 * 1000);
+    this.versionCheckInterval = setInterval(checkForNew, 60 * 1000);
 
-    // Also check when the tab regains focus/visibility — users who left
-    // the site open in a background tab see the popup as soon as they
-    // come back instead of waiting up to a full poll cycle.
     this.onVisibility = () => {
-      if (document.visibilityState === 'visible') checkVersion();
+      if (document.visibilityState === 'visible') checkForNew();
     };
     document.addEventListener('visibilitychange', this.onVisibility);
     window.addEventListener('focus', this.onVisibility);
+
+    // Kick off an immediate check on page load.
+    checkForNew();
   }
 
   ngOnDestroy(): void {
@@ -129,7 +115,7 @@ export class App implements OnInit, OnDestroy {
     // busting query string to the URL on reload so any browser HTTP cache
     // for index.html is bypassed — the combination guarantees the user
     // lands on the new version without needing Ctrl+Shift+R.
-    const tag = this.pendingVersion || Date.now().toString();
+    const tag = Date.now().toString();
     const doReload = () => {
       const url = new URL(window.location.href);
       url.searchParams.set('_v', tag);
