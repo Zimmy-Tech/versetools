@@ -357,7 +357,7 @@ def match_enemy_pool(class_name, wave_pools):
     return None
 
 
-def parse_mission(xml_path, loc, scope_map=None, rep_req_rank_map=None):
+def parse_mission(xml_path, loc, scope_map=None, rep_req_rank_map=None, standing_by_guid=None):
     """Parse a single mission broker XML file."""
     try:
         root = ET.parse(xml_path).getroot()
@@ -418,19 +418,32 @@ def parse_mission(xml_path, loc, scope_map=None, rep_req_rank_map=None):
             if scope_name and scope_name not in rep_scopes:
                 rep_scopes.append(scope_name)
 
-    # Reputation rank from DCB binary (SReputationMissionRequirementsParams)
+    # Reputation rank. StarBreaker inlines the rep-requirements struct inside
+    # <reputationRequirements>; read its SReputationMissionGiverRequirementParams
+    # 'standing' GUID directly and look up the standing name. Legacy unp4k used
+    # an attribute ref resolved by a byte-scan map (rep_req_rank_map).
     rep_rank = None
-    rep_req_attr = root.get("reputationRequirements", "")
-    if rep_req_rank_map and rep_req_attr:
-        req_m = re.search(r'\[([0-9A-Fa-f]+)\]', rep_req_attr)
-        if req_m:
-            rep_rank = rep_req_rank_map.get(req_m.group(1).upper())
+    inline_giver = root.find(".//reputationRequirements//SReputationMissionGiverRequirementParams")
+    if inline_giver is not None and standing_by_guid:
+        standing_g = (inline_giver.get("standing") or "").strip()
+        if standing_g and standing_g != "00000000-0000-0000-0000-000000000000":
+            rep_rank = standing_by_guid.get(guid_key(standing_g))
+    if rep_rank is None and rep_req_rank_map:
+        rep_req_attr = root.get("reputationRequirements", "")
+        if rep_req_attr:
+            req_m = re.search(r'\[([0-9A-Fa-f]+)\]', rep_req_attr)
+            if req_m:
+                rep_rank = rep_req_rank_map.get(req_m.group(1).upper())
 
     category = infer_category(str(xml_path), class_name)
 
-    # Chain: mission's own GUID and required mission GUIDs
+    # Chain: mission's own GUID and required mission GUIDs.
+    # StarBreaker uses <Reference value="GUID"/>; unp4k used <Reference>GUID</Reference>.
     mission_ref = root.get("__ref", "")
-    req_refs = [ref.text for ref in root.findall(".//requiredMissions/Reference") if ref.text]
+    req_refs = []
+    for ref in root.findall(".//requiredMissions/Reference"):
+        g = ref.get("value") or ref.text
+        if g: req_refs.append(g)
 
     result = {
         "className": class_name,
@@ -610,6 +623,7 @@ def build_contract_difficulty_table(dcb_path):
 def estimate_reward(difficulty_table, diff_ref, time_to_complete):
     """
     Estimate UEC payout from a ContractDifficulty reference and timeToComplete.
+    Legacy unp4k path — StarBreaker callers use estimate_reward_inline below.
     Returns (estimated_reward, True) or (0, False) if can't compute.
     """
     if not diff_ref or not time_to_complete or diff_ref == 'null':
@@ -637,6 +651,33 @@ def estimate_reward(difficulty_table, diff_ref, time_to_complete):
     estimated = round(raw / 250) * 250
     return max(estimated, 250), True
 
+
+def _score_from_label(label):
+    """ContractDifficulty attributes look like 'Easy_PvE_only_action_3' —
+    the trailing integer after the last underscore is the difficulty score."""
+    if not label: return 0
+    try: return int(label.rsplit('_', 1)[-1])
+    except ValueError: return 0
+
+
+def estimate_reward_inline(profile_by_guid, profile_guid, score_labels, time_to_complete):
+    """StarBreaker path: difficulty profile and per-axis scores come inline
+    from the contract XML. profile_by_guid maps profile GUID → 4-tuple of
+    weights (mechanicalSkill, mentalLoad, riskOfLoss, gameKnowledge).
+    score_labels is a 4-tuple of raw label strings from the ContractDifficulty
+    element. Returns (estimated_reward, True) or (0, False)."""
+    if not profile_guid or profile_guid == '00000000-0000-0000-0000-000000000000':
+        return 0, False
+    weights = profile_by_guid.get(guid_key(profile_guid))
+    if not weights: return 0, False
+    try: t = float(time_to_complete)
+    except (ValueError, TypeError): return 0, False
+    if t <= 0: return 0, False
+    scores = [_score_from_label(s) for s in score_labels]
+    weighted_value = sum(w * _SCORE_VALUES.get(s, 3660) for w, s in zip(weights, scores))
+    estimated = round(t * weighted_value / 250) * 250
+    return max(estimated, 250), True
+
 def main():
     print("=" * 60)
     print("VerseDB Mission Extractor")
@@ -655,10 +696,50 @@ def main():
     difficulty_table = build_contract_difficulty_table(DCB_FILE)
     print(f"  {len(difficulty_table)} ContractDifficulty entries loaded")
 
-    # ── DCB binary rank resolution ──────────────────────────────────────
-    # Build map: SReputationMissionRequirementsParams index → rank display name
-    # Chain: ReqParams[idx] → strong pointer → SReputationMissionGiverRequirementParams
-    #        → maxStanding GUID at byte offset 48 → standing XML displayName → localization
+    # Build ContractDifficultyProfile GUID → (4 weights) map from forge XMLs.
+    # StarBreaker inlines the profile GUID on each contract's <ContractDifficulty>
+    # element so we can resolve reward estimates without byte-scanning DCB.
+    profile_by_guid = {}
+    profile_dir = FORGE_DIR / "contracts" / "contractdifficultyprofiles"
+    if profile_dir.exists():
+        for pf in profile_dir.rglob("*.xml.xml"):
+            try:
+                ptxt = open(pf, encoding="utf-8", errors="replace").read()
+                pref = re.search(r'__ref="([^"]+)"', ptxt)
+                if not pref: continue
+                # Weights are attributes on the profile root element
+                wms = re.search(r'mechanicalSkillWeight="([^"]+)"', ptxt)
+                wml = re.search(r'mentalLoadWeight="([^"]+)"', ptxt)
+                wrl = re.search(r'riskOfLossWeight="([^"]+)"', ptxt)
+                wgk = re.search(r'gameKnowledgeWeight="([^"]+)"', ptxt)
+                if wms and wml and wrl and wgk:
+                    profile_by_guid[guid_key(pref.group(1))] = (
+                        float(wms.group(1)), float(wml.group(1)),
+                        float(wrl.group(1)), float(wgk.group(1)),
+                    )
+            except Exception:
+                pass
+    print(f"  {len(profile_by_guid)} ContractDifficultyProfile XMLs loaded")
+
+    # ── Build standing GUID → display name map (used by both inline and byte-scan paths) ──
+    standing_by_guid = {}
+    standings_dir = FORGE_DIR / "reputation" / "standings"
+    if standings_dir.exists():
+        for sf in standings_dir.rglob("*.xml.xml"):
+            try:
+                stxt = open(sf, encoding="utf-8", errors="replace").read()
+                sref = re.search(r'__ref="([^"]+)"', stxt)
+                sdisp = re.search(r'displayName="@([^"]+)"', stxt)
+                if sref and sdisp:
+                    display = loc.get(sdisp.group(1).lower(), sdisp.group(1))
+                    standing_by_guid[guid_key(sref.group(1))] = display
+            except Exception:
+                pass
+        print(f"  Standing GUID map: {len(standing_by_guid)} entries")
+
+    # ── DCB binary rank resolution (legacy unp4k format only) ──────────────
+    # StarBreaker inlines the struct so parse_mission can read it directly;
+    # this block only fires for legacy unp4k output that used [HEX] refs.
     rep_req_rank_map = {}  # hex index string -> rank display name (e.g. "0606" -> "Master")
     if DCB_FILE.exists():
         try:
@@ -695,21 +776,7 @@ def main():
                              + c_u8 + c_u16*2 + c_u32*4 + c_u64*8
                              + c_f32*4 + c_f64*8 + c_guid*16 + c_str*4 + c_loc*4 + c_enum*4)
 
-                # Build standing GUID → display name map
-                _standing_guids = {}  # sorted_hex → display name
-                standings_dir = FORGE_DIR / "reputation" / "standings"
-                for sf in standings_dir.rglob("*.xml.xml"):
-                    try:
-                        stxt = open(sf, encoding="utf-8", errors="replace").read()
-                        sref = re.search(r'__ref="([^"]+)"', stxt)
-                        sdisp = re.search(r'displayName="@([^"]+)"', stxt)
-                        if sref and sdisp:
-                            display = loc.get(sdisp.group(1).lower(), sdisp.group(1))
-                            _standing_guids[guid_key(sref.group(1))] = display
-                    except Exception:
-                        pass
-
-                # Resolve each req entry
+                # Resolve each req entry using the pre-built standing_by_guid map
                 for ri in range(req_cnt):
                     inst = req_off + ri * req_rs
                     _, strong_idx = _st.unpack_from("<II", dcb_d, inst)
@@ -722,7 +789,7 @@ def main():
                         continue
                     g_inst = giver_off + s_ii * giver_rs
                     guid_hex = dcb_d[g_inst + 48:g_inst + 64].hex()
-                    rank = _standing_guids.get(guid_key(guid_hex))
+                    rank = standing_by_guid.get(guid_key(guid_hex))
                     if rank:
                         rep_req_rank_map[format(ri, "04X")] = rank
 
@@ -1051,24 +1118,51 @@ def main():
                 if gen_scope:
                     result_scopes.add(gen_scope)
 
-                # Chain: required completion tags (prerequisites)
-                req_tags = re.findall(
-                    r'<requiredCompletedContractTags>.*?<Reference>([^<]+)</Reference>.*?</requiredCompletedContractTags>',
+                # Chain: required completion tags (prerequisites). Accept both
+                # StarBreaker <Reference value="GUID"/> and legacy <Reference>GUID</Reference>.
+                req_tags_block = re.search(
+                    r'<requiredCompletedContractTags>(.*?)</requiredCompletedContractTags>',
                     body, re.S
                 )
+                req_tags = []
+                if req_tags_block:
+                    inner = req_tags_block.group(1)
+                    req_tags = re.findall(r'<Reference\s+value="([^"]+)"\s*/?>', inner)
+                    if not req_tags:
+                        req_tags = re.findall(r'<Reference>([^<]+)</Reference>', inner)
                 # Chain: granted completion tags (on success)
                 grant_tags = re.findall(r'ContractResult_CompletionTag[^>]*tag="([^"]+)"', body)
                 # onceOnly flag
                 once_only = 'onceOnly="1"' in attrs
 
-                # Estimated reward from ContractDifficulty
-                # The difficulty and timeToComplete are on contractResults element
+                # Estimated reward from ContractDifficulty. StarBreaker inlines
+                # the profile GUID + per-axis score labels on a <ContractDifficulty>
+                # child element; legacy unp4k used a difficulty="ContractDifficulty[HEX]"
+                # attribute resolved via difficulty_table.
                 combined = attrs + body
-                diff_ref_m = re.search(r'difficulty="(ContractDifficulty\[[^\]]+\])"', combined)
                 time_m2 = re.search(r'timeToComplete="([^"]+)"', combined)
-                diff_ref = diff_ref_m.group(1) if diff_ref_m else None
                 ttc = time_m2.group(1) if time_m2 else None
-                est_reward, is_estimated = estimate_reward(difficulty_table, diff_ref, ttc)
+                est_reward, is_estimated = 0, False
+                # Inline-first
+                inline_cd = re.search(
+                    r'<ContractDifficulty\s+difficultyProfile="([^"]+)"\s+'
+                    r'mechanicalSkill="([^"]*)"\s+mentalLoad="([^"]*)"\s+'
+                    r'riskOfLoss="([^"]*)"\s+gameKnowledge="([^"]*)"',
+                    combined
+                )
+                if inline_cd:
+                    est_reward, is_estimated = estimate_reward_inline(
+                        profile_by_guid,
+                        inline_cd.group(1),
+                        (inline_cd.group(2), inline_cd.group(3),
+                         inline_cd.group(4), inline_cd.group(5)),
+                        ttc,
+                    )
+                if not is_estimated:
+                    # Legacy fallback
+                    diff_ref_m = re.search(r'difficulty="(ContractDifficulty\[[^\]]+\])"', combined)
+                    diff_ref = diff_ref_m.group(1) if diff_ref_m else None
+                    est_reward, is_estimated = estimate_reward(difficulty_table, diff_ref, ttc)
 
                 entry = {
                     "className": debug_name,
@@ -1360,7 +1454,7 @@ def main():
     missions = []
     skipped = 0
     for xml_file in mission_dir.rglob("*.xml.xml"):
-        result = parse_mission(xml_file, loc, scope_map, rep_req_rank_map)
+        result = parse_mission(xml_file, loc, scope_map, rep_req_rank_map, standing_by_guid)
         if result:
             missions.append(result)
         else:
@@ -1804,8 +1898,12 @@ def main():
                     display = DISPLAY_FALLBACKS[display]
                 ceiling = int(ceiling_m.group(1)) if ceiling_m else 0
 
-                # Extract standing references in order
-                refs = re.findall(r'<Reference>([^<]+)</Reference>', stxt)
+                # Extract standing references in order. StarBreaker uses
+                # <Reference value="GUID"/>; unp4k used <Reference>GUID</Reference>.
+                # Accept both attribute and text forms.
+                refs = re.findall(r'<Reference\s+value="([^"]+)"\s*/?>', stxt)
+                if not refs:
+                    refs = re.findall(r'<Reference>([^<]+)</Reference>', stxt)
                 ranks = []
                 for r in refs:
                     gk = guid_key(r)

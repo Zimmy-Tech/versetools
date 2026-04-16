@@ -786,7 +786,9 @@ def parse_vehicle_xml(xml_path, loc):
 
         controller_def = item_port.find("ControllerDef")
         controller_tag = controller_def.get("controllableTags", "") if controller_def is not None else ""
-        port_tags = item_port.get("portTags", "")
+        # Vehicle XMLs use inconsistent casing — Idris uses portTags, Retaliator
+        # uses PortTags. Accept either.
+        port_tags = item_port.get("portTags", "") or item_port.get("PortTags", "")
 
         hp_entry = {
             "id":       hp_id,
@@ -2994,65 +2996,66 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
         if si < len(struct_defs):
             struct_data[si] = (off, cnt); off += struct_defs[si][4] * cnt
 
-    loadout_si = struct_by_name.get("SItemPortLoadoutManualParams")
-    entry_si   = struct_by_name.get("SItemPortLoadoutEntryParams")
-    if loadout_si not in struct_data or entry_si not in struct_data:
-        print("  WARNING: Loadout structs not found in DCB")
-        return
-
-    l_off, l_cnt = struct_data[loadout_si]
-    l_rs = struct_defs[loadout_si][4]   # 33 bytes
-    e_off, e_cnt = struct_data[entry_si]
-    e_rs = struct_defs[entry_si][4]     # 44 bytes
-
-    # Build GUID -> class_name map from DCB records table.
-    # Record layout (32 bytes): [0:4]=?, [4:8]=path_text_off, [8:12]=struct_idx, [12:28]=GUID, [28:32]=?
-    guid_to_class = {}
-    for i in range(n_records):
-        rec_off = records_start + i * 32
-        path_off = u32(rec_off + 4)
-        guid = raw[rec_off+12:rec_off+28]
-        if path_off < text_len:
-            path = text_at(path_off)
-            if path:
-                stem = path.rsplit('/', 1)[-1].replace('.xml', '')
-                cls = stem[len('entityclassdefinition.'):] if stem.startswith('entityclassdefinition.') else stem
-                guid_to_class[guid] = cls
-
-    _EMPTY_GUID = bytes(16)
-
-    def read_loadout(variant, depth=0):
-        """Return (portName -> className) for a loadout variant, resolving GUIDs
-        and recursively following child loadouts (prefix child ports with parent port)."""
-        if variant >= l_cnt or depth > 4: return {}
-        inst = l_off + variant * l_rs
-        count     = raw[inst + 25]
-        start_idx = u32(inst + 29)
-        if count == 0 or start_idx >= e_cnt: return {}
-        result = {}
-        for k in range(count):
-            ei = e_off + (start_idx + k) * e_rs
+    # Build GUID → className map by walking the forge entity XMLs. Loadout
+    # entries reference EntityClassDefinitions by GUID, and StarBreaker emits
+    # each as a separate XML with __ref (GUID) and filename (class name).
+    # Scoped to entity subtrees that loadouts plausibly reference — weapons,
+    # mounts, missiles, components, seats, screens, etc.
+    guid_to_class_str = {}
+    scan_roots = ["entities/scitem", "entities/spaceships", "entities/groundvehicles",
+                  "entities/test", "entities"]
+    seen_paths = set()
+    for sub in scan_roots:
+        sub_dir = forge_dir / sub
+        if not sub_dir.exists(): continue
+        for fp in sub_dir.rglob("*.xml.xml"):
+            if fp in seen_paths: continue
+            seen_paths.add(fp)
             try:
-                port = text_at(u32(ei + 0)).lower()
-                cls  = text_at(u32(ei + 4)).lower()
-                if not port:
-                    continue
-                # Resolve GUID when className is empty
-                if not cls:
-                    guid = raw[ei+12:ei+28]
-                    if guid != _EMPTY_GUID:
-                        cls = guid_to_class.get(guid, '')
-                if cls:
-                    result[port] = cls
-                # Follow child loadout if present
-                child_struct  = u32(ei + 36)
-                child_variant = u32(ei + 40)
-                if child_struct == loadout_si and child_variant < l_cnt:
-                    children = read_loadout(child_variant, depth + 1)
-                    for child_port, child_cls in children.items():
-                        result[f"{port}.{child_port}"] = child_cls
+                # Quick-read the root element: just the opening tag plus attributes.
+                # Avoid full ElementTree parse for speed — this runs once per extract.
+                with open(fp, 'r', encoding='utf-8', errors='replace') as f:
+                    head = f.read(2048)
+                m_ref = re.search(r'__ref="([0-9a-f-]{36})"', head)
+                if not m_ref: continue
+                ref = m_ref.group(1).lower()
+                # Class name from filename: "entityclassdefinition.Foo.xml" → "foo"
+                stem = fp.stem.replace(".xml", "")
+                if stem.lower().startswith("entityclassdefinition."):
+                    stem = stem[len("entityclassdefinition."):]
+                guid_to_class_str[ref] = stem.lower()
             except Exception:
                 pass
+
+    _EMPTY_GUID_STR = "00000000-0000-0000-0000-000000000000"
+
+    def read_loadout_from_element(lp_elem, depth=0):
+        """Walk an inlined <SItemPortLoadoutManualParams> element and return
+        {portName → className}. Recursively follows nested <loadout> children,
+        prefixing child port names with parent port (dotted key). Works on
+        StarBreaker forge output which inlines the full entry tree."""
+        if depth > 4 or lp_elem is None:
+            return {}
+        result = {}
+        entries = lp_elem.find("entries")
+        if entries is None:
+            return {}
+        for entry in entries.findall("SItemPortLoadoutEntryParams"):
+            port = (entry.get("itemPortName") or "").lower()
+            if not port: continue
+            cls = (entry.get("entityClassName") or "").lower()
+            if not cls:
+                guid = (entry.get("entityClassReference") or "").lower()
+                if guid and guid != _EMPTY_GUID_STR:
+                    cls = guid_to_class_str.get(guid, "")
+            if cls:
+                result[port] = cls
+            # Follow nested loadout
+            child_lp = entry.find("./loadout/SItemPortLoadoutManualParams")
+            if child_lp is not None:
+                child_map = read_loadout_from_element(child_lp, depth + 1)
+                for cport, ccls in child_map.items():
+                    result[f"{port}.{cport}"] = ccls
         return result
 
     # Forge entity name -> vehicle XML name aliases (when names differ)
@@ -3075,19 +3078,21 @@ def extract_default_loadouts(ships, forge_dir, dcb_path):
         scan_dirs.append(gv_dir)
 
     for scan_dir in scan_dirs:
-        for xml_file in sorted(scan_dir.glob("*.xml")):
+        for xml_file in sorted(scan_dir.glob("*.xml.xml")):
             stem = xml_file.stem.replace(".xml", "")
             alias = FORGE_ALIASES.get(stem.lower())
             matched = next((k for k in ships if k.lower() == (alias or stem).lower()), None)
             if not matched:
                 continue
             try:
-                txt = xml_file.read_text(errors='replace')
-                m = re.search(r'SItemPortLoadoutManualParams\[([0-9A-Fa-f]+)\]', txt)
-                if not m:
+                root = ET.parse(xml_file).getroot()
+                # Top-level loadout path:
+                # EntityClassDefinition → Components → SEntityComponentDefaultLoadoutParams
+                # → loadout → SItemPortLoadoutManualParams
+                lp = root.find("./Components/SEntityComponentDefaultLoadoutParams/loadout/SItemPortLoadoutManualParams")
+                if lp is None:
                     continue
-                variant = int(m.group(1), 16)
-                loadout = read_loadout(variant)
+                loadout = read_loadout_from_element(lp)
                 if loadout:
                     ships[matched]["defaultLoadout"] = loadout
                     enriched += 1
@@ -3436,12 +3441,35 @@ def enrich_armor_from_forge(ships, forge_dir, dcb_path=None):
                 if defl is not None:
                     ship["armorDeflectPhys"] = safe_float(defl.get("DamagePhysical", 0))
                     ship["armorDeflectEnrg"] = safe_float(defl.get("DamageEnergy", 0))
-                # Extract DamageInfo reference for hull damage multipliers
+                # Hull damage multipliers — StarBreaker inlines the DamageInfo inside
+                # <damageMultiplier>. Legacy unp4k used a DamageInfo[HEX] ref on the
+                # attribute; fall back to that if inline is absent.
+                dm_di = armor.find("./damageMultiplier/DamageInfo")
+                if dm_di is not None:
+                    ship["hullDmgPhys"] = round(safe_float(dm_di.get("DamagePhysical", 0)), 2)
+                    ship["hullDmgEnrg"] = round(safe_float(dm_di.get("DamageEnergy", 0)), 2)
+                    ship["hullDmgDist"] = round(safe_float(dm_di.get("DamageDistortion", 0)), 2)
+                else:
+                    txt = ET.tostring(root, encoding='unicode')
+                    m = re.search(r'damageMultiplier="DamageInfo\[([0-9A-Fa-f]+)\]"', txt)
+                    if m:
+                        dmg_info_refs[ship["className"]] = m.group(1)
+            # Durability damage resistance — StarBreaker inlines per-type
+            # <PhysicalResistance Multiplier="0.81"/> etc. Legacy used a
+            # DamageResistance[HEX] ref.
+            dr_block = root.find(".//SHealthComponentParams/DamageResistances/DamageResistance")
+            if dr_block is not None:
+                pr = dr_block.find("PhysicalResistance")
+                er = dr_block.find("EnergyResistance")
+                dr = dr_block.find("DistortionResistance")
+                if pr is not None:
+                    ship["durabilityPhys"] = round(safe_float(pr.get("Multiplier", 1)), 4)
+                if er is not None:
+                    ship["durabilityEnrg"] = round(safe_float(er.get("Multiplier", 1)), 4)
+                if dr is not None:
+                    ship["durabilityDist"] = round(safe_float(dr.get("Multiplier", 1)), 4)
+            else:
                 txt = ET.tostring(root, encoding='unicode')
-                m = re.search(r'damageMultiplier="DamageInfo\[([0-9A-Fa-f]+)\]"', txt)
-                if m:
-                    dmg_info_refs[ship["className"]] = m.group(1)
-                # Extract DamageResistance reference for durability damage modifiers
                 m2 = re.search(r'DamageResistances="DamageResistance\[([0-9A-Fa-f]+)\]"', txt)
                 if m2:
                     dmg_resist_refs[ship["className"]] = m2.group(1)
@@ -3632,8 +3660,10 @@ def enrich_cargo_capacity(ships, forge_dir, dcb_path=None):
             except Exception:
                 pass
 
-    # Build mining pod cache: pod class name -> SCU (from SStandardCargoUnit in forge XML)
-    pod_scu_refs = {}  # class_name -> hex index
+    # Build mining pod cache: pod class name -> SCU (inline SStandardCargoUnit
+    # in StarBreaker forge output; falls back to DCB byte-scan for legacy unp4k).
+    pod_scu_cache = {}
+    pod_scu_refs = {}
     pod_dir = forge_dir / "entities" / "scitem" / "ships" / "utility" / "mining" / "miningpods"
     if pod_dir.exists():
         for xml_file in pod_dir.glob("cargo_shipmining_pod_*.xml.xml"):
@@ -3642,6 +3672,14 @@ def enrich_cargo_capacity(ships, forge_dir, dcb_path=None):
                 continue
             try:
                 root = ET.parse(xml_file).getroot()
+                # Inline: <SStandardCargoUnit standardCargoUnits="N"/>
+                scu_el = root.find(".//SStandardCargoUnit")
+                if scu_el is not None:
+                    val = safe_float(scu_el.get("standardCargoUnits", 0))
+                    if val > 0:
+                        pod_scu_cache[stem.lower()] = round(val)
+                        continue
+                # Legacy: [HEX] ref
                 txt = ET.tostring(root, encoding='unicode')
                 m = re.search(r'SStandardCargoUnit\[([0-9A-Fa-f]+)\]', txt)
                 if m:
@@ -3649,8 +3687,7 @@ def enrich_cargo_capacity(ships, forge_dir, dcb_path=None):
             except Exception:
                 pass
 
-    # Read SStandardCargoUnit values from DCB
-    pod_scu_cache = {}
+    # Resolve any remaining refs via DCB byte-scan (legacy format)
     if dcb_path and dcb_path.exists() and pod_scu_refs:
         with open(dcb_path, "rb") as f:
             dcb_d = f.read()
@@ -3827,15 +3864,18 @@ def enrich_shield_face_type(ships, forge_dir):
 
 
 def enrich_fuel_capacity(ships, forge_dir, dcb_path=None):
-    """Extract hydrogen and quantum fuel tank capacities per ship."""
+    """Extract hydrogen and quantum fuel tank capacities per ship.
+    Tank XMLs inline the capacity as <capacity><SStandardCargoUnit
+    standardCargoUnits="N"/></capacity> (StarBreaker forge). Legacy unp4k
+    output used a ref index — handled via byte-scan fallback below."""
     tank_dir = forge_dir / "entities" / "scitem" / "ships" / "fueltanks"
     if not tank_dir.exists():
         print(f"  WARNING: fueltanks dir not found")
         return
 
-    # Scan tank entity files for SStandardCargoUnit references
-    # htnk_* = hydrogen, qtnk_* = quantum
-    tank_refs = {}  # class_name -> (type, hex_index)
+    # htnk_* = hydrogen, qtnk_* = quantum. Parse each tank's capacity inline.
+    tank_capacities = {}  # class_name -> (type, capacity)
+    tank_refs = {}        # class_name -> (type, hex_index)   [for byte-scan fallback]
     for xml_file in tank_dir.glob("*.xml.xml"):
         stem = xml_file.stem.replace(".xml", "").lower()
         if not stem.startswith("htnk_") and not stem.startswith("qtnk_"):
@@ -3843,6 +3883,13 @@ def enrich_fuel_capacity(ships, forge_dir, dcb_path=None):
         tank_type = "hydrogen" if stem.startswith("htnk_") else "quantum"
         try:
             root = ET.parse(xml_file).getroot()
+            cap_el = root.find(".//capacity/SStandardCargoUnit")
+            if cap_el is not None:
+                val = safe_float(cap_el.get("standardCargoUnits", 0))
+                if val > 0:
+                    tank_capacities[stem] = (tank_type, round(val, 1))
+                    continue
+            # Legacy fallback: regex for [HEX] ref on the capacity attribute
             txt = ET.tostring(root, encoding='unicode')
             m = re.search(r'capacity="SStandardCargoUnit\[([0-9A-Fa-f]+)\]"', txt)
             if m:
@@ -3850,13 +3897,8 @@ def enrich_fuel_capacity(ships, forge_dir, dcb_path=None):
         except Exception:
             pass
 
-    if not tank_refs:
-        print(f"  WARNING: no fuel tank refs found")
-        return
-
-    # Read SStandardCargoUnit values from DCB
-    tank_capacities = {}  # class_name -> capacity_mscu
-    if dcb_path and dcb_path.exists():
+    # Resolve any remaining refs via DCB byte scan (legacy format only)
+    if tank_refs and dcb_path and dcb_path.exists():
         with open(dcb_path, "rb") as f:
             dcb_d = f.read()
         h = _dcb_parse_header(dcb_d)
@@ -3869,6 +3911,10 @@ def enrich_fuel_capacity(ships, forge_dir, dcb_path=None):
                     val = struct.unpack_from("<f", dcb_d, scu_off + idx * 4)[0]
                     if val > 0:
                         tank_capacities[cls_name] = (tank_type, round(val, 1))
+
+    if not tank_capacities:
+        print(f"  WARNING: no fuel tank capacities resolved")
+        return
 
     # Match tanks to ships via default loadout
     enriched = 0
@@ -5642,18 +5688,25 @@ def main(mode: str = "live"):
             dict(_radar_hp), dict(_ls_hp),
         ])
 
-    # Add Retaliator module hardpoints (front + rear bays for cargo/torpedo modules)
+    # Retaliator module bays: ensure the ship has front/rear module hardpoints.
+    # The vehicle XML normally provides them (size 3-3, swaponly, tagged),
+    # but add a defensive fallback only if they're missing. Previously the
+    # code unconditionally appended duplicates, which caused the picker to
+    # apply exclusive_tags filtering on the wrong (second) hardpoint and
+    # block all module swaps.
     if "AEGS_Retaliator" in ships:
-        ships["AEGS_Retaliator"]["hardpoints"].extend([
-            {"id": "hardpoint_front_module", "label": "Front Module Bay",
-             "type": "Module", "subtypes": "", "minSize": 1, "maxSize": 10,
-             "flags": "exclusive_tags", "portTags": "AEGS_Retaliator_Module_Front",
-             "allTypes": [{"type": "Module", "subtypes": ""}]},
-            {"id": "hardpoint_rear_module", "label": "Rear Module Bay",
-             "type": "Module", "subtypes": "", "minSize": 1, "maxSize": 10,
-             "flags": "exclusive_tags", "portTags": "AEGS_Retaliator_Module_Rear",
-             "allTypes": [{"type": "Module", "subtypes": ""}]},
-        ])
+        existing = {hp["id"].lower() for hp in ships["AEGS_Retaliator"].get("hardpoints", [])}
+        for hp_id, tag, label in [
+            ("hardpoint_front_module", "AEGS_Retaliator_Module_Front", "Front Module Bay"),
+            ("hardpoint_rear_module",  "AEGS_Retaliator_Module_Rear",  "Rear Module Bay"),
+        ]:
+            if hp_id in existing: continue
+            ships["AEGS_Retaliator"]["hardpoints"].append({
+                "id": hp_id, "label": label,
+                "type": "Module", "subtypes": "", "minSize": 3, "maxSize": 3,
+                "flags": "swaponly", "portTags": tag,
+                "allTypes": [{"type": "Module", "subtypes": ""}],
+            })
 
     # Add Sabre Firebird bespoke internal missile rack (24x S3 Thunderbolt III)
     if "aegs_sabre_firebird" in ships:
@@ -6058,48 +6111,9 @@ def main(mode: str = "live"):
         if cls in items:
             items[cls]["capacity"] = 7
 
-    # Beam weapon overrides (damage not extractable from standard ammo chain)
-    BEAM_OVERRIDES = {
-        "hrst_laserbeam_bespoke": {
-            "damage": {"physical": 0, "energy": 15000, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
-            "alphaDamage": 15000, "dps": 15000, "fireRate": 60,
-            "penetrationDistance": 29.4, "penetrationMinRadius": 1.47, "penetrationMaxRadius": 2.94,
-        },
-        # Idris-M S10 "Destroyer" Mass Driver — charge weapon. DCB base alpha
-        # (144,160 @ 1.9 RPM) reflects uncharged shot. maxChargeModifier
-        # damageMultiplier=2 doubles alpha on a full charge, the way players
-        # actually fire it. Erkul and SPViewer report the max-charge number.
-        "klwe_massdriver_s10": {
-            "damage": {"physical": 288320, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0},
-            "alphaDamage": 288320, "dps": 9610.67, "fireRate": 2.0,
-        },
-    }
-    for cls, overrides in BEAM_OVERRIDES.items():
-        if cls in items:
-            items[cls].update(overrides)
-
-    # Name overrides for items with auto-generated names
-    NAME_OVERRIDES = {
-        "mrck_s10_aegs_idris_nose_s12_torpedo": 'HMF-T12 "Hammerfall" Torpedo Launcher',
-        "mrck_s05_rsi_perseus_torpedo_l": "5105 Torpedo Rack",
-        "mrck_s05_rsi_perseus_torpedo_r": "5105 Torpedo Rack",
-        "qdrv_acas_s01_foxfire_scitem": "FoxFire Quantum Drive",
-        "qdrv_acas_s01_lightfire_scitem": "LightFire Quantum Drive",
-        "shld_banu_s02_placeholder_scitem": "Sukoran Shield",
-        "shld_rsi_s04_polaris_scitem": "Glacis Shield",
-        "cool_just_s02_coolcore_scitem": "CoolCore",
-        "jdrv_tars_s01_explorer_scitem": "Explorer Jump Module",
-        "jdrv_tars_s02_excelsior_scitem": "Excelsior Jump Module",
-        "jdrv_tars_s03_exodus_scitem": "Exodus Jump Module",
-        "jdrv_tars_s04_c_explorer": "Explorer Jump Module (Capital)",
-        "jdrv_aegs_s04_javelin_scitem": "Javelin Jump Module",
-        "jdrv_orig_s04_890j_scitem": "890 Jump Module",
-        "jdrv_wetk_s04_idris_scitem": "Exfiltrate Jump Module",
-        "jdrv_rsi_s04_bengal_scitem": "Bengal Jump Module",
-    }
-    for cls, name in NAME_OVERRIDES.items():
-        if cls in items:
-            items[cls]["name"] = name
+    # Beam-weapon damage overrides and community/marketing name overrides moved
+    # to the Angular app's data-overrides.ts (applied at DB hydration). Keeping
+    # the extractor faithful to DCB so future CIG diffs are cleanly meaningful.
 
     # Auto-clean ugly auto-generated names (title-cased classNames with no localization)
     _MFR_MAP = {
