@@ -49,7 +49,7 @@ export class HardpointSlotComponent {
   }
 
   isMissileSlot = computed(() =>
-    this.options().some(o => o.type === 'Missile')
+    this.options().some(o => o.type === 'Missile' || o.type === 'Bomb')
   );
 
   isMissileRackSlot = computed(() =>
@@ -268,7 +268,7 @@ export class HardpointSlotComponent {
   /** Compact inline missile card data. */
   missileCompact = computed<{ size: string; name: string; acqType: string; count: number; stats: { key: string; val: string; cls?: string }[] } | null>(() => {
     const item = this.currentItem();
-    if (!item || item.type !== 'Missile') return null;
+    if (!item || (item.type !== 'Missile' && item.type !== 'Bomb')) return null;
     const capacity = this.rackLeafIds().length;
 
     const stats: { key: string; val: string }[] = [];

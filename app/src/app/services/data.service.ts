@@ -659,7 +659,12 @@ export class DataService {
         for (const [dotKey, cls] of Object.entries(defaultLoadout)) {
           if (!dotKey.startsWith(prefix)) continue;
           const subItem = this.items().find(i => i.className.toLowerCase() === cls.toLowerCase());
-          if (subItem && (subItem.type === 'WeaponGun' || subItem.type === 'Missile' || subItem.type === 'MissileLauncher' || subItem.type === 'Shield' || subItem.type === 'WeaponMining' || subItem.type === 'SalvageHead' || subItem.type === 'TractorBeam')) {
+          if (!subItem) continue;
+          // Rack-type swap: don't re-populate leaves with incompatible ordnance
+          // (missile rack → bomb rack must not keep the ship's default missile, and vice versa)
+          if (item.type === 'BombLauncher'    && subItem.type === 'Missile') continue;
+          if (item.type === 'MissileLauncher' && subItem.type === 'Bomb')    continue;
+          if (subItem.type === 'WeaponGun' || subItem.type === 'Missile' || subItem.type === 'MissileLauncher' || subItem.type === 'Shield' || subItem.type === 'WeaponMining' || subItem.type === 'SalvageHead' || subItem.type === 'TractorBeam') {
             current[dotKey] = subItem;
           }
         }
@@ -1134,8 +1139,9 @@ export class DataService {
     const acceptsGun     = hp.type === 'WeaponGun' || allTypes.includes('WeaponGun');
     const acceptsTurret  = hp.type === 'Turret' || hp.type === 'TurretBase' ||
                            allTypes.includes('Turret') || allTypes.includes('TurretBase');
-    const acceptsRack    = hp.type === 'MissileLauncher' || hp.type === 'BombLauncher' ||
-                           allTypes.includes('MissileLauncher') || allTypes.includes('BombLauncher');
+    const acceptsMissileRack = hp.type === 'MissileLauncher' || allTypes.includes('MissileLauncher');
+    const acceptsBombRack    = hp.type === 'BombLauncher'    || allTypes.includes('BombLauncher');
+    const acceptsRack        = acceptsMissileRack || acceptsBombRack;
     const acceptsMissile = hp.type === 'Missile';
     const acceptsMining  = hp.type === 'WeaponMining' || allTypes.includes('WeaponMining');
     const acceptsMiningMod = hp.type === 'MiningModifier' || allTypes.includes('MiningModifier');
@@ -1200,7 +1206,8 @@ export class DataService {
         if (acceptsGun    && i.type === 'WeaponMount' && !hp.id.includes('.')) return true;
         if (acceptsGun    && (i.type === 'WeaponGun' || i.type === 'WeaponTachyon')) return true;
         if (acceptsTurret && (i.type === 'Turret' || i.type === 'TurretBase')) return true;
-        if (acceptsRack   && i.type === 'MissileLauncher') return true;
+        if (acceptsMissileRack && i.type === 'MissileLauncher') return true;
+        if (acceptsBombRack    && i.type === 'BombLauncher')    return true;
         if (acceptsMissile && i.type === 'Missile') return true;
         if (acceptsMining  && i.type === 'WeaponMining') return true;
         if (acceptsMiningMod && i.type === 'MiningModifier') return true;
