@@ -19,6 +19,9 @@ interface FpsWeapon {
   dps: number;
   sequenceEntries?: number | null;
   category?: string;
+  recoilPitch?: number | null;
+  recoilYaw?: number | null;
+  recoilSmooth?: number | null;
 }
 
 @Component({
@@ -118,6 +121,7 @@ export class FpsWeaponsComponent {
   }
 
   showRealDpsModal = signal(false);
+  showRecoilModal = signal(false);
 
   dmgType(w: FpsWeapon): string {
     const d = w.damage;

@@ -45,10 +45,13 @@
             <th>Speed</th>
             <th>Range</th>
             <th>Dmg Type</th>
+            <th class="recoil-header">Pitch (&deg;) <button class="info-btn" (click)="showRecoilModal.set(true)">?</button></th>
+            <th class="recoil-header">Yaw (&deg;)</th>
+            <th class="recoil-header">Smooth (s)</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="section-header"><td colspan="13">Anti-Personnel</td></tr>
+          <tr class="section-header"><td colspan="16">Anti-Personnel</td></tr>
           @for (w of antiPersonnel(); track w.className) {
             <tr>
               <td class="col-name">{{ w.name }}</td>
@@ -64,10 +67,13 @@
               <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
               <td class="col-num">{{ w.range ? w.range + 'm' : '\u2014' }}</td>
               <td>{{ dmgType(w) }}</td>
+              <td class="col-num col-recoil">{{ fmt(w.recoilPitch ?? 0, 2) }}</td>
+              <td class="col-num col-recoil">{{ fmt(w.recoilYaw ?? 0, 2) }}</td>
+              <td class="col-num col-recoil">{{ fmt(w.recoilSmooth ?? 0, 2) }}</td>
             </tr>
           }
           @if (antiShip().length) {
-            <tr class="section-header"><td colspan="13">Anti-Ship</td></tr>
+            <tr class="section-header"><td colspan="16">Anti-Ship</td></tr>
             @for (w of antiShip(); track w.className) {
               <tr>
                 <td class="col-name">{{ w.name }}</td>
@@ -76,11 +82,16 @@
                 <td>{{ w.subType }}</td>
                 <td class="col-modes">{{ w.fireModes.join(', ') || '\u2014' }}</td>
                 <td class="col-num">{{ fmt(w.dps) }}</td>
+                <td class="col-num col-real-dps">&mdash;</td>
                 <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
                 <td class="col-num">{{ fmtRpm(w) }}</td>
                 <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
                 <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
+                <td class="col-num">&mdash;</td>
                 <td>{{ dmgType(w) }}</td>
+                <td class="col-num col-recoil">&mdash;</td>
+                <td class="col-num col-recoil">&mdash;</td>
+                <td class="col-num col-recoil">&mdash;</td>
               </tr>
             }
           }
@@ -103,6 +114,25 @@
           <p>If the listed RPM doesn't land exactly on a tick boundary, the weapon fires slower than advertised. <strong>Real DPS</strong> reflects this actual in-game fire rate.</p>
           <p><strong>Example:</strong> The Killshot Rifle lists 535 RPM, but ceil(1800/535) = 4 ticks per shot, giving an effective 450 RPM — a 15.9% DPS loss.</p>
           <p>Weapons showing <strong>—</strong> in this column are unaffected (single-shot cannons, gatlings, or weapons that already sit on a tick boundary).</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showRecoilModal()) {
+    <div class="modal-overlay" (click)="showRecoilModal.set(false)">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title">Recoil — Pitch, Yaw &amp; Smooth</span>
+          <button class="modal-close" (click)="showRecoilModal.set(false)">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Three values sourced from each weapon's procedural recoil curve:</p>
+          <p><strong>Pitch (&deg;)</strong> — maximum vertical kick per shot, in degrees. This is how far the camera deflects <em>upward</em> when the weapon fires. Higher = harder to keep on-target in sustained fire.</p>
+          <p><strong>Yaw (&deg;)</strong> — maximum horizontal kick per shot, in degrees. Adds side-to-side deflection on top of the vertical kick.</p>
+          <p><strong>Smooth (s)</strong> — recoil recovery time, in seconds. How long the camera takes to settle back after a shot. Lower = snappier return, higher = softer / smoother recoil feel.</p>
+          <p><strong>Example:</strong> An A03 Sniper kicks ~0.88&deg; up and ~0.2&deg; sideways per shot, settling in 0.09s — a sharp, high-impact single-shot. A P4-AR Rifle kicks only ~0.19&deg; up at 0.06s smooth — flat and controllable for full-auto.</p>
+          <p>Weapons showing <strong>—</strong> have no recoil curve (launchers, railgun) or all-zero values in game files (most energy sidearms).</p>
         </div>
       </div>
     </div>

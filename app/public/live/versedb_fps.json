@@ -11,9 +11,13 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 0,
+      "fireRate": 300.0,
       "isCharged": null,
-      "fireModes": [],
+      "fireModes": [
+        "Single",
+        "Single",
+        "Single"
+      ],
       "magazineSize": 0,
       "projectileSpeed": 0,
       "range": 0,
@@ -26,7 +30,7 @@
         "stun": 0
       },
       "alphaDamage": 0,
-      "dps": 0,
+      "dps": 0.0,
       "sequenceEntries": 3,
       "pelletCount": null,
       "isBeam": null,
@@ -39,9 +43,11 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 24.0,
-      "isCharged": true,
-      "fireModes": [],
+      "fireRate": 70.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 5,
       "projectileSpeed": 50.0,
       "range": 200.0,
@@ -54,7 +60,7 @@
         "stun": 0
       },
       "alphaDamage": 6000.0,
-      "dps": 2400.0,
+      "dps": 7000.0,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
@@ -218,7 +224,10 @@
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 1.15,
+      "recoilYaw": 0.1,
+      "recoilSmooth": 0.06
     },
     {
       "className": "behr_smg_ballistic_01",
@@ -312,7 +321,10 @@
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 1.55,
+      "recoilYaw": 0.44,
+      "recoilSmooth": 0.09
     },
     {
       "className": "gmni_lmg_ballistic_01",
@@ -453,9 +465,10 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 150.0,
+      "fireRate": 455.0,
       "isCharged": null,
       "fireModes": [
+        "Single",
         "Single"
       ],
       "magazineSize": 18,
@@ -470,7 +483,7 @@
         "stun": 0.0
       },
       "alphaDamage": 48.0,
-      "dps": 120.0,
+      "dps": 364.0,
       "sequenceEntries": null,
       "pelletCount": 12,
       "isBeam": null,
@@ -507,7 +520,10 @@
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "recoilPitch": 0.876,
+      "recoilYaw": 0.2,
+      "recoilSmooth": 0.09
     },
     {
       "className": "hdgw_pistol_ballistic_01",
@@ -516,9 +532,11 @@
       "type": "Pistol",
       "subType": "Ballistic",
       "size": 1,
-      "fireRate": 60.0,
-      "isCharged": true,
-      "fireModes": [],
+      "fireRate": 170.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 8,
       "projectileSpeed": 550.0,
       "range": 1100.0,
@@ -531,7 +549,7 @@
         "stun": 0.0
       },
       "alphaDamage": 45.0,
-      "dps": 45.0,
+      "dps": 127.5,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
@@ -580,7 +598,8 @@
       "fireRate": 600.0,
       "isCharged": null,
       "fireModes": [
-        "Rapid"
+        "Rapid",
+        "Single"
       ],
       "magazineSize": 35,
       "projectileSpeed": 600.0,
@@ -610,10 +629,11 @@
       "type": "SMG",
       "subType": "Energy",
       "size": 2,
-      "fireRate": 800.0,
+      "fireRate": 900.0,
       "isCharged": null,
       "fireModes": [
-        "Rapid"
+        "Rapid",
+        "Burst"
       ],
       "magazineSize": 60,
       "projectileSpeed": 600.0,
@@ -627,7 +647,7 @@
         "stun": 0.0
       },
       "alphaDamage": 13.0,
-      "dps": 173.33,
+      "dps": 195.0,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
@@ -643,9 +663,11 @@
       "type": "Shotgun",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 24.0,
-      "isCharged": true,
-      "fireModes": [],
+      "fireRate": 60.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 12,
       "projectileSpeed": 300.0,
       "range": 600.0,
@@ -658,7 +680,7 @@
         "stun": 0.0
       },
       "alphaDamage": 120.0,
-      "dps": 48.0,
+      "dps": 120.0,
       "sequenceEntries": null,
       "pelletCount": 12,
       "isBeam": null,
@@ -674,9 +696,12 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 350.0,
+      "fireRate": 800.0,
       "isCharged": null,
-      "fireModes": [],
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 16,
       "projectileSpeed": 300.0,
       "range": 600.0,
@@ -689,7 +714,7 @@
         "stun": 0.0
       },
       "alphaDamage": 52.0,
-      "dps": 303.33,
+      "dps": 693.33,
       "sequenceEntries": 2,
       "pelletCount": 8,
       "isBeam": null,
@@ -707,7 +732,12 @@
       "size": 3,
       "fireRate": 40,
       "isCharged": null,
-      "fireModes": [],
+      "fireModes": [
+        "Single",
+        "Single",
+        "Single",
+        "Single"
+      ],
       "magazineSize": 12,
       "projectileSpeed": 875.0,
       "range": 1750.0,
@@ -837,9 +867,11 @@
       "type": "SMG",
       "subType": "Energy",
       "size": 2,
-      "fireRate": 625.0,
+      "fireRate": 700.0,
       "isCharged": null,
-      "fireModes": [],
+      "fireModes": [
+        "Burst"
+      ],
       "magazineSize": 45,
       "projectileSpeed": 600.0,
       "range": 1200.0,
@@ -852,7 +884,7 @@
         "stun": 0.0
       },
       "alphaDamage": 21.0,
-      "dps": 218.75,
+      "dps": 245.0,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
@@ -868,9 +900,11 @@
       "type": "Sniper",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 120.0,
-      "isCharged": true,
-      "fireModes": [],
+      "fireRate": 70.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 16,
       "projectileSpeed": 1000.0,
       "range": 4000.0,
@@ -883,7 +917,7 @@
         "stun": 0.0
       },
       "alphaDamage": 50.0,
-      "dps": 100.0,
+      "dps": 58.33,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
@@ -1027,9 +1061,12 @@
       "type": "Rifle",
       "subType": "Ballistic",
       "size": 2,
-      "fireRate": 535.0,
+      "fireRate": 600.0,
       "isCharged": null,
-      "fireModes": [],
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 45,
       "projectileSpeed": 0,
       "range": 0,
@@ -1042,7 +1079,7 @@
         "stun": 0
       },
       "alphaDamage": 20.5,
-      "dps": 182.79,
+      "dps": 205.0,
       "sequenceEntries": 2,
       "pelletCount": null,
       "isBeam": null,
@@ -1091,9 +1128,12 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 120.0,
+      "fireRate": 50.0,
       "isCharged": null,
-      "fireModes": [],
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 8,
       "projectileSpeed": 300.0,
       "range": 600.0,
@@ -1106,7 +1146,7 @@
         "stun": 0.0
       },
       "alphaDamage": 72.0,
-      "dps": 144.0,
+      "dps": 60.0,
       "sequenceEntries": 2,
       "pelletCount": 8,
       "isBeam": null,
@@ -1149,9 +1189,12 @@
       "type": "LMG",
       "subType": "Energy",
       "size": 4,
-      "fireRate": 0,
+      "fireRate": 550.0,
       "isCharged": null,
       "fireModes": [
+        "Single",
+        "Single",
+        "Single",
         "Beam"
       ],
       "magazineSize": 165,
@@ -1167,7 +1210,7 @@
       },
       "alphaDamage": 275.0,
       "dps": 275.0,
-      "sequenceEntries": null,
+      "sequenceEntries": 3,
       "pelletCount": null,
       "isBeam": true,
       "category": "Anti-Personnel"
@@ -1212,9 +1255,10 @@
       "type": "Rifle",
       "subType": "Energy",
       "size": 2,
-      "fireRate": 0,
+      "fireRate": 600.0,
       "isCharged": null,
       "fireModes": [
+        "Rapid",
         "Beam"
       ],
       "magazineSize": 80,
@@ -1278,9 +1322,12 @@
       "type": "Shotgun",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 120,
+      "fireRate": 385.0,
       "isCharged": null,
-      "fireModes": [],
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 20,
       "projectileSpeed": 300.0,
       "range": 600.0,
@@ -1293,7 +1340,7 @@
         "stun": 0.0
       },
       "alphaDamage": 46.0,
-      "dps": 92.0,
+      "dps": 295.17,
       "sequenceEntries": null,
       "pelletCount": 8,
       "isBeam": null,
@@ -1309,9 +1356,11 @@
       "type": "Sniper",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 16.67,
-      "isCharged": true,
-      "fireModes": [],
+      "fireRate": 325.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 22,
       "projectileSpeed": 700.0,
       "range": 1400.0,
@@ -1324,7 +1373,7 @@
         "stun": 0.0
       },
       "alphaDamage": 42.5,
-      "dps": 11.81,
+      "dps": 230.21,
       "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,

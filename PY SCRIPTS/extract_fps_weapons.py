@@ -247,7 +247,13 @@ def build_magazine_index(mag_dir: Path) -> dict:
 # ── Ammo index ───────────────────────────────────────────────────────────────
 
 def build_ammo_index(ammo_dir: Path) -> dict:
-    """Build map: ammo_stem -> {speed, lifetime, bpp_ref, bulletType}"""
+    """Build map: ammo_stem -> {speed, lifetime, bpp_ref, bulletType, damage}
+
+    Damage is parsed from the inline <damage><DamageInfo .../></damage> element
+    inside <projectileParams><BulletProjectileParams>. The StarBreaker forge
+    inlines these (4.8+); older builds referenced BulletProjectileParams by DCB
+    index and required the DCB damage_map fallback.
+    """
     index = {}
     if not ammo_dir.exists():
         return index
@@ -262,6 +268,7 @@ def build_ammo_index(ammo_dir: Path) -> dict:
             lifetime = 0.0
             bpp_ref = ""
             bullet_type = ""
+            damage = None
 
             m = re.search(r'speed="([^"]+)"', xml_text)
             if m:
@@ -276,11 +283,29 @@ def build_ammo_index(ammo_dir: Path) -> dict:
             if m:
                 bullet_type = m.group(1)
 
+            # Inline base damage: first <damage>...<DamageInfo .../>...</damage>
+            # (NOT damageDropMinDistance / damageDropPerMeter etc.)
+            dmg_block = re.search(r'<damage>\s*<DamageInfo\s+([^/]+?)/>', xml_text)
+            if dmg_block:
+                attrs = dmg_block.group(1)
+                def _at(name):
+                    mm = re.search(rf'{name}="([^"]+)"', attrs)
+                    return safe_float(mm.group(1)) if mm else 0.0
+                damage = {
+                    "physical":    round(_at("DamagePhysical"),    4),
+                    "energy":      round(_at("DamageEnergy"),      4),
+                    "distortion":  round(_at("DamageDistortion"),  4),
+                    "thermal":     round(_at("DamageThermal"),     4),
+                    "biochemical": round(_at("DamageBiochemical"), 4),
+                    "stun":        round(_at("DamageStun"),        4),
+                }
+
             index[stem] = {
                 "speed": speed,
                 "lifetime": lifetime,
                 "bpp_ref": bpp_ref,
                 "bulletType": bullet_type,
+                "damage": damage,
             }
         except Exception:
             pass
@@ -346,27 +371,33 @@ def build_recoil_index(recoil_dir: Path) -> dict:
                 yaw = safe_float(m_yaw.group(1)) if m_yaw else 0.0
                 smooth = safe_float(m_smooth.group(1)) if m_smooth else 0.0
 
-                # Derive weapon className from filename by stripping fire mode suffix
+                # Derive weapon className from filename by stripping fire-mode tokens
+                # (tokens may appear anywhere in the stem, not just trailing — e.g.
+                # "behr_sniper_ballistic_single_01" or "behr_rifle_ballistic_02_rapid_civilian").
                 stem = xml_file.stem.replace(".xml", "").lower()
-                # Known fire mode suffixes to strip
-                for suffix in ("_rapid_newrecoil", "_rapid", "_burst_altfire", "_burst",
-                               "_single_post_heat", "_single_preheat", "_single",
-                               "_parallel", "_beam", "_ballistic_shot", "_energy_shot"):
-                    if stem.endswith(suffix):
-                        weapon_class = stem[:-len(suffix)]
-                        break
-                else:
-                    weapon_class = stem
+                # Longer compounds first so they win over their sub-tokens.
+                weapon_class = re.sub(
+                    r'_(?:single_post_heat|single_preheat|rapid_newrecoil|burst_altfire|'
+                    r'ballistic_shot|energy_shot|single|rapid|burst|parallel|beam|preheat|newrecoil)',
+                    '',
+                    stem,
+                )
+                # Game-file typo: some recoil folders use "ballstic" instead of "ballistic".
+                candidates = {weapon_class}
+                if 'ballstic' in weapon_class:
+                    candidates.add(weapon_class.replace('ballstic', 'ballistic'))
 
                 # Keep the entry with highest pitch per weapon (most useful for comparison)
-                existing = index.get(weapon_class)
-                if existing is None or abs(pitch) > abs(existing.get("recoilPitch", 0)):
-                    if pitch != 0 or yaw != 0 or smooth != 0:
-                        index[weapon_class] = {
-                            "recoilPitch": round(abs(pitch), 4),
-                            "recoilYaw": round(abs(yaw), 4),
-                            "recoilSmooth": round(smooth, 4),
-                        }
+                if pitch != 0 or yaw != 0 or smooth != 0:
+                    values = {
+                        "recoilPitch": round(abs(pitch), 4),
+                        "recoilYaw": round(abs(yaw), 4),
+                        "recoilSmooth": round(smooth, 4),
+                    }
+                    for key in candidates:
+                        existing = index.get(key)
+                        if existing is None or abs(pitch) > abs(existing.get("recoilPitch", 0)):
+                            index[key] = values
             except Exception:
                 pass
 
@@ -674,11 +705,52 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
     m_acr = re.search(r'ammoContainerRecord="([^"]+)"', xml_text)
     ammo_container_guid = m_acr.group(1) if m_acr else ""
 
-    # Extract SProjectileLauncher refs (for pellet counts)
+    # Extract SProjectileLauncher refs (for pellet counts, legacy DCB format)
     spl_refs = re.findall(r'SProjectileLauncher\[([0-9A-Fa-f]+)\]', xml_text)
 
-    # Extract SWeaponActionFireBeamParams refs (for beam DPS)
+    # Inline pellet count (StarBreaker forge, 4.8+): SProjectileLauncher element
+    # with a pelletCount="N" attribute. Take the max across all inline launchers
+    # to catch the primary fire-path value (polymorphic blocks may have more).
+    inline_pellet_count = 0
+    for m in re.finditer(r'<SProjectileLauncher\s+([^>]+)>', xml_text):
+        attrs = m.group(1)
+        pc_m = re.search(r'pelletCount="([0-9]+)"', attrs)
+        if pc_m:
+            pc = int(pc_m.group(1))
+            if pc > inline_pellet_count:
+                inline_pellet_count = pc
+
+    # Extract SWeaponActionFireBeamParams refs (for beam DPS, legacy DCB format)
     beam_refs = re.findall(r'SWeaponActionFireBeamParams\[([0-9A-Fa-f]+)\]', xml_text)
+
+    # Inline beam DPS (StarBreaker forge, 4.8+): <SWeaponActionFireBeamParams>
+    # element with a nested <damagePerSecond><DamageInfo .../></damagePerSecond>.
+    # Take the first one found.
+    inline_beam_damage = None
+    beam_block = re.search(
+        r'<SWeaponActionFireBeamParams\b[^>]*>(.*?)</SWeaponActionFireBeamParams>',
+        xml_text, re.DOTALL,
+    )
+    if beam_block:
+        dps_m = re.search(
+            r'<damagePerSecond>\s*<DamageInfo\s+([^/]+?)/>',
+            beam_block.group(1),
+        )
+        if dps_m:
+            attrs = dps_m.group(1)
+            def _bat(name):
+                mm = re.search(rf'{name}="([^"]+)"', attrs)
+                return safe_float(mm.group(1)) if mm else 0.0
+            inline_beam_damage = {
+                "physical":    round(_bat("DamagePhysical"),    4),
+                "energy":      round(_bat("DamageEnergy"),      4),
+                "distortion":  round(_bat("DamageDistortion"),  4),
+                "thermal":     round(_bat("DamageThermal"),     4),
+                "biochemical": round(_bat("DamageBiochemical"), 4),
+                "stun":        round(_bat("DamageStun"),        4),
+            }
+            if all(v == 0 for v in inline_beam_damage.values()):
+                inline_beam_damage = None
 
     return {
         "className": stem,
@@ -693,7 +765,9 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
         "chargeRpm": charge_rpm,
         "ammoContainerGuid": ammo_container_guid,
         "splRefs": spl_refs,
+        "inlinePelletCount": inline_pellet_count,
         "beamRefs": beam_refs,
+        "inlineBeamDamage": inline_beam_damage,
     }
 
 
@@ -792,6 +866,7 @@ def extract_fps_weapons():
         projectile_speed = ammo_data["speed"] if ammo_data else 0
         ammo_lifetime = ammo_data["lifetime"] if ammo_data else 0
         bpp_ref = ammo_data["bpp_ref"] if ammo_data else ""
+        inline_damage = ammo_data.get("damage") if ammo_data else None
         ammo_type = classify_ammo_type(class_name, "")
 
         # Manual BPP overrides for weapons whose ammo names don't match
@@ -810,11 +885,16 @@ def extract_fps_weapons():
         ANTI_SHIP = {"apar_special_ballistic_01", "apar_special_ballistic_02", "none_special_ballistic_01"}
         if class_name in MANUAL_DAMAGE:
             damage = MANUAL_DAMAGE[class_name]
+        elif inline_damage and any(v > 0 for v in inline_damage.values()):
+            # Preferred source: inline <damage><DamageInfo/> in the ammo XML
+            # (StarBreaker forge format, 4.8+). Skip if all zeros so we fall
+            # through to the DCB lookup for legacy builds.
+            damage = inline_damage
         else:
             if not bpp_ref and class_name in MANUAL_BPP:
                 bpp_ref = MANUAL_BPP[class_name]
 
-            # Look up damage from DCB
+            # Look up damage from DCB (legacy byte-indexed format)
             damage = {"physical": 0, "energy": 0, "distortion": 0, "thermal": 0, "biochemical": 0, "stun": 0}
             if bpp_ref:
                 dcb_damage = damage_map.get(bpp_ref.upper())
@@ -850,19 +930,23 @@ def extract_fps_weapons():
             "none_special_ballistic_01": 37,     # Boomtube - single-shot rocket, 1.5s
                                                  #   unstow reload + fire = ~1.62s cycle
                                                  #   = 37 effective RPM
+            "ksar_sniper_ballistic_01": 40,      # Scalpel - bolt-action sniper. Inline
+                                                 #   XML exposes a 600 RPM "Burst" mode
+                                                 #   (2-round tap) that misrepresents
+                                                 #   the sustained cycle; 40 RPM matches
+                                                 #   in-game bolt-cycle behavior.
         }
         if class_name in OVERRIDE_RATES:
             fire_rate_rpm = OVERRIDE_RATES[class_name]
 
         FALLBACK_RATES = {
             "volt_shotgun_energy_01": 120,       # Prism - action params not inlined
-            "ksar_sniper_ballistic_01": 40,      # Scalpel - bolt-action, multi-step
-                                                 #   Seconds sequence; no single value
-                                                 #   meaningfully represents the cycle
         }
-        # Beam weapons — continuous DPS, not RPM-based
+        # Beam weapons — continuous DPS, not RPM-based.
+        # Parallax starts as a rifle and transitions to beam on overheat;
+        # the beam is how it's primarily used, so we report beam DPS.
         BEAM_WEAPONS = {
-            "volt_rifle_energy_01",   # Parallax
+            "volt_rifle_energy_01",   # Parallax (dual-mode, beam on overheat)
             "volt_smg_energy_01",     # Quartz
             "volt_lmg_energy_01",     # Fresnel
             "none_smg_energy_01",     # Ripper
@@ -887,6 +971,11 @@ def extract_fps_weapons():
         }
         pellet_count = MANUAL_PELLETS.get(class_name, 1)
         if pellet_count == 1:
+            # Inline pelletCount from weapon XML (4.8+ StarBreaker forge)
+            ipc = wpn.get("inlinePelletCount", 0)
+            if ipc > pellet_count:
+                pellet_count = ipc
+            # Legacy DCB SProjectileLauncher lookup
             for spl_ref in wpn.get("splRefs", []):
                 pc = pellet_map.get(spl_ref.upper(), 1)
                 if pc > pellet_count:
@@ -903,15 +992,21 @@ def extract_fps_weapons():
             "volt_lmg_energy_01": "0020",    # Fresnel (same beam profile as Quartz)
         }
         if is_beam:
-            beam_ref = MANUAL_BEAM.get(class_name)
-            if not beam_ref:
-                beam_refs = wpn.get("beamRefs", [])
-                beam_ref = beam_refs[0] if beam_refs else None
-            if beam_ref:
-                beam_dmg = beam_map.get(beam_ref.upper())
-                if beam_dmg:
-                    damage = beam_dmg
-                    alpha_damage = round(sum(beam_dmg.values()), 4)
+            beam_dmg = None
+            # Preferred: inline <damagePerSecond> in the weapon XML (4.8+)
+            inline_beam = wpn.get("inlineBeamDamage")
+            if inline_beam:
+                beam_dmg = inline_beam
+            else:
+                beam_ref = MANUAL_BEAM.get(class_name)
+                if not beam_ref:
+                    beam_refs = wpn.get("beamRefs", [])
+                    beam_ref = beam_refs[0] if beam_refs else None
+                if beam_ref:
+                    beam_dmg = beam_map.get(beam_ref.upper())
+            if beam_dmg:
+                damage = beam_dmg
+                alpha_damage = round(sum(beam_dmg.values()), 4)
 
         dps = round(alpha_damage * fire_rate_rpm / 60, 2) if fire_rate_rpm > 0 and not is_beam else 0
         if is_beam and alpha_damage > 0:
