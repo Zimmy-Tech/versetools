@@ -537,6 +537,8 @@ export class HardpointSlotComponent {
       if (item.emMax) rows.push({ label: 'EM', value: f(item.emMax)! });
     } else if (item.type === 'Cooler') {
       if (item.coolingRate) rows.push({ label: 'Cooling Rate', value: f(item.coolingRate)! });
+      if (item.powerMin) rows.push({ label: 'Min Power', value: item.powerMin.toString() });
+      if (item.powerMax) rows.push({ label: 'Max Power', value: item.powerMax.toString() });
       if (item.irSignature) rows.push({ label: 'IR', value: f(item.irSignature)! });
     } else if (item.type === 'QuantumDrive') {
       if (item.speed) rows.push({ label: 'Speed', value: ((item.speed) / 1000).toFixed(0) + ' Mm/s' });
