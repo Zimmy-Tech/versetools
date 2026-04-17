@@ -6,113 +6,424 @@
     </div>
   } @else {
 
-    <!-- Filter sidebar / bar -->
-    <div class="filter-bar">
-      <div class="filter-group">
-        <span class="filter-label">Search</span>
-        <input class="filter-input" type="text" placeholder="title, giver, description..."
-               [value]="searchQuery()"
-               (input)="searchQuery.set($any($event.target).value); resetPage()">
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">Category</span>
-        <select class="filter-select" [value]="categoryFilter()" (change)="categoryFilter.set($any($event.target).value); resetPage()">
-          @for (cat of categories(); track cat) {
-            <option [value]="cat">{{ cat || 'All' }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">Lawful</span>
-        <select class="filter-select" [value]="lawfulFilter()" (change)="lawfulFilter.set($any($event.target).value); resetPage()">
-          <option value="">All</option>
-          <option value="lawful">Lawful</option>
-          <option value="unlawful">Unlawful</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">System</span>
-        <select class="filter-select" [value]="systemFilter()" (change)="systemFilter.set($any($event.target).value); resetPage()">
-          @for (sys of systems(); track sys) {
-            <option [value]="sys">{{ sys || 'All' }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">Activity</span>
-        <select class="filter-select" [value]="activityFilter()" (change)="activityFilter.set($any($event.target).value); resetPage()">
-          @for (act of activities(); track act) {
-            <option [value]="act">{{ act || 'All' }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">Contractor</span>
-        <select class="filter-select" [value]="contractorFilter()" (change)="contractorFilter.set($any($event.target).value); resetPage()">
-          @for (ct of contractors(); track ct) {
-            <option [value]="ct">{{ ct || 'All' }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">Sort</span>
-        <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
-          <option value="reward">Reward (high)</option>
-          <option value="title">Title (A-Z)</option>
-          <option value="category">Category</option>
-        </select>
-      </div>
-
-      <div class="filter-toggles">
-        <button class="filter-btn-bp" [class.active]="contractorFilter() === 'Wikelo Emporium'"
-                (click)="contractorFilter.set(contractorFilter() === 'Wikelo Emporium' ? '' : 'Wikelo Emporium'); resetPage()">Wikelo</button>
-        <button class="filter-btn-bp" [class.active]="blueprintFilter()"
-                (click)="blueprintFilter.set(!blueprintFilter()); resetPage()">Blueprints</button>
-        <button class="filter-btn-bp" [class.active]="chainFilter()"
-                (click)="chainFilter.set(!chainFilter()); resetPage()">Chains</button>
-      </div>
-
-      @if (hasActiveFilter()) {
-        <button class="filter-clear" (click)="clearFilters()">Clear Filters</button>
-      }
-      <div class="pager">
-        <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
-        <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
-        <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
+    <!-- top meta strip -->
+    <div class="mv-meta">
+      <div class="mv-logo">VERSETOOLS</div>
+      <div class="mv-crumb">CONTRACTS / <b>BOARD</b></div>
+      <div class="mv-right">
+        <span>CONTRACTS <span class="num">{{ totalFiltered() | number }}</span></span>
+        <span>SYSTEMS <span class="num">{{ systems().length - 1 }}</span></span>
+        <span>PAGE <span class="num">{{ page() }} / {{ totalPages() }}</span></span>
       </div>
     </div>
 
-    <div class="missions-content">
+    <div class="mv-shell">
 
-    <!-- Mission list -->
-    <div class="mission-list">
-      @for (m of filteredMissions(); track m.className) {
-        <div class="mission-card" [class.unlawful]="!m.lawful" [class.selected]="selectedMission()?.className === m.className" (click)="selectMission(m, $event)">
-          <div class="mission-header">
-            <div class="mission-title">{{ m.title }}</div>
-            <div class="mission-reward">
-              <span class="reward-val" [class.estimated]="m.rewardEstimated">{{ fmtReward(m.reward) }}</span>
-              <span class="reward-unit">{{ m.currency }}</span>
-            </div>
+      <!-- sidebar -->
+      <aside class="mv-side" [class.mv-side-open]="filtersOpen()">
+        <div class="mv-search">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/>
+          </svg>
+          <input placeholder="Search titles"
+                 [value]="searchQuery()"
+                 (input)="searchQuery.set($any($event.target).value); resetPage()" />
+        </div>
+
+        <h4>Category</h4>
+        <div class="mv-chips">
+          <button class="mv-chip" [class.on]="categoryFilter() === ''"
+                  (click)="categoryFilter.set(''); resetPage()">All</button>
+          @for (cat of categories(); track cat) {
+            @if (cat) {
+              <button class="mv-chip" [class.on]="categoryFilter() === cat"
+                      (click)="categoryFilter.set(categoryFilter() === cat ? '' : cat); resetPage()">{{ cat }}</button>
+            }
+          }
+        </div>
+
+        <h4>Risk</h4>
+        <div class="mv-chips">
+          <button class="mv-chip" [class.on]="riskFilter() === 'low'"
+                  (click)="riskFilter.set(riskFilter() === 'low' ? '' : 'low'); resetPage()">
+            <span class="mv-chip-dot risk-low"></span>Low
+          </button>
+          <button class="mv-chip" [class.on]="riskFilter() === 'med'"
+                  (click)="riskFilter.set(riskFilter() === 'med' ? '' : 'med'); resetPage()">
+            <span class="mv-chip-dot risk-med"></span>Medium
+          </button>
+          <button class="mv-chip" [class.on]="riskFilter() === 'high'"
+                  (click)="riskFilter.set(riskFilter() === 'high' ? '' : 'high'); resetPage()">
+            <span class="mv-chip-dot risk-high"></span>High
+          </button>
+        </div>
+
+        <h4>Legality</h4>
+        <div class="mv-chips">
+          <button class="mv-chip" [class.on]="lawfulFilter() === 'lawful'"
+                  (click)="lawfulFilter.set(lawfulFilter() === 'lawful' ? '' : 'lawful'); resetPage()">Legal</button>
+          <button class="mv-chip" [class.on]="lawfulFilter() === 'unlawful'"
+                  (click)="lawfulFilter.set(lawfulFilter() === 'unlawful' ? '' : 'unlawful'); resetPage()">Illegal</button>
+        </div>
+
+        <h4>System</h4>
+        <div class="mv-chips">
+          @for (sys of systems(); track sys) {
+            @if (sys) {
+              <button class="mv-chip" [class.on]="systemFilter() === sys"
+                      (click)="systemFilter.set(systemFilter() === sys ? '' : sys); resetPage()">{{ sys }}</button>
+            }
+          }
+        </div>
+
+        <h4>Activity</h4>
+        <div class="mv-chips">
+          @for (act of activities(); track act) {
+            @if (act) {
+              <button class="mv-chip" [class.on]="activityFilter() === act"
+                      (click)="activityFilter.set(activityFilter() === act ? '' : act); resetPage()">{{ act }}</button>
+            }
+          }
+        </div>
+
+        <h4>Contractor</h4>
+        <select class="mv-select" [value]="contractorFilter()"
+                (change)="contractorFilter.set($any($event.target).value); resetPage()">
+          @for (ct of contractors(); track ct) {
+            <option [value]="ct">{{ ct || 'All contractors' }}</option>
+          }
+        </select>
+
+        <h4>Special</h4>
+        <div class="mv-chips">
+          <button class="mv-chip" [class.on]="contractorFilter() === 'Wikelo Emporium'"
+                  (click)="contractorFilter.set(contractorFilter() === 'Wikelo Emporium' ? '' : 'Wikelo Emporium'); resetPage()">Wikelo</button>
+          <button class="mv-chip" [class.on]="blueprintFilter()"
+                  (click)="blueprintFilter.set(!blueprintFilter()); resetPage()">Blueprints</button>
+          <button class="mv-chip" [class.on]="chainFilter()"
+                  (click)="chainFilter.set(!chainFilter()); resetPage()">Chains</button>
+        </div>
+
+        @if (appliedFilters().length) {
+          <h4>Applied</h4>
+          <div class="mv-applied">
+            @for (f of appliedFilters(); track f.key) {
+              <span class="mv-pill"><b>{{ f.label }}</b><span class="x" (click)="removeFilter(f.key)">×</span></span>
+            }
+            <button class="mv-clear" (click)="clearFilters()">Clear all</button>
           </div>
-          <div class="mission-meta">
-            @if (m.contractor) {<span class="mi-item contractor">{{ m.contractor }}</span>}<!--
-            -->@if (m.system) {<span class="mi-item system">{{ m.system }}</span>}<!--
-            -->@if (m.danger) {<span class="mi-item danger">{{ m.danger }}</span>}<!--
-            -->@if (m.boss) {<span class="meta-tag boss">BOSS</span>}
+        }
+      </aside>
+
+      <!-- main -->
+      <main class="mv-main">
+
+        <div class="mv-toolbar">
+          <button class="mv-filter-toggle" (click)="filtersOpen.set(!filtersOpen())" [class.on]="filtersOpen()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M6 12h12M10 18h4"/>
+            </svg>
+            Filters
+            @if (appliedFilters().length) { <span class="mv-filter-count">{{ appliedFilters().length }}</span> }
+          </button>
+          <div class="mv-pager">
+            <button class="mv-pager-btn" [disabled]="page() <= 1" (click)="prevPage()">‹</button>
+            <span class="mv-pager-info">{{ page() }} / {{ totalPages() }}</span>
+            <button class="mv-pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">›</button>
           </div>
         </div>
-      }
-    </div>
+
+        <div class="mv-list">
+
+          <div class="mv-list-head">
+            <span></span>
+            <span>Contract</span>
+            <span class="num">Payout</span>
+            <span>Location</span>
+            <span>Expires</span>
+            <span></span>
+          </div>
+
+          @for (m of filteredMissions(); track m.className) {
+            <div class="mv-row" [class.open]="expandedId() === m.className">
+              <div class="mv-row-click" (click)="toggleExpand(m.className)">
+                <span class="mv-risk-dot" [class.risk-low]="riskTier(m) === 'low'"
+                                          [class.risk-med]="riskTier(m) === 'med'"
+                                          [class.risk-high]="riskTier(m) === 'high'"></span>
+                <div class="mv-title-cell">
+                  <div class="mv-title-row">
+                    <span class="mv-title">{{ m.title }}</span>
+                    @if (m.lawful) {
+                      <span class="mv-badge b-legal">Legal</span>
+                    } @else {
+                      <span class="mv-badge b-illegal">Illegal</span>
+                    }
+                    @if (m.danger === 'Extreme' || m.danger === 'Very High') {
+                      <span class="mv-badge b-extreme">{{ m.danger }}</span>
+                    }
+                    @if (m.boss) {
+                      <span class="mv-badge b-vip">Boss</span>
+                    }
+                    @if (m.isChain) {
+                      <span class="mv-badge b-chain">Chain</span>
+                    }
+                  </div>
+                  <div class="mv-meta-row">
+                    @if (m.contractor) { <span class="faction">{{ m.contractor }}</span><span class="dot"></span> }
+                    <span><b>{{ m.category }}</b>@if (m.activity) { · {{ m.activity }} }</span>
+                    @if (m.maxPlayers > 1) { <span class="dot"></span><span>Crew <b>1–{{ m.maxPlayers }}</b></span> }
+                    @if (m.multiSystem) { <span class="dot"></span><span>Multi-system</span> }
+                  </div>
+                </div>
+                <div class="mv-pay" [class.pay-hi]="m.reward >= 400000">
+                  {{ fmtReward(m.reward) }}<span class="u">{{ m.currency }}</span>
+                  @if (m.rewardEstimated) { <span class="est">est</span> }
+                </div>
+                <div class="mv-loc">
+                  {{ m.system || '—' }}
+                  @if (m.activity) { <span class="sub">{{ m.activity }}</span> }
+                </div>
+                <div class="mv-time" [class.hot]="m.timeLimitMin && m.timeLimitMin <= 240">
+                  {{ fmtDuration(m.timeLimitMin) }}
+                  @if (m.timeLimitMin && m.timeLimitMin <= 240) { <span class="sub">Hard</span> }
+                  @else if (m.timeLimitMin) { <span class="sub">Standard</span> }
+                </div>
+                <span class="mv-chev">
+                  @if (expandedId() === m.className) {
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
+                  } @else {
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 6 6 6-6 6"/></svg>
+                  }
+                </span>
+              </div>
+
+              @if (expandedId() === m.className) {
+                <div class="mv-detail">
+
+                  <!-- ══ LEFT · Mission Brief ══ -->
+                  <div class="mv-col">
+                    <h5>Mission Brief</h5>
+                    @if (m.description) {
+                      <p>{{ cleanDesc(m.description) }}</p>
+                    } @else {
+                      <p class="mv-dim">No briefing available.</p>
+                    }
+
+                    @if (m.missionFlow?.length) {
+                      <h5>Objectives</h5>
+                      <ol class="mv-objectives">
+                        @for (phase of m.missionFlow; track $index; let i = $index) {
+                          <li><span class="idx">{{ i < 9 ? '0' : '' }}{{ i + 1 }}</span>{{ phase.trim() }}</li>
+                        }
+                      </ol>
+                    }
+
+                    @if (m.giver) {
+                      <h5>Operator Contact</h5>
+                      <div class="mv-operator">
+                        <div class="mv-operator-avatar">{{ initials(m.giver) }}</div>
+                        <div>
+                          <div class="mv-operator-who">{{ m.giver }}</div>
+                          <div class="mv-operator-role">Handler{{ m.contractor ? ' · ' + m.contractor : '' }}</div>
+                        </div>
+                      </div>
+                    }
+
+                    @if (m.enemyPool?.length) {
+                      <h5>Hostiles</h5>
+                      <div class="mv-tags">
+                        @for (ship of m.enemyPool; track ship) {
+                          <span class="mv-tag">{{ ship }}</span>
+                        }
+                      </div>
+                    }
+                  </div>
+
+                  <!-- ══ CENTER · Operator Org + Standings (hero) ══ -->
+                  <div class="mv-col">
+                    @if (selectedProfileFor(m); as prof) {
+                      <div class="mv-org-card">
+                        <div class="mv-org-head">
+                          <div class="mv-org-mark">{{ initials(prof.name) }}</div>
+                          <div>
+                            <div class="mv-org-name">{{ prof.name }}</div>
+                            @if (prof.focus) {
+                              <div class="mv-org-tagline">{{ prof.focus }}</div>
+                            }
+                          </div>
+                        </div>
+                        @if (prof.description) {
+                          <p class="mv-org-desc">{{ prof.description }}</p>
+                        }
+                        <dl class="mv-org-meta">
+                          @if (prof.hq)         { <dt>HQ</dt><dd>{{ prof.hq }}</dd> }
+                          @if (prof.area)       { <dt>Area</dt><dd>{{ prof.area }}</dd> }
+                          @if (prof.founded)    { <dt>Founded</dt><dd>{{ prof.founded }}</dd> }
+                          @if (prof.leadership) { <dt>Leadership</dt><dd>{{ prof.leadership }}</dd> }
+                          @if (prof.association){ <dt>Association</dt><dd>{{ prof.association }}</dd> }
+                        </dl>
+                      </div>
+                    } @else if (m.contractor) {
+                      <div class="mv-org-card mv-org-card-thin">
+                        <div class="mv-org-head">
+                          <div class="mv-org-mark">{{ initials(m.contractor) }}</div>
+                          <div>
+                            <div class="mv-org-name">{{ m.contractor }}</div>
+                            <div class="mv-org-tagline">Contractor</div>
+                          </div>
+                        </div>
+                      </div>
+                    }
+
+                    @if (uniqueReqs(m); as reqs) {
+                      @if (reqs.length) {
+                        <div class="mv-req-strip">
+                          @for (req of reqs; track req.scope) {
+                            <span class="mv-req"><b>{{ fmtScope(req.scope) }}</b> · min <em class="lo">{{ req.minRank }}</em> · max <em class="hi">{{ req.maxRank }}</em></span>
+                          }
+                        </div>
+                      }
+                    }
+
+                    @if (getLadders(m).length) {
+                      @for (ladder of getLadders(m); track ladder.name) {
+                        <div class="mv-standings-wrap">
+                          <div class="mv-standings-head">
+                            <span class="mv-standings-name">{{ ladder.displayName }} · Standing</span>
+                            @if (m.repReward) { <span class="mv-standings-rate">+{{ m.repReward | number }} / mission</span> }
+                          </div>
+                          <table class="mv-standings">
+                            <thead>
+                              <tr>
+                                <th>Rank</th>
+                                <th class="num">Min rep</th>
+                                <th class="num">Missions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @for (row of calcLadder(m, ladder); track row.minRep) {
+                                <tr [class.you]="row.active"
+                                    [class.locked]="row.gated"
+                                    [class.unlocked]="!row.gated && !row.active">
+                                  <td>
+                                    <span class="role-cell">
+                                      <span class="tier-dot"></span>
+                                      <span class="rank-name">{{ row.name }}</span>
+                                      @if (row.perk) { <span class="rank-perk">{{ row.perk }}</span> }
+                                      @if (row.gated) { <span class="rank-gated">GATED</span> }
+                                    </span>
+                                  </td>
+                                  <td class="num">{{ row.minRep | number }}</td>
+                                  <td class="num">{{ row.missions !== null ? (row.missions | number) : (row.xpToFill > 0 ? '—' : '✓') }}</td>
+                                </tr>
+                              }
+                            </tbody>
+                            <tfoot>
+                              <tr>
+                                <td>Ceiling</td>
+                                <td class="num" colspan="2">{{ ladder.ceiling | number }} rep</td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </div>
+                      }
+                    } @else if (visibleScopes(m).length && !selectedProfileFor(m)) {
+                      <h5 style="margin-top:16px">Reputation Earned</h5>
+                      <div class="mv-tags">
+                        @for (scope of visibleScopes(m); track scope) {
+                          <span class="mv-tag rep">{{ fmtScope(scope) }}</span>
+                        }
+                      </div>
+                    } @else if (!selectedProfileFor(m) && !m.contractor) {
+                      <p class="mv-dim">No faction reputation data.</p>
+                    }
+                  </div>
+
+                  <!-- ══ RIGHT · Payout + Conditions ══ -->
+                  <div class="mv-col">
+                    <div class="mv-payout-block">
+                      <div class="mv-payout-lbl">Base Payout</div>
+                      <div class="mv-payout-big">
+                        {{ m.reward | number }}<span class="u">{{ m.currency }}</span>
+                      </div>
+                      @if (m.rewardEstimated) {
+                        <div class="mv-payout-sub">Estimated — may vary in-game</div>
+                      }
+                      @if (m.repReward || m.repPenalty || m.canShare || m.onceOnly) {
+                        @if (m.repReward) {
+                          <div class="mv-payout-bonus"><span class="k">Reputation</span><span class="v up">+{{ m.repReward | number }}</span></div>
+                        }
+                        @if (m.repPenalty) {
+                          <div class="mv-payout-bonus"><span class="k">On failure</span><span class="v down">{{ m.repPenalty | number }}</span></div>
+                        }
+                        @if (m.canShare) {
+                          <div class="mv-payout-bonus"><span class="k">Shareable</span><span class="v">Yes</span></div>
+                        }
+                        @if (m.onceOnly) {
+                          <div class="mv-payout-bonus"><span class="k">Once only</span><span class="v warn">Yes</span></div>
+                        }
+                      }
+                    </div>
+
+                    <h5>Conditions</h5>
+                    <div class="mv-cond-list">
+                      @if (m.difficulty >= 0) { <div class="mv-cond-row"><span class="k">Difficulty</span><span class="v">{{ m.difficulty }}</span></div> }
+                      @if (m.maxPlayers > 1) { <div class="mv-cond-row"><span class="k">Max players</span><span class="v">{{ m.maxPlayers }}</span></div> }
+                      @if (m.timeLimitMin) { <div class="mv-cond-row"><span class="k">Time limit</span><span class="v" [class.warn]="m.timeLimitMin <= 240">{{ fmtDuration(m.timeLimitMin) }}</span></div> }
+                      @if (m.lifetimeMin) { <div class="mv-cond-row"><span class="k">Lifetime</span><span class="v">{{ fmtDuration(m.lifetimeMin) }}</span></div> }
+                      @if (m.cooldownMin) { <div class="mv-cond-row"><span class="k">Cooldown</span><span class="v">{{ fmtDuration(m.cooldownMin) }}</span></div> }
+                      @if (m.respawnMin) { <div class="mv-cond-row"><span class="k">Respawn</span><span class="v">{{ fmtDuration(m.respawnMin) }}</span></div> }
+                      @if (m.abandonCooldownMin) { <div class="mv-cond-row"><span class="k">Abandon CD</span><span class="v">{{ fmtDuration(m.abandonCooldownMin) }}</span></div> }
+                      @if (m.danger) { <div class="mv-cond-row"><span class="k">Danger</span><span class="v" [class.bad]="riskTier(m) === 'high'" [class.warn]="riskTier(m) === 'med'">{{ m.danger }}</span></div> }
+                      @if (m.prison) { <div class="mv-cond-row"><span class="k">Prison</span><span class="v bad">Yes</span></div> }
+                      @if (m.multiSystem) { <div class="mv-cond-row"><span class="k">Route</span><span class="v">Multi-system</span></div> }
+                    </div>
+
+                    @if (m.blueprintRewards?.length) {
+                      <h5>Blueprints</h5>
+                      <div class="mv-tags">
+                        @for (bp of m.blueprintRewards; track bp) {
+                          <span class="mv-tag bp">{{ bp }}</span>
+                        }
+                      </div>
+                    }
+                    @if (m.requiresCompletion?.length) {
+                      <h5>Requires</h5>
+                      <div class="mv-tags">
+                        @for (req of m.requiresCompletion; track req) {
+                          <span class="mv-tag chain" (click)="navigateToMission(req, $event)">{{ req }}</span>
+                        }
+                      </div>
+                    }
+                    @if (m.unlocks?.length) {
+                      <h5>Unlocks</h5>
+                      <div class="mv-tags">
+                        @for (u of m.unlocks; track u) {
+                          <span class="mv-tag chain" (click)="navigateToMission(u, $event)">{{ u }}</span>
+                        }
+                      </div>
+                    }
+                  </div>
+
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+
+        <div class="mv-pag">
+          <span>{{ totalFiltered() | number }} contracts match · page {{ page() }} of {{ totalPages() }}</span>
+          <div class="mv-pgs">
+            <span class="p" [class.disabled]="page() <= 1" (click)="prevPage()">‹</span>
+            <span class="p on">{{ page() }}</span>
+            <span class="p" [class.disabled]="page() >= totalPages()" (click)="nextPage()">›</span>
+          </div>
+        </div>
+      </main>
     </div>
 
-    <!-- Popout detail panel -->
+    <!-- Reputation popout (still used for full rep-ladder drill-down) -->
     @if (selectedMission(); as sm) {
       <div class="popout-overlay" (click)="closePopout()"></div>
       <div class="popout-panel">
@@ -120,21 +431,15 @@
           <div class="popout-title">{{ sm.title }}</div>
           <span class="popout-close" (click)="closePopout()">✕</span>
         </div>
-        <!-- Tab Nav -->
         <div class="popout-tabs">
           <button class="popout-tab" [class.active]="popoutTab() === 'info'" (click)="popoutTab.set('info')">Main Info</button>
           <button class="popout-tab" [class.active]="popoutTab() === 'reputation'" (click)="popoutTab.set('reputation')">Reputation</button>
         </div>
-
         <div class="popout-body">
-
-          <!-- ═══ Main Info Tab ═══ -->
           @if (popoutTab() === 'info') {
             <div class="popout-meta">
               <span class="popout-cat">{{ sm.category }}</span>
-              @if (sm.boss) {
-                <span class="meta-tag boss">BOSS</span>
-              }
+              @if (sm.boss) { <span class="meta-tag boss">BOSS</span> }
               @if (sm.lawful) {
                 <span class="meta-tag lawful">LAWFUL</span>
               } @else {
@@ -152,71 +457,10 @@
               @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
               @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
               @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
-              @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
               @if (sm.lifetimeMin) { <div class="popout-stat"><span class="ps-label">Lifetime</span><span class="ps-val">{{ sm.lifetimeMin }} min</span></div> }
-              @if (sm.respawnMin) { <div class="popout-stat"><span class="ps-label">Respawn</span><span class="ps-val">{{ sm.respawnMin }} min</span></div> }
-              @if (sm.timeLimitMin) { <div class="popout-stat"><span class="ps-label">Time Limit</span><span class="ps-val">{{ sm.timeLimitMin }} min</span></div> }
               @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
-              @if (sm.abandonCooldownMin) { <div class="popout-stat"><span class="ps-label">Abandon CD</span><span class="ps-val">{{ sm.abandonCooldownMin }} min</span></div> }
-              @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
               @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Rep Reward</span><span class="ps-val rep-positive">+{{ sm.repReward }}</span></div> }
-              @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure Penalty</span><span class="ps-val rep-negative">{{ sm.repPenalty }}</span></div> }
             </div>
-
-            @if (sm.missionFlow?.length) {
-              <div class="popout-section">
-                <div class="popout-section-title">Mission Flow</div>
-                <div class="mission-flow">
-                  @for (phase of sm.missionFlow; track $index) {
-                    <div class="flow-step" [class.sub-step]="phase.startsWith('  ')">{{ phase.trim() }}</div>
-                  }
-                </div>
-              </div>
-            }
-
-            @if (sm.enemyPool?.length) {
-              <div class="popout-section">
-                <div class="popout-section-title">Enemy Ships</div>
-                <div class="popout-tags">
-                  @for (ship of sm.enemyPool; track ship) {
-                    <span class="pool-tag">{{ ship }}</span>
-                  }
-                </div>
-              </div>
-            }
-
-            @if (sm.requiresCompletion?.length) {
-              <div class="popout-section">
-                <div class="popout-section-title">Requires Completion</div>
-                <div class="popout-tags">
-                  @for (req of sm.requiresCompletion; track req) {
-                    <span class="chain-tag" (click)="navigateToMission(req, $event)">{{ req }}</span>
-                  }
-                </div>
-              </div>
-            }
-
-            @if (sm.unlocks?.length) {
-              <div class="popout-section">
-                <div class="popout-section-title">Unlocks</div>
-                <div class="popout-tags">
-                  @for (u of sm.unlocks; track u) {
-                    <span class="chain-tag" (click)="navigateToMission(u, $event)">{{ u }}</span>
-                  }
-                </div>
-              </div>
-            }
-
-            @if (sm.blueprintRewards?.length) {
-              <div class="popout-section">
-                <div class="popout-section-title">Blueprint Rewards</div>
-                <div class="popout-tags">
-                  @for (bp of sm.blueprintRewards; track bp) {
-                    <span class="bp-tag">{{ bp }}</span>
-                  }
-                </div>
-              </div>
-            }
 
             @if (sm.description) {
               <div class="popout-section">
@@ -226,7 +470,6 @@
             }
           }
 
-          <!-- ═══ Reputation Tab ═══ -->
           @if (popoutTab() === 'reputation') {
             @if (selectedProfile(); as prof) {
               <div class="faction-card">
@@ -245,11 +488,6 @@
                   @if (prof.association){ <div class="fc-stat"><span class="fcs-k">Association</span><span class="fcs-v">{{ prof.association }}</span></div> }
                 </div>
               </div>
-            } @else if (sm.contractor) {
-              <div class="popout-section">
-                <div class="popout-section-title">Contractor</div>
-                <div class="popout-stat"><span class="ps-label">Faction</span><span class="ps-val">{{ sm.contractor }}</span></div>
-              </div>
             }
             @if (visibleScopes(sm).length) {
               <div class="popout-section">
@@ -261,7 +499,6 @@
                 </div>
               </div>
             }
-
             @if (uniqueReqs(sm); as reqs) {
               @if (reqs.length) {
                 <div class="popout-section">
@@ -274,21 +511,9 @@
                 </div>
               }
             }
-
-            @if (sm.repReward || sm.repPenalty) {
-              <div class="popout-section">
-                <div class="popout-section-title">Rewards / Penalties</div>
-                @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Success</span><span class="ps-val rep-positive">+{{ sm.repReward }} rep</span></div> }
-                @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure</span><span class="ps-val rep-negative">{{ sm.repPenalty }} rep</span></div> }
-              </div>
-            }
-
             @for (ladder of getLadders(sm); track ladder.name) {
               <div class="popout-section">
                 <div class="popout-section-title">{{ ladder.displayName }} Ranks</div>
-                @if (sm.repReward) {
-                  <div class="popout-stat"><span class="ps-label">Rep / Mission</span><span class="ps-val rep-positive">+{{ sm.repReward | number }}</span></div>
-                }
                 <div class="rep-calc-table">
                   <div class="rep-calc-header">
                     <span class="rc-rank">Rank</span>
@@ -312,12 +537,10 @@
                 </div>
               </div>
             }
-
             @if (!sm.repScopes?.length && !getLadders(sm).length) {
               <div class="popout-empty">No reputation data available for this contract.</div>
             }
           }
-
         </div>
       </div>
     }

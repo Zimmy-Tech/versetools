@@ -91,102 +91,184 @@
         <div class="popout-title">{{ sm.title }}</div>
         <span class="popout-close" (click)="closePopout()">&#x2715;</span>
       </div>
+      <div class="popout-tabs">
+        <button class="popout-tab" [class.active]="popoutTab() === 'info'"
+                (click)="popoutTab.set('info')">Main Info</button>
+        <button class="popout-tab" [class.active]="popoutTab() === 'reputation'"
+                (click)="popoutTab.set('reputation')">Reputation</button>
+      </div>
       <div class="popout-body">
-        <div class="popout-meta">
-          <span class="popout-cat">{{ sm.category }}</span>
-          @if (sm.lawful) {
-            <span class="meta-tag lawful">LAWFUL</span>
-          } @else {
-            <span class="meta-tag unlawful">UNLAWFUL</span>
-          }
-          @if (sm.system) { <span class="meta-item"><em>System</em> {{ sm.system }}</span> }
-          @if (sm.activity) { <span class="meta-tag activity">{{ sm.activity }}</span> }
-        </div>
 
-        <div class="popout-stats">
-          <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
-          @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
-          @if (sm.contractor) { <div class="popout-stat"><span class="ps-label">Contractor</span><span class="ps-val">{{ sm.contractor }}</span></div> }
-          @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
-          @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
-          @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
-          @if (sm.lifetimeMin) { <div class="popout-stat"><span class="ps-label">Lifetime</span><span class="ps-val">{{ sm.lifetimeMin }} min</span></div> }
-          @if (sm.respawnMin) { <div class="popout-stat"><span class="ps-label">Respawn</span><span class="ps-val">{{ sm.respawnMin }} min</span></div> }
-          @if (sm.timeLimitMin) { <div class="popout-stat"><span class="ps-label">Time Limit</span><span class="ps-val">{{ sm.timeLimitMin }} min</span></div> }
-          @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
-          @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
-        </div>
-
-        @if (sm.missionFlow?.length) {
-          <div class="popout-section">
-            <div class="popout-section-title">Mission Type</div>
-            <div class="popout-tags">
-              @for (flow of sm.missionFlow; track flow) {
-                <span class="meta-tag activity">{{ flow }}</span>
-              }
-            </div>
+        @if (popoutTab() === 'info') {
+          <div class="popout-meta">
+            <span class="popout-cat">{{ sm.category }}</span>
+            @if (sm.lawful) {
+              <span class="meta-tag lawful">LAWFUL</span>
+            } @else {
+              <span class="meta-tag unlawful">UNLAWFUL</span>
+            }
+            @if (sm.system) { <span class="meta-item"><em>System</em> {{ sm.system }}</span> }
+            @if (sm.activity) { <span class="meta-tag activity">{{ sm.activity }}</span> }
           </div>
+
+          <div class="popout-stats">
+            <div class="popout-stat"><span class="ps-label">Reward</span><span class="ps-val accent">{{ sm.reward.toLocaleString('en-US') }} {{ sm.currency }}</span></div>
+            @if (sm.giver) { <div class="popout-stat"><span class="ps-label">From</span><span class="ps-val">{{ sm.giver }}</span></div> }
+            @if (sm.contractor) { <div class="popout-stat"><span class="ps-label">Contractor</span><span class="ps-val">{{ sm.contractor }}</span></div> }
+            @if (sm.difficulty >= 0) { <div class="popout-stat"><span class="ps-label">Difficulty</span><span class="ps-val">{{ sm.difficulty }}</span></div> }
+            @if (sm.maxPlayers > 1) { <div class="popout-stat"><span class="ps-label">Max Players</span><span class="ps-val">{{ sm.maxPlayers }}</span></div> }
+            @if (sm.canShare) { <div class="popout-stat"><span class="ps-label">Shareable</span><span class="ps-val">Yes</span></div> }
+            @if (sm.lifetimeMin) { <div class="popout-stat"><span class="ps-label">Lifetime</span><span class="ps-val">{{ sm.lifetimeMin }} min</span></div> }
+            @if (sm.respawnMin) { <div class="popout-stat"><span class="ps-label">Respawn</span><span class="ps-val">{{ sm.respawnMin }} min</span></div> }
+            @if (sm.timeLimitMin) { <div class="popout-stat"><span class="ps-label">Time Limit</span><span class="ps-val">{{ sm.timeLimitMin }} min</span></div> }
+            @if (sm.cooldownMin) { <div class="popout-stat"><span class="ps-label">Cooldown</span><span class="ps-val">{{ sm.cooldownMin }} min</span></div> }
+            @if (sm.onceOnly) { <div class="popout-stat"><span class="ps-label">Once Only</span><span class="ps-val">Yes</span></div> }
+          </div>
+
+          @if (sm.missionFlow?.length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Mission Type</div>
+              <div class="popout-tags">
+                @for (flow of sm.missionFlow; track flow) {
+                  <span class="meta-tag activity">{{ flow }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sm.requiresCompletion?.length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Prerequisites</div>
+              <div class="popout-tags">
+                @for (req of sm.requiresCompletion; track req) {
+                  <span class="rep-scope">{{ req }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sm.unlocks?.length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Unlocks</div>
+              <div class="popout-tags">
+                @for (u of sm.unlocks; track u) {
+                  <span class="bp-reward-tag">{{ u }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (sm.description && sm.description.length > 20) {
+            <div class="popout-section">
+              <div class="popout-section-title">Mission Brief</div>
+              <div class="popout-desc" [innerHTML]="sm.description.replace(/\\n/g, '<br>')"></div>
+            </div>
+          }
+
+          @if (sm.blueprintRewards?.length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Blueprint Rewards</div>
+              <div class="popout-tags">
+                @for (bp of sm.blueprintRewards; track bp) {
+                  <span class="bp-reward-tag">{{ bp }}</span>
+                }
+              </div>
+            </div>
+          }
         }
 
-        @if (sm.repScopes?.length) {
-          <div class="popout-section">
-            <div class="popout-section-title">Reputation</div>
-            <div class="popout-stats">
-              @for (scope of sm.repScopes; track scope) {
-                <div class="popout-stat"><span class="ps-label">Scope</span><span class="ps-val">{{ scope }}</span></div>
+        @if (popoutTab() === 'reputation') {
+          @if (selectedProfile(); as prof) {
+            <div class="faction-card">
+              <div class="fc-header">
+                <div class="fc-name">{{ prof.name }}</div>
+              </div>
+              @if (prof.description) {
+                <div class="fc-desc">{{ prof.description }}</div>
               }
-              @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Success</span><span class="ps-val positive">+{{ sm.repReward }}</span></div> }
-              @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure</span><span class="ps-val negative">{{ sm.repPenalty }}</span></div> }
+              <div class="fc-stats">
+                @if (prof.hq)         { <div class="fc-stat"><span class="fcs-k">HQ</span><span class="fcs-v">{{ prof.hq }}</span></div> }
+                @if (prof.area)       { <div class="fc-stat"><span class="fcs-k">Area</span><span class="fcs-v">{{ prof.area }}</span></div> }
+                @if (prof.focus)      { <div class="fc-stat"><span class="fcs-k">Focus</span><span class="fcs-v">{{ prof.focus }}</span></div> }
+                @if (prof.founded)    { <div class="fc-stat"><span class="fcs-k">Founded</span><span class="fcs-v">{{ prof.founded }}</span></div> }
+                @if (prof.leadership) { <div class="fc-stat"><span class="fcs-k">Leadership</span><span class="fcs-v">{{ prof.leadership }}</span></div> }
+                @if (prof.association){ <div class="fc-stat"><span class="fcs-k">Association</span><span class="fcs-v">{{ prof.association }}</span></div> }
+              </div>
             </div>
-            @if (sm.repRequirements?.length) {
-              <div class="popout-tags" style="margin-top: 4px;">
-                @for (req of sm.repRequirements; track req.scope) {
-                  <span class="rep-scope">{{ req.scope }}: {{ req.minRank }} — {{ req.maxRank }}</span>
+          } @else if (sm.contractor) {
+            <div class="popout-section">
+              <div class="popout-section-title">Contractor</div>
+              <div class="popout-stat"><span class="ps-label">Faction</span><span class="ps-val">{{ sm.contractor }}</span></div>
+            </div>
+          }
+
+          @if (visibleScopes(sm).length) {
+            <div class="popout-section">
+              <div class="popout-section-title">Reputation Earned</div>
+              <div class="popout-tags">
+                @for (scope of visibleScopes(sm); track scope) {
+                  <span class="rep-scope">{{ fmtScope(scope) }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (uniqueReqs(sm); as reqs) {
+            @if (reqs.length) {
+              <div class="popout-section">
+                <div class="popout-section-title">Requirements</div>
+                @for (req of reqs; track req.scope) {
+                  <div class="popout-stat"><span class="ps-label">Scope</span><span class="ps-val">{{ fmtScope(req.scope) }}</span></div>
+                  <div class="popout-stat"><span class="ps-label">Required Rep</span><span class="ps-val rep-min">{{ req.minRank }}</span></div>
+                  <div class="popout-stat"><span class="ps-label">Max Rep</span><span class="ps-val rep-max">{{ req.maxRank }}</span></div>
                 }
               </div>
             }
-          </div>
-        }
+          }
 
-        @if (sm.requiresCompletion?.length) {
-          <div class="popout-section">
-            <div class="popout-section-title">Prerequisites</div>
-            <div class="popout-tags">
-              @for (req of sm.requiresCompletion; track req) {
-                <span class="rep-scope">{{ req }}</span>
-              }
+          @if (sm.repReward || sm.repPenalty) {
+            <div class="popout-section">
+              <div class="popout-section-title">Rewards / Penalties</div>
+              @if (sm.repReward) { <div class="popout-stat"><span class="ps-label">Success</span><span class="ps-val rep-positive">+{{ sm.repReward }} rep</span></div> }
+              @if (sm.repPenalty) { <div class="popout-stat"><span class="ps-label">Failure</span><span class="ps-val rep-negative">{{ sm.repPenalty }} rep</span></div> }
             </div>
-          </div>
-        }
+          }
 
-        @if (sm.unlocks?.length) {
-          <div class="popout-section">
-            <div class="popout-section-title">Unlocks</div>
-            <div class="popout-tags">
-              @for (u of sm.unlocks; track u) {
-                <span class="bp-reward-tag">{{ u }}</span>
+          @for (ladder of getLadders(sm); track ladder.name) {
+            <div class="popout-section">
+              <div class="popout-section-title">{{ ladder.displayName }} Ranks</div>
+              @if (sm.repReward) {
+                <div class="popout-stat"><span class="ps-label">Rep / Mission</span><span class="ps-val rep-positive">+{{ sm.repReward | number }}</span></div>
               }
+              <div class="rep-calc-table">
+                <div class="rep-calc-header">
+                  <span class="rc-rank">Rank</span>
+                  <span class="rc-xp">XP to Fill</span>
+                  <span class="rc-missions">Missions</span>
+                </div>
+                @for (row of calcLadder(sm, ladder); track row.minRep) {
+                  <div class="rep-calc-row"
+                       [class.active-rank]="row.active"
+                       [class.gated]="row.gated">
+                    <span class="rc-rank">
+                      {{ row.name }}
+                      @if (row.perk) { <span class="rc-perk">{{ row.perk }}</span> }
+                      @if (row.gated) { <span class="ladder-gated">GATED</span> }
+                    </span>
+                    <span class="rc-xp">{{ row.xpToFill > 0 ? (row.xpToFill | number) : '—' }}</span>
+                    <span class="rc-missions">{{ row.missions !== null ? (row.missions | number) : '—' }}</span>
+                  </div>
+                }
+                <div class="ladder-ceiling">Ceiling: {{ ladder.ceiling | number }}</div>
+              </div>
             </div>
-          </div>
+          }
+
+          @if (!selectedProfile() && !sm.contractor && !visibleScopes(sm).length && !uniqueReqs(sm).length && !sm.repReward && !sm.repPenalty && !getLadders(sm).length) {
+            <div class="popout-empty">No reputation data available for this contract.</div>
+          }
         }
 
-        @if (sm.description && sm.description.length > 20) {
-          <div class="popout-section">
-            <div class="popout-section-title">Mission Brief</div>
-            <div class="popout-desc" [innerHTML]="sm.description.replace(/\\n/g, '<br>')"></div>
-          </div>
-        }
-
-        @if (sm.blueprintRewards?.length) {
-          <div class="popout-section">
-            <div class="popout-section-title">Blueprint Rewards</div>
-            <div class="popout-tags">
-              @for (bp of sm.blueprintRewards; track bp) {
-                <span class="bp-reward-tag">{{ bp }}</span>
-              }
-            </div>
-          </div>
-        }
       </div>
     </div>
   }

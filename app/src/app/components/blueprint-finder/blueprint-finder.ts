@@ -1,6 +1,7 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { DecimalPipe } from '@angular/common';
 import { DataService } from '../../services/data.service';
 
 interface Mission {
@@ -34,9 +35,48 @@ interface Mission {
   unlocks?: string[];
 }
 
+interface RepRank {
+  name: string;
+  minRep: number;
+  gated?: boolean;
+  perk?: string;
+  driftPerHour?: number;
+}
+
+interface RepLadder {
+  name: string;
+  displayName: string;
+  ceiling: number;
+  ranks: RepRank[];
+}
+
+interface CalcRow {
+  name: string;
+  minRep: number;
+  xpToFill: number;
+  missions: number | null;
+  active: boolean;
+  gated: boolean;
+  perk?: string;
+}
+
+interface ContractorProfile {
+  name: string;
+  description?: string;
+  area?: string;
+  focus?: string;
+  founded?: string;
+  hq?: string;
+  leadership?: string;
+  association?: string;
+}
+
 interface MissionData {
   contracts: Mission[];
   missions?: Mission[];  // legacy fallback
+  reputationLadders?: Record<string, RepLadder>;
+  scopeToLadder?: Record<string, string>;
+  contractorProfiles?: Record<string, ContractorProfile>;
 }
 
 interface BlueprintEntry {
@@ -48,11 +88,15 @@ interface BlueprintEntry {
 @Component({
   selector: 'app-blueprint-finder',
   standalone: true,
+  imports: [DecimalPipe],
   templateUrl: './blueprint-finder.html',
   styleUrl: './blueprint-finder.scss',
 })
 export class BlueprintFinderComponent {
   private allMissions = signal<Mission[]>([]);
+  private repLadders = signal<Record<string, RepLadder>>({});
+  private scopeToLadder = signal<Record<string, string>>({});
+  private contractorProfiles = signal<Record<string, ContractorProfile>>({});
   loaded = signal(false);
 
   searchQuery = signal('');
@@ -142,6 +186,14 @@ export class BlueprintFinderComponent {
     return this.filtered().find(bp => bp.name === name) ?? null;
   });
   selectedMission = signal<Mission | null>(null);
+  popoutTab = signal<'info' | 'reputation'>('info');
+
+  /** Faction/contractor profile lookup for the currently-selected mission. */
+  selectedProfile = computed<ContractorProfile | null>(() => {
+    const m = this.selectedMission();
+    if (!m?.contractor) return null;
+    return this.contractorProfiles()[m.contractor] ?? null;
+  });
 
   toggleExpand(name: string): void {
     this.expandedBp.set(this.expandedBp() === name ? null : name);
@@ -149,11 +201,107 @@ export class BlueprintFinderComponent {
 
   openMission(m: Mission, e: Event): void {
     e.stopPropagation();
+    this.popoutTab.set('info');
     this.selectedMission.set(m);
   }
 
   closePopout(): void {
     this.selectedMission.set(null);
+  }
+
+  /* ── Reputation logic (mirrored from missions-view) ──────────────────────
+     Kept in sync manually; if rep rendering gets more complex, factor into
+     a shared service. */
+
+  private readonly SCOPE_DISPLAY: Record<string, string> = {
+    'affinity': 'NPC Affinity',
+    'assassination': 'Assassination',
+    'bounty': 'Bounty Hunting',
+    'bounty_bountyhuntersguild': 'Bounty Hunters Guild',
+    'courier': 'Courier',
+    'emergency': 'Emergency Support',
+    'factionreputationscope': 'Faction Standing',
+    'handyman_citizensforpyro': 'Hired Muscle (CFP)',
+    'hauling': 'Hauling',
+    'hiredmuscle': 'Hired Muscle',
+    'racing_shiptimetrial': 'Racing (Ship)',
+    'security': 'Security',
+    'shipcombat_headhunters': 'Ship Combat (Headhunters)',
+    'technician': 'Technician',
+    'wikelo': 'Barter & Trade',
+  };
+
+  private readonly SCOPE_HIDDEN = new Set(['npc_reliability', 'affinity', 'npc_fired']);
+  private readonly LADDER_HIDDEN = new Set(['affinity', 'npc_reliability', 'npc_fired']);
+
+  fmtScope(scope: string): string {
+    return this.SCOPE_DISPLAY[scope] ?? scope;
+  }
+
+  visibleScopes(m: Mission): string[] {
+    return (m.repScopes ?? []).filter(s => !this.SCOPE_HIDDEN.has(s));
+  }
+
+  uniqueReqs(m: Mission): { scope: string; minRank: string; maxRank: string }[] {
+    if (!m.repRequirements?.length) return [];
+    const seen = new Set<string>();
+    return m.repRequirements.filter(r => {
+      const key = `${r.scope}:${r.minRank}:${r.maxRank}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  getLadders(m: Mission): RepLadder[] {
+    const ladders = this.repLadders();
+    const stl = this.scopeToLadder();
+    const scopes = m.repScopes ?? [];
+    const reqScopes = (m.repRequirements ?? []).map(r => r.scope).filter(s => s && s !== '?');
+    const allScopes = [...new Set([...scopes, ...reqScopes])];
+    const seen = new Set<string>();
+    const results: RepLadder[] = [];
+    for (const scope of allScopes) {
+      const ladderKey = stl[scope] ?? stl[scope.toLowerCase()] ?? scope.toLowerCase();
+      if (seen.has(ladderKey) || this.LADDER_HIDDEN.has(ladderKey)) continue;
+      seen.add(ladderKey);
+      const ladder = ladders[ladderKey];
+      if (ladder) results.push(ladder);
+    }
+    return results;
+  }
+
+  calcLadder(m: Mission, ladder: RepLadder): CalcRow[] {
+    const repPerMission = m.repReward ?? 0;
+    const ranks = ladder.ranks.filter(r => r.minRep >= 0);
+    return ranks.map((rank, i) => {
+      const isLast = i + 1 >= ranks.length;
+      const nextMin = isLast ? ladder.ceiling : ranks[i + 1].minRep;
+      const rawGap = nextMin - rank.minRep;
+      const xpToFill = isLast || rawGap <= 1 ? 0 : Math.max(0, rawGap);
+      const missions = repPerMission > 0 && xpToFill > 0
+        ? Math.ceil(xpToFill / repPerMission) : null;
+      return {
+        name: rank.name,
+        minRep: rank.minRep,
+        xpToFill,
+        missions,
+        active: this.isActiveRank(m, ladder, rank),
+        gated: !!rank.gated,
+        perk: rank.perk,
+      };
+    });
+  }
+
+  isActiveRank(m: Mission, ladder: RepLadder, rank: RepRank): boolean {
+    const reqs = m.repRequirements ?? [];
+    for (const req of reqs) {
+      const minIdx = ladder.ranks.findIndex(r => r.name === req.minRank);
+      const maxIdx = ladder.ranks.findIndex(r => r.name === req.maxRank);
+      const rankIdx = ladder.ranks.indexOf(rank);
+      if (minIdx >= 0 && maxIdx >= 0 && rankIdx >= minIdx && rankIdx <= maxIdx) return true;
+    }
+    return false;
   }
 
   fmtReward(n: number): string {
@@ -176,6 +324,9 @@ export class BlueprintFinderComponent {
       this.loaded.set(false);
       this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe(d => {
         this.allMissions.set(d.contracts ?? d.missions ?? []);
+        this.repLadders.set(d.reputationLadders ?? {});
+        this.scopeToLadder.set(d.scopeToLadder ?? {});
+        this.contractorProfiles.set(d.contractorProfiles ?? {});
         this.loaded.set(true);
       });
     });

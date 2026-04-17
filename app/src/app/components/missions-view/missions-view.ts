@@ -114,12 +114,28 @@ export class MissionsViewComponent {
   systemFilter = signal('');
   activityFilter = signal('');
   contractorFilter = signal('');
+  riskFilter = signal<'' | 'low' | 'med' | 'high'>('');
   sortBy = signal<'reward' | 'title' | 'category'>('reward');
   blueprintFilter = signal(false);
   chainFilter = signal(false);
   blueprintNameFilter = signal('');
   page = signal(1);
   readonly pageSize = 50;
+  /** Drawer open/closed on narrow viewports. Ignored at wide viewports where
+   *  the sidebar is always visible. Default closed so first paint on mobile
+   *  shows the list, not the filters. */
+  filtersOpen = signal(false);
+
+  /** Three-tier risk from the raw `danger` string.
+   *  low: Very Low / Low  ·  med: Medium  ·  high: High / Very High / Extreme
+   *  Anything else (incl. undefined) is 'none'. */
+  riskTier(m: Mission): 'low' | 'med' | 'high' | 'none' {
+    const d = (m.danger ?? '').toLowerCase();
+    if (d === 'very low' || d === 'low') return 'low';
+    if (d === 'medium') return 'med';
+    if (d === 'high' || d === 'very high' || d === 'extreme') return 'high';
+    return 'none';
+  }
 
   categories = computed(() => {
     const cats = new Set(this.allMissions().map(m => m.category));
@@ -153,8 +169,42 @@ export class MissionsViewComponent {
     return this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
            this.activityFilter() !== '' || this.contractorFilter() !== '' ||
+           this.riskFilter() !== '' ||
            this.blueprintFilter() || this.chainFilter() || this.blueprintNameFilter() !== '';
   });
+
+  /** Pill list for the "Applied" strip. Each entry has a label for display
+   *  and a key that `removeFilter()` uses to clear just that one. */
+  appliedFilters = computed<{ key: string; label: string }[]>(() => {
+    const out: { key: string; label: string }[] = [];
+    if (this.searchQuery().length >= 2) out.push({ key: 'search', label: `"${this.searchQuery()}"` });
+    if (this.categoryFilter()) out.push({ key: 'category', label: this.categoryFilter() });
+    if (this.riskFilter()) out.push({ key: 'risk', label: 'Risk ' + this.riskFilter().toUpperCase() });
+    if (this.lawfulFilter()) out.push({ key: 'lawful', label: this.lawfulFilter() === 'lawful' ? 'Legal' : 'Illegal' });
+    if (this.systemFilter()) out.push({ key: 'system', label: this.systemFilter() });
+    if (this.activityFilter()) out.push({ key: 'activity', label: this.activityFilter() });
+    if (this.contractorFilter()) out.push({ key: 'contractor', label: this.contractorFilter() });
+    if (this.blueprintFilter()) out.push({ key: 'blueprint', label: 'Blueprints' });
+    if (this.chainFilter()) out.push({ key: 'chain', label: 'Chains' });
+    if (this.blueprintNameFilter()) out.push({ key: 'bpname', label: this.blueprintNameFilter() });
+    return out;
+  });
+
+  removeFilter(key: string): void {
+    switch (key) {
+      case 'search': this.searchQuery.set(''); break;
+      case 'category': this.categoryFilter.set(''); break;
+      case 'risk': this.riskFilter.set(''); break;
+      case 'lawful': this.lawfulFilter.set(''); break;
+      case 'system': this.systemFilter.set(''); break;
+      case 'activity': this.activityFilter.set(''); break;
+      case 'contractor': this.contractorFilter.set(''); break;
+      case 'blueprint': this.blueprintFilter.set(false); break;
+      case 'chain': this.chainFilter.set(false); break;
+      case 'bpname': this.blueprintNameFilter.set(''); break;
+    }
+    this.resetPage();
+  }
 
   private allFiltered = computed(() => {
     // Title-only search with word-boundary prefix matching. The previous
@@ -179,11 +229,14 @@ export class MissionsViewComponent {
 
     let missions = this.allMissions();
 
+    const risk = this.riskFilter();
+
     if (cat) missions = missions.filter(m => m.category === cat);
     if (law === 'lawful') missions = missions.filter(m => m.lawful);
     if (law === 'unlawful') missions = missions.filter(m => !m.lawful);
     if (sys) missions = missions.filter(m => m.system === sys);
     if (act) missions = missions.filter(m => m.activity === act);
+    if (risk) missions = missions.filter(m => this.riskTier(m) === risk);
     if (bpName) missions = missions.filter(m => m.blueprintRewards?.includes(bpName));
     else if (bp) missions = missions.filter(m => m.blueprintRewards?.length);
     if (chain) missions = missions.filter(m => m.isChain);
@@ -218,6 +271,13 @@ export class MissionsViewComponent {
     if (!m?.contractor) return null;
     return this.contractorProfiles()[m.contractor] ?? null;
   });
+
+  /** Same lookup as `selectedProfile` but for an arbitrary mission — used
+   *  by the inline expanded-row detail, which can render for any row. */
+  selectedProfileFor(m: Mission): ContractorProfile | null {
+    if (!m.contractor) return null;
+    return this.contractorProfiles()[m.contractor] ?? null;
+  }
 
   constructor(private http: HttpClient, private data: DataService) {
     effect(() => {
@@ -254,10 +314,31 @@ export class MissionsViewComponent {
     this.systemFilter.set('');
     this.activityFilter.set('');
     this.contractorFilter.set('');
+    this.riskFilter.set('');
     this.blueprintFilter.set(false);
     this.chainFilter.set(false);
     this.blueprintNameFilter.set('');
     this.page.set(1);
+  }
+
+  /** Initials for an org/operator mark — "Interknet Defense Solutions" → "IDS",
+   *  "Deacon Tobin" → "DT", single-word "Shubin" → "SH". Max 3 chars. */
+  initials(name: string | undefined | null): string {
+    if (!name) return '?';
+    const parts = name.trim().split(/\s+/).filter(p => p.length > 0);
+    if (parts.length === 0) return '?';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return parts.slice(0, 3).map(p => p[0]).join('').toUpperCase();
+  }
+
+  /** "4h 12m" / "35m" — short-form duration for the Time column.
+   *  Returns em-dash when undefined so list rows still align. */
+  fmtDuration(min: number | undefined): string {
+    if (!min || min <= 0) return '—';
+    if (min < 60) return `${Math.round(min)}m`;
+    const h = Math.floor(min / 60);
+    const m = Math.round(min - h * 60);
+    return m > 0 ? `${h}h ${m}m` : `${h}h`;
   }
 
   private readonly SCOPE_DISPLAY: Record<string, string> = {

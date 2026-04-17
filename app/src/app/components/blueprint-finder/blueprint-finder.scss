@@ -440,7 +440,7 @@
   transform: translate(-50%, -50%);
   width: 90%;
   max-width: 520px;
-  max-height: 80vh;
+  height: 80vh;
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -511,6 +511,8 @@
   gap: 12px;
   position: relative;
   z-index: 2;
+  flex: 1;
+  min-height: 0;
 }
 
 .popout-meta {
@@ -734,4 +736,200 @@
 
   .popout-title { font-size: 15px; }
   .popout-close { padding: 8px 12px; font-size: 20px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Reputation tab — ported from missions-view popout
+   ══════════════════════════════════════════════════════════════ */
+
+.popout-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.popout-tab {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { color: var(--text); }
+  &.active { color: var(--text); border-bottom-color: var(--accent); }
+}
+
+.popout-empty {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text3);
+  padding: 16px;
+  text-align: center;
+}
+
+.rep-min { color: var(--gold); }
+.rep-max { color: var(--text2); }
+.ps-val.rep-positive { color: var(--green); }
+.ps-val.rep-negative { color: var(--red); }
+
+/* ── Faction profile card ─────────────────────── */
+
+.faction-card {
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(0, 200, 255, 0.05), rgba(0, 200, 255, 0.01));
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+}
+
+.fc-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+}
+
+.fc-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.fc-desc {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text2);
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+
+.fc-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 4px 14px;
+}
+
+.fc-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  padding: 2px 0;
+}
+
+.fcs-k {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  min-width: 72px;
+  flex-shrink: 0;
+}
+
+.fcs-v {
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* ── Rep calculator table ─────────────────────── */
+
+.rep-calc-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.rep-calc-header {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rep-calc-row {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--bg3);
+  border-left: 3px solid transparent;
+  border-radius: 3px;
+  transition: background 0.1s;
+
+  &.active-rank {
+    border-left-color: var(--accent);
+    background: rgba(0, 200, 255, 0.06);
+  }
+  &.gated { opacity: 0.6; }
+}
+
+.rc-rank {
+  flex: 1;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rc-perk {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  background: rgba(0, 230, 118, 0.08);
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.rc-xp, .rc-missions {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+  width: 90px;
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rep-calc-header .rc-xp,
+.rep-calc-header .rc-missions { color: var(--text3); }
+
+.ladder-gated {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.ladder-ceiling {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  text-align: right;
+  padding: 4px 8px 0;
 }
