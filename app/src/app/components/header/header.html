@@ -145,6 +145,10 @@
     @for (tab of industryToolsTabs; track tab.id) {
       <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
     }
+    <div class="mobile-nav-title">FPS GEAR</div>
+    @for (tab of fpsGearTabs; track tab.id) {
+      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+    }
     <div class="mobile-nav-title">MORE</div>
     <button class="mobile-nav-item" [class.active]="isTabActive('submit')" (click)="navigateTo('submit')">Submit Data</button>
     <button class="mobile-nav-item" [class.active]="isTabActive('formulas')" (click)="navigateTo('formulas')">Formulas</button>
