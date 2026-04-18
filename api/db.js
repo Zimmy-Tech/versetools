@@ -41,10 +41,10 @@ function buildPool() {
     password: decodeURIComponent(u.password),
     database: u.pathname.replace(/^\//, '') || 'defaultdb',
     ssl: { rejectUnauthorized: false },
-    // Set search_path via session option so every backend connection
-    // already has it before we issue a query (avoids racing client.query()
-    // inside a 'connect' handler, which pg v9 deprecates).
-    options: '-c search_path=versedb,public',
+    // search_path is set as a default on the versedb_app role via
+    //   ALTER ROLE versedb_app IN DATABASE versedb SET search_path TO versedb, public;
+    // This lets us connect through PgBouncer (which rejects arbitrary
+    // startup options) while still landing in the right schema.
   });
 }
 
