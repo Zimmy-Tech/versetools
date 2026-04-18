@@ -292,6 +292,19 @@
   }
 }
 
+.build-badge-sep {
+  margin: 0 4px;
+  opacity: 0.55;
+}
+
+.build-badge-source {
+  color: var(--accent, #00c8ff);
+}
+
+.build-badge-source-static {
+  color: #ffb347;
+}
+
 @media (max-width: 767px) {
   .build-badge {
     bottom: 4px;

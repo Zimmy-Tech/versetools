@@ -124,6 +124,10 @@ export class DataService {
   readonly ptuEnabled = signal(false);
   readonly ptuLabel = signal('');
 
+  /** Which source satisfied the last successful db load: 'db' = live API,
+   *  'static' = bundled JSON fallback. Empty until the first load resolves. */
+  readonly dataSource = signal<'' | 'db' | 'static'>('');
+
   constructor(private http: HttpClient) {
     // Load PTU config — prefer the API (admin-toggleable, lives in the DB)
     // and fall back to the static config.json for hosts without an API
@@ -182,13 +186,14 @@ export class DataService {
       // (network-first) so it won't serve a stale copy either — data
       // updates now propagate on the very next page load after deploy.
       const noCache = { headers: { 'Cache-Control': 'no-cache' } };
+      const primaryIsStatic = primaryUrl === fallbackUrl;
       this.http.get<VerseDb>(primaryUrl, noCache).subscribe({
-        next: applyDb,
+        next: (db) => { this.dataSource.set(primaryIsStatic ? 'static' : 'db'); applyDb(db); },
         error: (err) => {
-          if (primaryUrl !== fallbackUrl) {
+          if (!primaryIsStatic) {
             console.warn(`API ${primaryUrl} failed, falling back to ${fallbackUrl}`, err);
             this.http.get<VerseDb>(fallbackUrl, noCache).subscribe({
-              next: applyDb,
+              next: (db) => { this.dataSource.set('static'); applyDb(db); },
               error: () => console.warn(`Could not load ${fallbackUrl}`),
             });
           } else {
@@ -227,6 +232,7 @@ export class DataService {
       headers: { 'Cache-Control': 'no-cache' },
     }).toPromise();
     if (!db) return;
+    this.dataSource.set(primaryUrl === fallbackUrl ? 'static' : 'db');
     this.db.set(applyDataOverrides(db));
     this.modeVersion.update((v) => v + 1);
     if (previousClassName) {

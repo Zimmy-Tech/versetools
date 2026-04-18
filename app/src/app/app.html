@@ -8,7 +8,13 @@
   </div>
 
   @if (buildTag()) {
-    <div class="build-badge" [title]="'Build: ' + loadedVersion()">{{ buildTag() }}</div>
+    <div class="build-badge" [title]="'Build: ' + loadedVersion() + (data.dataSource() ? ' · source: ' + (data.dataSource() === 'db' ? 'database' : 'static fallback') : '')">
+      {{ buildTag() }}
+      @if (data.dataSource(); as src) {
+        <span class="build-badge-sep">·</span>
+        <span class="build-badge-source" [class.build-badge-source-static]="src === 'static'">{{ src === 'db' ? 'DB' : 'Static' }}</span>
+      }
+    </div>
   }
 
   @if (showWelcome()) {
