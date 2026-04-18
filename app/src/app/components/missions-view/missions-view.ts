@@ -28,6 +28,10 @@ interface Mission {
   generator?: string;
   repRequirements?: { scope: string; minRank: string; maxRank: string }[];
   system?: string;
+  /** Set when the same mission appears in multiple systems. Includes the primary
+   *  `system` value. Used for filter predicates and display. */
+  systems?: string[];
+  givers?: string[];
   activity?: string;
   blueprintRewards?: string[];
   repReward?: number;
@@ -143,7 +147,11 @@ export class MissionsViewComponent {
   });
 
   systems = computed(() => {
-    const sys = new Set(this.allMissions().map(m => m.system).filter(Boolean));
+    const sys = new Set<string>();
+    for (const m of this.allMissions()) {
+      if (m.systems?.length) for (const s of m.systems) sys.add(s);
+      else if (m.system) sys.add(m.system);
+    }
     return ['', ...Array.from(sys).sort()];
   });
 
@@ -234,7 +242,9 @@ export class MissionsViewComponent {
     if (cat) missions = missions.filter(m => m.category === cat);
     if (law === 'lawful') missions = missions.filter(m => m.lawful);
     if (law === 'unlawful') missions = missions.filter(m => !m.lawful);
-    if (sys) missions = missions.filter(m => m.system === sys);
+    if (sys) missions = missions.filter(m =>
+      (m.systems?.length ? m.systems.includes(sys) : m.system === sys)
+    );
     if (act) missions = missions.filter(m => m.activity === act);
     if (risk) missions = missions.filter(m => this.riskTier(m) === risk);
     if (bpName) missions = missions.filter(m => m.blueprintRewards?.includes(bpName));

@@ -1622,7 +1622,8 @@ def main():
         print(f"  Fixed {desc_fixed} missing descriptions from localization fallback")
 
     # Deduplicate: same title + category + reward = same mission (different locations)
-    # Mark duplicates with "multiSystem" flag
+    # Mark duplicates with "multiSystem" flag and union per-system metadata so
+    # players in any system the mission appears in can still find it.
     seen = {}
     unique = []
     for m in missions:
@@ -1631,14 +1632,25 @@ def main():
             seen[key] = m
             unique.append(m)
         else:
-            seen[key]["multiSystem"] = True
+            winner = seen[key]
+            winner["multiSystem"] = True
+            # Union system + giver so search by either location resolves.
+            for field in ("system", "giver"):
+                plural = field + "s"
+                val = m.get(field)
+                if not val and not winner.get(field):
+                    continue
+                if plural not in winner:
+                    winner[plural] = [winner[field]] if winner.get(field) else []
+                if val and val not in winner[plural]:
+                    winner[plural].append(val)
             # Merge any rep scopes from the duplicate
             if m.get("repScopes"):
-                existing = seen[key].get("repScopes", [])
+                existing = winner.get("repScopes", [])
                 for s in m["repScopes"]:
                     if s not in existing:
                         existing.append(s)
-                seen[key]["repScopes"] = existing
+                winner["repScopes"] = existing
     missions = unique
     multi = sum(1 for m in missions if m.get("multiSystem"))
     print(f"  Filtered: {before} -> {len(missions)} unique ({multi} available in multiple systems)")
@@ -1695,15 +1707,26 @@ def main():
             seen2[key] = m
             unique2.append(m)
         else:
-            seen2[key]["multiSystem"] = True
+            winner = seen2[key]
+            winner["multiSystem"] = True
+            # Union system + giver (scalar → list) so filtering by either resolves.
+            for field in ("system", "giver"):
+                plural = field + "s"
+                val = m.get(field)
+                if not val and not winner.get(field):
+                    continue
+                if plural not in winner:
+                    winner[plural] = [winner[field]] if winner.get(field) else []
+                if val and val not in winner[plural]:
+                    winner[plural].append(val)
             # Merge rep scopes and blueprint rewards from duplicate
             for field in ("repScopes", "blueprintRewards"):
                 if m.get(field):
-                    existing = seen2[key].get(field, [])
+                    existing = winner.get(field, [])
                     for s in m[field]:
                         if s not in existing:
                             existing.append(s)
-                    seen2[key][field] = existing
+                    winner[field] = existing
     all_entries = unique2
     if before_dedup2 != len(all_entries):
         print(f"  Second-pass dedup: {before_dedup2} -> {len(all_entries)}")
