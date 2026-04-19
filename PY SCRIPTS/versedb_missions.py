@@ -2005,23 +2005,28 @@ def main():
         for ref in m.get("_requiredRefs", []):
             ref_required_by.setdefault(ref, []).append(m["title"])
 
-    # 2. Contract tag chains: tag GUID → granting contract title, tag GUID → [requiring titles]
-    tag_granted_by = {}   # tag GUID → title of contract that grants it
+    # 2. Contract tag chains: tag GUID → [granter titles], tag GUID → [requirer titles]
+    # Both are multi-valued because a single completion tag can be granted by
+    # (or required by) multiple contracts. Most CFP ranks work this way — Nyx
+    # combat intro and Pyro hauling intro both grant the same CFP tag, so
+    # either completes the gate for the follow-up patrol/haul missions.
+    tag_granted_by = {}   # tag GUID → [titles of contracts that grant it]
     tag_required_by = {}  # tag GUID → [titles of contracts that require it]
     for c in all_entries:
         for tag in c.get("_grantTags", []):
-            tag_granted_by[tag] = c["title"]
+            tag_granted_by.setdefault(tag, []).append(c["title"])
     for c in all_entries:
         for tag in c.get("_reqTags", []):
             tag_required_by.setdefault(tag, []).append(c["title"])
 
-    # 3. Resolve into requiresCompletion / unlocks
+    # 3. Resolve into requiresCompletion / requiresAnyOf / unlocks
     chain_count = 0
     for m in all_entries:
-        requires = []
+        requires = []                      # strict AND list (single-granter tags)
+        requires_any_of: list[list[str]] = []  # OR groups (multi-granter tags)
         unlocks = []
 
-        # Mission broker: requiredMissions refs → titles
+        # Mission broker: requiredMissions refs → titles (single mission per ref)
         for ref in m.get("_requiredRefs", []):
             title = mission_ref_map.get(ref)
             if title and title not in requires:
@@ -2034,11 +2039,22 @@ def main():
                 if t not in unlocks and t != m["title"]:
                     unlocks.append(t)
 
-        # Contract tags: required tags → granting contract titles
+        # Contract tags: required tags → granting contract titles.
+        # One granter → strict AND; multiple granters → OR alternatives.
+        seen_any_of = set()
         for tag in m.get("_reqTags", []):
-            title = tag_granted_by.get(tag)
-            if title and title not in requires and title != m["title"]:
-                requires.append(title)
+            granters = [g for g in tag_granted_by.get(tag, []) if g != m["title"]]
+            if not granters:
+                continue
+            if len(granters) == 1:
+                if granters[0] not in requires:
+                    requires.append(granters[0])
+            else:
+                # Deduplicate OR groups so the same {X,Y} alt set isn't listed twice.
+                key = tuple(sorted(granters))
+                if key not in seen_any_of:
+                    seen_any_of.add(key)
+                    requires_any_of.append(sorted(granters))
 
         # Contract tags: granted tags → requiring contract titles
         for tag in m.get("_grantTags", []):
@@ -2049,9 +2065,11 @@ def main():
 
         if requires:
             m["requiresCompletion"] = requires
+        if requires_any_of:
+            m["requiresAnyOf"] = requires_any_of
         if unlocks:
             m["unlocks"] = unlocks
-        if requires or unlocks:
+        if requires or requires_any_of or unlocks:
             m["isChain"] = True
             chain_count += 1
 

@@ -17271,8 +17271,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Extreme",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -17361,12 +17364,31 @@
         "Pyro"
       ],
       "requiresCompletion": [
-        "Exciting New Opportunities with Foxwell Enforcement",
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace",
-        "Help Headhunters at [Location]",
-        "Stop Attack at [Location]"
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ],
+        [
+          "Help Headhunters at [Location]",
+          "Help Headhunters at [Location]",
+          "Orange Level Contract: Protect Our Client’s Interests"
+        ],
+        [
+          "Red Level Contract: Save Ships at [Location]",
+          "Stop Attack at [Location]",
+          "Stop Attack at [Location]"
+        ]
       ],
       "isChain": true
     },
@@ -17423,12 +17445,29 @@
       "danger": "Extreme",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
-      "requiresCompletion": [
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace",
-        "Help Headhunters at [Location]",
-        "Stop Attack at [Location]"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ],
+        [
+          "Help Headhunters at [Location]",
+          "Help Headhunters at [Location]",
+          "Orange Level Contract: Protect Our Client’s Interests"
+        ],
+        [
+          "Red Level Contract: Save Ships at [Location]",
+          "Stop Attack at [Location]",
+          "Stop Attack at [Location]"
+        ]
       ],
       "isChain": true
     },
@@ -17731,12 +17770,29 @@
       "danger": "Extreme",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
-      "requiresCompletion": [
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace",
-        "Help Headhunters at [Location]",
-        "Stop Attack at [Location]"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ],
+        [
+          "Help Headhunters at [Location]",
+          "Help Headhunters at [Location]",
+          "Orange Level Contract: Protect Our Client’s Interests"
+        ],
+        [
+          "Red Level Contract: Save Ships at [Location]",
+          "Stop Attack at [Location]",
+          "Stop Attack at [Location]"
+        ]
       ],
       "isChain": true
     },
@@ -17939,8 +17995,11 @@
         "Testudo Helmet Turfwar",
         "Quartz Energy SMG Battery (45 cap)"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -17984,8 +18043,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -18029,8 +18091,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -18219,8 +18284,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Very High",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -18301,11 +18369,26 @@
         "Pyro"
       ],
       "requiresCompletion": [
-        "Exciting New Opportunities with Foxwell Enforcement",
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace",
-        "Help Headhunters at [Location]"
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ],
+        [
+          "Help Headhunters at [Location]",
+          "Help Headhunters at [Location]",
+          "Orange Level Contract: Protect Our Client’s Interests"
+        ]
       ],
       "unlocks": [
         "Red Level Contract: Support VIP Clients",
@@ -18366,11 +18449,24 @@
       "danger": "Very High",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
-      "requiresCompletion": [
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace",
-        "Help Headhunters at [Location]"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ],
+        [
+          "Help Headhunters at [Location]",
+          "Help Headhunters at [Location]",
+          "Orange Level Contract: Protect Our Client’s Interests"
+        ]
       ],
       "unlocks": [
         "Red Level Contract: Support VIP Clients",
@@ -18762,11 +18858,24 @@
       "danger": "Very High",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
-      "requiresCompletion": [
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace",
-        "Help Headhunters at [Location]"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ],
+        [
+          "Help Headhunters at [Location]",
+          "Help Headhunters at [Location]",
+          "Orange Level Contract: Protect Our Client’s Interests"
+        ]
       ],
       "unlocks": [
         "Red Level Contract: Support VIP Clients",
@@ -18840,8 +18949,11 @@
       ],
       "activity": "Delivery",
       "contractor": "Dead Saints",
-      "requiresCompletion": [
-        "DEAD SAINTS - Trial Cargo Haul"
+      "requiresAnyOf": [
+        [
+          "DEAD SAINTS - Trial Cargo Haul",
+          "DEAD SAINTS - Trial Cargo Haul"
+        ]
       ],
       "isChain": true
     },
@@ -19099,8 +19211,11 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -19135,8 +19250,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Extreme",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -19591,8 +19709,11 @@
       "activity": "Delivery",
       "danger": "Medium",
       "contractor": "Dead Saints",
-      "requiresCompletion": [
-        "DEAD SAINTS - Trial Cargo Haul"
+      "requiresAnyOf": [
+        [
+          "DEAD SAINTS - Trial Cargo Haul",
+          "DEAD SAINTS - Trial Cargo Haul"
+        ]
       ],
       "isChain": true
     },
@@ -19689,8 +19810,12 @@
         }
       ],
       "activity": "Delivery",
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -19724,8 +19849,11 @@
       "activity": "Delivery",
       "danger": "Medium",
       "contractor": "Dead Saints",
-      "requiresCompletion": [
-        "DEAD SAINTS - Trial Cargo Haul"
+      "requiresAnyOf": [
+        [
+          "DEAD SAINTS - Trial Cargo Haul",
+          "DEAD SAINTS - Trial Cargo Haul"
+        ]
       ],
       "isChain": true
     },
@@ -19832,8 +19960,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "High",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -20008,10 +20139,21 @@
         "Pyro"
       ],
       "requiresCompletion": [
-        "Exciting New Opportunities with Foxwell Enforcement",
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace"
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ]
       ],
       "unlocks": [
         "Red Level Contract: Save Ships at [Location]",
@@ -20111,10 +20253,19 @@
       "danger": "High",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
-      "requiresCompletion": [
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ]
       ],
       "unlocks": [
         "Red Level Contract: Save Ships at [Location]",
@@ -20260,8 +20411,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -20394,8 +20548,11 @@
         "Testudo Helmet Turfwar",
         "Quartz Energy SMG Battery (45 cap)"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -20439,8 +20596,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -20484,8 +20644,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -20662,8 +20825,11 @@
       "activity": "Delivery",
       "danger": "Medium",
       "contractor": "Dead Saints",
-      "requiresCompletion": [
-        "DEAD SAINTS - Trial Cargo Haul"
+      "requiresAnyOf": [
+        [
+          "DEAD SAINTS - Trial Cargo Haul",
+          "DEAD SAINTS - Trial Cargo Haul"
+        ]
       ],
       "isChain": true
     },
@@ -21066,8 +21232,11 @@
         "S71 Rifle Magazine (30 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -21152,8 +21321,11 @@
       "system": "Nyx",
       "danger": "Extreme",
       "contractor": "Hockrow Agency",
-      "requiresCompletion": [
-        "Hockrow Agency"
+      "requiresAnyOf": [
+        [
+          "Hockrow Agency",
+          "Hockrow Agency"
+        ]
       ],
       "isChain": true
     },
@@ -21194,8 +21366,11 @@
         "Nyx",
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Dead Saints"
+      "requiresAnyOf": [
+        [
+          "Dead Saints",
+          "Dead Saints"
+        ]
       ],
       "isChain": true
     },
@@ -21237,8 +21412,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -21869,8 +22047,11 @@
       ],
       "system": "Nyx",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -21949,8 +22130,11 @@
       ],
       "system": "Pyro",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -22147,10 +22331,19 @@
       "danger": "High",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
-      "requiresCompletion": [
-        "Eliminate Annoyance",
-        "Protect Our Site",
-        "Secure Our Airspace"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ],
+        [
+          "Orange Level Contract: Ship Protection Needed",
+          "Secure Our Airspace"
+        ]
       ],
       "unlocks": [
         "Red Level Contract: Save Ships at [Location]",
@@ -22399,8 +22592,11 @@
         "S71 Rifle Magazine (30 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -22433,8 +22629,11 @@
       "system": "Nyx",
       "danger": "Very High",
       "contractor": "Hockrow Agency",
-      "requiresCompletion": [
-        "Hockrow Agency"
+      "requiresAnyOf": [
+        [
+          "Hockrow Agency",
+          "Hockrow Agency"
+        ]
       ],
       "isChain": true
     },
@@ -22475,8 +22674,11 @@
         "Nyx",
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Dead Saints"
+      "requiresAnyOf": [
+        [
+          "Dead Saints",
+          "Dead Saints"
+        ]
       ],
       "isChain": true
     },
@@ -22518,8 +22720,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -23015,8 +23220,11 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -23051,8 +23259,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Very High",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -23431,8 +23642,11 @@
       ],
       "activity": "Delivery",
       "contractor": "Dead Saints",
-      "requiresCompletion": [
-        "DEAD SAINTS - Trial Cargo Haul"
+      "requiresAnyOf": [
+        [
+          "DEAD SAINTS - Trial Cargo Haul",
+          "DEAD SAINTS - Trial Cargo Haul"
+        ]
       ],
       "isChain": true
     },
@@ -23900,8 +24114,11 @@
       ],
       "activity": "Delivery",
       "contractor": "Dead Saints",
-      "requiresCompletion": [
-        "DEAD SAINTS - Trial Cargo Haul"
+      "requiresAnyOf": [
+        [
+          "DEAD SAINTS - Trial Cargo Haul",
+          "DEAD SAINTS - Trial Cargo Haul"
+        ]
       ],
       "isChain": true
     },
@@ -24037,8 +24254,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -24082,8 +24302,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -24705,8 +24928,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -25036,8 +25262,12 @@
       ],
       "activity": "Delivery",
       "danger": "Medium",
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -25214,8 +25444,12 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -25461,8 +25695,12 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -25835,8 +26073,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Medium",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -26021,9 +26262,17 @@
         "Pyro"
       ],
       "requiresCompletion": [
-        "Exciting New Opportunities with Foxwell Enforcement",
-        "Eliminate Annoyance",
-        "Protect Our Site"
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ]
       ],
       "unlocks": [
         "Orange Level Contract: Protect Our Client’s Interests",
@@ -26093,9 +26342,15 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Eliminate Annoyance",
-        "Protect Our Site"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ],
+        [
+          "Protect Our Site",
+          "Yellow Level Contract: Defend [Location]"
+        ]
       ],
       "unlocks": [
         "Orange Level Contract: Protect Our Client’s Interests",
@@ -26537,8 +26792,11 @@
         "S71 Rifle Magazine (30 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -26623,8 +26881,11 @@
       "system": "Nyx",
       "danger": "High",
       "contractor": "Hockrow Agency",
-      "requiresCompletion": [
-        "Hockrow Agency"
+      "requiresAnyOf": [
+        [
+          "Hockrow Agency",
+          "Hockrow Agency"
+        ]
       ],
       "isChain": true
     },
@@ -26665,8 +26926,11 @@
         "Nyx",
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Dead Saints"
+      "requiresAnyOf": [
+        [
+          "Dead Saints",
+          "Dead Saints"
+        ]
       ],
       "isChain": true
     },
@@ -26708,8 +26972,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -27252,8 +27519,11 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -27359,8 +27629,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "High",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -27867,8 +28140,11 @@
       "activity": "Mining",
       "danger": "Medium",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -27899,8 +28175,12 @@
       ],
       "activity": "Delivery",
       "danger": "Medium",
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -27935,8 +28215,11 @@
       ],
       "system": "Nyx",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -28177,8 +28460,12 @@
         }
       ],
       "activity": "Delivery",
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -28442,8 +28729,11 @@
       ],
       "system": "Pyro",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -28776,8 +29066,16 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Very Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "isChain": true
     },
@@ -29542,8 +29840,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Red Wind Linehaul"
+      "requiresAnyOf": [
+        [
+          "Red Wind Linehaul",
+          "Red Wind Linehaul"
+        ]
       ],
       "isChain": true
     },
@@ -30003,8 +30304,12 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -30064,8 +30369,11 @@
       "activity": "Mining",
       "danger": "Medium",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -30102,8 +30410,16 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Very Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "isChain": true
     },
@@ -30577,8 +30893,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -30622,8 +30941,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -30706,8 +31028,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -31005,8 +31330,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -31661,8 +31989,17 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Special Covalex Delivery Stanton System"
@@ -31806,8 +32143,11 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -31892,8 +32232,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Medium",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -31975,8 +32318,11 @@
       "activity": "Mining",
       "danger": "Medium",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -32018,8 +32364,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Red Wind Linehaul"
+      "requiresAnyOf": [
+        [
+          "Red Wind Linehaul",
+          "Red Wind Linehaul"
+        ]
       ],
       "isChain": true
     },
@@ -32381,8 +32730,11 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "requiresCompletion": [
-        "Reclusive Bounty: [TargetName] | Very-High Risk"
+      "requiresAnyOf": [
+        [
+          "Reclusive Bounty: [TargetName] | Very-High Risk",
+          "Reclusive Bounty: [TargetName] | Very-High Risk"
+        ]
       ],
       "isChain": true
     },
@@ -32421,8 +32773,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Low",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -32912,8 +33267,11 @@
         "Pyro",
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -33065,8 +33423,13 @@
         "Pyro"
       ],
       "requiresCompletion": [
-        "Exciting New Opportunities with Foxwell Enforcement",
-        "Eliminate Annoyance"
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ]
       ],
       "unlocks": [
         "Orange Level Contract: Ship Protection Needed",
@@ -33146,8 +33509,16 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Very Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "isChain": true
     },
@@ -33209,8 +33580,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Eliminate Annoyance"
+      "requiresAnyOf": [
+        [
+          "Eliminate Annoyance",
+          "Yellow Level Contract: Stand Up to Aggressors"
+        ]
       ],
       "unlocks": [
         "Orange Level Contract: Ship Protection Needed",
@@ -33353,8 +33727,11 @@
       "system": "Stanton",
       "activity": "FPS",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -33572,8 +33949,11 @@
       ],
       "system": "Nyx",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -33641,8 +34021,11 @@
         }
       ],
       "system": "Stanton",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -34033,8 +34416,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -34380,8 +34766,17 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Special Covalex Delivery Stanton System"
@@ -34517,8 +34912,11 @@
       ],
       "system": "Pyro",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -34726,8 +35124,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Red Wind Linehaul"
+      "requiresAnyOf": [
+        [
+          "Red Wind Linehaul",
+          "Red Wind Linehaul"
+        ]
       ],
       "isChain": true
     },
@@ -34801,8 +35202,13 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -35660,8 +36066,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -35744,8 +36153,11 @@
         }
       ],
       "system": "Stanton",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -35813,8 +36225,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -35908,8 +36323,11 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -36288,8 +36706,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Low",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -36498,8 +36919,11 @@
         "S71 Rifle Magazine (30 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -36532,8 +36956,11 @@
       "system": "Nyx",
       "danger": "Medium",
       "contractor": "Hockrow Agency",
-      "requiresCompletion": [
-        "Hockrow Agency"
+      "requiresAnyOf": [
+        [
+          "Hockrow Agency",
+          "Hockrow Agency"
+        ]
       ],
       "isChain": true
     },
@@ -36614,8 +37041,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -36970,8 +37400,17 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Special Covalex Delivery Stanton System"
@@ -37402,8 +37841,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -37542,8 +37984,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -37697,8 +38142,17 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Special Covalex Delivery Stanton System"
@@ -38032,8 +38486,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "contractor": "Shubin Interstellar",
-      "requiresCompletion": [
-        "Small Purchase Order: Hand Mined Materials"
+      "requiresAnyOf": [
+        [
+          "Small Purchase Order: Hand Mined Materials",
+          "Small Purchase Order: Hand Mined Materials"
+        ]
       ],
       "isChain": true
     },
@@ -38066,8 +38523,13 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -38418,8 +38880,12 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -38703,8 +39169,13 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -38950,8 +39421,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Red Wind Linehaul"
+      "requiresAnyOf": [
+        [
+          "Red Wind Linehaul",
+          "Red Wind Linehaul"
+        ]
       ],
       "isChain": true
     },
@@ -39157,8 +39631,11 @@
         }
       ],
       "system": "Stanton",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -39441,8 +39918,16 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Very Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "isChain": true
     },
@@ -39806,8 +40291,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -40048,8 +40536,11 @@
       "systems": [
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -40341,8 +40832,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Very Low",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -40379,8 +40873,17 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Special Covalex Delivery Stanton System"
@@ -40420,8 +40923,13 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -40487,8 +40995,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -40604,8 +41115,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -41205,8 +41719,13 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -42309,8 +42828,11 @@
         "R97 Shotgun Magazine (18 cap)"
       ],
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -42553,8 +43075,11 @@
       "system": "Nyx",
       "activity": "Mining",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -42626,8 +43151,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Very Low",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -42713,8 +43241,11 @@
         }
       ],
       "system": "Stanton",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -42796,8 +43327,11 @@
       "system": "Nyx",
       "activity": "Mining",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -42830,8 +43364,13 @@
       "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -42916,8 +43455,11 @@
       ],
       "system": "Nyx",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -43310,8 +43852,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -43376,8 +43921,11 @@
       "system": "Stanton",
       "activity": "Mining",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -43602,8 +44150,11 @@
       "system": "Stanton",
       "activity": "Mining",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -44057,8 +44608,16 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Very Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton",
+          "Very Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "isChain": true
     },
@@ -44478,8 +45037,11 @@
       "activity": "Ship",
       "danger": "Very Low",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -44514,8 +45076,11 @@
       ],
       "system": "Pyro",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -44559,8 +45124,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -44767,8 +45335,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Red Wind Linehaul"
+      "requiresAnyOf": [
+        [
+          "Red Wind Linehaul",
+          "Red Wind Linehaul"
+        ]
       ],
       "isChain": true
     },
@@ -45224,8 +45795,11 @@
       "activity": "Ship",
       "danger": "Very Low",
       "contractor": "Citizens For Prosperity",
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -45553,8 +46127,11 @@
         }
       ],
       "system": "Stanton",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -45726,8 +46303,17 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Special Covalex Delivery Stanton System"
@@ -45924,8 +46510,11 @@
       "systems": [
         "Pyro"
       ],
-      "requiresCompletion": [
-        "First Haul in System"
+      "requiresAnyOf": [
+        [
+          "First Haul in System",
+          "Seeking Experienced Combat Pilots"
+        ]
       ],
       "isChain": true
     },
@@ -46010,8 +46599,11 @@
       "system": "Nyx",
       "danger": "Very Low",
       "contractor": "Hockrow Agency",
-      "requiresCompletion": [
-        "Hockrow Agency"
+      "requiresAnyOf": [
+        [
+          "Hockrow Agency",
+          "Hockrow Agency"
+        ]
       ],
       "isChain": true
     },
@@ -46044,8 +46636,11 @@
       "system": "Nyx",
       "danger": "Low",
       "contractor": "Hockrow Agency",
-      "requiresCompletion": [
-        "Hockrow Agency"
+      "requiresAnyOf": [
+        [
+          "Hockrow Agency",
+          "Hockrow Agency"
+        ]
       ],
       "isChain": true
     },
@@ -46081,8 +46676,11 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -46117,8 +46715,12 @@
       "system": "Stanton",
       "activity": "Delivery",
       "danger": "Low",
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -46159,8 +46761,11 @@
         "Nyx",
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Dead Saints"
+      "requiresAnyOf": [
+        [
+          "Dead Saints",
+          "Dead Saints"
+        ]
       ],
       "isChain": true
     },
@@ -46202,8 +46807,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -46599,8 +47207,13 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -46738,8 +47351,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -46770,8 +47386,11 @@
       "system": "Stanton",
       "activity": "FPS",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -46854,8 +47473,12 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -47410,8 +48033,17 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Long Distance Covalex Delivery Stanton"
+      "requiresAnyOf": [
+        [
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton",
+          "Long Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Special Covalex Delivery Stanton System"
@@ -47780,8 +48412,11 @@
       "systems": [
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -47970,8 +48605,11 @@
         }
       ],
       "system": "Stanton",
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -48362,8 +49000,11 @@
         "Nyx",
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Dead Saints"
+      "requiresAnyOf": [
+        [
+          "Dead Saints",
+          "Dead Saints"
+        ]
       ],
       "isChain": true
     },
@@ -48405,8 +49046,11 @@
         "Stanton",
         "Pyro"
       ],
-      "requiresCompletion": [
-        "Setting a Trap"
+      "requiresAnyOf": [
+        [
+          "Setting a Trap",
+          "Setting a Trap"
+        ]
       ],
       "isChain": true
     },
@@ -49093,8 +49737,13 @@
       "systems": [
         "Stanton"
       ],
-      "requiresCompletion": [
-        "Med. Distance Covalex Delivery Nyx"
+      "requiresAnyOf": [
+        [
+          "Med. Distance Covalex Delivery Nyx",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton",
+          "Med. Distance Covalex Delivery Stanton"
+        ]
       ],
       "unlocks": [
         "Very Long Distance Covalex Delivery Stanton"
@@ -49560,8 +50209,12 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Cargo Hauling Opportunity with Ling Hauling"
+      "requiresAnyOf": [
+        [
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling",
+          "Cargo Hauling Opportunity with Ling Hauling"
+        ]
       ],
       "isChain": true
     },
@@ -51834,8 +52487,11 @@
         "Pyro",
         "Nyx"
       ],
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },
@@ -51865,8 +52521,11 @@
       "system": "Stanton",
       "activity": "FPS",
       "contractor": "Adagio Holdings",
-      "requiresCompletion": [
-        "Adagio Holdings in Need of Salvagers"
+      "requiresAnyOf": [
+        [
+          "Adagio Holdings in Need of Salvagers",
+          "Adagio Holdings in Need of Salvagers"
+        ]
       ],
       "isChain": true
     },

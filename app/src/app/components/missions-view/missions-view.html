@@ -157,7 +157,8 @@
           </div>
 
           @for (m of filteredMissions(); track m.className) {
-            <div class="mv-row" [class.open]="expandedId() === m.className">
+            <div class="mv-row" [class.open]="expandedId() === m.className"
+                 [attr.data-mv-row]="m.className">
               <div class="mv-row-click" (click)="toggleExpand(m.className)">
                 <span class="mv-risk-dot" [class.risk-low]="riskTier(m) === 'low'"
                                           [class.risk-med]="riskTier(m) === 'med'"
@@ -408,19 +409,32 @@
                     }
                     @if (m.requiresCompletion?.length) {
                       <h5>Requires</h5>
-                      <div class="mv-tags">
+                      <ul class="mv-chain-list">
                         @for (req of m.requiresCompletion; track req) {
-                          <span class="mv-tag chain" (click)="navigateToMission(req, $event)">{{ req }}</span>
+                          <li (click)="navigateToMission(req, $event)">{{ req }}</li>
                         }
-                      </div>
+                      </ul>
+                    }
+                    @if (m.requiresAnyOf?.length) {
+                      <h5>Requires (any one)</h5>
+                      @for (group of m.requiresAnyOf; track $index) {
+                        <ul class="mv-chain-list mv-chain-anyof">
+                          @for (alt of group; track alt; let i = $index) {
+                            @if (i > 0) {
+                              <li class="mv-chain-or-sep">— or —</li>
+                            }
+                            <li (click)="navigateToMission(alt, $event)">{{ alt }}</li>
+                          }
+                        </ul>
+                      }
                     }
                     @if (m.unlocks?.length) {
                       <h5>Unlocks</h5>
-                      <div class="mv-tags">
+                      <ul class="mv-chain-list">
                         @for (u of m.unlocks; track u) {
-                          <span class="mv-tag chain" (click)="navigateToMission(u, $event)">{{ u }}</span>
+                          <li (click)="navigateToMission(u, $event)">{{ u }}</li>
                         }
-                      </div>
+                      </ul>
                     }
                   </div>
 

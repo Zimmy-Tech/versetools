@@ -1142,6 +1142,63 @@ $cols: 14px minmax(0, 1fr) 100px 140px 110px 20px;
   }
 }
 
+/* "Or" separator inside a requires-any-of group, rendered as an inert
+   centered divider between alternative missions. */
+.mv-chain-list li.mv-chain-or-sep {
+  cursor: default;
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-align: center;
+  padding: 2px 0;
+  border-bottom: 0;
+  &::before { content: none; }
+  &:hover { background: transparent; color: var(--text3); }
+}
+
+/* Each OR group gets its own bordered envelope so multiple alt sets don't
+   visually bleed into each other. */
+.mv-chain-anyof {
+  border-left: 2px dashed rgba(0, 200, 255, 0.35);
+  padding-left: 8px;
+  margin-bottom: 6px;
+}
+
+/* Chain-navigation list — same shape as .mv-bp-list but with cyan accent
+   and click affordance since each row jumps to the referenced mission. */
+.mv-chain-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+
+  li {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--accent);
+    padding: 3px 0 3px 14px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    transition: background .12s, color .12s;
+  }
+  li:last-child { border-bottom: 0; }
+  li:hover {
+    background: rgba(0, 200, 255, 0.06);
+    color: #7fdfff;
+  }
+  li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(0, 200, 255, 0.7);
+  }
+}
+
 .mv-tag {
   font-family: 'Share Tech Mono', monospace;
   font-size: 11.5px;

@@ -55,6 +55,10 @@ interface Mission {
   danger?: string;
   enemyPool?: string[];
   requiresCompletion?: string[];
+  /** OR groups: complete *any* mission in each inner array to satisfy that
+   *  gate. Rendered as "complete any one of" groups, distinct from the
+   *  strict AND list in `requiresCompletion`. */
+  requiresAnyOf?: string[][];
   unlocks?: string[];
   isChain?: boolean;
   rewardEstimated?: boolean;
@@ -517,10 +521,19 @@ export class MissionsViewComponent {
   navigateToMission(title: string, e: MouseEvent): void {
     e.stopPropagation();
     const target = this.allMissions().find(m => m.title === title);
-    if (target) {
-      this.popoutTab.set('info');
-      this.selectedMission.set(target);
-    }
+    if (!target) return;
+    // Match the normal row-click UX: expand the target inline and scroll it
+    // into view. Keeps chain navigation consistent with the rest of the board
+    // rather than popping open the legacy reputation modal.
+    this.expandedId.set(target.className);
+    // Jump to page 1 if the target isn't in the current page so the row
+    // actually becomes visible. Title-based search is the simplest way.
+    this.searchQuery.set(title);
+    this.resetPage();
+    setTimeout(() => {
+      const el = document.querySelector(`[data-mv-row="${CSS.escape(target.className)}"]`);
+      if (el && 'scrollIntoView' in el) (el as HTMLElement).scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 50);
   }
 
   private readonly MISSION_VAR_LABELS: Record<string, string> = {
