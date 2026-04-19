@@ -103,20 +103,21 @@ export class BlueprintFinderComponent {
   typeFilter = signal('');
   setFilter = signal('');
 
-  readonly armorSets = [
-    'Antium', 'Arden-SL', 'Aril', 'Artimex', 'Aves', 'Calico', 'Carnifex',
-    'Citadel', 'Corbel', 'Defiance', 'Dust', 'DustUp', 'Geist', 'Inquisitor',
-    'Lynx', 'Monde', 'Morozov-SH', 'ORC-mkV', 'Overlord', 'PAB-1', 'Palatino',
-    'Pembroke', 'Piecemeal', 'Strata', 'Testudo', 'TrueDef-Pro', 'Venture',
-  ];
+  /** Armor set names derived from the blueprint data — every set with at
+   *  least one armor-typed blueprint. Auto-updates when the data changes. */
+  readonly armorSets = computed(() => this.setsOfKind(this.ARMOR_TYPES));
+  readonly weaponSets = computed(() => this.setsOfKind(this.WEAPON_TYPES));
 
-  readonly weaponSets = [
-    'A03', 'Arclight', 'Arrowhead', 'Atzkav', 'BR-2', 'C54', 'Coda',
-    'Custodian', 'Deadrig', 'Devastator', 'F55', 'FS-9', 'Fresnel',
-    'Gallant', 'Karna', 'Killshot', 'Lumin', 'P6-LR', 'P8-SC',
-    'Parallax', 'Prism', 'Pulse', 'Pulverizer', 'Quartz', 'R97',
-    'Ravager-212', 'S71', 'Scalpel', 'Tripledown', 'Yubarev', 'Zenith',
-  ];
+  private setsOfKind(typeSet: Set<string>): string[] {
+    const names = new Set<string>();
+    for (const bp of this.blueprints()) {
+      if (!typeSet.has(bp.type)) continue;
+      const s = this.setNameFor(bp.name);
+      // Skip garbage tokens: must start with a letter and be at least 2 chars.
+      if (s.length >= 2 && /^[A-Za-z]/.test(s)) names.add(s);
+    }
+    return Array.from(names).sort();
+  }
 
   toggleSet(set: string): void {
     this.setFilter.set(this.setFilter() === set ? '' : set);
@@ -130,6 +131,7 @@ export class BlueprintFinderComponent {
     ['Legs', /legs/i],
     ['Undersuit', /undersuit/i],
     ['Backpack', /backpack/i],
+    ['Suit', /\bsuit\b/i],
     ['Rifle', /rifle/i],
     ['Sniper', /sniper/i],
     ['Pistol', /pistol/i],
@@ -139,6 +141,14 @@ export class BlueprintFinderComponent {
     ['Magazine', /magazine/i],
     ['Attachment', /optic|barrel|stock|grip|laser.*pointer/i],
   ];
+  private readonly ARMOR_TYPES = new Set(['Helmet', 'Core', 'Arms', 'Legs', 'Undersuit', 'Backpack', 'Suit']);
+  private readonly WEAPON_TYPES = new Set(['Rifle', 'Sniper', 'Pistol', 'Shotgun', 'SMG', 'LMG']);
+
+  /** The "set name" used for the sidebar filter chips — the first whitespace-
+   *  delimited token of a blueprint name (e.g. 'Morozov-SH Arms Thule' → 'Morozov-SH'). */
+  private setNameFor(name: string): string {
+    return (name.split(/\s+/)[0] || '').trim();
+  }
 
   private classifyBlueprint(name: string): string {
     for (const [type, pattern] of this.TYPE_PATTERNS) {
@@ -174,7 +184,7 @@ export class BlueprintFinderComponent {
     const set = this.setFilter();
     let list = this.blueprints();
     if (type) list = list.filter(b => b.type === type);
-    if (set) list = list.filter(b => b.name.toLowerCase().startsWith(set.toLowerCase()));
+    if (set) list = list.filter(b => this.setNameFor(b.name) === set);
     if (q) list = list.filter(b => b.name.toLowerCase().includes(q));
     return list;
   });

@@ -31,7 +31,7 @@
         <div class="sb-section">
           <span class="sb-label">Armor Sets</span>
           <div class="sb-buttons">
-            @for (set of armorSets; track set) {
+            @for (set of armorSets(); track set) {
               <button class="sb-btn" [class.active]="setFilter() === set"
                       (click)="toggleSet(set)">{{ set }}</button>
             }
@@ -41,7 +41,7 @@
         <div class="sb-section">
           <span class="sb-label">Weapons</span>
           <div class="sb-buttons">
-            @for (set of weaponSets; track set) {
+            @for (set of weaponSets(); track set) {
               <button class="sb-btn" [class.active]="setFilter() === set"
                       (click)="toggleSet(set)">{{ set }}</button>
             }
