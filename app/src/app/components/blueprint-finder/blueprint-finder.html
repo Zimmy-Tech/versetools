@@ -168,11 +168,11 @@
           @if (sm.blueprintRewards?.length) {
             <div class="popout-section">
               <div class="popout-section-title">Blueprint Rewards</div>
-              <div class="popout-tags">
+              <ul class="bp-reward-list">
                 @for (bp of sm.blueprintRewards; track bp) {
-                  <span class="bp-reward-tag">{{ bp }}</span>
+                  <li>{{ bp }}</li>
                 }
-              </div>
+              </ul>
             </div>
           }
         }
@@ -236,30 +236,44 @@
 
           @for (ladder of getLadders(sm); track ladder.name) {
             <div class="popout-section">
-              <div class="popout-section-title">{{ ladder.displayName }} Ranks</div>
-              @if (sm.repReward) {
-                <div class="popout-stat"><span class="ps-label">Rep / Mission</span><span class="ps-val rep-positive">+{{ sm.repReward | number }}</span></div>
-              }
-              <div class="rep-calc-table">
-                <div class="rep-calc-header">
-                  <span class="rc-rank">Rank</span>
-                  <span class="rc-xp">XP to Fill</span>
-                  <span class="rc-missions">Missions</span>
+              <div class="mv-standings-wrap">
+                <div class="mv-standings-head">
+                  <span class="mv-standings-name">{{ ladder.displayName }} · Standing</span>
+                  @if (sm.repReward) { <span class="mv-standings-rate">+{{ sm.repReward | number }} / mission</span> }
                 </div>
-                @for (row of calcLadder(sm, ladder); track row.minRep) {
-                  <div class="rep-calc-row"
-                       [class.active-rank]="row.active"
-                       [class.gated]="row.gated">
-                    <span class="rc-rank">
-                      {{ row.name }}
-                      @if (row.perk) { <span class="rc-perk">{{ row.perk }}</span> }
-                      @if (row.gated) { <span class="ladder-gated">GATED</span> }
-                    </span>
-                    <span class="rc-xp">{{ row.xpToFill > 0 ? (row.xpToFill | number) : '—' }}</span>
-                    <span class="rc-missions">{{ row.missions !== null ? (row.missions | number) : '—' }}</span>
-                  </div>
-                }
-                <div class="ladder-ceiling">Ceiling: {{ ladder.ceiling | number }}</div>
+                <table class="mv-standings">
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th class="num">Min rep</th>
+                      <th class="num">Missions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of calcLadder(sm, ladder); track row.minRep) {
+                      <tr [class.you]="row.active"
+                          [class.locked]="row.gated"
+                          [class.unlocked]="!row.gated && !row.active">
+                        <td>
+                          <span class="role-cell">
+                            <span class="tier-dot"></span>
+                            <span class="rank-name">{{ row.name }}</span>
+                            @if (row.perk) { <span class="rank-perk">{{ row.perk }}</span> }
+                            @if (row.gated) { <span class="rank-gated">GATED</span> }
+                          </span>
+                        </td>
+                        <td class="num">{{ row.minRep | number }}</td>
+                        <td class="num">{{ row.missions !== null ? (row.missions | number) : (row.xpToFill > 0 ? '—' : '✓') }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td>Ceiling</td>
+                      <td class="num" colspan="2">{{ ladder.ceiling | number }} rep</td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </div>
           }

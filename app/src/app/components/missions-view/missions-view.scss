@@ -361,7 +361,8 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
-  padding-right: 4px;
+  /* Breathing room so row borders don't crash into the scrollbar track. */
+  padding-right: 12px;
 
   &::-webkit-scrollbar { width: 4px; }
   &::-webkit-scrollbar-track { background: transparent; }
@@ -406,8 +407,10 @@ $cols: 14px minmax(0, 1fr) 100px 140px 110px 20px;
   }
 
   &.open {
-    border-color: rgba(0, 200, 255, 0.18);
-    border-left-color: var(--accent);
+    /* Uniform 1px cyan stroke on all four sides so the dropdown reads as a
+       single contained container instead of bleeding into the page. */
+    border: 1px solid var(--accent);
+    border-radius: 4px;
     box-shadow:
       0 0 0 1px rgba(0, 200, 255, 0.08),
       0 4px 20px rgba(0, 0, 0, 0.45);
@@ -612,7 +615,9 @@ $cols: 14px minmax(0, 1fr) 100px 140px 110px 20px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 0;
-  padding: 22px 0 0;
+  /* Keep generous top gap from the separator, and add breathing room on
+     the sides + bottom so content doesn't crash into the container border. */
+  padding: 22px 18px 18px;
   border-top: 1px dashed rgba(255, 255, 255, 0.10);
   margin-top: 4px;
 

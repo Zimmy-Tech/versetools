@@ -130,35 +130,33 @@
   gap: 2px;
 }
 
+/* Match Missions → Contracts chip filter style for a consistent look. */
 .sb-btn {
-  font-family: 'Exo 2', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.02);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
   color: var(--text2);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 3px;
   cursor: pointer;
-  text-align: center;
-  transition: all 0.15s;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   white-space: nowrap;
+  transition: border-color .15s, color .15s, background .15s;
 
   &:hover {
+    border-color: rgba(255, 255, 255, 0.18);
     color: var(--text);
-    border-color: var(--accent2);
-    box-shadow: 0 0 6px rgba(0, 200, 255, 0.08);
-  }
-
-  &:active {
-    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
   }
 
   &.active {
+    background: rgba(0, 200, 255, 0.12);
     color: var(--accent);
-    border-color: var(--accent);
-    background: rgba(0, 200, 255, 0.08);
+    border-color: rgba(0, 200, 255, 0.45);
   }
 }
 
@@ -646,14 +644,152 @@
   border-radius: 2px;
 }
 
-.bp-reward-tag {
+.bp-reward-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+
+  li {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text2);
+    padding: 3px 0 3px 14px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  li:last-child { border-bottom: 0; }
+  li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(0, 230, 118, 0.55);
+  }
+}
+
+/* Standings table — mirrors missions-view inline rep ladder so the popout
+   reads the same as the contract board. */
+.mv-standings-wrap { margin-top: 4px; }
+
+.mv-standings-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mv-standings-name {
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
-  color: var(--gold);
-  background: rgba(240, 165, 0, 0.08);
-  border: 1px solid rgba(240, 165, 0, 0.3);
-  padding: 1px 6px;
-  border-radius: 2px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.mv-standings-rate {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 0.06em;
+}
+
+.mv-standings {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+
+  thead th {
+    text-align: left;
+    font-size: 10.5px;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-weight: 500;
+    padding: 7px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    &.num { text-align: right; }
+  }
+
+  tbody td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text2);
+    vertical-align: middle;
+
+    &.num { text-align: right; color: var(--text); }
+  }
+
+  tbody tr:hover td { background: rgba(0, 200, 255, 0.03); }
+
+  tbody tr.you td {
+    background: rgba(0, 200, 255, 0.10);
+    color: var(--text);
+    font-weight: 500;
+  }
+  tbody tr.you td:first-child {
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+
+  tbody tr.locked td { color: var(--text3); opacity: 0.75; }
+
+  tfoot td {
+    padding: 7px 8px;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text3);
+
+    &.num { color: var(--text2); text-align: right; font-size: 12px; letter-spacing: 0.04em; }
+  }
+
+  .role-cell { display: flex; align-items: center; gap: 8px; }
+
+  .tier-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text3);
+    flex-shrink: 0;
+  }
+  tr.you .tier-dot {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.18);
+  }
+  tr.unlocked .tier-dot { background: var(--green); }
+
+  .rank-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.3px;
+  }
+
+  .rank-perk {
+    font-size: 10.5px;
+    color: var(--green);
+    background: rgba(0, 230, 118, 0.1);
+    padding: 1px 5px;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .rank-gated {
+    font-size: 9px;
+    color: var(--text3);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1px 4px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+  }
 }
 
 /* ── Mobile ─────────────────────────────────────────── */
@@ -681,7 +817,6 @@
 @media (max-width: 767px) {
 
   .sb-buttons { gap: 4px; }
-  .sb-btn { padding: 4px 8px; font-size: 13px; min-height: 36px; }
 
   .filter-input, .filter-select {
     font-size: 14px;
