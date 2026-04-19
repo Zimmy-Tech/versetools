@@ -40,6 +40,16 @@
   @if (phase() === 'compare') {
     <div class="lc-body">
 
+      <!-- Compare controls -->
+      <div class="lc-controls">
+        <button class="lc-toggle" [class.on]="includeCurrent()"
+                (click)="toggleIncludeCurrent()"
+                [title]="includeCurrent() ? 'Click to hide the in-app current loadout' : 'Click to include the in-app current loadout'">
+          <span class="lc-toggle-dot"></span>
+          Compare current
+        </button>
+      </div>
+
       <!-- Column headers -->
       <div class="lc-col-headers">
         <div class="lc-col-label-spacer"></div>

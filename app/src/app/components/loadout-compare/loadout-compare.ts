@@ -87,6 +87,13 @@ export class LoadoutCompareComponent {
   // Phase: 'pick' = selecting loadouts, 'compare' = showing comparison
   phase = signal<'pick' | 'compare'>('pick');
   selectedIndices = signal<Set<number>>(new Set());
+  /** When true, include the live in-app loadout as a "Current" column
+   *  alongside selected saved loadouts. Toggle defaults on. */
+  includeCurrent = signal<boolean>(true);
+
+  toggleIncludeCurrent(): void {
+    this.includeCurrent.set(!this.includeCurrent());
+  }
 
   toggleSelect(index: number): void {
     const current = new Set(this.selectedIndices());
@@ -123,11 +130,13 @@ export class LoadoutCompareComponent {
     const allItems = this.data.items();
     const result: LoadoutStats[] = [];
 
-    // Current loadout is always first
-    const currentEntries = Object.entries(this.data.loadout()).map(
-      ([k, v]) => [k, v] as [string, Item]
-    );
-    result.push({ ...this.computeStats(currentEntries, ship), label: 'Current' });
+    // Current loadout first, only if the "Compare current" toggle is on.
+    if (this.includeCurrent()) {
+      const currentEntries = Object.entries(this.data.loadout()).map(
+        ([k, v]) => [k, v] as [string, Item]
+      );
+      result.push({ ...this.computeStats(currentEntries, ship, this.data.powerAlloc()), label: 'Current' });
+    }
 
     // Selected saved loadouts — look up each loadout's ship for correct stats
     const allShips = this.data.ships();
@@ -141,7 +150,7 @@ export class LoadoutCompareComponent {
         const item = allItems.find(i => i.className === className);
         if (item) entries.push([slotId, item]);
       }
-      result.push({ ...this.computeStats(entries, savedShip), label: saved.name });
+      result.push({ ...this.computeStats(entries, savedShip, saved.powerAlloc ?? {}), label: saved.name });
     }
 
     return result;
@@ -150,7 +159,7 @@ export class LoadoutCompareComponent {
   // Stats to compare as rows
   statRows = computed(() => {
     const cols = this.columns();
-    if (cols.length < 2) return [];
+    if (cols.length < 1) return [];
 
     const rows: { label: string; values: number[]; unit: string; invert: boolean; section?: string }[] = [
       // Firepower
@@ -160,6 +169,9 @@ export class LoadoutCompareComponent {
       // Defense
       { label: 'Shield HP', values: cols.map(c => c.shieldHp), unit: '', invert: false, section: 'Defense' },
       { label: 'Shield Regen/s', values: cols.map(c => c.shieldRegen), unit: '', invert: false },
+      // Lower = better (regen to full faster). Zero regen → 0 (rendered as "—"
+      // via the template check if you want — for now we show "0 s").
+      { label: 'Full Regen Time', values: cols.map(c => c.shieldRegen > 0 ? c.shieldHp / c.shieldRegen : 0), unit: ' s', invert: true },
       { label: 'Phys Resist', values: cols.map(c => c.shieldResistPhys), unit: '%', invert: false },
       { label: 'Enrg Resist', values: cols.map(c => c.shieldResistEnrg), unit: '%', invert: false },
       // Armor
@@ -226,12 +238,16 @@ export class LoadoutCompareComponent {
     return false;
   }
 
-  private computeStats(entries: [string, Item][], ship: Ship): Omit<LoadoutStats, 'label'> {
+  private computeStats(entries: [string, Item][], ship: Ship, powerAlloc: Record<string, number> = {}): Omit<LoadoutStats, 'label'> {
     const hardpoints = ship.hardpoints ?? [];
     let peakDpsPilot = 0, peakDpsCrew = 0, totalAlpha = 0;
     const pilotWeapons: WeaponEntry[] = [];
     const crewWeapons: WeaponEntry[] = [];
-    let shieldHp = 0, shieldRegen = 0, shieldCount = 0;
+    let shieldHp = 0, shieldCount = 0;
+    // Shields 1-2 are active (contribute regen); 3+ are reserve (HP only).
+    // We track primaries to scale regen by allocated power pips — mirrors the
+    // dps-panel formula so "Full Regen Time" matches the in-app live figure.
+    const primaryShields: { slotId: string; item: Item }[] = [];
     const missileMap: Record<string, MissileGroup> = {};
     let missileTotalDmg = 0;
     let powerOutput = 0, powerDraw = 0, coolingRate = 0;
@@ -271,7 +287,10 @@ export class LoadoutCompareComponent {
 
       if (item.type === 'Shield') {
         shieldHp += item.hp ?? 0;
-        shieldRegen += item.regenRate ?? 0;
+        // In-game, a ship runs at most 2 shields "active" at once. Any shields
+        // beyond the first two are reserve pools — they add HP but contribute
+        // no regen (they auto-activate when the active pair depletes).
+        if (shieldCount < 2) primaryShields.push({ slotId, item });
         shieldCount++;
         resistPhysSum += item.resistPhysMax ?? 0;
         resistEnrgSum += item.resistEnrgMax ?? 0;
@@ -314,6 +333,15 @@ export class LoadoutCompareComponent {
         salvageHeadCount++;
       }
     }
+
+    // Scale shield regen by allocated power pips, mirroring dps-panel.ts's
+    // formula: regen = maxRegen × (totalAlloc / totalMax). Max regen is the
+    // theoretical ceiling at full pips; in practice the player splits pips
+    // between the two primaries. The saved loadout carries its own powerAlloc.
+    const maxPrimaryRegen = primaryShields.reduce((s, { item }) => s + (item.regenRate ?? 0), 0);
+    const totalAlloc = primaryShields.reduce((s, { slotId }) => s + (powerAlloc[slotId] ?? 0), 0);
+    const totalMax = primaryShields.reduce((s, { item }) => s + Math.max(1, (item.powerMax ?? 0) - 1), 0);
+    const shieldRegen = (totalMax > 0 && totalAlloc > 0) ? maxPrimaryRegen * (totalAlloc / totalMax) : 0;
 
     return {
       peakDpsPilot: Math.round(peakDpsPilot),
