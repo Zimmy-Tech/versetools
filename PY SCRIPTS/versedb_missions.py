@@ -140,6 +140,28 @@ def infer_system(class_name):
     if 'nyx' in cn: return 'Nyx'
     return ''
 
+def infer_region(class_name):
+    """Infer sub-region letter (A-Z) from className for systems that divide into
+    regions (e.g. Pyro RegionA/B/C/D). Returns the letter or empty string."""
+    m = re.search(r'Region([A-Z])(?![A-Za-z])', class_name or '')
+    return m.group(1) if m else ''
+
+# Maps a (system, region letter) to the planets the MissionLocality record for
+# that region draws locations from. Verified by resolving the GUID references
+# in libs/foundry/records/missiondata/pu_missionlocality/pyro_regions/ to the
+# starmap/pu records they point to and clustering by pyroN_ / rr_pN_ prefix.
+# CIG exposes no player-facing region name, so we surface the planet list as
+# the human-readable hint instead of the raw letter.
+REGION_PLANETS = {
+    ('Pyro', 'A'): ['Pyro I', 'Pyro II'],
+    ('Pyro', 'B'): ['Pyro III'],
+    ('Pyro', 'C'): ['Pyro IV', 'Pyro V'],
+    ('Pyro', 'D'): ['Pyro VI'],
+}
+
+def resolve_region_planets(system, region):
+    return list(REGION_PLANETS.get((system, region), []))
+
 def infer_activity(class_name, generator=''):
     """Infer activity type (Ship, FPS, Mining, Salvage, etc.)."""
     cn = class_name.lower()
@@ -1231,6 +1253,12 @@ def main():
                 system = infer_system(debug_name)
                 if system:
                     entry["system"] = system
+                region = infer_region(debug_name)
+                if region:
+                    entry["region"] = region
+                    planets = resolve_region_planets(system, region)
+                    if planets:
+                        entry["regionPlanets"] = planets
                 activity = infer_activity(debug_name, gen_name)
                 if activity:
                     entry["activity"] = activity
@@ -1621,21 +1649,24 @@ def main():
     if desc_fixed:
         print(f"  Fixed {desc_fixed} missing descriptions from localization fallback")
 
-    # Deduplicate: same title + category + reward = same mission (different locations)
-    # Mark duplicates with "multiSystem" flag and union per-system metadata so
-    # players in any system the mission appears in can still find it.
+    # Deduplicate: same title + category + reward + blueprint reward set = same mission.
+    # Variants with the same title/reward but different blueprint pools (e.g. Headhunters
+    # region A/B vs C/D "Deep space hit") stay as distinct entries so each row's
+    # blueprintRewards accurately reflects what that variant actually awards.
+    # Mark duplicates with "multiSystem" flag and union per-system/region/giver metadata.
     seen = {}
     unique = []
     for m in missions:
-        key = (m["title"], m["category"], m["reward"])
+        bp_sig = tuple(sorted(m.get("blueprintRewards") or []))
+        key = (m["title"], m["category"], m["reward"], bp_sig)
         if key not in seen:
             seen[key] = m
             unique.append(m)
         else:
             winner = seen[key]
             winner["multiSystem"] = True
-            # Union system + giver so search by either location resolves.
-            for field in ("system", "giver"):
+            # Union system + region + giver so search by any locator resolves.
+            for field in ("system", "region", "giver"):
                 plural = field + "s"
                 val = m.get(field)
                 if not val and not winner.get(field):
@@ -1644,13 +1675,14 @@ def main():
                     winner[plural] = [winner[field]] if winner.get(field) else []
                 if val and val not in winner[plural]:
                     winner[plural].append(val)
-            # Merge any rep scopes from the duplicate
-            if m.get("repScopes"):
-                existing = winner.get("repScopes", [])
-                for s in m["repScopes"]:
-                    if s not in existing:
-                        existing.append(s)
-                winner["repScopes"] = existing
+            # Merge list-valued fields from the duplicate (order-preserving union).
+            for field in ("repScopes", "regionPlanets"):
+                if m.get(field):
+                    existing = winner.get(field, [])
+                    for s in m[field]:
+                        if s not in existing:
+                            existing.append(s)
+                    winner[field] = existing
     missions = unique
     multi = sum(1 for m in missions if m.get("multiSystem"))
     print(f"  Filtered: {before} -> {len(missions)} unique ({multi} available in multiple systems)")
@@ -1697,20 +1729,23 @@ def main():
     print(f"  Merged {merged_bp} blueprint rewards from contracts into missions")
     print(f"  Dropped {len(merged_contracts)} duplicate contracts, kept {len(remaining_contracts)}")
 
-    # Second-pass dedup on combined list (catches contract duplicates with same title+category+reward)
+    # Second-pass dedup on combined list (catches contract duplicates with same
+    # title+category+reward+blueprint pool signature). Entries with differing BP
+    # pools stay separate so per-variant rewards are preserved.
     before_dedup2 = len(all_entries)
     seen2 = {}
     unique2 = []
     for m in all_entries:
-        key = (m["title"], m["category"], m["reward"])
+        bp_sig = tuple(sorted(m.get("blueprintRewards") or []))
+        key = (m["title"], m["category"], m["reward"], bp_sig)
         if key not in seen2:
             seen2[key] = m
             unique2.append(m)
         else:
             winner = seen2[key]
             winner["multiSystem"] = True
-            # Union system + giver (scalar → list) so filtering by either resolves.
-            for field in ("system", "giver"):
+            # Union system + region + giver (scalar → list) so filtering by any resolves.
+            for field in ("system", "region", "giver"):
                 plural = field + "s"
                 val = m.get(field)
                 if not val and not winner.get(field):
@@ -1719,8 +1754,9 @@ def main():
                     winner[plural] = [winner[field]] if winner.get(field) else []
                 if val and val not in winner[plural]:
                     winner[plural].append(val)
-            # Merge rep scopes and blueprint rewards from duplicate
-            for field in ("repScopes", "blueprintRewards"):
+            # Merge rep scopes + regionPlanets. Blueprint rewards are already part
+            # of the dedup key — if we hit here, they match, so no union needed.
+            for field in ("repScopes", "regionPlanets"):
                 if m.get(field):
                     existing = winner.get(field, [])
                     for s in m[field]:
@@ -1812,6 +1848,14 @@ def main():
 
     # Sort by category then reward
     all_entries.sort(key=lambda m: (m["category"], -(m.get("reward", 0))))
+
+    # Canonical ordering for region planet lists. Roman numerals I-VI sort
+    # correctly lexicographically, so a plain sort gives "Pyro I, Pyro II, …".
+    for m in all_entries:
+        if m.get("regionPlanets"):
+            m["regionPlanets"] = sorted(m["regionPlanets"])
+        if m.get("regions"):
+            m["regions"] = sorted(m["regions"])
 
     # Clean up placeholder titles and rep requirements across ALL entries
     _CLASSNAME_TITLE_MAP = {

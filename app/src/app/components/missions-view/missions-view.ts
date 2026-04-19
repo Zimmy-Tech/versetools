@@ -32,6 +32,15 @@ interface Mission {
    *  `system` value. Used for filter predicates and display. */
   systems?: string[];
   givers?: string[];
+  /** Sub-region letter (e.g. Pyro "A"/"B"/"C"/"D") — CIG-internal, kept for
+   *  data fidelity but not surfaced to players. Multiple entries with the same
+   *  title/reward can exist when blueprint reward pools differ by region. */
+  region?: string;
+  regions?: string[];
+  /** Human-readable planet list for the region(s) this mission draws from
+   *  (e.g. ['Pyro I', 'Pyro II']). Derived from the MissionLocality → starmap
+   *  mapping in the extractor. Use this for display, not the raw region letter. */
+  regionPlanets?: string[];
   activity?: string;
   blueprintRewards?: string[];
   repReward?: number;

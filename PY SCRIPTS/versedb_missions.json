@@ -1,13 +1,13 @@
 {
   "meta": {
-    "totalContracts": 1612,
+    "totalContracts": 1629,
     "categories": {
       "Blockade Runner": 1,
       "Bounty": 147,
       "Cargo": 188,
       "Combat": 111,
       "Combined": 4,
-      "Contract": 931,
+      "Contract": 948,
       "Delivery": 91,
       "Derelict": 16,
       "Event": 5,
@@ -16868,6 +16868,12 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "D"
+      ],
+      "regionPlanets": [
+        "Pyro VI"
       ]
     },
     {
@@ -16888,8 +16894,22 @@
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
-      "multiSystem": true,
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
+    },
+    {
+      "className": "Hockrow_FacilityDelve_P3MM_Repeat",
+      "title": "Jorrit Dossier: Access Research Files",
+      "category": "Contract",
+      "generator": "hockrowagency_facilitydelve",
+      "reward": 677750,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "timeLimitMin": 105,
+      "activity": "FPS",
       "blueprintRewards": [
         "Zenith \"Darkwave\" Laser Sniper Rifle",
         "Fresnel \"Molten\" Energy LMG",
@@ -16898,7 +16918,11 @@
         "Geist Armor Legs ASD Edition",
         "Geist Armor Helmet ASD Edition",
         "Zenith Laser Sniper Rifle Battery (22 Cap)"
-      ]
+      ],
+      "cooldownMin": 1,
+      "abandonCooldownMin": 1,
+      "contractor": "Hockrow Agency",
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
       "className": "IDS_ResourceGathering_Tech",
@@ -16958,6 +16982,12 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "D"
+      ],
+      "regionPlanets": [
+        "Pyro VI"
       ]
     },
     {
@@ -17400,6 +17430,12 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "D"
+      ],
+      "regionPlanets": [
+        "Pyro VI"
       ]
     },
     {
@@ -18190,10 +18226,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Delivery",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -18386,9 +18437,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -18616,6 +18682,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -18919,7 +18989,12 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ]
     },
     {
       "className": "HH_Pyro_RegionB_VH_Shadowfall_Sabotage",
@@ -18950,7 +19025,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "HH_Pyro_RegionB_VH_Shadowfall_BombingRun",
@@ -18981,7 +19060,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "Rayari_Rank2_IrradiatedValakkarTeeth_Gathering",
@@ -19072,6 +19155,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
         "Atzkav \"Igniter\" Sniper Rifle",
@@ -19117,6 +19204,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Yubarev Pistol",
@@ -19131,6 +19224,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ],
       "boss": true
     },
@@ -20048,18 +20145,52 @@
         "Venture Core Base",
         "Venture Legs Base",
         "Horizon Helmet Base",
-        "Arclight Pistol Battery (30 cap)",
+        "Arclight Pistol Battery (30 cap)"
+      ],
+      "contractor": "Shubin Interstellar",
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ]
+    },
+    {
+      "className": "Shubin_RG_Discovery_ShipMining_Nyx/Stanton_Stileron",
+      "title": "Mjr. Purchase Order: Ship Mined Ore",
+      "category": "Contract",
+      "generator": "shubin_resourcegathering_shipmining",
+      "reward": 202000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Shubin Interstellar"
+      ],
+      "timeLimitMin": 46,
+      "description": "POSTING: Purchase Order\\nLOCATION: <EM4>~mission(System) </EM4>\\n\\nTERMS*: \\nShubin Interstellar is currently looking to fulfil another purchase order for a variety of refined materials. We appreciate your help in this matter.\\n\\n~mission(Hint_Location) Many of these ores are extremely rare and difficult to find, detectable only when a rock has been cracked open.\\n\\nReminder, all the <EM4>materials must be refined before delivery</EM4>, and since this is a purchase order and not a mining contract, you are expected to provide your own equipment, such as a <EM4>~mission(Hint_Tool)</EM4>.\\n\\nOnce you’re ready to sell us the required refined materials, deposit them in the freight elevator located at <EM4>~mission(Destination|Address)</EM4>.\\n\\n*By accepting this contract you are assuming any and all risks associated with the work outlined herein and in no way can Shubin Interstellar be held accountable for any damages accrued during the duration of the contract.",
+      "repRequirements": [
+        {
+          "scope": "Shubin Interstellar",
+          "minRank": "Head Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Stanton",
+      "activity": "Mining",
+      "blueprintRewards": [
         "Arclight \"Nightstalker\" Pistol",
         "Aril Arms",
         "Aril Core",
         "Aril Legs",
         "Aril Helmet",
-        "Arclight \"Warhawk\" Pistol"
+        "Arclight \"Warhawk\" Pistol",
+        "Arclight Pistol Battery (30 cap)"
       ],
       "contractor": "Shubin Interstellar",
       "multiSystem": true,
       "systems": [
-        "Pyro",
         "Stanton"
       ]
     },
@@ -20097,6 +20228,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -20111,6 +20248,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
       ],
       "boss": true
     },
@@ -20429,9 +20570,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -20547,10 +20703,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -20879,6 +21050,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -20910,10 +21086,22 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "D"
       ]
     },
     {
@@ -21165,6 +21353,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -21427,6 +21619,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -21561,6 +21758,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna Rifle",
@@ -21846,6 +22047,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Fate\" Rifle",
         "Artimex Core",
@@ -21932,6 +22137,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Devastator Shotgun",
@@ -21973,10 +22183,19 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "B",
+        "D"
       ]
     },
     {
@@ -22041,6 +22260,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -22158,6 +22381,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Yubarev Pistol",
@@ -22366,6 +22593,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
         "Atzkav \"Igniter\" Sniper Rifle",
@@ -22403,6 +22634,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
         "Atzkav \"Igniter\" Sniper Rifle",
@@ -22505,6 +22740,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Fate\" Rifle",
         "Artimex Core",
@@ -22542,6 +22781,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -22590,6 +22833,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -22772,6 +23019,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "Crime",
       "contractor": "Citizens For Prosperity"
     },
@@ -22804,10 +23055,22 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "D"
       ]
     },
     {
@@ -22839,9 +23102,21 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "D"
       ]
     },
     {
@@ -22902,6 +23177,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -22949,6 +23229,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -22996,10 +23280,22 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -23259,6 +23555,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "Crime",
       "contractor": "Citizens For Prosperity"
     },
@@ -23288,6 +23588,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "Crime",
       "contractor": "Citizens For Prosperity"
     },
@@ -23318,6 +23622,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "Delivery",
       "danger": "Low",
       "cooldownMin": 1,
@@ -23380,10 +23689,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Delivery",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -23601,9 +23925,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -23634,7 +23973,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "HH_Pyro_RegionB_VH_ChainElimAll_3Cluster_ElimSpec_AttackCFP",
@@ -23662,6 +24005,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
         "Atzkav \"Igniter\" Sniper Rifle",
@@ -23702,6 +24049,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Devastator Shotgun",
@@ -23817,6 +24168,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Brimstone\" Rifle",
         "Artimex Core Lodestone",
@@ -23912,6 +24267,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Yubarev Pistol",
@@ -23980,6 +24340,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -24039,9 +24404,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -24270,6 +24650,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -24392,6 +24776,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "contractor": "Citizens For Prosperity"
     },
@@ -24421,6 +24809,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Fate\" Rifle",
         "Artimex Core",
@@ -24492,6 +24884,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
         "Atzkav \"Igniter\" Sniper Rifle",
@@ -24562,9 +24958,18 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "B",
+        "D"
       ]
     },
     {
@@ -24658,6 +25063,13 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C"
+      ],
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
       ]
     },
     {
@@ -24837,6 +25249,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Brimstone\" Rifle",
         "Artimex Core Lodestone",
@@ -25068,9 +25484,19 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "D"
       ]
     },
     {
@@ -25102,9 +25528,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -25136,9 +25577,19 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
       ]
     },
     {
@@ -25170,9 +25621,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -25435,10 +25901,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -25676,6 +26157,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna Rifle",
@@ -25713,6 +26198,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Fate\" Rifle",
         "Artimex Core",
@@ -25747,6 +26236,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Fate\" Rifle",
         "Artimex Core",
@@ -25781,6 +26274,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Brimstone\" Rifle",
         "Artimex Core Lodestone",
@@ -25902,6 +26399,15 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Ravager-212 Twin Shotgun",
@@ -25916,6 +26422,12 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ],
       "boss": true
     },
@@ -26059,9 +26571,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "C"
       ]
     },
     {
@@ -26153,11 +26676,26 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Ship",
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -26189,6 +26727,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -26241,6 +26783,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna \"Valor\" Rifle",
@@ -26454,6 +27001,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna \"Rager\" Rifle",
@@ -26491,6 +27042,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Brimstone\" Rifle",
         "Artimex Core Lodestone",
@@ -26530,7 +27085,12 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ]
     },
     {
       "className": "Adagio_RG_ShipSalvage_Nyx_Rank1_RMC_CMats_S1Components",
@@ -26707,10 +27267,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Delivery",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -26769,6 +27344,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -26800,6 +27379,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -27188,6 +27771,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna Rifle",
@@ -27228,9 +27815,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -27299,6 +27901,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -27401,9 +28008,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -27435,6 +28057,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna \"Valor\" Rifle",
@@ -27475,7 +28102,12 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ]
     },
     {
       "className": "HH_Pyro_RegionB_M_CFPOutposts_BombingRun",
@@ -27506,7 +28138,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "HH_Pyro_RegionA_M_2AsteroidBase_Criminals_MultiSabotage",
@@ -27538,9 +28174,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -27574,9 +28225,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -27847,6 +28513,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -27969,10 +28639,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -28150,7 +28830,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "Hockrow_Stanton_MissingPersonSpace_Super",
@@ -28291,11 +28975,23 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Ship",
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -28324,9 +29020,22 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "C",
+        "D"
       ]
     },
     {
@@ -28354,7 +29063,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "HH_Pyro_RegionB_H_MissingPerson_DestroyItem_XTXS",
@@ -28384,7 +29097,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "Ling_Stanton_Hard_RecoverCargo",
@@ -28540,9 +29257,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -28660,6 +29392,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -28733,6 +29469,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna \"Valor\" Rifle",
@@ -28773,6 +29514,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -28784,7 +29530,46 @@
         "Morozov-SH Legs",
         "Morozov-SH Helmet",
         "Scalpel Sniper Rifle Magazine (12 cap)",
-        "Coda Pistol Magazine (6 cap)",
+        "Coda Pistol Magazine (6 cap)"
+      ]
+    },
+    {
+      "className": "HH_Pyro_RegionC_CFPOutpost_EliminateSpecific",
+      "title": "Need a CFP taken down",
+      "category": "Contract",
+      "generator": "headhunters_mercenary_fps",
+      "reward": 78000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "contractor": "Headhunters",
+      "repScopes": [
+        "Headhunters"
+      ],
+      "timeLimitMin": 22,
+      "missionFlow": [
+        "FPS Combat"
+      ],
+      "description": "Need an available trigger to take down a target in a CFP outpost. They're a real piece of work named ~mission(TargetName). Old school merc filled with lead-pipe cruelty. \\n\\nHeard they're posted over at ~mission(Location|Address). Swing by and take them out. Try not to cause too much damage. They're the target, not anyone else.\\n\\nStows out.",
+      "repRequirements": [
+        {
+          "scope": "Headhunters",
+          "minRank": "Neutral",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "activity": "FPS",
+      "blueprintRewards": [
         "Devastator Shotgun",
         "Devastator \"Warhawk\" Shotgun",
         "Devastator \"Midnight\" Shotgun",
@@ -28797,6 +29582,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -28828,7 +29617,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "HighpointWildernessSpecialists_IrradiatedKopions_RegionA_KillAnimals",
@@ -28847,6 +29640,7 @@
       ],
       "timeLimitMin": 20,
       "description": "As a consequence of the ongoing radiation storm on Pyro I, some of the invasive kopions have become irradiated. This poses a threat to the health of the indigenous wildlife and to those who live and work in <EM4>~mission(Location)</EM4>. \\n\\nWe are seeking out a skilled contractor who can cull any irradiated kopions in and around <EM4>~mission(Location|Address)</EM4>. Do not accept this contract unless you have the proper weapons and equipment that can reliably function in a radioactive environment. \\n\\nYour compensation will be adjusted to match the risks associated with this contract.\\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
+      "region": "A",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -29252,10 +30046,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Delivery",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -29553,6 +30362,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna Rifle",
@@ -29651,6 +30464,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "P6-LR Sniper Rifle",
@@ -30024,11 +30841,56 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
+      "contractor": "Citizens For Prosperity"
+    },
+    {
+      "className": "CFP_Pyro_RegionA_M_2AsteroidBase_Criminals_DefendShip",
+      "title": "Ship Needs Emergency Assistance",
+      "category": "Contract",
+      "generator": "citizensforprosperity_defendship",
+      "reward": 72250,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 18,
+      "missionFlow": [
+        "Multi-Wave Defense"
+      ],
+      "description": "A Citizens for Prosperity affiliated ship was attempting to deliver some supplies to ~mission(Location|Address) when they were attacked by the recipients who didn't want to pay for their purchase and chose violence instead.\\n\\nI'll instruct our traders to be more careful about who they deal with in the future, but for now, I would really appreciate you lending them a hand in fighting off these attackers. \\n\\nAppreciated,\\n\\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "activity": "Ship",
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
-        "Nyx",
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -30092,10 +30954,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Ship",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -30376,6 +31253,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Fate\" Rifle",
         "Artimex Core",
@@ -30410,6 +31291,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Karna \"Brimstone\" Rifle",
         "Artimex Core Lodestone",
@@ -30825,10 +31710,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -30933,9 +31833,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -31000,6 +31915,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna Rifle",
@@ -31007,18 +31928,62 @@
         "Artimex Core",
         "Artimex Legs",
         "Artimex Helmet",
-        "Karna Rifle Battery (35 cap)",
-        "Karna \"Valor\" Rifle",
-        "Artimex Core Canuto",
-        "Artimex Arms Canuto",
-        "Artimex Legs Canuto",
-        "Artimex Helmet Canuto"
+        "Karna Rifle Battery (35 cap)"
       ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
       ]
+    },
+    {
+      "className": "CFP_Pyro_RegionC_CFPOutpost_Stage1_RegionLink_ToRegionA_EliminateAll",
+      "title": "Call for Help: [Location]",
+      "category": "Contract",
+      "generator": "citizensforprosperity_mercenary_fps",
+      "reward": 66000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Affinity",
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 18,
+      "missionFlow": [
+        "FPS Combat"
+      ],
+      "description": "We've received a distress call from ~mission(Location|Address). A group of unknown assailants have launched an attack. There have been multiple deaths reported and we need to reclaim the outpost.\\n\\nI know this is far from your current position, but we're desperate to secure the area and get the outpost back and running again.\\n\\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Jr. Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
+      "activity": "FPS",
+      "blueprintRewards": [
+        "Karna \"Valor\" Rifle",
+        "Artimex Core Canuto",
+        "Artimex Arms Canuto",
+        "Artimex Legs Canuto",
+        "Artimex Helmet Canuto",
+        "Karna Rifle Battery (35 cap)"
+      ],
+      "contractor": "Citizens For Prosperity"
     },
     {
       "className": "FoxwellEnforcement_EscortShips_Stanton_Easy",
@@ -31433,6 +32398,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Yubarev Pistol",
@@ -31447,6 +32418,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -31610,6 +32585,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Devastator Shotgun",
@@ -31728,6 +32708,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -31769,6 +32753,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -31778,7 +32768,54 @@
         "Calico Core Tactical",
         "Calico Legs Tactical",
         "Calico Helmet Tactical",
-        "Atzkav Sniper Rifle Battery (8 cap)",
+        "Atzkav Sniper Rifle Battery (8 cap)"
+      ],
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "className": "HH_Pyro_RegionC_M_2AsteroidBase_Criminals_EliminateAll_RetrieveStolenGoods",
+      "title": "Death and cargo",
+      "category": "Contract",
+      "generator": "headhunters_mercenary_fps",
+      "reward": 62500,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "contractor": "Headhunters",
+      "repScopes": [
+        "Headhunters"
+      ],
+      "timeLimitMin": 16,
+      "missionFlow": [
+        "FPS Combat"
+      ],
+      "description": "Local crew decided to hit one of our convoys and steal our shit. They got away, but we aren't gonna let them celebrate for long. I want you to head out to ~mission(Location|Address) where they got a base, blast them into ash, and get our stuff back. \\n\\nOnce you got the cargo, take it over to ~mission(Destination|Address) and we can all forget these assholes ever existed.\\n\\nStows out.",
+      "repRequirements": [
+        {
+          "scope": "Headhunters",
+          "minRank": "Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "activity": "FPS",
+      "blueprintRewards": [
         "Yubarev Pistol",
         "Yubarev \"Mirage\" Pistol",
         "Yubarev \"Igniter\" Pistol",
@@ -31791,6 +32828,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -31819,6 +32860,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
         "Atzkav \"Igniter\" Sniper Rifle",
@@ -31856,6 +32901,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
         "Atzkav \"Igniter\" Sniper Rifle",
@@ -31956,7 +33005,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "HH_Pyro_RegionA_M_OccuDerelict_MissingPerson",
@@ -31984,10 +33037,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -32016,9 +33084,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -32335,6 +33418,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "blueprintRewards": [
         "P6-LR Sniper Rifle",
         "A03 Sniper Rifle",
@@ -32353,6 +33442,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -32384,6 +33477,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "blueprintRewards": [
         "P6-LR Sniper Rifle",
         "A03 Sniper Rifle",
@@ -32627,6 +33724,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "region": "C",
       "activity": "FPS"
     },
     {
@@ -32657,10 +33755,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -32692,6 +33805,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna \"Valor\" Rifle",
@@ -32840,6 +33958,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -32911,10 +34033,23 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C"
       ]
     },
     {
@@ -32946,6 +34081,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -32960,7 +34101,54 @@
         "ADP-mk4 Helmet Woodland",
         "FS-9 Magazine (75 cap)",
         "BR-2 Shotgun Magazine (12 cap)",
-        "Gallant Rifle Battery (45 cap)",
+        "Gallant Rifle Battery (45 cap)"
+      ],
+      "contractor": "Citizens For Prosperity",
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "className": "CFP_Pyro_RegionC_E_1AsteroidBase_Criminals_BombingRun",
+      "title": "Eliminate Fuel Stores",
+      "category": "Contract",
+      "generator": "citizensforprosperity_destroyitems",
+      "reward": 57250,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Affinity",
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 20,
+      "missionFlow": [
+        "Find & Destroy Targets"
+      ],
+      "description": "We've been having escalating issues with the outlaws at ~mission(Location|Address) and can no longer stand by and watch as their aggressive actions hurt our community. \\n\\nWe are wary of launching a full scale assault, but believe that if their fuel stores are wiped out, it would deter them from further hostile actions. \\n\\nIf you're able, I'd appreciate you handling the destruction of the fuel personally. A ship capable of launching missiles would probably make the most sense, but I leave that up to you.\\n\\nThanks,\\n \\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "blueprintRewards": [
         "P6-LR Sniper Rifle",
         "A03 Sniper Rifle",
         "CBH-3 Helmet Base",
@@ -32978,6 +34166,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -33112,6 +34304,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Devastator Shotgun",
@@ -33126,6 +34324,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -33374,6 +34576,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "contractor": "Citizens For Prosperity"
     },
@@ -33490,11 +34697,56 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
+      "contractor": "Citizens For Prosperity"
+    },
+    {
+      "className": "CFP_Pyro_RegionA_Lagrange_LRT_DefendShip",
+      "title": "Pilot Seeking Combat Support",
+      "category": "Contract",
+      "generator": "citizensforprosperity_defendship",
+      "reward": 55000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 15,
+      "missionFlow": [
+        "Multi-Wave Defense"
+      ],
+      "description": "One of our pilots had just picked up a shipment of supplies near ~mission(Location|Address) when they were attacked by some vicious shipjackers. \\n\\nWe just received their distress beacon and I'm hoping you can go provide them combat support.\\n\\nAny assistance you could give would make all the difference.\\n\\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Jr. Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "activity": "Ship",
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
-        "Nyx",
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -33526,6 +34778,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -33573,6 +34830,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -33620,6 +34882,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -33634,7 +34902,53 @@
         "ADP-mk4 Helmet Woodland",
         "FS-9 Magazine (75 cap)",
         "BR-2 Shotgun Magazine (12 cap)",
-        "Gallant Rifle Battery (45 cap)",
+        "Gallant Rifle Battery (45 cap)"
+      ],
+      "contractor": "Citizens For Prosperity",
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "className": "CFP_Pyro_RegionC_M_2AsteroidBase_Criminals_Sabotage",
+      "title": "Halt Narcotics Operation",
+      "category": "Contract",
+      "generator": "citizensforprosperity_destroyitems",
+      "reward": 55000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Affinity",
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 15,
+      "missionFlow": [
+        "Eliminate Spawned Enemies"
+      ],
+      "description": "Citizens for Prosperity has been working hard to improve people's lives across the system, but an already difficult task becomes near impossible when drugs get involved. We've recently seen a dealer specifically targeting our most vulnerable and have experienced setbacks across the board. This needs to stop.\\n\\nWe would like you to go to ~mission(Location|Address) and put a permanent end to their production line.\\n\\nDo this and we can hopefully get our people back on track. \\n \\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
+      "blueprintRewards": [
         "P6-LR Sniper Rifle",
         "A03 Sniper Rifle",
         "CBH-3 Helmet Base",
@@ -33648,11 +34962,7 @@
         "A03 Sniper Rifle Magazine (15 cap)",
         "P6-LR Magazine (8 cap)"
       ],
-      "contractor": "Citizens For Prosperity",
-      "multiSystem": true,
-      "systems": [
-        "Pyro"
-      ]
+      "contractor": "Citizens For Prosperity"
     },
     {
       "className": "Hockrow_FacilityDelve_P2M2-Stanton4",
@@ -33768,7 +35078,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "HighpointWildernessSpecialists_KillAnimals_Medium_NoRep",
@@ -34229,10 +35543,23 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C"
       ]
     },
     {
@@ -34387,6 +35714,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -34401,7 +35732,46 @@
         "ADP-mk4 Helmet Woodland",
         "FS-9 Magazine (75 cap)",
         "BR-2 Shotgun Magazine (12 cap)",
-        "Gallant Rifle Battery (45 cap)",
+        "Gallant Rifle Battery (45 cap)"
+      ],
+      "contractor": "Citizens For Prosperity"
+    },
+    {
+      "className": "CFP_Pyro_RegionC_Rank0_VE_1AsteroidBase_Criminals_Sabotage",
+      "title": "Disable Outlaw Stronghold at [Location]",
+      "category": "Contract",
+      "generator": "citizensforprosperity_destroyitems",
+      "reward": 53000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Affinity",
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 20,
+      "missionFlow": [
+        "Find & Destroy Targets"
+      ],
+      "description": "Following a series of raids against Citizens for Prosperity aligned settlements, we believe we have traced those responsible back to ~mission(Location|Address).\\n\\nAttacking them directly will pose too great of a risk and most likely encourage aggressive reprisals. Instead, we believe that if their power generators were to be disable it could force them to settle somewhere else.\\n\\nDo you think you could handle it for us?\\n \\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Neutral",
+          "maxRank": "Neutral"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "blueprintRewards": [
         "P6-LR Sniper Rifle",
         "A03 Sniper Rifle",
         "CBH-3 Helmet Base",
@@ -34419,6 +35789,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -34450,6 +35824,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -34464,7 +35844,54 @@
         "ADP-mk4 Helmet Woodland",
         "FS-9 Magazine (75 cap)",
         "BR-2 Shotgun Magazine (12 cap)",
-        "Gallant Rifle Battery (45 cap)",
+        "Gallant Rifle Battery (45 cap)"
+      ],
+      "contractor": "Citizens For Prosperity",
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "className": "CFP_Pyro_RegionC_M_2AsteroidBase_Criminals_BombingRun_Sabotage",
+      "title": "Reduce Outlaw's Operational Readiness",
+      "category": "Contract",
+      "generator": "citizensforprosperity_destroyitems",
+      "reward": 53000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Affinity",
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 20,
+      "missionFlow": [
+        "Find & Destroy Targets"
+      ],
+      "description": "There is a group of outlaws at ~mission(Location|Address) that have become increasingly brazen in their attacks on Citizens for Prosperity assets in the system. \\n\\nTo minimize loss of life, we want to first try convincing them to move on to somewhere else by disabling their generators and destroying their fuel reserves. \\n\\nHopefully, that should be enough to convince them to move on to greener pastures.\\n\\nThanks,\\n \\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Sr. Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "blueprintRewards": [
         "P6-LR Sniper Rifle",
         "A03 Sniper Rifle",
         "CBH-3 Helmet Base",
@@ -34482,6 +35909,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -34834,9 +36265,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -34867,6 +36313,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "region": "A",
       "activity": "FPS"
     },
     {
@@ -34967,10 +36414,23 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C"
       ]
     },
     {
@@ -35187,10 +36647,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Delivery",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -35300,6 +36775,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -35388,10 +36867,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -35423,10 +36917,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -35888,10 +37392,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Ship",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -35923,9 +37442,19 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -36142,10 +37671,23 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C"
       ]
     },
     {
@@ -36263,6 +37805,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna \"Brimstone\" Rifle",
@@ -36303,6 +37849,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "contractor": "Citizens For Prosperity"
     },
     {
@@ -36363,10 +37914,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "B",
+        "C"
       ]
     },
     {
@@ -36491,6 +38052,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -36647,7 +38213,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "EckhartSecurity_ShipAmbush_Nyx_Medium",
@@ -37638,6 +39208,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -38155,6 +39729,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Yubarev Pistol",
@@ -38197,6 +39775,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Yubarev Pistol",
@@ -38238,9 +39821,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -38272,9 +39870,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -38304,6 +39917,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -38338,7 +39956,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "CFP_Pyro_RegionA_Rank1_JacksonsSwap_Local_Handyman",
@@ -38368,10 +39990,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
       ]
     },
     {
@@ -38402,10 +40034,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
       ]
     },
     {
@@ -38437,9 +40079,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -38471,9 +40128,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -38505,6 +40177,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -38546,6 +40222,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Atzkav Sniper Rifle",
@@ -38555,7 +40237,54 @@
         "Calico Core Tactical",
         "Calico Legs Tactical",
         "Calico Helmet Tactical",
-        "Atzkav Sniper Rifle Battery (8 cap)",
+        "Atzkav Sniper Rifle Battery (8 cap)"
+      ],
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "className": "HH_Pyro_RegionC_E_1AsteroidBase_Criminals_EliminateAll",
+      "title": "Need a hitter",
+      "category": "Contract",
+      "generator": "headhunters_mercenary_fps",
+      "reward": 37250,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "contractor": "Headhunters",
+      "repScopes": [
+        "Headhunters"
+      ],
+      "timeLimitMin": 12,
+      "missionFlow": [
+        "FPS Combat"
+      ],
+      "description": "So here's the deal, we got some small time dirtbags who think they're hotshots running out of a base near ~mission(Location|Address). I don't know what toxic shit they're drinking but they thought it'd be a good idea to step to some Headhunter Clips. Killed one, injured three more. So I'm looking to send someone there to blast their ambition right out of their skulls.\\n\\nHead over and get it done. You'll get a nice bump of creds for it.\\n\\n- Stows",
+      "repRequirements": [
+        {
+          "scope": "Headhunters",
+          "minRank": "Jr. Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "activity": "FPS",
+      "blueprintRewards": [
         "Yubarev Pistol",
         "Yubarev \"Mirage\" Pistol",
         "Yubarev \"Igniter\" Pistol",
@@ -38568,6 +40297,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -38736,20 +40469,46 @@
         "Aril Legs",
         "Aril Helmet",
         "Arclight \"Warhawk\" Pistol",
-        "Arclight Pistol Battery (30 cap)",
+        "Arclight Pistol Battery (30 cap)"
+      ],
+      "contractor": "Shubin Interstellar"
+    },
+    {
+      "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Hephaestanite",
+      "title": "Lrg. Purchase Order: Ship Mined Ore",
+      "category": "Contract",
+      "generator": "shubin_resourcegathering_shipmining",
+      "reward": 36750,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Shubin Interstellar"
+      ],
+      "timeLimitMin": 11,
+      "description": "POSTING: Purchase Order\\nLOCATION: <EM4>~mission(System) </EM4>\\n\\nTERMS*: \\nShubin Interstellar is currently looking to fulfil another purchase order for a variety of refined materials. We appreciate your help in this matter.\\n\\n~mission(Hint_Location) \\n\\nReminder, all the <EM4>materials must be refined before delivery</EM4>, and since this is a purchase order and not a mining contract, you are expected to provide your own equipment, such as a <EM4>~mission(Hint_Tool)</EM4>.\\n\\nOnce you’re ready to sell us the required refined materials, deposit them in the freight elevator located at <EM4>~mission(Destination|Address)</EM4>.\\n\\n*By accepting this contract you are assuming any and all risks associated with the work outlined herein and in no way can Shubin Interstellar be held accountable for any damages accrued during the duration of the contract.",
+      "repRequirements": [
+        {
+          "scope": "Shubin Interstellar",
+          "minRank": "Sr. Contractor",
+          "maxRank": "Sr. Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "activity": "Mining",
+      "blueprintRewards": [
         "Arclight \"Stormfall\" Pistol",
         "Arclight Pistol",
         "Venture Arms Base",
         "Venture Core Base",
         "Venture Legs Base",
-        "Horizon Helmet Base"
+        "Horizon Helmet Base",
+        "Arclight Pistol Battery (30 cap)"
       ],
-      "contractor": "Shubin Interstellar",
-      "multiSystem": true,
-      "systems": [
-        "Stanton",
-        "Pyro"
-      ]
+      "contractor": "Shubin Interstellar"
     },
     {
       "className": "HH_Pyro4_Med_Trdpst_Local_3box_Single_Courier",
@@ -38940,11 +40699,56 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
+      "contractor": "Citizens For Prosperity"
+    },
+    {
+      "className": "CFP_Pyro_RegionA_Rank0_VE_1AsteroidBase_Criminals_DefendShip",
+      "title": "Pilot in Distress",
+      "category": "Contract",
+      "generator": "citizensforprosperity_defendship",
+      "reward": 36500,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 10,
+      "missionFlow": [
+        "Multi-Wave Defense"
+      ],
+      "description": "It seems one of the routes that we had thought relatively safe has proven otherwise. Outlaws have attacked one of our pilots over at ~mission(Location|Address) and they won't make it much longer without support. \\n\\nI'd appreciate it if you could fly there as quickly as possible and help them deal with these attackers.\\n\\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Neutral",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "activity": "Ship",
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
-        "Nyx",
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -38975,11 +40779,26 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Ship",
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -39192,10 +41011,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Ship",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -39258,9 +41092,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -39403,10 +41252,21 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "C"
       ]
     },
     {
@@ -39438,10 +41298,22 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -39806,7 +41678,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "HH_Pyro_RegionD_XTOutpost_Sabotage",
@@ -39837,7 +41713,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "CFP_Pyro_RegionA_Rank0_VE_1AsteroidBase_Criminals_Sabotage",
@@ -39868,6 +41748,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "blueprintRewards": [
         "FS-9 LMG",
         "BR-2 Shotgun",
@@ -39882,7 +41768,54 @@
         "ADP-mk4 Helmet Woodland",
         "FS-9 Magazine (75 cap)",
         "BR-2 Shotgun Magazine (12 cap)",
-        "Gallant Rifle Battery (45 cap)",
+        "Gallant Rifle Battery (45 cap)"
+      ],
+      "contractor": "Citizens For Prosperity",
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "className": "CFP_Pyro_RegionC_VE_1AsteroidBase_Criminals_Sabotage",
+      "title": "Disable Outlaw Stronghold at [Location]",
+      "category": "Contract",
+      "generator": "citizensforprosperity_destroyitems",
+      "reward": 33000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Affinity",
+        "Citizens For Prosperity"
+      ],
+      "timeLimitMin": 12,
+      "missionFlow": [
+        "Find & Destroy Targets"
+      ],
+      "description": "Following a series of raids against Citizens for Prosperity aligned settlements, we believe we have traced those responsible back to ~mission(Location|Address).\\n\\nAttacking them directly will pose too great of a risk and most likely encourage aggressive reprisals. Instead, we believe that if their power generators were to be disable it could force them to settle somewhere else.\\n\\nDo you think you could handle it for us?\\n \\nLima Endicott\\nLead Dispatcher\\nCitizens for Prosperity",
+      "repRequirements": [
+        {
+          "scope": "Citizens For Prosperity",
+          "minRank": "Jr. Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "blueprintRewards": [
         "P6-LR Sniper Rifle",
         "A03 Sniper Rifle",
         "CBH-3 Helmet Base",
@@ -39900,6 +41833,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -40021,6 +41958,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -40064,6 +42006,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -40144,9 +42090,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -40178,9 +42139,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -40428,9 +42404,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -40482,10 +42473,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
       ]
     },
     {
@@ -41003,10 +43004,23 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C"
       ]
     },
     {
@@ -41211,7 +43225,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "HighpointWildernessSpecialists_KillAnimalsAtLocation_Stanton1_Medium",
@@ -42048,10 +44066,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -42306,9 +44339,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -42377,6 +44425,11 @@
         }
       ],
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Karna \"Valor\" Rifle",
@@ -42823,10 +44876,22 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "D"
       ]
     },
     {
@@ -42855,9 +44920,24 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -43047,7 +45127,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "HH_Pyro_RegionC_CFPOutpost_Sabotage",
@@ -43078,7 +45162,12 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ]
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Iron",
@@ -43275,6 +45364,12 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -43286,7 +45381,54 @@
         "Morozov-SH Legs",
         "Morozov-SH Helmet",
         "Scalpel Sniper Rifle Magazine (12 cap)",
-        "Coda Pistol Magazine (6 cap)",
+        "Coda Pistol Magazine (6 cap)"
+      ],
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "className": "HH_Pyro_RegionC_Rank0_VE_1AsteroidBase_Criminals_EliminateSpecific",
+      "title": "Deep space hit",
+      "category": "Contract",
+      "generator": "headhunters_mercenary_fps",
+      "reward": 24000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "contractor": "Headhunters",
+      "repScopes": [
+        "Headhunters"
+      ],
+      "timeLimitMin": 8,
+      "missionFlow": [
+        "FPS Combat"
+      ],
+      "description": "Got word of crew that's been pulling jobs and building a rep for themselves. Since they've said they don't want anything to do with Headhunters, we're looking to break 'em apart before they become a problem. Their leader is some punk named ~mission(TargetName) and we figure if they met the wrong end of a bullet, the rest of them would break apart.\\n\\nWe're told you can find ~mission(TargetName|Last) around ~mission(Location|Address). Head over and take care of it.\\n\\nThey shouldn't pose much of a problem to a pro like you.\\n\\nStows out.",
+      "repRequirements": [
+        {
+          "scope": "Headhunters",
+          "minRank": "Neutral",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "activity": "FPS",
+      "blueprintRewards": [
         "Devastator Shotgun",
         "Devastator \"Warhawk\" Shotgun",
         "Devastator \"Midnight\" Shotgun",
@@ -43299,6 +45441,10 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "C",
+        "D"
       ]
     },
     {
@@ -43670,9 +45816,16 @@
         }
       ],
       "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "D"
       ]
     },
     {
@@ -43808,6 +45961,10 @@
         }
       ],
       "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ],
       "activity": "FPS",
       "blueprintRewards": [
         "Scalpel Sniper Rifle",
@@ -44142,10 +46299,23 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C"
       ]
     },
     {
@@ -44168,6 +46338,11 @@
       "timeLimitMin": 10,
       "description": "Highpoint Wilderness is seeking a contractor to cull a pack of kopions that are threatening to overrun one of Citizens for Prosperity's outposts. After an initial assessment, it has been decided that relocation is impossible and a culling of them is the only viable option. If you're interested, head to <EM4>~mission(Location|Address)</EM4>  and once we've received confirmation that the task is complete we will send payment.\\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -44193,6 +46368,11 @@
       "timeLimitMin": 10,
       "description": "Highpoint Wilderness needs someone to exterminate an overpopulated pack of kopions that's threatening one of CFP's settlements. This pack can be found at <EM4>~mission(Location|Address)</EM4>. Remember to exhibit caution when approaching them and arm yourself accordingly.\\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -44619,9 +46799,20 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro IV",
+        "Pyro V"
+      ],
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "C"
       ]
     },
     {
@@ -44653,7 +46844,12 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ]
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton1_Rank0_Local_Choice",
@@ -44827,7 +47023,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "HH_Pyro_RegionD_Rank3_LastLanding_Local_Handyman",
@@ -44857,7 +47057,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "HH_Pyro_RegionD_Rank5_LastLanding_Local_Handyman",
@@ -44887,7 +47091,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "D",
+      "regionPlanets": [
+        "Pyro VI"
+      ]
     },
     {
       "className": "HH_Pyro_RegionB_E_CFPXSOutposts_BombingRun",
@@ -44918,7 +47126,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "B",
+      "regionPlanets": [
+        "Pyro III"
+      ]
     },
     {
       "className": "WildstarRacing_Race3_TheSkyScraper_OpenTrack",
@@ -45063,7 +47275,12 @@
           "maxRank": "Neutral"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ]
     },
     {
       "className": "HighpointWildernessSpecialists_KillAnimalsAtLocation_Stanton1_Easy",
@@ -45123,7 +47340,12 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Pyro"
+      "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ]
     },
     {
       "className": "Hockrow_Nyx_MissingPersonSpace_Intro",
@@ -45211,24 +47433,7 @@
       ],
       "system": "Pyro",
       "activity": "Ship",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
-      "multiSystem": true,
-      "systems": [
-        "Pyro",
-        "Nyx"
-      ],
-      "blueprintRewards": [
-        "R97 Shotgun",
-        "Monde Arms",
-        "Monde Core",
-        "Monde Legs",
-        "Monde Helmet",
-        "Monde Arms Hiro",
-        "Monde Core Hiro",
-        "Monde Legs Hiro",
-        "Monde Helmet Hiro",
-        "R97 Shotgun Magazine (18 cap)"
-      ]
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
       "className": "BountyHuntersGuild_Bounty_Pyro_VeryEasy",
@@ -45260,6 +47465,50 @@
       "system": "Pyro",
       "activity": "Ship",
       "danger": "Very Low",
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
+    },
+    {
+      "className": "BountyHuntersGuild_Bounty_Nyx_Rehire",
+      "title": "Verified Bounty: [TargetName] | [Danger]",
+      "category": "Contract",
+      "generator": "bountyhuntersguild_killship",
+      "reward": 9750,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "contractor": "Bounty Hunters Guild",
+      "repScopes": [
+        "Bounty Hunting",
+        "Bounty Hunting (Guild)"
+      ],
+      "timeLimitMin": 5,
+      "missionFlow": [
+        "Destroy Targets"
+      ],
+      "repRequirements": [
+        {
+          "scope": "bounty_bountyhuntersguild",
+          "minRank": "Probationary Guild Member",
+          "maxRank": "Applicant"
+        }
+      ],
+      "system": "Nyx",
+      "activity": "Ship",
+      "blueprintRewards": [
+        "R97 Shotgun",
+        "Monde Arms",
+        "Monde Core",
+        "Monde Legs",
+        "Monde Helmet",
+        "Monde Arms Hiro",
+        "Monde Core Hiro",
+        "Monde Legs Hiro",
+        "Monde Helmet Hiro",
+        "R97 Shotgun Magazine (18 cap)"
+      ],
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
@@ -45332,10 +47581,25 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -45390,11 +47654,26 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "FPS",
       "contractor": "Citizens For Prosperity",
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -46696,12 +48975,27 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Crime",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -46725,12 +49019,27 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Crime",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -46755,12 +49064,27 @@
         }
       ],
       "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
       "activity": "Crime",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "multiSystem": true,
       "systems": [
         "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
       ]
     },
     {
@@ -47019,8 +49343,15 @@
         "Pyro",
         "Nyx"
       ],
+      "regions": [
+        "A"
+      ],
       "givers": [
         "Adagio Holdings"
+      ],
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
       ]
     },
     {
@@ -47914,6 +50245,11 @@
       "timeLimitMin": 0,
       "description": "We’re putting out a contract for anyone who is capable of hunting animals responsibly. Citizens for Prosperity needs a group of aggressive kopions who have been harassing their people culled from <EM4>~mission(Location|Address)</EM4>. After some initial monitoring, it looked as if they may on, but unfortunately we’ve been forced to take action. This is a relatively straightforward job, but when dealing with dangerous animals, cautious is always advised.\\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
       "system": "Pyro",
+      "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
