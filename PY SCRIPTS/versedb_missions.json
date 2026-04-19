@@ -16829,7 +16829,13 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "danger": "Low"
+      "danger": "Low",
+      "unlocks": [
+        "Retrieve Additional Smuggler Intel",
+        "Recover Vanduul Corpses",
+        "Recover Vanduul Tech"
+      ],
+      "isChain": true
     },
     {
       "className": "IDS_RecoverEncryptedData",
@@ -16870,7 +16876,11 @@
         "Testudo Arms Clanguard",
         "Quartz Energy SMG Battery (45 cap)",
         "Pulse Laser Pistol Battery (60 Cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "Vanduul-Tech Smugglers"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_ASD_ResourceGathering",
@@ -16889,7 +16899,11 @@
       "activity": "Mining",
       "cooldownMin": 10,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P3M1",
@@ -17000,7 +17014,16 @@
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P3MM_Repeat",
@@ -17028,7 +17051,16 @@
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "IDS_ResourceGathering_Tech",
@@ -17055,7 +17087,11 @@
         "Pulse Laser Pistol Battery (60 Cap)"
       ],
       "cooldownMin": 1,
-      "abandonCooldownMin": 1
+      "abandonCooldownMin": 1,
+      "requiresCompletion": [
+        "Vanduul-Tech Smugglers"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Pyro_BulkGrade_Solar_CFP_StationToRuin_Carbon_CargoHauling_Multi3ToSingle",
@@ -17194,7 +17230,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Nyx_Super",
@@ -17230,7 +17270,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Org_ConstructionCompany",
@@ -17315,7 +17359,16 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement",
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Stanton_Super",
@@ -17369,7 +17422,15 @@
       "activity": "Ship",
       "danger": "Extreme",
       "cooldownMin": 15,
-      "abandonCooldownMin": 15
+      "abandonCooldownMin": 15,
+      "requiresCompletion": [
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Org_IndustrialEngineer",
@@ -17503,7 +17564,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Pyro_BulkGrade_Solar_CFP_StationToRuin_Carbon_CargoHauling_Multi2ToSingle",
@@ -17665,7 +17730,15 @@
       "activity": "Ship",
       "danger": "Extreme",
       "cooldownMin": 15,
-      "abandonCooldownMin": 15
+      "abandonCooldownMin": 15,
+      "requiresCompletion": [
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Rayari_Rank3_IrradiatedPearls",
@@ -17700,7 +17773,11 @@
         "Siebe Helmet",
         "Prism Laser Shotgun Battery (20 cap)"
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Org_WeaponManufacturer",
@@ -17861,7 +17938,11 @@
         "Testudo Legs Turfwar",
         "Testudo Helmet Turfwar",
         "Quartz Energy SMG Battery (45 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Patrol_Nyx_Super",
@@ -17902,7 +17983,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Patrol_Nyx_Super",
@@ -17943,7 +18028,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_Patrol_Stanton_Super",
@@ -18089,7 +18178,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Very High"
+      "danger": "Very High",
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Nyx_VeryHard",
@@ -18125,7 +18218,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Very High"
+      "danger": "Very High",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Stanton_Rank2_Components_Unique",
@@ -18202,7 +18299,19 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement",
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]"
+      ],
+      "unlocks": [
+        "Red Level Contract: Support VIP Clients",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Stanton_VeryHard",
@@ -18256,7 +18365,18 @@
       "activity": "Ship",
       "danger": "Very High",
       "cooldownMin": 15,
-      "abandonCooldownMin": 15
+      "abandonCooldownMin": 15,
+      "requiresCompletion": [
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]"
+      ],
+      "unlocks": [
+        "Red Level Contract: Support VIP Clients",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "GillysPilotSchool_Mission08",
@@ -18276,7 +18396,11 @@
       ],
       "description": "Welcome to the final scenario of the Combat Gauntlet.\\n\\nThroughout this course, you’ve gotten to experience the advanced combat and defensive tactics needed to survive a variety of encounters. Time to take all those new skills and knowledge and see how they hold up against a large capital vessel and some escort ships.\\n\\nYou know the drill by now. Once you and all your allies are set, find your way to <EM4>~mission(Location|Address)</EM4> to see how you do when truly pushed to the limits.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE\\n- Patience is a Virtue – If you’ve balanced your squadron properly, you should be able to come out on top, just don’t expect it to be a quick fight. Ships this big don’t go down quickly.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL   \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "requiresCompletion": [
+        "Combat Gauntlet - Scenario #7"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Pyro_SupplyGrade_Solar_CFP_StationToRuin_Carbon_CargoHauling_Multi3ToSingle",
@@ -18426,6 +18550,10 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Very High",
+      "unlocks": [
+        "Verified Bounty: [TargetName] at QV Breaker Station"
+      ],
+      "isChain": true,
       "boss": true
     },
     {
@@ -18524,6 +18652,10 @@
         "Stanton",
         "Pyro"
       ],
+      "unlocks": [
+        "Verified Bounty: [TargetName] at QV Breaker Station"
+      ],
+      "isChain": true,
       "boss": true
     },
     {
@@ -18629,7 +18761,18 @@
       "activity": "Ship",
       "danger": "Very High",
       "cooldownMin": 15,
-      "abandonCooldownMin": 15
+      "abandonCooldownMin": 15,
+      "requiresCompletion": [
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]"
+      ],
+      "unlocks": [
+        "Red Level Contract: Support VIP Clients",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Quartz_Copper_Corundum_Titainum_Beryl_Hephestanite_Agricium_Laranite_Borase",
@@ -18696,7 +18839,11 @@
         }
       ],
       "activity": "Delivery",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "requiresCompletion": [
+        "DEAD SAINTS - Trial Cargo Haul"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Quartz_Copper_Beryl_Hephestanite_Agricium_Borase",
@@ -18859,7 +19006,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_DefendShip_Nyx_Super",
@@ -18899,7 +19050,11 @@
         "Testudo Legs Combustion",
         "Testudo Helmet Combustion",
         "Pulse Laser Pistol Battery (60 Cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "CitizensForProsperity_DefendShip_Nyx_Super",
@@ -18943,7 +19098,11 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_DefendShip_Nyx_Super",
@@ -18975,7 +19134,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Extreme"
+      "danger": "Extreme",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Copper_Titainum_Beryl_Agricium_Borase",
@@ -19216,7 +19379,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Quartz_Iron_Tungsten_Corundum_Titainum_Hephestanite_Borase",
@@ -19423,7 +19590,11 @@
       ],
       "activity": "Delivery",
       "danger": "Medium",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "requiresCompletion": [
+        "DEAD SAINTS - Trial Cargo Haul"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_GroundMine_Nyx_Rank4_LargeQuantity_Carinite",
@@ -19479,7 +19650,18 @@
         }
       ],
       "activity": "Delivery",
-      "danger": "Low"
+      "danger": "Low",
+      "unlocks": [
+        "Finish Interrupted Ling Delivery",
+        "Ling Shipment Recovery",
+        "Rescue Incomplete Ling Delivery",
+        "Complete Stranded Ling Shipment",
+        "Delivery of Abandoned Ling Cargo",
+        "Stuck Ling Shipment Pending Delivery",
+        "Ling Family Rookie Cargo Haul - Medium Scale",
+        "Ling Family Rookie Cargo Haul - Small Scale"
+      ],
+      "isChain": true
     },
     {
       "className": "HaulCargo_MultiToSingle_Interstellar_Small_Souv_DistSpri_ProFoo_Stim",
@@ -19506,7 +19688,11 @@
           "maxRank": "Master"
         }
       ],
-      "activity": "Delivery"
+      "activity": "Delivery",
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "HaulCargo_SingleToMulti_Interstellar_Medium_Alt_Neon_Etam_Slam",
@@ -19537,7 +19723,11 @@
       ],
       "activity": "Delivery",
       "danger": "Medium",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "requiresCompletion": [
+        "DEAD SAINTS - Trial Cargo Haul"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Nyx_Rank2_RMC_CMats_Components_Unique",
@@ -19601,7 +19791,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "High"
+      "danger": "High",
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Nyx_Hard",
@@ -19637,7 +19831,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "High"
+      "danger": "High",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Pyro_SupplyGrade_Solar_CFP_StationToRuin_Carbon_CargoHauling_Multi2ToSingle",
@@ -19707,7 +19905,11 @@
         "Quartz Energy SMG Battery (45 cap)",
         "Pulse Laser Pistol Battery (60 Cap)"
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_Bounty_Nyx_Super",
@@ -19751,7 +19953,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_EscortShips_Stanton_Hard",
@@ -19800,7 +20006,20 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement",
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace"
+      ],
+      "unlocks": [
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Nyx_Tin_Taranite",
@@ -19891,7 +20110,19 @@
       "activity": "Ship",
       "danger": "High",
       "cooldownMin": 15,
-      "abandonCooldownMin": 15
+      "abandonCooldownMin": 15,
+      "requiresCompletion": [
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace"
+      ],
+      "unlocks": [
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Nyx_Rank2_RMC_CMats_IndustrialComponents",
@@ -19958,7 +20189,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Stanton_Rank2_RMC_CMats_CivilianComponents",
@@ -20024,7 +20259,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Nyx_Silicon_Beryl",
@@ -20154,7 +20393,11 @@
         "Testudo Legs Turfwar",
         "Testudo Helmet Turfwar",
         "Quartz Energy SMG Battery (45 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Patrol_Nyx_VeryHard",
@@ -20195,7 +20438,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Patrol_Nyx_VeryHard",
@@ -20236,7 +20483,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_Stileron",
@@ -20410,7 +20661,11 @@
       ],
       "activity": "Delivery",
       "danger": "Medium",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "requiresCompletion": [
+        "DEAD SAINTS - Trial Cargo Haul"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_ShipAmbush_Stanton_Super",
@@ -20457,7 +20712,11 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Yellow Level Contract: Ambush An Amateur"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Stanton_Super",
@@ -20753,7 +21012,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_Super_RecoverCargo",
@@ -20802,7 +21065,11 @@
         "C54 SMG Magazine (50 cap)",
         "S71 Rifle Magazine (30 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_XTBase_VHRT_RetrieveCargo",
@@ -20884,7 +21151,11 @@
       ],
       "system": "Nyx",
       "danger": "Extreme",
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Hockrow Agency"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_Nyx_Super_RecoverCargo",
@@ -20922,7 +21193,11 @@
       "systems": [
         "Nyx",
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Dead Saints"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Nyx_Super_RecoverCargo",
@@ -20961,7 +21236,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Nyx_Quantanium",
@@ -21023,7 +21302,14 @@
       ],
       "description": "Congrats on completing part six of this eight-part course.\\n\\nYou’ve gained a lot of experience across the past six scenarios, and now it’s time to put it all to practice. Scenario seven puts you up against a corvette-class ship and its escorts. This extended encounter will push you to the limit and test everything you got.   \\n\\nThe only thing left is to understand the limit of your skillset. To put it simply, you can’t do everything yourself. Developing and maintaining relationships with fellow pilots that you can call upon for support is really the last piece of the puzzle. Not saying you can't overcome encounters like this by yourself, but even the Navy doesn’t send their ace pilots on a patrol alone.    \\n\\nOnce you decided whether to do this alone or call in some support, head over to <EM4>~mission(Location|Address)</EM4> to kick off the encounter.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE\\n- Strength in Diversity – Think about the roles your allies will be filling and choose who to bring carefully to help balance strengths and weaknesses. You’ll want ships capable of taking on the Corvette while others deal with the escort.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL   \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "requiresCompletion": [
+        "Combat Gauntlet - Scenario #6"
+      ],
+      "unlocks": [
+        "Combat Gauntlet - Scenario #8"
+      ],
+      "isChain": true
     },
     {
       "className": "HaulCargo_SingleToMulti_Interstellar_Bulk_AltUnpro_Trit",
@@ -21582,7 +21868,11 @@
         }
       ],
       "system": "Nyx",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_ShipWaveAttack_ClearOutHostiles_Stanton_H",
@@ -21622,7 +21912,11 @@
         "Antium Helmet",
         "Parallax Rifle Battery (80 Cap)"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_H",
@@ -21654,7 +21948,11 @@
         }
       ],
       "system": "Pyro",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_DefendShip_Nyx_VeryHard",
@@ -21694,7 +21992,11 @@
         "Testudo Legs Combustion",
         "Testudo Helmet Combustion",
         "Pulse Laser Pistol Battery (60 Cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_Bounty_Nyx_VeryHard",
@@ -21738,7 +22040,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_VH_LastDitch_EliminateSpecific",
@@ -21840,7 +22146,19 @@
       "activity": "Ship",
       "danger": "High",
       "cooldownMin": 15,
-      "abandonCooldownMin": 15
+      "abandonCooldownMin": 15,
+      "requiresCompletion": [
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace"
+      ],
+      "unlocks": [
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Nyx_Titanium_Ice",
@@ -21947,7 +22265,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium_Quartz_Iron_Copper_Tungsten_Corundum_Titanium",
@@ -22023,7 +22345,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_VeryHard_RecoverCargo",
@@ -22072,7 +22398,11 @@
         "C54 SMG Magazine (50 cap)",
         "S71 Rifle Magazine (30 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Nyx_VeryHard_MissingPersons",
@@ -22102,7 +22432,11 @@
       ],
       "system": "Nyx",
       "danger": "Very High",
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Hockrow Agency"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_Nyx_VeryHard_RecoverCargo",
@@ -22140,7 +22474,11 @@
       "systems": [
         "Nyx",
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Dead Saints"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Nyx_VeryHard_RecoverCargo",
@@ -22179,7 +22517,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_M_ChainElimAll_3Cluster_ElimSpec",
@@ -22237,7 +22579,14 @@
       ],
       "description": "Congrats on completing part five of this eight-part course.\\n\\nI’m bringing out the big guns for scenario six. Time for you to go up against larger, multi-crewed ships, which provide a few new challenges. Not only will you have to contend with their enhanced firepower but their multifaceted shields means you’ll have to target one shield face continually to do real damage. Easier said than done when both of y’all are moving at such fast speeds.      \\n\\nFind your way to <EM4>~mission(Location|Address)</EM4> whenever you're ready.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>. \\n\\nTRICKS OF THE TRADE:\\n- Size Advantage – When going up against a larger ship, try to stay away from their front as typically this is where the majority of their offensive fire is located. \\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL   \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "requiresCompletion": [
+        "Combat Gauntlet - Scenario #5"
+      ],
+      "unlocks": [
+        "Combat Gauntlet - Scenario #7"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Pyro_SupplyGrade_Solar_CFP_StationToRuin_Potassium_CargoHauling_Multi2ToSingle",
@@ -22617,7 +22966,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "CitizensForProsperity_DefendShip_Nyx_VeryHard",
@@ -22661,7 +23014,11 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_DefendShip_Nyx_VeryHard",
@@ -22693,7 +23050,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Very High"
+      "danger": "Very High",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Foxwell_PAF_HaulCargo_Multi2ToSingle_Small_Aluminum",
@@ -23069,7 +23430,11 @@
         }
       ],
       "activity": "Delivery",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "requiresCompletion": [
+        "DEAD SAINTS - Trial Cargo Haul"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_DefendShip_Nyx_Hard",
@@ -23109,7 +23474,11 @@
         "Testudo Legs Combustion",
         "Testudo Helmet Combustion",
         "Pulse Laser Pistol Battery (60 Cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_Bounty_Nyx_Hard",
@@ -23153,7 +23522,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_VH_MissingPerson_Theft_XT",
@@ -23489,7 +23862,14 @@
       ],
       "activity": "Delivery",
       "danger": "Low",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "unlocks": [
+        "DEAD SAINTS - Rookie Rank - Small Cargo Haul",
+        "DEAD SAINTS - Rookie Rank - Medium Cargo Haul",
+        "DEAD SAINTS -- Rookie Rank, Large Scale Cargo Run",
+        "DEAD SAINTS -- Rookie Rank, Small Scale Cargo Run"
+      ],
+      "isChain": true
     },
     {
       "className": "HaulCargo_AToB_Interstellar_Large_Car_Wid_Potas_CM_Neon",
@@ -23519,7 +23899,11 @@
         }
       ],
       "activity": "Delivery",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "requiresCompletion": [
+        "DEAD SAINTS - Trial Cargo Haul"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium_Quartz_Iron_Tungsten_Titanium",
@@ -23607,7 +23991,11 @@
         "Testudo Legs Turfwar",
         "Testudo Helmet Turfwar",
         "Quartz Energy SMG Battery (45 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Patrol_Nyx_Hard",
@@ -23648,7 +24036,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Patrol_Nyx_Hard",
@@ -23689,7 +24081,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_H_MissingPerson_Theft_XTXS",
@@ -24266,7 +24662,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Nyx_VeryHard",
@@ -24304,7 +24704,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_H_ChainElimAll_2Cluster_ElimSpec_XTAttack",
@@ -24400,7 +24804,18 @@
         }
       ],
       "activity": "Delivery",
-      "danger": "Low"
+      "danger": "Low",
+      "unlocks": [
+        "Finish Interrupted Ling Delivery",
+        "Ling Shipment Recovery",
+        "Rescue Incomplete Ling Delivery",
+        "Complete Stranded Ling Shipment",
+        "Delivery of Abandoned Ling Cargo",
+        "Stuck Ling Shipment Pending Delivery",
+        "Ling Family Rookie Cargo Haul - Medium Scale",
+        "Ling Family Rookie Cargo Haul - Small Scale"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionC_CFPXSOutposts_ChainEliminateAll",
@@ -24473,7 +24888,11 @@
         "Pulse Laser Pistol Battery (60 Cap)"
       ],
       "cooldownMin": 1,
-      "abandonCooldownMin": 1
+      "abandonCooldownMin": 1,
+      "requiresCompletion": [
+        "Vanduul-Tech Smugglers"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_H_3AsteroidBase_XhenoThreat_MissingPerson_Sabotage",
@@ -24616,7 +25035,11 @@
         }
       ],
       "activity": "Delivery",
-      "danger": "Medium"
+      "danger": "Medium",
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_ShipAmbush_Stanton_VeryHard",
@@ -24663,7 +25086,11 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Yellow Level Contract: Ambush An Amateur"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Stanton_VeryHard",
@@ -24786,7 +25213,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionB_VH_ShadowFall_EliminateAll",
@@ -24858,7 +25289,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "EckhartSecurity_Defend_Hard",
@@ -25025,7 +25460,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionB_E_ChainElimAll_1Cluster_AttackCFP",
@@ -25276,7 +25715,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Medium"
+      "danger": "Medium",
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_Gold",
@@ -25391,7 +25834,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Medium"
+      "danger": "Medium",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_H_ChainElimAll_2Cluster_ElimSpec_HHAttack",
@@ -25471,7 +25918,11 @@
         "Testudo Legs Combustion",
         "Testudo Helmet Combustion",
         "Pulse Laser Pistol Battery (60 Cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_Bounty_Nyx_Medium",
@@ -25515,7 +25966,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_EscortShips_Stanton_Medium",
@@ -25564,7 +26019,21 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement",
+        "Eliminate Annoyance",
+        "Protect Our Site"
+      ],
+      "unlocks": [
+        "Orange Level Contract: Protect Our Client’s Interests",
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Stanton_Medium",
@@ -25623,7 +26092,20 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Eliminate Annoyance",
+        "Protect Our Site"
+      ],
+      "unlocks": [
+        "Orange Level Contract: Protect Our Client’s Interests",
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_H_MissingPerson_DestroyItem_XTXS",
@@ -25847,7 +26329,11 @@
         "Palatino Helmet Moonfall",
         "P8-ARM Rifle Magazine (30 cap)"
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_FPSMine_Stanton_Rank3_LowQuantity_Jacli_Saldy",
@@ -25965,7 +26451,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "Foxwell_PAF_HaulCargo_AtoB_Small_AgriculturalSupplies",
@@ -26046,7 +26536,11 @@
         "C54 SMG Magazine (50 cap)",
         "S71 Rifle Magazine (30 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_CrimBase_HRT_RetrieveCargo",
@@ -26128,7 +26622,11 @@
       ],
       "system": "Nyx",
       "danger": "High",
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Hockrow Agency"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_Nyx_Hard_RecoverCargo",
@@ -26166,7 +26664,11 @@
       "systems": [
         "Nyx",
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Dead Saints"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Nyx_Hard_RecoverCargo",
@@ -26205,7 +26707,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_PAF_AtoB_Small_Slam_unproccessed",
@@ -26507,7 +27013,11 @@
         "Quartz Energy SMG Battery (45 cap)",
         "Pulse Laser Pistol Battery (60 Cap)"
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "GillysPilotSchool_Mission05",
@@ -26527,7 +27037,14 @@
       ],
       "description": "Congrats on completing part four of this eight-part course.   \\n\\nThe fifth scenario focuses on defensive tactics. Knowing when to take evasive measures and deploy either decoys or noise countermeasures is essential to your survival. That’s why the aggressors in this exercise will be armed with missiles.   \\n\\nEnsure your countermeasures are fully stocked and then go to <EM4>~mission(Location|Address)</EM4> to start.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Ready to Launch - Easy access to your decoys and countermeasures can be critical in your success in dealing with incoming missile fire. \\n- Stand and Fight - Resist the temptation to hit the afterburner to escape as you’ll increase your signature and make it easier for the missile to hit you. They’re almost certainly much faster than you anyway.\\n- Close the Gap – While it may seem counterintuitive, getting closer to an enemy ship can be an advantage. Missiles have a minimum range and if you’re inside of it they won’t be able to get a lock on you.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "requiresCompletion": [
+        "Combat Gauntlet - Scenario #4"
+      ],
+      "unlocks": [
+        "Combat Gauntlet - Scenario #6"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Pyro_Rank1_RMC_CMats_S1Component",
@@ -26639,7 +27156,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "Eckhart_Nyx_HRT_MultiDefendShip",
@@ -26682,7 +27203,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "CitizensForProsperity_DefendShip_Nyx_Hard",
@@ -26726,7 +27251,11 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_H_3AsteroidBase_XenoThreat_MissingPerson_RetrieveStolenGoods",
@@ -26829,7 +27358,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "High"
+      "danger": "High",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_M_2AsteroidBase_Criminals_DefendShip_BombingRun",
@@ -27333,7 +27866,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "danger": "Medium",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "HaulCargo_AToB_Interstellar_Medium_DistSpri_PartyFav_ElecEq_Souv",
@@ -27361,7 +27898,11 @@
         }
       ],
       "activity": "Delivery",
-      "danger": "Medium"
+      "danger": "Medium",
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_ShipWaveAttack_ClearOutHostiles_Nyx_M",
@@ -27393,7 +27934,11 @@
         }
       ],
       "system": "Nyx",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Pyro_SmallGrade_Solar_CFP_TradepostToStation_Aluminum_CargoHauling_Multi3ToSingle",
@@ -27503,7 +28048,11 @@
       "multiSystem": true,
       "systems": [
         "microTech"
-      ]
+      ],
+      "requiresCompletion": [
+        "Cull Invasive Creatures"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_H_MissingPerson_DestroyItem_XTXS",
@@ -27627,7 +28176,11 @@
           "maxRank": "Master"
         }
       ],
-      "activity": "Delivery"
+      "activity": "Delivery",
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "HaulCargo_AToB_Interstellar_Small_Cryo_Intro",
@@ -27655,7 +28208,14 @@
       ],
       "activity": "Delivery",
       "danger": "Low",
-      "contractor": "Dead Saints"
+      "contractor": "Dead Saints",
+      "unlocks": [
+        "DEAD SAINTS - Rookie Rank - Small Cargo Haul",
+        "DEAD SAINTS - Rookie Rank - Medium Cargo Haul",
+        "DEAD SAINTS -- Rookie Rank, Large Scale Cargo Run",
+        "DEAD SAINTS -- Rookie Rank, Small Scale Cargo Run"
+      ],
+      "isChain": true
     },
     {
       "className": "HaulCargo_AToB_Interstellar_Bulk_Plas_ShipAmm_RMC",
@@ -27702,7 +28262,23 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data"
+      ],
+      "unlocks": [
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Updated Energy Anomaly Data",
+        "Jorrit Dossier: Updated Security Data",
+        "Jorrit Dossier: Updated Seismic Data",
+        "Jorrit Dossier: Updated Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M4-Stanton4_Repeat",
@@ -27738,7 +28314,17 @@
       ],
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Uncommon_Beryl_Agricium",
@@ -27819,7 +28405,11 @@
         "Antium Helmet",
         "Parallax Rifle Battery (80 Cap)"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_M",
@@ -27851,7 +28441,11 @@
         }
       ],
       "system": "Pyro",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Stanton_Rank1_RMC_CMats_S1Component",
@@ -27934,7 +28528,11 @@
       ],
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul",
-      "multiSystem": true
+      "multiSystem": true,
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_H_CFPXSOutposts_XT_EliminateAll",
@@ -28177,7 +28775,11 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_Stage1_RegionLink_ToRegionB_RetrieveCargo",
@@ -28493,7 +29095,11 @@
         "Testudo Legs Combustion",
         "Testudo Helmet Combustion",
         "Pulse Laser Pistol Battery (60 Cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_Bounty_Nyx_Intro",
@@ -28537,7 +29143,21 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "unlocks": [
+        "Defend InterSec Operative",
+        "Operative Extraction",
+        "Protect Vital Asset",
+        "Pilot Under Fire From Vanduul",
+        "Handle Vanduul Attack on Ship",
+        "Patrol Dangerous Sector",
+        "Terrorist [TargetName] to be Neutralized",
+        "Neutralize UEE Threat: [TargetName]",
+        "Preemptive Strike On [TargetName]",
+        "Neutralize Vanduul Target",
+        "Eliminate Vanduul Ship"
+      ],
+      "isChain": true
     },
     {
       "className": "InterSec_Bounty_Nyx_Easy",
@@ -28581,7 +29201,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Defense Contract: [TargetName] Elimination"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Nyx_MissingPersonSpace_Super",
@@ -28825,7 +29449,18 @@
         }
       ],
       "activity": "Delivery",
-      "danger": "Low"
+      "danger": "Low",
+      "unlocks": [
+        "Finish Interrupted Ling Delivery",
+        "Ling Shipment Recovery",
+        "Rescue Incomplete Ling Delivery",
+        "Complete Stranded Ling Shipment",
+        "Delivery of Abandoned Ling Cargo",
+        "Stuck Ling Shipment Pending Delivery",
+        "Ling Family Rookie Cargo Haul - Medium Scale",
+        "Ling Family Rookie Cargo Haul - Small Scale"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionC_Caves_ChainMissingPersons",
@@ -28906,7 +29541,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Red Wind Linehaul"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_Stanton_Super_RecoverCargo",
@@ -29363,7 +30002,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Pyro_Rank1_RMCMedium",
@@ -29420,7 +30063,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "danger": "Medium",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_ProcessedFoodMedicalMilitaryHyperprocessorsBioplastic_Rank3",
@@ -29454,7 +30101,11 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_MRT_Criminals_KillShip",
@@ -29880,7 +30531,11 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Civilian Defense Force"
+      "contractor": "Civilian Defense Force",
+      "requiresCompletion": [
+        "Cull Invasive Creatures"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Patrol_Nyx_Medium",
@@ -29921,7 +30576,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Patrol_Nyx_Medium",
@@ -29962,7 +30621,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "EckhartSecurity_ShipAmbush_Nyx_Hard",
@@ -30000,7 +30663,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Nyx_Hard",
@@ -30038,7 +30705,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_BlackBoxRecovery_Nyx_VeryHard",
@@ -30333,7 +31004,11 @@
       ],
       "system": "Pyro",
       "activity": "Mining",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Nyx_MissingPersonSpace_VeryHard",
@@ -30639,7 +31314,23 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data"
+      ],
+      "unlocks": [
+        "Jorrit Dossier: Power Usage Data",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Updated Energy Anomaly Data",
+        "Jorrit Dossier: Updated Security Data",
+        "Jorrit Dossier: Updated Seismic Data",
+        "Jorrit Dossier: Updated Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M3-Stanton4_Repeat",
@@ -30676,7 +31367,17 @@
       ],
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionD_HHXSOutpost_Sabotage-EliminateSpecific",
@@ -30774,7 +31475,11 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Yellow Level Contract: Ambush An Amateur"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Stanton_Hard",
@@ -30955,7 +31660,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "unlocks": [
+        "Special Covalex Delivery Stanton System"
+      ],
+      "isChain": true
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_VeryHard",
@@ -31045,7 +31757,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "CitizensForProsperity_DefendShip_Nyx_Medium",
@@ -31089,7 +31805,11 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_M_2AsteroidBase_Criminals_DefendShip",
@@ -31171,7 +31891,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Medium"
+      "danger": "Medium",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_CrimBase_MRT_DefendShip",
@@ -31250,7 +31974,11 @@
       "system": "Pyro",
       "activity": "Mining",
       "danger": "Medium",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Nyx_VeryHard_RecoverCargo",
@@ -31289,7 +32017,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Red Wind Linehaul"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_Stanton_VeryHard_RecoverCargo",
@@ -31346,7 +32078,14 @@
       ],
       "description": "Congrats on completing part three of this eight-part course.\\n\\nGood combat pilots know not all threats are apparent. It’s the threats you don’t expect that can be the most devastating. Scenario four is focused on how to identify and deal with stealth targets. Hopefully by the end, you’ll understand just how important your radar is in determining who you’re really up against. Expect to have regular and stealth ships hunting you down.    \\n\\nMake your way to <EM4>~mission(Location|Address)</EM4> whenever you’re ready, and remember to keep your eyes on your radar.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Surprise Attacks - Pinging your surroundings can sometimes reveal hidden ships. Be ready for contacts to show up unexpectedly.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "requiresCompletion": [
+        "Combat Gauntlet - Scenario #3"
+      ],
+      "unlocks": [
+        "Combat Gauntlet - Scenario #5"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_CanardView_Local_4boxes_Single_Courier",
@@ -31593,7 +32332,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Low"
+      "danger": "Low",
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "BHG_Rockcracker_Power_EliminateSpecific",
@@ -31637,7 +32380,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "Reclusive Bounty: [TargetName] | Very-High Risk"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Nyx_Easy",
@@ -31673,7 +32420,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Low"
+      "danger": "Low",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Vaughn_Rockcracker_Power_EliminateSpecific",
@@ -31806,7 +32557,17 @@
         }
       ],
       "danger": "Low",
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "unlocks": [
+        "Additional Resources For Research",
+        "Need Resource for Research\\n",
+        "Vital Resources Needed For Research",
+        "Collect Irradiated Kopion Horns",
+        "Obtain Irradiated Valakkar Pearls",
+        "Gather Irradiated Valakkar Fangs",
+        "Collect Irradiated Valakkar Eggs"
+      ],
+      "isChain": true
     },
     {
       "className": "Rayari_Rank0_Harvestable_Single_Prota",
@@ -31833,7 +32594,11 @@
         }
       ],
       "contractor": "Rayari Incorporated",
-      "multiSystem": true
+      "multiSystem": true,
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_RecoverItem_Nyx_Maze_1Box",
@@ -32146,7 +32911,11 @@
       "systems": [
         "Pyro",
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_CFPOutpost_Stage1_RegionLink_ToRegionB_EliminateAll",
@@ -32294,7 +33063,22 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement",
+        "Eliminate Annoyance"
+      ],
+      "unlocks": [
+        "Orange Level Contract: Ship Protection Needed",
+        "Orange Level Contract: Protect Our Client’s Interests",
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Iron_Titanium",
@@ -32361,7 +33145,11 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Stanton_Easy",
@@ -32420,7 +33208,21 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Eliminate Annoyance"
+      ],
+      "unlocks": [
+        "Orange Level Contract: Ship Protection Needed",
+        "Orange Level Contract: Protect Our Client’s Interests",
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Stanton_Rank1_RMCMedium",
@@ -32550,7 +33352,11 @@
       ],
       "system": "Stanton",
       "activity": "FPS",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_DisableCommsTowers_Hard",
@@ -32729,7 +33535,11 @@
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_ShipWaveAttack_ClearOutHostiles_Nyx_E",
@@ -32761,7 +33571,11 @@
         }
       ],
       "system": "Nyx",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_4Box",
@@ -32826,7 +33640,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Stanton"
+      "system": "Stanton",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionC_CFPXSOutpost_EliminateSpecific",
@@ -33214,7 +34032,11 @@
       ],
       "system": "Pyro",
       "activity": "Mining",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "BountyHuntersGuild_Bounty_Stanton_VeryHard",
@@ -33557,7 +34379,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "unlocks": [
+        "Special Covalex Delivery Stanton System"
+      ],
+      "isChain": true
     },
     {
       "className": "BitZeros_RecoverItem_Nyx_MicroSatellite_1Box",
@@ -33651,7 +34480,11 @@
         "Antium Helmet",
         "Parallax Rifle Battery (80 Cap)"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_E",
@@ -33683,7 +34516,11 @@
         }
       ],
       "system": "Pyro",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_RecoverPackage_Stanton_4Box",
@@ -33888,7 +34725,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Red Wind Linehaul"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_Stanton_Hard_RecoverCargo",
@@ -33959,7 +34800,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Local_FPSMine_Stanton_PlanetarySystem_LowQuantity_Apho_Doliv_Had",
@@ -34811,7 +35659,11 @@
       ],
       "system": "Pyro",
       "activity": "Mining",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_BombingRun_Stanton_VH",
@@ -34854,7 +35706,11 @@
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "Headhunters_BombingRun_Stanton_VH",
@@ -34887,7 +35743,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Stanton"
+      "system": "Stanton",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_E_JacksonsSwap_XSOutposts_EliminateSpecific",
@@ -34952,7 +35812,11 @@
       ],
       "system": "Pyro",
       "activity": "Mining",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "Eckhart_Nyx_LRT_DefendShip",
@@ -34995,7 +35859,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "CitizensForProsperity_DefendShip_Nyx_Easy",
@@ -35039,7 +35907,11 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_Lagrange_LRT_DefendShip",
@@ -35324,7 +36196,23 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data"
+      ],
+      "unlocks": [
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Updated Energy Anomaly Data",
+        "Jorrit Dossier: Updated Security Data",
+        "Jorrit Dossier: Updated Seismic Data",
+        "Jorrit Dossier: Updated Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M2-Stanton4_Repeat",
@@ -35357,7 +36245,17 @@
       ],
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_DefendShip_Nyx_Easy",
@@ -35389,7 +36287,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Low"
+      "danger": "Low",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionD_CFPOutpost_BombingRun",
@@ -35455,7 +36357,15 @@
       "multiSystem": true,
       "systems": [
         "microTech"
-      ]
+      ],
+      "requiresCompletion": [
+        "Reduce Overpopulation"
+      ],
+      "unlocks": [
+        "Intensive Eradication Effort",
+        "Cull Irradiated Kopions"
+      ],
+      "isChain": true
     },
     {
       "className": "EchhartSecurity_Stanton_Medium_RecoverCargo",
@@ -35494,7 +36404,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_EliminateAll_NonHostiles",
@@ -35583,7 +36497,11 @@
         "C54 SMG Magazine (50 cap)",
         "S71 Rifle Magazine (30 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Nyx_Medium_MissingPersons",
@@ -35613,7 +36531,11 @@
       ],
       "system": "Nyx",
       "danger": "Medium",
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Hockrow Agency"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Local_FPSMine_Pyro_LowQuantity_Apho_Doliv_Had",
@@ -35691,7 +36613,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "EckhartSecurity_DC_Stanton4_S4Compex-A_Storage_EliminateBoss",
@@ -36043,7 +36969,14 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "unlocks": [
+        "Special Covalex Delivery Stanton System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionB_Rank0_VE_1AsteroidBase_Criminals_Sabotage",
@@ -36348,7 +37281,11 @@
         "Pulse Laser Pistol Battery (60 Cap)"
       ],
       "contractor": "Rayari Incorporated",
-      "multiSystem": true
+      "multiSystem": true,
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "HighpointWildernessSpecialists_KillAnimals_Nyx_Easy",
@@ -36464,7 +37401,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Nyx_MissingPersonSpace_Hard",
@@ -36600,7 +37541,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_LRT_Criminals_KillShip",
@@ -36751,7 +37696,14 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "unlocks": [
+        "Special Covalex Delivery Stanton System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_Rank3_Regional_Handyman",
@@ -36951,7 +37903,22 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "unlocks": [
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data",
+        "Jorrit Dossier: Updated Energy Anomaly Data",
+        "Jorrit Dossier: Updated Security Data",
+        "Jorrit Dossier: Updated Seismic Data",
+        "Jorrit Dossier: Updated Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_Rank1_SmallQ_Tungsten_Copper",
@@ -37064,7 +38031,11 @@
       ],
       "system": "Pyro",
       "activity": "Mining",
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "requiresCompletion": [
+        "Small Purchase Order: Hand Mined Materials"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_RataDungDegnousRootCK13SeedAgricultural_Rank1",
@@ -37094,7 +38065,14 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "Headhunters_OLP_EliminateAll",
@@ -37208,7 +38186,14 @@
       ],
       "description": "Congrats on completing part two of this eight-part course.   \\n\\nThe third scenario throws tactical considerations into the mix. This time around the attacking ships are from distinct classes with distinct battlefield applications. Knowing what targets to prioritize is vital to surviving engagements against multiple ships.      \\n\\nWhenever you’re ready, head to <EM4>~mission(Location|Address)</EM4> to get started.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Bigger They Are – Try to evaluate which threat is the most dangerous and take them out first.\\n- Shields – If you’re taking a lot of damage, don’t be afraid to boost away and let your shields regenerate.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "requiresCompletion": [
+        "Combat Gauntlet - Scenario #2"
+      ],
+      "unlocks": [
+        "Combat Gauntlet - Scenario #4"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_Lagrange_MRT_RetrieveCargo",
@@ -37432,7 +38417,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Patrol_Stanton_Easy",
@@ -37713,7 +38702,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_3Box",
@@ -37953,7 +38949,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Red Wind Linehaul"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_Stanton_Medium_RecoverCargo",
@@ -38033,7 +39033,11 @@
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_Rank3_JacksonsSwap_Local_Handyman",
@@ -38114,7 +39118,12 @@
         "Palatino Helmet Sunstone"
       ],
       "cooldownMin": 1,
-      "abandonCooldownMin": 1
+      "abandonCooldownMin": 1,
+      "requiresCompletion": [
+        "Preliminary Bounty: [TargetName]",
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "Headhunters_BombingRun_Stanton_H",
@@ -38147,7 +39156,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Stanton"
+      "system": "Stanton",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Redwind_Intro",
@@ -38352,7 +39365,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "contractor": "Rayari Incorporated"
+      "contractor": "Rayari Incorporated",
+      "requiresCompletion": [
+        "Interested in Building a Better Future?"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Tungsten",
@@ -38423,7 +39440,11 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionC_Caves_M_KillAnimals",
@@ -38659,7 +39680,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_Mercenary_Rehire",
@@ -38698,7 +39723,11 @@
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_EliminateAll_WithHelp",
@@ -38776,7 +39805,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_DisableCommsTowers_Easy",
@@ -39014,7 +40047,11 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_GroundMine_Stanton_Rank1_SmallQuantity_Beradom",
@@ -39226,7 +40263,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Very Low"
+      "danger": "Very Low",
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Ice",
@@ -39299,7 +40340,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Very Low"
+      "danger": "Very Low",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_WasteScrapWaseCompBoardThermalfoam_Rank2",
@@ -39333,7 +40378,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "unlocks": [
+        "Special Covalex Delivery Stanton System"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_AgriculturalPingalaProtaFlourine_Rank1",
@@ -39367,7 +40419,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "BountyHuntersGuild_Bounty_Stanton_Hard",
@@ -39427,7 +40486,11 @@
       ],
       "system": "Pyro",
       "activity": "Mining",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Nyx_MissingPersonSpace_Medium",
@@ -39508,7 +40571,11 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Yellow Level Contract: Ambush An Amateur"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Pyro_Rank0_RMCSmall",
@@ -39536,7 +40603,11 @@
       ],
       "system": "Pyro",
       "activity": "Mining",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Stanton_Medium",
@@ -39680,7 +40751,23 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "unlocks": [
+        "Yellow Level Contract: Defend [Location]",
+        "Orange Level Contract: Ship Protection Needed",
+        "Orange Level Contract: Protect Our Client’s Interests",
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_EscortShips_Stanton_VeryEasy",
@@ -39739,7 +40826,20 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "unlocks": [
+        "Yellow Level Contract: Defend [Location]",
+        "Orange Level Contract: Ship Protection Needed",
+        "Orange Level Contract: Protect Our Client’s Interests",
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "Manfred_Search",
@@ -39785,7 +40885,11 @@
           "minRank": "Applicant",
           "maxRank": "Elite Security Contractor"
         }
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "Eckhart_FacilityDelve_ResearchWing_GravityAnomaly_DestroyServers",
@@ -39814,7 +40918,11 @@
           "minRank": "Applicant",
           "maxRank": "Elite Security Contractor"
         }
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "Eckhart_FacilityDelve_EngineeringWing_Office_DestroyServers",
@@ -39843,7 +40951,11 @@
           "minRank": "Applicant",
           "maxRank": "Elite Security Contractor"
         }
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "Eckhart_FacilityDelve_EngineeringWing_CoolingServerRoom_DestroyServers",
@@ -39872,7 +40984,11 @@
           "minRank": "Applicant",
           "maxRank": "Elite Security Contractor"
         }
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "BHG_ASDFacilityDelving_ResearchWing_EliminateSpecific",
@@ -39910,7 +41026,12 @@
         "Palatino Helmet Daystar"
       ],
       "cooldownMin": 1,
-      "abandonCooldownMin": 1
+      "abandonCooldownMin": 1,
+      "requiresCompletion": [
+        "Preliminary Bounty: [TargetName]",
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "isChain": true
     },
     {
       "className": "BitZeros_RecoverItem_Stanton_MicroSatellite_1Box",
@@ -40046,7 +41167,14 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "ENTRY LVL. COURIER NEEDED IN STANTON"
+      ],
+      "unlocks": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_MazeMedGelMilitary_Rank1",
@@ -40076,7 +41204,14 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Medium",
@@ -41020,7 +42155,11 @@
         "Monde Legs Hiro",
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_BombingRun_Stanton_M",
@@ -41063,7 +42202,11 @@
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "CitizensForProsperity_DefendShip_Nyx_Intro",
@@ -41095,7 +42238,33 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Low",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "unlocks": [
+        "Patrol to Prevent Possible Attack",
+        "Patrol Vanduul Hunting Ground",
+        "Pilot in Distress",
+        "Pilot Seeking Combat Support",
+        "Ship Needs Emergency Assistance",
+        "Convoy Caught in Brutal Attack",
+        "Respond to Distress Beacon",
+        "Come to Aid of Convoy",
+        "Patrol Travel Lanes",
+        "Patrol Risky Travel Lanes",
+        "Patrol Dangerous Travel Lanes",
+        "Patrol Outlaw Hunting Grounds",
+        "Patrol Dangerous Outlaw Sector",
+        "Patrol Extremely Dangerous Sector",
+        "Intercepted Supply Run",
+        "Recovering Valuable Supplies",
+        "Crucial Supplies Need Retrieving",
+        "Cargo Shipment Must Be Completed",
+        "Special Recovery Operation",
+        "Help Deal with Outlaw Hunting Party",
+        "Clear CFP Route of Hostiles",
+        "Remove Upstart Gang From Sector",
+        "Neutralize Dangerous Criminal Fleet"
+      ],
+      "isChain": true
     },
     {
       "className": "CitizensForProsperity_DefendShip_Nyx_VeryEasy",
@@ -41139,7 +42308,11 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_Rank0_VE_1AsteroidBase_Criminals_DefendShip",
@@ -41292,7 +42465,23 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files"
+      ],
+      "unlocks": [
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Updated Energy Anomaly Data",
+        "Jorrit Dossier: Updated Security Data",
+        "Jorrit Dossier: Updated Seismic Data",
+        "Jorrit Dossier: Updated Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P2M1-Stanton4_Repeat",
@@ -41325,7 +42514,17 @@
       ],
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Nyx_Rank0_RMC_Rubble_Parts_Salvage_Choice",
@@ -41353,7 +42552,11 @@
       ],
       "system": "Nyx",
       "activity": "Mining",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Nyx_Rank1_SmallQ_Alimunium_Quartz",
@@ -41422,7 +42625,11 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Very Low"
+      "danger": "Very Low",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_Lagrange_VLRT_DefendShip",
@@ -41505,7 +42712,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Stanton"
+      "system": "Stanton",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_VE_1AsteroidBase_Criminals_Sabotage",
@@ -41584,7 +42795,11 @@
       ],
       "system": "Nyx",
       "activity": "Mining",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_TinPotassiumBoraseLindinium_Rank1",
@@ -41614,7 +42829,14 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "Covalex"
+      "contractor": "Covalex",
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_Mercenary_Intro",
@@ -41640,7 +42862,28 @@
       "danger": "Low",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "unlocks": [
+        "Yellow Level Contract: Clear Shipjacking Group",
+        "Yellow Level Contract: Neutralize Shipjacking Gang",
+        "Orange Level Contract: Destroy Outlaw Threat",
+        "Orange Level Contract: Take Out Criminal Fleet",
+        "Still Looking for Work?",
+        "Yellow Level Contract: Limiting Potential Threat",
+        "Yellow Level Contract: Disrupt Operations",
+        "Orange Level Contract: Take Out Fuel Supplies",
+        "Orange Level Contract: Destroy Outlaw Infrastructure",
+        "Red Level Contract: Fuel Container Demolition",
+        "Red Level Contract: Destroy Outlaw Infrastructure",
+        "Yellow Level Contract: Stand Up to Aggressors",
+        "Yellow Level Contract: Defend [Location]",
+        "Orange Level Contract: Ship Protection Needed",
+        "Orange Level Contract: Protect Our Client’s Interests",
+        "Red Level Contract: Save Ships at [Location]",
+        "Red Level Contract: Support VIP Clients",
+        "Yellow Level Contract: Ambush An Amateur"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_ShipWaveAttack_ClearOutHostiles_Nyx_VE",
@@ -41672,7 +42915,11 @@
         }
       ],
       "system": "Nyx",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_Rank1_YangsPlace_Local_Handyman",
@@ -42020,7 +43267,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Nyx_Easy",
@@ -42058,7 +43309,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_FacilityDelve_P1M2",
@@ -42077,7 +43332,22 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Jorrit Dossier: Onyx Personnel Files"
+      ],
+      "unlocks": [
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data",
+        "Jorrit Dossier: Updated Energy Anomaly Data",
+        "Jorrit Dossier: Updated Security Data",
+        "Jorrit Dossier: Updated Seismic Data",
+        "Jorrit Dossier: Updated Power Usage Data"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_ShipSalvage_Stanton_Rank0_RMC_Rubble_Parts_Salvage_Choice",
@@ -42105,7 +43375,11 @@
       ],
       "system": "Stanton",
       "activity": "Mining",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionD_CFPOutpost_Sabotage",
@@ -42327,7 +43601,11 @@
       ],
       "system": "Stanton",
       "activity": "Mining",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Quartz",
@@ -42778,7 +44056,11 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Easy",
@@ -42867,7 +44149,14 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "unlocks": [
+        "Finishing The Job",
+        "Cleaning Up Someone Else’s Mess",
+        "Taking Back Our Goods",
+        "Lost But Not Gone"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_CrimBase_Rank1_MissingPerson",
@@ -42933,7 +44222,14 @@
       ],
       "description": "Congrats on completing part one of this eight-part course.\\n\\nScenario two will focus on how to deal with multiple targets at the same time. Goal here is give you a better handle on how to balance offense and defense.   \\n\\nWhenever you’re set, grab a combat ship, and head to <EM4>~mission(Location|Address)</EM4> to begin.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Pick Your Fight - For situations where you’re coming up against multiple targets of equal threat, your best strategy is to focus on neutralizing one target at a time to gradually reduce the amount of incoming fire.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "requiresCompletion": [
+        "Combat Gauntlet - Scenario #1"
+      ],
+      "unlocks": [
+        "Combat Gauntlet - Scenario #3"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_VE_1AsteroidBase_Criminals_RetrieveCargo",
@@ -43020,7 +44316,11 @@
         "Antium Helmet",
         "Parallax Rifle Battery (80 Cap)"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_EliminateAll",
@@ -43177,7 +44477,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Very Low",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_VE",
@@ -43209,7 +44513,11 @@
         }
       ],
       "system": "Pyro",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Patrol_Nyx_VeryEasy",
@@ -43250,7 +44558,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_FPSMine_Pyro_Intro",
@@ -43290,7 +44602,13 @@
         "Novikov Helmet",
         "Arclight Pistol Battery (30 cap)"
       ],
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "unlocks": [
+        "Small Purchase Order: Vehicle Mined Ore",
+        "Med. Purchase Order: Vehicle Mined Ore",
+        "Lrg. Purchase Order: Vehicle Mined Ore"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_FPSMine_Pyro_Rank1_MediumQuantity_Doliv",
@@ -43402,7 +44720,14 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "unlocks": [
+        "Salvager Needed (Small Supply of RMC)",
+        "Salvager Needed (Small Supply of RMC / UCM)",
+        "Salvager Needed (Small Supply of RMC / Components)",
+        "Salvager Needed (Small Special Order of RMC / Components)"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_Nyx_Easy_RecoverCargo",
@@ -43441,7 +44766,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Red Wind Linehaul"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_Stanton_Easy_RecoverCargo",
@@ -43573,7 +44902,11 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Yellow Level Contract: Ambush An Amateur"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Stanton_Easy",
@@ -43849,7 +45182,11 @@
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Patrol_Nyx_VeryEasy_V",
@@ -43886,7 +45223,11 @@
       "system": "Nyx",
       "activity": "Ship",
       "danger": "Very Low",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "BountyHuntersGuild_Bounty_Stanton_Medium",
@@ -44211,7 +45552,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Stanton"
+      "system": "Stanton",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_BlackBoxRecovery_Stanton_VeryEasy",
@@ -44380,7 +45725,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "unlocks": [
+        "Special Covalex Delivery Stanton System"
+      ],
+      "isChain": true
     },
     {
       "className": "BitZeros_BlackBoxRecovery_Stanton_Intro",
@@ -44468,7 +45820,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "unlocks": [
+        "Finishing The Job",
+        "Cleaning Up Someone Else’s Mess",
+        "Taking Back Our Goods",
+        "Lost But Not Gone"
+      ],
+      "isChain": true
     },
     {
       "className": "EchhartSecurity_Stanton_Easy_RecoverCargo",
@@ -44507,7 +45866,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_VeryEasy_RecoverCargo",
@@ -44560,7 +45923,11 @@
       "multiSystem": true,
       "systems": [
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "First Haul in System"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_Lagrange_LRT_RetrieveCargo",
@@ -44642,7 +46009,11 @@
       ],
       "system": "Nyx",
       "danger": "Very Low",
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Hockrow Agency"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Nyx_Easy_MissingPersons",
@@ -44672,7 +46043,11 @@
       ],
       "system": "Nyx",
       "danger": "Low",
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "requiresCompletion": [
+        "Hockrow Agency"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_FPSSalvage_Pyro_S1Components",
@@ -44705,7 +46080,11 @@
       "systems": [
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Ling_Stanton_Easy_RecoverCargo",
@@ -44737,7 +46116,11 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "danger": "Low"
+      "danger": "Low",
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_Nyx_Easy_RecoverCargo",
@@ -44775,7 +46158,11 @@
       "systems": [
         "Nyx",
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Dead Saints"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Nyx_Easy_RecoverCargo",
@@ -44814,7 +46201,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_Intro_RetrieveCargo",
@@ -45125,7 +46516,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "ENTRY LVL. COURIER NEEDED IN STANTON"
+      ],
+      "unlocks": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Nyx_MedgelMedicalFood_Rank0",
@@ -45159,7 +46557,14 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "ENTRY LVL. COURIER NEEDED IN STANTON"
+      ],
+      "unlocks": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_WasteScrapCompBoard_Rank1",
@@ -45193,7 +46598,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_FPSMine_Stanton_Intro",
@@ -45232,7 +46644,13 @@
         "Strata Helmet Shooting Star",
         "Arclight Pistol Battery (30 cap)"
       ],
-      "contractor": "Shubin Interstellar"
+      "contractor": "Shubin Interstellar",
+      "unlocks": [
+        "Small Purchase Order: Vehicle Mined Ore",
+        "Med. Purchase Order: Vehicle Mined Ore",
+        "Lrg. Purchase Order: Vehicle Mined Ore"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_Intro_Hauling",
@@ -45261,7 +46679,33 @@
       ],
       "system": "Pyro",
       "danger": "Low",
-      "contractor": "Citizens For Prosperity"
+      "contractor": "Citizens For Prosperity",
+      "unlocks": [
+        "Patrol to Prevent Possible Attack",
+        "Patrol Vanduul Hunting Ground",
+        "Pilot in Distress",
+        "Pilot Seeking Combat Support",
+        "Ship Needs Emergency Assistance",
+        "Convoy Caught in Brutal Attack",
+        "Respond to Distress Beacon",
+        "Come to Aid of Convoy",
+        "Patrol Travel Lanes",
+        "Patrol Risky Travel Lanes",
+        "Patrol Dangerous Travel Lanes",
+        "Patrol Outlaw Hunting Grounds",
+        "Patrol Dangerous Outlaw Sector",
+        "Patrol Extremely Dangerous Sector",
+        "Intercepted Supply Run",
+        "Recovering Valuable Supplies",
+        "Crucial Supplies Need Retrieving",
+        "Cargo Shipment Must Be Completed",
+        "Special Recovery Operation",
+        "Help Deal with Outlaw Hunting Party",
+        "Clear CFP Route of Hostiles",
+        "Remove Upstart Gang From Sector",
+        "Neutralize Dangerous Criminal Fleet"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_FPSSalvage_Nyx_Canisters_Components_Unique",
@@ -45293,7 +46737,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_FPSSalvage_Stanton_S1Components",
@@ -45321,7 +46769,11 @@
       ],
       "system": "Stanton",
       "activity": "FPS",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_FPSMine_Stanton_Rank1_MediumQuantity_Apho",
@@ -45401,7 +46853,11 @@
       "systems": [
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_E_UnocDerelict_MissingPerson",
@@ -45564,7 +47020,11 @@
       "systems": [
         "Hurston",
         "microTech"
-      ]
+      ],
+      "unlocks": [
+        "Cull Invasive Creatures"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_SunsetMesa_Local_1box_Single_Courier",
@@ -45875,7 +47335,11 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "ENTRY LVL. COURIER NEEDED IN STANTON"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_RecoverPackage_Nyx_1Box_Intro",
@@ -45903,7 +47367,15 @@
       "system": "Nyx",
       "danger": "Low",
       "contractor": "Red Wind Linehaul",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "unlocks": [
+        "Red Wind Easy Cargo Recovery",
+        "Red Wind Straightforward Cargo Recovery",
+        "Red Wind Challenging Cargo Recovery",
+        "Red Wind Dangerous Cargo Recovery",
+        "Red Wind Special Cargo Recovery"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_PartyFavorsFoodSpiritsSouvenirsFreshFood_Rank2",
@@ -45937,7 +47409,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "unlocks": [
+        "Special Covalex Delivery Stanton System"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_Rank0_VE_1AsteroidBase_Criminals_EliminateSpecific",
@@ -46116,7 +47595,38 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Low"
+      "danger": "Low",
+      "unlocks": [
+        "Low Risk Cargo Retrieval",
+        "Client's Cargo Needs Recovering",
+        "Standard Cargo Recovery Op.",
+        "High Risk Shipment Recovery",
+        "Critical Cargo Extraction",
+        "Extreme Risk Cargo Retrieval",
+        "PURGE ASD SERVERS",
+        "INFILITRATE ASD SITE AND DESTROY SERVERS",
+        "FIND SERVERS AT ASD SITE AND DESTROY",
+        "SEEK AND DESTROY ASD DATA",
+        "Low Risk Protection Detail",
+        "Executive Protection Detail",
+        "Experienced Protection Detail Needed",
+        "VIP Client Needs Protection",
+        "Protection Detail Needed. High Risk.",
+        "Top Tier Operator Needed",
+        "Save Ship",
+        "Support Client Under Attack",
+        "Stop Attack on High-Profile Client",
+        "High-Risk Ship Encounter",
+        "Stop Deadly Ship Attack",
+        "Extremely Dangerous Defense",
+        "Settle a Score",
+        "Time to Teach a Lesson",
+        "Launch Surprise Attack",
+        "Tricky Ambush",
+        "Dangerous Ambush",
+        "Highly Dangerous Ambush"
+      ],
+      "isChain": true
     },
     {
       "className": "EckhartSecurity_ShipAmbush_Nyx_VeryEasy",
@@ -46154,7 +47664,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Nyx_Intro",
@@ -46188,7 +47702,46 @@
       ],
       "system": "Nyx",
       "activity": "Ship",
-      "danger": "Low"
+      "danger": "Low",
+      "unlocks": [
+        "Grab ‘n’ go",
+        "Taking what’s ours",
+        "Finish the job",
+        "Jackpot",
+        "Getting what we deserve",
+        "Worth the trouble",
+        "Help Headhunters Prospect",
+        "Headhunter Needs Help",
+        "Backup Needed Now",
+        "Bring Down the Hammer",
+        "Rally to Help Clips Convoy",
+        "Looking for a Damn Hero",
+        "Surprise Party",
+        "Silent Strike",
+        "Ambush Op",
+        "Reprisal Attack",
+        "Tactical Strike",
+        "Elite Op",
+        "See What’s Out There",
+        "Scout and Scan",
+        "Space Patrol",
+        "Looking For Trouble",
+        "Stand Our Ground",
+        "Hunt Some Heads",
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]",
+        "Ground The Upstarts",
+        "No Fly Zone",
+        "Stopping the Competition",
+        "Wasting Their Stockpile",
+        "Trapping a Rat",
+        "Outsmarting our Enemies"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Nyx_VeryEasy",
@@ -46226,7 +47779,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "BountyHuntersGuild_Bounty_Stanton_Easy",
@@ -46292,7 +47849,11 @@
       "multiSystem": true,
       "systems": [
         "Nyx"
-      ]
+      ],
+      "unlocks": [
+        "ENTRY LVL. COURIER NEEDED IN STANTON"
+      ],
+      "isChain": true
     },
     {
       "className": "RedWind_RecoverPackage_Stanton_1Box_Intro",
@@ -46320,7 +47881,15 @@
       "system": "Stanton",
       "danger": "Low",
       "contractor": "Red Wind Linehaul",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "unlocks": [
+        "Red Wind Easy Cargo Recovery",
+        "Red Wind Straightforward Cargo Recovery",
+        "Red Wind Challenging Cargo Recovery",
+        "Red Wind Dangerous Cargo Recovery",
+        "Red Wind Special Cargo Recovery"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_BombingRun_Stanton_VE",
@@ -46363,7 +47932,11 @@
         "Antium Core Moss Camo",
         "Antium Legs Moss Camo"
       ],
-      "contractor": "Foxwell Enforcement"
+      "contractor": "Foxwell Enforcement",
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "isChain": true
     },
     {
       "className": "Headhunters_BombingRun_Stanton_VE",
@@ -46396,7 +47969,11 @@
           "maxRank": "Elite Contractor"
         }
       ],
-      "system": "Stanton"
+      "system": "Stanton",
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionD_Rank0_Regional_Handyman",
@@ -46640,7 +48217,11 @@
       ],
       "description": "Looking to gain critical hands-on experience battling a variety of targets and situations? Then my Combat Gauntlet might be the perfect fit for you.\\n\\nPlease understand that this course is intended for pilots who have already mastered flying basics and are ready to take their abilities to the next level. If you’re starting off and want to learn the ropes, I’d recommend logging some hours in an Arena Commander simpod. But for those ready to face a real challenge, I firmly believe that students learn best by doing. \\n\\nThat’s why I’ve designed these eight scenarios to be as realistic as possible. I promise you this is the closest thing to Navy combat pilot training you can get without enlisting, so don’t expect a lot of hand holding. <EM4>The risk of injury to yourself or your ship should be taken very seriously.</EM4>\\n\\nGAUNTLET SCENARIOS:\\n1. Single Targets\\n2. Multiple Targets\\n3. Target Priority\\n4. Target Stealth\\n5. Missiles and Countermeasures\\n6. Multi-Crew Targets\\n7. Corvette with Escorts\\n8. Capital Ship Encounter\\n\\nSo, if you’re ready to challenge yourself and prove you got what it takes to be a great pilot, the first scenario will focus on handling a single target. Head to <EM4>~mission(Location|Address)</EM4> to begin.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Situational Awareness – Don’t get so focused on taking a target that you aren’t watching your flight path. No good taking out the enemy if you fly headfirst into an asteroid.\\n\\nGood luck out there, \\nInstructor Gilly    \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.” \\n",
       "cooldownMin": 45,
-      "abandonCooldownMin": 45
+      "abandonCooldownMin": 45,
+      "unlocks": [
+        "Combat Gauntlet - Scenario #2"
+      ],
+      "isChain": true
     },
     {
       "className": "EchhartSecurity_Stanton_VeryEasy_RecoverCargo",
@@ -46679,7 +48260,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "New Opportunity - Ambush Strike"
+      ],
+      "isChain": true
     },
     {
       "className": "FoxwellEnforcement_ShipAmbush_Stanton_VeryEasy",
@@ -46727,7 +48312,18 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Exciting New Opportunities with Foxwell Enforcement"
+      ],
+      "unlocks": [
+        "Yellow Level Contract: Surprise Strike",
+        "Orange Level Contract: Spring a Trap",
+        "Orange Level Contract: Return the Favor",
+        "Red Level Contract: Ambush Attack Squad",
+        "Red Level Contract: Surprise Attack"
+      ],
+      "isChain": true
     },
     {
       "className": "DeadSaints_Nyx_VeryEasy_RecoverCargo",
@@ -46765,7 +48361,11 @@
       "systems": [
         "Nyx",
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Dead Saints"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_Nyx_VeryEasy_RecoverCargo",
@@ -46804,7 +48404,11 @@
         "Nyx",
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "requiresCompletion": [
+        "Setting a Trap"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Stanton_Intro",
@@ -46861,7 +48465,46 @@
       "systems": [
         "Stanton",
         "Pyro"
-      ]
+      ],
+      "unlocks": [
+        "Grab ‘n’ go",
+        "Taking what’s ours",
+        "Finish the job",
+        "Jackpot",
+        "Getting what we deserve",
+        "Worth the trouble",
+        "Help Headhunters Prospect",
+        "Headhunter Needs Help",
+        "Backup Needed Now",
+        "Bring Down the Hammer",
+        "Rally to Help Clips Convoy",
+        "Looking for a Damn Hero",
+        "Surprise Party",
+        "Silent Strike",
+        "Ambush Op",
+        "Reprisal Attack",
+        "Tactical Strike",
+        "Elite Op",
+        "See What’s Out There",
+        "Scout and Scan",
+        "Space Patrol",
+        "Looking For Trouble",
+        "Stand Our Ground",
+        "Hunt Some Heads",
+        "Eliminate Annoyance",
+        "Protect Our Site",
+        "Secure Our Airspace",
+        "Help Headhunters at [Location]",
+        "Stop Attack at [Location]",
+        "Restore Order at [Location]",
+        "Ground The Upstarts",
+        "No Fly Zone",
+        "Stopping the Competition",
+        "Wasting Their Stockpile",
+        "Trapping a Rat",
+        "Outsmarting our Enemies"
+      ],
+      "isChain": true
     },
     {
       "className": "HeadHunters_ShipAmbush_Stanton_VeryEasy",
@@ -47106,7 +48749,23 @@
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
-      "contractor": "Hockrow Agency"
+      "contractor": "Hockrow Agency",
+      "unlocks": [
+        "Verified Bounty: [TargetName] at [Location]",
+        "Jorrit Dossier: Lab Sample",
+        "Jorrit Dossier: Access Engineering Files",
+        "Jorrit Dossier: Access Research Files",
+        "Jorrit Dossier: Retrieve Energy Anomaly Data",
+        "Jorrit Dossier: Retrieve Security Data",
+        "Jorrit Dossier: Retrieve Seismic Data",
+        "Jorrit Dossier: Power Usage Data",
+        "Jorrit Dossier: Updated Energy Anomaly Data",
+        "Jorrit Dossier: Updated Security Data",
+        "Jorrit Dossier: Updated Seismic Data",
+        "Jorrit Dossier: Updated Power Usage Data",
+        "Cargo Transfer from Shuttered Facility"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Silicon",
@@ -47392,7 +49051,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "ENTRY LVL. COURIER NEEDED IN STANTON"
+      ],
+      "unlocks": [
+        "Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_FoodConstructionMedical_Rank1",
@@ -47426,7 +49092,14 @@
       "multiSystem": true,
       "systems": [
         "Stanton"
-      ]
+      ],
+      "requiresCompletion": [
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "unlocks": [
+        "Very Long Distance Covalex Delivery Stanton"
+      ],
+      "isChain": true
     },
     {
       "className": "HH_Pyro_RegionA_E_CFPXSOutposts_BombingRun",
@@ -47637,7 +49310,16 @@
       ],
       "system": "Stanton",
       "activity": "Delivery",
-      "contractor": "FTL Courier"
+      "contractor": "FTL Courier",
+      "requiresCompletion": [
+        "ENTRY LVL. COURIER NEEDED IN NYX"
+      ],
+      "unlocks": [
+        "JR. LVL. COURIER NEEDED IN STANTON",
+        "Med. Distance Covalex Delivery Stanton",
+        "Med. Distance Covalex Delivery Nyx"
+      ],
+      "isChain": true
     },
     {
       "className": "WildstarRacing_Race6_YadarValley_OpenTrack",
@@ -47877,7 +49559,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Cargo Hauling Opportunity with Ling Hauling"
+      ],
+      "isChain": true
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Nyx_Rank0_Local_Choice",
@@ -48050,7 +49736,16 @@
       "system": "Nyx",
       "danger": "Low",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "unlocks": [
+        "Locate Missing Clients",
+        "Locate Missing Employee",
+        "Locate Missing Team",
+        "Locate Missing Family Member",
+        "Locate Missing Contractors",
+        "Locate Missing Crew"
+      ],
+      "isChain": true
     },
     {
       "className": "Hockrow_Stanton_MissingPersonSpace_Intro",
@@ -48080,7 +49775,16 @@
       "system": "Stanton",
       "danger": "Low",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)"
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "unlocks": [
+        "Locate Missing Clients",
+        "Locate Missing Employee",
+        "Locate Missing Team",
+        "Locate Missing Family Member",
+        "Locate Missing Contractors",
+        "Locate Missing Crew"
+      ],
+      "isChain": true
     },
     {
       "className": "BountyHuntersGuild_Bounty_Pyro_Rehire",
@@ -48308,7 +50012,11 @@
       "activity": "FPS",
       "danger": "Low",
       "cooldownMin": 1,
-      "abandonCooldownMin": 1
+      "abandonCooldownMin": 1,
+      "unlocks": [
+        "Verified Bounty: [TargetName] at [Location]"
+      ],
+      "isChain": true
     },
     {
       "className": "CFP_Pyro_RegionA_E_CFPOutpost_FPSSalvage",
@@ -48759,7 +50467,16 @@
       "timeLimitMin": 0,
       "description": "Hello, I am Wikelo. Recent addition to your system and very excited to be here. Spent many time here in UEE and happy to spent more.\\n\\nHave place where I make things from other things.\\n\\nNeed person to bring me useful things to finish project I work on. You have list. Get, please. I am at <EM4>~mission(destination|ListAll)</EM4>.\\n\\nWill give you item for your help.\\n\\nAlso, when done, if you want to do more. Have many things can make in my humble shop. Come, look at pretty poster and then decide what you want me to make.\\n\\nBye.",
       "danger": "Low",
-      "contractor": "Wikelo Emporium"
+      "contractor": "Wikelo Emporium",
+      "unlocks": [
+        "Very Hungry",
+        "Trade Worm Parts for Favors?",
+        "Trade Merc Scrip for Favors?",
+        "Trade Council Scrip for Favors?",
+        "Turn Things to Favor",
+        "Want Polaris? Need something special."
+      ],
+      "isChain": true
     },
     {
       "className": "TheCollector_FoodOrder",
@@ -48774,7 +50491,11 @@
       "canShare": false,
       "timeLimitMin": 0,
       "description": "You humans keep Wikelo very busy. Work more than when I at old souli. But Wikelo very hungry now and can't get food.\\n\\nPlease help. Bring food and drink to Wikelo Emporium at <EM4>~mission(destination|ListAll)</EM4>.\\n\\nVery appreciate your help. Will give thing in return.\\n\\nBye.",
-      "contractor": "Wikelo Emporium"
+      "contractor": "Wikelo Emporium",
+      "requiresCompletion": [
+        "Wikelo Arrive to System"
+      ],
+      "isChain": true
     },
     {
       "className": "TheCollector_Favours_IrradiatedPearls",
@@ -48789,7 +50510,11 @@
       "canShare": false,
       "timeLimitMin": 0,
       "description": "Have new way to get <EM4>favors</EM4> from Wikelo. Hear much about worm things in radiation storms. Made up of many interesting parts that Wikelo find use for. \\n\\nIf you bring parts to <EM4>~mission(destination|ListAll)</EM4>, will trade for favor.\\n\\nBye.",
-      "contractor": "Wikelo Emporium"
+      "contractor": "Wikelo Emporium",
+      "requiresCompletion": [
+        "Wikelo Arrive to System"
+      ],
+      "isChain": true
     },
     {
       "className": "TheCollector_Favours_MercScrip",
@@ -48804,7 +50529,11 @@
       "canShare": false,
       "timeLimitMin": 0,
       "description": "Wikelo has another way to get <EM4>favors</EM4> if you interested. \\n\\nYour Mercenary souli has <EM4>scrip</EM4> metal, used like favors, but made of very interesting metal that Wikelo need for new project.\\n\\nIf you bring scrips to <EM4>~mission(destination|ListAll)</EM4>, will trade for favor.\\n\\nBye.",
-      "contractor": "Wikelo Emporium"
+      "contractor": "Wikelo Emporium",
+      "requiresCompletion": [
+        "Wikelo Arrive to System"
+      ],
+      "isChain": true
     },
     {
       "className": "TheCollector_Favours_CouncilScrip",
@@ -48819,7 +50548,11 @@
       "canShare": false,
       "timeLimitMin": 0,
       "description": "If you want other way to get <EM4>favors</EM4> from Wikelo, have thing for you. Wikelo have need for <EM4>scrip</EM4> given out by Council group. Wikelo not part of thief souli, but has business from time to time.\\n\\nIf you bring scrips to <EM4>~mission(destination|ListAll)</EM4>, will trade for favor.\\n\\nBye.",
-      "contractor": "Wikelo Emporium"
+      "contractor": "Wikelo Emporium",
+      "requiresCompletion": [
+        "Wikelo Arrive to System"
+      ],
+      "isChain": true
     },
     {
       "className": "TheCollector_Favours_Caranite",
@@ -48834,7 +50567,11 @@
       "canShare": false,
       "timeLimitMin": 0,
       "description": "Maybe Wikelo not have something you want made (that strange, but okay). Old souli would give out <EM4>favors</EM4>, very good way to prove that you do work for me. Collect enough and trade when I have something you want.\\n\\nBring things to <EM4>~mission(destination|ListAll)</EM4> and will trade for favor.\\n\\nBye.",
-      "contractor": "Wikelo Emporium"
+      "contractor": "Wikelo Emporium",
+      "requiresCompletion": [
+        "Wikelo Arrive to System"
+      ],
+      "isChain": true
     },
     {
       "className": "TheCollector_Favours_PolarisParts",
@@ -48849,7 +50586,11 @@
       "canShare": false,
       "timeLimitMin": 0,
       "description": "Wikelo need large amounts of <EM4>quantainium</EM4> and is willing to give you nice Polaris in exchange but also know many humans not have much space, so you trade as you go. Wikelo will you <EM4>Polaris bits</EM4> if you want trade quantainium. Work like favors. Help Wikelo remember how much you give. \\n\\nBring quantainium to <EM4>~mission(destination|ListAll)</EM4> and will trade for bits.\\n\\nBye.",
-      "contractor": "Wikelo Emporium"
+      "contractor": "Wikelo Emporium",
+      "requiresCompletion": [
+        "Wikelo Arrive to System"
+      ],
+      "isChain": true
     },
     {
       "className": "TheCollector_Vehicle_Small_Fortune",
@@ -50052,7 +51793,14 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "unlocks": [
+        "Salvager Needed (Small Supply of RMC)",
+        "Salvager Needed (Small Supply of RMC / UCM)",
+        "Salvager Needed (Small Supply of RMC / Components)",
+        "Salvager Needed (Small Special Order of RMC / Components)"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_FPSSalvage_Stanton_Canisters_S0Components",
@@ -50085,7 +51833,11 @@
         "Stanton",
         "Pyro",
         "Nyx"
-      ]
+      ],
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "Adagio_RG_FPSSalvage_Stanton_Canisters_S1Components_Unique",
@@ -50112,7 +51864,11 @@
       ],
       "system": "Stanton",
       "activity": "FPS",
-      "contractor": "Adagio Holdings"
+      "contractor": "Adagio Holdings",
+      "requiresCompletion": [
+        "Adagio Holdings in Need of Salvagers"
+      ],
+      "isChain": true
     },
     {
       "className": "RCD_Exclusive",

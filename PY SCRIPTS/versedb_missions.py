@@ -1322,8 +1322,10 @@ def main():
 
                 # Chain: required completion tags (prerequisites). Accept both
                 # StarBreaker <Reference value="GUID"/> and legacy <Reference>GUID</Reference>.
+                # Note: StarBreaker emits `<requiredCompletedContractTags __type="TagList">`,
+                # so the regex must allow attrs on the opening tag.
                 req_tags_block = re.search(
-                    r'<requiredCompletedContractTags>(.*?)</requiredCompletedContractTags>',
+                    r'<requiredCompletedContractTags[^>]*>(.*?)</requiredCompletedContractTags>',
                     body, re.S
                 )
                 req_tags = []
