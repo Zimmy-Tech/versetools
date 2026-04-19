@@ -72,31 +72,33 @@
   gap: 2px;
 }
 
+/* Match Missions → Contracts chip filter style for a consistent look. */
 .sb-btn {
-  font-family: 'Exo 2', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.02);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
   color: var(--text2);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 3px;
   cursor: pointer;
-  text-align: center;
-  transition: all 0.2s;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   white-space: nowrap;
+  transition: border-color .15s, color .15s, background .15s;
 
   &:hover {
+    border-color: rgba(255, 255, 255, 0.18);
     color: var(--text);
-    border-color: var(--accent2);
-    box-shadow: 0 0 6px rgba(0, 200, 255, 0.08);
   }
+
   &.active {
+    background: rgba(0, 200, 255, 0.12);
     color: var(--accent);
-    border-color: var(--accent);
-    background: rgba(0, 200, 255, 0.08);
-    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
+    border-color: rgba(0, 200, 255, 0.45);
   }
 }
 
@@ -1591,12 +1593,6 @@
   .filter-select, .filter-input {
     min-height: 40px;
     font-size: 14px;
-  }
-
-  .sb-btn {
-    min-height: 40px;
-    padding: 6px 10px;
-    font-size: 13px;
   }
 
   .filter-clear {
