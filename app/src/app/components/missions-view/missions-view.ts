@@ -41,6 +41,11 @@ interface Mission {
    *  (e.g. ['Pyro I', 'Pyro II']). Derived from the MissionLocality → starmap
    *  mapping in the extractor. Use this for display, not the raw region letter. */
   regionPlanets?: string[];
+  /** Live event this contract is gated behind (empty if always-available).
+   *  `eventActive=false` means the scenario is currently disabled — contract
+   *  exists in data but won't spawn in-game until CIG turns the event on. */
+  event?: string;
+  eventActive?: boolean;
   activity?: string;
   blueprintRewards?: string[];
   repReward?: number;
@@ -128,6 +133,9 @@ export class MissionsViewComponent {
   activityFilter = signal('');
   contractorFilter = signal('');
   riskFilter = signal<'' | 'low' | 'med' | 'high'>('');
+  /** Event filter. Empty string = main list (hide all event content); '__all__'
+   *  = include everything; any specific event name = show only that event. */
+  eventFilter = signal<string>('');
   sortBy = signal<'reward' | 'title' | 'category'>('reward');
   blueprintFilter = signal(false);
   chainFilter = signal(false);
@@ -174,6 +182,23 @@ export class MissionsViewComponent {
     return ['', ...Array.from(ct).sort()];
   });
 
+  /** Events present in the dataset. Each entry carries its active state so the
+   *  dropdown can dim dormant events. Sorted: active first, then alphabetical. */
+  readonly events = computed(() => {
+    const byName = new Map<string, boolean>();  // event → active
+    for (const m of this.allMissions()) {
+      if (!m.event) continue;
+      const prev = byName.get(m.event);
+      // If any row says active, treat the event as active.
+      if (prev === undefined || (!prev && m.eventActive)) {
+        byName.set(m.event, !!m.eventActive);
+      }
+    }
+    const list = Array.from(byName.entries());
+    list.sort((a, b) => (Number(b[1]) - Number(a[1])) || a[0].localeCompare(b[0]));
+    return list;
+  });
+
   blueprintNames = computed(() => {
     const names = new Set<string>();
     for (const m of this.allMissions()) {
@@ -186,7 +211,7 @@ export class MissionsViewComponent {
     return this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
            this.activityFilter() !== '' || this.contractorFilter() !== '' ||
-           this.riskFilter() !== '' ||
+           this.riskFilter() !== '' || this.eventFilter() !== '' ||
            this.blueprintFilter() || this.chainFilter() || this.blueprintNameFilter() !== '';
   });
 
@@ -201,6 +226,8 @@ export class MissionsViewComponent {
     if (this.systemFilter()) out.push({ key: 'system', label: this.systemFilter() });
     if (this.activityFilter()) out.push({ key: 'activity', label: this.activityFilter() });
     if (this.contractorFilter()) out.push({ key: 'contractor', label: this.contractorFilter() });
+    if (this.eventFilter() === '__all__') out.push({ key: 'event', label: 'Events: All' });
+    else if (this.eventFilter()) out.push({ key: 'event', label: 'Event: ' + this.eventFilter() });
     if (this.blueprintFilter()) out.push({ key: 'blueprint', label: 'Blueprints' });
     if (this.chainFilter()) out.push({ key: 'chain', label: 'Chains' });
     if (this.blueprintNameFilter()) out.push({ key: 'bpname', label: this.blueprintNameFilter() });
@@ -216,6 +243,7 @@ export class MissionsViewComponent {
       case 'system': this.systemFilter.set(''); break;
       case 'activity': this.activityFilter.set(''); break;
       case 'contractor': this.contractorFilter.set(''); break;
+      case 'event': this.eventFilter.set(''); break;
       case 'blueprint': this.blueprintFilter.set(false); break;
       case 'chain': this.chainFilter.set(false); break;
       case 'bpname': this.blueprintNameFilter.set(''); break;
@@ -251,6 +279,12 @@ export class MissionsViewComponent {
     if (cat) missions = missions.filter(m => m.category === cat);
     if (law === 'lawful') missions = missions.filter(m => m.lawful);
     if (law === 'unlawful') missions = missions.filter(m => !m.lawful);
+    // Event filter: default hides event-gated contracts from the main list
+    // (matches how other SC tools separate event content). '__all__' disables
+    // the filter; a specific event name narrows to just that event's contracts.
+    const ev = this.eventFilter();
+    if (!ev) missions = missions.filter(m => !m.event);
+    else if (ev !== '__all__') missions = missions.filter(m => m.event === ev);
     if (sys) missions = missions.filter(m =>
       (m.systems?.length ? m.systems.includes(sys) : m.system === sys)
     );
@@ -334,6 +368,7 @@ export class MissionsViewComponent {
     this.activityFilter.set('');
     this.contractorFilter.set('');
     this.riskFilter.set('');
+    this.eventFilter.set('');
     this.blueprintFilter.set(false);
     this.chainFilter.set(false);
     this.blueprintNameFilter.set('');

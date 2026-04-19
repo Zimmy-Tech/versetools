@@ -162,6 +162,134 @@ REGION_PLANETS = {
 def resolve_region_planets(system, region):
     return list(REGION_PLANETS.get((system, region), []))
 
+def _camel_to_words(s):
+    """Split a CamelCase token into spaced words. Keeps acronyms intact:
+    'ShipWaveAttack' -> 'Ship Wave Attack', 'HQBase' -> 'HQ Base'."""
+    s = re.sub(r'([a-z0-9])([A-Z])', r'\1 \2', s)
+    s = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', s)
+    return s.strip()
+
+_TITLE_NOISE_TOKENS = {
+    "pu", "hh", "cfp", "rr", "sp", "pve", "pvp", "haulcargo",
+    "stanton", "pyro", "nyx", "delamar",
+    "stanton1", "stanton1a", "stanton1b", "stanton2", "stanton2a", "stanton2b",
+    "stanton3", "stanton3a", "stanton3b", "stanton4", "stanton4a", "stanton4b",
+    "pyro1", "pyro2", "pyro3", "pyro4", "pyro5", "pyro6",
+    "regiona", "regionb", "regionc", "regiond",
+    "rank0", "rank1", "rank2", "rank3", "rank4", "rank5",
+    "ert", "hrt", "vhrt", "lrt", "vlrt", "mrt",
+    "standard", "intro", "random", "generic",
+    "lawful", "unlawful",
+    "easy", "medium", "hard", "veryeasy", "veryhard", "super",
+    "small", "large",
+    "regional", "local", "single",
+    "dc", "lob", "ugf",
+    "nononhostiles",  # CIG flag for "hostile-only targets" — noise in titles
+}
+_TITLE_TOKEN_ALIASES = {
+    "missingperson": "Missing Person",
+    "eliminateboss": "Eliminate Boss",
+    "eliminateall": "Eliminate All",
+    "eliminatespecific": "Eliminate Target",
+    "killship": "Ship Takedown",
+    "killanimals": "Kill Animals",
+    "commarrayrepair": "Comm Array Repair",
+    "commarrayhack": "Comm Array Hack",
+    "wastedisposal": "Waste Disposal",
+    "salvagecontractor": "Salvage",
+    "coverup": "Coverup",
+    "distributioncentre": "Distribution Centre",
+    "distributioncentres": "Distribution Centre",
+    "rounddelivery": "Round-Trip Delivery",
+    "cfpoutposts": "CFP Outposts",
+    "cfpxsoutposts": "CFP Outposts",
+    "multieliminateallandboss": "Multi-Eliminate + Boss",
+    "wanted5": "Five-Star Wanted",
+    "distraction": "Distraction",
+    "initialinvite": "Initial Invite",
+    "timetrial": "Time Trial",
+    "opentrack": "Open Track",
+    "blockaderunner": "Blockade Runner",
+    "prisonescapee": "Prison Escapee",
+    "removeclaimjumpers": "Remove Claim Jumpers",
+    "certificationmission": "Certification",
+    "defendshipnamed": "Defend Ship",
+    "escortships": "Escort Ships",
+    "shipwaveattack": "Ship Wave Attack",
+    "drawoutboss": "Draw Out Boss",
+    "foxwellenforcement": "Foxwell Enforcement",
+    "headhunters": "Head Hunters",
+    "bountyhuntersguild": "Bounty Hunters Guild",
+    "bountyhuntersguilds": "Bounty Hunters Guild",
+    "eavesdroppers": "Eavesdroppers",
+    "syncedassassination": "Synced Assassination",
+    "drugproduction": "Drug Production",
+}
+
+def synthesize_title_from_className(cn):
+    """Best-effort human-readable title from a raw className when localization
+    didn't resolve one. Preserves CamelCase word boundaries, filters noise
+    tokens (system/region/rank/difficulty markers), and applies known-compound
+    aliases. Returns empty string if nothing meaningful can be derived."""
+    if not cn:
+        return ""
+    # Wildstar races: WildstarRacing_RaceN_Circuit_OpenTrack / TimeTrial
+    m = re.match(r'^WildstarRacing_Race\d+_([A-Za-z0-9]+)_(OpenTrack|TimeTrial)$', cn)
+    if m:
+        circuit = _camel_to_words(m.group(1))
+        mode = "Open Track" if m.group(2) == "OpenTrack" else "Time Trial"
+        return f"{circuit} {mode}"
+    # Headhunters / CFP handyman: *_Rank*_..._Handyman
+    m = re.search(r'Rank(\d+).*_Handyman$', cn)
+    if m:
+        rank = m.group(1)
+        parts = cn.split("_")
+        loc_tokens = [p for p in parts[2:-1]
+                      if not re.match(r'^(Region[A-Z]|Rank\d+|Regional|Local)$', p)]
+        where = _camel_to_words(" ".join(loc_tokens)) if loc_tokens else "Pyro"
+        return f"{where} Handyman (Rank {rank})".strip()
+    cn_l = cn.lower()
+    # Scored local delivery series
+    m = re.search(r'_(legal|unlawful)_deliver_(\d+)$', cn_l)
+    if m:
+        kind = "Legal" if m.group(1) == "legal" else "Unlawful"
+        return f"Local {kind} Delivery {m.group(2)}"
+    # Courier series with location prefix
+    if "_courier" in cn_l:
+        parts = cn.split("_")
+        name_parts = [p for p in parts if p.lower() not in _TITLE_NOISE_TOKENS
+                      and not re.match(r'^(Region[A-Z]|Rank\d+|\d+boxe?s?|Single|Local|Med|Trdpst)$', p, re.I)
+                      and p.lower() != "courier"]
+        loc = _camel_to_words(" ".join(name_parts)) if name_parts else ""
+        return f"{loc} Courier".strip() if loc else "Courier Delivery"
+    # Haul cargo named variant
+    if cn_l == "haulcargo_rounddelivery":
+        return "Round-Trip Delivery"
+    # Generic path: split on _/-, keep original case, apply aliases + CamelCase splitting
+    parts = [p for p in re.split(r'[_\-]', cn) if p]
+    meaningful = []
+    for p in parts:
+        p_low = p.lower()
+        if p_low in _TITLE_NOISE_TOKENS:
+            continue
+        if re.match(r'^\d+$', p_low):
+            continue
+        # Drop per-instance IDs: letter prefix + digits (e.g. "mts4ld13")
+        if re.match(r'^[a-z]{2,}\d', p_low) and len(p_low) > 6:
+            continue
+        alias = _TITLE_TOKEN_ALIASES.get(p_low)
+        if alias:
+            meaningful.append(alias)
+            continue
+        split = _camel_to_words(p)
+        meaningful.append(split if " " in split else p.title())
+    if not meaningful:
+        return ""
+    title = " ".join(meaningful)
+    # Collapse duplicate consecutive words (e.g. "CFP CFP Outposts" → "CFP Outposts").
+    title = re.sub(r'\b(\w+)(\s+\1\b)+', r'\1', title, flags=re.IGNORECASE)
+    return title
+
 def infer_activity(class_name, generator=''):
     """Infer activity type (Ship, FPS, Mining, Salvage, etc.)."""
     cn = class_name.lower()
@@ -956,6 +1084,49 @@ def main():
                 pass
     print(f"  Loaded {len(bp_pool_map)} blueprint pools, {len(craft_names)} craft blueprints")
 
+    # Mission scenarios — event gates that can enable/disable contract families.
+    # A contract referencing a scenario with enabled="0" is not currently spawning
+    # in the live game. We tag such contracts with an `event` name + `eventActive`
+    # flag so the UI can group event content separately (like other tools do).
+    print("\n[4b/7] Loading mission scenarios...")
+    scen_dir = FORGE_DIR / "missionscenarios"
+    scenarios = {}
+    if scen_dir.exists():
+        for p in scen_dir.rglob("*.xml.xml"):
+            try:
+                text = p.read_text(encoding="utf-8")
+            except Exception:
+                continue
+            ref_m = re.search(r'__ref="([0-9a-f-]+)"', text)
+            if not ref_m:
+                continue
+            name_m = re.search(r'<MissionScenario\.[^\s]*\s+name="([^"]+)"', text)
+            desc_m = re.search(r'description="([^"]+)"', text)
+            enabled_m = re.search(r'<MissionScenarioSchedule[^/>]*enabled="(\d)"', text)
+            scenarios[guid_key(ref_m.group(1))] = {
+                "name": name_m.group(1) if name_m else p.stem,
+                "description": desc_m.group(1) if desc_m else "",
+                "enabled": enabled_m.group(1) == "1" if enabled_m else None,
+            }
+    print(f"  Parsed {len(scenarios)} scenarios ({sum(1 for s in scenarios.values() if s['enabled'])} active)")
+
+    _EVENT_CLEANERS = [
+        (re.compile(r'^\s*Start this [Ss]cenario to activate the?\s+', re.I), ''),
+        (re.compile(r'^\s*Event to\s+', re.I), ''),
+        (re.compile(r'\s+event\s*$', re.I), ''),
+        (re.compile(r'\s*\..*$'), ''),  # stop at first sentence
+    ]
+    def event_display(scen):
+        desc = (scen.get("description") or "").strip()
+        for rx, repl in _EVENT_CLEANERS:
+            desc = rx.sub(repl, desc).strip()
+        if desc and desc[0].islower():
+            desc = desc[0].upper() + desc[1:]
+        if desc:
+            return desc
+        name = re.sub(r'_?[Ss]cenario$', '', scen.get("name") or "")
+        return re.sub(r'[_]+', ' ', name).strip() or scen.get("name", "")
+
     # Contracts (from contract generator system)
     print("\n[5/7] Parsing contracts...")
     contract_dir = FORGE_DIR / "contracts" / "contractgenerator"
@@ -988,6 +1159,15 @@ def main():
             # Clean up scope name: "reputationscope_assassination" -> "assassination"
             if gen_scope.startswith("reputationscope_"):
                 gen_scope = gen_scope.replace("reputationscope_", "")
+
+            # Handler-level scenario gate. Applies to every contract under this
+            # generator unless an individual contract overrides with its own.
+            gen_scenario_refs = []
+            gen_scen_m = re.search(
+                r'<ContractGeneratorHandler[^>]*>.*?<required_active_scenarios>(.*?)</required_active_scenarios>',
+                txt, re.S)
+            if gen_scen_m:
+                gen_scenario_refs = re.findall(r'<Reference value="([0-9a-f-]+)"', gen_scen_m.group(1))
 
             def parse_contract_element(attrs, body, gen_name, parent_title=""):
                 """Parse a Contract, SubContract, or CareerContract element."""
@@ -1206,6 +1386,23 @@ def main():
                     entry["_grantTags"] = grant_tags
                 if once_only:
                     entry["onceOnly"] = True
+
+                # Event gate. Contract-level scenarios take precedence over handler.
+                scen_m = re.search(
+                    r'<required_active_scenarios>(.*?)</required_active_scenarios>',
+                    body, re.S)
+                if scen_m:
+                    scen_refs = re.findall(r'<Reference value="([0-9a-f-]+)"', scen_m.group(1))
+                else:
+                    scen_refs = gen_scenario_refs
+                if scen_refs:
+                    # Use the first scenario; rare for contracts to require multiple.
+                    info = scenarios.get(guid_key(scen_refs[0]))
+                    if info:
+                        entry["event"] = event_display(info)
+                        if info.get("enabled") is not None:
+                            entry["eventActive"] = bool(info["enabled"])
+
                 # Resolve contractor early so scope display can use it
                 contractor = _resolve_contractor(debug_name, loc) or _resolve_contractor(gen_name, loc) or ""
                 if contractor:
@@ -1654,11 +1851,35 @@ def main():
     # region A/B vs C/D "Deep space hit") stay as distinct entries so each row's
     # blueprintRewards accurately reflects what that variant actually awards.
     # Mark duplicates with "multiSystem" flag and union per-system/region/giver metadata.
+    #
+    # Opt-in audit: with VERSEDB_DEDUP_AUDIT=1 set, capture pre-dedup variants into
+    # a sidecar JSON so you can scan for fields that diverge within a collapsed
+    # group (indicating the dedup key may be hiding meaningful variation).
+    AUDIT = bool(os.environ.get("VERSEDB_DEDUP_AUDIT"))
+    audit_groups = {} if AUDIT else None
+
+    def dedup_key(m):
+        """Fields that materially change what the player experiences.
+        - title/category/reward: baseline identity
+        - blueprintRewards: loot pool (rewards accuracy, per-region fix)
+        - lawful: legal vs illegal is a hard boundary
+        - activity: Ship vs FPS is a hard boundary
+        - missionFlow: different objectives = different mission
+        """
+        return (
+            m.get("title"), m.get("category"), m.get("reward"),
+            tuple(sorted(m.get("blueprintRewards") or [])),
+            m.get("lawful"),
+            m.get("activity"),
+            tuple(m.get("missionFlow") or []),
+        )
+
     seen = {}
     unique = []
     for m in missions:
-        bp_sig = tuple(sorted(m.get("blueprintRewards") or []))
-        key = (m["title"], m["category"], m["reward"], bp_sig)
+        key = dedup_key(m)
+        if AUDIT:
+            audit_groups.setdefault(key, []).append(dict(m))
         if key not in seen:
             seen[key] = m
             unique.append(m)
@@ -1736,8 +1957,9 @@ def main():
     seen2 = {}
     unique2 = []
     for m in all_entries:
-        bp_sig = tuple(sorted(m.get("blueprintRewards") or []))
-        key = (m["title"], m["category"], m["reward"], bp_sig)
+        key = dedup_key(m)
+        if AUDIT:
+            audit_groups.setdefault(key, []).append(dict(m))
         if key not in seen2:
             seen2[key] = m
             unique2.append(m)
@@ -1875,16 +2097,16 @@ def main():
     for m in all_entries:
         title = m.get("title", "")
         if title.startswith("[Contractor]"):
-            cn = m.get("className", "").lower().replace("pu_", "")
+            cn = m.get("className", "")
+            cn_l = cn.lower().replace("pu_", "")
             new_title = None
             for pattern, label in _CLASSNAME_TITLE_MAP.items():
-                if pattern in cn:
+                if pattern in cn_l:
                     new_title = label
                     break
-            if new_title:
-                m["title"] = new_title
-            else:
-                m["title"] = cn.replace("_", " ").title()
+            # Fallback: use the shared className synthesizer rather than a naive
+            # title-case which produces squashed tokens like "Removeclaimjumpers".
+            m["title"] = new_title or synthesize_title_from_className(cn) or cn_l.replace("_", " ").title()
             placeholder_fixed += 1
         # Strip PLACEHOLDER rep requirements
         if m.get("repRequirements"):
@@ -2198,6 +2420,50 @@ def main():
     if narr_fixed:
         print(f"  Resolved narrative for {narr_fixed} procedural contracts")
 
+    # ── Drop clear dev/test templates that never ship as real content ──
+    # These have generic className markers (_template, _mtest) and unresolved
+    # titles. Shipping them pollutes search with meaningless "<= UNINITIALIZED =>" rows.
+    _TEMPLATE_CN_PATTERNS = re.compile(r'(?:^|_)(?:template|mtest)(?:_|$)', re.IGNORECASE)
+    before_tpl = len(all_entries)
+    all_entries = [e for e in all_entries if not _TEMPLATE_CN_PATTERNS.search(e.get("className", ""))]
+    dropped_tpl = before_tpl - len(all_entries)
+    if dropped_tpl:
+        print(f"  Dropped {dropped_tpl} dev/test template entries")
+
+    # ── Fallback title synthesis from className ────────────────────
+    # After all loc lookups + narrative resolution, some titles still carry raw
+    # placeholders (<= UNINITIALIZED =>, <= PLACEHOLDER =>, bare [Token]) because
+    # CIG stores the human string runtime-only. Synthesize readable fallbacks
+    # from className tokens so players see meaningful names instead of debug text.
+    def is_placeholder_title(t):
+        """True only for titles that are actually missing their human-readable
+        form — not for in-game titles that carry runtime substitution tokens
+        like 'Reclusive Bounty: [TargetName] | Extreme Risk'. A title is a
+        placeholder if it's empty, a dev marker (<=…=>), or consists *only*
+        of bracketed tokens ([Title], [Contractor], [Title] ([Item])) with
+        no surrounding prose."""
+        if not t:
+            return True
+        if "<=" in t and "=>" in t:
+            return True
+        # Strip all [Token] placeholders and see if any real text remains.
+        stripped = re.sub(r'\[[A-Za-z]+\]', '', t)
+        # Also strip trailing parenthesised tokens like "([Item])" leftover.
+        stripped = re.sub(r'\(\s*\)', '', stripped).strip()
+        return not stripped
+
+    synth_fixed = 0
+    for entry in all_entries:
+        t = (entry.get("title") or "").strip()
+        if not is_placeholder_title(t):
+            continue
+        fallback = synthesize_title_from_className(entry.get("className", ""))
+        if fallback:
+            entry["title"] = fallback
+            synth_fixed += 1
+    if synth_fixed:
+        print(f"  Synthesized {synth_fixed} fallback titles from className")
+
     # ── Contractor profiles from RepUI localization ────────────────
     # Each in-game faction/NPC has a narrative card in global.ini as
     # {key}_RepUI_Description/Area/Focus/Founded/HQ/Leadership (or the
@@ -2230,6 +2496,71 @@ def main():
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
+
+    # Opt-in dedup audit: emit a sidecar showing what fields vary within each
+    # collapsed group, so maintainers can spot "hidden variants" and decide
+    # whether to extend the dedup key.
+    if AUDIT and audit_groups:
+        # Fields that are deliberately unioned or are per-row bookkeeping are
+        # not audit-interesting. Everything else is surfaced if it diverges.
+        IGNORE = {
+            "className", "_titleLocKey", "_ref", "_requiredRefs",
+            "_reqTags", "_grantTags",
+            "system", "systems", "region", "regions", "giver", "givers",
+            "regionPlanets", "multiSystem", "repScopes",
+            # Part of the dedup key — never divergent within a group:
+            "blueprintRewards", "lawful", "activity", "missionFlow",
+        }
+        def norm(v):
+            if isinstance(v, list):
+                return tuple(norm(x) for x in v)
+            if isinstance(v, dict):
+                return tuple(sorted((k, norm(val)) for k, val in v.items()))
+            return v
+
+        audit_report = []
+        for key, variants in audit_groups.items():
+            if len(variants) < 2:
+                continue
+            all_fields = set()
+            for v in variants:
+                all_fields.update(v.keys())
+            diffs = {}
+            for field in all_fields - IGNORE:
+                values = {norm(v.get(field)) for v in variants}
+                if len(values) > 1:
+                    # Store original (non-normalized) representative values.
+                    uniq_samples = []
+                    seen_norms = set()
+                    for v in variants:
+                        raw = v.get(field)
+                        n = norm(raw)
+                        if n not in seen_norms:
+                            seen_norms.add(n)
+                            uniq_samples.append(raw)
+                    diffs[field] = uniq_samples
+            if diffs:
+                audit_report.append({
+                    "title": variants[0].get("title"),
+                    "category": variants[0].get("category"),
+                    "reward": variants[0].get("reward"),
+                    "variant_count": len(variants),
+                    "diverging_field_count": len(diffs),
+                    "diverging_fields": sorted(diffs.keys()),
+                    "samples": diffs,
+                    "classNames": sorted({v.get("className", "") for v in variants}),
+                })
+        audit_report.sort(key=lambda r: (-r["diverging_field_count"], -r["variant_count"], r["title"]))
+        audit_path = OUTPUT_FILE.with_name("versedb_missions_dedup_audit.json")
+        with open(audit_path, "w", encoding="utf-8") as f:
+            json.dump({
+                "summary": {
+                    "collapsed_groups": sum(1 for v in audit_groups.values() if len(v) > 1),
+                    "groups_with_variance": len(audit_report),
+                },
+                "groups": audit_report,
+            }, f, indent=2, ensure_ascii=False)
+        print(f"\n  [audit] Wrote {audit_path.name}: {len(audit_report)} groups with field variance")
 
     size_kb = OUTPUT_FILE.stat().st_size / 1024
     print(f"\n{'=' * 60}")

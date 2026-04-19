@@ -94,6 +94,18 @@
           }
         </select>
 
+        @if (events().length) {
+          <h4>Event</h4>
+          <select class="mv-select" [value]="eventFilter()"
+                  (change)="eventFilter.set($any($event.target).value); resetPage()">
+            <option value="">Main (no events)</option>
+            <option value="__all__">All events + main</option>
+            @for (ev of events(); track ev[0]) {
+              <option [value]="ev[0]">{{ ev[0] }}{{ ev[1] ? '' : ' (dormant)' }}</option>
+            }
+          </select>
+        }
+
         <h4>Special</h4>
         <div class="mv-chips">
           <button class="mv-chip" [class.on]="contractorFilter() === 'Wikelo Emporium'"
@@ -166,6 +178,12 @@
                     }
                     @if (m.isChain) {
                       <span class="mv-badge b-chain">Chain</span>
+                    }
+                    @if (m.event) {
+                      <span class="mv-badge b-event" [class.b-event-dormant]="!m.eventActive"
+                            [title]="m.eventActive ? 'Event: ' + m.event + ' (active)' : 'Event: ' + m.event + ' (dormant — not currently in-game)'">
+                        {{ m.eventActive ? 'Event' : 'Dormant' }}: {{ m.event }}
+                      </span>
                     }
                   </div>
                   <div class="mv-meta-row">
@@ -381,12 +399,12 @@
                     </div>
 
                     @if (m.blueprintRewards?.length) {
-                      <h5>Blueprints</h5>
-                      <div class="mv-tags">
+                      <h5>Blueprint Rewards</h5>
+                      <ul class="mv-bp-list">
                         @for (bp of m.blueprintRewards; track bp) {
-                          <span class="mv-tag bp">{{ bp }}</span>
+                          <li>{{ bp }}</li>
                         }
-                      </div>
+                      </ul>
                     }
                     @if (m.requiresCompletion?.length) {
                       <h5>Requires</h5>

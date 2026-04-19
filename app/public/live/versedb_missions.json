@@ -1,19 +1,19 @@
 {
   "meta": {
-    "totalContracts": 1629,
+    "totalContracts": 1643,
     "categories": {
       "Blockade Runner": 1,
-      "Bounty": 147,
+      "Bounty": 152,
       "Cargo": 188,
-      "Combat": 111,
+      "Combat": 113,
       "Combined": 4,
-      "Contract": 948,
+      "Contract": 952,
       "Delivery": 91,
-      "Derelict": 16,
+      "Derelict": 20,
       "Event": 5,
       "Investigation": 8,
       "Mission Giver (Pacheco)": 2,
-      "Other": 79,
+      "Other": 81,
       "Prison": 2,
       "PvP": 2,
       "Ship Recovery": 1,
@@ -6144,13 +6144,10 @@
         "Hurston",
         "Crusader",
         "Stanton",
-        "Pyro",
-        "microTech",
-        "ArcCorp"
+        "Pyro"
       ],
       "givers": [
-        "[Contractor]",
-        "Shubin Interstellar"
+        "[Contractor]"
       ]
     },
     {
@@ -6468,7 +6465,8 @@
       "unlocks": [
         "Oust Claimjumpers",
         "Remove Claimjumpers",
-        "Expel Claimjumpers"
+        "Expel Claimjumpers",
+        "[Contractor]"
       ],
       "isChain": true
     },
@@ -6527,20 +6525,74 @@
       "cooldownMin": 15,
       "repScopes": [
         "affinity",
-        "assassination",
-        "hiredmuscle"
+        "assassination"
       ],
       "system": "Pyro",
       "activity": "Ship",
       "contractor": "XenoThreat",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
+    },
+    {
+      "className": "pu_removeclaimjumpers_pyro_xenothreat_pyro2",
+      "title": "XenoThreat",
+      "category": "Bounty",
+      "reward": 5000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "description": "am_RCJ_Pyro2_desc",
+      "giver": "XenoThreat",
+      "lifetimeMin": 20,
+      "respawnMin": 5,
+      "cooldownMin": 2,
+      "repScopes": [
+        "affinity",
+        "hiredmuscle"
+      ],
+      "system": "Pyro",
+      "contractor": "XenoThreat",
       "multiSystem": true,
       "systems": [
         "Pyro"
       ],
       "givers": [
         "XenoThreat"
-      ]
+      ],
+      "requiresCompletion": [
+        "Surveillance Termination"
+      ],
+      "isChain": true
+    },
+    {
+      "className": "pu_removeclaimjumpers_pyro_roughandready_pyro3",
+      "title": "Rough & Ready",
+      "category": "Bounty",
+      "reward": 5000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "description": "am_RCJ_Pyro3_desc",
+      "giver": "Rough & Ready",
+      "lifetimeMin": 20,
+      "respawnMin": 5,
+      "cooldownMin": 2,
+      "system": "Pyro",
+      "contractor": "Rough & Ready",
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "givers": [
+        "Rough & Ready"
+      ],
+      "requiresCompletion": [
+        "Stop Spying Op"
+      ],
+      "isChain": true
     },
     {
       "className": "pu_assassination_pve_vaughn",
@@ -6595,6 +6647,59 @@
       "contractor": "Eckhart Security"
     },
     {
+      "className": "pu_assassination_pve",
+      "title": "Assassination",
+      "category": "Bounty",
+      "reward": 5000,
+      "currency": "UEC",
+      "lawful": false,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 45,
+      "respawnMin": 5,
+      "cooldownMin": 30,
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "givers": [
+        "[Contractor]"
+      ]
+    },
+    {
+      "className": "pu_removeclaimjumpers_stanton1",
+      "title": "Remove Claim Jumpers",
+      "category": "Bounty",
+      "reward": 5000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "Shubin Interstellar",
+      "lifetimeMin": 20,
+      "respawnMin": 5,
+      "cooldownMin": 2,
+      "system": "Hurston",
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "systems": [
+        "Hurston",
+        "Pyro",
+        "Crusader",
+        "microTech",
+        "ArcCorp"
+      ],
+      "givers": [
+        "Shubin Interstellar",
+        "[Contractor]"
+      ],
+      "requiresCompletion": [
+        "Clear Claimjumpers"
+      ],
+      "isChain": true
+    },
+    {
       "className": "pu_removeclaimjumpers_pyro_xenothreat_intro",
       "title": "Surveillance Termination",
       "category": "Bounty",
@@ -6618,6 +6723,7 @@
       "danger": "Low",
       "unlocks": [
         "Eradicate Sentries",
+        "XenoThreat",
         "Annihilate Sentries",
         "Silence Sentries"
       ],
@@ -6674,6 +6780,7 @@
       "unlocks": [
         "Squash Spying Op",
         "Silence Spying Op",
+        "Rough & Ready",
         "Stomp Spying Op"
       ],
       "isChain": true
@@ -7475,6 +7582,24 @@
       "respawnMin": 1,
       "cooldownMin": 15,
       "activity": "Ship",
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
+    },
+    {
+      "className": "pu_bounty_fps_pve_stanton2",
+      "title": "Bounty",
+      "category": "Bounty",
+      "reward": 1890,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 15,
+      "respawnMin": 1,
+      "cooldownMin": 15,
+      "system": "Crusader",
+      "activity": "FPS",
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
       "systems": [
@@ -13101,7 +13226,7 @@
     },
     {
       "className": "haulcargo_rounddelivery",
-      "title": "<= UNINITIALIZED =>",
+      "title": "Round-Trip Delivery",
       "category": "Cargo",
       "reward": 18000,
       "currency": "UEC",
@@ -13166,33 +13291,6 @@
       ]
     },
     {
-      "className": "haulcargo_template",
-      "title": "<= UNINITIALIZED =>",
-      "category": "Cargo",
-      "reward": 10000,
-      "currency": "UEC",
-      "lawful": true,
-      "difficulty": 2,
-      "maxPlayers": 1,
-      "canShare": true,
-      "description": "<= UNINITIALIZED =>",
-      "giver": "Covalex Independent Contractors",
-      "lifetimeMin": 60,
-      "respawnMin": 10,
-      "cooldownMin": 60,
-      "repScopes": [
-        "hauling"
-      ],
-      "repRequirements": [
-        {
-          "scope": "hauling",
-          "minRank": "Trainee",
-          "maxRank": "Trainee"
-        }
-      ],
-      "activity": "Delivery"
-    },
-    {
       "className": "haulcargo_multi2tosingle_processed_agriculturalsupplies_stanton4",
       "title": "Trainee Rank - Extra Small Cargo Haul",
       "category": "Cargo",
@@ -13227,37 +13325,6 @@
         "Hurston",
         "ArcCorp"
       ],
-      "givers": [
-        "Covalex Independent Contractors"
-      ]
-    },
-    {
-      "className": "haulcargo_mtest",
-      "title": "<= UNINITIALIZED =>",
-      "category": "Cargo",
-      "reward": 5000,
-      "currency": "UEC",
-      "lawful": true,
-      "difficulty": 1,
-      "maxPlayers": 1,
-      "canShare": true,
-      "description": "<= UNINITIALIZED =>",
-      "giver": "Covalex Independent Contractors",
-      "lifetimeMin": 60,
-      "respawnMin": 10,
-      "cooldownMin": 60,
-      "repScopes": [
-        "hauling"
-      ],
-      "repRequirements": [
-        {
-          "scope": "hauling",
-          "minRank": "Trainee",
-          "maxRank": "Trainee"
-        }
-      ],
-      "activity": "Delivery",
-      "multiSystem": true,
       "givers": [
         "Covalex Independent Contractors"
       ]
@@ -15286,11 +15353,6 @@
       ],
       "systems": [
         "Pyro"
-      ],
-      "repScopes": [
-        "assassination",
-        "affinity",
-        "bounty"
       ]
     },
     {
@@ -15345,6 +15407,31 @@
       ],
       "system": "Crusader",
       "activity": "FPS"
+    },
+    {
+      "className": "pu_eliminatespecific_lawful_nononhostiles",
+      "title": "Eliminate Target",
+      "category": "Combat",
+      "reward": 14000,
+      "currency": "UEC",
+      "lawful": false,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 15,
+      "cooldownMin": 1,
+      "activity": "FPS",
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "givers": [
+        "[Contractor]"
+      ],
+      "repScopes": [
+        "assassination",
+        "affinity",
+        "bounty"
+      ]
     },
     {
       "className": "pu_eliminatespecific_lawful_nononhostiles_stanton3",
@@ -16479,6 +16566,25 @@
       "system": "Pyro"
     },
     {
+      "className": "pu_destroynarcotics_legal",
+      "title": "Destroy Narcotics",
+      "category": "Combat",
+      "reward": 8000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 15,
+      "cooldownMin": 10,
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "givers": [
+        "[Contractor]"
+      ]
+    },
+    {
       "className": "pu_destroynarcotics_legal_stanton4",
       "title": "Clear Site of Drugs",
       "category": "Combat",
@@ -17450,6 +17556,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "InterSec",
       "repScopes": [
         "InterSec"
@@ -17482,6 +17590,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -17641,6 +17751,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -18259,6 +18371,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "InterSec",
       "repScopes": [
         "InterSec"
@@ -18291,6 +18405,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -18382,6 +18498,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -18420,6 +18538,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -18971,6 +19091,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -19008,6 +19130,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -19043,6 +19167,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -20602,6 +20728,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Eckhart Security",
       "repScopes": [
         "Eckhart Security"
@@ -20639,6 +20767,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -20686,6 +20816,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -20736,6 +20868,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -20764,6 +20898,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -20800,6 +20936,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -21000,6 +21138,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -21261,6 +21401,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -21383,6 +21525,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -21420,6 +21564,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -21450,6 +21596,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -21488,6 +21636,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -21848,6 +21998,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Eckhart Security",
       "repScopes": [
         "Eckhart Security"
@@ -21885,6 +22037,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -21932,6 +22086,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -21960,6 +22116,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -21996,6 +22154,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -22689,6 +22849,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -23957,6 +24119,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -24387,6 +24551,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -24596,6 +24762,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Ling Family Hauling",
       "repScopes": [
         "Ling Family Hauling",
@@ -24833,6 +25001,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Ling Family Hauling",
       "repScopes": [
         "Ling Family Hauling",
@@ -25691,6 +25861,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -25768,6 +25940,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Eckhart Security",
       "repScopes": [
         "Eckhart Security"
@@ -25837,6 +26011,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -25884,6 +26060,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -25934,6 +26112,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -25962,6 +26142,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -25998,6 +26180,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -27068,6 +27252,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -27189,6 +27375,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -27300,6 +27488,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Security"
       ],
@@ -27603,6 +27793,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -27641,6 +27833,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -27884,6 +28078,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -27920,6 +28116,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -27963,6 +28161,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -27991,6 +28191,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -28085,6 +28287,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -28121,6 +28325,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -28156,6 +28362,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -28206,6 +28414,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -28385,6 +28595,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -28451,6 +28663,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -28667,6 +28881,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Red Wind Linehaul"
       ],
@@ -28704,6 +28920,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex",
         "Hauling"
@@ -28813,6 +29031,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -28848,6 +29068,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -28914,6 +29136,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -29115,6 +29339,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Ling Family Hauling",
       "repScopes": [
         "Ling Family Hauling",
@@ -29208,6 +29434,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -29319,6 +29547,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -29377,6 +29607,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Civilian Defense Force",
@@ -29600,6 +29832,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -29635,6 +29869,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Security"
       ],
@@ -29878,6 +30114,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -29923,6 +30161,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -30107,6 +30347,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -30218,6 +30460,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -30691,6 +30935,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -30723,6 +30969,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -31016,6 +31264,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Red Wind Linehaul"
       ],
@@ -31053,6 +31303,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex",
         "Hauling"
@@ -31171,6 +31423,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -31353,6 +31607,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -31431,6 +31687,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Vaughn",
       "repScopes": [
         "Assassination"
@@ -31503,6 +31761,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -31587,6 +31847,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -32083,6 +32345,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -32436,6 +32700,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -32477,6 +32743,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -32507,6 +32775,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -32537,6 +32807,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -33059,6 +33331,52 @@
       ]
     },
     {
+      "className": "HH_Pyro_RegionA_M_OccuCave_MissingPerson",
+      "title": "Track Down [TargetName]",
+      "category": "Contract",
+      "generator": "headhunters_investigation",
+      "reward": 61750,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "contractor": "Headhunters",
+      "repScopes": [
+        "Headhunters"
+      ],
+      "timeLimitMin": 18,
+      "description": "We’re on the market for a new stash house, so I sent ~mission(TargetName) over to ~mission(Location|Address). They were supposed to just have a quick look and report back to me if any of the hangars would work for us, but I haven’t heard from them since.\\n\\nMy guess is that someone else was already using the hangar, but I’d sleep better knowing for sure.\\n\\nIf the credits seem right, head over and see if you can find out what happened to ~mission(TargetName|Last). Just be careful. I’d hate to have to hire someone to find your body next.\\n\\nStows out.",
+      "repRequirements": [
+        {
+          "scope": "Headhunters",
+          "minRank": "Jr. Contractor",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro IV",
+        "Pyro V",
+        "Pyro VI"
+      ],
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
       "className": "HH_Pyro_RegionA_CrimBase_Rank2_MissingPerson",
       "title": "Find [TargetName]\\n",
       "category": "Contract",
@@ -33219,6 +33537,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -33251,6 +33571,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -33303,6 +33625,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -33341,6 +33665,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -33537,6 +33863,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Red Wind Linehaul"
       ],
@@ -33574,6 +33902,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex",
         "Hauling"
@@ -33609,6 +33939,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -33641,6 +33973,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -33895,6 +34229,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -33988,6 +34324,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -34487,6 +34825,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -34528,6 +34868,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -35061,6 +35403,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -35096,6 +35440,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Security"
       ],
@@ -35123,6 +35469,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Eckhart Security",
       "repScopes": [
         "Eckhart Security"
@@ -35200,6 +35548,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -35247,6 +35597,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -35275,6 +35627,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -35312,6 +35666,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -35482,6 +35838,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -35669,6 +36027,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -36002,6 +36362,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Civilian Defense Force",
         "Security"
@@ -36116,6 +36478,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -36177,6 +36541,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -36369,6 +36735,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -36482,6 +36850,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Security"
       ],
@@ -36708,6 +37078,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -36850,6 +37222,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -36900,6 +37274,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -37032,6 +37408,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Ling Family Hauling",
       "repScopes": [
         "Ling Family Hauling",
@@ -37187,6 +37565,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -37313,6 +37693,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -37345,6 +37727,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -37469,6 +37853,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -37542,6 +37928,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Red Wind Linehaul"
       ],
@@ -37579,6 +37967,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex",
         "Hauling"
@@ -37614,6 +38004,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -37702,6 +38094,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -37734,6 +38128,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -37868,6 +38264,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -38009,6 +38407,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -38037,6 +38437,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Civilian Defense Force",
@@ -38196,6 +38598,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -38652,6 +39056,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -38751,6 +39157,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -38905,6 +39313,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -38937,6 +39347,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -39029,6 +39441,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -39193,6 +39607,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Civilian Defense Force",
@@ -39470,6 +39886,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -39506,6 +39924,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -39610,6 +40030,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -39638,6 +40060,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -39666,6 +40090,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -39902,6 +40328,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Civilian Defense Force",
@@ -40018,6 +40446,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -40062,6 +40492,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -40111,6 +40543,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -40315,6 +40749,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -40386,6 +40822,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -40596,6 +41034,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -40813,6 +41253,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -41044,6 +41486,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -41075,6 +41519,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -41152,6 +41598,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -41206,6 +41654,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -41281,6 +41731,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -41420,6 +41872,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -41465,6 +41919,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -41495,6 +41951,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Vaughn",
       "repScopes": [
         "Assassination"
@@ -41661,6 +42119,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -41696,6 +42156,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -42188,12 +42650,35 @@
       "system": "Stanton",
       "danger": "Low",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
-      "multiSystem": true,
-      "systems": [
-        "Stanton",
-        "Nyx"
-      ]
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
+    },
+    {
+      "className": "Hockrow_BlackBoxRecovery_Nyx_VeryEasy",
+      "title": "Hockrow Agency",
+      "category": "Contract",
+      "generator": "hockrowagency_recoveritem",
+      "reward": 31750,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "repScopes": [
+        "Hockrow Agency"
+      ],
+      "timeLimitMin": 12,
+      "repRequirements": [
+        {
+          "scope": "Hockrow Agency",
+          "minRank": "Neutral",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Nyx",
+      "danger": "Very Low",
+      "contractor": "Hockrow Agency",
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
       "className": "FTL_RecoverItem_Space_Stanton_Easy",
@@ -42273,6 +42758,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -42305,6 +42792,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -42355,6 +42844,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -42456,6 +42947,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -42501,6 +42994,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -42696,6 +43191,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -42767,6 +43264,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -42805,6 +43304,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -42915,6 +43416,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Red Wind Linehaul"
       ],
@@ -42952,6 +43455,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex",
         "Hauling"
@@ -43139,6 +43644,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -43208,6 +43715,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -43243,6 +43752,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Security"
       ],
@@ -43309,6 +43820,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -43679,6 +44192,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -43845,6 +44360,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -43877,6 +44394,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Bit Zeros"
       ],
@@ -43926,6 +44445,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -43961,6 +44482,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Eckhart Security",
       "repScopes": [
         "Eckhart Security"
@@ -43998,6 +44521,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Citizens For Prosperity"
       ],
@@ -44049,6 +44574,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Citizens For Prosperity"
@@ -44099,6 +44626,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -44127,6 +44656,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -44188,6 +44719,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Ling Family Hauling",
       "repScopes": [
         "Ling Family Hauling",
@@ -44218,6 +44751,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -44254,6 +44789,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -44291,6 +44828,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -44322,6 +44861,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -44564,6 +45105,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -44596,6 +45139,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -44628,6 +45173,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -44660,6 +45207,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -44786,6 +45335,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Shubin Interstellar"
       ],
@@ -44827,6 +45378,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Ling Family Hauling",
       "repScopes": [
         "Ling Family Hauling",
@@ -44941,6 +45494,49 @@
       ]
     },
     {
+      "className": "HH_Pyro_RegionA_E_UnocCave_Rustville_MissingPerson",
+      "title": "Anybody Seen [TargetName]?",
+      "category": "Contract",
+      "generator": "headhunters_investigation",
+      "reward": 26500,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "contractor": "Headhunters",
+      "repScopes": [
+        "Headhunters"
+      ],
+      "timeLimitMin": 10,
+      "description": "I know better than to send someone like ~mission(TargetName) out by themselves, but that didn’t stop me from being a fool and doing it. Now the dumb SOB hasn’t returned my comms and nobody has set eyes on them in a few days.\\n\\nIf you got the time, I could use someone to go over to ~mission(Location|Address) and see if they’re still there. You get paid even if they wind up being dead.\\n\\n-Stows",
+      "repRequirements": [
+        {
+          "scope": "Headhunters",
+          "minRank": "Neutral",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Pyro",
+      "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II",
+        "Pyro III",
+        "Pyro VI"
+      ],
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ],
+      "regions": [
+        "A",
+        "B",
+        "D"
+      ]
+    },
+    {
       "className": "HighpointWildernessSpecialists_KillAnimals_Easy_NoRep",
       "title": "Reduce Overpopulation",
       "category": "Contract",
@@ -44952,6 +45548,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Security"
       ],
@@ -45145,6 +45743,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -45255,6 +45855,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "FTL Courier"
       ],
@@ -45315,6 +45917,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -45459,6 +46063,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -45666,6 +46272,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "FTL Courier"
       ],
@@ -45726,6 +46334,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Foxwell Enforcement"
       ],
@@ -45767,6 +46377,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -45840,6 +46452,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -45857,12 +46471,37 @@
       "system": "Stanton",
       "danger": "Low",
       "contractor": "Hockrow Agency",
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
-      "multiSystem": true,
-      "systems": [
-        "Stanton",
-        "Nyx"
-      ]
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
+    },
+    {
+      "className": "Hockrow_Nyx_MissingPersonSpace_VeryEasy",
+      "title": "Hockrow Agency",
+      "category": "Contract",
+      "generator": "hockrowagency_missingperson",
+      "reward": 21250,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": false,
+      "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
+      "repScopes": [
+        "Hockrow Agency"
+      ],
+      "timeLimitMin": 8,
+      "repRequirements": [
+        {
+          "scope": "Hockrow Agency",
+          "minRank": "Neutral",
+          "maxRank": "Elite Contractor"
+        }
+      ],
+      "system": "Nyx",
+      "danger": "Very Low",
+      "contractor": "Hockrow Agency",
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
       "className": "FTL_Courier_Stanton_Food_Rank0",
@@ -45876,6 +46515,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "FTL Courier"
       ],
@@ -45908,6 +46549,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex",
         "Hauling"
@@ -46011,6 +46654,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Eckhart Security",
       "repScopes": [
         "Eckhart Security"
@@ -46096,6 +46741,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Dead Saints"
       ],
@@ -46132,6 +46779,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -46330,6 +46979,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Civilian Defense Force",
@@ -46360,6 +47011,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Civilian Defense Force",
@@ -46665,6 +47318,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -46717,6 +47372,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -46749,6 +47406,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Covalex"
       ],
@@ -46781,6 +47440,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -46827,6 +47488,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -46957,6 +47620,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "FTL Courier"
@@ -47109,6 +47774,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -47186,6 +47853,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Ling Family Hauling",
       "repScopes": [
         "Ling Family Hauling",
@@ -47259,6 +47928,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Headhunters"
@@ -47294,6 +47965,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Security"
       ],
@@ -47323,6 +47996,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Headhunters",
       "repScopes": [
         "Affinity",
@@ -47359,6 +48034,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -47387,6 +48064,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Hockrow Agency"
       ],
@@ -47614,6 +48293,8 @@
       "maxPlayers": 1,
       "canShare": false,
       "rewardEstimated": true,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "contractor": "Bounty Hunters Guild",
       "repScopes": [
         "Bounty Hunting (Guild)"
@@ -47678,7 +48359,7 @@
     },
     {
       "className": "ConstantineHurston_InitialInvite",
-      "title": "[title]",
+      "title": "Constantine Hurston Initial Invite",
       "category": "Contract",
       "generator": "constantinehurston_generator",
       "reward": 7250,
@@ -49280,23 +49961,6 @@
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
-      "className": "tutorial_generator_template",
-      "title": "tutorial_generator_template",
-      "category": "Contract",
-      "generator": "tutorial_generator_template",
-      "reward": 0,
-      "currency": "UEC",
-      "lawful": true,
-      "difficulty": -1,
-      "maxPlayers": 1,
-      "canShare": false,
-      "timeLimitMin": -1,
-      "cooldownMin": 1,
-      "abandonCooldownMin": 1,
-      "description": "~mission(Contractor|RecoverSpaceDescription)",
-      "multiSystem": true
-    },
-    {
       "className": "LawlessSalvage_Clovus",
       "title": "In the Wake of Disaster",
       "category": "Contract",
@@ -49325,6 +49989,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Adagio Holdings"
       ],
@@ -49459,6 +50125,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "timeLimitMin": 10,
       "description": "CONTRACT: Mining Rights Transfer\\nLOCATION: Nyx\\n\\nDETAILS:\\nShubin Interstellar prospectors have recently discovered the location of an abandoned QV Planetary Service Breaker Station near the Keeger belt. These stations were originally used by the defunct company to harvest valuable resources from inside asteroids but knowledge of their exact locations has been lost over the years. \\n\\nWhile this particular station is offline, our scout team believes that it could be made functional again with the necessary repairs. Additionally, if it was brought back online, there's already a resource-heavy asteroid in place ready to be cracked by the station's mining laser. \\n\\nUnfortunately, with all the various challenges that come with operating in Nyx, Shubin doesn't currently have the available bandwidth to handle the aforementioned repairs ourselves. This however has created an opportunity for an interested independent mining operation such as yourself. \\n\\n<EM4>TERMS*: </EM4>\\nWe are making available the <EM4>exclusive mining rights</EM4> to this QV Breaker Station. Upon purchase, we will provide the coordinates of the station to only you and your crew. Your team will then be free to head there with a <EM4>mining vessel</EM4>, restore the <EM4>station's mining laser</EM4> to an operational status, crack the asteroid, and <EM4>harvest the resources</EM4> inside. \\n\\nPlease note that while we guarantee that these coordinates will be exclusive to you, we cannot assure that other interested parties, such as outlaws, may not discover the station's location on their own. Caution is advised. \\n\\n*By accepting this contract you are assuming any and all risks associated with the work outlined herein and in no way can Shubin Interstellar be held accountable for any damages accrued during the duration of the contract.",
       "repRequirements": [
@@ -49496,6 +50164,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon contested mission",
+      "eventActive": true,
       "timeLimitMin": 10,
       "description": "CONTRACT: Mining Rights Transfer\\nLOCATION: Nyx\\n\\nDETAILS: \\nShubin Interstellar prospectors have recently discovered the location of an abandoned QV Planetary Service Breaker Station near the Keeger belt. These stations were originally used by the defunct company to harvest valuable resources from inside asteroids but knowledge of their exact locations has been lost over the years. \\n\\nWhile this particular station is offline, our scout team believes that it could be made functional again with the necessary repairs. Additionally, if it was brought back online, there's already a resource-heavy asteroid in place ready to be cracked by the station's mining laser. \\n\\nUnfortunately, with all the various challenges that come with operating in Nyx, Shubin doesn't currently have the available bandwidth to handle the aforementioned repairs ourselves. This however has created an opportunity for an interested independent mining operation such as yourself. \\n\\n<EM4>TERMS*:</EM4>\\nWe are making available the <EM4>shared mining rights</EM4> to this QV Breaker Station. Upon purchase, we will provide the coordinates of the station to you and your crew. (Remember, any other interested parties who purchase the mining rights will get access to the station as well.) Your crew will then be free to head there with a <EM4>mining vessel</EM4>, restore the <EM4>station's mining laser</EM4> to an operational status, crack the asteroid, and <EM4>harvest the resources</EM4> inside. \\n\\nPlease note that since this is a shared contract we are able to offer these mining rights at a reduced prices, but the resources in the asteroid will be available on a <EM4>first come, first serve</EM4> basis with any other mining crews at the site. Also, there is also a chance that other interested parties, such as outlaws, may discover the station's location on their own. Caution is advised. \\n\\n*By accepting this contract you are assuming any and all risks associated with the work outlined herein and in no way can Shubin Interstellar be held accountable for any damages accrued during the duration of the contract.",
       "repRequirements": [
@@ -49633,6 +50303,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49656,6 +50328,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49679,6 +50353,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49702,6 +50378,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49725,6 +50403,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49741,6 +50421,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49757,6 +50439,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49773,6 +50457,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49789,6 +50475,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49805,6 +50493,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49821,6 +50511,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49837,6 +50529,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49853,6 +50547,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -49869,6 +50565,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49892,6 +50590,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49915,6 +50615,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49938,6 +50640,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49961,6 +50665,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -49984,6 +50690,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50007,6 +50715,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50030,6 +50740,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50053,6 +50765,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50076,6 +50790,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50099,6 +50815,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50122,6 +50840,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50145,6 +50865,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50168,6 +50890,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50191,6 +50915,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50214,6 +50940,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Rockcracker Dungeon exclusive mission",
+      "eventActive": true,
       "repRequirements": [
         {
           "scope": "Shubin Interstellar",
@@ -50237,6 +50965,8 @@
       "difficulty": -1,
       "maxPlayers": 1,
       "canShare": false,
+      "event": "Nyx Mission Pack 2",
+      "eventActive": false,
       "repScopes": [
         "Affinity",
         "Civilian Defense Force",
@@ -50723,7 +51453,7 @@
     },
     {
       "className": "pu_delivery_dc_stanton_courier_to_stanton4_covalexs4dc05",
-      "title": "<= UNINITIALIZED =>",
+      "title": "delivery to covalexs4dc05 Courier",
       "category": "Delivery",
       "reward": 15000,
       "currency": "UEC",
@@ -50844,7 +51574,7 @@
     },
     {
       "className": "pu_delivery_local_legal_deliver_5",
-      "title": "<= PLACEHOLDER =>",
+      "title": "Local Legal Delivery 5",
       "category": "Delivery",
       "reward": 15000,
       "currency": "UEC",
@@ -50992,7 +51722,7 @@
     },
     {
       "className": "pu_delivery_local_legal_deliver_4",
-      "title": "<= PLACEHOLDER =>",
+      "title": "Local Legal Delivery 4",
       "category": "Delivery",
       "reward": 12000,
       "currency": "UEC",
@@ -51584,7 +52314,7 @@
     },
     {
       "className": "pu_delivery_local_legal_deliver_3",
-      "title": "<= PLACEHOLDER =>",
+      "title": "Local Legal Delivery 3",
       "category": "Delivery",
       "reward": 9000,
       "currency": "UEC",
@@ -52323,7 +53053,7 @@
     },
     {
       "className": "pu_delivery_local_legal_deliver_2",
-      "title": "<= PLACEHOLDER =>",
+      "title": "Local Legal Delivery 2",
       "category": "Delivery",
       "reward": 6000,
       "currency": "UEC",
@@ -52625,7 +53355,7 @@
     },
     {
       "className": "pu_collect_covalex_random",
-      "title": "[Title]",
+      "title": "Collect Covalex",
       "category": "Delivery",
       "reward": 5000,
       "currency": "UEC",
@@ -52927,7 +53657,7 @@
     },
     {
       "className": "pu_delivery_local_legal_deliver_1",
-      "title": "<= PLACEHOLDER =>",
+      "title": "Local Legal Delivery 1",
       "category": "Delivery",
       "reward": 3000,
       "currency": "UEC",
@@ -52993,7 +53723,7 @@
     },
     {
       "className": "pu_delivery_dc_stanton_specific_stanton4",
-      "title": "<= UNINITIALIZED =>",
+      "title": "Delivery Specific",
       "category": "Delivery",
       "reward": 3000,
       "currency": "UEC",
@@ -53132,7 +53862,7 @@
     },
     {
       "className": "pu_delivery_distributioncentre",
-      "title": "<= UNINITIALIZED =>",
+      "title": "Delivery Distribution Centre",
       "category": "Delivery",
       "reward": 1,
       "currency": "UEC",
@@ -53299,7 +54029,7 @@
     },
     {
       "className": "pu_derelict_recovery_missingperson_unlawful_stanton2",
-      "title": "[Title]",
+      "title": "Derelict Recovery Missing Person",
       "category": "Derelict",
       "reward": 18000,
       "currency": "UEC",
@@ -53320,6 +54050,33 @@
         "microTech",
         "ArcCorp",
         "Hurston"
+      ],
+      "givers": [
+        "[Contractor]"
+      ]
+    },
+    {
+      "className": "pu_derelict_recovery_missingperson_lawful_delamar",
+      "title": "Derelict Recovery Missing Person",
+      "category": "Derelict",
+      "reward": 18000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 30,
+      "respawnMin": 45,
+      "cooldownMin": 1,
+      "activity": "FPS",
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "systems": [
+        "Crusader",
+        "Hurston",
+        "ArcCorp",
+        "microTech"
       ],
       "givers": [
         "[Contractor]"
@@ -53378,8 +54135,7 @@
       "repScopes": [
         "assassination",
         "affinity",
-        "bounty",
-        "security"
+        "bounty"
       ],
       "repRequirements": [
         {
@@ -53394,15 +54150,55 @@
       "multiSystem": true,
       "systems": [
         "Stanton",
-        "Hurston",
         "Crusader",
+        "Hurston",
         "ArcCorp",
         "microTech"
       ],
       "givers": [
         "Vaughn",
-        "[Contractor]",
         "Ruto",
+        "[Contractor]"
+      ]
+    },
+    {
+      "className": "pu_derelict_eliminateall_lawful_stanton1b",
+      "title": "Eliminate All",
+      "category": "Derelict",
+      "reward": 15000,
+      "currency": "UEC",
+      "lawful": true,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 15,
+      "cooldownMin": 10,
+      "repScopes": [
+        "security",
+        "affinity",
+        "bounty"
+      ],
+      "repRequirements": [
+        {
+          "scope": "security",
+          "minRank": "Jr. Security Contractor",
+          "maxRank": "Jr. Security Contractor"
+        }
+      ],
+      "system": "Hurston",
+      "activity": "FPS",
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "systems": [
+        "Hurston",
+        "ArcCorp",
+        "Crusader",
+        "Stanton",
+        "microTech"
+      ],
+      "givers": [
+        "[Contractor]",
         "Crusader Security"
       ]
     },
@@ -53552,7 +54348,7 @@
     },
     {
       "className": "pu_derelict_recovery_collect_lawful_stanton4",
-      "title": "[Title]",
+      "title": "Derelict Recovery Collect",
       "category": "Derelict",
       "reward": 9000,
       "currency": "UEC",
@@ -53570,9 +54366,9 @@
       "multiSystem": true,
       "systems": [
         "microTech",
-        "ArcCorp",
         "Crusader",
-        "Hurston"
+        "Hurston",
+        "ArcCorp"
       ],
       "givers": [
         "[Contractor]",
@@ -53605,8 +54401,63 @@
       "systems": [
         "Hurston",
         "ArcCorp",
+        "microTech",
+        "Crusader"
+      ],
+      "givers": [
+        "[Contractor]"
+      ]
+    },
+    {
+      "className": "pu_derelict_recovery_collect_unlawful_stanton3",
+      "title": "Derelict Recovery Collect",
+      "category": "Derelict",
+      "reward": 9000,
+      "currency": "UEC",
+      "lawful": false,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 30,
+      "respawnMin": 45,
+      "cooldownMin": 1,
+      "system": "ArcCorp",
+      "activity": "FPS",
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "systems": [
+        "ArcCorp",
+        "microTech",
+        "Hurston",
+        "Crusader"
+      ],
+      "givers": [
+        "[Contractor]"
+      ]
+    },
+    {
+      "className": "pu_derelict_recovery_blackbox_unlawful_delamar",
+      "title": "Recovery",
+      "category": "Derelict",
+      "reward": 9000,
+      "currency": "UEC",
+      "lawful": false,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 30,
+      "respawnMin": 45,
+      "cooldownMin": 25,
+      "activity": "FPS",
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "systems": [
         "Crusader",
-        "microTech"
+        "microTech",
+        "ArcCorp",
+        "Hurston"
       ],
       "givers": [
         "[Contractor]"
@@ -53708,7 +54559,7 @@
     },
     {
       "className": "pu_derelict_recovery_missingperson",
-      "title": "[Title]",
+      "title": "Derelict Recovery Missing Person",
       "category": "Derelict",
       "reward": 805,
       "currency": "UEC",
@@ -54242,7 +55093,7 @@
     },
     {
       "className": "pu_wanted5_distraction_stanton",
-      "title": "",
+      "title": "Distraction",
       "category": "Other",
       "reward": 60000,
       "currency": "UEC",
@@ -54729,7 +55580,7 @@
     },
     {
       "className": "pu_scavenge_surfacerelay_prevent_sp",
-      "title": "[Title]",
+      "title": "Scavenge Surfacerelay Prevent",
       "category": "Other",
       "reward": 25000,
       "currency": "UEC",
@@ -55120,8 +55971,41 @@
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
+      "className": "pu_recovery_ugf",
+      "title": "Recovery",
+      "category": "Other",
+      "reward": 15000,
+      "currency": "UEC",
+      "lawful": false,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 5,
+      "respawnMin": 5,
+      "cooldownMin": 1,
+      "repScopes": [
+        "affinity",
+        "security"
+      ],
+      "description": "~mission(Contractor|RecoverSpaceDescription)",
+      "multiSystem": true,
+      "systems": [
+        "microTech",
+        "ArcCorp",
+        "Hurston"
+      ],
+      "givers": [
+        "[Contractor]"
+      ],
+      "requiresCompletion": [
+        "[Contractor]"
+      ],
+      "isChain": true
+    },
+    {
       "className": "pu_station_wastedisposal_unlawful_ruto_body",
-      "title": "[Title]",
+      "title": "Station Waste Disposal Ruto Body",
       "category": "Other",
       "reward": 15000,
       "currency": "UEC",
@@ -55330,7 +56214,7 @@
     },
     {
       "className": "pu_station_wastedisposal_unlawful_ruto_body_intro",
-      "title": "[Title]",
+      "title": "Station Waste Disposal Ruto Body",
       "category": "Other",
       "reward": 10000,
       "currency": "UEC",
@@ -55390,6 +56274,22 @@
       "system": "Crusader",
       "activity": "Salvage",
       "danger": "Medium"
+    },
+    {
+      "className": "pu_destroy_stash_pvp",
+      "title": "Destroy Stash",
+      "category": "Other",
+      "reward": 10000,
+      "currency": "UEC",
+      "lawful": false,
+      "difficulty": -1,
+      "maxPlayers": 1,
+      "canShare": true,
+      "giver": "[Contractor]",
+      "lifetimeMin": 5,
+      "respawnMin": 5,
+      "cooldownMin": 1,
+      "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton1d",
@@ -55509,7 +56409,7 @@
     },
     {
       "className": "pu_station_wastedisposal_lawful_stanton3",
-      "title": "[Title] ([Item])",
+      "title": "Station Waste Disposal",
       "category": "Other",
       "reward": 8250,
       "currency": "UEC",
@@ -55558,7 +56458,7 @@
     },
     {
       "className": "pu_station_wastedisposal_lawful_stanton1",
-      "title": "[Title] ([Item])",
+      "title": "Station Waste Disposal",
       "category": "Other",
       "reward": 8000,
       "currency": "UEC",
@@ -55738,7 +56638,7 @@
     },
     {
       "className": "pu_station_wastedisposal_lawful_stanton2",
-      "title": "[Title] ([Item])",
+      "title": "Station Waste Disposal",
       "category": "Other",
       "reward": 6250,
       "currency": "UEC",
@@ -55755,7 +56655,7 @@
     },
     {
       "className": "pu_station_wastedisposal_unlawful_ruto",
-      "title": "[Title]",
+      "title": "Station Waste Disposal Ruto",
       "category": "Other",
       "reward": 6000,
       "currency": "UEC",
@@ -55798,7 +56698,7 @@
     },
     {
       "className": "destroy_satellite",
-      "title": "<= UNINITIALIZED =>",
+      "title": "Destroy Satellite",
       "category": "Other",
       "reward": 5000,
       "currency": "UEC",
@@ -56388,7 +57288,7 @@
     },
     {
       "className": "pu_steal_ugf_stash_pacheco",
-      "title": "[Title]",
+      "title": "Steal Stash Pacheco",
       "category": "Theft",
       "reward": 20000,
       "currency": "UEC",
@@ -56441,7 +57341,7 @@
     },
     {
       "className": "pu_steal_ugf_stash_stanton3",
-      "title": "[Title]",
+      "title": "Steal Stash",
       "category": "Theft",
       "reward": 16000,
       "currency": "UEC",
