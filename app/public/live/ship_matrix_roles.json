@@ -1,0 +1,1439 @@
+{
+  "source": "api.star-citizen.wiki/api/v3/vehicles",
+  "fetched_at": "2026-04-20T08:13:09Z",
+  "total_vehicles_in_api": 293,
+  "map": {
+    "aegs_avenger_stalker": {
+      "role": "Interceptor",
+      "career": "Combat",
+      "shipMatrixName": "Avenger Stalker"
+    },
+    "aegs_avenger_titan": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Avenger Titan"
+    },
+    "aegs_avenger_titan_renegade": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Avenger Titan Renegade"
+    },
+    "aegs_avenger_warlock": {
+      "role": "Interdiction",
+      "career": "Combat",
+      "shipMatrixName": "Avenger Warlock"
+    },
+    "aegs_eclipse": {
+      "role": "Stealth Bomber",
+      "career": "Combat",
+      "shipMatrixName": "Eclipse"
+    },
+    "aegs_eclipse_bis2950": {
+      "role": "Stealth Bomber",
+      "career": "Combat",
+      "shipMatrixName": "Eclipse"
+    },
+    "aegs_gladius": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Gladius"
+    },
+    "aegs_gladius_dunlevy": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Gladius"
+    },
+    "aegs_gladius_pir": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Gladius Pirate Edition"
+    },
+    "aegs_gladius_valiant": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Gladius Valiant"
+    },
+    "aegs_hammerhead": {
+      "role": "Heavy Gunship",
+      "career": "Combat",
+      "shipMatrixName": "Hammerhead"
+    },
+    "aegs_hammerhead_showdown": {
+      "role": "Heavy Gunship",
+      "career": "Combat",
+      "shipMatrixName": "Hammerhead Best In Show Edition 2949"
+    },
+    "aegs_idris_m": {
+      "role": "Frigate",
+      "career": "Combat",
+      "shipMatrixName": "Idris-M"
+    },
+    "aegs_idris_p": {
+      "role": "Frigate",
+      "career": "Combat",
+      "shipMatrixName": "Idris-P"
+    },
+    "aegs_idris_p_fw_25": {
+      "role": "Frigate",
+      "career": "Combat",
+      "shipMatrixName": "Idris-P"
+    },
+    "aegs_idris_p_collector_military": {
+      "role": "Frigate",
+      "career": "Combat",
+      "shipMatrixName": "Idris-P"
+    },
+    "aegs_javelin": {
+      "role": "Destroyer",
+      "career": "Destroyer",
+      "shipMatrixName": "Javelin"
+    },
+    "aegs_reclaimer": {
+      "role": "Heavy Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Reclaimer"
+    },
+    "aegs_reclaimer_showdown": {
+      "role": "Heavy Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Reclaimer Best In Show Edition 2949"
+    },
+    "aegs_reclaimer_teach": {
+      "role": "Heavy Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Reclaimer"
+    },
+    "aegs_redeemer": {
+      "role": "Gunship",
+      "career": "Combat",
+      "shipMatrixName": "Redeemer"
+    },
+    "aegs_retaliator": {
+      "role": "Modular",
+      "career": "Combat",
+      "shipMatrixName": "Retaliator Bomber"
+    },
+    "aegs_sabre": {
+      "role": "Stealth Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Sabre"
+    },
+    "aegs_sabre_comet": {
+      "role": "Stealth Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Sabre Comet"
+    },
+    "aegs_sabre_firebird": {
+      "role": "Stealth Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Sabre Firebird"
+    },
+    "aegs_sabre_firebird_collector_milt": {
+      "role": "Stealth Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Sabre Firebird"
+    },
+    "aegs_sabre_peregrine": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Sabre Peregrine"
+    },
+    "aegs_sabre_peregrine_collector_competition": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Sabre Peregrine"
+    },
+    "aegs_sabre_raven": {
+      "role": "Interdiction",
+      "career": "Combat",
+      "shipMatrixName": "Sabre Raven"
+    },
+    "aegs_vanguard_harbinger": {
+      "role": "Heavy Fighter / Bomber",
+      "career": "Combat",
+      "shipMatrixName": "Vanguard Harbinger"
+    },
+    "aegs_vanguard_hoplite": {
+      "role": "Dropship",
+      "career": "Combat",
+      "shipMatrixName": "Vanguard Hoplite"
+    },
+    "aegs_vanguard_sentinel": {
+      "role": "Heavy Fighter / Bomber",
+      "career": "Combat",
+      "shipMatrixName": "Vanguard Sentinel"
+    },
+    "aegs_vanguard": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Vanguard Warden"
+    },
+    "anvl_arrow": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Arrow"
+    },
+    "anvl_asgard": {
+      "role": "Dropship",
+      "career": "Combat",
+      "shipMatrixName": "Asgard"
+    },
+    "anvl_asgard_collector_military": {
+      "role": "Dropship",
+      "career": "Combat",
+      "shipMatrixName": "Asgard"
+    },
+    "anvl_ballista": {
+      "role": "Anti-Air",
+      "career": "Combat",
+      "shipMatrixName": "Anvil Ballista Snowblind"
+    },
+    "anvl_ballista_dunestalker": {
+      "role": "Anti-Air",
+      "career": "Combat",
+      "shipMatrixName": "Anvil Ballista Dunestalker"
+    },
+    "anvl_ballista_snowblind": {
+      "role": "Anti-Air",
+      "career": "Combat",
+      "shipMatrixName": "Anvil Ballista Snowblind"
+    },
+    "anvl_c8_pisces": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "C8 Pisces"
+    },
+    "anvl_c8r_pisces": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "C8R Pisces"
+    },
+    "anvl_c8x_pisces_expedition": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "C8X Pisces Expedition"
+    },
+    "anvl_carrack": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Carrack"
+    },
+    "anvl_carrack_bis2950": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Carrack"
+    },
+    "anvl_carrack_expedition": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Carrack Expedition"
+    },
+    "anvl_centurion": {
+      "role": "Anti-Air",
+      "career": "Combat",
+      "shipMatrixName": "Centurion"
+    },
+    "anvl_hornet_f7a_mk1": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7A Hornet Mk I"
+    },
+    "anvl_hornet_f7a_mk2": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7A Hornet Mk II"
+    },
+    "anvl_hornet_f7c": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C Hornet Mk I"
+    },
+    "anvl_hornet_f7c_mk2": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C Hornet Mk II"
+    },
+    "anvl_hornet_f7c_wildfire": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C Hornet Wildfire Mk I"
+    },
+    "anvl_hornet_f7cm_heartseeker": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C-M Super Hornet Heartseeker Mk I"
+    },
+    "anvl_hornet_f7cm_mk2_heartseeker": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C-M Super Hornet Heartseeker Mk I"
+    },
+    "anvl_hornet_f7cm": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C-M Super Hornet Mk I"
+    },
+    "anvl_hornet_f7cm_mk2": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C-M Super Hornet Mk II"
+    },
+    "anvl_hornet_f7cr": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "F7C-R Hornet Tracker Mk I"
+    },
+    "anvl_hornet_f7cr_mk2": {
+      "role": "Pathfinder",
+      "career": "Combat",
+      "shipMatrixName": "F7C-R Hornet Tracker Mk II"
+    },
+    "anvl_hornet_f7cs": {
+      "role": "Stealth Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C-S Hornet Ghost Mk I"
+    },
+    "anvl_hornet_f7cs_mk2": {
+      "role": "Stealth Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F7C-S Hornet Ghost Mk II"
+    },
+    "anvl_hornet_f7_mk2_collector_mod": {
+      "role": "Medium Fighter",
+      "career": "Combat"
+    },
+    "anvl_lightning_f8": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning"
+    },
+    "anvl_lightning_f8c": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning"
+    },
+    "anvl_lightning_f8c_plat": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning"
+    },
+    "anvl_lightning_f8c_exec": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning Executive Edition"
+    },
+    "anvl_lightning_f8c_collector_stealth": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning"
+    },
+    "anvl_lightning_f8c_collector_military": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning"
+    },
+    "anvl_gladiator": {
+      "role": "Bomber",
+      "career": "Combat",
+      "shipMatrixName": "Gladiator"
+    },
+    "anvl_hawk": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Hawk"
+    },
+    "anvl_hurricane": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Hurricane"
+    },
+    "anvl_paladin": {
+      "role": "Gunship",
+      "career": "Gunship",
+      "shipMatrixName": "Paladin"
+    },
+    "anvl_spartan": {
+      "role": "Passenger",
+      "career": "Combat",
+      "shipMatrixName": "Spartan"
+    },
+    "anvl_terrapin": {
+      "role": "Pathfinder",
+      "career": "Support",
+      "shipMatrixName": "Terrapin"
+    },
+    "anvl_terrapin_medic": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Terrapin Medic"
+    },
+    "anvl_terrapin_medic_collector_medic": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Terrapin Medic"
+    },
+    "anvl_valkyrie": {
+      "role": "Dropship",
+      "career": "Combat",
+      "shipMatrixName": "Valkyrie"
+    },
+    "anvl_valkyrie_bis2950": {
+      "role": "Dropship",
+      "career": "Combat",
+      "shipMatrixName": "Valkyrie"
+    },
+    "xian_scout": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Khartu-Al"
+    },
+    "xian_nox": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Nox"
+    },
+    "xian_nox_kue": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Nox Kue"
+    },
+    "xian_nox_collector_mod": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Nox"
+    },
+    "xnaa_santokyai": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "San'tok.y\u0101i"
+    },
+    "argo_atls": {
+      "shipMatrixName": "ATLS"
+    },
+    "argo_atls_geo": {
+      "shipMatrixName": "ATLS GEO"
+    },
+    "argo_atls_geo_ikti": {
+      "shipMatrixName": "ATLS GEO"
+    },
+    "argo_atls_ikti": {
+      "shipMatrixName": "ATLS"
+    },
+    "argo_csv_cargo": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "CSV-SM"
+    },
+    "argo_mole": {
+      "role": "Medium Mining",
+      "career": "Industrial",
+      "shipMatrixName": "Argo Mole Carbon Edition"
+    },
+    "argo_mole_teach": {
+      "role": "Medium Mining",
+      "career": "Industrial",
+      "shipMatrixName": "Argo Mole Carbon Edition"
+    },
+    "argo_moth": {
+      "role": "Medium Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "MOTH"
+    },
+    "argo_mpuv": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "MPUV Cargo"
+    },
+    "argo_mpuv_transport": {
+      "role": "Passenger",
+      "career": "Transporter",
+      "shipMatrixName": "MPUV Personnel"
+    },
+    "argo_mpuv_1t": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "MPUV Tractor"
+    },
+    "argo_raft": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "RAFT"
+    },
+    "argo_raft_collector_indust": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "RAFT"
+    },
+    "argo_srv": {
+      "role": "Recovery",
+      "career": "Support",
+      "shipMatrixName": "SRV"
+    },
+    "argo_atls_geo_collector_grad03": {
+      "shipMatrixName": "ATLS"
+    },
+    "argo_atls_geo_collector_grad01": {
+      "shipMatrixName": "ATLS"
+    },
+    "banu_defender": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Defender"
+    },
+    "cnou_hoverquad": {
+      "role": "Passenger",
+      "career": "Exploration",
+      "shipMatrixName": "HoverQuad"
+    },
+    "cnou_mustang_alpha": {
+      "role": "Starter / Light Freight",
+      "career": "Multi-Role",
+      "shipMatrixName": "Mustang Alpha"
+    },
+    "cnou_mustang_beta": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "Mustang Beta"
+    },
+    "cnou_mustang_alpha_citizencon2018": {
+      "role": "Starter / Light Freight",
+      "career": "Multi-Role",
+      "shipMatrixName": "Mustang Alpha Vindicator"
+    },
+    "cnou_mustang_delta": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Mustang Delta"
+    },
+    "cnou_mustang_gamma": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Mustang Gamma"
+    },
+    "cnou_mustang_omega": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Mustang Omega"
+    },
+    "cnou_nomad": {
+      "role": "Starter / Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Nomad"
+    },
+    "cnou_nomad_teach": {
+      "role": "Starter / Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Nomad"
+    },
+    "drak_corsair_exec_military": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Corsair"
+    },
+    "drak_corsair_exec_stealthindustrial": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Corsair"
+    },
+    "crus_spirit_a1": {
+      "role": "Bomber",
+      "career": "Combat",
+      "shipMatrixName": "A1 Spirit"
+    },
+    "crus_starlifter_a2": {
+      "role": "Heavy Bomber",
+      "career": "Combat",
+      "shipMatrixName": "A2 Hercules"
+    },
+    "crus_starlifter_a2_collector_military": {
+      "role": "Heavy Bomber",
+      "career": "Combat"
+    },
+    "crus_starfighter_inferno": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Ares Inferno"
+    },
+    "crus_starfighter_inferno_collector_military": {
+      "role": "Heavy Fighter",
+      "career": "Combat"
+    },
+    "crus_starfighter_ion": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Ares Ion"
+    },
+    "crus_starfighter_ion_collector_stealth": {
+      "role": "Heavy Fighter",
+      "career": "Combat"
+    },
+    "crus_spirit_c1": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "C1 Spirit"
+    },
+    "crus_spirit_c1_civilian": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "C1 Spirit"
+    },
+    "crus_starlifter_c2": {
+      "role": "Heavy Freight",
+      "career": "Transporter",
+      "shipMatrixName": "C2 Hercules"
+    },
+    "crus_intrepid": {
+      "role": "Starter / Light Freight",
+      "career": "Starter",
+      "shipMatrixName": "Intrepid"
+    },
+    "crus_intrepid_collector_indust": {
+      "role": "Starter / Light Freight",
+      "career": "Starter",
+      "shipMatrixName": "Intrepid"
+    },
+    "crus_starlifter_m2": {
+      "role": "Heavy Freight",
+      "career": "Transporter",
+      "shipMatrixName": "M2 Hercules"
+    },
+    "crus_star_runner": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Mercury"
+    },
+    "drak_cutlass_black_exec_military": {
+      "role": "Light Freight / Medium Fighter",
+      "career": "Multi-Role",
+      "shipMatrixName": "Cutlass Black"
+    },
+    "drak_cutlass_black_exec_stealth": {
+      "role": "Light Freight / Medium Fighter",
+      "career": "Multi-Role",
+      "shipMatrixName": "Cutlass Black"
+    },
+    "drak_buccaneer": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Buccaneer"
+    },
+    "drak_caterpillar": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Caterpillar"
+    },
+    "drak_caterpillar_boarded": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Caterpillar"
+    },
+    "drak_caterpillar_pirate": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Caterpillar Pirate Edition"
+    },
+    "drak_clipper": {
+      "role": "Generalist",
+      "career": "Exploration",
+      "shipMatrixName": "Clipper"
+    },
+    "drak_corsair": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Corsair"
+    },
+    "drak_cutlass_black": {
+      "role": "Light Freight / Medium Fighter",
+      "career": "Multi-Role",
+      "shipMatrixName": "Cutlass Black"
+    },
+    "drak_cutlass_black_bis2950": {
+      "role": "Light Freight / Medium Fighter",
+      "career": "Multi-Role",
+      "shipMatrixName": "Cutlass Black"
+    },
+    "drak_cutlass_blue": {
+      "role": "Interdiction",
+      "career": "Combat",
+      "shipMatrixName": "Cutlass Blue"
+    },
+    "drak_cutlass_blue_bis2950": {
+      "role": "Interdiction",
+      "career": "Combat",
+      "shipMatrixName": "Cutlass Blue"
+    },
+    "drak_cutlass_red": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Cutlass Red"
+    },
+    "drak_cutlass_red_bis2950": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Cutlass Red"
+    },
+    "drak_cutlass_steel": {
+      "role": "Dropship",
+      "career": "Combat",
+      "shipMatrixName": "Cutlass Steel"
+    },
+    "drak_cutter": {
+      "role": "Starter / Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "Cutter"
+    },
+    "drak_cutter_rambler": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Cutter Rambler"
+    },
+    "drak_cutter_scout": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "Cutter Scout"
+    },
+    "drak_dragonfly": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Dragonfly Black"
+    },
+    "drak_dragonfly_pink": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Dragonfly Yellowjacket"
+    },
+    "drak_dragonfly_yellow": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Dragonfly Yellowjacket"
+    },
+    "drak_golem": {
+      "role": "Starter / Light Mining",
+      "career": "Industrial",
+      "shipMatrixName": "Golem"
+    },
+    "drak_golem_ox": {
+      "role": "Light Freight",
+      "career": "Industrial",
+      "shipMatrixName": "Golem OX"
+    },
+    "drak_golem_teach": {
+      "role": "Starter / Light Mining",
+      "career": "Industrial",
+      "shipMatrixName": "Golem"
+    },
+    "drak_golem_collector_indust": {
+      "role": "Starter / Light Mining",
+      "career": "Industrial",
+      "shipMatrixName": "Golem"
+    },
+    "drak_herald": {
+      "role": "Medium Data",
+      "career": "Transporter",
+      "shipMatrixName": "Herald"
+    },
+    "drak_mule": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Mule"
+    },
+    "drak_vulture": {
+      "role": "Light Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Vulture"
+    },
+    "drak_vulture_teach": {
+      "role": "Light Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Vulture"
+    },
+    "vncl_blade": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Blade"
+    },
+    "vncl_glaive": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Glaive"
+    },
+    "espr_prowler": {
+      "role": "Dropship",
+      "career": "Combat",
+      "shipMatrixName": "Prowler"
+    },
+    "espr_prowler_utility": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Prowler Utility"
+    },
+    "espr_prowler_utility_collector_indust": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Prowler Utility"
+    },
+    "vncl_stinger": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Stinger"
+    },
+    "espr_talon": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Talon"
+    },
+    "espr_talon_shrike": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Talon Shrike"
+    },
+    "anvl_lightning_f8c_exec_stealth": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning"
+    },
+    "anvl_lightning_f8c_exec_military": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "F8C Lightning"
+    },
+    "gama_syulen": {
+      "role": "Starter / Pathfinder",
+      "career": "Multi-Role",
+      "shipMatrixName": "Syulen"
+    },
+    "grin_mdc": {
+      "role": "Anti-Air",
+      "career": "Ground",
+      "shipMatrixName": "MDC"
+    },
+    "grin_mtc": {
+      "role": "Passenger",
+      "career": "Ground",
+      "shipMatrixName": "MTC"
+    },
+    "grin_ptv": {
+      "role": "Passenger",
+      "career": "Ground",
+      "shipMatrixName": "PTV"
+    },
+    "grin_roc": {
+      "role": "Light Mining",
+      "career": "Industrial",
+      "shipMatrixName": "ROC"
+    },
+    "grin_roc_ds": {
+      "role": "Light Mining",
+      "career": "Industrial",
+      "shipMatrixName": "ROC-DS"
+    },
+    "grin_stv": {
+      "role": "Passenger",
+      "career": "Ground",
+      "shipMatrixName": "STV"
+    },
+    "grin_utv": {
+      "role": "Ground",
+      "career": "Ground",
+      "shipMatrixName": "UTV"
+    },
+    "glsn_shiv": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Shiv"
+    },
+    "anvl_hornet_f7a_mk2_exec_stealth": {
+      "role": "Medium Fighter",
+      "career": "Combat"
+    },
+    "anvl_hornet_f7a_mk2_exec_military": {
+      "role": "Medium Fighter",
+      "career": "Combat"
+    },
+    "krig_l21_wolf": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "L-21 Wolf"
+    },
+    "krig_l21_wolf_collector_stealth": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "L-21 Wolf"
+    },
+    "krig_l21_wolf_collector_military": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "L-21 Wolf"
+    },
+    "krig_l22_alphawolf": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "L-22 Alpha Wolf"
+    },
+    "krig_p52_merlin": {
+      "role": "Snub Fighter",
+      "career": "Combat",
+      "shipMatrixName": "P-52 Merlin"
+    },
+    "krig_p72_archimedes": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "P-72 Archimedes"
+    },
+    "krig_p72_archimedes_emerald": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "P-72 Archimedes Emerald"
+    },
+    "misc_fury": {
+      "role": "Snub Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Fury"
+    },
+    "misc_fury_lx": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Fury LX"
+    },
+    "misc_fury_miru": {
+      "role": "Snub Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Fury MX"
+    },
+    "mrai_guardian": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Guardian"
+    },
+    "mrai_guardian_mx": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Guardian MX"
+    },
+    "mrai_guardian_mx_collector_military": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Guardian MX"
+    },
+    "mrai_guardian_qi": {
+      "role": "Interdiction",
+      "career": "Combat",
+      "shipMatrixName": "Guardian QI"
+    },
+    "mrai_guardian_qi_collector_indust": {
+      "role": "Interdiction",
+      "career": "Combat",
+      "shipMatrixName": "Guardian QI"
+    },
+    "mrai_guardian_military": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Guardian"
+    },
+    "mrai_pulse": {
+      "role": "Combat",
+      "career": "Ground",
+      "shipMatrixName": "Pulse"
+    },
+    "mrai_pulse_lx": {
+      "role": "Racing",
+      "career": "Ground",
+      "shipMatrixName": "Pulse LX"
+    },
+    "misc_razor": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Razor"
+    },
+    "misc_razor_ex": {
+      "role": "Stealth Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Razor EX"
+    },
+    "misc_razor_lx": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Razor LX"
+    },
+    "misc_fortune": {
+      "role": "Light Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Fortune"
+    },
+    "misc_fortune_teach": {
+      "role": "Light Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Fortune"
+    },
+    "misc_fortune_collector_industrial": {
+      "role": "Light Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Fortune"
+    },
+    "misc_freelancer": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Freelancer"
+    },
+    "misc_freelancer_dur": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Freelancer DUR"
+    },
+    "misc_freelancer_max": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Freelancer MAX"
+    },
+    "misc_freelancer_mis": {
+      "role": "Gunship",
+      "career": "Combat",
+      "shipMatrixName": "Freelancer MIS"
+    },
+    "misc_hull_a": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Hull A"
+    },
+    "misc_hull_b": {
+      "role": "Medium Freight",
+      "career": "Industrial",
+      "shipMatrixName": "Hull B"
+    },
+    "misc_hull_c": {
+      "role": "Heavy Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Hull C"
+    },
+    "misc_prospector": {
+      "role": "Light Mining",
+      "career": "Industrial",
+      "shipMatrixName": "Prospector"
+    },
+    "misc_prospector_collector_indust": {
+      "role": "Light Mining",
+      "career": "Industrial",
+      "shipMatrixName": "Prospector"
+    },
+    "misc_reliant": {
+      "role": "Starter / Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Reliant Kore"
+    },
+    "misc_reliant_mako": {
+      "role": "Reporting",
+      "career": "Support",
+      "shipMatrixName": "Reliant Mako"
+    },
+    "misc_reliant_sen": {
+      "role": "Light Science",
+      "career": "Industrial",
+      "shipMatrixName": "Reliant Sen"
+    },
+    "misc_reliant_tana": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Reliant Tana"
+    },
+    "misc_starfarer": {
+      "role": "Heavy Refueling",
+      "career": "Support",
+      "shipMatrixName": "Starfarer"
+    },
+    "misc_starfarer_gemini": {
+      "role": "Heavy Refueling",
+      "career": "Support",
+      "shipMatrixName": "Starfarer Gemini"
+    },
+    "misc_starfarer_teach": {
+      "role": "Heavy Refueling",
+      "career": "Support",
+      "shipMatrixName": "Starfarer"
+    },
+    "misc_starlancer_max": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Starlancer MAX"
+    },
+    "misc_starlancer_max_collector_indust": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Starlancer MAX"
+    },
+    "misc_starlancer_tac": {
+      "role": "Gunship",
+      "career": "Combat",
+      "shipMatrixName": "Starlancer TAC"
+    },
+    "misc_starlancer_tac_collector_military": {
+      "role": "Gunship",
+      "career": "Combat",
+      "shipMatrixName": "Starlancer TAC"
+    },
+    "orig_100i": {
+      "role": "Starter / Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "100i"
+    },
+    "orig_125a": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "125a"
+    },
+    "orig_135c": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "135c"
+    },
+    "orig_300i": {
+      "role": "Luxury Touring",
+      "career": "Exploration",
+      "shipMatrixName": "300i"
+    },
+    "orig_315p": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "315p"
+    },
+    "orig_325a": {
+      "role": "Interceptor",
+      "career": "Combat",
+      "shipMatrixName": "325a"
+    },
+    "orig_350r": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "350r"
+    },
+    "orig_400i": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "400i"
+    },
+    "orig_600i": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "600i Explorer"
+    },
+    "orig_600i_bis2951": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "600i Explorer"
+    },
+    "orig_600i_executive_edition": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "600i Explorer"
+    },
+    "orig_600i_touring": {
+      "role": "Luxury Touring",
+      "career": "Exploration",
+      "shipMatrixName": "600i Touring"
+    },
+    "orig_85x": {
+      "role": "Touring",
+      "career": "Exploration",
+      "shipMatrixName": "85X"
+    },
+    "orig_890jump": {
+      "role": "Luxury Touring",
+      "career": "Exploration",
+      "shipMatrixName": "890 Jump"
+    },
+    "orig_m50": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "M50"
+    },
+    "orig_x1": {
+      "role": "Passenger",
+      "career": "Exploration",
+      "shipMatrixName": "X1"
+    },
+    "orig_x1_force": {
+      "role": "Passenger",
+      "career": "Combat",
+      "shipMatrixName": "X1 Force"
+    },
+    "orig_x1_velocity": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "X1 Velocity"
+    },
+    "rsi_apollo_medivac_tier_1": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Medivac"
+    },
+    "rsi_apollo_medivac_tier_2": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Medivac"
+    },
+    "rsi_apollo_medivac_tier_3": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Medivac"
+    },
+    "rsi_apollo_medivac": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Medivac"
+    },
+    "rsi_apollo_triage_tier_3": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Triage"
+    },
+    "rsi_apollo_triage_tier_1": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Triage"
+    },
+    "rsi_apollo_triage_tier_2": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Triage"
+    },
+    "rsi_apollo_triage": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Triage"
+    },
+    "rsi_apollo_triage_collector_stealth": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Apollo Triage"
+    },
+    "rsi_aurora_gs_cl": {
+      "role": "Light Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Aurora Mk I CL"
+    },
+    "rsi_aurora_gs_es": {
+      "role": "Starter / Pathfinder",
+      "career": "Multi-Role",
+      "shipMatrixName": "Aurora Mk I ES"
+    },
+    "rsi_aurora_mk2": {
+      "role": "Starter / Light Fighter",
+      "career": "Multi-Role",
+      "shipMatrixName": "Aurora Mk II"
+    },
+    "rsi_aurora_gs_ln": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Aurora Mk I LN"
+    },
+    "rsi_aurora_gs_lx": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "Aurora Mk I LX"
+    },
+    "rsi_aurora_gs_mr": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Aurora Mk I MR"
+    },
+    "rsi_aurora_gs_se": {
+      "role": "Light Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Aurora Mk I SE"
+    },
+    "rsi_constellation_andromeda": {
+      "role": "Medium Freight / Gun Ship",
+      "career": "Multi-Role",
+      "shipMatrixName": "Constellation Andromeda"
+    },
+    "rsi_constellation_aquila": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Constellation Aquila"
+    },
+    "rsi_constellation_phoenix": {
+      "role": "Luxury Touring",
+      "career": "Exploration",
+      "shipMatrixName": "Constellation Phoenix"
+    },
+    "rsi_constellation_phoenix_emerald": {
+      "role": "Luxury Touring",
+      "career": "Exploration",
+      "shipMatrixName": "Constellation Phoenix Emerald"
+    },
+    "rsi_constellation_taurus": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Constellation Taurus"
+    },
+    "rsi_constellation_taurus_military": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Constellation Taurus"
+    },
+    "rsi_hermes": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Hermes"
+    },
+    "rsi_lynx": {
+      "role": "Luxury Touring",
+      "career": "Transporter",
+      "shipMatrixName": "Lynx"
+    },
+    "rsi_mantis": {
+      "role": "Interdiction",
+      "career": "Combat",
+      "shipMatrixName": "Mantis"
+    },
+    "rsi_meteor": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Meteor"
+    },
+    "rsi_meteor_collector_military": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Meteor"
+    },
+    "rsi_meteor_collector_stealth": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Meteor"
+    },
+    "rsi_perseus": {
+      "role": "Heavy Gunship",
+      "career": "Combat",
+      "shipMatrixName": "Perseus"
+    },
+    "rsi_polaris": {
+      "role": "Corvette",
+      "career": "Combat",
+      "shipMatrixName": "Polaris"
+    },
+    "rsi_polaris_collector_military": {
+      "role": "Corvette",
+      "career": "Combat",
+      "shipMatrixName": "Polaris"
+    },
+    "rsi_salvation": {
+      "role": "Starter / Light Salvage",
+      "career": "Industrial",
+      "shipMatrixName": "Salvation"
+    },
+    "rsi_scorpius": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Scorpius"
+    },
+    "rsi_scorpius_antares": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Scorpius Antares"
+    },
+    "rsi_scorpius_stealth": {
+      "role": "Heavy Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Scorpius"
+    },
+    "rsi_ursa_rover": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "Ursa"
+    },
+    "rsi_ursa_rover_emerald": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "Ursa Fortuna"
+    },
+    "rsi_ursa_medivac": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Ursa Medivac"
+    },
+    "rsi_ursa_medivac_stealth": {
+      "role": "Medical",
+      "career": "Support",
+      "shipMatrixName": "Ursa Medivac"
+    },
+    "rsi_zeus_cl": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Zeus Mk II CL"
+    },
+    "rsi_zeus_cl_collector_indust": {
+      "role": "Medium Freight",
+      "career": "Transporter",
+      "shipMatrixName": "Zeus Mk II CL"
+    },
+    "rsi_zeus_es": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Zeus Mk II ES"
+    },
+    "rsi_zeus_es_collector_indust": {
+      "role": "Expedition",
+      "career": "Exploration",
+      "shipMatrixName": "Zeus Mk II ES"
+    },
+    "gama_syulen_exec_military": {
+      "role": "Starter / Pathfinder",
+      "career": "Multi-Role",
+      "shipMatrixName": "Syulen"
+    },
+    "gama_syulen_exec_stealth": {
+      "role": "Starter / Pathfinder",
+      "career": "Multi-Role",
+      "shipMatrixName": "Syulen"
+    },
+    "tmbl_cyclone": {
+      "role": "Passenger",
+      "career": "Combat",
+      "shipMatrixName": "Cyclone"
+    },
+    "tmbl_cyclone_aa": {
+      "role": "Anti-Air",
+      "career": "Combat",
+      "shipMatrixName": "Cyclone AA"
+    },
+    "tmbl_cyclone_mt": {
+      "role": "Anti-Air",
+      "career": "Combat",
+      "shipMatrixName": "Cyclone MT"
+    },
+    "tmbl_cyclone_rc": {
+      "role": "Racing",
+      "career": "Competition",
+      "shipMatrixName": "Cyclone RC"
+    },
+    "tmbl_cyclone_rn": {
+      "role": "Pathfinder",
+      "career": "Exploration",
+      "shipMatrixName": "Cyclone RN"
+    },
+    "tmbl_cyclone_tr": {
+      "role": "Anti-Vehicle",
+      "career": "Combat",
+      "shipMatrixName": "Cyclone TR"
+    },
+    "tmbl_nova": {
+      "role": "Heavy Tank",
+      "career": "Ground Combat",
+      "shipMatrixName": "Nova"
+    },
+    "tmbl_storm": {
+      "role": "Light Tank",
+      "career": "Ground Combat",
+      "shipMatrixName": "Storm"
+    },
+    "tmbl_storm_aa": {
+      "role": "Light Tank",
+      "career": "Ground Combat",
+      "shipMatrixName": "Storm AA"
+    },
+    "vncl_scythe": {
+      "role": "Medium Fighter",
+      "career": "Combat",
+      "shipMatrixName": "Scythe"
+    }
+  }
+}

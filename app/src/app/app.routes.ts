@@ -29,6 +29,7 @@ import {
   ShipPowerPlantsComponent,
   ShipQuantumDrivesComponent,
 } from './components/ship-items/ship-dbs';
+import { ShipExplorerComponent } from './components/ship-items/ship-explorer';
 import {
   MiningLasersDbComponent,
   MiningModulesDbComponent,
@@ -55,6 +56,7 @@ export const routes: Routes = [
   { path: 'ship-weapons-db',    component: ShipWeaponsDbComponent },
   { path: 'ship-power-plants',  component: ShipPowerPlantsComponent },
   { path: 'ship-quantum-drives',component: ShipQuantumDrivesComponent },
+  { path: 'ship-explorer',      component: ShipExplorerComponent },
   { path: 'submit',             component: SubmitViewComponent },
   { path: 'formulas',           component: FormulasViewComponent },
   { path: 'mining',             component: MiningViewComponent },

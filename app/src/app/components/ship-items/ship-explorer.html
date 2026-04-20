@@ -1,0 +1,54 @@
+<div class="sid-view">
+
+  @if (!data.isLoaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading ships...</div>
+    </div>
+  } @else {
+
+    <div class="sid-header">
+      <div class="sid-title">Ship Explorer</div>
+      <div class="sid-sub">{{ filtered().length }} of {{ ships().length }} ships</div>
+    </div>
+
+    <div class="sid-filters">
+      @for (filter of dropdowns; track filter.label) {
+        <select class="sid-select" [value]="dropdownValues()[filter.label] || ''"
+                (change)="setDropdownValue(filter.label, $any($event.target).value)">
+          <option value="">{{ filter.allLabel }}</option>
+          @for (opt of dropdownOptions(filter); track opt) {
+            <option [value]="opt">{{ opt }}</option>
+          }
+        </select>
+      }
+      <input class="sid-search" type="text" placeholder="Search..."
+             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+    </div>
+
+    <div class="sid-table-wrap">
+      <table class="sid-table">
+        <thead>
+          <tr>
+            @for (col of cols; track col.field) {
+              <th [class.sortable]="col.sortable" [class.col-num-head]="col.align === 'right'"
+                  (click)="toggleSort(col)">{{ col.label }}{{ sortIndicator(col) }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (ship of filtered(); track ship.className; let isFirst = $first) {
+            <tr>
+              @for (col of cols; track col.field; let isCol0 = $first) {
+                <td [class]="tdClass(col, isCol0)">{{ formatted(ship, col) }}</td>
+              }
+            </tr>
+          }
+          @if (!filtered().length) {
+            <tr><td [attr.colspan]="cols.length" class="empty-row">No ships match the current filters.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  }
+</div>
