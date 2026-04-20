@@ -1,0 +1,54 @@
+<div class="sid-view">
+
+  @if (!data.isLoaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading {{ title.toLowerCase() }}...</div>
+    </div>
+  } @else {
+
+    <div class="sid-header">
+      <div class="sid-title">{{ title }} Database</div>
+      <div class="sid-sub">{{ filtered().length }} of {{ items().length }} items</div>
+    </div>
+
+    <div class="sid-filters">
+      @if (subTypeFilters.length) {
+        <select class="sid-select" [value]="subTypeFilter()"
+                (change)="subTypeFilter.set($any($event.target).value)">
+          <option value="">All Classes</option>
+          @for (f of subTypeFilters; track f.label) {
+            <option [value]="f.label">{{ f.label }}</option>
+          }
+        </select>
+      }
+      <input class="sid-search" type="text" placeholder="Search..."
+             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+    </div>
+
+    <div class="sid-table-wrap">
+      <table class="sid-table">
+        <thead>
+          <tr>
+            @for (col of columns; track col.field) {
+              <th [class.sortable]="col.sortable" [class.col-num-head]="col.align === 'right'"
+                  (click)="toggleSort(col)">{{ col.label }}{{ sortIndicator(col) }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of filtered(); track item.className; let first = $first; let i = $index) {
+            <tr>
+              @for (col of columns; track col.field; let isFirst = $first) {
+                <td [class]="tdClass(col, isFirst)">{{ formatted(item, col) }}</td>
+              }
+            </tr>
+          }
+          @if (!filtered().length) {
+            <tr><td [attr.colspan]="columns.length" class="empty-row">No items match the current filters.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  }
+</div>

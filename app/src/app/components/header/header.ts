@@ -7,7 +7,7 @@ import { Ship, Item } from '../../models/db.models';
 import { LoadoutCompareComponent, StoredLoadout as StoredLoadoutExport } from '../loadout-compare/loadout-compare';
 import { AdminService } from '../admin/admin.service';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'qtRange' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle';
+export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'qtRange' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle' | 'shipShields' | 'shipCoolers' | 'shipWeaponsDb' | 'shipPowerPlants' | 'shipQuantumDrives';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
@@ -18,6 +18,11 @@ const TAB_ROUTES: Record<string, string> = {
   fpsTtk: 'fps-ttk',
   eveStyle: 'eve-style',
   qtRange: 'qt-range',
+  shipShields: 'ship-shields',
+  shipCoolers: 'ship-coolers',
+  shipWeaponsDb: 'ship-weapons-db',
+  shipPowerPlants: 'ship-power-plants',
+  shipQuantumDrives: 'ship-quantum-drives',
 };
 
 function tabToRoute(id: string): string {
@@ -82,6 +87,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { id: 'armor', label: 'Armor Damage' },
     { id: 'compare', label: 'Weapon Performance' },
     { id: 'finder', label: 'Default Loadout Finder' },
+    { id: 'shipWeaponsDb', label: 'Ship Weapons' },
+    { id: 'shipShields', label: 'Shields' },
+    { id: 'shipCoolers', label: 'Coolers' },
+    { id: 'shipPowerPlants', label: 'Power Plants' },
+    { id: 'shipQuantumDrives', label: 'Quantum Drives' },
     // { id: 'eveStyle', label: 'Eve Style (Pilot)' },  // hidden until ready
   ];
 

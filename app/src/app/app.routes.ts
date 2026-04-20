@@ -22,6 +22,13 @@ import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
 import { EveStyleComponent } from './components/eve-style/eve-style';
 import { AltLayoutComponent } from './components/alt-layout/alt-layout';
+import {
+  ShipShieldsComponent,
+  ShipCoolersComponent,
+  ShipWeaponsDbComponent,
+  ShipPowerPlantsComponent,
+  ShipQuantumDrivesComponent,
+} from './components/ship-items/ship-dbs';
 import { adminGuard } from './components/admin/admin-guard';
 
 export const routes: Routes = [
@@ -39,6 +46,11 @@ export const routes: Routes = [
   { path: 'rankings',           component: RankingsViewComponent },
   { path: 'qt-range',           component: QtRangeViewComponent },
   { path: 'armor',              component: ArmorViewComponent },
+  { path: 'ship-shields',       component: ShipShieldsComponent },
+  { path: 'ship-coolers',       component: ShipCoolersComponent },
+  { path: 'ship-weapons-db',    component: ShipWeaponsDbComponent },
+  { path: 'ship-power-plants',  component: ShipPowerPlantsComponent },
+  { path: 'ship-quantum-drives',component: ShipQuantumDrivesComponent },
   { path: 'submit',             component: SubmitViewComponent },
   { path: 'formulas',           component: FormulasViewComponent },
   { path: 'mining',             component: MiningViewComponent },
