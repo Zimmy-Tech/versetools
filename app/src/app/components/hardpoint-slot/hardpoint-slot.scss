@@ -108,11 +108,13 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: rgba(19, 26, 36, 0.6);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23667f98'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px 6px;
+  // Subtle vertical gradient (top a touch lighter than bottom) gives the
+  // card "material" instead of reading as a flat paint fill — ambient
+  // light coming from above.
+  background:
+    linear-gradient(180deg, rgba(24, 32, 44, 0.72) 0%, rgba(15, 21, 30, 0.62) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23667f98'/%3E%3C/svg%3E") no-repeat right 10px center;
+  background-size: auto, 10px 6px;
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 3px;
   color: var(--text);
@@ -124,9 +126,29 @@
   outline: none;
   cursor: pointer;
   min-height: 35px;
-  transition: all 0.15s;
+  transition: all 0.15s, transform 0.15s;
+  // Layered depth: top rim highlight (bevel), a hairline bottom darkline
+  // (edge thickness), and a soft drop shadow that floats the card over
+  // the background. All opacities are low enough to read as texture
+  // rather than a decorated card.
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.18);
 
-  &:hover { border-color: rgba(0, 200, 255, 0.15); background-color: rgba(19, 26, 36, 0.8); }
+  &:hover {
+    border-color: rgba(0, 200, 255, 0.18);
+    background:
+      linear-gradient(180deg, rgba(28, 38, 52, 0.82) 0%, rgba(18, 26, 36, 0.72) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23667f98'/%3E%3C/svg%3E") no-repeat right 10px center;
+    background-size: auto, 10px 6px;
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 8px rgba(0, 0, 0, 0.28),
+      0 0 10px rgba(0, 200, 255, 0.05);
+    transform: translateY(-0.5px);
+  }
   &:focus { border-color: var(--accent2); box-shadow: 0 0 6px rgba(0, 200, 255, 0.08); }
   option { background: var(--bg3); color: var(--text); }
 }
@@ -147,19 +169,28 @@
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  background: rgba(19, 26, 36, 0.6);
+  background: linear-gradient(180deg, rgba(24, 32, 44, 0.72) 0%, rgba(15, 21, 30, 0.62) 100%);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 3px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s, transform 0.15s;
   min-height: 35px;
   min-width: 0;
   overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.18);
 
   &:hover {
-    border-color: rgba(0, 200, 255, 0.2);
-    background: rgba(19, 26, 36, 0.8);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 200, 255, 0.22);
+    background: linear-gradient(180deg, rgba(28, 38, 52, 0.82) 0%, rgba(18, 26, 36, 0.72) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 10px rgba(0, 0, 0, 0.28),
+      0 0 12px rgba(0, 200, 255, 0.06);
+    transform: translateY(-0.5px);
   }
 }
 
@@ -640,18 +671,27 @@
 .cmp-trigger {
   display: flex;
   align-items: center;
-  background: rgba(19, 26, 36, 0.6);
+  background: linear-gradient(180deg, rgba(24, 32, 44, 0.72) 0%, rgba(15, 21, 30, 0.62) 100%);
   border: 1px solid rgba(255, 255, 255, 0.04);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s, transform 0.15s;
   overflow: hidden;
   padding: 6px 0;
   border-radius: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.18);
 
   &:hover {
-    border-color: rgba(0, 200, 255, 0.15);
-    background: rgba(19, 26, 36, 0.8);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 200, 255, 0.18);
+    background: linear-gradient(180deg, rgba(28, 38, 52, 0.82) 0%, rgba(18, 26, 36, 0.72) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 10px rgba(0, 0, 0, 0.28),
+      0 0 12px rgba(0, 200, 255, 0.06);
+    transform: translateY(-0.5px);
   }
 
   .trigger-arrow {
@@ -673,9 +713,13 @@
   display: flex;
   align-items: stretch;
   border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(19, 26, 36, 0.6);
+  background: linear-gradient(180deg, rgba(24, 32, 44, 0.72) 0%, rgba(15, 21, 30, 0.62) 100%);
   overflow: hidden;
   border-radius: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.18);
 }
 
 .cmp-trigger .cmp-tag,
@@ -684,14 +728,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 8px;
-  background: rgba(0, 0, 0, 0.2);
-  border-right: 2px solid rgba(0, 200, 255, 0.2);
+  padding: 0 10px;
+  // Size chip now reads as a pressed-in / stamped ID plate instead of a
+  // flat rectangle. The darker gradient sits below the host card's
+  // surface, a soft inner top shadow suggests the chip is recessed, a
+  // 1px bottom highlight catches the interior ledge, and a 1px shadow
+  // on the right edge maintains visual separation from the name column
+  // (replaces the old cyan divider border). The S# text picks up a
+  // subtle cyan glow + ink shadow — reads like an engraved readout.
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.12) 100%);
   font-family: 'Rajdhani', sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 1px;
+  text-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 200, 255, 0.35);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    inset -1px 0 0 rgba(0, 0, 0, 0.3);
 }
 
 .cmp-trigger .cmp-info,
@@ -796,11 +853,40 @@
 
 /* ── Jane's Spec Card (component detail display) ──── */
 .jane-card-slot {
+  position: relative;
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-top: 2px solid var(--accent2);
   background: linear-gradient(160deg, rgba(19, 26, 36, 0.7) 0%, rgba(0, 0, 0, 0.15) 100%);
   overflow: hidden;
   border-radius: 4px;
+  // Same depth recipe as the other cards — top rim, bottom hairline,
+  // soft drop shadow — so the Jane-card spec panel reads as a raised
+  // instrument readout instead of flat paint.
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 6px rgba(0, 0, 0, 0.22);
+
+  // Faint horizontal scanlines (same pattern the left-sidebar stat
+  // blocks use) — ~1.8% white every 2px — gives the card a CRT /
+  // instrument-panel texture without fighting the content.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.018) 2px,
+      rgba(255, 255, 255, 0.018) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+
+  > * { position: relative; z-index: 1; }
 }
 
 .jane-card-slot .jane-meta {

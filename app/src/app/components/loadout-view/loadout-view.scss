@@ -421,6 +421,13 @@
   flex-direction: column;
   gap: 6px;
   position: relative;
+  // Match the card-depth recipe from hardpoint-slot triggers: rim
+  // highlight on top, hairline dark on the bottom, soft drop shadow
+  // so each stat panel reads as a raised block instead of flat paint.
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 6px rgba(0, 0, 0, 0.22);
 
   // Subtle top-right corner accent
   &::before {
@@ -658,41 +665,57 @@
   padding: 0 0 4px;
 }
 
-.btn-cart-add {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: rgba(0, 200, 255, 0.06);
-  border: 1px solid rgba(0, 200, 255, 0.2);
-  border-radius: 4px;
-  padding: 4px 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover { background: rgba(0, 200, 255, 0.12); box-shadow: 0 0 8px rgba(0, 200, 255, 0.1); }
-}
-
+// Shared depth recipe for the loadout control row — matches the action
+// buttons in the ship-picker bar (bulk / mil / stealth) so the controls
+// feel like one family of raised panels.
+.btn-cart-add,
 .btn-reset {
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--text3);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   padding: 4px 10px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s, transform 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 2px 4px rgba(0, 0, 0, 0.22);
+  &:hover { transform: translateY(-0.5px); }
+}
+
+.btn-cart-add {
+  color: var(--accent);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  background: linear-gradient(180deg, rgba(0, 200, 255, 0.14) 0%, rgba(0, 200, 255, 0.03) 100%);
+
+  &:hover {
+    background: linear-gradient(180deg, rgba(0, 200, 255, 0.22) 0%, rgba(0, 200, 255, 0.06) 100%);
+    border-color: var(--accent);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.22),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 8px rgba(0, 0, 0, 0.28),
+      0 0 10px rgba(0, 200, 255, 0.2);
+  }
+}
+
+.btn-reset {
+  color: var(--text3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
 
   &:hover {
     color: var(--accent);
     border-color: var(--accent2);
-    box-shadow: 0 0 6px rgba(0, 200, 255, 0.08);
+    background: linear-gradient(180deg, rgba(0, 200, 255, 0.12) 0%, rgba(0, 200, 255, 0.02) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.15),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 8px rgba(0, 0, 0, 0.28),
+      0 0 8px rgba(0, 200, 255, 0.15);
   }
 }
 
@@ -829,10 +852,25 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
     margin-left: auto;
     padding: 2px 8px;
     border: 1px solid var(--border);
-    background: var(--bg3);
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.18) 100%);
     letter-spacing: 0;
-    transition: all 0.15s;
-    &:hover { color: var(--accent); border-color: var(--accent2); }
+    transition: all 0.15s, transform 0.15s;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+      0 1px 3px rgba(0, 0, 0, 0.2);
+    &:hover {
+      color: var(--accent);
+      border-color: var(--accent2);
+      background: linear-gradient(180deg, rgba(0, 200, 255, 0.12) 0%, rgba(0, 200, 255, 0.02) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(0, 200, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+        0 2px 5px rgba(0, 0, 0, 0.25),
+        0 0 6px rgba(0, 200, 255, 0.12);
+      transform: translateY(-0.5px);
+    }
   }
 
 

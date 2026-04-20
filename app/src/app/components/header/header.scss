@@ -452,52 +452,73 @@ header {
   flex-shrink: 0;
   position: relative;
 
-  .bulk-equip-btn {
-    font-size: 11px;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--accent);
-    cursor: pointer;
-    padding: 4px 12px;
-    border: 1px solid var(--accent2);
-    border-radius: 4px;
-    background: rgba(74, 255, 122, 0.06);
-    white-space: nowrap;
-    transition: all 0.2s;
-    &:hover { background: rgba(74, 255, 122, 0.15); border-color: var(--accent); box-shadow: 0 0 8px rgba(74, 255, 122, 0.15); }
-  }
-
-  .mil-a-btn {
-    font-size: 11px;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #ff8844;
-    cursor: pointer;
-    padding: 4px 12px;
-    border: 1px solid rgba(255, 136, 68, 0.4);
-    border-radius: 4px;
-    background: rgba(255, 136, 68, 0.06);
-    white-space: nowrap;
-    transition: all 0.2s;
-    &:hover { background: rgba(255, 136, 68, 0.15); border-color: #ff8844; box-shadow: 0 0 8px rgba(255, 136, 68, 0.15); }
-  }
-
+  // Shared depth recipe for the three loadout action buttons. Each one
+  // keeps its accent color (green / orange / purple) but picks up the
+  // same vertical gradient + rim highlight + bottom shadow + outer drop
+  // shadow stack used on the loadout cards, so the whole page reads as
+  // raised physical panels instead of paint.
+  .bulk-equip-btn,
+  .mil-a-btn,
   .stealth-a-btn {
     font-size: 11px;
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
-    color: #8888cc;
     cursor: pointer;
     padding: 4px 12px;
-    border: 1px solid rgba(136, 136, 204, 0.4);
     border-radius: 4px;
-    background: rgba(136, 136, 204, 0.06);
     white-space: nowrap;
-    transition: all 0.2s;
-    &:hover { background: rgba(136, 136, 204, 0.15); border-color: #8888cc; box-shadow: 0 0 8px rgba(136, 136, 204, 0.15); }
+    transition: all 0.2s, transform 0.15s;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 2px 4px rgba(0, 0, 0, 0.22);
+    &:hover { transform: translateY(-0.5px); }
+  }
+
+  .bulk-equip-btn {
+    color: var(--accent);
+    border: 1px solid var(--accent2);
+    background: linear-gradient(180deg, rgba(74, 255, 122, 0.12) 0%, rgba(74, 255, 122, 0.03) 100%);
+    &:hover {
+      background: linear-gradient(180deg, rgba(74, 255, 122, 0.22) 0%, rgba(74, 255, 122, 0.08) 100%);
+      border-color: var(--accent);
+      box-shadow:
+        inset 0 1px 0 rgba(74, 255, 122, 0.18),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+        0 3px 8px rgba(0, 0, 0, 0.28),
+        0 0 10px rgba(74, 255, 122, 0.2);
+    }
+  }
+
+  .mil-a-btn {
+    color: #ff8844;
+    border: 1px solid rgba(255, 136, 68, 0.4);
+    background: linear-gradient(180deg, rgba(255, 136, 68, 0.12) 0%, rgba(255, 136, 68, 0.03) 100%);
+    &:hover {
+      background: linear-gradient(180deg, rgba(255, 136, 68, 0.22) 0%, rgba(255, 136, 68, 0.08) 100%);
+      border-color: #ff8844;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 136, 68, 0.22),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+        0 3px 8px rgba(0, 0, 0, 0.28),
+        0 0 10px rgba(255, 136, 68, 0.22);
+    }
+  }
+
+  .stealth-a-btn {
+    color: #8888cc;
+    border: 1px solid rgba(136, 136, 204, 0.4);
+    background: linear-gradient(180deg, rgba(136, 136, 204, 0.14) 0%, rgba(136, 136, 204, 0.03) 100%);
+    &:hover {
+      background: linear-gradient(180deg, rgba(136, 136, 204, 0.24) 0%, rgba(136, 136, 204, 0.08) 100%);
+      border-color: #8888cc;
+      box-shadow:
+        inset 0 1px 0 rgba(136, 136, 204, 0.22),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+        0 3px 8px rgba(0, 0, 0, 0.28),
+        0 0 10px rgba(136, 136, 204, 0.22);
+    }
   }
 
   .ship-picker-wrap {
@@ -513,14 +534,28 @@ header {
     font-weight: 700;
     letter-spacing: 1px;
     color: var(--text3);
-    background: var(--bg3);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.18) 100%);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 4px 10px;
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s;
-    &:hover { color: var(--text); border-color: var(--text3); box-shadow: 0 0 8px rgba(0, 200, 255, 0.15); }
+    transition: all 0.2s, transform 0.15s;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 2px 4px rgba(0, 0, 0, 0.22);
+    &:hover {
+      color: var(--text);
+      border-color: var(--accent2);
+      background: linear-gradient(180deg, rgba(0, 200, 255, 0.1) 0%, rgba(0, 200, 255, 0.02) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(0, 200, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+        0 3px 8px rgba(0, 0, 0, 0.28),
+        0 0 8px rgba(0, 200, 255, 0.15);
+      transform: translateY(-0.5px);
+    }
   }
 }
 
@@ -540,20 +575,31 @@ header {
   padding: 4px 14px;
   border: 1px solid var(--border);
   border-radius: 3px;
-  background: transparent;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.18) 100%);
   color: var(--text2);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s, transform 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 2px 4px rgba(0, 0, 0, 0.22);
 
   &:hover {
     color: var(--text);
     border-color: var(--accent2);
+    background: linear-gradient(180deg, rgba(0, 200, 255, 0.12) 0%, rgba(0, 200, 255, 0.02) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.15),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 8px rgba(0, 0, 0, 0.28),
+      0 0 8px rgba(0, 200, 255, 0.15);
+    transform: translateY(-0.5px);
   }
 }
 
 .lb-store {
   &:hover { color: var(--accent); border-color: var(--accent); }
-  &:active { background: rgba(0, 200, 255, 0.08); }
+  &:active { background: rgba(0, 200, 255, 0.12); }
 }
 
 .lb-arrow {
