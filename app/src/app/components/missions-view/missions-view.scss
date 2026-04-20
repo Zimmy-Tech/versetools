@@ -226,6 +226,200 @@
   option { background: var(--bg2); color: var(--text); }
 }
 
+/* Custom dropdown for Faction + Rank. Mirrors the qt-range-view
+   filter-picker pattern so OS-gray selected-state highlights don't
+   bleed through the dark theme. */
+.mv-picker {
+  position: relative;
+  width: 100%;
+}
+
+.mv-picker-trigger {
+  width: 100%;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  transition: border-color .15s, background .15s;
+
+  &:hover  { border-color: rgba(0, 200, 255, 0.3); }
+  &.open   { border-color: rgba(0, 200, 255, 0.5); }
+}
+
+.mv-picker-val {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mv-picker-caret {
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.mv-picker-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg2);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 3px;
+  padding: 3px;
+  max-height: 320px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  animation: mvPickerIn 0.12s ease-out;
+}
+
+@keyframes mvPickerIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mv-picker-opt {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  padding: 6px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.1s, color 0.1s;
+
+  &:hover {
+    background: rgba(0, 200, 255, 0.08);
+    color: var(--text);
+  }
+
+  &.selected {
+    background: rgba(0, 200, 255, 0.15);
+    color: var(--accent);
+  }
+}
+
+.mv-picker-sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 3px 4px;
+}
+
+/* ── Faction + Rep Gate group ────────────────────────
+   The Rank picker only appears after a faction is picked. Grouping the
+   two under a shared bordered container with a left accent rail makes
+   their relationship structural rather than spatial. The rail brightens
+   once Rank is showing, and the Rank trigger plays a one-shot pulse on
+   entry so new users notice it spawned. */
+.mv-gate {
+  position: relative;
+  margin-top: 14px;
+  padding: 10px 10px 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.015);
+  transition: border-color 0.25s, background 0.25s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: rgba(0, 200, 255, 0.25);
+    border-radius: 1px;
+    transition: background 0.25s, box-shadow 0.25s;
+  }
+
+  &.mv-gate-active {
+    border-color: rgba(0, 200, 255, 0.22);
+    background: rgba(0, 200, 255, 0.025);
+
+    &::before {
+      background: var(--accent);
+      box-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
+    }
+  }
+}
+
+.mv-gate-heading {
+  // Override the default sidebar <h4> spacing so the heading sits snug
+  // inside the container instead of pushing the first field downward.
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.14em !important;
+  color: var(--text3);
+}
+
+.mv-gate-field {
+  + .mv-gate-field { margin-top: 8px; }
+}
+
+.mv-gate-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 3px;
+  padding-left: 1px;
+}
+
+.mv-gate-elbow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: rgba(0, 200, 255, 0.55);
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+/* One-shot pulse on the Rank trigger when the field first renders. Uses
+   `animation` without iteration count (defaults to 1) so it plays once
+   per Angular mount — picking a different faction that keeps the Rank
+   field visible will NOT replay it, which is the desired behaviour
+   (only new appearances get the nudge). */
+.mv-picker-pulse .mv-picker-trigger {
+  animation: gatePulse 1.2s ease-out;
+}
+
+@keyframes gatePulse {
+  0% {
+    border-color: var(--accent);
+    background: rgba(0, 200, 255, 0.18);
+    box-shadow: 0 0 0 0 rgba(0, 200, 255, 0.5),
+                0 0 14px rgba(0, 200, 255, 0.35);
+  }
+  60% {
+    border-color: rgba(0, 200, 255, 0.4);
+    background: rgba(0, 200, 255, 0.06);
+    box-shadow: 0 0 0 4px rgba(0, 200, 255, 0),
+                0 0 6px rgba(0, 200, 255, 0.15);
+  }
+  100% {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: var(--bg2);
+    box-shadow: none;
+  }
+}
+
 .mv-applied {
   display: flex;
   flex-wrap: wrap;
@@ -922,6 +1116,14 @@ $cols: minmax(0, 1fr) 160px 80px 140px 80px 60px 140px 20px;
   }
 
   tbody tr:hover td { background: rgba(0, 200, 255, 0.03); }
+
+  /* Ladder rows double as "jump to contracts at this rank" shortcuts —
+     give them a cursor + brighter hover so the affordance reads. */
+  tbody tr.clickable { cursor: pointer; }
+  tbody tr.clickable:hover td {
+    background: rgba(0, 200, 255, 0.09);
+    color: var(--text);
+  }
 
   tbody tr.you td {
     background: rgba(0, 200, 255, 0.10);

@@ -20,14 +20,24 @@
         </div>
 
         <h4>Category</h4>
-        <div class="mv-chips">
-          <button class="mv-chip" [class.on]="categoryFilter() === ''"
-                  (click)="categoryFilter.set(''); resetPage()">All</button>
-          @for (cat of categories(); track cat) {
-            @if (cat) {
-              <button class="mv-chip" [class.on]="categoryFilter() === cat"
-                      (click)="categoryFilter.set(categoryFilter() === cat ? '' : cat); resetPage()">{{ cat }}</button>
-            }
+        <div class="mv-picker">
+          <button class="mv-picker-trigger" (click)="toggleCategoryDd($event)"
+                  [class.open]="categoryOpen()">
+            <span class="mv-picker-val">{{ categoryFilter() || 'All categories' }}</span>
+            <span class="mv-picker-caret">{{ categoryOpen() ? '▴' : '▾' }}</span>
+          </button>
+          @if (categoryOpen()) {
+            <div class="mv-picker-list" (click)="$event.stopPropagation()">
+              <div class="mv-picker-opt" [class.selected]="categoryFilter() === ''"
+                   (click)="pickCategory('')">All categories</div>
+              <div class="mv-picker-sep"></div>
+              @for (cat of categories(); track cat) {
+                @if (cat) {
+                  <div class="mv-picker-opt" [class.selected]="categoryFilter() === cat"
+                       (click)="pickCategory(cat)">{{ cat }}</div>
+                }
+              }
+            </div>
           }
         </div>
 
@@ -40,22 +50,46 @@
         </div>
 
         <h4>System</h4>
-        <div class="mv-chips">
-          @for (sys of systems(); track sys) {
-            @if (sys) {
-              <button class="mv-chip" [class.on]="systemFilter() === sys"
-                      (click)="systemFilter.set(systemFilter() === sys ? '' : sys); resetPage()">{{ sys }}</button>
-            }
+        <div class="mv-picker">
+          <button class="mv-picker-trigger" (click)="toggleSystemDd($event)"
+                  [class.open]="systemOpen()">
+            <span class="mv-picker-val">{{ systemFilter() || 'All systems' }}</span>
+            <span class="mv-picker-caret">{{ systemOpen() ? '▴' : '▾' }}</span>
+          </button>
+          @if (systemOpen()) {
+            <div class="mv-picker-list" (click)="$event.stopPropagation()">
+              <div class="mv-picker-opt" [class.selected]="systemFilter() === ''"
+                   (click)="pickSystem('')">All systems</div>
+              <div class="mv-picker-sep"></div>
+              @for (sys of systems(); track sys) {
+                @if (sys) {
+                  <div class="mv-picker-opt" [class.selected]="systemFilter() === sys"
+                       (click)="pickSystem(sys)">{{ sys }}</div>
+                }
+              }
+            </div>
           }
         </div>
 
         <h4>Activity</h4>
-        <div class="mv-chips">
-          @for (act of activities(); track act) {
-            @if (act) {
-              <button class="mv-chip" [class.on]="activityFilter() === act"
-                      (click)="activityFilter.set(activityFilter() === act ? '' : act); resetPage()">{{ act }}</button>
-            }
+        <div class="mv-picker">
+          <button class="mv-picker-trigger" (click)="toggleActivityDd($event)"
+                  [class.open]="activityOpen()">
+            <span class="mv-picker-val">{{ activityFilter() || 'All activities' }}</span>
+            <span class="mv-picker-caret">{{ activityOpen() ? '▴' : '▾' }}</span>
+          </button>
+          @if (activityOpen()) {
+            <div class="mv-picker-list" (click)="$event.stopPropagation()">
+              <div class="mv-picker-opt" [class.selected]="activityFilter() === ''"
+                   (click)="pickActivity('')">All activities</div>
+              <div class="mv-picker-sep"></div>
+              @for (act of activities(); track act) {
+                @if (act) {
+                  <div class="mv-picker-opt" [class.selected]="activityFilter() === act"
+                       (click)="pickActivity(act!)">{{ act }}</div>
+                }
+              }
+            </div>
           }
         </div>
 
@@ -66,6 +100,66 @@
             <option [value]="ct">{{ ct || 'All contractors' }}</option>
           }
         </select>
+
+        @if (factionOptions().length) {
+          <div class="mv-gate" [class.mv-gate-active]="!!factionLadder()">
+            <h4 class="mv-gate-heading">Faction · Rep Gate</h4>
+            <div class="mv-gate-field">
+              <span class="mv-gate-label">Faction</span>
+              <div class="mv-picker">
+                <button class="mv-picker-trigger" (click)="toggleFactionDd($event)"
+                        [class.open]="factionOpen()">
+                  <span class="mv-picker-val">
+                    @if (factionFilter() === '__none__') { No rep gate }
+                    @else if (factionFilter()) { {{ fmtScope(factionFilter()) }} }
+                    @else { Any faction }
+                  </span>
+                  <span class="mv-picker-caret">{{ factionOpen() ? '▴' : '▾' }}</span>
+                </button>
+                @if (factionOpen()) {
+                  <div class="mv-picker-list" (click)="$event.stopPropagation()">
+                    <div class="mv-picker-opt" [class.selected]="factionFilter() === ''"
+                         (click)="pickFaction('')">Any faction</div>
+                    <div class="mv-picker-opt" [class.selected]="factionFilter() === '__none__'"
+                         (click)="pickFaction('__none__')">No rep gate</div>
+                    <div class="mv-picker-sep"></div>
+                    @for (f of factionOptions(); track f.scope) {
+                      <div class="mv-picker-opt" [class.selected]="factionFilter() === f.scope"
+                           (click)="pickFaction(f.scope)">{{ f.label }}</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            @if (factionLadder()) {
+              <div class="mv-gate-field mv-gate-field-child">
+                <span class="mv-gate-label">
+                  <span class="mv-gate-elbow" aria-hidden="true">└</span>
+                  Rank
+                </span>
+                <div class="mv-picker mv-picker-pulse">
+                  <button class="mv-picker-trigger" (click)="toggleRankDd($event)"
+                          [class.open]="rankOpen()">
+                    <span class="mv-picker-val">{{ rankFilter() || 'Any rank' }}</span>
+                    <span class="mv-picker-caret">{{ rankOpen() ? '▴' : '▾' }}</span>
+                  </button>
+                  @if (rankOpen()) {
+                    <div class="mv-picker-list" (click)="$event.stopPropagation()">
+                      <div class="mv-picker-opt" [class.selected]="rankFilter() === ''"
+                           (click)="pickRank('')">Any rank</div>
+                      <div class="mv-picker-sep"></div>
+                      @for (r of rankOptions(); track r) {
+                        <div class="mv-picker-opt" [class.selected]="rankFilter() === r"
+                             (click)="pickRank(r)">{{ r }}</div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
 
         @if (events().length) {
           <h4>Event</h4>
@@ -284,11 +378,11 @@
                       }
                     }
 
-                    @if (getLadders(m).length) {
-                      @for (ladder of getLadders(m); track ladder.name) {
+                    @if (getLaddersWithScope(m).length) {
+                      @for (pair of getLaddersWithScope(m); track pair.ladder.name) {
                         <div class="mv-standings-wrap">
                           <div class="mv-standings-head">
-                            <span class="mv-standings-name">{{ ladder.displayName }} · Standing</span>
+                            <span class="mv-standings-name">{{ pair.ladder.displayName }} · Standing</span>
                             @if (m.repReward) { <span class="mv-standings-rate">+{{ m.repReward | number }} / mission</span> }
                           </div>
                           <table class="mv-standings">
@@ -300,10 +394,13 @@
                               </tr>
                             </thead>
                             <tbody>
-                              @for (row of calcLadder(m, ladder); track row.minRep) {
-                                <tr [class.you]="row.active"
+                              @for (row of calcLadder(m, pair.ladder); track row.minRep) {
+                                <tr class="clickable"
+                                    [class.you]="row.active"
                                     [class.locked]="row.gated"
-                                    [class.unlocked]="!row.gated && !row.active">
+                                    [class.unlocked]="!row.gated && !row.active"
+                                    (click)="applyLadderFilter(pair.scope, row.name, $event)"
+                                    [title]="'Show contracts available at ' + row.name + ' with ' + fmtScope(pair.scope)">
                                   <td>
                                     <span class="role-cell">
                                       <span class="tier-dot"></span>
@@ -320,7 +417,7 @@
                             <tfoot>
                               <tr>
                                 <td>Ceiling</td>
-                                <td class="num" colspan="2">{{ ladder.ceiling | number }} rep</td>
+                                <td class="num" colspan="2">{{ pair.ladder.ceiling | number }} rep</td>
                               </tr>
                             </tfoot>
                           </table>

@@ -1,4 +1,4 @@
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal, computed, effect, HostListener, ElementRef, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
 import { DataService } from '../../services/data.service';
@@ -136,6 +136,18 @@ export class MissionsViewComponent {
   systemFilter = signal('');
   activityFilter = signal('');
   contractorFilter = signal('');
+  /** Rep-gate filter. Scope key from `repRequirements[].scope`, or '' for any,
+   *  or '__none__' for "no rep gate" (contracts with no repRequirements). */
+  factionFilter = signal<string>('');
+  /** Rank name within the current faction's ladder. '' = any rank in that
+   *  faction. Automatically cleared when `factionFilter` changes to a scope
+   *  with a different ladder (picked in `pickFaction`). */
+  rankFilter = signal<string>('');
+  factionOpen = signal(false);
+  rankOpen = signal(false);
+  categoryOpen = signal(false);
+  systemOpen = signal(false);
+  activityOpen = signal(false);
   riskFilter = signal<'' | 'low' | 'med' | 'high'>('');
   /** Event filter. Empty string = main list (hide all event content); '__all__'
    *  = include everything; any specific event name = show only that event. */
@@ -267,9 +279,50 @@ export class MissionsViewComponent {
     return this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
            this.activityFilter() !== '' || this.contractorFilter() !== '' ||
+           this.factionFilter() !== '' || this.rankFilter() !== '' ||
            this.riskFilter() !== '' || this.eventFilter() !== '' ||
            this.blueprintFilter() || this.chainFilter() ||
            this.blueprintNameFilter() !== '' || this.blueprintPoolFilter() !== '';
+  });
+
+  /** Scopes that actually appear in some contract's `repRequirements`, with
+   *  hidden ladders removed. Built once per data load via the
+   *  `allMissions` signal and rendered as the Faction dropdown options. */
+  factionOptions = computed<{ scope: string; label: string }[]>(() => {
+    const stl = this.scopeToLadder();
+    const hidden = this.LADDER_HIDDEN;
+    const seen = new Set<string>();
+    for (const m of this.allMissions()) {
+      for (const r of m.repRequirements ?? []) {
+        const scope = r.scope;
+        if (!scope || scope === '?') continue;
+        const ladderKey = stl[scope] ?? stl[scope.toLowerCase()] ?? scope.toLowerCase();
+        if (hidden.has(ladderKey)) continue;
+        seen.add(scope);
+      }
+    }
+    return Array.from(seen)
+      .map(scope => ({ scope, label: this.fmtScope(scope) }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  });
+
+  /** Ladder behind the currently-selected faction scope. Null for "any" and
+   *  the synthetic "no rep gate" bucket, which have no rank axis. */
+  factionLadder = computed<RepLadder | null>(() => {
+    const scope = this.factionFilter();
+    if (!scope || scope === '__none__') return null;
+    const stl = this.scopeToLadder();
+    const ladderKey = stl[scope] ?? stl[scope.toLowerCase()] ?? scope.toLowerCase();
+    return this.repLadders()[ladderKey] ?? null;
+  });
+
+  /** Rank names (low → high) for the selected faction's ladder. Excludes
+   *  negative-minRep "hostile" sentinels that `calcLadder` also filters
+   *  so the dropdown list matches what the rep table shows. */
+  rankOptions = computed<string[]>(() => {
+    const ladder = this.factionLadder();
+    if (!ladder) return [];
+    return ladder.ranks.filter(r => r.minRep >= 0).map(r => r.name);
   });
 
   /** Pill list for the "Applied" strip. Each entry has a label for display
@@ -283,6 +336,13 @@ export class MissionsViewComponent {
     if (this.systemFilter()) out.push({ key: 'system', label: this.systemFilter() });
     if (this.activityFilter()) out.push({ key: 'activity', label: this.activityFilter() });
     if (this.contractorFilter()) out.push({ key: 'contractor', label: this.contractorFilter() });
+    if (this.factionFilter() === '__none__') {
+      out.push({ key: 'faction', label: 'No rep gate' });
+    } else if (this.factionFilter()) {
+      const base = this.fmtScope(this.factionFilter());
+      const label = this.rankFilter() ? `${base} @ ${this.rankFilter()}` : base;
+      out.push({ key: 'faction', label });
+    }
     if (this.eventFilter() === '__all__') out.push({ key: 'event', label: 'Events: All' });
     else if (this.eventFilter()) out.push({ key: 'event', label: 'Event: ' + this.eventFilter() });
     if (this.blueprintFilter()) out.push({ key: 'blueprint', label: 'Blueprints' });
@@ -304,6 +364,7 @@ export class MissionsViewComponent {
       case 'system': this.systemFilter.set(''); break;
       case 'activity': this.activityFilter.set(''); break;
       case 'contractor': this.contractorFilter.set(''); break;
+      case 'faction': this.factionFilter.set(''); this.rankFilter.set(''); break;
       case 'event': this.eventFilter.set(''); break;
       case 'blueprint': this.blueprintFilter.set(false); break;
       case 'chain': this.chainFilter.set(false); break;
@@ -387,6 +448,30 @@ export class MissionsViewComponent {
     if (pool) missions = missions.filter(m => this.bpPoolKey(m) === pool);
     if (chain) missions = missions.filter(m => m.isChain);
     if (ct) missions = missions.filter(m => m.contractor === ct);
+    const faction = this.factionFilter();
+    if (faction === '__none__') {
+      missions = missions.filter(m => !m.repRequirements?.length);
+    } else if (faction) {
+      const ladder = this.factionLadder();
+      const rank = this.rankFilter();
+      const rankIdx = ladder && rank ? ladder.ranks.findIndex(r => r.name === rank) : -1;
+      missions = missions.filter(m => {
+        const reqs = m.repRequirements ?? [];
+        for (const req of reqs) {
+          if (req.scope !== faction) continue;
+          if (!rank || !ladder) return true;
+          // Rank-gated: "what's available at my current rep" — my rank must
+          // fall within the contract's [minRank, maxRank] window. maxRank is
+          // usually the same as minRank (single-rank gate) but can widen for
+          // contracts that stay available across several ranks.
+          const minIdx = ladder.ranks.findIndex(r => r.name === req.minRank);
+          const maxIdx = ladder.ranks.findIndex(r => r.name === req.maxRank);
+          if (rankIdx >= 0 && minIdx >= 0 && maxIdx >= 0 &&
+              rankIdx >= minIdx && rankIdx <= maxIdx) return true;
+        }
+        return false;
+      });
+    }
     if (titleRx) missions = missions.filter(m => titleRx.test(m.title ?? ''));
 
     const dir = this.sortDir();
@@ -458,6 +543,31 @@ export class MissionsViewComponent {
     return this.contractorProfiles()[m.contractor] ?? null;
   }
 
+  private host = inject(ElementRef<HTMLElement>);
+
+  /** Close dropdowns on outside click so the overlays don't linger when the
+   *  user clicks elsewhere in the page. */
+  @HostListener('document:click', ['$event'])
+  onDocClick(ev: MouseEvent): void {
+    if (this.host.nativeElement.contains(ev.target as Node)) return;
+    this.factionOpen.set(false);
+    this.rankOpen.set(false);
+    this.categoryOpen.set(false);
+    this.systemOpen.set(false);
+    this.activityOpen.set(false);
+  }
+
+  /** Close every dropdown except the one the user is opening. Centralised so
+   *  opening one picker consistently collapses the others rather than
+   *  stacking two menus on top of each other. */
+  private closeAllPickersExcept(keep: 'faction' | 'rank' | 'category' | 'system' | 'activity' | null): void {
+    if (keep !== 'faction')  this.factionOpen.set(false);
+    if (keep !== 'rank')     this.rankOpen.set(false);
+    if (keep !== 'category') this.categoryOpen.set(false);
+    if (keep !== 'system')   this.systemOpen.set(false);
+    if (keep !== 'activity') this.activityOpen.set(false);
+  }
+
   constructor(private http: HttpClient, private data: DataService) {
     effect(() => {
       const prefix = this.data.dataPrefix();
@@ -493,6 +603,8 @@ export class MissionsViewComponent {
     this.systemFilter.set('');
     this.activityFilter.set('');
     this.contractorFilter.set('');
+    this.factionFilter.set('');
+    this.rankFilter.set('');
     this.riskFilter.set('');
     this.eventFilter.set('');
     this.blueprintFilter.set(false);
@@ -564,19 +676,33 @@ export class MissionsViewComponent {
   private readonly LADDER_HIDDEN = new Set(['affinity', 'npc_reliability', 'npc_fired']);
 
   getLadders(m: Mission): RepLadder[] {
+    return this.getLaddersWithScope(m).map(x => x.ladder);
+  }
+
+  /** Ladders for a mission paired with the canonical scope that produced
+   *  each. The scope is needed by the inline expanded-detail template to
+   *  wire rank-row clicks into the faction filter. Dedup is per-ladder (not
+   *  per-scope) so multiple scopes hitting the same ladder — e.g. several
+   *  "factionreputation" factions — don't produce duplicate tables; the
+   *  first scope encountered wins, which matches the request-order
+   *  displayed in the req-strip above. */
+  getLaddersWithScope(m: Mission): { ladder: RepLadder; scope: string }[] {
     const ladders = this.repLadders();
     const stl = this.scopeToLadder();
-    const scopes = m.repScopes ?? [];
     const reqScopes = (m.repRequirements ?? []).map(r => r.scope).filter(s => s && s !== '?');
-    const allScopes = [...new Set([...scopes, ...reqScopes])];
+    const scopes = m.repScopes ?? [];
+    // requirement scopes first — we want clickable ranks in ladders to filter
+    // by the exact scope the mission gates on, not a descriptive scope that
+    // produces the same ladder but isn't what contracts carry.
+    const allScopes = [...new Set([...reqScopes, ...scopes])];
     const seen = new Set<string>();
-    const results: RepLadder[] = [];
+    const results: { ladder: RepLadder; scope: string }[] = [];
     for (const scope of allScopes) {
       const ladderKey = stl[scope] ?? stl[scope.toLowerCase()] ?? scope.toLowerCase();
       if (seen.has(ladderKey) || this.LADDER_HIDDEN.has(ladderKey)) continue;
       seen.add(ladderKey);
       const ladder = ladders[ladderKey];
-      if (ladder) results.push(ladder);
+      if (ladder) results.push({ ladder, scope });
     }
     return results;
   }
@@ -629,6 +755,76 @@ export class MissionsViewComponent {
 
   toggleExpand(id: string): void {
     this.expandedId.set(this.expandedId() === id ? null : id);
+  }
+
+  toggleFactionDd(ev: Event): void {
+    ev.stopPropagation();
+    this.closeAllPickersExcept('faction');
+    this.factionOpen.update(v => !v);
+  }
+  toggleRankDd(ev: Event): void {
+    ev.stopPropagation();
+    // Rank dropdown is inert until a faction is chosen — avoid opening an
+    // empty list.
+    if (!this.factionLadder()) return;
+    this.closeAllPickersExcept('rank');
+    this.rankOpen.update(v => !v);
+  }
+  toggleCategoryDd(ev: Event): void {
+    ev.stopPropagation();
+    this.closeAllPickersExcept('category');
+    this.categoryOpen.update(v => !v);
+  }
+  toggleSystemDd(ev: Event): void {
+    ev.stopPropagation();
+    this.closeAllPickersExcept('system');
+    this.systemOpen.update(v => !v);
+  }
+  toggleActivityDd(ev: Event): void {
+    ev.stopPropagation();
+    this.closeAllPickersExcept('activity');
+    this.activityOpen.update(v => !v);
+  }
+  pickCategory(val: string): void {
+    this.categoryFilter.set(val);
+    this.categoryOpen.set(false);
+    this.resetPage();
+  }
+  pickSystem(val: string): void {
+    this.systemFilter.set(val);
+    this.systemOpen.set(false);
+    this.resetPage();
+  }
+  pickActivity(val: string): void {
+    this.activityFilter.set(val);
+    this.activityOpen.set(false);
+    this.resetPage();
+  }
+  pickFaction(scope: string): void {
+    const prevLadder = this.factionLadder();
+    this.factionFilter.set(scope);
+    // Clear rank when the ladder changes — a rank name valid in one ladder
+    // rarely exists in another, so keeping stale rank produces empty lists.
+    if (prevLadder !== this.factionLadder()) this.rankFilter.set('');
+    this.factionOpen.set(false);
+    this.resetPage();
+  }
+  pickRank(rank: string): void {
+    this.rankFilter.set(rank);
+    this.rankOpen.set(false);
+    this.resetPage();
+  }
+
+  /** Click-handler from a rank row in the expanded contract's ladder. Applies
+   *  faction + rank as a filter and collapses the row so the user lands back
+   *  on the filtered list. */
+  applyLadderFilter(scope: string, rank: string, ev: MouseEvent): void {
+    ev.stopPropagation();
+    this.factionFilter.set(scope);
+    this.rankFilter.set(rank);
+    this.expandedId.set(null);
+    this.resetPage();
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
   }
 
   selectMission(m: Mission, e: MouseEvent): void {
