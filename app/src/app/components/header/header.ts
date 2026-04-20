@@ -7,11 +7,13 @@ import { Ship, Item } from '../../models/db.models';
 import { LoadoutCompareComponent, StoredLoadout as StoredLoadoutExport } from '../loadout-compare/loadout-compare';
 import { AdminService } from '../admin/admin.service';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'qtRange' | 'armor' | 'mining' | 'miningSignatures' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle' | 'shipShields' | 'shipCoolers' | 'shipWeaponsDb' | 'shipPowerPlants' | 'shipQuantumDrives';
+export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'blueprints' | 'crafting' | 'rankings' | 'qtRange' | 'armor' | 'mining' | 'miningSignatures' | 'miningLasers' | 'miningModules' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle' | 'shipShields' | 'shipCoolers' | 'shipWeaponsDb' | 'shipPowerPlants' | 'shipQuantumDrives';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
   miningSignatures: 'mining-signatures',
+  miningLasers: 'mining-lasers',
+  miningModules: 'mining-modules',
   shipCompare: 'ship-compare',
   fpsWeapons: 'fps-weapons',
   fpsArmor: 'fps-armor',
@@ -103,6 +105,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly industryToolsTabs: { id: TabName; label: string }[] = [
     { id: 'mining', label: 'Mining Ore Locations' },
     { id: 'miningSignatures', label: 'Mining Signatures' },
+    { id: 'miningLasers', label: 'Mining Lasers' },
+    { id: 'miningModules', label: 'Mining Modules' },
     { id: 'crafting', label: 'Crafting' },
   ];
 

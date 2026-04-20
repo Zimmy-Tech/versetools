@@ -19,7 +19,7 @@
   gap: 18px;
   min-width: 0;
   width: 100%;
-  max-width: 1800px;
+  max-width: 2100px;
   margin-inline: auto;
 }
 
@@ -369,7 +369,7 @@
   &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 }
 
-$cols: 14px minmax(0, 1fr) 100px 80px 140px 20px;
+$cols: minmax(0, 1fr) 160px 80px 140px 80px 60px 140px 20px;
 
 .mv-list-head {
   display: grid;
@@ -384,7 +384,17 @@ $cols: 14px minmax(0, 1fr) 100px 80px 140px 20px;
   text-transform: uppercase;
   margin-bottom: 4px;
 
-  .num { text-align: right; }
+  // All columnar headers (everything after the Contract title) center so
+  // they sit over their centered data values. Contract header stays left
+  // since that column holds the wrapped title + meta text.
+  > :nth-child(n+2):nth-last-child(n+2) { text-align: center; }
+
+  .sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.12s;
+    &:hover { color: var(--text); }
+  }
 }
 
 .mv-row {
@@ -425,18 +435,6 @@ $cols: 14px minmax(0, 1fr) 100px 80px 140px 20px;
   padding: 12px 14px;
   align-items: center;
   cursor: pointer;
-}
-
-.mv-risk-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--text3);
-  box-shadow: 0 0 0 3px rgba(120, 140, 160, 0.12);
-
-  &.risk-low { background: var(--green); box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.14); }
-  &.risk-med { background: var(--gold); box-shadow: 0 0 0 3px rgba(240, 165, 0, 0.15); }
-  &.risk-high { background: var(--red); box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.18); }
 }
 
 .mv-title-cell {
@@ -538,10 +536,11 @@ $cols: 14px minmax(0, 1fr) 100px 80px 140px 20px;
   font-family: 'Share Tech Mono', monospace;
   font-size: 17px;
   color: var(--text);
-  text-align: right;
+  text-align: center;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
   line-height: 1.2;
+  white-space: nowrap;
 
   &.pay-hi { color: var(--accent); }
 
@@ -554,23 +553,22 @@ $cols: 14px minmax(0, 1fr) 100px 80px 140px 20px;
   }
 
   .est {
-    display: block;
     color: var(--text3);
     font-size: 10px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-top: 2px;
+    margin-left: 5px;
   }
 }
 
 .mv-rep {
   font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
-  text-align: right;
+  text-align: center;
   font-variant-numeric: tabular-nums;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   line-height: 1.2;
 
   .rep-pos  { color: var(--green); }
@@ -578,11 +576,51 @@ $cols: 14px minmax(0, 1fr) 100px 80px 140px 20px;
   .rep-none { color: var(--text3); }
 }
 
+.mv-chain-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mv-faction-cell {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 12.5px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-self: center;
+}
+
+.mv-type-cell {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text2);
+  text-align: center;
+  align-self: center;
+}
+
+.mv-chain-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 3px rgba(0, 200, 255, 0.18),
+    0 0 10px rgba(0, 200, 255, 0.55);
+}
+
 .mv-loc {
   font-family: 'Share Tech Mono', monospace;
   font-size: 12.5px;
   color: var(--text2);
   letter-spacing: 0.02em;
+  text-align: center;
 
   .sub {
     color: var(--text3);
@@ -1684,13 +1722,19 @@ $cols: 14px minmax(0, 1fr) 100px 80px 140px 20px;
   /* denser list row */
   .mv-list-head,
   .mv-row-click {
-    grid-template-columns: 10px minmax(0, 1fr) 92px 40px;
+    grid-template-columns: minmax(0, 1fr) 92px 40px;
     gap: 10px;
     padding: 10px;
   }
-  .mv-list-head > :nth-child(4),
+  .mv-list-head > :nth-child(2),
+  .mv-list-head > :nth-child(3),
   .mv-list-head > :nth-child(5),
+  .mv-list-head > :nth-child(6),
+  .mv-list-head > :nth-child(7),
+  .mv-row-click > .mv-faction-cell,
+  .mv-row-click > .mv-type-cell,
   .mv-row-click > .mv-rep,
+  .mv-row-click > .mv-chain-cell,
   .mv-row-click > .mv-loc { display: none; }
 
   /* stack expanded detail columns */

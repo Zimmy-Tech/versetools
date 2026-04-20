@@ -139,12 +139,19 @@ export class ShipItemDbComponent {
       if (ShipItemDbComponent.SKIP_SUBSTRINGS_WEAPON.some(s => cn.includes(s))) return true;
     }
     if (ShipItemDbComponent.PLACEHOLDER_NAME_RX.test(item.name ?? '')) return true;
-    // Components (Shield / Cooler / PowerPlant / QuantumDrive) always have
-    // letter grades A-D. Numeric grades mean it's a capital-ship bespoke,
-    // placeholder, or other non-equippable variant that slipped through.
-    if (item.type !== 'WeaponGun' && /^\d+$/.test(String(item.grade ?? ''))) return true;
+    // Only the four power-ladder components use letter grades (A–D); for
+    // those, a numeric grade is a capital-ship bespoke or placeholder that
+    // slipped past the suffix blocklist. Other item types (WeaponMining,
+    // MiningModifier, etc.) legitimately carry numeric grades (e.g. all
+    // mining lasers are Grade 1), so this check must be type-scoped.
+    if (ShipItemDbComponent.LETTER_GRADE_TYPES.has(item.type) &&
+        /^\d+$/.test(String(item.grade ?? ''))) return true;
     return false;
   }
+
+  private static readonly LETTER_GRADE_TYPES = new Set([
+    'Shield', 'Cooler', 'PowerPlant', 'QuantumDrive',
+  ]);
 
   readonly items = computed<Item[]>(() =>
     this.data.items().filter(i => i.type === this.itemType && !this.shouldHide(i))

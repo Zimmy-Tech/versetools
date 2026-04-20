@@ -140,7 +140,11 @@ export class MissionsViewComponent {
   /** Event filter. Empty string = main list (hide all event content); '__all__'
    *  = include everything; any specific event name = show only that event. */
   eventFilter = signal<string>('');
-  sortBy = signal<'reward' | 'title' | 'category'>('reward');
+  sortBy = signal<'reward' | 'title' | 'category' | 'system' | 'rep' | 'chain' | 'faction' | 'type'>('reward');
+  /** Sort direction toggles when the user clicks the same column header
+   *  twice. Defaults chosen per field in `setSort()` so the first click
+   *  feels natural (numeric fields start desc, text fields asc). */
+  sortDir = signal<'asc' | 'desc'>('desc');
   blueprintFilter = signal(false);
   chainFilter = signal(false);
   blueprintNameFilter = signal('');
@@ -385,12 +389,45 @@ export class MissionsViewComponent {
     if (ct) missions = missions.filter(m => m.contractor === ct);
     if (titleRx) missions = missions.filter(m => titleRx.test(m.title ?? ''));
 
-    if (sort === 'reward') missions = [...missions].sort((a, b) => b.reward - a.reward);
-    else if (sort === 'title') missions = [...missions].sort((a, b) => a.title.localeCompare(b.title));
-    else missions = [...missions].sort((a, b) => a.category.localeCompare(b.category) || b.reward - a.reward);
+    const dir = this.sortDir();
+    const sign = dir === 'asc' ? 1 : -1;
+    const systemKey = (m: Mission) => (m.systems?.length ? m.systems[0] : m.system) ?? '';
+    const byNumber = (a: number, b: number) => (a - b) * sign;
+    const byString = (a: string, b: string) => a.localeCompare(b) * sign;
+    missions = [...missions].sort((a, b) => {
+      if (sort === 'reward') return byNumber(a.reward ?? 0, b.reward ?? 0);
+      if (sort === 'rep')    return byNumber(a.repReward ?? 0, b.repReward ?? 0);
+      if (sort === 'title')  return byString(a.title ?? '', b.title ?? '');
+      if (sort === 'system') return byString(systemKey(a), systemKey(b)) || (b.reward - a.reward);
+      if (sort === 'chain')  return byNumber(a.isChain ? 1 : 0, b.isChain ? 1 : 0) || (b.reward - a.reward);
+      if (sort === 'faction') return byString(a.contractor ?? '', b.contractor ?? '') || (b.reward - a.reward);
+      if (sort === 'type')    return byString(a.activity ?? '', b.activity ?? '') || (b.reward - a.reward);
+      // category + reward fallback
+      return a.category.localeCompare(b.category) * sign || (b.reward - a.reward);
+    });
 
     return missions;
   });
+
+  /** Click handler for a column header. Toggles direction if the same
+   *  column is clicked twice; otherwise sets the new field with a sensible
+   *  default direction (numeric → desc, text → asc). */
+  setSort(field: 'reward' | 'title' | 'system' | 'rep' | 'chain' | 'faction' | 'type'): void {
+    if (this.sortBy() === field) {
+      this.sortDir.set(this.sortDir() === 'desc' ? 'asc' : 'desc');
+    } else {
+      this.sortBy.set(field);
+      // Text columns default ascending; numeric / boolean ones default desc.
+      const asc = field === 'title' || field === 'system' || field === 'faction' || field === 'type';
+      this.sortDir.set(asc ? 'asc' : 'desc');
+    }
+    this.resetPage();
+  }
+
+  sortIndicator(field: 'reward' | 'title' | 'system' | 'rep' | 'chain' | 'faction' | 'type'): string {
+    if (this.sortBy() !== field) return '';
+    return this.sortDir() === 'desc' ? ' ▾' : ' ▴';
+  }
 
   totalFiltered = computed(() => this.allFiltered().length);
   totalPages = computed(() => Math.ceil(this.totalFiltered() / this.pageSize) || 1);

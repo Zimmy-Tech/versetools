@@ -6,17 +6,6 @@
     </div>
   } @else {
 
-    <!-- top meta strip -->
-    <div class="mv-meta">
-      <div class="mv-logo">VERSETOOLS</div>
-      <div class="mv-crumb">CONTRACTS / <b>BOARD</b></div>
-      <div class="mv-right">
-        <span>CONTRACTS <span class="num">{{ totalFiltered() | number }}</span></span>
-        <span>SYSTEMS <span class="num">{{ systems().length - 1 }}</span></span>
-        <span>PAGE <span class="num">{{ page() }} / {{ totalPages() }}</span></span>
-      </div>
-    </div>
-
     <div class="mv-shell">
 
       <!-- sidebar -->
@@ -134,21 +123,18 @@
             Filters
             @if (appliedFilters().length) { <span class="mv-filter-count">{{ appliedFilters().length }}</span> }
           </button>
-          <div class="mv-pager">
-            <button class="mv-pager-btn" [disabled]="page() <= 1" (click)="prevPage()">‹</button>
-            <span class="mv-pager-info">{{ page() }} / {{ totalPages() }}</span>
-            <button class="mv-pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">›</button>
-          </div>
         </div>
 
         <div class="mv-list">
 
           <div class="mv-list-head">
-            <span></span>
-            <span>Contract</span>
-            <span class="num">Payout</span>
-            <span class="num">Rep</span>
-            <span>Location</span>
+            <span class="sortable" (click)="setSort('title')">Contract{{ sortIndicator('title') }}</span>
+            <span class="sortable" (click)="setSort('faction')">Faction{{ sortIndicator('faction') }}</span>
+            <span class="sortable" (click)="setSort('type')">Type{{ sortIndicator('type') }}</span>
+            <span class="num sortable" (click)="setSort('reward')">Payout{{ sortIndicator('reward') }}</span>
+            <span class="num sortable" (click)="setSort('rep')">Rep{{ sortIndicator('rep') }}</span>
+            <span class="sortable" (click)="setSort('chain')">Chain{{ sortIndicator('chain') }}</span>
+            <span class="sortable" (click)="setSort('system')">Location{{ sortIndicator('system') }}</span>
             <span></span>
           </div>
 
@@ -156,9 +142,6 @@
             <div class="mv-row" [class.open]="expandedId() === m.className"
                  [attr.data-mv-row]="m.className">
               <div class="mv-row-click" (click)="toggleExpand(m.className)">
-                <span class="mv-risk-dot" [class.risk-low]="riskTier(m) === 'low'"
-                                          [class.risk-med]="riskTier(m) === 'med'"
-                                          [class.risk-high]="riskTier(m) === 'high'"></span>
                 <div class="mv-title-cell">
                   <div class="mv-title-row">
                     <span class="mv-title">{{ m.title }}</span>
@@ -171,9 +154,6 @@
                     @if (m.boss) {
                       <span class="mv-badge b-vip">Boss</span>
                     }
-                    @if (m.isChain) {
-                      <span class="mv-badge b-chain">Chain</span>
-                    }
                     @if (m.event) {
                       <span class="mv-badge b-event" [class.b-event-dormant]="!m.eventActive"
                             [title]="m.eventActive ? 'Event: ' + m.event + ' (active)' : 'Event: ' + m.event + ' (dormant — not currently in-game)'">
@@ -181,17 +161,16 @@
                       </span>
                     }
                   </div>
-                  <div class="mv-meta-row">
-                    @if (m.contractor) { <span class="faction">{{ m.contractor }}</span><span class="dot"></span> }
-                    @if (m.category !== 'Contract') {
-                      <span><b>{{ m.category }}</b>@if (m.activity) { · {{ m.activity }} }</span>
-                    } @else if (m.activity) {
-                      <span>{{ m.activity }}</span>
-                    }
-                    @if (m.maxPlayers > 1) { <span class="dot"></span><span>Crew <b>1–{{ m.maxPlayers }}</b></span> }
-                    @if (m.multiSystem) { <span class="dot"></span><span>Multi-system</span> }
-                  </div>
+                  @if (m.maxPlayers > 1 || m.multiSystem) {
+                    <div class="mv-meta-row">
+                      @if (m.maxPlayers > 1) { <span>Crew <b>1–{{ m.maxPlayers }}</b></span> }
+                      @if (m.maxPlayers > 1 && m.multiSystem) { <span class="dot"></span> }
+                      @if (m.multiSystem) { <span>Multi-system</span> }
+                    </div>
+                  }
                 </div>
+                <div class="mv-faction-cell">{{ m.contractor || '—' }}</div>
+                <div class="mv-type-cell">{{ m.activity || '—' }}</div>
                 <div class="mv-pay" [class.pay-hi]="m.reward >= 400000">
                   {{ fmtReward(m.reward) }}<span class="u">{{ m.currency }}</span>
                   @if (m.rewardEstimated) { <span class="est">est</span> }
@@ -200,6 +179,9 @@
                   @if (m.repReward) { <span class="rep-pos">+{{ m.repReward | number }}</span> }
                   @else { <span class="rep-none">—</span> }
                   @if (m.repPenalty) { <span class="rep-neg">{{ m.repPenalty | number }}</span> }
+                </div>
+                <div class="mv-chain-cell" [title]="m.isChain ? 'Part of a mission chain' : ''">
+                  @if (m.isChain) { <span class="mv-chain-dot"></span> }
                 </div>
                 <div class="mv-loc">
                   {{ (m.systems?.length ? m.systems!.join(' · ') : m.system) || '—' }}
@@ -313,7 +295,7 @@
                             <thead>
                               <tr>
                                 <th>Rank</th>
-                                <th class="num">Min rep</th>
+                                <th class="num">XP to fill</th>
                                 <th class="num">Missions</th>
                               </tr>
                             </thead>
@@ -330,8 +312,8 @@
                                       @if (row.gated) { <span class="rank-gated">GATED</span> }
                                     </span>
                                   </td>
-                                  <td class="num">{{ row.minRep | number }}</td>
-                                  <td class="num">{{ row.missions !== null ? (row.missions | number) : (row.xpToFill > 0 ? '—' : '✓') }}</td>
+                                  <td class="num">{{ row.xpToFill > 0 ? (row.xpToFill | number) : '—' }}</td>
+                                  <td class="num">{{ row.missions !== null ? (row.missions | number) : (row.xpToFill > 0 ? '—' : '—') }}</td>
                                 </tr>
                               }
                             </tbody>

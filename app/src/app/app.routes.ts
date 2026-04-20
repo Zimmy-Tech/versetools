@@ -29,6 +29,10 @@ import {
   ShipPowerPlantsComponent,
   ShipQuantumDrivesComponent,
 } from './components/ship-items/ship-dbs';
+import {
+  MiningLasersDbComponent,
+  MiningModulesDbComponent,
+} from './components/ship-items/mining-dbs';
 import { adminGuard } from './components/admin/admin-guard';
 
 export const routes: Routes = [
@@ -55,6 +59,8 @@ export const routes: Routes = [
   { path: 'formulas',           component: FormulasViewComponent },
   { path: 'mining',             component: MiningViewComponent },
   { path: 'mining-signatures',  component: MiningSignaturesComponent },
+  { path: 'mining-lasers',      component: MiningLasersDbComponent },
+  { path: 'mining-modules',     component: MiningModulesDbComponent },
   { path: 'compact',            component: CompactViewComponent },
   { path: 'eve-style',          component: EveStyleComponent },
   { path: 'alt-layout',         component: AltLayoutComponent },
