@@ -10,6 +10,10 @@ import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../services/data.service';
 import { AdminService } from '../admin.service';
 import type { Item } from '../../../models/db.models';
+import {
+  SLOT_PRESETS, MODULE_SUBPORT_CATEGORIES, groupedPresets, buildSlot,
+  type SlotPreset, type SlotEntry, type SlotCategory,
+} from '../slot-presets';
 
 type FieldKind = 'number' | 'text' | 'boolean';
 
@@ -25,6 +29,11 @@ interface SectionDef {
   title: string;
   fields: FieldDef[];
 }
+
+// Module sub-port preset catalogue — shared with the hardpoint editor.
+// See `../slot-presets.ts` for the full definition of SlotPreset / buildSlot.
+// Module editors only use the subset of categories that make sense nested
+// inside a module (shield / weapon / missile / cooler / power).
 
 const SECTIONS: SectionDef[] = [
   {
@@ -303,6 +312,45 @@ export class ItemEditorComponent {
   original = signal<Record<string, any>>({});
   expanded = signal<Set<string>>(new Set(['identity']));
 
+  // ── Module config state (only used when selectedItem.type === 'Module') ──
+  moduleSubPorts = signal<SlotEntry[]>([]);
+  moduleCargoBonus = signal<number | null>(null);
+  private moduleOriginalSubPorts = signal<string>('[]');     // JSON for dirty-compare
+  private moduleOriginalCargoBonus = signal<number | null>(null);
+  /** Grouped preset rows filtered to categories that make sense inside a module. */
+  readonly modulePresetGroups = groupedPresets(MODULE_SUBPORT_CATEGORIES);
+
+  moduleConfigDirty = computed(() => {
+    if (!this.isContainerItem()) return false;
+    const portsJson = JSON.stringify(this.moduleSubPorts());
+    if (portsJson !== this.moduleOriginalSubPorts()) return true;
+    return (this.moduleCargoBonus() ?? null) !== (this.moduleOriginalCargoBonus() ?? null);
+  });
+
+  /** Item types that can carry sub-ports in their data shape. Modules are
+   *  the most common case; turrets/mounts/racks also use the same mechanism
+   *  for nested weapons / missiles / guns. Anything in this set gets the
+   *  "Slot Configuration" panel in the editor. */
+  private static readonly CONTAINER_TYPES = new Set([
+    'Module', 'Turret', 'TurretBase', 'WeaponMount',
+    'MissileLauncher', 'BombLauncher',
+  ]);
+
+  isContainerItem = computed(() => {
+    const t = this.selectedItem()?.type;
+    return !!t && ItemEditorComponent.CONTAINER_TYPES.has(t);
+  });
+
+  // Kept for backwards compatibility with any template/ship-specific logic
+  // that already relied on the module-specific guard. Modules are a subset
+  // of container items.
+  isModule = computed(() => this.selectedItem()?.type === 'Module');
+
+  /** Dynamic title for the slot-config card. Reads "Module Configuration"
+   *  for modules, "Slot Configuration" for everything else that can hold
+   *  sub-ports. */
+  slotConfigTitle = computed(() => this.isModule() ? 'Module Configuration' : 'Slot Configuration');
+
   status = signal<{ kind: 'idle' | 'saving' | 'success' | 'error'; message?: string }>({
     kind: 'idle',
   });
@@ -317,7 +365,7 @@ export class ItemEditorComponent {
     return dirty;
   });
 
-  dirtyCount = computed(() => this.dirtyKeys().length);
+  dirtyCount = computed(() => this.dirtyKeys().length + (this.moduleConfigDirty() ? 1 : 0));
 
   /** Returns the sections that have at least one populated field on the
    * currently-selected item — used to highlight relevant sections. */
@@ -355,7 +403,62 @@ export class ItemEditorComponent {
       this.status.set({ kind: 'idle' });
       // Auto-expand sections that have data on this item
       this.expanded.set(new Set(['identity', ...this.relevantSectionIds()]));
+
+      // Populate module config state if this is a Module.
+      const ports: SlotEntry[] = Array.isArray((item as any).subPorts)
+        ? JSON.parse(JSON.stringify((item as any).subPorts))
+        : [];
+      this.moduleSubPorts.set(ports);
+      this.moduleOriginalSubPorts.set(JSON.stringify(ports));
+      const cargo = (item as any).cargoBonus ?? null;
+      this.moduleCargoBonus.set(cargo);
+      this.moduleOriginalCargoBonus.set(cargo);
     });
+  }
+
+  addModulePreset(preset: SlotPreset): void {
+    const existingIds = new Set(this.moduleSubPorts().map(sp => sp.id));
+    const entry = buildSlot(preset.category, preset.size, existingIds);
+    this.moduleSubPorts.update(curr => [...curr, entry]);
+  }
+
+  removeModuleSubPort(index: number): void {
+    this.moduleSubPorts.update(curr => curr.filter((_, i) => i !== index));
+  }
+
+  renameModuleSubPort(index: number, newId: string): void {
+    this.moduleSubPorts.update(curr =>
+      curr.map((sp, i) => (i === index ? { ...sp, id: newId } : sp))
+    );
+  }
+
+  /** Toggle the $uneditable flag on a sub-port. When set, the player's
+   *  loadout view renders the slot as locked (no swap button) and the
+   *  default loadout item stays put. Used for bespoke slots like the
+   *  Harbinger's rocket pods or the Hornet Mk I nose turret. */
+  toggleSubPortLock(index: number): void {
+    this.moduleSubPorts.update(curr =>
+      curr.map((sp, i) => {
+        if (i !== index) return sp;
+        const currentLocked = (sp.flags ?? '').includes('$uneditable');
+        return { ...sp, flags: currentLocked ? '' : '$uneditable' };
+      })
+    );
+  }
+
+  isSubPortLocked(sp: SlotEntry): boolean {
+    return (sp.flags ?? '').includes('$uneditable');
+  }
+
+  setModuleCargoBonus(v: number | null): void {
+    this.moduleCargoBonus.set(v);
+  }
+
+  /** Short human-readable description of a sub-port row for the list. */
+  describeSubPort(sp: SlotEntry): string {
+    const size = sp.minSize === sp.maxSize ? `S${sp.minSize}` : `S${sp.minSize}-S${sp.maxSize}`;
+    const kind = sp.subtypes || sp.type;
+    return `${size} ${kind}`;
   }
 
   selectItem(className: string): void {
@@ -398,6 +501,9 @@ export class ItemEditorComponent {
 
   reset(): void {
     this.form.set({ ...this.original() });
+    const original: SlotEntry[] = JSON.parse(this.moduleOriginalSubPorts());
+    this.moduleSubPorts.set(original);
+    this.moduleCargoBonus.set(this.moduleOriginalCargoBonus());
     this.status.set({ kind: 'idle' });
   }
 
@@ -406,7 +512,8 @@ export class ItemEditorComponent {
     if (!item) return;
 
     const dirty = this.dirtyKeys();
-    if (dirty.length === 0) {
+    const moduleDirty = this.moduleConfigDirty();
+    if (dirty.length === 0 && !moduleDirty) {
       this.status.set({ kind: 'error', message: 'No changes to save.' });
       return;
     }
@@ -429,13 +536,22 @@ export class ItemEditorComponent {
       }
     }
 
+    if (moduleDirty) {
+      patch['subPorts'] = this.moduleSubPorts();
+      const cargo = this.moduleCargoBonus();
+      patch['cargoBonus'] = cargo === null ? null : Number(cargo);
+    }
+
     this.status.set({ kind: 'saving' });
     try {
       await this.admin.patchItem(item.className, patch);
       this.original.set({ ...this.form() });
+      this.moduleOriginalSubPorts.set(JSON.stringify(this.moduleSubPorts()));
+      this.moduleOriginalCargoBonus.set(this.moduleCargoBonus());
+      const fieldsSaved = dirty.length + (moduleDirty ? 1 : 0);
       this.status.set({
         kind: 'success',
-        message: `Saved ${dirty.length} field${dirty.length === 1 ? '' : 's'}. Reload the public site to see updates.`,
+        message: `Saved ${fieldsSaved} change${fieldsSaved === 1 ? '' : 's'}. Reload the public site to see updates.`,
       });
     } catch (err: any) {
       const msg = err?.error?.error || err?.message || 'Save failed';

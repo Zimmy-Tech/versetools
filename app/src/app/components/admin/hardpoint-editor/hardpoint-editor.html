@@ -43,11 +43,41 @@
             </div>
           </div>
           <div class="header-actions">
-            <button type="button" class="add-hp-btn" (click)="addHardpoint()">+ Add Hardpoint</button>
+            <button type="button" class="add-hp-btn" (click)="togglePresetPicker()">
+              {{ presetPickerOpen() ? '× Close' : '+ Add Hardpoint' }}
+            </button>
             <button type="button" class="link-btn" (click)="expandAll()">Expand all</button>
             <button type="button" class="link-btn" (click)="collapseAll()">Collapse all</button>
           </div>
         </div>
+
+        @if (presetPickerOpen()) {
+          <div class="preset-picker">
+            <div class="preset-picker-header">
+              <div class="preset-picker-title">Pick a preset — size + category → valid hardpoint</div>
+              <button type="button" class="link-btn advanced-btn"
+                      (click)="addHardpointManual(); togglePresetPicker()"
+                      title="Prompt-based add for hardpoint shapes the presets don't cover">
+                Advanced… (manual id)
+              </button>
+            </div>
+            <div class="preset-groups">
+              @for (group of hardpointPresetGroups; track group.key) {
+                <div class="preset-group">
+                  <div class="preset-group-label">{{ group.label }}</div>
+                  <div class="preset-buttons">
+                    @for (preset of group.presets; track preset.id) {
+                      <button type="button" class="preset-btn"
+                              (click)="addHardpointFromPreset(preset)">
+                        S{{ preset.size }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
 
         <div class="type-helper">
           <button type="button" class="helper-toggle" (click)="showTypeHelper.set(!showTypeHelper())">

@@ -108,6 +108,77 @@
         </div>
 
         <div class="sections">
+          @if (isContainerItem()) {
+            <div class="section-card expanded relevant module-config">
+              <div class="section-header module-header">
+                <span class="caret">▾</span>
+                <span class="section-title">{{ slotConfigTitle() }}</span>
+                @if (moduleConfigDirty()) {
+                  <span class="dirty-dot" title="Unsaved slot changes"></span>
+                }
+              </div>
+              <div class="section-body">
+                @if (isModule()) {
+                  <label class="field">
+                    <span class="field-label">Cargo Bonus (SCU)</span>
+                    <input type="number" step="1"
+                           [ngModel]="moduleCargoBonus()"
+                           (ngModelChange)="setModuleCargoBonus($event === '' || $event == null ? null : +$event)" />
+                  </label>
+                }
+
+                <div class="module-slots-header">
+                  <div class="module-slots-title">
+                    Slots provided by this {{ isModule() ? 'module' : 'item' }}
+                  </div>
+                  <div class="module-slots-count">
+                    {{ moduleSubPorts().length }} slot{{ moduleSubPorts().length === 1 ? '' : 's' }}
+                  </div>
+                </div>
+
+                @if (moduleSubPorts().length === 0) {
+                  <div class="module-slots-empty">
+                    No slots yet. Use the buttons below to add what this {{ isModule() ? 'module' : 'item' }} contributes.
+                  </div>
+                } @else {
+                  <div class="module-slot-rows">
+                    @for (sp of moduleSubPorts(); track $index; let i = $index) {
+                      <div class="module-slot-row" [class.locked]="isSubPortLocked(sp)">
+                        <span class="slot-kind">{{ describeSubPort(sp) }}</span>
+                        <input type="text" class="slot-id"
+                               [ngModel]="sp.id"
+                               (ngModelChange)="renameModuleSubPort(i, $event)"
+                               title="Sub-port id (must be unique within this item)" />
+                        <button type="button" class="slot-lock"
+                                [class.active]="isSubPortLocked(sp)"
+                                (click)="toggleSubPortLock(i)"
+                                [title]="isSubPortLocked(sp) ? 'Locked — player cannot swap this slot\'s item. Click to unlock.' : 'Unlocked — player can swap freely. Click to lock.'">
+                          {{ isSubPortLocked(sp) ? '🔒' : '🔓' }}
+                        </button>
+                        <button type="button" class="slot-remove" (click)="removeModuleSubPort(i)" title="Remove this slot">×</button>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <div class="module-preset-groups">
+                  @for (group of modulePresetGroups; track group.key) {
+                    <div class="module-preset-group">
+                      <div class="module-preset-group-label">+ Add {{ group.label }}</div>
+                      <div class="module-preset-buttons">
+                        @for (preset of group.presets; track preset.id) {
+                          <button type="button" class="module-preset-btn"
+                                  (click)="addModulePreset(preset)">
+                            S{{ preset.size }}
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
           @for (section of sections; track section.id) {
             <div
               class="section-card"

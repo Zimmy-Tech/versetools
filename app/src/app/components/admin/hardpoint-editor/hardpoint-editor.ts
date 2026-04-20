@@ -19,6 +19,10 @@ import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../services/data.service';
 import { AdminService } from '../admin.service';
 import type { Item, Ship } from '../../../models/db.models';
+import {
+  SHIP_HARDPOINT_CATEGORIES, groupedPresets, buildSlot, defaultHardpointLabel,
+  type SlotPreset,
+} from '../slot-presets';
 
 interface Hardpoint {
   id: string;
@@ -306,7 +310,48 @@ export class HardpointEditorComponent {
 
   // ─── Add / remove hardpoints (working copy only — Save persists) ──
 
-  addHardpoint(): void {
+  /** Preset catalogue for ship hardpoints — same categories as modules plus
+   *  Quantum Drive and Module slots (the latter two can't be nested inside
+   *  a module itself). Rendered as a grid of button groups. */
+  readonly hardpointPresetGroups = groupedPresets(SHIP_HARDPOINT_CATEGORIES);
+
+  /** Toggles the visibility of the preset picker strip above the hardpoint
+   *  list. Kept as a separate signal so the picker can hide on save/reset. */
+  presetPickerOpen = signal(false);
+
+  togglePresetPicker(): void {
+    this.presetPickerOpen.update(v => !v);
+  }
+
+  /** Add a ship-level hardpoint from a preset. Mirrors the module sub-port
+   *  flow in the item editor — button click → valid hardpoint entry. */
+  addHardpointFromPreset(preset: SlotPreset): void {
+    const existingIds = new Set(this.workingHardpoints().map(h => h.id));
+    const slot = buildSlot(preset.category, preset.size, existingIds);
+    const newHp: Hardpoint = {
+      id: slot.id,
+      label: defaultHardpointLabel(preset.category, preset.size),
+      type: slot.type,
+      subtypes: slot.subtypes ?? '',
+      minSize: slot.minSize,
+      maxSize: slot.maxSize,
+      flags: slot.flags ?? '',
+      controllerTag: '',
+      portTags: '',
+      allTypes: slot.allTypes,
+    };
+    this.workingHardpoints.update((arr) => [...arr, newHp]);
+    this.expandedIds.update((s) => {
+      const next = new Set(s);
+      next.add(slot.id);
+      return next;
+    });
+  }
+
+  /** Legacy prompt-based add kept as an "advanced" escape hatch for hardpoint
+   *  shapes the presets don't cover. The button stays reachable from the
+   *  preset picker panel. */
+  addHardpointManual(): void {
     const id = window.prompt(
       'New hardpoint ID (used as the unique key, e.g. "hardpoint_weapon_nose")'
     );
@@ -335,6 +380,12 @@ export class HardpointEditorComponent {
       next.add(trimmed);
       return next;
     });
+  }
+
+  /** Deprecated entry point — kept so the template binding doesn't break
+   *  during incremental migration. Opens the preset picker instead. */
+  addHardpoint(): void {
+    this.togglePresetPicker();
   }
 
   removeHardpoint(idx: number, $event: MouseEvent): void {
