@@ -171,5 +171,177 @@
     color: var(--text3);
     padding: 24px;
   }
+
+  tbody tr.clickable-row {
+    cursor: pointer;
+    &:hover { background: rgba(0, 200, 255, 0.06); }
+  }
+}
+
+/* Default-equipment modal — matches blueprint-finder popout vibe but scoped
+   to this component since the styles over there aren't shared. */
+
+@keyframes sidOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sidPanelIn {
+  from { opacity: 0; transform: translate(-50%, -48%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.sid-popout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 900;
+  animation: sidOverlayIn 0.15s ease-out;
+}
+
+.sid-popout-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 520px;
+  max-height: 80vh;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 255, 0.06),
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 80px rgba(0, 200, 255, 0.03);
+  z-index: 901;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: sidPanelIn 0.2s ease-out;
+}
+
+.sid-popout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
+}
+
+.sid-popout-eyebrow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.sid-popout-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-top: 2px;
+}
+
+.sid-popout-close {
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 15px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  &:hover { color: var(--red); background: rgba(255, 68, 68, 0.08); }
+}
+
+.sid-popout-body {
+  padding: 14px 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+}
+
+.sid-popout-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.sid-popout-empty {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  color: var(--text3);
+  text-align: center;
+  padding: 24px 8px;
+}
+
+.sid-ship-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sid-ship-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 3px;
+  background: var(--bg3);
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: rgba(0, 200, 255, 0.25);
+    background: rgba(0, 200, 255, 0.04);
+  }
+}
+
+.sid-ship-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+
+.sid-ship-mfr {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.sid-ship-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  min-width: 24px;
+  text-align: right;
 }
 

@@ -55,7 +55,7 @@
         </thead>
         <tbody>
           @for (item of filtered(); track item.className; let first = $first; let i = $index) {
-            <tr>
+            <tr class="clickable-row" (click)="openItemModal(item)">
               @for (col of columns; track col.field; let isFirst = $first) {
                 <td [class]="tdClass(col, isFirst)">{{ formatted(item, col) }}</td>
               }
@@ -68,5 +68,38 @@
       </table>
     </div>
 
+  }
+
+  @if (selectedItem(); as sel) {
+    <div class="sid-popout-overlay" (click)="closeItemModal()"></div>
+    <div class="sid-popout-panel" (click)="$event.stopPropagation()">
+      <div class="sid-popout-header">
+        <div>
+          <div class="sid-popout-eyebrow">Default Equipment</div>
+          <div class="sid-popout-title">{{ sel.name }}</div>
+        </div>
+        <div class="sid-popout-close" (click)="closeItemModal()">✕</div>
+      </div>
+      <div class="sid-popout-body">
+        @if (selectedItemShips().length) {
+          <div class="sid-popout-count">
+            {{ selectedItemShips().length }} ship{{ selectedItemShips().length === 1 ? '' : 's' }} equip this by default
+          </div>
+          <ul class="sid-ship-list">
+            @for (entry of selectedItemShips(); track entry.ship.className) {
+              <li class="sid-ship-row">
+                <div class="sid-ship-name">{{ entry.ship.name }}</div>
+                <div class="sid-ship-mfr">{{ entry.ship.manufacturer }}</div>
+                <div class="sid-ship-count">×{{ entry.slotIds.length }}</div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <div class="sid-popout-empty">
+            Not currently fitted as default equipment on any ship.
+          </div>
+        }
+      </div>
+    </div>
   }
 </div>

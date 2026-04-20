@@ -1,6 +1,6 @@
 import { Component, Input, signal, computed } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { Item } from '../../models/db.models';
+import { Item, Ship } from '../../models/db.models';
 
 /** A configurable dropdown filter. Each wrapper page passes in the set of
  *  dropdowns it wants (e.g. shields want Class + Grade; weapons want Type).
@@ -65,7 +65,21 @@ export class ShipItemDbComponent {
   sortField = signal('');
   sortDir = signal<'asc' | 'desc'>('asc');
 
+  /** Item whose "ships defaulting this" modal is open. Null = modal closed. */
+  selectedItem = signal<Item | null>(null);
+
   constructor(public data: DataService) {}
+
+  /** Ships that default-equip the currently-selected item. Derived signal so
+   *  the modal re-reads when ships data changes. */
+  readonly selectedItemShips = computed<{ ship: Ship; slotIds: string[] }[]>(() => {
+    const item = this.selectedItem();
+    if (!item) return [];
+    return this.data.getShipsWithDefaultItem(item.className);
+  });
+
+  openItemModal(item: Item): void { this.selectedItem.set(item); }
+  closeItemModal(): void { this.selectedItem.set(null); }
 
   private currentSort = computed(() => this.sortField() || this.defaultSort);
 

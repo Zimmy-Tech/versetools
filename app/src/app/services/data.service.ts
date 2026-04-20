@@ -1374,4 +1374,29 @@ export class DataService {
   clearCart(): void {
     this.cart.set(new Map());
   }
+
+  /** Reverse lookup: which ships equip the given item as default gear, and
+   *  in which slot(s). Walks every ship's defaultLoadout (both top-level
+   *  hardpoint keys and dotted sub-slot keys). Used by the Ship Tools DB
+   *  click-through to show "who ships this component as default". */
+  getShipsWithDefaultItem(className: string): { ship: Ship; slotIds: string[] }[] {
+    const target = className.toLowerCase();
+    const results: { ship: Ship; slotIds: string[] }[] = [];
+    for (const ship of this.ships()) {
+      const loadout = ship.defaultLoadout;
+      if (!loadout) continue;
+      const slots: string[] = [];
+      for (const [slotId, cls] of Object.entries(loadout)) {
+        if (cls && cls.toLowerCase() === target) slots.push(slotId);
+      }
+      if (slots.length) results.push({ ship, slotIds: slots });
+    }
+    // Biggest/best-known ships first feels nicer than alphabetical —
+    // sort by slot count desc then ship name asc.
+    results.sort((a, b) =>
+      b.slotIds.length - a.slotIds.length ||
+      (a.ship.name ?? '').localeCompare(b.ship.name ?? '')
+    );
+    return results;
+  }
 }
