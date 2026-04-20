@@ -242,8 +242,8 @@ export class MissionsViewComponent {
       const first = g.blueprints[0] ?? '';
       const extra = g.blueprints.length - 1;
       const label = extra > 0
-        ? `${first} +${extra} (${g.missions}m)`
-        : `${first} (${g.missions}m)`;
+        ? `${first} +${extra} (${g.missions})`
+        : `${first} (${g.missions})`;
       result.push({ key, label, missionCount: g.missions, bpCount: g.blueprints.length });
     }
     result.sort((a, b) => b.missionCount - a.missionCount || a.label.localeCompare(b.label));

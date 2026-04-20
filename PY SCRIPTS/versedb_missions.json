@@ -2787,6 +2787,7 @@
           "maxRank": "Veteran Guild Member"
         }
       ],
+      "system": "Stanton",
       "danger": "Very High",
       "missionFlow": [
         "Destroy Targets"
@@ -3006,6 +3007,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Arlington Gang",
       "missionFlow": [
@@ -3707,6 +3709,7 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "contractor": "Crusader Security",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -3737,6 +3740,7 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "contractor": "Hurston Security",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -3833,11 +3837,13 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Northrock Service Group",
       "danger": "Low",
       "multiSystem": true,
       "systems": [
+        "Stanton",
         "Crusader",
         "Hurston"
       ],
@@ -3876,6 +3882,7 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Northrock Service Group",
       "requiresCompletion": [
@@ -4173,6 +4180,7 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "contractor": "Hurston Security",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -4203,6 +4211,7 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "contractor": "Crusader Security",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -4232,6 +4241,7 @@
           "maxRank": "Guild Steward"
         }
       ],
+      "system": "Stanton",
       "danger": "Extreme",
       "missionFlow": [
         "Destroy Targets"
@@ -4484,6 +4494,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Arlington Gang",
       "missionFlow": [
@@ -4947,6 +4958,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Arlington Gang",
       "missionFlow": [
@@ -5146,6 +5158,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Arlington Gang",
       "missionFlow": [
@@ -5178,9 +5191,11 @@
       "lifetimeMin": 45,
       "respawnMin": 5,
       "cooldownMin": 25,
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
       "systems": [
+        "Stanton",
         "ArcCorp",
         "Hurston"
       ],
@@ -5350,6 +5365,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Arlington Gang",
       "missionFlow": [
@@ -5911,9 +5927,13 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Arlington Gang",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "Eckhart Security"
       ],
@@ -6016,6 +6036,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "contractor": "Arlington Gang"
     },
@@ -6044,6 +6065,7 @@
           "maxRank": "Guild Member"
         }
       ],
+      "system": "Stanton",
       "danger": "Medium",
       "missionFlow": [
         "Destroy Targets"
@@ -6496,6 +6518,7 @@
       "respawnMin": 5,
       "cooldownMin": 2,
       "onceOnly": true,
+      "system": "Stanton",
       "danger": "Low",
       "unlocks": [
         "Oust Claimjumpers",
@@ -6848,6 +6871,7 @@
           "maxRank": "Junior Guild Member"
         }
       ],
+      "system": "Stanton",
       "danger": "Low",
       "missionFlow": [
         "Destroy Targets"
@@ -7357,6 +7381,7 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "danger": "Very Low",
       "missionFlow": [
         "Destroy Targets"
@@ -7588,6 +7613,7 @@
         "bounty",
         "bounty_bountyhuntersguild"
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "contractor": "Crusader Security",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -7611,6 +7637,7 @@
         "bounty",
         "bounty_bountyhuntersguild"
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "contractor": "Hurston Security",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -13263,9 +13290,9 @@
       "multiSystem": true,
       "systems": [
         "Hurston",
+        "Stanton",
         "microTech",
         "ArcCorp",
-        "Stanton",
         "Crusader"
       ],
       "givers": [
@@ -13297,6 +13324,7 @@
           "maxRank": "Trainee"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery"
     },
     {
@@ -15422,15 +15450,17 @@
       "lifetimeMin": 15,
       "respawnMin": 5,
       "cooldownMin": 10,
+      "system": "Pyro",
       "activity": "FPS",
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
+      "systems": [
+        "Pyro",
+        "Stanton"
+      ],
       "givers": [
         "[Contractor]",
         "RR_bounty_from"
-      ],
-      "systems": [
-        "Pyro"
       ]
     },
     {
@@ -15499,9 +15529,13 @@
       "giver": "[Contractor]",
       "lifetimeMin": 15,
       "cooldownMin": 1,
+      "system": "Stanton",
       "activity": "FPS",
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "[Contractor]"
       ],
@@ -16333,6 +16367,7 @@
       "giver": "[Contractor]",
       "lifetimeMin": 15,
       "cooldownMin": 1,
+      "system": "Stanton",
       "activity": "FPS",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
@@ -16917,6 +16952,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "danger": "Low",
       "unlocks": [
         "Retrieve Additional Smuggler Intel",
@@ -16951,6 +16987,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "blueprintRewards": [
         "Pulse \"Blacklist\" Pistol",
         "Quartz Energy SMG",
@@ -17099,6 +17136,7 @@
       "canShare": false,
       "rewardEstimated": true,
       "timeLimitMin": 105,
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "Low",
       "cooldownMin": 1,
@@ -17128,6 +17166,7 @@
       "canShare": false,
       "rewardEstimated": true,
       "timeLimitMin": 105,
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Zenith \"Darkwave\" Laser Sniper Rifle",
@@ -17167,6 +17206,7 @@
       "contractor": "InterSec",
       "timeLimitMin": 96,
       "description": "MISSION SPECS\\n\\nArea of Operation: Nyx System\\nHostile Forces: Outlaws present and armed\\nEquipment Specs: Combat-rated Ship, Personal Arms\\nBriefing: \\nTo prevent the Shattered Blade from flooding the black market with xeno-contraband, the UEE has charged InterSec with <EM4>recovering a stash of Vanduul Plating and Metal.</EM4> from the old <EM4>QV Logistics station</EM4> the gang has been occupying. Once you have the materials in your posession, deliver them to the freight elevator at <EM4>~mission(Destination|Address)</EM4>.\\n\\nFollowing from your previous experience, it would not be surprising if the Shattered Blade offer resistance, but ensure that your focus is on recovering the materials.\\n\\nRespectfully,\\n\\nDeacon Tobin\\nOperations Manager\\nInterSec Defense Solutions\\n\\nThis communication consists of confidential information solely intended for the recipient. Please disregard if received in error and notify sender. All operations are conducted at the contractor’s own personal risk and must adhere to UEE and system law where applicable.",
+      "system": "Nyx",
       "activity": "Mining",
       "blueprintRewards": [
         "Pulse Laser Pistol",
@@ -17248,6 +17288,7 @@
           "maxRank": "Veteran Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Mining",
       "blueprintRewards": [
         "Arclight \"Nightstalker\" Pistol",
@@ -17399,6 +17440,7 @@
           "maxRank": "Veteran Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Mining",
       "blueprintRewards": [
         "Arclight \"Stormfall\" Pistol",
@@ -17594,6 +17636,7 @@
           "maxRank": "Veteran Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Mining",
       "blueprintRewards": [
         "Arclight \"Nightstalker\" Pistol",
@@ -17631,6 +17674,7 @@
           "maxRank": "Veteran Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Mining",
       "blueprintRewards": [
         "Arclight \"Nightstalker\" Pistol",
@@ -17668,6 +17712,7 @@
           "maxRank": "Veteran Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Mining",
       "blueprintRewards": [
         "Arclight \"Nightstalker\" Pistol",
@@ -17967,6 +18012,7 @@
           "maxRank": "Veteran Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Mining",
       "blueprintRewards": [
         "Arclight \"Stormfall\" Pistol",
@@ -17978,7 +18024,10 @@
         "Arclight Pistol Battery (30 cap)"
       ],
       "contractor": "Shubin Interstellar",
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ]
     },
     {
       "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Stanton_Super",
@@ -18098,7 +18147,6 @@
         "Testudo Core Nightveil",
         "Testudo Legs Nightveil",
         "Testudo Helmet Nightveil",
-        "00000000",
         "Quartz \"Deadfall\" Energy SMG",
         "Testudo Arms Turfwar",
         "Testudo Core Turfwar",
@@ -18611,6 +18659,7 @@
         "Wave Attack"
       ],
       "description": "Welcome to the final scenario of the Combat Gauntlet.\\n\\nThroughout this course, you’ve gotten to experience the advanced combat and defensive tactics needed to survive a variety of encounters. Time to take all those new skills and knowledge and see how they hold up against a large capital vessel and some escort ships.\\n\\nYou know the drill by now. Once you and all your allies are set, find your way to <EM4>~mission(Location|Address)</EM4> to see how you do when truly pushed to the limits.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE\\n- Patience is a Virtue – If you’ve balanced your squadron properly, you should be able to come out on top, just don’t expect it to be a quick fight. Ships this big don’t go down quickly.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL   \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "requiresCompletion": [
@@ -18833,6 +18882,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul"
     },
@@ -19078,6 +19128,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Dead Saints",
       "requiresAnyOf": [
@@ -19856,6 +19907,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Medium",
       "contractor": "Dead Saints",
@@ -19922,6 +19974,7 @@
           "maxRank": "Trainee"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Low",
       "unlocks": [
@@ -19962,6 +20015,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "requiresAnyOf": [
         [
@@ -20000,6 +20054,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Medium",
       "contractor": "Dead Saints",
@@ -20710,7 +20765,6 @@
         "Testudo Core Nightveil",
         "Testudo Legs Nightveil",
         "Testudo Helmet Nightveil",
-        "00000000",
         "Quartz \"Deadfall\" Energy SMG",
         "Testudo Arms Turfwar",
         "Testudo Core Turfwar",
@@ -20998,6 +21052,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Medium",
       "contractor": "Dead Saints",
@@ -21668,6 +21723,7 @@
         "Wave Attack"
       ],
       "description": "Congrats on completing part six of this eight-part course.\\n\\nYou’ve gained a lot of experience across the past six scenarios, and now it’s time to put it all to practice. Scenario seven puts you up against a corvette-class ship and its escorts. This extended encounter will push you to the limit and test everything you got.   \\n\\nThe only thing left is to understand the limit of your skillset. To put it simply, you can’t do everything yourself. Developing and maintaining relationships with fellow pilots that you can call upon for support is really the last piece of the puzzle. Not saying you can't overcome encounters like this by yourself, but even the Navy doesn’t send their ace pilots on a patrol alone.    \\n\\nOnce you decided whether to do this alone or call in some support, head over to <EM4>~mission(Location|Address)</EM4> to kick off the encounter.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE\\n- Strength in Diversity – Think about the roles your allies will be filling and choose who to bring carefully to help balance strengths and weaknesses. You’ll want ships capable of taking on the Corvette while others deal with the escort.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL   \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "requiresCompletion": [
@@ -21703,6 +21759,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul"
     },
@@ -21931,6 +21988,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul"
     },
@@ -23003,6 +23061,7 @@
         "Wave Attack"
       ],
       "description": "Congrats on completing part five of this eight-part course.\\n\\nI’m bringing out the big guns for scenario six. Time for you to go up against larger, multi-crewed ships, which provide a few new challenges. Not only will you have to contend with their enhanced firepower but their multifaceted shields means you’ll have to target one shield face continually to do real damage. Easier said than done when both of y’all are moving at such fast speeds.      \\n\\nFind your way to <EM4>~mission(Location|Address)</EM4> whenever you're ready.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>. \\n\\nTRICKS OF THE TRADE:\\n- Size Advantage – When going up against a larger ship, try to stay away from their front as typically this is where the majority of their offensive fire is located. \\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL   \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "requiresCompletion": [
@@ -23233,6 +23292,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul"
     },
@@ -23290,6 +23350,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Medium",
       "contractor": "Red Wind Linehaul"
@@ -23516,6 +23577,7 @@
       ],
       "timeLimitMin": 35,
       "description": "Something weird is going on at the old Hathor mining facilities. Both the platform alignment facilities and orbital laser platforms have been abandoned and gathering dust for decades, but outlaws have started using them as a base of operations.\\n\\nWe’ve been hired by a concerned party who’s recently lost a lot of important cargo to one such gang. Currently, their stuff is stashed at <EM4>~mission(Location1|Address)</EM4> and <EM4>~mission(Location2|Address)</EM4>, but there’s a growing fear that the gang may be offloading their goods soon. That’s why we’ve been hired to hit both of those Hathor facilities, retrieve the cargo from the freight elevators, and bring it to the freight elevator at <EM4>~mission(Destination|Address)</EM4>. \\n\\nHere’s the specifics on what to grab from each location. Doesn’t matter in what order you do this, as long as it all gets collected and delivered. Just be sure to bring a ship that can handle <EM4>~mission(MissionMaxSCUSize) cargo containers</EM4>.  It also wouldn't hurt to bring a <EM4>handheld tractor beam</EM4> with you.   \\n\\n~mission(MultiToSingleToken)\\n\\nFoxwell hasn’t been able to scout these locations, but if I were you, I’d expect to face some serious armed resistance. Best bring a bunch of gear and some friends.\\n\\n\\nMarcus Clenn\\nFoxwell Enforcement\\n'Security, Your Way'\\n\\nFoxwell Enforcement is a bonded security specialist licensed to operate throughout the UEE. We are always looking for new operators to join our family. If you or anyone you know is interested, please reach out to one of our contract representatives.",
+      "system": "Stanton",
       "activity": "Delivery",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -23642,6 +23704,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery"
     },
     {
@@ -23881,6 +23944,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Dead Saints",
       "requiresAnyOf": [
@@ -24142,6 +24206,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul"
     },
@@ -24325,6 +24390,7 @@
           "maxRank": "Trainee"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "danger": "Low",
       "contractor": "Dead Saints",
@@ -24364,6 +24430,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "contractor": "Dead Saints",
       "requiresAnyOf": [
@@ -24455,7 +24522,6 @@
         "Testudo Core Nightveil",
         "Testudo Legs Nightveil",
         "Testudo Helmet Nightveil",
-        "00000000",
         "Quartz \"Deadfall\" Energy SMG",
         "Testudo Arms Turfwar",
         "Testudo Core Turfwar",
@@ -24700,6 +24766,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul"
     },
@@ -25271,9 +25338,13 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Pyro"
+      ]
     },
     {
       "className": "HaulCargo_Multi2ToSingle_Interstellar_Medium_Souv_Intro",
@@ -25301,6 +25372,7 @@
           "maxRank": "Trainee"
         }
       ],
+      "system": "Nyx",
       "activity": "Delivery",
       "danger": "Low",
       "unlocks": [
@@ -25377,6 +25449,7 @@
       "contractor": "InterSec",
       "timeLimitMin": 20,
       "description": "MISSION SPECS\\n\\nArea of Operation: Nyx System\\nHostile Forces: Outlaws present and armed\\nEquipment Specs: <EM4>Cargo Capable Ship</EM4>, Personal Arms, <EM4>Heavy-Duty Tractor Beam</EM4>\\nBriefing: \\nOur latest intel shows that the Shattered Blade have replenished their stock of Vanduul corpses and will shortly be transferring them from the old <EM4>QV Logistics station</EM4>they're operating from to an interested buyer. The UEE can't have another incident like what happened with ASD so they're eager for us to <EM4>recover the cryopods</EM4> and deliver them to <EM4>the freight elevator at ~mission(Destination|Address)</EM4>.\\n\\nWhile the Shattered Blade members present at the site might offer resistance, they are not the focus of you mission. Deal with them as needed and get the cryopods. \\n\\nRespectfully,\\n\\nDeacon Tobin\\nOperations Manager\\nInterSec Defense Solutions\\n\\nThis communication consists of confidential information solely intended for the recipient. Please disregard if received in error and notify sender. All operations are conducted at the contractor’s own personal risk and must adhere to UEE and system law where applicable.",
+      "system": "Nyx",
       "activity": "Mining",
       "blueprintRewards": [
         "Pulse Laser Pistol",
@@ -25454,9 +25527,13 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ]
     },
     {
       "className": "HH_Pyro_RegionA_CrimBase_HRT_RetrieveCargo",
@@ -25536,6 +25613,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Nyx",
       "activity": "Delivery",
       "danger": "Medium",
       "requiresAnyOf": [
@@ -25681,9 +25759,13 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ]
     },
     {
       "className": "Ling_Stanton_Super_RecoverCargo",
@@ -25837,6 +25919,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "High"
     },
@@ -25864,6 +25947,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "contractor": "Covalex"
     },
@@ -26050,6 +26134,7 @@
       ],
       "timeLimitMin": 25,
       "description": "Looking for a contractor with the right skills and ship for an important mission. Outlaws ambushed a Hull C carrying a <EM4>~mission(CargoGradeToken)</EM4> load of cargo and took it to <EM4>~mission(Location|Address)</EM4>. We’ve been hired to get it all back.  \\n\\nThe cargo is being stored somewhere at a defunct Hathor facility. The place is big and crawling with outlaws. Need someone to retrieve the goods from the freight elevator there and deliver it all back to the <EM4>freight elevator at ~mission(Destination|Address)</EM4>. Don’t think this will be a walk in the park. Bring lots of ammo and a ship that can handle <EM4>~mission(MissionMaxSCUSize) cargo containers</EM4>. \\n\\nIt also wouldn't hurt to bring a <EM4>handheld tractor beam</EM4> with you.   \\n\\n\\nMarcus Clenn\\nFoxwell Enforcement\\n'Security, Your Way'\\n\\nFoxwell Enforcement is a bonded security specialist licensed to operate throughout the UEE. We are always looking for new operators to join our family. If you or anyone you know is interested, please reach out to one of our contract representatives.",
+      "system": "Stanton",
       "activity": "Delivery",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -26133,7 +26218,8 @@
           "minRank": "Neutral",
           "maxRank": "Elite Contractor"
         }
-      ]
+      ],
+      "system": "Stanton"
     },
     {
       "className": "RedWind_Pyro_SmallGrade_Solar_CFP_OutpostToOutpost_Waste_CargoHauling_Multi4ToSingle",
@@ -27038,6 +27124,7 @@
       ],
       "timeLimitMin": 25,
       "description": "A crew recently raided a distribution center and made off with <EM4>~mission(CargoGradeToken) load of cargo</EM4>. Foxwell has been hired to get all those goods back. We’re getting reports of these outlaws using old Hathor facilities as stash houses and we believe the stolen items are currently at <EM4>~mission(Location|Address)</EM4>.\\n\\nIf interested, you’ll need a ship that can handle <EM4>~mission(MissionMaxSCUSize) cargo containers</EM4>. Doubt you’ll be able to slip in and out of that PAF without being noticed either, so best be prepared to clear the location. Once safe, grab the goods from the freight elevator and deliver them to the <EM4>freight elevator at ~mission(Destination|Address)</EM4>. \\n\\nIt also wouldn't hurt to bring a <EM4>handheld tractor beam</EM4> with you.   \\n\\n\\nMarcus Clenn\\nFoxwell Enforcement\\n'Security, Your Way'\\n\\nFoxwell Enforcement is a bonded security specialist licensed to operate throughout the UEE. We are always looking for new operators to join our family. If you or anyone you know is interested, please reach out to one of our contract representatives.",
+      "system": "Stanton",
       "activity": "Delivery",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -27320,7 +27407,8 @@
           "minRank": "Neutral",
           "maxRank": "Elite Contractor"
         }
-      ]
+      ],
+      "system": "Stanton"
     },
     {
       "className": "Shubin_RG_Discovery_ShipMining_Stanton_Gold",
@@ -27625,6 +27713,7 @@
         "Wave Attack"
       ],
       "description": "Congrats on completing part four of this eight-part course.   \\n\\nThe fifth scenario focuses on defensive tactics. Knowing when to take evasive measures and deploy either decoys or noise countermeasures is essential to your survival. That’s why the aggressors in this exercise will be armed with missiles.   \\n\\nEnsure your countermeasures are fully stocked and then go to <EM4>~mission(Location|Address)</EM4> to start.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Ready to Launch - Easy access to your decoys and countermeasures can be critical in your success in dealing with incoming missile fire. \\n- Stand and Fight - Resist the temptation to hit the afterburner to escape as you’ll increase your signature and make it easier for the missile to hit you. They’re almost certainly much faster than you anyway.\\n- Close the Gap – While it may seem counterintuitive, getting closer to an enemy ship can be an advantage. Missiles have a minimum range and if you’re inside of it they won’t be able to get a lock on you.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "requiresCompletion": [
@@ -27922,9 +28011,13 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex",
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ]
     },
     {
       "className": "HeadHunters_DefendShip_Nyx_Hard",
@@ -28146,6 +28239,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex"
     },
@@ -28518,6 +28612,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Nyx",
       "activity": "Delivery",
       "danger": "Medium",
       "requiresAnyOf": [
@@ -28671,6 +28766,7 @@
       ],
       "timeLimitMin": 20,
       "description": "Native plants and animals near <EM4>~mission(Location)</EM4> are on the verge of environmental collapse due to the dramatic population spikes of several invasive species. We’ve been contracted to dramatically reduce the current population of these species to help avoid an environmental collapse. We need a dedicated and highly skilled exterminator to carry out this contract.     \\n\\nYou can better acquaint yourself with the creatures in question by referencing <EM4>\"The Guide to Stanton Wildlife\"</EM4> in your Journal.     \\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "High",
       "cooldownMin": 1,
@@ -28678,6 +28774,7 @@
       "contractor": "Civilian Defense Force",
       "multiSystem": true,
       "systems": [
+        "Stanton",
         "microTech"
       ],
       "requiresCompletion": [
@@ -28781,6 +28878,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Nyx",
       "activity": "Delivery",
       "contractor": "Covalex"
     },
@@ -28810,6 +28908,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "requiresAnyOf": [
         [
@@ -28845,6 +28944,7 @@
           "maxRank": "Trainee"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Low",
       "contractor": "Dead Saints",
@@ -28880,6 +28980,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Covalex"
     },
@@ -29145,6 +29246,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Nyx",
       "activity": "Delivery",
       "contractor": "Covalex"
     },
@@ -29173,9 +29275,13 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "contractor": "Red Wind Linehaul",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "requiresCompletion": [
         "Jorrit Dossier: Onyx Personnel Files"
       ],
@@ -29384,6 +29490,7 @@
           "maxRank": "Guild Steward"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "R97 Shotgun",
@@ -29397,7 +29504,10 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ]
     },
     {
       "className": "Covalex_DeliveryPilot_Stanton_GoldTungstenDymantiumMercury_Rank3",
@@ -30095,6 +30205,7 @@
           "maxRank": "Master"
         }
       ],
+      "system": "Nyx",
       "activity": "Delivery",
       "contractor": "Covalex"
     },
@@ -30124,6 +30235,7 @@
           "maxRank": "Trainee"
         }
       ],
+      "system": "Pyro",
       "activity": "Delivery",
       "danger": "Low",
       "unlocks": [
@@ -30959,6 +31071,7 @@
           "maxRank": "Lead Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "Medium"
     },
@@ -31248,7 +31361,12 @@
       ],
       "timeLimitMin": 20,
       "description": "As a consequence of the ongoing radiation storm on Pyro I, some of the invasive kopions have become irradiated. This poses a threat to the health of the indigenous wildlife and to those who live and work in <EM4>~mission(Location)</EM4>. \\n\\nWe are seeking out a skilled contractor who can cull any irradiated kopions in and around <EM4>~mission(Location|Address)</EM4>. Do not accept this contract unless you have the proper weapons and equipment that can reliably function in a radioactive environment. \\n\\nYour compensation will be adjusted to match the risks associated with this contract.\\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
+      "system": "Pyro",
       "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -32114,7 +32232,6 @@
         "Corbel Core Halcyon",
         "Corbel Legs Halcyon",
         "Corbel Helmet Halcyon",
-        "00000000",
         "Zenith Laser Sniper Rifle Battery (22 Cap)"
       ],
       "cooldownMin": 1,
@@ -32866,6 +32983,7 @@
         "Wave Attack"
       ],
       "description": "Congrats on completing part three of this eight-part course.\\n\\nGood combat pilots know not all threats are apparent. It’s the threats you don’t expect that can be the most devastating. Scenario four is focused on how to identify and deal with stealth targets. Hopefully by the end, you’ll understand just how important your radar is in determining who you’re really up against. Expect to have regular and stealth ships hunting you down.    \\n\\nMake your way to <EM4>~mission(Location|Address)</EM4> whenever you’re ready, and remember to keep your eyes on your radar.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Surprise Attacks - Pinging your surroundings can sometimes reveal hidden ships. Be ready for contacts to show up unexpectedly.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "requiresCompletion": [
@@ -33165,6 +33283,7 @@
           "maxRank": "Guild Steward"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "R97 Shotgun",
@@ -33261,6 +33380,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "activity": "FPS",
       "blueprintRewards": [
         "R97 Shotgun",
@@ -33521,6 +33641,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "Low"
     },
@@ -34246,6 +34367,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Pyro",
       "danger": "High",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -34288,6 +34410,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Pyro",
       "danger": "High",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -34587,6 +34710,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -34626,6 +34750,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "danger": "Low",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -35829,7 +35954,12 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Pyro",
       "region": "C",
+      "regionPlanets": [
+        "Pyro IV",
+        "Pyro V"
+      ],
       "activity": "FPS"
     },
     {
@@ -36353,6 +36483,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -36395,6 +36526,7 @@
           "maxRank": "Guild Steward"
         }
       ],
+      "system": "Stanton",
       "activity": "Ship",
       "danger": "High"
     },
@@ -37319,6 +37451,7 @@
       ],
       "timeLimitMin": 15,
       "description": "Highpoint Wilderness Specialists are dedicated to keeping the delicate ecosystems of the empire in balance. A client recently hired us to evaluate the environmental impact of a number of invasive creatures near <EM4>~mission(Location)</EM4>. We’ve determined that to preserve the natural order of the region a conscientious culling of these species is necessary.  \\n\\nLooking for someone able and willing to help in this effort. Please refer to <EM4>\"The Guide to Stanton Wildlife\"</EM4> in your Journal for further information on the creatures being targeted.     \\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "Medium",
       "cooldownMin": 1,
@@ -37326,6 +37459,7 @@
       "contractor": "Civilian Defense Force",
       "multiSystem": true,
       "systems": [
+        "Stanton",
         "microTech"
       ],
       "requiresCompletion": [
@@ -37410,6 +37544,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -38648,7 +38783,12 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Pyro",
       "region": "A",
+      "regionPlanets": [
+        "Pyro I",
+        "Pyro II"
+      ],
       "activity": "FPS"
     },
     {
@@ -38941,6 +39081,7 @@
       "rewardEstimated": true,
       "timeLimitMin": 15,
       "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update:\\nThe files you found in Engineering confirm that Dr. Jorrit is actively pursuing something at the site, but it is still unclear what the doctor is up to. I’m hoping that if you can find the data he was accessing in Research it will provide further clarity.\\n\\n\\nContract Investigator Actions:\\nExplore the <EM4>Research</EM4> wing to locate and <EM4>access Dr. Jorrit’s recent files</EM4> .\\n\\nAdditional Notes:\\nBe wary of possible hostile forces on site. \\n\\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n\\nOnce you accessed these files, I'll be sending you <EM4>5 Secure Drives</EM4> with copies of whatever data we've gathered so far. You can collect them at your home location.",
+      "system": "Stanton",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -39148,6 +39289,7 @@
         "Eliminate Target"
       ],
       "description": "Surprise, surprise. Seems like not everyone’s happy that the Headhunters are making inroads in Stanton. One crew in particular has been hitting our people and then scurrying back to <EM4>~mission(Location|Address)</EM4>. \\n\\nWant you to go there and give ‘em a taste of their own medicine. Removing these lickboots should send a pretty clear message about what happens if you screw with us. \\n\\n\\nStows out.",
+      "system": "Stanton",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -39240,6 +39382,7 @@
         "Wave Attack"
       ],
       "description": "Congrats on completing part two of this eight-part course.   \\n\\nThe third scenario throws tactical considerations into the mix. This time around the attacking ships are from distinct classes with distinct battlefield applications. Knowing what targets to prioritize is vital to surviving engagements against multiple ships.      \\n\\nWhenever you’re ready, head to <EM4>~mission(Location|Address)</EM4> to get started.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Bigger They Are – Try to evaluate which threat is the most dangerous and take them out first.\\n- Shields – If you’re taking a lot of damage, don’t be afraid to boost away and let your shields regenerate.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "requiresCompletion": [
@@ -40199,6 +40342,7 @@
         "FPS Combat"
       ],
       "description": "--------------------------------------------------------\\n----------------- BOUNTY CONTRACT -----------------\\n--------------------------------------------------------\\n\\nBOUNTY HUNTERS GUILD\\nPROCESSING & DISTRIBUTION\\n\\nThe Bounty Hunters Guild has authorized an official bounty.\\n\\nNAME: ~mission(TargetName) \\nSYSTEM: Stanton\\nRISK ASSESSMENT: Medium\\nLAST KNOWN LOCATION:  ~mission(Location|Address)\\nKNOWN AFFILIATIONS: <None>\\nNOTES: We have tracked this bounty target to the <EM4>Engineering wing</EM4> of an abandoned Associated Science and Development research facility. While shuttered, various scavengers and other unsavory types are known to frequent the area.\\n\\nThe facility itself might also pose a risk as the nature of the research being conducted there is unknown. Be on the lookout for potential environmental hazards while in pursuit of the target.\\n\\n\\nBOUNTY HUNTERS GUILD\\nIn Pursuit of Justice\\n\\nThe Bounty Hunters Guild is a security service sanctioned by the Mercenary Guild and authorized to operate in both the UEE and beyond in accordance with Xenotrade Authority Acts.",
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Palatino Arms Sunstone",
@@ -40273,6 +40417,7 @@
       "repReward": 100,
       "timeLimitMin": 15,
       "description": "RED WIND LINEHAUL\\n'YOUR GOODS IN GOOD HANDS'\\n----------------------------\\n\\nRed Wind is looking to bolster our roster of haulers. Need someone who can keep their wits about them and keep quiet. If you check those boxes, and have a ship that can handle <EM4>~mission(MissionMaxSCUSize) cargo containers</EM4>, then give this trial run a shot.  \\n\\nPICK UP\\nFreight elevator at <EM4>~mission(Location|Address)</EM4>. \\n\\nDROP OFF\\nFreight elevator at <EM4>~mission(Destination|Address)</EM4>.\\n\\nComplete this contract and we’ll send more hauling opportunities your way. And don't forget to pack a <EM4>handheld tractor beam</EM4> to bring along. \\n",
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Low",
       "cooldownMin": 1,
@@ -40716,6 +40861,7 @@
         "Eliminate Target"
       ],
       "description": "Word’s gotten out that we’re expanding into Stanton and a local crew has hit a few of our safe houses. We managed to track the bastards back to some old Hathor mining site. \\n\\nYou up for showing them how the Headhunters handle things? If so, head over to <EM4>~mission(Location|Address)</EM4> and show them that we mean business. \\n\\n \\n- Stows",
+      "system": "Stanton",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -40830,6 +40976,7 @@
           "maxRank": "Applicant"
         }
       ],
+      "system": "Stanton",
       "blueprintRewards": [
         "Antium Arms Maroon",
         "Antium Core Maroon",
@@ -40875,6 +41022,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -40995,6 +41143,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Pyro",
       "danger": "Low",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -41142,6 +41291,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Pyro",
       "danger": "Low",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -42031,6 +42181,7 @@
       "rewardEstimated": true,
       "timeLimitMin": 10,
       "description": "WIP_Goto_Manfred_Desc",
+      "system": "Pyro",
       "cooldownMin": 45,
       "abandonCooldownMin": 45
     },
@@ -42063,6 +42214,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "requiresCompletion": [
         "New Opportunity - Ambush Strike"
       ],
@@ -42097,6 +42249,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "requiresCompletion": [
         "New Opportunity - Ambush Strike"
       ],
@@ -42131,6 +42284,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "requiresCompletion": [
         "New Opportunity - Ambush Strike"
       ],
@@ -42165,6 +42319,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "requiresCompletion": [
         "New Opportunity - Ambush Strike"
       ],
@@ -42195,6 +42350,7 @@
         "FPS Combat"
       ],
       "description": "--------------------------------------------------------\\n----------------- BOUNTY CONTRACT -----------------\\n--------------------------------------------------------\\n\\nBOUNTY HUNTERS GUILD\\nPROCESSING & DISTRIBUTION\\n\\nThe Bounty Hunters Guild has authorized an official bounty.\\n\\nNAME: ~mission(TargetName) \\nSYSTEM: Stanton\\nRISK ASSESSMENT: Medium\\nLAST KNOWN LOCATION:  ~mission(Location|Address)\\nKNOWN AFFILIATIONS: <None>\\nNOTES: We have tracked this bounty target to the <EM4>Research wing</EM4> of an abandoned Associated Science and Development facility. While shuttered, various scavengers and other unsavory types are known to frequent the area.\\n\\nThe facility itself might also pose a risk as the nature of the research being conducted there is unknown. Be on the lookout for potential environmental hazards while in pursuit of the target.\\n\\n\\nBOUNTY HUNTERS GUILD\\nIn Pursuit of Justice\\n\\nThe Bounty Hunters Guild is a security service sanctioned by the Mercenary Guild and authorized to operate in both the UEE and beyond in accordance with Xenotrade Authority Acts.",
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Palatino Arms Metropolis",
@@ -44107,6 +44263,7 @@
         "FPS Combat"
       ],
       "description": "Are you an experienced contractor looking to increase your income with some security work? Or maybe you’re new to the field and are looking for some hands-on experience? \\n\\nFoxwell Enforcement are looking for enthusiastic new contractors to help with local law enforcement. To see if you’re the right fit for us, we’d like for you to head over to <EM4>~mission(Location|Address)<EM4> and support the security forces on site. Local gang members have been giving that spot problems. Help the local forces take care of these outlaws to qualify for more contract opportunities with Foxwell.\\n\\nContractors are employed on a strictly freelance basis. Foxwell expects contractors to supply their own weapons and armor and does not accept any responsibility for any injuries, damages, or deaths accumulated during the contract.\\n\\nGood luck,\\n\\nMarcus Clenn\\nFoxwell Enforcement\\n'Security, Your Way'\\n\\nFoxwell Enforcement is a bonded security specialist licensed to operate throughout the UEE. We are always looking for new operators to join our family. If you or anyone you know is interested, please reach out to one of our contract representatives.",
+      "system": "Stanton",
       "danger": "Low",
       "cooldownMin": 15,
       "abandonCooldownMin": 15,
@@ -44475,6 +44632,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "activity": "FPS",
       "blueprintRewards": [
         "R97 Shotgun",
@@ -44488,7 +44646,10 @@
         "Monde Helmet Hiro",
         "R97 Shotgun Magazine (18 cap)"
       ],
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Nyx"
+      ]
     },
     {
       "className": "EckhartSecurity_ShipAmbush_Nyx_Easy",
@@ -44593,6 +44754,7 @@
       "rewardEstimated": true,
       "timeLimitMin": 10,
       "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Update: \\nFrom the personnel files recovered at the Onyx Facility, we have now learned that Dr. Jorrit has recently visited the site and accessed files while there. The next step will be to follow this lead and try to learn exactly what Dr. Jorrit was doing in his old lab.\\n\\nContract Investigator Actions:\\nExplore the <EM4>Engineering</EM4> wing and <EM4>access Dr. Jorrit’s recent files</EM4>.\\n\\nAdditional Notes:\\nI've found a work around for the QT issue so you'll be able to travel directly to the site from now on.\\n\\nBe wary of possible hostile forces on site. \\n\\nTravel to Onyx in a vehicle that can be stored in a large hangar.\\n",
+      "system": "Stanton",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -44942,6 +45104,7 @@
         "Eliminate Target"
       ],
       "description": "Can’t believe how many criminals are crawling around this damn system. Guess we’ll have to make some room for ourselves. \\n\\nGot a list of high-level leaders here. Nothing brings chaos and disorder to the existing gangs like a good decapitation attack. The next target is <EM4>~mission(TargetName)</EM4>, who we’ve tracked to <EM4>~mission(Location|Address)</EM4>. Feel like ghosting ‘em?   \\n\\nThese old Hathor platform facilities are big and spread out. Doubt there’s a way to do this and not attract the attention of their foot soldiers. Ain’t gonna be easy but sure sounds like fun.\\n\\n- Stows",
+      "system": "Stanton",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -45519,6 +45682,7 @@
         "Wave Attack"
       ],
       "description": "Congrats on completing part one of this eight-part course.\\n\\nScenario two will focus on how to deal with multiple targets at the same time. Goal here is give you a better handle on how to balance offense and defense.   \\n\\nWhenever you’re set, grab a combat ship, and head to <EM4>~mission(Location|Address)</EM4> to begin.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Pick Your Fight - For situations where you’re coming up against multiple targets of equal threat, your best strategy is to focus on neutralizing one target at a time to gradually reduce the amount of incoming fire.\\n\\nGood luck out there, \\nInstructor Gilly     \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL  \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.”",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "requiresCompletion": [
@@ -45651,6 +45815,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -45693,6 +45858,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -45735,6 +45901,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "FPS",
       "blueprintRewards": [
         "Antium Arms Maroon",
@@ -48447,6 +48614,7 @@
       ],
       "timeLimitMin": 10,
       "description": "We’ve been monitoring a situation at <EM4>~mission(Location)</EM4> regarding an uptick in the <EM4>~mission(Creature)</EM4> population over the past few months. Our models indicate that if this continues many of the native plants and animals will be adversely affected. It’s imperative that the <EM4>~mission(Creature)</EM4> population is reduced before that happens.     \\n\\nIf you can help, please refer to <EM4>\"The Guide to Stanton Wildlife\"</EM4> in your Journal for more specifics on the targeted creature.\\n\\nBest,\\n\\nWanda Werkheiser\\nContract Manager\\nHighpoint Wilderness Specialists",
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "Low",
       "cooldownMin": 1,
@@ -48454,6 +48622,7 @@
       "contractor": "Civilian Defense Force",
       "multiSystem": true,
       "systems": [
+        "Stanton",
         "Hurston",
         "microTech"
       ],
@@ -49697,6 +49866,7 @@
         "Wave Attack"
       ],
       "description": "Looking to gain critical hands-on experience battling a variety of targets and situations? Then my Combat Gauntlet might be the perfect fit for you.\\n\\nPlease understand that this course is intended for pilots who have already mastered flying basics and are ready to take their abilities to the next level. If you’re starting off and want to learn the ropes, I’d recommend logging some hours in an Arena Commander simpod. But for those ready to face a real challenge, I firmly believe that students learn best by doing. \\n\\nThat’s why I’ve designed these eight scenarios to be as realistic as possible. I promise you this is the closest thing to Navy combat pilot training you can get without enlisting, so don’t expect a lot of hand holding. <EM4>The risk of injury to yourself or your ship should be taken very seriously.</EM4>\\n\\nGAUNTLET SCENARIOS:\\n1. Single Targets\\n2. Multiple Targets\\n3. Target Priority\\n4. Target Stealth\\n5. Missiles and Countermeasures\\n6. Multi-Crew Targets\\n7. Corvette with Escorts\\n8. Capital Ship Encounter\\n\\nSo, if you’re ready to challenge yourself and prove you got what it takes to be a great pilot, the first scenario will focus on handling a single target. Head to <EM4>~mission(Location|Address)</EM4> to begin.\\n\\nAs a bonus, successful completion of the scenario will net the original contractor holder an award of <EM4>~mission(ScripAmount) MG Scrip</EM4>.\\n\\nTRICKS OF THE TRADE:\\n- Situational Awareness – Don’t get so focused on taking a target that you aren’t watching your flight path. No good taking out the enemy if you fly headfirst into an asteroid.\\n\\nGood luck out there, \\nInstructor Gilly    \\n\\n\\nABOUT GILLY’S FLIGHT SCHOOL \\nInstructor Lucas “Gilly” Baramsco has served in six squadrons and has over ten years of teaching experience. Whether a student with zero flight experience or a professional looking to polish their skills, Gilly Flight School offers a variety of courses to “Launch Your Piloting Career.” \\n",
+      "system": "Stanton",
       "cooldownMin": 45,
       "abandonCooldownMin": 45,
       "unlocks": [
@@ -50186,6 +50356,7 @@
       ],
       "timeLimitMin": 7,
       "description": "Looking to get some practice track time to improve your piloting skills? Then strap in and throttle up with Wildstar Racing Amateur League.\\n\\n~mission(RaceDetails)\\n\\nDISCLAIMER\\nWildstar Racing requires the contracted racer to be the vehicle pilot, no substitutes or stand-ins are allowed. Please be mindful that Wildstar Racing utilizes publicly accessible tracks and that other individuals may be present. Wildstar Racing is not responsible for any damage your ship may suffer while racing.",
+      "system": "Stanton",
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -50242,6 +50413,7 @@
       "rewardEstimated": true,
       "timeLimitMin": 5,
       "description": "Hockrow Agency \\nCase File #JD10285\\nLead Investigator: Arken Mallor\\n\\nCase Summary: \\nA client has requested that Hockrow compile a complete dossier on infamous scientist <EM4>Dr. Logan Jorrit</EM4>. Believed responsible for the incidents at Associated Science & Development’s Lazarus site, the client is eager to get a broader view of Dr. Logan and his research.\\n\\nContract Investigator Actions: \\nGain access to ASD’s shuttered <EM4>Onyx Facility</EM4> where Dr. Jorrit was formerly the Lead Scientist.  Once there, locate and <EM4>access the research lab’s personnel files</EM4> so that we can get an overview of what was going on there.\\n\\nAdditional Notes:\\nThe QT beacon to the site was deactivated when the facility went dark so you'll have to fly the last leg manually.\\n\\nWhile ASD has formally closed the facility, caution is still advised. Not only may the labs themselves be hazardous, but the surrounding area shows signs of recent visitors. Scavengers or squatters may be on site.\\n\\nI've also managed to wrangle an employee ID code for you so as long as you're on the job, you'll be able to access the computers there. \\n\\nAdditionally, Onyx Facility only has large hangars available, so plan your travel appropriately.\\n",
+      "system": "Stanton",
       "activity": "FPS",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
@@ -50386,6 +50558,7 @@
       ],
       "timeLimitMin": 7,
       "description": "Looking to get some practice track time to improve your piloting skills? Then strap in and throttle up with Wildstar Racing Amateur League.\\n\\n~mission(RaceDetails)\\n\\nDISCLAIMER\\nWildstar Racing requires the contracted racer to be the vehicle pilot, no substitutes or stand-ins are allowed. Please be mindful that Wildstar Racing utilizes publicly accessible tracks and that other individuals may be present. Wildstar Racing is not responsible for any damage your ship may suffer while racing.",
+      "system": "Stanton",
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -50521,6 +50694,7 @@
       ],
       "timeLimitMin": 6,
       "description": "Looking to get some practice track time to improve your piloting skills? Then strap in and throttle up with Wildstar Racing Amateur League.\\n\\n~mission(RaceDetails)\\n\\nDISCLAIMER\\nWildstar Racing requires the contracted racer to be the vehicle pilot, no substitutes or stand-ins are allowed. Please be mindful that Wildstar Racing utilizes publicly accessible tracks and that other individuals may be present. Wildstar Racing is not responsible for any damage your ship may suffer while racing.",
+      "system": "Stanton",
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -50765,6 +50939,7 @@
           "maxRank": "Elite Security Contractor"
         }
       ],
+      "system": "Stanton",
       "blueprintRewards": [
         "Antium Arms Maroon",
         "Antium Core Maroon",
@@ -50795,6 +50970,7 @@
       ],
       "timeLimitMin": 6,
       "description": "Looking to get some practice track time to improve your piloting skills? Then strap in and throttle up with Wildstar Racing Amateur League.\\n\\n~mission(RaceDetails)\\n\\nDISCLAIMER\\nWildstar Racing requires the contracted racer to be the vehicle pilot, no substitutes or stand-ins are allowed. Please be mindful that Wildstar Racing utilizes publicly accessible tracks and that other individuals may be present. Wildstar Racing is not responsible for any damage your ship may suffer while racing.",
+      "system": "Stanton",
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -50857,6 +51033,7 @@
       ],
       "timeLimitMin": 5,
       "description": "Looking to get some practice track time to improve your piloting skills? Then strap in and throttle up with Wildstar Racing Amateur League.\\n\\n~mission(RaceDetails)\\n\\nDISCLAIMER\\nWildstar Racing requires the contracted racer to be the vehicle pilot, no substitutes or stand-ins are allowed. Please be mindful that Wildstar Racing utilizes publicly accessible tracks and that other individuals may be present. Wildstar Racing is not responsible for any damage your ship may suffer while racing.",
+      "system": "Stanton",
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -51018,6 +51195,7 @@
       ],
       "timeLimitMin": 5,
       "description": "Looking to get some practice track time to improve your piloting skills? Then strap in and throttle up with Wildstar Racing Amateur League.\\n\\n~mission(RaceDetails)\\n\\nDISCLAIMER\\nWildstar Racing requires the contracted racer to be the vehicle pilot, no substitutes or stand-ins are allowed. Please be mindful that Wildstar Racing utilizes publicly accessible tracks and that other individuals may be present. Wildstar Racing is not responsible for any damage your ship may suffer while racing.",
+      "system": "Stanton",
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -51039,6 +51217,7 @@
       ],
       "timeLimitMin": 5,
       "description": "Looking to get some practice track time to improve your piloting skills? Then strap in and throttle up with Wildstar Racing Amateur League.\\n\\n~mission(RaceDetails)\\n\\nDISCLAIMER\\nWildstar Racing requires the contracted racer to be the vehicle pilot, no substitutes or stand-ins are allowed. Please be mindful that Wildstar Racing utilizes publicly accessible tracks and that other individuals may be present. Wildstar Racing is not responsible for any damage your ship may suffer while racing.",
+      "system": "Stanton",
       "activity": "Racing",
       "cooldownMin": 1,
       "abandonCooldownMin": 1
@@ -51551,6 +51730,7 @@
         "FPS Combat"
       ],
       "description": "--------------------------------------------------------\\n----------------- BOUNTY CONTRACT -----------------\\n--------------------------------------------------------\\n\\nBOUNTY HUNTERS GUILD\\nPROCESSING & DISTRIBUTION\\n\\nThe Bounty Hunters Guild has authorized an official bounty.\\n\\nNAME: ~mission(TargetName) \\nSYSTEM: Stanton\\nRISK ASSESSMENT: Medium\\nLAST KNOWN LOCATION:  ~mission(Location|Address)\\nKNOWN AFFILIATIONS: <None>\\nNOTES: This preliminary bounty is being offered to you as a formal evaluation of your skills. Successful completion of this contract will lead to additional bounty work being made available. \\n\\nIt is believed that the target will be on foot and well armed, so be prepared to engage in a firefight. Additionally, there may be other hostiles forces at the site, while they should not be your primary focus, you may have to engage with them while in pursuit of the target.\\n\\n\\nBOUNTY HUNTERS GUILD\\nIn Pursuit of Justice\\n\\nThe Bounty Hunters Guild is a security service sanctioned by the Mercenary Guild and authorized to operate in both the UEE and beyond in accordance with Xenotrade Authority Acts.",
+      "system": "Stanton",
       "activity": "FPS",
       "danger": "Low",
       "cooldownMin": 1,
@@ -51624,10 +51804,14 @@
         "Affinity"
       ],
       "timeLimitMin": 5,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)",
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ]
     },
     {
       "className": "RR_Pyro_Checkmate_Local_1box_Single_Courier",
@@ -51678,9 +51862,13 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Stanton",
       "activity": "Mining",
       "contractor": "Shubin Interstellar",
-      "multiSystem": true
+      "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ]
     },
     {
       "className": "TarPits_Stanton1_Unlawful_Salvage_Easy",
@@ -53118,6 +53306,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53134,6 +53323,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53150,6 +53340,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53166,6 +53357,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53182,6 +53374,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53198,6 +53391,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53214,6 +53408,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53230,6 +53425,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53246,6 +53442,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53262,6 +53459,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53278,6 +53476,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53294,6 +53493,7 @@
       "maxPlayers": 1,
       "canShare": false,
       "timeLimitMin": -1,
+      "system": "Stanton",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -53314,6 +53514,7 @@
       ],
       "timeLimitMin": 0,
       "description": "Fortune has shined upon us once again. I’ve just learned of a battle near ~mission(Location) that’s just transpired far from the prying eyes of any meddlesome comm arrays, and reinforcements from either of the forces involved have yet to be dispatched. This means that there is a window of opportunity for an enterprising soul to pick the graveyard clean.\\n \\nI’d like to extend this opportunity to all my trusted contacts. Any and all interested parties can have the location… for the right price. Coordinates will be provided once you accept the contract and will remain available until you choose to terminate it.\\n\\nOf course, speed will be of the essence as you will not only face potential competition from other salvagers, but also the looming possibility of reinforcements arriving to survey the battlefield. \\n\\nIf you’re still hesitating, just remember, fortune favors the bold.\\n\\n-cd",
+      "system": "Stanton",
       "activity": "Salvage"
     },
     {
@@ -53499,6 +53700,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "blueprintRewards": [
         "R97 \"Kismet\" Shotgun",
         "R97 \"Righteous\" Shotgun",
@@ -53638,6 +53840,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "blueprintRewards": [
         "R97 \"Kismet\" Shotgun",
         "R97 \"Righteous\" Shotgun",
@@ -53675,6 +53878,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53700,6 +53904,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53725,6 +53930,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53750,6 +53956,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53768,6 +53975,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53786,6 +53994,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53804,6 +54013,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53822,6 +54032,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53840,6 +54051,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53858,6 +54070,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53876,6 +54089,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53894,6 +54108,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53912,6 +54127,7 @@
       "canShare": false,
       "event": "Rockcracker Dungeon exclusive mission",
       "eventActive": true,
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53937,6 +54153,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53962,6 +54179,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -53987,6 +54205,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54012,6 +54231,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54037,6 +54257,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54062,6 +54283,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54087,6 +54309,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54112,6 +54335,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54137,6 +54361,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54162,6 +54387,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54187,6 +54413,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54212,6 +54439,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54237,6 +54465,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54262,6 +54491,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54287,6 +54517,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54312,6 +54543,7 @@
           "maxRank": "Elite Contractor"
         }
       ],
+      "system": "Nyx",
       "cooldownMin": 1,
       "abandonCooldownMin": 1,
       "contractor": "Shubin Interstellar",
@@ -54364,6 +54596,7 @@
       "lifetimeMin": 15,
       "respawnMin": 60,
       "cooldownMin": 40,
+      "system": "Stanton",
       "activity": "Delivery"
     },
     {
@@ -55164,6 +55397,7 @@
           "maxRank": "Runner"
         }
       ],
+      "system": "Stanton",
       "activity": "Delivery",
       "danger": "Low",
       "unlocks": [
@@ -56736,6 +56970,7 @@
       "lifetimeMin": 45,
       "respawnMin": 1,
       "cooldownMin": 15,
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
@@ -57970,6 +58205,7 @@
           "maxRank": "Not Eligible"
         }
       ],
+      "system": "Stanton",
       "contractor": "XenoThreat"
     },
     {
@@ -57989,6 +58225,7 @@
         "emergency",
         "affinity"
       ],
+      "system": "Stanton",
       "contractor": "XenoThreat",
       "requiresCompletion": [
         "Overdrive Initiative: INTEL RAID",
@@ -58019,6 +58256,7 @@
         "emergency",
         "affinity"
       ],
+      "system": "Stanton",
       "contractor": "XenoThreat",
       "requiresCompletion": [
         "Overdrive Initiative: INTEL RAID",
@@ -58056,6 +58294,7 @@
           "maxRank": "Not Eligible"
         }
       ],
+      "system": "Stanton",
       "contractor": "XenoThreat"
     },
     {
@@ -58640,7 +58879,8 @@
       "giver": "SENDER NOT FOUND",
       "lifetimeMin": 240,
       "respawnMin": 60,
-      "cooldownMin": 1440
+      "cooldownMin": 1440,
+      "system": "Stanton"
     },
     {
       "className": "pu_hijackedship_890_stanton4",
@@ -58872,6 +59112,7 @@
       "lifetimeMin": 20,
       "respawnMin": 5,
       "cooldownMin": 1,
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
@@ -58977,6 +59218,9 @@
       ],
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "[From]",
         "[Contractor]"
@@ -59088,7 +59332,8 @@
       "description": "LocationDebris_CleanupOp_Description",
       "giver": "LocationDebris_CleanupOp_From",
       "lifetimeMin": 5,
-      "cooldownMin": 1
+      "cooldownMin": 1,
+      "system": "Stanton"
     },
     {
       "className": "pu_retrieveconsignment_stanton4_legal_easy",
@@ -59220,6 +59465,7 @@
       "multiSystem": true,
       "systems": [
         "ArcCorp",
+        "Stanton",
         "microTech",
         "Hurston",
         "Crusader"
@@ -59331,6 +59577,7 @@
       "giver": "[Contractor]",
       "lifetimeMin": 15,
       "cooldownMin": 1,
+      "system": "Stanton",
       "contractor": "BlacJac Security",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
@@ -59368,9 +59615,11 @@
         "affinity",
         "security"
       ],
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
       "systems": [
+        "Stanton",
         "microTech",
         "ArcCorp",
         "Hurston"
@@ -59400,8 +59649,12 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "Ruto"
       ],
@@ -59610,6 +59863,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "danger": "Low",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
@@ -59669,6 +59923,7 @@
       "lifetimeMin": 5,
       "respawnMin": 5,
       "cooldownMin": 1,
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
@@ -59768,8 +60023,12 @@
       "giver": "Civilian Defense Force",
       "lifetimeMin": 15,
       "onceOnly": true,
+      "system": "Stanton",
       "contractor": "Hex Penetrator",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "Civilian Defense Force"
       ],
@@ -59818,7 +60077,8 @@
       "giver": "Ed Biollo",
       "lifetimeMin": 30,
       "respawnMin": 1,
-      "cooldownMin": 45
+      "cooldownMin": 45,
+      "system": "Stanton"
     },
     {
       "className": "pu_collect_covalex_personal_thrace",
@@ -59834,7 +60094,8 @@
       "giver": "Thrace Pinter",
       "lifetimeMin": 30,
       "respawnMin": 1,
-      "cooldownMin": 45
+      "cooldownMin": 45,
+      "system": "Stanton"
     },
     {
       "className": "pu_station_wastedisposal_lawful_stanton1",
@@ -59867,7 +60128,8 @@
       "giver": "Baylor Ward",
       "lifetimeMin": 30,
       "respawnMin": 1,
-      "cooldownMin": 45
+      "cooldownMin": 45,
+      "system": "Stanton"
     },
     {
       "className": "hexpenetrator_rewardrecord",
@@ -59909,7 +60171,8 @@
       "giver": "Gloria Theolone",
       "lifetimeMin": 30,
       "respawnMin": 1,
-      "cooldownMin": 45
+      "cooldownMin": 45,
+      "system": "Stanton"
     },
     {
       "className": "hexpenetrator_recoverdeliver",
@@ -59955,7 +60218,8 @@
       "giver": "Sam Besser",
       "lifetimeMin": 30,
       "respawnMin": 1,
-      "cooldownMin": 45
+      "cooldownMin": 45,
+      "system": "Stanton"
     },
     {
       "className": "pu_collect_covalex_personal_anya",
@@ -59971,7 +60235,8 @@
       "giver": "Anya Sugari",
       "lifetimeMin": 30,
       "respawnMin": 1,
-      "cooldownMin": 45
+      "cooldownMin": 45,
+      "system": "Stanton"
     },
     {
       "className": "pu_cave_recovery_missingperson_lawful_stanton2b",
@@ -60050,9 +60315,11 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)",
       "multiSystem": true,
       "systems": [
+        "Stanton",
         "Crusader",
         "ArcCorp"
       ],
@@ -60074,6 +60341,7 @@
       "lifetimeMin": 45,
       "respawnMin": 1,
       "cooldownMin": 1,
+      "system": "Stanton",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
     },
     {
@@ -60313,6 +60581,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "repReward": 100
     },
     {
@@ -60365,7 +60634,8 @@
           "minRank": "Neutral",
           "maxRank": "Neutral"
         }
-      ]
+      ],
+      "system": "Stanton"
     },
     {
       "className": "pu_shiphijacked_rclmr_retrieve_datapad",
@@ -60381,7 +60651,8 @@
       "giver": "SENDER NOT FOUND",
       "lifetimeMin": 15,
       "respawnMin": 60,
-      "cooldownMin": 20
+      "cooldownMin": 20,
+      "system": "Stanton"
     },
     {
       "className": "dataheist_unlawful_vh_stanton1",
@@ -60687,6 +60958,7 @@
       "repScopes": [
         "affinity"
       ],
+      "system": "Stanton",
       "activity": "Crime",
       "contractor": "Tecia Pacheco",
       "description": "~mission(Contractor|RecoverSpaceDescription)"
@@ -61052,7 +61324,11 @@
       "description": "Well done!\\n\\nWith the first part behind you, you should now have some basic familiarity with the movement controls, managing your hunger and thirst, and some of the core functionality of your mobiGlas – namely the Contract Manager and your Journal.\\n\\nThis next section will help you familiarize yourself with [Location] and take you to visit [StoreName], a weapons store here in [Location].\\n\\nYou can shop there, and at other stores like it, using United Earth Credits (UEC). During the Alpha phase of Star Citizen’s development, we will be using a currency called aUEC (Alpha United Earth Credits). This is a temporary currency specifically designed for testing the in-game economy and balance.",
       "giver": "How to Play Guide",
       "onceOnly": true,
+      "system": "Stanton",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "How to Play Guide"
       ],
@@ -61074,7 +61350,11 @@
       "description": "Congratulations on taking your first steps into the universe!\\n\\nOver the course of this tutorial, you’ll learn how to get around both on foot and in space. \\n\\nFirst up is helping you familiarize yourself with some basic movement controls and the use of your mobiGlas while still inside your “Hab” (or habitation). Follow the objectives and hints on your HUD (heads-up display) to proceed through this mission.",
       "giver": "How to Play Guide",
       "onceOnly": true,
+      "system": "Stanton",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "How to Play Guide"
       ],
@@ -61096,7 +61376,11 @@
       "description": "You’re almost through with the tutorial. All that remains is to take flight!\\n\\nWith your business in [Location] finished, it’s time to leave the city – and eventually the planet. Make your way to the [TransitNameShort] transit shuttles. These shuttles can take you all around [Location] – but your destination is the spaceport, where an Anvil C8 Pisces has been temporarily provided for you.\\n\\nThis snub scouting ship is a great starter vessel, perfect for new pilots looking to get their wings.",
       "giver": "How to Play Guide",
       "onceOnly": true,
+      "system": "Stanton",
       "multiSystem": true,
+      "systems": [
+        "Stanton"
+      ],
       "givers": [
         "How to Play Guide"
       ]

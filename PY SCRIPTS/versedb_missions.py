@@ -507,7 +507,7 @@ def match_enemy_pool(class_name, wave_pools):
     return None
 
 
-def parse_mission(xml_path, loc, scope_map=None, rep_req_rank_map=None, standing_by_guid=None):
+def parse_mission(xml_path, loc, scope_map=None, rep_req_rank_map=None, standing_by_guid=None, loc_system=None):
     """Parse a single mission broker XML file."""
     try:
         root = ET.parse(xml_path).getroot()
@@ -633,6 +633,17 @@ def parse_mission(xml_path, loc, scope_map=None, rep_req_rank_map=None, standing
         scope = rep_scopes[0] if rep_scopes else "hauling"
         result["repRequirements"] = [{"scope": scope, "minRank": rep_rank, "maxRank": rep_rank}]
     system = infer_system(class_name)
+    # Fall back: broker missions carry location/locality GUIDs on the root
+    # attrs. Resolve via the starmap map passed in. Without this, pu_missions
+    # like `pu_bounty_pve_family_*` render with no location.
+    if not system and loc_system:
+        for attr in ("locationMissionAvailable", "localityAvailable"):
+            g = root.get(attr)
+            if g and g not in ("null", "00000000-0000-0000-0000-000000000000"):
+                sys = loc_system.get(guid_key(g))
+                if sys:
+                    system = sys
+                    break
     if system:
         result["system"] = system
     activity = infer_activity(class_name)
@@ -1022,6 +1033,73 @@ def main():
                 pass
     print(f"  Loaded {len(rep_reward_amounts)} reputation reward amounts")
 
+    # Location GUID → system map. Contracts reference locations via prereqs
+    # (ContractPrerequisite_Location locationAvailable="GUID") and missions
+    # via locationMissionAvailable / localityAvailable attrs. Resolve those
+    # GUIDs against starmap records + mission_locality + pu_locations so we
+    # can tag missions with the correct system when className inference
+    # can't. Without this ~20% of missions show up with no Location.
+    loc_system = {}
+    for p in (FORGE_DIR / "starmap" / "pu").rglob("*.xml.xml"):
+        try:
+            st = p.stem.lower()
+            txt = p.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        ref = re.search(r'__ref="([^"]+)"', txt)
+        if not ref:
+            continue
+        sys = None
+        if "stanton" in st: sys = "Stanton"
+        elif "pyro"   in st: sys = "Pyro"
+        elif "nyx"    in st: sys = "Nyx"
+        elif "terra"  in st: sys = "Terra"
+        if sys:
+            loc_system[guid_key(ref.group(1))] = sys
+    # Second-tier: missionlocality + pu_locations/templates records inherit
+    # system from their referenced starmap nodes (or from filename tokens).
+    for subdir in ("missiondata/pu_missionlocality", "missiondata/pu_locations"):
+        dp = FORGE_DIR / subdir
+        if not dp.exists():
+            continue
+        for p in dp.rglob("*.xml.xml"):
+            try:
+                txt = p.read_text(encoding="utf-8")
+            except Exception:
+                continue
+            ref = re.search(r'__ref="([^"]+)"', txt)
+            if not ref:
+                continue
+            resolved = None
+            for g in re.findall(r'[a-zA-Z_]+="([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})"', txt):
+                sys = loc_system.get(guid_key(g))
+                if sys:
+                    resolved = sys
+                    break
+            if not resolved:
+                st = p.stem.lower()
+                if "stanton" in st: resolved = "Stanton"
+                elif "pyro"   in st: resolved = "Pyro"
+                elif "nyx"    in st: resolved = "Nyx"
+            if resolved:
+                loc_system[guid_key(ref.group(1))] = resolved
+    print(f"  Resolved {len(loc_system)} location GUIDs to systems")
+
+    def system_from_location_refs(text):
+        """Scan text for location/locality GUID attrs and return the first
+        resolvable system. Skips the sentinel GUIDs ('null', all-zeros)."""
+        for m in re.finditer(
+            r'(?:locationAvailable|localityAvailable|locationMissionAvailable)="([^"]+)"',
+            text
+        ):
+            g = m.group(1)
+            if g in ("null", "00000000-0000-0000-0000-000000000000"):
+                continue
+            sys = loc_system.get(guid_key(g))
+            if sys:
+                return sys
+        return ""
+
     # Blueprint pools
     print("\n[4/7] Building blueprint pool map...")
     bp_pool_dir = FORGE_DIR / "crafting" / "blueprintrewards" / "blueprintmissionpools"
@@ -1072,10 +1150,15 @@ def main():
                 if ref_m:
                     pool_name = f.stem.replace(".xml", "").replace("bp_missionreward_", "")
                     bp_pool_map[guid_key(ref_m.group(1))] = pool_name
-                    # Resolve blueprint items
+                    # Resolve blueprint items. Pools occasionally include a
+                    # null / all-zero blueprintRecord — that's a "no drop"
+                    # slot, not a real item. Skip those instead of letting
+                    # them leak through as "00000000" in the UI.
                     bp_guids = re.findall(r'blueprintRecord="([^"]+)"', txt)
                     items = []
                     for bg in bp_guids:
+                        if bg in ("null", "00000000-0000-0000-0000-000000000000"):
+                            continue
                         item_name = craft_names.get(guid_key(bg), bg[:8])
                         if item_name and item_name != "null":
                             items.append(item_name)
@@ -1159,6 +1242,10 @@ def main():
             # Clean up scope name: "reputationscope_assassination" -> "assassination"
             if gen_scope.startswith("reputationscope_"):
                 gen_scope = gen_scope.replace("reputationscope_", "")
+
+            # Handler-level location fallback. Contracts declared inside the
+            # generator inherit this when className inference finds nothing.
+            gen_system = system_from_location_refs(txt)
 
             # Handler-level scenario gate. Applies to every contract under this
             # generator unless an individual contract overrides with its own.
@@ -1456,6 +1543,12 @@ def main():
                 if rep_reqs:
                     entry["repRequirements"] = rep_reqs
                 system = infer_system(debug_name)
+                # Fall back: this contract body's location refs, then the
+                # handler's. Some generators (Shubin, Nyx-based contractors)
+                # don't encode the system in className but do declare it via
+                # ContractPrerequisite_Location locationAvailable="GUID".
+                if not system:
+                    system = system_from_location_refs(body) or gen_system
                 if system:
                     entry["system"] = system
                 region = infer_region(debug_name)
@@ -1687,7 +1780,7 @@ def main():
     missions = []
     skipped = 0
     for xml_file in mission_dir.rglob("*.xml.xml"):
-        result = parse_mission(xml_file, loc, scope_map, rep_req_rank_map, standing_by_guid)
+        result = parse_mission(xml_file, loc, scope_map, rep_req_rank_map, standing_by_guid, loc_system)
         if result:
             missions.append(result)
         else:

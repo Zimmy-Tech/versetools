@@ -42,22 +42,6 @@
           }
         </div>
 
-        <h4>Risk</h4>
-        <div class="mv-chips">
-          <button class="mv-chip" [class.on]="riskFilter() === 'low'"
-                  (click)="riskFilter.set(riskFilter() === 'low' ? '' : 'low'); resetPage()">
-            <span class="mv-chip-dot risk-low"></span>Low
-          </button>
-          <button class="mv-chip" [class.on]="riskFilter() === 'med'"
-                  (click)="riskFilter.set(riskFilter() === 'med' ? '' : 'med'); resetPage()">
-            <span class="mv-chip-dot risk-med"></span>Medium
-          </button>
-          <button class="mv-chip" [class.on]="riskFilter() === 'high'"
-                  (click)="riskFilter.set(riskFilter() === 'high' ? '' : 'high'); resetPage()">
-            <span class="mv-chip-dot risk-high"></span>High
-          </button>
-        </div>
-
         <h4>Legality</h4>
         <div class="mv-chips">
           <button class="mv-chip" [class.on]="lawfulFilter() === 'lawful'"
@@ -165,7 +149,6 @@
             <span class="num">Payout</span>
             <span class="num">Rep</span>
             <span>Location</span>
-            <span>Expires</span>
             <span></span>
           </div>
 
@@ -179,9 +162,7 @@
                 <div class="mv-title-cell">
                   <div class="mv-title-row">
                     <span class="mv-title">{{ m.title }}</span>
-                    @if (m.lawful) {
-                      <span class="mv-badge b-legal">Legal</span>
-                    } @else {
+                    @if (!m.lawful) {
                       <span class="mv-badge b-illegal">Illegal</span>
                     }
                     @if (m.danger === 'Extreme' || m.danger === 'Very High') {
@@ -202,7 +183,11 @@
                   </div>
                   <div class="mv-meta-row">
                     @if (m.contractor) { <span class="faction">{{ m.contractor }}</span><span class="dot"></span> }
-                    <span><b>{{ m.category }}</b>@if (m.activity) { · {{ m.activity }} }</span>
+                    @if (m.category !== 'Contract') {
+                      <span><b>{{ m.category }}</b>@if (m.activity) { · {{ m.activity }} }</span>
+                    } @else if (m.activity) {
+                      <span>{{ m.activity }}</span>
+                    }
                     @if (m.maxPlayers > 1) { <span class="dot"></span><span>Crew <b>1–{{ m.maxPlayers }}</b></span> }
                     @if (m.multiSystem) { <span class="dot"></span><span>Multi-system</span> }
                   </div>
@@ -219,12 +204,6 @@
                 <div class="mv-loc">
                   {{ (m.systems?.length ? m.systems!.join(' · ') : m.system) || '—' }}
                   @if (m.regionPlanets?.length) { <span class="sub">{{ m.regionPlanets!.join(' · ') }}</span> }
-                  @else if (m.activity) { <span class="sub">{{ m.activity }}</span> }
-                </div>
-                <div class="mv-time" [class.hot]="m.timeLimitMin && m.timeLimitMin <= 240">
-                  {{ fmtDuration(m.timeLimitMin) }}
-                  @if (m.timeLimitMin && m.timeLimitMin <= 240) { <span class="sub">Hard</span> }
-                  @else if (m.timeLimitMin) { <span class="sub">Standard</span> }
                 </div>
                 <span class="mv-chev">
                   @if (expandedId() === m.className) {
