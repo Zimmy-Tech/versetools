@@ -1,5 +1,6 @@
 import { Component, signal, computed, effect, HostListener, ElementRef, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { DataService } from '../../services/data.service';
 
@@ -52,13 +53,28 @@ interface Mission {
   repPenalty?: number;
   boss?: boolean;
   contractor?: string;
+  /** Location names this contract can trigger/spawn at, resolved from
+   *  `localityAvailable` GUIDs to starmap/missionlocality names at extract
+   *  time. Useful signal that system-variant splits carry genuinely
+   *  different spawn sets — Stanton Super triggers at the 4 Stanton planets
+   *  while Pyro Super triggers at the 4 Pyro regions, for example. */
+  triggerLocations?: string[];
+  /** Drill-down expansion of `triggerLocations`: each group is one parent
+   *  MissionLocality and `locations` are the specific starmap callsigns
+   *  it covers (asteroid belt markers like "RAB-WHISKEY", Lagrange points,
+   *  planets). Collapsed behind a toggle in the UI because big contracts
+   *  carry 90+ entries. */
+  triggerLocationDetails?: { group: string; locations: string[] }[];
   danger?: string;
   enemyPool?: string[];
   requiresCompletion?: string[];
   /** OR groups: complete *any* mission in each inner array to satisfy that
    *  gate. Rendered as "complete any one of" groups, distinct from the
-   *  strict AND list in `requiresCompletion`. */
-  requiresAnyOf?: string[][];
+   *  strict AND list in `requiresCompletion`. Each alt carries the union of
+   *  systems its title is available in — the tag-granter system is global
+   *  so cross-system completions technically satisfy the gate, but surfacing
+   *  the system lets players pick a reachable variant. */
+  requiresAnyOf?: { title: string; systems: string[] }[][];
   unlocks?: string[];
   isChain?: boolean;
   rewardEstimated?: boolean;
@@ -523,6 +539,18 @@ export class MissionsViewComponent {
   });
 
   expandedId = signal<string | null>(null);
+  /** Trigger-locations drill-down toggle. Keyed by contract className so
+   *  the open/closed state is per-row, not global. */
+  expandedTriggersId = signal<string | null>(null);
+  toggleTriggers(id: string, ev: MouseEvent): void {
+    ev.stopPropagation();
+    this.expandedTriggersId.set(this.expandedTriggersId() === id ? null : id);
+  }
+  /** Sum of child-location counts across all groups on a contract. Used in
+   *  the "show NN specific locations" button label. */
+  totalTriggerChildren(m: Mission): number {
+    return (m.triggerLocationDetails ?? []).reduce((a, g) => a + g.locations.length, 0);
+  }
   selectedMission = signal<Mission | null>(null);
   popoutTab = signal<'info' | 'reputation'>('info');
   private contractorProfiles = signal<Record<string, ContractorProfile>>({});
@@ -568,7 +596,7 @@ export class MissionsViewComponent {
     if (keep !== 'activity') this.activityOpen.set(false);
   }
 
-  constructor(private http: HttpClient, private data: DataService) {
+  constructor(private http: HttpClient, private data: DataService, private route: ActivatedRoute) {
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion(); // track mode changes
@@ -581,6 +609,19 @@ export class MissionsViewComponent {
         this.contractorProfiles.set(data.contractorProfiles ?? {});
         this.loaded.set(true);
       });
+    });
+
+    // Accept deep-links from the Rep Builder: `?faction=<scope>&rank=<name>`
+    // pre-selects the filter pair. Any other filters (search, category, …)
+    // stay clear so the narrowed list really reflects the deep-link.
+    this.route.queryParamMap.subscribe(params => {
+      const f = params.get('faction');
+      const r = params.get('rank');
+      if (f) {
+        this.factionFilter.set(f);
+        this.rankFilter.set(r ?? '');
+        this.resetPage();
+      }
     });
   }
 
@@ -835,6 +876,41 @@ export class MissionsViewComponent {
 
   closePopout(): void {
     this.selectedMission.set(null);
+  }
+
+  /** Systems a mission is actually available in — normalises the `systems`
+   *  array form and the legacy single-`system` form into one set. */
+  private missionSystems(m: Mission): Set<string> {
+    if (m.systems?.length) return new Set(m.systems);
+    return m.system ? new Set([m.system]) : new Set();
+  }
+
+  /** Alt is "reachable" if it shares at least one system with the parent
+   *  mission. Used to sort/dim cross-system-only alts that players usually
+   *  can't satisfy without flying elsewhere. An alt with no systems listed
+   *  is treated as reachable — the extractor may not have resolved one
+   *  and we'd rather over-show than silently drop. */
+  altReachable(m: Mission, alt: { systems: string[] }): boolean {
+    if (!alt.systems?.length) return true;
+    const mine = this.missionSystems(m);
+    if (!mine.size) return true;
+    return alt.systems.some(s => mine.has(s));
+  }
+
+  /** Alts in a group with reachable ones first (same within-bucket order).
+   *  Keeps the template declarative — no sort logic in HTML. */
+  sortedAlts(m: Mission, group: { title: string; systems: string[] }[]):
+      { title: string; systems: string[]; reachable: boolean }[] {
+    return group
+      .map(a => ({ ...a, reachable: this.altReachable(m, a) }))
+      .sort((a, b) => Number(b.reachable) - Number(a.reachable));
+  }
+
+  /** Tooltip for an unreachable OR alt — kept as a method so the template
+   *  doesn't have to deal with an escaped apostrophe in a string literal. */
+  altTooltip(alt: { systems: string[]; reachable: boolean }): string {
+    if (alt.reachable) return '';
+    return `Only available in ${alt.systems.join(', ')} — not in this mission’s systems`;
   }
 
   navigateToMission(title: string, e: MouseEvent): void {

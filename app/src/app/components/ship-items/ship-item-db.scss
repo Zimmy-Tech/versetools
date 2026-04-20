@@ -89,6 +89,29 @@
 
 .sid-search { min-width: 200px; }
 
+/* Clear-filters control. Quieter than the dropdowns so it reads as an
+   escape hatch, not a primary control — appears only when at least one
+   filter is narrowing the list. */
+.sid-clear {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+
+  &:hover {
+    color: var(--red);
+    border-color: rgba(255, 80, 80, 0.4);
+    background: rgba(255, 80, 80, 0.05);
+  }
+}
+
 .sid-table-wrap {
   // Size to content so short lists don't stretch to a full-viewport box;
   // still shrinks inside the view and scrolls internally when rows exceed

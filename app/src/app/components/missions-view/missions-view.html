@@ -330,6 +330,50 @@
                         }
                       </div>
                     }
+
+                    @if (m.triggerLocations?.length) {
+                      <h5 title="Where this contract can spawn in-game. Sourced from the contract's ContractPrerequisite_Locality set in the game data.">Trigger Locations</h5>
+                      <div class="mv-triggers">
+                        @for (loc of m.triggerLocations; track loc) {
+                          <span class="mv-trigger">{{ loc }}</span>
+                        }
+                      </div>
+
+                      @if (totalTriggerChildren(m); as total) {
+                        @if (total > 0) {
+                          <button class="mv-trigger-toggle"
+                                  (click)="toggleTriggers(m.className, $event)"
+                                  [class.open]="expandedTriggersId() === m.className">
+                            @if (expandedTriggersId() === m.className) {
+                              Hide specific locations
+                            } @else {
+                              Show {{ total }} specific locations
+                            }
+                            <span class="mv-trigger-toggle-caret">
+                              {{ expandedTriggersId() === m.className ? '▴' : '▾' }}
+                            </span>
+                          </button>
+
+                          @if (expandedTriggersId() === m.className) {
+                            <div class="mv-trigger-detail">
+                              @for (g of m.triggerLocationDetails; track g.group) {
+                                <div class="mv-trigger-group">
+                                  <div class="mv-trigger-group-head">
+                                    <span class="mv-trigger-group-name">{{ g.group }}</span>
+                                    <span class="mv-trigger-group-count">{{ g.locations.length }}</span>
+                                  </div>
+                                  <div class="mv-trigger-group-list">
+                                    @for (loc of g.locations; track loc) {
+                                      <span class="mv-trigger-sub">{{ loc }}</span>
+                                    }
+                                  </div>
+                                </div>
+                              }
+                            </div>
+                          }
+                        }
+                      }
+                    }
                   </div>
 
                   <!-- ══ CENTER · Operator Org + Standings (hero) ══ -->
@@ -509,11 +553,23 @@
                       <h5>Requires (any one)</h5>
                       @for (group of m.requiresAnyOf; track $index) {
                         <ul class="mv-chain-list mv-chain-anyof">
-                          @for (alt of group; track alt; let i = $index) {
+                          @for (alt of sortedAlts(m, group); track alt.title; let i = $index) {
                             @if (i > 0) {
                               <li class="mv-chain-or-sep">— or —</li>
                             }
-                            <li (click)="navigateToMission(alt, $event)">{{ alt }}</li>
+                            <li class="mv-chain-alt" [class.mv-chain-alt-far]="!alt.reachable"
+                                (click)="navigateToMission(alt.title, $event)"
+                                [title]="altTooltip(alt)">
+                              <span class="mv-chain-alt-title">{{ alt.title }}</span>
+                              @if (alt.systems.length) {
+                                <span class="mv-chain-alt-systems">
+                                  @for (s of alt.systems; track s) {
+                                    <span class="mv-sys-tag"
+                                          [class.mv-sys-tag-dim]="!alt.reachable">{{ s }}</span>
+                                  }
+                                </span>
+                              }
+                            </li>
                           }
                         </ul>
                       }

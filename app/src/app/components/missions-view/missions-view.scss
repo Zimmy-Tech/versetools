@@ -1136,6 +1136,22 @@ $cols: minmax(0, 1fr) 160px 80px 140px 80px 60px 140px 20px;
 
   tbody tr.locked td { color: var(--text3); opacity: 0.75; }
 
+  /* Ranks outside this mission's [minRank, maxRank] window — the player
+     can't access the contract from here, so they shouldn't visually
+     compete with the active rank. Soft fade, keep legible. Clickable
+     rows remain clickable (user can still pivot to filter by that
+     rank) so hover brings them back toward full brightness. */
+  tbody tr.unlocked td {
+    color: var(--text3);
+    opacity: 0.45;
+  }
+  tbody tr.unlocked:hover td {
+    opacity: 0.9;
+    color: var(--text2);
+  }
+  tbody tr.unlocked .rank-name { color: var(--text3); font-weight: 500; }
+  tbody tr.unlocked .tier-dot { background: rgba(255, 255, 255, 0.15); }
+
   tfoot td {
     padding: 7px 8px;
     font-size: 10.5px;
@@ -1467,6 +1483,158 @@ $cols: minmax(0, 1fr) 160px 80px 140px 80px 60px 140px 20px;
   border-bottom: 0;
   &::before { content: none; }
   &:hover { background: transparent; color: var(--text3); }
+}
+
+/* An OR alternative's row. Extends the list-item shape so the alt
+   title + inline system badges render on one line, wrapping cleanly
+   when the title is long. */
+.mv-chain-alt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mv-chain-alt-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mv-chain-alt-systems {
+  display: inline-flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* System badge on OR alts — tells players which system(s) the alt
+   actually exists in. `mv-sys-tag-dim` softens the badge when the alt's
+   systems don't overlap the parent mission's systems, so an unreachable
+   option reads as informational rather than actionable. */
+.mv-sys-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: rgba(0, 200, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  line-height: 1.3;
+}
+
+.mv-sys-tag-dim {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Trigger Locations strip — resolved from contract prereq Locality refs.
+   Cyan pills to match the system-tag vocabulary but slightly heavier so
+   they read as content, not metadata. */
+.mv-triggers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.mv-trigger {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.08);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+/* "Show NN specific locations" — a modest toggle beneath the pills so the
+   expanded list is opt-in. Most contracts carry <5 trigger regions each
+   with 15-30 callsigns; always-on would dominate the detail view. */
+.mv-trigger-toggle {
+  margin-top: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: transparent;
+  border: 0;
+  padding: 3px 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover { color: var(--accent); }
+  &.open  { color: var(--accent); }
+}
+
+.mv-trigger-toggle-caret { font-size: 10px; line-height: 1; }
+
+.mv-trigger-detail {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: rgba(0, 200, 255, 0.03);
+  border-left: 2px solid rgba(0, 200, 255, 0.25);
+  border-radius: 0 3px 3px 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.mv-trigger-group + .mv-trigger-group { margin-top: 10px; }
+
+.mv-trigger-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mv-trigger-group-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.3px;
+}
+
+.mv-trigger-group-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text3);
+  font-variant-numeric: tabular-nums;
+}
+
+.mv-trigger-group-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.mv-trigger-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text2);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Unreachable alt — whole row dims so the player understands it's not
+   a practical choice from where they are, without hiding the option
+   entirely (tags still grant the same gate if they do travel). */
+.mv-chain-list li.mv-chain-alt-far {
+  opacity: 0.5;
+
+  &:hover { opacity: 0.85; }
+
+  &::before { background: var(--text3); }
 }
 
 /* Each OR group gets its own bordered envelope so multiple alt sets don't

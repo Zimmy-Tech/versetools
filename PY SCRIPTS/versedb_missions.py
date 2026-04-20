@@ -1040,6 +1040,33 @@ def main():
     # can tag missions with the correct system when className inference
     # can't. Without this ~20% of missions show up with no Location.
     loc_system = {}
+    # Parallel map: GUID → human-readable location name, used to label each
+    # contract's trigger locations in the UI (e.g. "Crusader", "ArcCorp",
+    # "Region A"). Built from the same records as loc_system so resolution
+    # is consistent with system inference.
+    loc_name = {}
+    # Two-level expansion: MissionLocality records wrap a list of specific
+    # starmap spots (Lagrange points, asteroid belts like "RAB-WHISKEY").
+    # locality_children maps each MissionLocality __ref to the ordered list
+    # of child __refs so a contract's top-level trigger can be drilled down
+    # into its constituent callsigns for power-user display.
+    locality_children: dict[str, list[str]] = {}
+
+    def _prettify_region(n: str) -> str:
+        """Normalise noisy names like 'regiona' / 'Pyro_Region_A' → 'Region A'
+        while leaving already-pretty names (e.g. 'Crusader') untouched."""
+        low = n.lower()
+        # Stanton2 → "Stanton II"? StarMap exposes it as "Stanton2"; callers
+        # expect the parent system name which the extractor already has, so
+        # we leave these alone to avoid confusing "Stanton2" becoming wrong.
+        m = re.match(r'region([a-d])$', low)
+        if m:
+            return f'Region {m.group(1).upper()}'
+        m = re.match(r'(?:pyro_)?region([a-d])$', low)
+        if m:
+            return f'Region {m.group(1).upper()}'
+        return n
+
     for p in (FORGE_DIR / "starmap" / "pu").rglob("*.xml.xml"):
         try:
             st = p.stem.lower()
@@ -1049,15 +1076,22 @@ def main():
         ref = re.search(r'__ref="([^"]+)"', txt)
         if not ref:
             continue
+        k = guid_key(ref.group(1))
         sys = None
         if "stanton" in st: sys = "Stanton"
         elif "pyro"   in st: sys = "Pyro"
         elif "nyx"    in st: sys = "Nyx"
         elif "terra"  in st: sys = "Terra"
         if sys:
-            loc_system[guid_key(ref.group(1))] = sys
-    # Second-tier: missionlocality + pu_locations/templates records inherit
-    # system from their referenced starmap nodes (or from filename tokens).
+            loc_system[k] = sys
+        # Pull the display name: prefer @localisation token on `name`, fall
+        # back to file stem. Localization resolves via the `loc` dict built
+        # earlier in the extractor.
+        nm = re.search(r'\sname="@?([^"]+)"', txt)
+        disp_key = nm.group(1) if nm else p.stem.replace('.xml', '')
+        disp = loc.get(disp_key.lower(), disp_key)
+        if disp and disp != "@LOC_UNINITIALIZED":
+            loc_name[k] = _prettify_region(disp)
     for subdir in ("missiondata/pu_missionlocality", "missiondata/pu_locations"):
         dp = FORGE_DIR / subdir
         if not dp.exists():
@@ -1070,6 +1104,7 @@ def main():
             ref = re.search(r'__ref="([^"]+)"', txt)
             if not ref:
                 continue
+            k = guid_key(ref.group(1))
             resolved = None
             for g in re.findall(r'[a-zA-Z_]+="([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})"', txt):
                 sys = loc_system.get(guid_key(g))
@@ -1082,8 +1117,38 @@ def main():
                 elif "pyro"   in st: resolved = "Pyro"
                 elif "nyx"    in st: resolved = "Nyx"
             if resolved:
-                loc_system[guid_key(ref.group(1))] = resolved
-    print(f"  Resolved {len(loc_system)} location GUIDs to systems")
+                loc_system[k] = resolved
+            # MissionLocality records identify a region/planet via the typed
+            # element suffix (e.g. <MissionLocality.Stanton2>). That suffix
+            # is a CIG-internal alias ("Stanton2") that the localization
+            # file maps to the human name ("Crusader"). Look up via loc;
+            # fall back to the raw suffix if no translation exists.
+            #
+            # Pyro regions A–D aren't in localization at all — they map to
+            # clusters of planets instead. We resolve those directly via
+            # REGION_PLANETS so the UI shows "Pyro I · Pyro II" rather than
+            # the CIG-internal letter, which is meaningless to players.
+            type_m = re.search(r'<MissionLocality\.([^\s/>]+)', txt)
+            disp_raw = type_m.group(1) if type_m else p.stem.replace('.xml', '')
+            low = disp_raw.lower()
+            rgn_m = re.match(r'region([a-d])$', low)
+            if rgn_m and resolved == 'Pyro':
+                planets = REGION_PLANETS.get(('Pyro', rgn_m.group(1).upper()))
+                if planets:
+                    loc_name[k] = ' · '.join(planets)
+                else:
+                    loc_name[k] = _prettify_region(disp_raw)
+            else:
+                translated = loc.get(low, disp_raw)
+                loc_name[k] = _prettify_region(translated)
+            # Record the MissionLocality's child starmap refs so the UI can
+            # drill into specific belt/Lagrange callsigns on demand. Must run
+            # regardless of whether the top-level name was region-expanded,
+            # otherwise the child list for Pyro regions never populates.
+            kids = re.findall(r'<Reference\s+value="([0-9a-f-]{36})"', txt)
+            if kids:
+                locality_children[k] = [guid_key(g) for g in kids]
+    print(f"  Resolved {len(loc_system)} location GUIDs to systems, {len(loc_name)} to names")
 
     def system_from_location_refs(text):
         """Scan text for location/locality GUID attrs and return the first
@@ -1481,6 +1546,43 @@ def main():
                     entry["_grantTags"] = grant_tags
                 if once_only:
                     entry["onceOnly"] = True
+
+                # Per-contract trigger locations: unique locationAvailable
+                # GUIDs from ContractPrerequisite_Locality elements, resolved
+                # against the loc_name map. `triggerLocations` is the summary
+                # list used for the top-of-detail pills; `triggerLocationDetails`
+                # expands each MissionLocality into the specific starmap
+                # callsigns it covers (Lagrange points, asteroid belt markers
+                # like "RAB-WHISKEY"). UI collapses the detail by default and
+                # reveals on click so a 99-location mission doesn't dominate
+                # the row.
+                _LOC_SENTINEL = {"null", "00000000-0000-0000-0000-000000000000"}
+                seen_loc = set()
+                trigger_locs = []
+                trigger_details = []
+                for _g in re.findall(r'localityAvailable="([^"]+)"', body):
+                    if _g in _LOC_SENTINEL:
+                        continue
+                    k = guid_key(_g)
+                    if k in seen_loc:
+                        continue
+                    seen_loc.add(k)
+                    name = loc_name.get(k)
+                    if not name:
+                        continue
+                    if name not in trigger_locs:
+                        trigger_locs.append(name)
+                    kids = []
+                    for child_k in locality_children.get(k, []):
+                        child_name = loc_name.get(child_k)
+                        if child_name and child_name not in kids:
+                            kids.append(child_name)
+                    if kids:
+                        trigger_details.append({"group": name, "locations": kids})
+                if trigger_locs:
+                    entry["triggerLocations"] = trigger_locs
+                if trigger_details:
+                    entry["triggerLocationDetails"] = trigger_details
 
                 # Event gate. Contract-level scenarios take precedence over handler.
                 scen_m = re.search(
@@ -1966,6 +2068,12 @@ def main():
         - lawful: legal vs illegal is a hard boundary
         - activity: Ship vs FPS is a hard boundary
         - missionFlow: different objectives = different mission
+        - system: per-system variants carry different location triggers
+          and can also carry different completion-tag requirements (the
+          loser's tags are discarded during merge). Keeping system in the
+          key splits these into one row per system so location and prereq
+          data stay per-variant. Players search/filter anyway; row growth
+          was judged acceptable.
         """
         return (
             m.get("title"), m.get("category"), m.get("reward"),
@@ -1973,6 +2081,7 @@ def main():
             m.get("lawful"),
             m.get("activity"),
             tuple(m.get("missionFlow") or []),
+            m.get("system"),
         )
 
     seen = {}
@@ -2118,11 +2227,33 @@ def main():
         for tag in c.get("_reqTags", []):
             tag_required_by.setdefault(tag, []).append(c["title"])
 
+    # Build title → systems union so OR alternatives can carry location
+    # context. Many titles have multiple records (one per system) that all
+    # grant the same tag — "Help Headhunters at [Location]" has six. Without
+    # a systems tag, dedupe by title loses information the player needs to
+    # pick a variant they can actually reach.
+    title_to_systems: dict[str, set[str]] = {}
+    for c in all_entries:
+        t = c.get("title")
+        if not t:
+            continue
+        bucket = title_to_systems.setdefault(t, set())
+        if c.get("systems"):
+            bucket.update(c["systems"])
+        elif c.get("system"):
+            bucket.add(c["system"])
+
+    def _alt_for_title(title: str) -> dict:
+        return {
+            "title": title,
+            "systems": sorted(title_to_systems.get(title, [])),
+        }
+
     # 3. Resolve into requiresCompletion / requiresAnyOf / unlocks
     chain_count = 0
     for m in all_entries:
         requires = []                      # strict AND list (single-granter tags)
-        requires_any_of: list[list[str]] = []  # OR groups (multi-granter tags)
+        requires_any_of: list[list[dict]] = []  # OR groups (multi-granter tags)
         unlocks = []
 
         # Mission broker: requiredMissions refs → titles (single mission per ref)
@@ -2140,20 +2271,23 @@ def main():
 
         # Contract tags: required tags → granting contract titles.
         # One granter → strict AND; multiple granters → OR alternatives.
+        # OR alts are deduped by title and annotated with the union of
+        # systems that title is available in, so the UI can help the
+        # player pick a reachable variant.
         seen_any_of = set()
         for tag in m.get("_reqTags", []):
             granters = [g for g in tag_granted_by.get(tag, []) if g != m["title"]]
             if not granters:
                 continue
-            if len(granters) == 1:
-                if granters[0] not in requires:
-                    requires.append(granters[0])
+            uniq_titles = sorted(set(granters))
+            if len(uniq_titles) == 1:
+                if uniq_titles[0] not in requires:
+                    requires.append(uniq_titles[0])
             else:
-                # Deduplicate OR groups so the same {X,Y} alt set isn't listed twice.
-                key = tuple(sorted(granters))
+                key = tuple(uniq_titles)
                 if key not in seen_any_of:
                     seen_any_of.add(key)
-                    requires_any_of.append(sorted(granters))
+                    requires_any_of.append([_alt_for_title(t) for t in uniq_titles])
 
         # Contract tags: granted tags → requiring contract titles
         for tag in m.get("_grantTags", []):
@@ -2538,6 +2672,43 @@ def main():
         if (t and needs_title) or (d and needs_desc): narr_fixed += 1
     if narr_fixed:
         print(f"  Resolved narrative for {narr_fixed} procedural contracts")
+
+    # ── Title-based narrative fallback ────────────────────────────────
+    # After the system-dedup split, contracts with identical titles can
+    # exist as separate records if they differ in reward / loot / other
+    # dedup-key fields. The raw DCB authors often only write a real
+    # description on ONE variant (typically the intro mission) and leave
+    # the others with a procedural ~mission(...) template our resolver
+    # doesn't cover (e.g. Hockrow FacilityDelve family). Borrow the real
+    # description from a sibling with the same title so every row reads.
+    def _is_placeholder_desc(s: str) -> bool:
+        s = (s or "").strip()
+        if not s: return True
+        if s.startswith("~mission("): return True
+        if s.startswith("[Contractor"): return True
+        return False
+
+    best_desc_by_title: dict[str, str] = {}
+    for entry in all_entries:
+        title = entry.get("title") or ""
+        desc = entry.get("description") or ""
+        if not title or _is_placeholder_desc(desc):
+            continue
+        prev = best_desc_by_title.get(title)
+        # Prefer longer narratives when multiple siblings have real text.
+        if not prev or len(desc) > len(prev):
+            best_desc_by_title[title] = desc
+
+    borrowed = 0
+    for entry in all_entries:
+        if not _is_placeholder_desc(entry.get("description") or ""):
+            continue
+        alt = best_desc_by_title.get(entry.get("title") or "")
+        if alt:
+            entry["description"] = alt
+            borrowed += 1
+    if borrowed:
+        print(f"  Borrowed narrative from same-title siblings: {borrowed} contracts")
 
     # ── Drop clear dev/test templates that never ship as real content ──
     # These have generic className markers (_template, _mtest) and unresolved

@@ -69,6 +69,18 @@ export class ShipExplorerComponent {
 
   selectedShip = signal<Ship | null>(null);
 
+  /** True when any filter (search or dropdown) is narrowing the list. */
+  readonly hasActiveFilter = computed(() => {
+    if (this.searchQuery().trim()) return true;
+    return Object.values(this.dropdownValues()).some(v => !!v);
+  });
+
+  /** Reset filters; sort state kept so column preference survives. */
+  clearFilters(): void {
+    this.searchQuery.set('');
+    this.dropdownValues.set({});
+  }
+
   /** Lazy-loaded map from our internal className (lowercased) to the
    *  star-citizen.wiki role/career entry. Only the Explorer consumes
    *  this — it never lands in DataService or the Ship interface. */

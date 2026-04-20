@@ -41,6 +41,10 @@
       }
       <input class="sid-search" type="text" placeholder="Search..."
              [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+      @if (hasActiveFilter()) {
+        <button class="sid-clear" (click)="clearFilters()"
+                title="Reset every filter to show all items">Clear filters</button>
+      }
     </div>
 
     <div class="sid-table-wrap">

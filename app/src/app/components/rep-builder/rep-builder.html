@@ -1,0 +1,190 @@
+<div class="rb">
+  @if (!loaded()) {
+    <div class="rb-empty"><div class="rb-empty-title">Loading…</div></div>
+  } @else {
+
+    <div class="rb-intro">
+      <h2 class="rb-title">Rep Builder</h2>
+      <p class="rb-sub">
+        Pick a faction and your current rank. The path below shows the
+        highest-rep contract at each tier and the number of runs needed to
+        reach the next rank — optimising for the fewest missions to cap.
+      </p>
+    </div>
+
+    <div class="rb-controls">
+      <div class="rb-control">
+        <span class="rb-label">Faction</span>
+        <div class="rb-picker">
+          <button class="rb-picker-trigger" (click)="toggleFactionDd($event)"
+                  [class.open]="factionOpen()">
+            <span class="rb-picker-val">{{ factionLabel() }}</span>
+            <span class="rb-picker-caret">{{ factionOpen() ? '▴' : '▾' }}</span>
+          </button>
+          @if (factionOpen()) {
+            <div class="rb-picker-list" (click)="$event.stopPropagation()">
+              @for (f of factionOptions(); track f.scope) {
+                <div class="rb-picker-opt" [class.selected]="factionScope() === f.scope"
+                     (click)="pickFaction(f.scope)">{{ f.label }}</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (walkableRanks().length) {
+        <div class="rb-control">
+          <span class="rb-label">Currently at</span>
+          <div class="rb-picker">
+            <button class="rb-picker-trigger" (click)="toggleRankDd($event)"
+                    [class.open]="rankOpen()">
+              <span class="rb-picker-val">{{ startRankLabel() }}</span>
+              <span class="rb-picker-caret">{{ rankOpen() ? '▴' : '▾' }}</span>
+            </button>
+            @if (rankOpen()) {
+              <div class="rb-picker-list" (click)="$event.stopPropagation()">
+                @for (r of walkableRanks(); track r.name; let i = $index) {
+                  <div class="rb-picker-opt"
+                       [class.selected]="startRankIdx() === i"
+                       [class.gated]="r.gated"
+                       (click)="pickStartRank(i)">
+                    {{ r.name }}
+                    @if (r.gated) { <span class="rb-opt-tag">GATED</span> }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (!factionScope()) {
+      <div class="rb-prompt">Choose a faction above to generate a path.</div>
+    } @else if (!path().length) {
+      <div class="rb-prompt">
+        No grindable path available. This faction either has no reputation
+        ladder extracted, or you're already at the top rank.
+      </div>
+    } @else {
+
+      <!-- Summary strip -->
+      <div class="rb-summary">
+        <div class="rb-sum-block">
+          <span class="rb-sum-v">{{ summary().grindableMissions | number }}</span>
+          <span class="rb-sum-k">missions to cap</span>
+        </div>
+        <div class="rb-sum-div"></div>
+        <div class="rb-sum-block">
+          <span class="rb-sum-v">{{ summary().tiersClimbed }}</span>
+          <span class="rb-sum-k">ranks climbed</span>
+        </div>
+        <div class="rb-sum-div"></div>
+        <div class="rb-sum-block">
+          <span class="rb-sum-v">{{ fmtRep(summary().totalRepToCap) }}</span>
+          <span class="rb-sum-k">total rep earned</span>
+        </div>
+        @if (summary().gatedWalls > 0) {
+          <div class="rb-sum-div"></div>
+          <div class="rb-sum-block rb-sum-warn">
+            <span class="rb-sum-v">{{ summary().gatedWalls }}</span>
+            <span class="rb-sum-k">gated walls</span>
+          </div>
+        }
+        <div class="rb-sum-div"></div>
+        <div class="rb-sum-block">
+          <span class="rb-sum-route">
+            {{ summary().startRank }}
+            <span class="rb-sum-arrow">→</span>
+            {{ summary().endRank }}
+          </span>
+          <span class="rb-sum-k">grind span</span>
+        </div>
+      </div>
+
+      <!-- Path -->
+      <div class="rb-path">
+        @for (step of path(); track step.toRank) {
+          <div class="rb-step" [class.rb-step-wall]="step.toRankGated">
+
+            <div class="rb-step-rail">
+              <div class="rb-step-dot"
+                   [class.rb-step-dot-gated]="step.toRankGated"></div>
+              @if (!$last) { <div class="rb-step-line"></div> }
+            </div>
+
+            <div class="rb-step-body">
+              <div class="rb-step-head">
+                <span class="rb-step-from">{{ step.fromRank }}</span>
+                <span class="rb-step-arrow">→</span>
+                <span class="rb-step-to">
+                  {{ step.toRank }}
+                  @if (step.toRankGated) { <span class="rb-wall-tag">GATED</span> }
+                  @if (step.toRankPerk) { <span class="rb-perk">{{ step.toRankPerk }}</span> }
+                </span>
+                <span class="rb-step-spacer"></span>
+                <span class="rb-step-rep">+{{ fmtRep(step.repNeeded) }} rep</span>
+              </div>
+
+              @if (step.toRankGated) {
+                <div class="rb-wall-msg">
+                  Rep alone won't open this rank — requires a quest or
+                  qualifying event. Grindable progress stops here.
+                </div>
+              } @else if (!step.best) {
+                <div class="rb-wall-msg">
+                  No eligible contract found at this tier with a rep reward.
+                </div>
+              } @else {
+                <div class="rb-best">
+                  <div class="rb-best-row" (click)="openMissionsForStep(step)"
+                       title="Show every eligible contract at this tier">
+                    <div class="rb-best-main">
+                      <span class="rb-best-tag">BEST</span>
+                      <span class="rb-best-title">{{ step.best.title }}</span>
+                      @if (step.best.contractor) {
+                        <span class="rb-best-contractor">{{ step.best.contractor }}</span>
+                      }
+                    </div>
+                    <div class="rb-best-stats">
+                      <span class="rb-stat">
+                        <span class="rb-stat-v">+{{ fmtRep(step.bestRepReward) }}</span>
+                        <span class="rb-stat-k">rep / run</span>
+                      </span>
+                      <span class="rb-stat rb-stat-runs">
+                        <span class="rb-stat-v">{{ step.missionsNeeded | number }}</span>
+                        <span class="rb-stat-k">runs</span>
+                      </span>
+                      <span class="rb-stat">
+                        <span class="rb-stat-v rb-cum">{{ step.cumulativeMissions | number }}</span>
+                        <span class="rb-stat-k">cumulative</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  @if (step.alternatives.length) {
+                    <details class="rb-alts">
+                      <summary>{{ step.alternatives.length }} more eligible at this tier</summary>
+                      @for (alt of step.alternatives; track alt.mission.className) {
+                        <div class="rb-alt-row">
+                          <span class="rb-alt-title">{{ alt.mission.title }}</span>
+                          <span class="rb-alt-rep">+{{ fmtRep(alt.repReward) }}</span>
+                        </div>
+                      }
+                    </details>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <p class="rb-foot">
+        V1 assumptions: rep is credited only to contracts gated on this
+        faction's scope. Cooldowns, shareable bonuses, and intra-tier
+        progress aren't factored yet.
+      </p>
+    }
+  }
+</div>

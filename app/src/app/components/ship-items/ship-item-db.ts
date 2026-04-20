@@ -190,6 +190,26 @@ export class ShipItemDbComponent {
     this.dropdownValues.update(m => ({ ...m, [label]: value }));
   }
 
+  /** True when any filter narrows the list — used to show/hide the Clear
+   *  Filters button. Sort state is excluded; it's a view preference, not a
+   *  filter. */
+  readonly hasActiveFilter = computed(() => {
+    if (this.searchQuery().trim()) return true;
+    if (this.subTypeFilter()) return true;
+    if (this.sizeFilter() !== null) return true;
+    const vals = this.dropdownValues();
+    return Object.values(vals).some(v => !!v);
+  });
+
+  /** Reset every filter to its default. Keeps sort field/direction so the
+   *  user's column preference survives a reset. */
+  clearFilters(): void {
+    this.searchQuery.set('');
+    this.subTypeFilter.set('');
+    this.sizeFilter.set(null);
+    this.dropdownValues.set({});
+  }
+
   readonly filtered = computed(() => {
     let list = this.items();
     const q = this.searchQuery().toLowerCase().trim();
