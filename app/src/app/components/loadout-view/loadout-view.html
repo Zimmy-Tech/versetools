@@ -16,44 +16,6 @@
         <div class="ship-title">
           <div class="ship-name-big">{{ data.selectedShip()!.name.replace(data.selectedShip()!.manufacturer.split(' ')[0] + ' ', '') }}</div>
           <div class="ship-mfr-big">{{ data.selectedShip()!.manufacturer }}</div>
-          <div class="ship-stats-row">
-            <div class="stat-pill">
-              <span class="stat-pill-label">Role</span>
-              <span class="stat-pill-val">{{ data.selectedShip()!.role || '—' }}</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-pill-label">Career</span>
-              <span class="stat-pill-val">{{ data.selectedShip()!.career || '—' }}</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-pill-label">Crew</span>
-              <span class="stat-pill-val">{{ data.selectedShip()!.crew }}</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-pill-label">Mass</span>
-              <span class="stat-pill-val">{{ massDisplay() }}</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-pill-label">Size</span>
-              <span class="stat-pill-val">{{ (data.selectedShip()!.size || '—') | uppercase }}</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-pill-label">Cargo</span>
-              <span class="stat-pill-val">{{ effectiveCargo() }} SCU</span>
-            </div>
-            @if (data.selectedShip()!.oreCapacity) {
-              <div class="stat-pill">
-                <span class="stat-pill-label">Ore</span>
-                <span class="stat-pill-val">{{ data.selectedShip()!.oreCapacity }} SCU</span>
-              </div>
-            }
-            @if (cheapestPrice(); as cp) {
-              <div class="stat-pill price-pill" [title]="cp.shop + ' — ' + cp.price.toLocaleString('en-US') + ' aUEC'">
-                <span class="stat-pill-label">Price</span>
-                <span class="stat-pill-val">{{ fmtPrice(cp.price) }} aUEC</span>
-              </div>
-            }
-          </div>
         </div>
 
         <!-- Ship Image -->
@@ -61,6 +23,45 @@
           <img [src]="shipImageSrc()"
                [alt]="data.selectedShip()!.name"
                (error)="onShipImageError($any($event.target))">
+        </div>
+
+        <div class="ship-stats-row">
+          <div class="stat-pill">
+            <span class="stat-pill-label">Role</span>
+            <span class="stat-pill-val">{{ data.selectedShip()!.role || '—' }}</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Career</span>
+            <span class="stat-pill-val">{{ data.selectedShip()!.career || '—' }}</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Crew</span>
+            <span class="stat-pill-val">{{ data.selectedShip()!.crew }}</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Mass</span>
+            <span class="stat-pill-val">{{ massDisplay() }}</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Size</span>
+            <span class="stat-pill-val">{{ (data.selectedShip()!.size || '—') | uppercase }}</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Cargo</span>
+            <span class="stat-pill-val">{{ effectiveCargo() }} SCU</span>
+          </div>
+          @if (data.selectedShip()!.oreCapacity) {
+            <div class="stat-pill">
+              <span class="stat-pill-label">Ore</span>
+              <span class="stat-pill-val">{{ data.selectedShip()!.oreCapacity }} SCU</span>
+            </div>
+          }
+          @if (cheapestPrice(); as cp) {
+            <div class="stat-pill price-pill" [title]="cp.shop + ' — ' + cp.price.toLocaleString('en-US') + ' aUEC'">
+              <span class="stat-pill-label">Price</span>
+              <span class="stat-pill-val">{{ fmtPrice(cp.price) }} aUEC</span>
+            </div>
+          }
         </div>
 
         <!-- Stats Blocks -->

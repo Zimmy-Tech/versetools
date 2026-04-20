@@ -42,18 +42,26 @@
 .compare-table-wrap {
   overflow-x: auto;
   overflow-y: visible;
-  background: var(--bg2);
+  // Recessed-well recipe: dark vertical gradient + inset top shadow
+  // (pressed-in) + bottom hairline highlight. The comparison data
+  // reads as being engraved into a single instrument panel.
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.12) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
   max-width: 1200px;
   width: 100%;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .compare-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
 
   th, td {
     padding: 4px 10px;
@@ -69,7 +77,6 @@
 
   .picker-header th {
     padding: 8px 6px;
-    border-top: 3px solid transparent;
     vertical-align: middle;
     overflow: visible;
     position: relative;
@@ -134,8 +141,8 @@
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  background: var(--bg3);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.22) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 4px;
   color: var(--text);
   padding: 6px 10px;
@@ -143,8 +150,21 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: all 0.15s;
-  &:hover { border-color: var(--accent2); box-shadow: 0 0 6px rgba(0, 200, 255, 0.1); }
+  transition: all 0.15s, transform 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 2px 4px rgba(0, 0, 0, 0.22);
+  &:hover {
+    border-color: var(--accent2);
+    background: linear-gradient(180deg, rgba(0, 200, 255, 0.12) 0%, rgba(0, 200, 255, 0.02) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.15),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 8px rgba(0, 0, 0, 0.28),
+      0 0 8px rgba(0, 200, 255, 0.15);
+    transform: translateY(-0.5px);
+  }
 }
 
 .picker-dropdown {

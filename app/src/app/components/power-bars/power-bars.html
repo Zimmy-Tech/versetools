@@ -86,7 +86,8 @@
 
     @if (coolingSupply() > 0) {
       <div class="pb-cooling-gauge" [class.deficit]="coolingPct() > 100">
-        <span class="pb-cooling-label">COOLING</span>
+        <img src="power-icons/icon_cooler_on.png" alt="Cooling" class="pb-cooling-icon"
+             [class.deficit]="coolingPct() > 100">
         <div class="pb-gauge-track">
           @for (seg of coolingSegments(); track $index) {
             <div class="pb-gauge-seg" [class.filled]="seg" [class.over]="coolingPct() > 100"></div>

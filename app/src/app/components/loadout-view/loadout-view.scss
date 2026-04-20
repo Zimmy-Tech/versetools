@@ -203,10 +203,16 @@
   justify-content: center;
   overflow: hidden;
   margin-bottom: 8px;
-  border: 1px solid rgba(0, 200, 255, 0.2);
+  border: 1px solid rgba(0, 200, 255, 0.25);
   border-radius: 3px;
   background: var(--bg);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  // Sits as a recessed viewport — the inner shadow reads as the ship
+  // being viewed through an inset glass plate, and the outer drop
+  // shadow floats the frame off the sidebar surface.
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 2px 14px rgba(0, 0, 0, 0.38);
   position: relative;
 
   img {
@@ -215,16 +221,33 @@
     object-fit: cover;
   }
 
-  // Corner accents
+  // Corner accents (top-left + bottom-right)
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(135deg, rgba(0, 200, 255, 0.18) 0%, transparent 22%) no-repeat top left,
+      linear-gradient(315deg, rgba(0, 200, 255, 0.1) 0%, transparent 16%) no-repeat bottom right;
+    z-index: 2;
+  }
+
+  // CRT scanlines — 2px repeat at ~2% opacity, same pattern as the
+  // sidebar stat blocks. Sells the "viewport display" feel.
   &::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border: 1px solid transparent;
-    background:
-      linear-gradient(135deg, rgba(0, 200, 255, 0.15) 0%, transparent 20%) no-repeat top left,
-      linear-gradient(315deg, rgba(0, 200, 255, 0.08) 0%, transparent 15%) no-repeat bottom right;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.022) 2px,
+      rgba(255, 255, 255, 0.022) 4px
+    );
+    z-index: 3;
   }
 }
 
@@ -264,26 +287,30 @@
   color: var(--text3);
   text-transform: uppercase;
   border-bottom: none;
-  padding-bottom: 6px;
+  padding: 3px 6px 6px 8px;
   margin-bottom: 6px;
   cursor: pointer;
   user-select: none;
   gap: 6px;
   position: relative;
-  transition: color 0.15s;
+  transition: color 0.15s, background 0.15s;
+  // Left accent stripe — a thin cyan bar anchored to the label marks
+  // the start of each section. Reads as a physical tab/header edge.
+  border-left: 2px solid rgba(0, 200, 255, 0.35);
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
 
-  // Gradient scanner line
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, var(--accent2), var(--border), transparent);
+  .collapse-arrow {
+    transition: transform 0.2s, color 0.15s;
+    display: inline-block;
   }
 
-  &:hover { color: var(--accent2); }
+  &:hover {
+    color: var(--accent2);
+    background: linear-gradient(90deg, rgba(0, 200, 255, 0.06) 0%, transparent 60%);
+    border-left-color: var(--accent);
+    .collapse-arrow { color: var(--accent); }
+  }
 }
 
 .ship-image-inset {
@@ -304,25 +331,68 @@
   }
 }
 
+// Ship-stats row is a single recessed instrument cluster with internal
+// vertical dividers between each stat — reads as one physical panel
+// with multiple readouts rather than eight floating chips. The outer
+// container carries the depth (pressed-in gradient + rim + drop
+// shadow); individual .stat-pill elements are divider-separated cells.
 .ship-stats-row {
   display: flex;
-  gap: 8px 16px;
+  gap: 0;
   margin-top: 8px;
   flex-wrap: wrap;
+  padding: 5px 4px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.1) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.18);
 }
 
-.stat-pill { display: flex; flex-direction: column; gap: 1px; }
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 2px 10px;
+  min-width: 0;
+  position: relative;
+
+  // Hairline vertical divider between stat cells. Skip the first one
+  // in each wrapped row using the first-child trick; :first-child
+  // handles the overall first, and the flex-wrap layout means we also
+  // rely on the divider looking harmless when rows break.
+  & + & {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      left: 0;
+      width: 1px;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.08) 20%,
+        rgba(255, 255, 255, 0.08) 80%,
+        transparent 100%);
+    }
+  }
+}
+
 .stat-pill-label {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text3);
   font-family: 'Rajdhani', sans-serif;
-  letter-spacing: 1px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
   text-transform: uppercase;
+  opacity: 0.7;
 }
 .stat-pill-val {
   font-family: 'Share Tech Mono', monospace;
   font-size: 15px;
   color: var(--text);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .price-pill {
@@ -412,22 +482,22 @@
 }
 
 .stat-block {
-  padding: 8px 12px 8px 12px;
-  background: linear-gradient(to left, rgba(0, 200, 255, 0.03), rgba(0, 0, 0, 0.15));
+  padding: 8px 12px;
+  // Recessed-well recipe matching the ship-stats cluster: dark vertical
+  // gradient, a deep inset top shadow (pressed-in), a bottom hairline
+  // highlight (interior ledge), and a soft outer drop shadow for the
+  // panel to still float subtly off the sidebar surface.
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.1) 100%);
   border: 1px solid rgba(255, 255, 255, 0.04);
-  border-right: 1px solid rgba(0, 200, 255, 0.2);
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   position: relative;
-  // Match the card-depth recipe from hardpoint-slot triggers: rim
-  // highlight on top, hairline dark on the bottom, soft drop shadow
-  // so each stat panel reads as a raised block instead of flat paint.
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 2px 6px rgba(0, 0, 0, 0.22);
+    inset 0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.18);
 
   // Subtle top-right corner accent
   &::before {
@@ -631,14 +701,25 @@
   padding: 3px 12px;
   border: 1px solid var(--orange);
   border-radius: 3px;
-  background: rgba(255, 140, 0, 0.1);
+  background: linear-gradient(180deg, rgba(255, 140, 0, 0.18) 0%, rgba(255, 140, 0, 0.04) 100%);
   color: var(--orange);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s, transform 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.22);
 
   &:hover {
-    background: rgba(255, 140, 0, 0.2);
+    background: linear-gradient(180deg, rgba(255, 140, 0, 0.28) 0%, rgba(255, 140, 0, 0.1) 100%);
     color: #ffaa33;
+    border-color: #ffaa33;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 140, 0, 0.3),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+      0 3px 8px rgba(0, 0, 0, 0.3),
+      0 0 10px rgba(255, 140, 0, 0.28);
+    transform: translateY(-0.5px);
   }
 }
 

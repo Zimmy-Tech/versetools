@@ -249,8 +249,9 @@
 }
 
 .row-rank {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-family: 'Exo 2', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 13.5px;
   color: var(--text3);
   text-align: center;
 }
@@ -263,24 +264,20 @@
 
   .ship-name {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  .ship-mfr {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--text3);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
   }
 }
 
 .row-fuel {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-family: 'Exo 2', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 13.5px;
   color: var(--text2);
   text-align: right;
 
@@ -292,8 +289,9 @@
 }
 
 .row-size {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-family: 'Exo 2', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
   color: var(--text2);
   text-align: center;
 }
@@ -369,8 +367,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 13px;
+  font-family: 'Exo 2', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--text);
 }

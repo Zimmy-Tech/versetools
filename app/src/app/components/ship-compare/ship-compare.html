@@ -13,7 +13,7 @@
         <tr class="picker-header">
           <th class="label-col"></th>
           @for (ship of slots(); track $index; let i = $index) {
-            <th class="val-col" [style.border-top-color]="slotColors[i]">
+            <th class="val-col">
               <div class="picker-wrap">
                 <div class="picker-trigger" (click)="openPicker(i)">
                   {{ ship?.name || '— select —' }}

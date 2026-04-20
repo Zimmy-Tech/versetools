@@ -320,10 +320,10 @@ export class PowerBarsComponent {
     return Math.round(this.coolingDemand() / supply * 100);
   });
 
-  /** 20 segments for cooling gauge, filled proportionally to coolingPct. */
+  /** 30 segments for cooling gauge, filled proportionally to coolingPct. */
   coolingSegments = computed(() => {
     const pct = this.coolingPct();
-    const total = 20;
+    const total = 30;
     const filled = Math.min(Math.round(pct / 100 * total), total);
     return Array.from({ length: total }, (_, i) => i < filled);
   });

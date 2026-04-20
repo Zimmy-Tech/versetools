@@ -90,11 +90,25 @@
   color: var(--text3);
 }
 
+// Shared recessed-well recipe for the hero readouts: dark vertical
+// gradient, deep inset top shadow (pressed-in), bottom hairline
+// highlight (interior ledge), and a soft outer drop shadow. The big
+// value text's cyan/blue glow reads as the number being lit up on an
+// engraved instrument face.
+%hero-recessed {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.12) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
 .dps-total {
+  @extend %hero-recessed;
   text-align: center;
   padding: 10px;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
 }
 
 .dps-num {
@@ -103,6 +117,9 @@
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 0 14px rgba(0, 200, 255, 0.3);
 }
 
 .dps-label {
@@ -150,17 +167,11 @@
 
 // ── HUD mode hero cards ─────────────────────────────────
 .dps-hero {
+  @extend %hero-recessed;
   text-align: center;
   padding: 12px 10px 10px;
-  background: linear-gradient(160deg, rgba(0, 200, 255, 0.06) 0%, rgba(0, 0, 0, 0.15) 100%);
-  border: 1px solid var(--border2);
-  border-radius: 4px;
   margin-bottom: 6px;
   cursor: help;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 2px 6px rgba(0, 0, 0, 0.22);
 }
 
 .dps-hero-dual {
@@ -242,17 +253,11 @@
 }
 
 .shield-hero {
+  @extend %hero-recessed;
   text-align: center;
   padding: 12px 10px 10px;
-  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
-  border: 1px solid var(--border2);
-  border-radius: 4px;
   margin-bottom: 6px;
   cursor: help;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 2px 6px rgba(0, 0, 0, 0.22);
 }
 
 .shield-hero-val {
@@ -282,17 +287,11 @@
 }
 
 .hull-hero {
+  @extend %hero-recessed;
   flex: 1;
   text-align: center;
   padding: 8px 4px 6px;
-  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
-  border: 1px solid var(--border);
-  border-radius: 4px;
   cursor: help;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .hull-hero-val {
@@ -364,13 +363,13 @@
   align-items: center;
   padding: 8px 10px;
   margin-top: 6px;
-  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
-  border: 1px solid rgba(0, 200, 255, 0.1);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.12) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 4px;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
-    0 2px 5px rgba(0, 0, 0, 0.2);
+    inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .sd-label {
@@ -426,17 +425,17 @@
   position: relative;
   overflow: hidden;
   padding: 8px 10px 8px 12px;
-  background: linear-gradient(160deg, rgba(0, 200, 255, 0.04) 0%, rgba(0, 0, 0, 0.15) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.12) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   min-width: 160px;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 2px 6px rgba(0, 0, 0, 0.22);
+    inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.2);
 
   // Scanline texture pulled from .popout-panel::after (Armor Check detail).
   &::after {
