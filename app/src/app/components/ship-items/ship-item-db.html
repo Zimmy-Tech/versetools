@@ -15,9 +15,27 @@
       @if (subTypeFilters.length) {
         <select class="sid-select" [value]="subTypeFilter()"
                 (change)="subTypeFilter.set($any($event.target).value)">
-          <option value="">All Classes</option>
+          <option value="">All</option>
           @for (f of subTypeFilters; track f.label) {
             <option [value]="f.label">{{ f.label }}</option>
+          }
+        </select>
+      }
+      @if (availableSizes().length > 1) {
+        <select class="sid-select" [value]="sizeFilter() === null ? '' : sizeFilter()"
+                (change)="onSizeFilterChange($any($event.target).value)">
+          <option value="">All Sizes</option>
+          @for (s of availableSizes(); track s) {
+            <option [value]="s">Size {{ s }}</option>
+          }
+        </select>
+      }
+      @for (filter of dropdownFilters; track filter.label) {
+        <select class="sid-select" [value]="dropdownValues()[filter.label] || ''"
+                (change)="setDropdownValue(filter.label, $any($event.target).value)">
+          <option value="">{{ filter.allLabel }}</option>
+          @for (opt of dropdownOptions(filter); track opt) {
+            <option [value]="opt">{{ opt }}</option>
           }
         </select>
       }

@@ -2,6 +2,16 @@ import { Component, Input, signal, computed } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Item } from '../../models/db.models';
 
+/** A configurable dropdown filter. Each wrapper page passes in the set of
+ *  dropdowns it wants (e.g. shields want Class + Grade; weapons want Type).
+ *  Distinct option values are harvested from the current item set via the
+ *  `value` accessor. */
+export interface DropdownFilter {
+  label: string;                 // Header text, e.g. "Type", "Class"
+  allLabel: string;              // Empty-option text, e.g. "All Types"
+  value: (item: Item) => string | null | undefined;
+}
+
 /** Column descriptor for the generic ship-item database table. */
 export interface ItemColumn {
   /** Column header text shown to users. */
@@ -37,6 +47,10 @@ export class ShipItemDbComponent {
   /** Optional secondary filter for WeaponGun (Ballistic vs Energy). Label =
    *  dropdown prompt, predicate picks the rows. Pass multiple for a multi-group. */
   @Input() subTypeFilters: { label: string; test: (i: Item) => boolean }[] = [];
+  /** Extra dropdown filters (Class / Grade / Type / ...). Each has a label,
+   *  an all-option text, and a value accessor. The component harvests the
+   *  distinct values from the unfiltered item set and renders options. */
+  @Input() dropdownFilters: DropdownFilter[] = [];
   @Input() columns: ItemColumn[] = [];
   /** Fields checked by the text search input. Defaults to name + manufacturer. */
   @Input() searchFields: string[] = ['name', 'manufacturer'];
@@ -45,6 +59,9 @@ export class ShipItemDbComponent {
 
   searchQuery = signal('');
   subTypeFilter = signal(''); // label of active subType filter or ''
+  sizeFilter = signal<number | null>(null);  // null = all sizes
+  /** Dropdown filter state keyed by the filter's label. Empty string = no filter. */
+  dropdownValues = signal<Record<string, string>>({});
   sortField = signal('');
   sortDir = signal<'asc' | 'desc'>('asc');
 
@@ -108,12 +125,49 @@ export class ShipItemDbComponent {
       if (ShipItemDbComponent.SKIP_SUBSTRINGS_WEAPON.some(s => cn.includes(s))) return true;
     }
     if (ShipItemDbComponent.PLACEHOLDER_NAME_RX.test(item.name ?? '')) return true;
+    // Components (Shield / Cooler / PowerPlant / QuantumDrive) always have
+    // letter grades A-D. Numeric grades mean it's a capital-ship bespoke,
+    // placeholder, or other non-equippable variant that slipped through.
+    if (item.type !== 'WeaponGun' && /^\d+$/.test(String(item.grade ?? ''))) return true;
     return false;
   }
 
   readonly items = computed<Item[]>(() =>
     this.data.items().filter(i => i.type === this.itemType && !this.shouldHide(i))
   );
+
+  /** Distinct sizes present in the unfiltered item set, sorted ascending.
+   *  Used to render the size button row — we only show sizes that actually
+   *  exist for this item type. */
+  readonly availableSizes = computed<number[]>(() => {
+    const sizes = new Set<number>();
+    for (const i of this.items()) {
+      if (typeof i.size === 'number') sizes.add(i.size);
+    }
+    return Array.from(sizes).sort((a, b) => a - b);
+  });
+
+  /** Distinct values for each configured dropdown filter, in sorted order. */
+  dropdownOptions(filter: DropdownFilter): string[] {
+    const values = new Set<string>();
+    for (const i of this.items()) {
+      const v = filter.value(i);
+      if (v != null && v !== '') values.add(String(v));
+    }
+    return Array.from(values).sort();
+  }
+
+  setSizeFilter(size: number | null): void {
+    this.sizeFilter.set(this.sizeFilter() === size ? null : size);
+  }
+
+  onSizeFilterChange(value: string): void {
+    this.sizeFilter.set(value === '' ? null : Number(value));
+  }
+
+  setDropdownValue(label: string, value: string): void {
+    this.dropdownValues.update(m => ({ ...m, [label]: value }));
+  }
 
   readonly filtered = computed(() => {
     let list = this.items();
@@ -130,6 +184,20 @@ export class ShipItemDbComponent {
     if (sub) {
       const match = this.subTypeFilters.find(f => f.label === sub);
       if (match) list = list.filter(match.test);
+    }
+    const size = this.sizeFilter();
+    if (size !== null) {
+      list = list.filter(i => i.size === size);
+    }
+    const dropVals = this.dropdownValues();
+    for (const filter of this.dropdownFilters) {
+      const selected = dropVals[filter.label];
+      if (selected) {
+        list = list.filter(i => {
+          const v = filter.value(i);
+          return v != null && String(v) === selected;
+        });
+      }
     }
 
     const field = this.currentSort();

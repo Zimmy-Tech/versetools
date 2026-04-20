@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ShipItemDbComponent, ItemColumn } from './ship-item-db';
+import { ShipItemDbComponent, ItemColumn, DropdownFilter } from './ship-item-db';
 import { Item } from '../../models/db.models';
 
 /** Shared column prefix — every ship-item table starts with these. */
@@ -9,6 +9,37 @@ const COMMON_COLS: ItemColumn[] = [
   { label: 'Grade',        field: 'grade',        sortable: true },
   { label: 'Size',         field: 'size',         sortable: true, align: 'right' },
 ];
+
+/** Dropdown filters for component pages (Shields / Coolers / Power / Quantum).
+ *  Class and Grade both read directly off item fields. */
+const COMPONENT_DROPDOWNS: DropdownFilter[] = [
+  { label: 'Class', allLabel: 'All Classes', value: i => i.itemClass },
+  { label: 'Grade', allLabel: 'All Grades',  value: i => i.grade },
+];
+
+/** Weapon types derived from className patterns. CIG doesn't model this as
+ *  an explicit field; we infer from the className tokens. Falls back to
+ *  'Other' so every weapon gets a value. */
+function weaponTypeOf(i: Item): string {
+  const cn = (i.className ?? '').toLowerCase();
+  if (/ballisticcannon|lasercannon|plasmacannon|neutroncannon|tachyoncannon|energycannon|distortioncannon/.test(cn)) return 'Cannon';
+  if (cn.includes('repeater')) return 'Repeater';
+  if (cn.includes('scattergun')) return 'Scattergun';
+  if (cn.includes('gatling')) return 'Gatling';
+  if (cn.includes('massdriver')) return 'Mass Driver';
+  if (cn.startsWith('rpod_')) return 'Rocket Pod';
+  if (cn.includes('beamweapon') || cn.includes('laserbeam')) return 'Beam';
+  if (cn.includes('railgun')) return 'Railgun';
+  return 'Other';
+}
+
+/** Ammo type derived from damage profile. Distortion weapons carry
+ *  damage.distortion > 0; remaining weapons split Ballistic vs Energy
+ *  by the isBallistic flag. */
+function ammoTypeOf(i: Item): string {
+  if ((i.damage?.distortion ?? 0) > 0) return 'Distortion';
+  return i.isBallistic ? 'Ballistic' : 'Energy';
+}
 
 // ── Shields ──────────────────────────────────────────────────
 
@@ -23,9 +54,11 @@ const HOST_STYLE = `:host { display: flex; flex: 1; overflow: hidden; }`;
     title="Shields"
     itemType="Shield"
     [columns]="cols"
+    [dropdownFilters]="dropdowns"
     defaultSort="hp" />`,
 })
 export class ShipShieldsComponent {
+  readonly dropdowns = COMPONENT_DROPDOWNS;
   readonly cols: ItemColumn[] = [
     ...COMMON_COLS,
     { label: 'HP',          field: 'hp',                sortable: true, align: 'right', decimals: 0 },
@@ -50,9 +83,11 @@ export class ShipShieldsComponent {
     title="Coolers"
     itemType="Cooler"
     [columns]="cols"
+    [dropdownFilters]="dropdowns"
     defaultSort="coolingRate" />`,
 })
 export class ShipCoolersComponent {
+  readonly dropdowns = COMPONENT_DROPDOWNS;
   readonly cols: ItemColumn[] = [
     ...COMMON_COLS,
     { label: 'Cooling',      field: 'coolingRate',  sortable: true, align: 'right', decimals: 1 },
@@ -75,18 +110,25 @@ export class ShipCoolersComponent {
     title="Ship Weapons"
     itemType="WeaponGun"
     [columns]="cols"
-    [subTypeFilters]="subTypes"
+    [dropdownFilters]="dropdowns"
     defaultSort="dps" />`,
 })
 export class ShipWeaponsDbComponent {
-  readonly subTypes = [
-    { label: 'Ballistic', test: (i: Item) => i.isBallistic === true },
-    { label: 'Energy',    test: (i: Item) => i.isBallistic !== true },
+  /** Two dropdowns — Type (Cannon / Repeater / …) and Ammo Type
+   *  (Ballistic / Energy / Distortion). Class and Grade don't apply to
+   *  SC weapons (they're all Grade 1). */
+  readonly dropdowns: DropdownFilter[] = [
+    { label: 'Type',      allLabel: 'All Types',      value: i => weaponTypeOf(i) },
+    { label: 'Ammo Type', allLabel: 'All Ammo Types', value: i => ammoTypeOf(i) },
   ];
 
+  /** Grade column dropped — all SC weapons are Grade 1, so it's dead space. */
   readonly cols: ItemColumn[] = [
-    ...COMMON_COLS,
-    { label: 'Type',    field: '_type', value: i => i.isBallistic ? 'Ballistic' : 'Energy' },
+    { label: 'Name',         field: 'name',         sortable: true },
+    { label: 'Manufacturer', field: 'manufacturer', sortable: true },
+    { label: 'Size',         field: 'size',         sortable: true, align: 'right' },
+    { label: 'Class',   field: '_wtype', value: i => weaponTypeOf(i) },
+    { label: 'Ammo Type', field: '_ammo', value: i => ammoTypeOf(i) },
     { label: 'DPS',     field: 'dps',             sortable: true, align: 'right', decimals: 0 },
     { label: 'Alpha',   field: 'alphaDamage',     sortable: true, align: 'right', decimals: 0 },
     { label: 'RPM',     field: 'fireRate',        sortable: true, align: 'right', decimals: 0 },
@@ -108,9 +150,11 @@ export class ShipWeaponsDbComponent {
     title="Power Plants"
     itemType="PowerPlant"
     [columns]="cols"
+    [dropdownFilters]="dropdowns"
     defaultSort="powerOutput" />`,
 })
 export class ShipPowerPlantsComponent {
+  readonly dropdowns = COMPONENT_DROPDOWNS;
   readonly cols: ItemColumn[] = [
     ...COMMON_COLS,
     { label: 'Power Out',    field: 'powerOutput',        sortable: true, align: 'right', decimals: 0 },
@@ -134,9 +178,11 @@ export class ShipPowerPlantsComponent {
     title="Quantum Drives"
     itemType="QuantumDrive"
     [columns]="cols"
+    [dropdownFilters]="dropdowns"
     defaultSort="speed" />`,
 })
 export class ShipQuantumDrivesComponent {
+  readonly dropdowns = COMPONENT_DROPDOWNS;
   readonly cols: ItemColumn[] = [
     ...COMMON_COLS,
     { label: 'Speed',       field: 'speed',         sortable: true, align: 'right', decimals: 0, unit: ' m/s' },
