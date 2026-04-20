@@ -106,6 +106,18 @@
           </select>
         }
 
+        @if (blueprintPools().length) {
+          <h4>Blueprint Pool</h4>
+          <select class="mv-select" [value]="blueprintPoolFilter()"
+                  (change)="blueprintPoolFilter.set($any($event.target).value); resetPage()"
+                  title="Filter to missions that share a blueprint reward pool">
+            <option value="">All pools</option>
+            @for (pool of blueprintPools(); track pool.key) {
+              <option [value]="pool.key">{{ pool.label }}</option>
+            }
+          </select>
+        }
+
         <h4>Special</h4>
         <div class="mv-chips">
           <button class="mv-chip" [class.on]="contractorFilter() === 'Wikelo Emporium'"
@@ -151,6 +163,7 @@
             <span></span>
             <span>Contract</span>
             <span class="num">Payout</span>
+            <span class="num">Rep</span>
             <span>Location</span>
             <span>Expires</span>
             <span></span>
@@ -197,6 +210,11 @@
                 <div class="mv-pay" [class.pay-hi]="m.reward >= 400000">
                   {{ fmtReward(m.reward) }}<span class="u">{{ m.currency }}</span>
                   @if (m.rewardEstimated) { <span class="est">est</span> }
+                </div>
+                <div class="mv-rep">
+                  @if (m.repReward) { <span class="rep-pos">+{{ m.repReward | number }}</span> }
+                  @else { <span class="rep-none">—</span> }
+                  @if (m.repPenalty) { <span class="rep-neg">{{ m.repPenalty | number }}</span> }
                 </div>
                 <div class="mv-loc">
                   {{ (m.systems?.length ? m.systems!.join(' · ') : m.system) || '—' }}
@@ -400,7 +418,21 @@
                     </div>
 
                     @if (m.blueprintRewards?.length) {
-                      <h5>Blueprint Rewards</h5>
+                      <div class="mv-bp-head">
+                        <h5>Blueprint Rewards</h5>
+                        @if (bpPoolMissionCount(m) > 1) {
+                          <button class="mv-bp-pool-btn"
+                                  (click)="filterByMissionPool(m); $event.stopPropagation()"
+                                  [class.on]="blueprintPoolFilter() === bpPoolKey(m)"
+                                  [title]="'Filter list to the ' + bpPoolMissionCount(m) + ' missions that share this pool'">
+                            @if (blueprintPoolFilter() === bpPoolKey(m)) {
+                              Clear pool filter
+                            } @else {
+                              Show {{ bpPoolMissionCount(m) }} missions sharing pool
+                            }
+                          </button>
+                        }
+                      </div>
                       <ul class="mv-bp-list">
                         @for (bp of m.blueprintRewards; track bp) {
                           <li>{{ bp }}</li>

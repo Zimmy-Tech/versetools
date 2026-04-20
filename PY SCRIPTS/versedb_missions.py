@@ -1290,16 +1290,22 @@ def main():
                 abandoned_cd = re.search(r'abandonedCooldownTime="([^"]+)"', combined)
                 time_limit = re.search(r'timeToComplete="([^"]+)"', combined)
 
-                # Reputation results — extract success/failure rep amounts
-                # Success: first Boolean=1, Failure: third Boolean=1
+                # Reputation results — extract success/failure rep amounts.
+                # StarBreaker emits attrs on the tag (__type, __polymorphicType)
+                # and self-closing <Bool value="…" /> instead of the old
+                # <Boolean>…</Boolean> format. Fall back to legacy form so
+                # older/alternate data still parses.
+                # Success: first bool=1, Failure: third bool=1.
                 rep_success = 0
                 rep_failure = 0
                 for cr_m in re.finditer(
-                    r'<ContractResult_LegacyReputation>(.*?)</ContractResult_LegacyReputation>',
+                    r'<ContractResult_LegacyReputation[^>]*>(.*?)</ContractResult_LegacyReputation>',
                     body, re.S
                 ):
                     cr_body = cr_m.group(1)
-                    booleans = re.findall(r'<Boolean>(\d)</Boolean>', cr_body)
+                    booleans = re.findall(r'<Bool(?:ean)?\s+value="(\d)"\s*/>', cr_body)
+                    if not booleans:
+                        booleans = re.findall(r'<Boolean>(\d)</Boolean>', cr_body)
                     reward_m = re.search(r'reward="([^"]+)"', cr_body)
                     if reward_m and len(booleans) >= 3:
                         amt = rep_reward_amounts.get(guid_key(reward_m.group(1)), 0)

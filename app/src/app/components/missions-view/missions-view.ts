@@ -144,6 +144,10 @@ export class MissionsViewComponent {
   blueprintFilter = signal(false);
   chainFilter = signal(false);
   blueprintNameFilter = signal('');
+  /** Filter by blueprint-reward pool signature. Pools are identified by the
+   *  sorted tuple of blueprint names (CIG doesn't model pools as a data
+   *  entity — identity is derived from the rewards set). Empty = no filter. */
+  blueprintPoolFilter = signal('');
   page = signal(1);
   readonly pageSize = 50;
   /** Drawer open/closed on narrow viewports. Ignored at wide viewports where
@@ -211,12 +215,57 @@ export class MissionsViewComponent {
     return ['', ...Array.from(names).sort()];
   });
 
+  /** Pool signature = sorted, pipe-joined blueprint names. Stable across
+   *  missions so any two missions with the same reward set produce the
+   *  same key. Empty rewards → empty string (excluded from filters). */
+  bpPoolKey(m: Mission): string {
+    const bps = m.blueprintRewards ?? [];
+    if (!bps.length) return '';
+    return [...bps].sort().join('|');
+  }
+
+  /** Distinct pools that are shared by 2+ missions. Single-mission pools
+   *  exist but have no filtering value in a list that shows them already.
+   *  Sorted by mission count desc, then first-blueprint asc. */
+  readonly blueprintPools = computed<{ key: string; label: string; missionCount: number; bpCount: number }[]>(() => {
+    const groups = new Map<string, { missions: number; blueprints: string[] }>();
+    for (const m of this.allMissions()) {
+      const key = this.bpPoolKey(m);
+      if (!key) continue;
+      const g = groups.get(key);
+      if (g) g.missions++;
+      else groups.set(key, { missions: 1, blueprints: [...(m.blueprintRewards ?? [])].sort() });
+    }
+    const result: { key: string; label: string; missionCount: number; bpCount: number }[] = [];
+    for (const [key, g] of groups) {
+      if (g.missions < 2) continue; // only shared pools in the dropdown
+      const first = g.blueprints[0] ?? '';
+      const extra = g.blueprints.length - 1;
+      const label = extra > 0
+        ? `${first} +${extra} (${g.missions}m)`
+        : `${first} (${g.missions}m)`;
+      result.push({ key, label, missionCount: g.missions, bpCount: g.blueprints.length });
+    }
+    result.sort((a, b) => b.missionCount - a.missionCount || a.label.localeCompare(b.label));
+    return result;
+  });
+
+  /** Mission count for the active pool filter — used to gate the "filter
+   *  by this pool" button in the expanded detail so it only appears when
+   *  the current mission actually shares a pool with others. */
+  bpPoolMissionCount(m: Mission): number {
+    const key = this.bpPoolKey(m);
+    if (!key) return 0;
+    return this.allMissions().filter(x => this.bpPoolKey(x) === key).length;
+  }
+
   hasActiveFilter = computed(() => {
     return this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
            this.activityFilter() !== '' || this.contractorFilter() !== '' ||
            this.riskFilter() !== '' || this.eventFilter() !== '' ||
-           this.blueprintFilter() || this.chainFilter() || this.blueprintNameFilter() !== '';
+           this.blueprintFilter() || this.chainFilter() ||
+           this.blueprintNameFilter() !== '' || this.blueprintPoolFilter() !== '';
   });
 
   /** Pill list for the "Applied" strip. Each entry has a label for display
@@ -235,6 +284,10 @@ export class MissionsViewComponent {
     if (this.blueprintFilter()) out.push({ key: 'blueprint', label: 'Blueprints' });
     if (this.chainFilter()) out.push({ key: 'chain', label: 'Chains' });
     if (this.blueprintNameFilter()) out.push({ key: 'bpname', label: this.blueprintNameFilter() });
+    if (this.blueprintPoolFilter()) {
+      const pool = this.blueprintPools().find(p => p.key === this.blueprintPoolFilter());
+      out.push({ key: 'bppool', label: 'Pool: ' + (pool?.label ?? 'Custom') });
+    }
     return out;
   });
 
@@ -251,6 +304,36 @@ export class MissionsViewComponent {
       case 'blueprint': this.blueprintFilter.set(false); break;
       case 'chain': this.chainFilter.set(false); break;
       case 'bpname': this.blueprintNameFilter.set(''); break;
+      case 'bppool': this.blueprintPoolFilter.set(''); break;
+    }
+    this.resetPage();
+  }
+
+  /** Set (or toggle off) the blueprint pool filter to a specific mission's
+   *  pool. Clears every other filter (search, event default, system, etc.)
+   *  so the pool is the only thing narrowing the list — otherwise the
+   *  search box or event gate silently drops pool members and the button's
+   *  promised count won't match what appears. */
+  filterByMissionPool(m: Mission): void {
+    const key = this.bpPoolKey(m);
+    if (!key) return;
+    const already = this.blueprintPoolFilter() === key;
+    if (already) {
+      this.blueprintPoolFilter.set('');
+    } else {
+      this.blueprintPoolFilter.set(key);
+      // Open the scope wide so every pool member is visible.
+      this.searchQuery.set('');
+      this.eventFilter.set('__all__');
+      this.categoryFilter.set('');
+      this.systemFilter.set('');
+      this.activityFilter.set('');
+      this.contractorFilter.set('');
+      this.riskFilter.set('');
+      this.lawfulFilter.set('');
+      this.blueprintFilter.set(false);
+      this.chainFilter.set(false);
+      this.blueprintNameFilter.set('');
     }
     this.resetPage();
   }
@@ -296,6 +379,8 @@ export class MissionsViewComponent {
     if (risk) missions = missions.filter(m => this.riskTier(m) === risk);
     if (bpName) missions = missions.filter(m => m.blueprintRewards?.includes(bpName));
     else if (bp) missions = missions.filter(m => m.blueprintRewards?.length);
+    const pool = this.blueprintPoolFilter();
+    if (pool) missions = missions.filter(m => this.bpPoolKey(m) === pool);
     if (chain) missions = missions.filter(m => m.isChain);
     if (ct) missions = missions.filter(m => m.contractor === ct);
     if (titleRx) missions = missions.filter(m => titleRx.test(m.title ?? ''));
@@ -376,6 +461,7 @@ export class MissionsViewComponent {
     this.blueprintFilter.set(false);
     this.chainFilter.set(false);
     this.blueprintNameFilter.set('');
+    this.blueprintPoolFilter.set('');
     this.page.set(1);
   }
 
