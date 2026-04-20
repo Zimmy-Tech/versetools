@@ -10348,7 +10348,7 @@
               "property": "Damage Mitigation",
               "startQuality": 0,
               "endQuality": 1000,
-              "modifierAtStart": 9.0,
+              "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
               "unit": ""
             }
@@ -55595,7 +55595,7 @@
               "property": "Damage Mitigation",
               "startQuality": 0,
               "endQuality": 1000,
-              "modifierAtStart": 9.0,
+              "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
               "unit": ""
             }
