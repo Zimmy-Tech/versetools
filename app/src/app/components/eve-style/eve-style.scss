@@ -192,14 +192,55 @@
   flex-shrink: 0;
 }
 
-// ── LEFT COLUMN ─────────────────────────────────────────
+// ── MAIN COLUMN (browser + picker + new stats area) ─────
 
-.ef-left {
-  width: 520px;
-  min-width: 520px;
+.ef-main {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ef-main-top {
+  display: flex;
+  flex: 0 0 45%;
+  min-height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.06);
+}
+
+// Browser keeps a fixed width inside the top row so the rest of the
+// row (stats TBD) can flex freely to the right.
+.ef-browser {
+  width: 520px;
+  min-width: 520px;
+  flex: 0 0 520px !important;
+  max-height: none !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ef-stats-tbd {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ef-stats-tbd-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ef-stats-tbd-note {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  opacity: 0.6;
 }
 
 // ── Browser Tabs ────────────────────────────────────────
@@ -493,7 +534,6 @@
 .ef-picker {
   flex: 1;
   min-height: 0;
-  border-top: 1px solid rgba(0, 200, 255, 0.06);
 }
 
 .ef-picker-search {
@@ -517,270 +557,95 @@
   &:focus { border-color: var(--accent2); box-shadow: 0 0 6px rgba(0, 200, 255, 0.1); }
 }
 
-.ef-picker-header {
-  display: flex;
-  gap: 4px;
-  padding: 4px 10px;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text3);
-  background: rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid rgba(0, 200, 255, 0.06);
-}
+// Config-driven picker table — columns mirror the main loadout picker
+// and expand/contract based on the selected slot's category.
 
-.ef-ph-name { flex: 1; }
-.ef-ph-col { width: 55px; text-align: right; }
-.ef-sortable { cursor: pointer; transition: color 0.15s; &:hover { color: var(--accent); } }
-.ef-ph-sz { width: 28px; }
-
-.ef-picker-list {
+.ef-picker-table-wrap {
   flex: 1;
-  overflow-y: auto;
+  overflow: auto;
 
-  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar { width: 4px; height: 4px; }
   &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 }
 
-.ef-picker-row {
-  display: flex;
-  gap: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-  transition: background 0.1s;
-
-  &:hover { background: rgba(0, 200, 255, 0.04); }
-  &.selected { background: rgba(0, 200, 255, 0.06); border-left: 2px solid var(--accent); }
-}
-
-.ef-pr-name {
-  flex: 1;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ef-pr-col {
-  width: 55px;
-  text-align: right;
+.ef-picker-table {
+  width: 100%;
+  border-collapse: collapse;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  color: var(--text2);
-  flex-shrink: 0;
 
-  &.mfr {
-    font-family: 'Exo 2', sans-serif;
-    font-size: 11px;
-    color: var(--text3);
-    width: 65px;
-  }
-  &.dps { color: var(--accent); font-weight: 700; }
-  &.sz { width: 28px; }
-}
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.25);
 
-// ── CENTER: Circular Loadout ────────────────────────────
+    th {
+      padding: 6px 8px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text3);
+      text-align: right;
+      white-space: nowrap;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.08);
 
-.ef-loadout {
-  flex: 1;
-  min-width: 320px;
-  display: flex;
-  flex-direction: column;
-}
-
-.ef-lv {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  overflow: hidden;
-}
-
-// Ring container: positions icons around the ship circle
-.ef-lv-ring {
-  position: relative;
-  width: clamp(400px, 90vh, 800px);
-  aspect-ratio: 1;
-  // Orbit radius for icon placement (used by children via inherit)
-  --ring-size: 100%;
-}
-
-// Ship image circle
-.ef-lv-ship-circle {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 65%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 2px solid rgba(0, 200, 255, 0.15);
-  background: radial-gradient(circle, rgba(19, 26, 36, 0.6) 0%, var(--bg) 80%);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 40px rgba(0, 200, 255, 0.06), inset 0 0 30px rgba(0, 0, 0, 0.5);
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.8;
-  }
-}
-
-.ef-lv-ship-label {
-  position: absolute;
-  bottom: 12%;
-  left: 0; right: 0;
-  text-align: center;
-  pointer-events: none;
-}
-
-.ef-lv-ship-name {
-  display: block;
-  font-family: 'Electrolize', sans-serif;
-  font-size: 15px;
-  color: var(--accent);
-  letter-spacing: 1.5px;
-  text-shadow: 0 0 10px rgba(0, 200, 255, 0.4), 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-.ef-lv-ship-mfr {
-  display: block;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 9px;
-  color: var(--accent2);
-  letter-spacing: 1px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-// Icon badge: positioned radially via --angle custom property
-// Uses rotate + translate to orbit around the ring center
-.ef-lv-icon {
-  --angle: 0deg;
-  position: absolute;
-  // Place on circle edge using CSS trig: 48% orbit radius
-  top: calc(50% + 48% * sin(var(--angle)) - 17px);
-  left: calc(50% + 48% * cos(var(--angle)) - 17px);
-  width: 34px;
-  height: 34px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(13, 17, 23, 0.9);
-  border: 1.5px solid rgba(0, 200, 255, 0.12);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-  z-index: 1;
-
-  &:hover {
-    border-color: var(--accent);
-    background: rgba(0, 200, 255, 0.12);
-    box-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
-    z-index: 2;
+      &.ef-th-name { text-align: left; }
+      &.ef-th-text, &.ef-th-sz { text-align: left; }
+      &.ef-th-equip { width: 24px; }
+      &.sortable {
+        cursor: pointer;
+        transition: color 0.15s;
+        &:hover { color: var(--accent); }
+      }
+    }
   }
 
-  &.selected {
-    border-color: var(--accent);
-    background: rgba(0, 200, 255, 0.15);
-    box-shadow: 0 0 14px rgba(0, 200, 255, 0.25);
-    z-index: 2;
+  tbody tr {
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    transition: background 0.1s;
+
+    &:hover { background: rgba(0, 200, 255, 0.04); }
+    &.selected {
+      background: rgba(0, 200, 255, 0.06);
+      td.ef-td-name { color: var(--accent); }
+    }
+    &.equipped {
+      background: rgba(0, 200, 255, 0.03);
+      td.ef-td-name { color: var(--accent); font-weight: 700; }
+      .ef-equip-btn { background: rgba(0, 200, 255, 0.12); border-color: var(--accent); }
+    }
   }
 
-  &.empty {
-    opacity: 0.45;
-    &:hover { opacity: 1; }
+  td {
+    padding: 5px 8px;
+    font-size: 12px;
+    color: var(--text2);
+    white-space: nowrap;
+    text-align: right;
+
+    &.ef-td-equip { padding: 3px 4px 3px 8px; width: 24px; }
+    &.ef-td-sz {
+      text-align: left;
+      color: var(--text3);
+      width: 32px;
+    }
+    &.ef-td-name {
+      text-align: left;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &.ef-td-text { text-align: left; color: var(--text2); }
+    &.ef-td-shop { text-align: center; color: var(--text3); }
   }
-
-  // Category colors
-  &.weapon { border-color: rgba(255, 68, 68, 0.2);
-    &:hover, &.selected { border-color: var(--red); box-shadow: 0 0 8px rgba(255, 68, 68, 0.15); }
-  }
-  &.shield { border-color: rgba(0, 230, 118, 0.2);
-    &:hover, &.selected { border-color: var(--green); box-shadow: 0 0 8px rgba(0, 230, 118, 0.15); }
-  }
-  &.power { border-color: rgba(240, 165, 0, 0.2);
-    &:hover, &.selected { border-color: var(--gold); box-shadow: 0 0 8px rgba(240, 165, 0, 0.15); }
-  }
-  &.cooler { border-color: rgba(0, 200, 255, 0.2);
-    &:hover, &.selected { border-color: var(--accent); }
-  }
-  &.quantum { border-color: rgba(180, 122, 255, 0.2);
-    &:hover, &.selected { border-color: var(--purple); box-shadow: 0 0 8px rgba(180, 122, 255, 0.15); }
-  }
-  &.missile { border-color: rgba(255, 140, 0, 0.2);
-    &:hover, &.selected { border-color: var(--orange); box-shadow: 0 0 8px rgba(255, 140, 0, 0.15); }
-  }
-  &.avionics { border-color: rgba(0, 200, 255, 0.15); }
-}
-
-.ef-lv-icon-glyph {
-  font-size: 14px;
-  line-height: 1;
-  color: var(--text2);
-
-  .weapon & { color: var(--red); }
-  .shield & { color: var(--green); }
-  .power & { color: var(--gold); }
-  .cooler & { color: var(--accent); }
-  .quantum & { color: var(--purple); }
-  .missile & { color: var(--orange); }
-  .avionics & { color: var(--accent2); }
-}
-
-.ef-lv-icon-sz {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
-  color: var(--text3);
-  line-height: 1;
-}
-
-// ── Loadout Summary ─────────────────────────────────────
-
-.ef-summary {
-  display: flex;
-  gap: 16px;
-  padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border-top: 1px solid rgba(0, 200, 255, 0.08);
-  flex-shrink: 0;
-}
-
-.ef-summary-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-}
-
-.ef-sum-label {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text3);
-}
-
-.ef-sum-val {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
-  color: var(--text);
-
-  &.accent { color: var(--accent); }
-  &.shield { color: var(--green); }
-  &.cooling { color: var(--accent); }
 }
 
 .ef-selected-detail {
@@ -991,9 +856,7 @@
 }
 
 @media (max-width: 900px) {
-  .ef-body { flex-direction: column; }
-  .ef-left { width: 100%; min-width: 0; flex-direction: row; max-height: 200px; }
-  .ef-browser { max-height: none; flex: 1; }
-  .ef-picker { flex: 1; border-top: none; border-left: 1px solid rgba(255, 255, 255, 0.04); }
-  .ef-loadout { min-width: 0; }
+  .ef-main-top { flex-direction: column; flex: 0 0 auto; }
+  .ef-browser { width: 100%; min-width: 0; flex: 0 0 auto !important; max-height: 200px !important; }
+  .ef-stats-tbd { flex: 0 0 auto; }
 }

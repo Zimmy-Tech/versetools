@@ -54,8 +54,11 @@
 
   <div class="ef-body">
 
-    <!-- ═══ LEFT COLUMN: Slot Browser + Picker ═══ -->
-    <div class="ef-left">
+    <!-- ═══ MAIN (everything except right details) ═══ -->
+    <div class="ef-main">
+
+      <!-- Top row: slot browser + (formerly center-top) stats/build area -->
+      <div class="ef-main-top">
 
       <!-- Slot Browser -->
       <div class="ef-panel ef-browser">
@@ -119,7 +122,21 @@
         }
       </div>
 
-      <!-- Item Picker -->
+        <!-- Stats / build data (TBD — placeholder for now) -->
+        <div class="ef-panel ef-stats-tbd">
+          <div class="ef-panel-title">Build Stats</div>
+          <div class="ef-stats-tbd-body">
+            <div class="ef-stats-tbd-note">
+              Early Alpha Preview Build<br>
+              Not all features are functional or complete.
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /ef-main-top -->
+
+      <!-- Item Picker (now spans full width of main, config-driven columns) -->
       <div class="ef-panel ef-picker">
         @if (selectedSlot(); as slot) {
           <div class="ef-panel-title">{{ slot.label }} — S{{ slot.hardpoint.maxSize }} — {{ pickerItems().length }} options</div>
@@ -129,28 +146,36 @@
                    [value]="pickerSearch()"
                    (input)="pickerSearch.set($any($event.target).value)">
           </div>
-          <div class="ef-picker-header">
-            <span class="ef-ph-equip"></span>
-            <span class="ef-ph-name ef-sortable" (click)="pickerSort.set('name')">Name</span>
-            <span class="ef-ph-col">Mfr</span>
-            <span class="ef-ph-col ef-ph-sz ef-sortable" (click)="pickerSort.set('size')">Sz</span>
-            <span class="ef-ph-col ef-sortable" (click)="pickerSort.set('dps')">{{ primaryStatLabel() }}</span>
-            <span class="ef-ph-col">Stat</span>
-          </div>
-          <div class="ef-picker-list">
-            @for (item of pickerItems(); track item.className) {
-              <div class="ef-picker-row"
-                   [class.selected]="selectedPickerItem()?.className === item.className"
-                   [class.equipped]="slot.item?.className === item.className"
-                   (click)="selectPicker(item)">
-                <button class="ef-equip-btn" (click)="equipToSlot(item); $event.stopPropagation()" title="Equip to {{ slot.label }}">+</button>
-                <span class="ef-pr-name">{{ item.name }}</span>
-                <span class="ef-pr-col mfr">{{ item.manufacturer }}</span>
-                <span class="ef-pr-col sz">S{{ item.size }}</span>
-                <span class="ef-pr-col dps">{{ primaryStat(item) }}</span>
-                <span class="ef-pr-col stat">{{ secondaryStat(item) }}</span>
-              </div>
-            }
+          <div class="ef-picker-table-wrap">
+            <table class="ef-picker-table">
+              <thead>
+                <tr>
+                  <th class="ef-th-equip"></th>
+                  @for (col of activeCols(); track col.label) {
+                    <th [class]="'ef-th-' + (col.kind ?? 'text')"
+                        [class.sortable]="!!col.sortField"
+                        [title]="col.title ?? ''"
+                        (click)="toggleSort(col.sortField)">{{ col.label }}{{ sortIndicator(col.sortField) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of pickerItems(); track item.className) {
+                  <tr [class.selected]="selectedPickerItem()?.className === item.className"
+                      [class.equipped]="slot.item?.className === item.className"
+                      (click)="selectPicker(item)">
+                    <td class="ef-td-equip">
+                      <button class="ef-equip-btn"
+                              (click)="equipToSlot(item); $event.stopPropagation()"
+                              [title]="'Equip to ' + slot.label">+</button>
+                    </td>
+                    @for (col of activeCols(); track col.label) {
+                      <td [class]="'ef-td-' + (col.kind ?? 'text')">{{ renderCol(item, col) }}</td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
           </div>
         } @else {
           <div class="ef-picker-empty">Select a slot above to see available components</div>
@@ -158,72 +183,7 @@
       </div>
 
     </div>
-
-    <!-- ═══ CENTER: Visual Loadout ═══ -->
-    <div class="ef-panel ef-loadout">
-      <div class="ef-panel-title">{{ data.selectedShip()?.name ?? 'None' }}</div>
-
-      <div class="ef-lv">
-
-        <!-- Circular ship display with radial slot icons -->
-        <div class="ef-lv-ring">
-
-          <!-- Ship image in circle -->
-          <div class="ef-lv-ship-circle">
-            <img [src]="shipImageSrc()"
-                 [alt]="data.selectedShip()?.name ?? ''"
-                 (error)="onShipImageError($any($event.target))">
-            <div class="ef-lv-ship-label">
-              <span class="ef-lv-ship-name">{{ data.selectedShip()!.name.replace(data.selectedShip()!.manufacturer.split(' ')[0] + ' ', '') }}</span>
-              <span class="ef-lv-ship-mfr">{{ data.selectedShip()?.manufacturer }}</span>
-            </div>
-          </div>
-
-          <!-- Radial icons placed around the circle edge -->
-          @for (slot of radialSlots(); track slot.node.slotId) {
-            <div class="ef-lv-icon"
-                 [class]="'ef-lv-icon ' + slot.category"
-                 [class.selected]="selectedSlotId() === slot.node.slotId"
-                 [class.empty]="!slot.node.item"
-                 [style.--angle]="slot.angle + 'deg'"
-                 (click)="selectSlot(slot.node.slotId)"
-                 [title]="(slot.node.item?.name ?? 'Empty') + ' S' + slot.node.hardpoint.maxSize">
-              <span class="ef-lv-icon-glyph">{{
-                slot.category === 'weapons' ? '\u2694' :
-                slot.category === 'shields' ? '\u25C8' :
-                slot.category === 'power' ? '\u26A1' :
-                slot.category === 'cooling' ? '\u2744' :
-                slot.category === 'quantum' ? '\u25C9' :
-                slot.category === 'missiles' ? '\u25C6' :
-                '\u25CE'
-              }}</span>
-              <span class="ef-lv-icon-sz">{{ slot.node.hardpoint.maxSize }}</span>
-            </div>
-          }
-
-        </div>
-      </div>
-
-      <!-- Summary bar -->
-      <div class="ef-summary">
-        <div class="ef-summary-row">
-          <span class="ef-sum-val accent">{{ fmt(totalDps()) }}</span>
-          <span class="ef-sum-label">Peak DPS</span>
-        </div>
-        <div class="ef-summary-row">
-          <span class="ef-sum-val">{{ fmt(totalAlpha(), 1) }}</span>
-          <span class="ef-sum-label">Alpha</span>
-        </div>
-        <div class="ef-summary-row">
-          <span class="ef-sum-val shield">{{ fmt(totalShieldHp()) }}</span>
-          <span class="ef-sum-label">Shield HP</span>
-        </div>
-        <div class="ef-summary-row">
-          <span class="ef-sum-val">{{ missileCount() }}</span>
-          <span class="ef-sum-label">Missiles</span>
-        </div>
-      </div>
-    </div>
+    <!-- /ef-main -->
 
     <!-- ═══ RIGHT: Details Panel ═══ -->
     <div class="ef-panel ef-details">

@@ -1,8 +1,23 @@
 import { Component, signal, computed } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { Item, Hardpoint } from '../../models/db.models';
+import { Item, Hardpoint, weaponDisplayType, calcMaxPips, calcWeaponAmmo } from '../../models/db.models';
 
 type CategoryId = 'weapons' | 'shields' | 'power' | 'cooling' | 'quantum' | 'avionics' | 'missiles';
+
+/** Column descriptor for the eve-style picker table. Mirrors the rich
+ *  per-type columns from the main loadout picker (hardpoint-slot.html)
+ *  so the same data density is visible in both views. */
+interface PickerCol {
+  label: string;
+  /** Field name used for sorting. Omit to make the column non-sortable. */
+  sortField?: string;
+  /** Value accessor. Returns the already-formatted string shown in the cell. */
+  value: (item: Item, ctx: EveStyleComponent) => string;
+  /** 'name' flag widens the column and applies the name typography. */
+  kind?: 'sz' | 'name' | 'num' | 'text' | 'shop';
+  /** Tooltip shown on the header. */
+  title?: string;
+}
 
 /**
  * A node in the EVE-style slot tree. Can represent a top-level hardpoint,
@@ -63,7 +78,10 @@ export class EveStyleComponent {
   selectedPickerItem = signal<Item | null>(null);
   browserTab = signal<'browse' | 'buy'>('browse');
   pickerSearch = signal('');
-  pickerSort = signal<'name' | 'dps' | 'size'>('name');
+  /** Sort field matches the underlying Item key (e.g., 'dps', 'alphaDamage',
+   *  'fireRate'). Defaults to 'size' so new slots show biggest-first. */
+  pickerSort = signal<string>('size');
+  pickerSortDir = signal<'asc' | 'desc'>('desc');
   shipSearch = signal('');
   shipPickerOpen = signal(false);
 
@@ -412,7 +430,8 @@ export class EveStyleComponent {
     const slot = this.selectedSlot();
     if (!slot) return [];
     const q = this.pickerSearch().toLowerCase();
-    const sort = this.pickerSort();
+    const field = this.pickerSort();
+    const dir = this.pickerSortDir() === 'asc' ? 1 : -1;
 
     let items = this.data.getOptionsForSlot(slot.hardpoint);
     if (q) {
@@ -423,13 +442,42 @@ export class EveStyleComponent {
     }
 
     items.sort((a, b) => {
-      if (sort === 'dps') return (b.dps ?? 0) - (a.dps ?? 0);
-      if (sort === 'size') return (b.size ?? 0) - (a.size ?? 0);
-      return (a.name ?? '').localeCompare(b.name ?? '');
+      const av = (a as any)[field];
+      const bv = (b as any)[field];
+      if (typeof av === 'number' && typeof bv === 'number') return (bv - av) * dir;
+      return (String(bv ?? '') as string).localeCompare(String(av ?? '')) * dir;
     });
 
     return items;
   });
+
+  /** Columns for the picker table, driven by the selected slot's category. */
+  readonly activeCols = computed<PickerCol[]>(() => {
+    const slot = this.selectedSlot();
+    const cat = slot?.category ?? 'weapons';
+    return PICKER_COLS[cat] ?? PICKER_COLS.weapons;
+  });
+
+  /** Thin wrapper so the template can call `renderCol(item, col)` without
+   *  passing `this` explicitly (cleaner binding in Angular templates). */
+  renderCol(item: Item, col: PickerCol): string {
+    return col.value(item, this);
+  }
+
+  toggleSort(field: string | undefined): void {
+    if (!field) return;
+    if (this.pickerSort() === field) {
+      this.pickerSortDir.set(this.pickerSortDir() === 'desc' ? 'asc' : 'desc');
+    } else {
+      this.pickerSort.set(field);
+      this.pickerSortDir.set(field === 'name' ? 'asc' : 'desc');
+    }
+  }
+
+  sortIndicator(field: string | undefined): string {
+    if (!field || this.pickerSort() !== field) return '';
+    return this.pickerSortDir() === 'desc' ? ' ▾' : ' ▴';
+  }
 
   // Stats from equipped items
   equippedWeapons = computed(() =>
@@ -482,39 +530,39 @@ export class EveStyleComponent {
     cat.expanded = !cat.expanded;
   }
 
-  primaryStat(item: Item): string {
-    if (item.dps) return Math.round(item.dps).toString();
-    if (item.hp) return item.hp.toLocaleString();
-    if (item.powerOutput) return item.powerOutput.toLocaleString();
-    if (item.coolingRate) return Math.round(item.coolingRate).toString();
-    if (item.speed) return Math.round(item.speed).toLocaleString() + ' m/s';
-    if (item.alphaDamage) return Math.round(item.alphaDamage).toString();
-    return '—';
+  fmt(n: number | undefined | null, digits = 0): string {
+    if (n == null || n === 0) return '—';
+    return Number(n).toFixed(digits);
   }
 
-  primaryStatLabel(): string {
-    const slot = this.selectedSlot();
-    if (!slot) return 'Stat';
-    if (slot.category === 'weapons') return 'DPS';
-    if (slot.category === 'missiles') return 'DMG';
-    if (slot.category === 'shields') return 'HP';
-    if (slot.category === 'power') return 'Output';
-    if (slot.category === 'cooling') return 'Rate';
-    if (slot.category === 'quantum') return 'Speed';
-    return 'Stat';
+  fmtRes(val: number | undefined | null): string {
+    if (val == null || val === 0) return '—';
+    return (Math.abs(val) * 100).toFixed(0) + '%';
   }
 
-  secondaryStat(item: Item): string {
-    if (item.fireRate) return Math.round(item.fireRate) + ' RPM';
-    if (item.regenRate) return Math.round(item.regenRate) + '/s';
-    if (item.range) return Math.round(item.range * 10) / 10 + ' Gm';
-    return '—';
+  fmtRegenTime(hp: number | undefined, rate: number | undefined): string {
+    if (!hp || !rate) return '—';
+    return (hp / rate).toFixed(1) + 's';
   }
 
-  fmt(n: number | undefined, digits = 0): string {
-    if (n == null) return '—';
-    return n.toLocaleString('en-US', { maximumFractionDigits: digits });
+  weaponType(item: Item): string { return weaponDisplayType(item); }
+
+  canOverheat(item: Item): boolean { return !!(item.isBallistic && item.maxHeat); }
+
+  /** Ammo count matching the main picker: ballistic → ammoCount; energy →
+   *  calcWeaponAmmo against the current ship's power pool. */
+  ammoForOption(opt: Item): string {
+    if (opt.isBallistic) return opt.ammoCount?.toString() ?? '—';
+    const ship = this.data.selectedShip();
+    const poolSize = ship?.weaponPowerPoolSize ?? 4;
+    const mult = ship?.ammoLoadMultiplier ?? 1;
+    const allWeapons = this.data.allLoadoutWeapons();
+    const maxPips = calcMaxPips(poolSize, allWeapons);
+    const ammo = calcWeaponAmmo(opt, maxPips, poolSize, allWeapons, mult);
+    return ammo != null ? ammo.toString() : '—';
   }
+
+  shopMark(opt: Item): string { return opt.shopPrices?.length ? '✓' : '✗'; }
 
   // Ship picker
   filteredShips = computed(() => {
@@ -684,3 +732,113 @@ export class EveStyleComponent {
     { name: 'Cousin Crow\'s', location: 'Orison', price: '12,600 UEC' },
   ];
 }
+
+/** Per-category picker column sets. Columns and labels mirror the main
+ *  loadout picker (hardpoint-slot.html) so both views show the same data
+ *  density. Value accessors return already-formatted display strings. */
+const PICKER_COLS: Record<CategoryId, PickerCol[]> = {
+  weapons: [
+    { label: 'Sz',       sortField: 'size',                 kind: 'sz',   value: i => 'S' + (i.size ?? '—') },
+    { label: 'Name',     sortField: 'name',                 kind: 'name', value: i => i.name ?? '—' },
+    { label: 'Type',                                        kind: 'text', value: (i, c) => c.weaponType(i) },
+    { label: 'Ammo',                                        kind: 'num',  value: (i, c) => c.ammoForOption(i) },
+    { label: 'DPS',      sortField: 'dps',                  kind: 'num',  value: (i, c) => c.fmt(i.dps) },
+    { label: 'Alpha',    sortField: 'alphaDamage',          kind: 'num',  value: (i, c) => c.fmt(i.alphaDamage, 1) },
+    { label: 'Pen.Dst',  sortField: 'penetrationDistance',  kind: 'num',  value: (i, c) => i.penetrationDistance ? c.fmt(i.penetrationDistance, 2) + 'm' : '—' },
+    { label: 'Pen.Rad',                                     kind: 'num',  value: (i, c) => i.penetrationMaxRadius ? c.fmt(i.penetrationMinRadius, 2) + '–' + c.fmt(i.penetrationMaxRadius, 2) + 'm' : '—' },
+    { label: 'RPM',      sortField: 'fireRate',             kind: 'num',  value: (i, c) => c.fmt(i.fireRate) },
+    { label: 'Vel',      sortField: 'projectileSpeed',      kind: 'num',  value: (i, c) => c.fmt(i.projectileSpeed) },
+    { label: 'Range',    sortField: 'range',                kind: 'num',  value: (i, c) => c.fmt(i.range) },
+    { label: 'Pwr',      sortField: 'powerDraw',            kind: 'num',  value: (i, c) => c.fmt(i.powerDraw, 2) },
+    { label: 'EM',       sortField: 'emSignature',          kind: 'num',  value: (i, c) => c.fmt(i.emSignature) },
+    { label: 'Overheat',                                    kind: 'text', value: (i, c) => c.canOverheat(i) ? '●' : '—' },
+    { label: 'HP',       sortField: 'componentHp',          kind: 'num',  value: (i, c) => c.fmt(i.componentHp) },
+    { label: 'Shop',                                        kind: 'shop', value: (i, c) => c.shopMark(i), title: 'Purchasable in-game' },
+  ],
+  shields: [
+    { label: 'Sz',         sortField: 'size',              kind: 'sz',   value: i => 'S' + (i.size ?? '—') },
+    { label: 'Name',       sortField: 'name',              kind: 'name', value: i => i.name ?? '—' },
+    { label: 'Class',      sortField: 'itemClass',         kind: 'text', value: i => i.itemClass ?? '—' },
+    { label: 'Grade',      sortField: 'grade',             kind: 'text', value: i => i.grade ?? '—' },
+    { label: 'HP Pool',    sortField: 'hp',                kind: 'num',  value: (i, c) => c.fmt(i.hp) },
+    { label: 'Regen/s',    sortField: 'regenRate',         kind: 'num',  value: (i, c) => c.fmt(i.regenRate) },
+    { label: 'Regen Time',                                 kind: 'num',  value: (i, c) => c.fmtRegenTime(i.hp, i.regenRate) },
+    { label: 'Enrg Res',   sortField: 'resistEnrgMax',     kind: 'num',  value: (i, c) => c.fmtRes(i.resistEnrgMax) },
+    { label: 'Dmg Delay',  sortField: 'damagedRegenDelay', kind: 'num',  value: (i, c) => c.fmt(i.damagedRegenDelay, 2) + 's' },
+    { label: 'Dwn Delay',  sortField: 'downedRegenDelay',  kind: 'num',  value: (i, c) => c.fmt(i.downedRegenDelay, 2) + 's' },
+    { label: 'Min Pwr',    sortField: 'powerDraw',         kind: 'num',  value: (i, c) => c.fmt(i.powerDraw, 2) },
+    { label: 'EM Max',     sortField: 'emMax',             kind: 'num',  value: (i, c) => c.fmt(i.emMax) },
+    { label: 'Health',                                     kind: 'num',  value: (i, c) => c.fmt(i.componentHp) },
+    { label: 'Shop',                                       kind: 'shop', value: (i, c) => c.shopMark(i) },
+  ],
+  cooling: [
+    { label: 'Sz',       sortField: 'size',        kind: 'sz',   value: i => 'S' + (i.size ?? '—') },
+    { label: 'Name',     sortField: 'name',        kind: 'name', value: i => i.name ?? '—' },
+    { label: 'Class',    sortField: 'itemClass',   kind: 'text', value: i => i.itemClass ?? '—' },
+    { label: 'Grade',    sortField: 'grade',       kind: 'text', value: i => i.grade ?? '—' },
+    { label: 'Cooling',  sortField: 'coolingRate', kind: 'num',  value: (i, c) => c.fmt(i.coolingRate, 1) },
+    { label: 'Min Pwr',  sortField: 'powerMin',    kind: 'num',  value: (i, c) => c.fmt(i.powerMin) },
+    { label: 'Max Pwr',  sortField: 'powerMax',    kind: 'num',  value: (i, c) => c.fmt(i.powerMax) },
+    { label: 'EM Max',   sortField: 'emMax',       kind: 'num',  value: (i, c) => c.fmt(i.emMax) },
+    { label: 'IR Max',   sortField: 'irSignature', kind: 'num',  value: (i, c) => c.fmt(i.irSignature) },
+    { label: 'Health',   sortField: 'componentHp', kind: 'num',  value: (i, c) => c.fmt(i.componentHp) },
+    { label: 'Shop',                               kind: 'shop', value: (i, c) => c.shopMark(i) },
+  ],
+  power: [
+    { label: 'Sz',            sortField: 'size',                kind: 'sz',   value: i => 'S' + (i.size ?? '—') },
+    { label: 'Name',          sortField: 'name',                kind: 'name', value: i => i.name ?? '—' },
+    { label: 'Class',         sortField: 'itemClass',           kind: 'text', value: i => i.itemClass ?? '—' },
+    { label: 'Grade',         sortField: 'grade',               kind: 'text', value: i => i.grade ?? '—' },
+    { label: 'Pwr Max',       sortField: 'powerOutput',         kind: 'num',  value: (i, c) => c.fmt(i.powerOutput) },
+    { label: 'Dist Max',      sortField: 'distortionMax',       kind: 'num',  value: (i, c) => c.fmt(i.distortionMax) },
+    { label: 'Dist Decay',    sortField: 'distortionDecayRate', kind: 'num',  value: (i, c) => c.fmt(i.distortionDecayRate, 2) },
+    { label: 'Dist Recovery',                                   kind: 'num',  value: (i, c) => c.fmt(i.distortionDecayDelay, 2) + 's' },
+    { label: 'EM/Seg',        sortField: 'emMax',               kind: 'num',  value: (i, c) => c.fmt(i.emMax) },
+    { label: 'EM Decay',                                        kind: 'num',  value: (i, c) => c.fmt(i.emDecayRate, 2) },
+    { label: 'Health',        sortField: 'componentHp',         kind: 'num',  value: (i, c) => c.fmt(i.componentHp) },
+    { label: 'Shop',                                            kind: 'shop', value: (i, c) => c.shopMark(i) },
+  ],
+  quantum: [
+    { label: 'Sz',           sortField: 'size',         kind: 'sz',   value: i => 'S' + (i.size ?? '—') },
+    { label: 'Name',         sortField: 'name',         kind: 'name', value: i => i.name ?? '—' },
+    { label: 'Class',        sortField: 'itemClass',    kind: 'text', value: i => i.itemClass ?? '—' },
+    { label: 'Grade',        sortField: 'grade',        kind: 'text', value: i => i.grade ?? '—' },
+    { label: 'Max Speed',    sortField: 'speed',        kind: 'num',  value: i => i.speed ? (i.speed / 1000).toFixed(0) + ' Mm/s' : '—' },
+    { label: 'Fuel Rate',    sortField: 'fuelRate',     kind: 'num',  value: i => i.fuelRate ? i.fuelRate.toFixed(5) : '—' },
+    { label: 'Spool Nav',    sortField: 'spoolTime',    kind: 'num',  value: (i, c) => c.fmt(i.spoolTime, 1) + 's' },
+    { label: 'Max Cooldown', sortField: 'cooldownTime', kind: 'num',  value: (i, c) => c.fmt(i.cooldownTime, 1) + 's' },
+    { label: 'EM Max',       sortField: 'emMax',        kind: 'num',  value: (i, c) => c.fmt(i.emMax) },
+    { label: 'Health',       sortField: 'hp',           kind: 'num',  value: (i, c) => c.fmt(i.hp) },
+    { label: 'Shop',                                    kind: 'shop', value: (i, c) => c.shopMark(i) },
+  ],
+  missiles: [
+    { label: 'Sz',           sortField: 'size',            kind: 'sz',   value: i => 'S' + (i.size ?? '—') },
+    { label: 'Name',         sortField: 'name',            kind: 'name', value: i => i.name ?? '—' },
+    { label: 'Type',         sortField: 'subType',         kind: 'text', value: i => i.subType ?? '—' },
+    { label: 'Damage',       sortField: 'alphaDamage',     kind: 'num',  value: (i, c) => c.fmt(i.alphaDamage) },
+    { label: 'Speed',        sortField: 'projectileSpeed', kind: 'num',  value: (i, c) => c.fmt(i.projectileSpeed) },
+    { label: 'Acquisition',  sortField: 'acquisition',     kind: 'text', value: i => i.acquisition ?? '—' },
+    { label: 'Arm Time',     sortField: 'armTime',         kind: 'num',  value: (i, c) => c.fmt(i.armTime, 2) + 's' },
+    { label: 'Lock Time',    sortField: 'lockTime',        kind: 'num',  value: (i, c) => c.fmt(i.lockTime, 2) + 's' },
+    { label: 'Ignite',       sortField: 'igniteTime',      kind: 'num',  value: (i, c) => c.fmt(i.igniteTime, 2) + 's' },
+    { label: 'Lock Angle',   sortField: 'lockAngle',       kind: 'num',  value: (i, c) => c.fmt(i.lockAngle, 0) + '°' },
+    { label: 'Lock Min',     sortField: 'lockRangeMin',    kind: 'num',  value: (i, c) => c.fmt(i.lockRangeMin) + 'm' },
+    { label: 'Lock Max',     sortField: 'lockRangeMax',    kind: 'num',  value: (i, c) => c.fmt(i.lockRangeMax) + 'm' },
+    { label: 'Shop',                                       kind: 'shop', value: (i, c) => c.shopMark(i) },
+  ],
+  avionics: [
+    { label: 'Sz',      sortField: 'size',           kind: 'sz',   value: i => 'S' + (i.size ?? '—') },
+    { label: 'Name',    sortField: 'name',           kind: 'name', value: i => i.name ?? '—' },
+    { label: 'Class',   sortField: 'itemClass',      kind: 'text', value: i => i.itemClass ?? '—' },
+    { label: 'Grade',   sortField: 'grade',          kind: 'text', value: i => i.grade ?? '—' },
+    { label: 'Aim Min', sortField: 'aimMin',         kind: 'num',  value: (i, c) => c.fmt(i.aimMin) },
+    { label: 'Aim Max', sortField: 'aimMax',         kind: 'num',  value: (i, c) => c.fmt(i.aimMax) },
+    { label: 'IR',      sortField: 'irSensitivity',  kind: 'num',  value: (i, c) => c.fmt(i.irSensitivity, 2) },
+    { label: 'EM',      sortField: 'emSensitivity',  kind: 'num',  value: (i, c) => c.fmt(i.emSensitivity, 2) },
+    { label: 'CS',      sortField: 'csSensitivity',  kind: 'num',  value: (i, c) => c.fmt(i.csSensitivity, 2) },
+    { label: 'Max Pwr', sortField: 'powerDraw',      kind: 'num',  value: (i, c) => c.fmt(i.powerDraw, 2) },
+    { label: 'EM Max',  sortField: 'emMax',          kind: 'num',  value: (i, c) => c.fmt(i.emMax) },
+    { label: 'Health',  sortField: 'componentHp',    kind: 'num',  value: (i, c) => c.fmt(i.componentHp) },
+    { label: 'Shop',                                 kind: 'shop', value: (i, c) => c.shopMark(i) },
+  ],
+};
