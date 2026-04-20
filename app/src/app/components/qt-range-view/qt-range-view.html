@@ -30,23 +30,41 @@
 
     <div class="filter-sep"></div>
 
-    <select class="filter-select"
-            [value]="shipSizeFilter()"
-            (change)="shipSizeFilter.set($any($event.target).value)">
-      <option value="">All Ship Sizes</option>
-      @for (s of shipSizeOptions.slice(1); track s) {
-        <option [value]="s">{{ s }}</option>
+    <div class="filter-picker">
+      <button class="filter-picker-trigger" (click)="toggleShipSize($event)"
+              [class.open]="shipSizeOpen()">
+        {{ shipSizeFilter() || 'All Ship Sizes' }}
+        <span class="filter-picker-caret">{{ shipSizeOpen() ? '▴' : '▾' }}</span>
+      </button>
+      @if (shipSizeOpen()) {
+        <div class="filter-picker-list" (click)="$event.stopPropagation()">
+          <div class="filter-picker-opt" [class.selected]="shipSizeFilter() === ''"
+               (click)="pickShipSize('')">All Ship Sizes</div>
+          @for (s of shipSizeOptions.slice(1); track s) {
+            <div class="filter-picker-opt" [class.selected]="shipSizeFilter() === s"
+                 (click)="pickShipSize(s)">{{ s }}</div>
+          }
+        </div>
       }
-    </select>
+    </div>
 
-    <select class="filter-select"
-            [value]="sizeFilter()"
-            (change)="sizeFilter.set($any($event.target).value === '' ? '' : +$any($event.target).value)">
-      <option value="">All QD Sizes</option>
-      @for (s of sizeOptions.slice(1); track s) {
-        <option [value]="s">QD Size {{ s }}</option>
+    <div class="filter-picker">
+      <button class="filter-picker-trigger" (click)="toggleQdSize($event)"
+              [class.open]="qdSizeOpen()">
+        {{ sizeFilter() === '' ? 'All QD Sizes' : 'QD Size ' + sizeFilter() }}
+        <span class="filter-picker-caret">{{ qdSizeOpen() ? '▴' : '▾' }}</span>
+      </button>
+      @if (qdSizeOpen()) {
+        <div class="filter-picker-list" (click)="$event.stopPropagation()">
+          <div class="filter-picker-opt" [class.selected]="sizeFilter() === ''"
+               (click)="pickQdSize('')">All QD Sizes</div>
+          @for (s of sizeOptions.slice(1); track s) {
+            <div class="filter-picker-opt" [class.selected]="sizeFilter() === s"
+                 (click)="pickQdSize(+s)">QD Size {{ s }}</div>
+          }
+        </div>
       }
-    </select>
+    </div>
 
     <input class="filter-input" type="text" placeholder="Search ship or manufacturer..."
            [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />

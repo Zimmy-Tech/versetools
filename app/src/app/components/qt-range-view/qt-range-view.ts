@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, HostListener, ElementRef, inject } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Ship, Item } from '../../models/db.models';
 
@@ -29,6 +29,41 @@ export class QtRangeViewComponent {
   searchQuery = signal('');
   sizeFilter = signal<number | ''>('');
   shipSizeFilter = signal<string>('');
+
+  /** Open-state flags for the custom dropdowns. Native <select>s were
+   *  swapped out so we could kill the browser's gray selected-state
+   *  highlights and hairline option separators. */
+  shipSizeOpen = signal(false);
+  qdSizeOpen = signal(false);
+
+  private host = inject(ElementRef<HTMLElement>);
+
+  /** Close any open dropdown when the user clicks outside this component. */
+  @HostListener('document:click', ['$event'])
+  onDocClick(ev: MouseEvent): void {
+    if (this.host.nativeElement.contains(ev.target as Node)) return;
+    this.shipSizeOpen.set(false);
+    this.qdSizeOpen.set(false);
+  }
+
+  toggleShipSize(ev: Event): void {
+    ev.stopPropagation();
+    this.qdSizeOpen.set(false);
+    this.shipSizeOpen.update(v => !v);
+  }
+  toggleQdSize(ev: Event): void {
+    ev.stopPropagation();
+    this.shipSizeOpen.set(false);
+    this.qdSizeOpen.update(v => !v);
+  }
+  pickShipSize(val: string): void {
+    this.shipSizeFilter.set(val);
+    this.shipSizeOpen.set(false);
+  }
+  pickQdSize(val: number | ''): void {
+    this.sizeFilter.set(val);
+    this.qdSizeOpen.set(false);
+  }
 
   readonly classButtons: { id: ClassFilter; label: string }[] = [
     { id: 'stock',       label: 'STOCK' },

@@ -177,7 +177,6 @@
   margin: 0 4px;
 }
 
-.filter-select,
 .filter-input {
   font-family: 'Rajdhani', sans-serif;
   font-size: 13px;
@@ -190,6 +189,108 @@
 
   &:focus {
     border-color: var(--accent);
+  }
+}
+
+// ── Custom size dropdowns ────────────────────────────
+// Native <select> dropdowns paint with OS-controlled gray selection
+// highlights + hairline option separators that clashed with the dark
+// theme. This custom picker replaces them: a button-depth trigger
+// opens an absolutely-positioned list that styles cleanly.
+
+.filter-picker {
+  position: relative;
+}
+
+.filter-picker-trigger {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.22) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  padding: 5px 10px 5px 10px;
+  min-width: 140px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: all 0.15s, transform 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 2px 4px rgba(0, 0, 0, 0.22);
+
+  &:hover {
+    border-color: var(--accent2);
+    background: linear-gradient(180deg, rgba(0, 200, 255, 0.12) 0%, rgba(0, 200, 255, 0.02) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.15),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 3px 8px rgba(0, 0, 0, 0.28),
+      0 0 8px rgba(0, 200, 255, 0.15);
+  }
+
+  &.open {
+    border-color: var(--accent);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 2px 4px rgba(0, 0, 0, 0.22);
+  }
+}
+
+.filter-picker-caret {
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1;
+}
+
+.filter-picker-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 100;
+  min-width: 100%;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.98) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 3px;
+  padding: 3px;
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 255, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.6);
+  animation: pickerIn 0.12s ease-out;
+}
+
+@keyframes pickerIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.filter-picker-opt {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--text2);
+  padding: 6px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.1s, color 0.1s;
+
+  &:hover {
+    background: rgba(0, 200, 255, 0.08);
+    color: var(--text);
+  }
+
+  &.selected {
+    background: rgba(0, 200, 255, 0.15);
+    color: var(--accent);
+    font-weight: 600;
   }
 }
 
