@@ -190,6 +190,21 @@ def load_localization(ini_path):
             key = key.split(",")[0].strip()
             loc[key.lower()] = val.strip()
     print(f"  Loaded {len(loc):,} localization entries")
+    # Populate MFR_FROM_PREFIX from every manufacturer_name<CODE> key so the
+    # manufacturer lookup stays in sync with the game's own code→name table
+    # instead of the hand-maintained dict above (which only had ship/weapon
+    # codes and missed all the SC component manufacturers). Existing entries
+    # are preserved to keep overrides.
+    added = 0
+    for key, val in loc.items():
+        if not key.startswith("manufacturer_name"):
+            continue
+        code = key[len("manufacturer_name"):].upper()
+        if code and code not in MFR_FROM_PREFIX:
+            MFR_FROM_PREFIX[code] = val
+            added += 1
+    if added:
+        print(f"  Loaded {added} additional manufacturer codes from localization")
     return loc
 
 def loc_lookup(loc, key):
@@ -306,8 +321,34 @@ MFR_FROM_PREFIX = {
     "APAR": "A&R",
 }
 
+# First-token prefixes that are type markers, not manufacturer codes — for these
+# classNames the manufacturer lives in the SECOND token (e.g. shld_yorm_... → YORM,
+# cool_jspn_... → JSPN). Without this, every shield/cooler/powerplant/quantumdrive
+# reports its type code as the manufacturer ("SHLD", "COOL", etc).
+TYPE_PREFIXES = {
+    "SHLD", "COOL", "POWR", "QDRV", "MSLN", "MRCK", "ARMR",
+    "LIFE", "EMP", "QSBB", "QINT",
+    # Ordnance / weapon-adjacent type markers — same shape as MRCK/QDRV,
+    # classNames encode type_size_mfg_... so skipping the type (and the
+    # S## size that often follows) gets us to the real manufacturer code.
+    "RPOD", "BOMB", "MISL", "GMISL", "GMRCK", "JDRV",
+    "LFSP", "RADR", "QDMP", "QED",
+}
+
 def mfr_from_classname(class_name):
-    prefix = class_name.split("_")[0].upper()
+    parts = [p.upper() for p in class_name.split("_")]
+    if not parts:
+        return ""
+    idx = 0
+    # Skip the type marker (SHLD, COOL, POWR, QDRV, MRCK, etc.)
+    if parts[idx] in TYPE_PREFIXES and idx + 1 < len(parts):
+        idx += 1
+    # Missile-rack and template classNames encode size in the slot
+    # immediately after the type marker (e.g. mrck_s04_vncl_quad_s02). Skip
+    # the S## size token so we land on the real manufacturer code.
+    if idx < len(parts) and re.fullmatch(r"S\d+", parts[idx]) and idx + 1 < len(parts):
+        idx += 1
+    prefix = parts[idx]
     return MFR_FROM_PREFIX.get(prefix, prefix)
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -6023,6 +6064,19 @@ def main(mode: str = "live"):
         if cls in items:
             items[cls].update(overrides)
 
+    # Aegis Vanguard Harbinger: rocket-pod turret slots are bespoke in-game
+    # (player cannot swap the Jericho XL pods). CIG set Flags="$uneditable"
+    # on these sub-ports in the source XML but left RequiredPortTags empty,
+    # so the generic heuristic at _build_subport_dict skips them. Apply the
+    # lock here where `items` is in scope. This turret item is equipped by
+    # exactly one ship (Aegis Vanguard Harbinger) so there's no risk of the
+    # lock cascading to other Vanguard variants.
+    _harbinger_turret = items.get("aegs_vanguard_harbinger_scitem_turret")
+    if _harbinger_turret:
+        for sp in _harbinger_turret.get("subPorts", []):
+            if sp.get("id", "").lower() in ("turret_left", "turret_right"):
+                sp["flags"] = "$uneditable"
+
     # Hornet variant-specific utility mounts (not auto-extracted from forge data)
     # F7C-R Tracker: WillsOp Long Look Radar
     items["umnt_anvl_s5_rotodome"] = {
@@ -6398,33 +6452,59 @@ def main(mode: str = "live"):
         if not s: return -1
         return sum(1 for h in s.get("hardpoints", []) if id_fragment in h["id"])
 
+    # Each integrity check is a (label, predicate, guard) triple. The guard
+    # runs first and if it returns False the check is skipped — lets us scope
+    # ship-specific assertions to modes where that ship actually exists, so
+    # we don't fail on e.g. PTU extractions where CIG has temporarily removed
+    # an entity for testing.
+    def _ship_exists(cls):
+        return _find_ship(cls) is not None
+
+    def _item_exists(cls):
+        return _find_item(cls) is not None
+
     INTEGRITY_CHECKS = [
-        # Aurora Mk II: DM module shield lives on the MODULE, not the ship
+        # Aurora Mk II: DM module shield lives on the MODULE, not the ship.
+        # Scoped to modes that actually have the Aurora item/ship — PTU
+        # occasionally ships without certain entities while CIG tests things.
         ("Aurora DM shield on module",
-         lambda: _item_has_subport("rsi_aurora_mk2_module_missile", "hardpoint_shield_generator_back")),
+         lambda: _item_has_subport("rsi_aurora_mk2_module_missile", "hardpoint_shield_generator_back"),
+         lambda: _item_exists("rsi_aurora_mk2_module_missile")),
         ("Aurora ship has exactly 2 shields",
-         lambda: _ship_hp_count("rsi_aurora_mk2", "shield_generator") == 2),
+         lambda: _ship_hp_count("rsi_aurora_mk2", "shield_generator") == 2,
+         lambda: _ship_exists("rsi_aurora_mk2")),
 
         # Hercules: C2/M2 must NOT have A2-only hardpoints
         ("C2 lacks bridge turret",
-         lambda: _ship_lacks_hp("crus_starlifter_c2", "hardpoint_bridge_remote_turret")),
+         lambda: _ship_lacks_hp("crus_starlifter_c2", "hardpoint_bridge_remote_turret"),
+         lambda: _ship_exists("crus_starlifter_c2")),
         ("C2 lacks forward turrets",
-         lambda: _ship_lacks_hp("crus_starlifter_c2", "hardpoint_forward_left_remote_turret")),
+         lambda: _ship_lacks_hp("crus_starlifter_c2", "hardpoint_forward_left_remote_turret"),
+         lambda: _ship_exists("crus_starlifter_c2")),
         ("C2 has exactly 2 shields",
-         lambda: _ship_hp_count("crus_starlifter_c2", "shield_generator") == 2),
+         lambda: _ship_hp_count("crus_starlifter_c2", "shield_generator") == 2,
+         lambda: _ship_exists("crus_starlifter_c2")),
         ("M2 lacks bridge turret",
-         lambda: _ship_lacks_hp("crus_starlifter_m2", "hardpoint_bridge_remote_turret")),
+         lambda: _ship_lacks_hp("crus_starlifter_m2", "hardpoint_bridge_remote_turret"),
+         lambda: _ship_exists("crus_starlifter_m2")),
         ("M2 lacks forward turrets",
-         lambda: _ship_lacks_hp("crus_starlifter_m2", "hardpoint_forward_left_remote_turret")),
+         lambda: _ship_lacks_hp("crus_starlifter_m2", "hardpoint_forward_left_remote_turret"),
+         lambda: _ship_exists("crus_starlifter_m2")),
         ("M2 has exactly 2 shields",
-         lambda: _ship_hp_count("crus_starlifter_m2", "shield_generator") == 2),
+         lambda: _ship_hp_count("crus_starlifter_m2", "shield_generator") == 2,
+         lambda: _ship_exists("crus_starlifter_m2")),
         ("A2 has exactly 3 shields",
-         lambda: _ship_hp_count("crus_starlifter_a2", "shield_generator") == 3),
+         lambda: _ship_hp_count("crus_starlifter_a2", "shield_generator") == 3,
+         lambda: _ship_exists("crus_starlifter_a2")),
     ]
 
     integrity_failures = []
-    for label, check in INTEGRITY_CHECKS:
+    integrity_skipped = 0
+    for label, check, guard in INTEGRITY_CHECKS:
         try:
+            if not guard():
+                integrity_skipped += 1
+                continue
             if not check():
                 integrity_failures.append(label)
         except Exception as e:
@@ -6441,7 +6521,11 @@ def main(mode: str = "live"):
         print("=" * 60)
         sys.exit(1)
     else:
-        print(f"\n  Integrity checks passed: {len(INTEGRITY_CHECKS)}/{len(INTEGRITY_CHECKS)}")
+        ran = len(INTEGRITY_CHECKS) - integrity_skipped
+        msg = f"\n  Integrity checks passed: {ran}/{ran}"
+        if integrity_skipped:
+            msg += f" ({integrity_skipped} skipped — entity absent in {DATA_MODE} mode)"
+        print(msg)
 
     output = {
         "meta": {
