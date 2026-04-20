@@ -314,7 +314,12 @@
         <div class="hardpoints-scroll col-defense">
 
           @if (shieldSlots().length) {
-            <div class="slot-group-label">Shields <span class="collapse-btn" (click)="toggleSection('shields')">{{ isCollapsed('shields') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
+            <div class="slot-group-label">Shields
+              @if (moduleReserveShieldCount() > 0) {
+                <span class="module-contrib">(+{{ moduleReserveShieldCount() }} reserve via module)</span>
+              }
+              <span class="collapse-btn" (click)="toggleSection('shields')">{{ isCollapsed('shields') ? '+ EXPAND' : '− COLLAPSE' }}</span>
+            </div>
             @for (hp of primaryShieldSlots(); track hp.id) {
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('shields')" />
             }
@@ -474,7 +479,7 @@
             <div class="slot-group-label">Modules <span class="collapse-btn" (click)="toggleSection('modules')">{{ isCollapsed('modules') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
             @for (hp of moduleSlots(); track hp.id) {
               <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('modules')" />
-              @if (!isCollapsed('modules') && unpromotedSubSlotsForModules()[hp.id]; as subs) {
+              @if (!isCollapsed('modules') && subSlotsForModules()[hp.id]; as subs) {
                 @for (sub of subs; track sub.id) {
                   <div class="sub-slot-indent">
                     <app-hardpoint-slot [hardpoint]="sub"

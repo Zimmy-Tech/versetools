@@ -214,8 +214,14 @@ export class LoadoutViewComponent {
       }
     }
 
-    // Apply to each component hardpoint (skip locked slots)
-    for (const hp of ship.hardpoints) {
+    // Apply to each component hardpoint (skip locked slots).
+    // Include module-contributed sub-slots (e.g., Aurora DM module's back
+    // shield) so bulk equip covers every slot a player can actually customize.
+    const slots: Hardpoint[] = [
+      ...ship.hardpoints,
+      ...Object.values(this.subSlotsForModules()).flat(),
+    ];
+    for (const hp of slots) {
       if (this.isSlotLocked(hp)) continue;
       const bySize = milA.get(hp.type);
       if (!bySize) continue;
@@ -266,7 +272,11 @@ export class LoadoutViewComponent {
       }
     }
 
-    for (const hp of ship.hardpoints) {
+    const slots: Hardpoint[] = [
+      ...ship.hardpoints,
+      ...Object.values(this.subSlotsForModules()).flat(),
+    ];
+    for (const hp of slots) {
       if (this.isSlotLocked(hp)) continue;
       const bySize = stealthA.get(hp.type);
       if (!bySize) continue;
@@ -1138,43 +1148,50 @@ export class LoadoutViewComponent {
   subSlotsMap    = computed(() => this._subSlotData().slots);
   rackLeafIdsMap = computed(() => this._subSlotData().rackLeafs);
 
-  // ── Module sub-slot promotion ──────────────────────
-  private readonly PROMOTABLE_TYPES = new Set(['Shield', 'Missile', 'MissileLauncher', 'BombLauncher']);
+  // ── Module sub-slot handling ──────────────────────
+  // Module sub-slots render **in place** under their owning module (Modules
+  // section), not promoted into Shields/Missiles/etc. The Shields section
+  // shows a one-line summary when a module contributes reserve-tier shields
+  // so the player can see the contribution without hunting for it elsewhere.
+  //
+  // Data-layer calcs (shield HP pool, regen cap, EM/IR, power pips, DPS)
+  // iterate `loadout` by item type and are agnostic to UI section, so they
+  // keep working unchanged — the "first 2 active, 3rd+ reserve" rule still
+  // falls out naturally because `dps-panel.ts` iterates ship hardpoints first
+  // and module sub-slots second, with a `.slice(0, 2)` cap.
 
-  /** Module sub-slots that should be promoted to their logical sections. */
-  promotedModuleSubSlots = computed(() => {
-    const subs = this.subSlotsMap();
-    const modules = this.moduleSlots();
-    const promoted: Hardpoint[] = [];
-    for (const modHp of modules) {
-      for (const child of subs[modHp.id] ?? []) {
-        if (this.PROMOTABLE_TYPES.has(child.type)) {
-          promoted.push({ ...child, sourceModuleHpId: modHp.id });
-        }
-      }
-    }
-    return promoted;
-  });
-
-  /** Module sub-slots minus promoted ones — for the Modules section display. */
-  unpromotedSubSlotsForModules = computed(() => {
+  /** All module sub-slots keyed by parent module hp id (includes every type). */
+  subSlotsForModules = computed(() => {
     const subs = this.subSlotsMap();
     const modules = this.moduleSlots();
     const result: Record<string, Hardpoint[]> = {};
     for (const modHp of modules) {
-      const remaining = (subs[modHp.id] ?? []).filter(c => !this.PROMOTABLE_TYPES.has(c.type));
-      if (remaining.length) result[modHp.id] = remaining;
+      const children = subs[modHp.id] ?? [];
+      if (children.length) result[modHp.id] = children;
     }
     return result;
   });
 
-  // Type-specific system slot groups (with module promotion)
+  /** Module-contributed shield sub-slots, for the reserve-summary header
+   *  and for bulk-equip traversal. */
+  private moduleShieldSubSlots = computed(() => {
+    const subs = this.subSlotsMap();
+    const modules = this.moduleSlots();
+    const out: Hardpoint[] = [];
+    for (const modHp of modules) {
+      for (const child of subs[modHp.id] ?? []) {
+        if (child.type === 'Shield') out.push(child);
+      }
+    }
+    return out;
+  });
+
+  moduleReserveShieldCount = computed(() => this.moduleShieldSubSlots().length);
+
+  // Type-specific system slot groups (native only; module sub-slots render
+  // in the Modules section).
   private baseShieldSlots = computed(() => this.utilitySlots().filter(hp => hp.type === 'Shield'));
-  allShieldSlots = computed(() => [
-    ...this.baseShieldSlots(),
-    ...this.promotedModuleSubSlots().filter(hp => hp.type === 'Shield'),
-  ]);
-  /** Shield slots including module-promoted entries. */
+  allShieldSlots = computed(() => this.baseShieldSlots());
   shieldSlots = computed(() => this.allShieldSlots());
   primaryShieldSlots = computed(() => this.allShieldSlots().slice(0, 2));
   excessShieldSlots = computed(() => this.allShieldSlots().slice(2));
@@ -1196,12 +1213,7 @@ export class LoadoutViewComponent {
       return false;
     });
   });
-  allMissileSlots = computed(() => [
-    ...this.baseMissileSlots(),
-    ...this.promotedModuleSubSlots().filter(hp =>
-      hp.type === 'Missile' || hp.type === 'MissileLauncher' || hp.type === 'BombLauncher'
-    ),
-  ]);
+  allMissileSlots = computed(() => this.baseMissileSlots());
   ppSlots     = computed(() => this.utilitySlots().filter(hp => hp.type === 'PowerPlant'));
   coolerSlots = computed(() => this.utilitySlots().filter(hp => hp.type === 'Cooler'));
   bladeSlots  = computed(() => this.utilitySlots().filter(hp => hp.type === 'FlightController'));

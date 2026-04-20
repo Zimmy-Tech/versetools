@@ -842,6 +842,17 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
     font-size: 11px;
     span { font-weight: 400; letter-spacing: 0.5px; text-transform: none; }
   }
+
+  .module-contrib {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--accent);
+    margin-left: 8px;
+    opacity: 0.85;
+  }
 }
 
 .excess-shield {
