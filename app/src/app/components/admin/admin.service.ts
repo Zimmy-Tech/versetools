@@ -222,6 +222,18 @@ export class AdminService {
     return resp.summary;
   }
 
+  // ─── Ship wiki metadata: community-wiki refresh ──────────────────
+
+  async refreshShipWiki(): Promise<ShipWikiRefreshSummary> {
+    const resp = await this.http
+      .post<{ ok: boolean; summary: ShipWikiRefreshSummary }>('/api/admin/ship-wiki/refresh', {}, {
+        headers: this.authHeaders(),
+      })
+      .toPromise();
+    if (!resp?.summary) throw new Error('Refresh response missing summary');
+    return resp.summary;
+  }
+
   // ─── Community submissions ────────────────────────────────────────
 
   async listAccelSubmissions(status: 'pending' | 'approved' | 'rejected' | 'all' = 'pending'): Promise<AccelSubmission[]> {
@@ -343,6 +355,14 @@ export interface ShopPriceRefreshSummary {
   unmatchedShipNames: string[];
   unmatchedItemNames: string[];
   changelogEntryId: number;
+}
+
+export interface ShipWikiRefreshSummary {
+  total: number;      // Vehicles the wiki API reports in total
+  inserted: number;   // Rows written to ship_wiki_metadata
+  matched: number;    // Rows whose normalized class_name matches a ship we carry
+  unmatched: number;  // inserted - matched (stored but won't join)
+  fetchedAt: string;
 }
 
 export interface AccelSubmission {

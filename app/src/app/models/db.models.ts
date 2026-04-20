@@ -25,6 +25,17 @@ export interface Ship {
   size: string;
   role: string;
   career: string;
+  /** Community-wiki role override from api.star-citizen.wiki. More
+   *  specific than DCB `role` ("Light Fighter" vs "Combat"). Populated
+   *  by exportFullDb's LEFT JOIN on ship_wiki_metadata when the DB is
+   *  available; undefined otherwise. Consumers should prefer
+   *  `roleFull ?? role` when displaying to players. */
+  roleFull?: string;
+  /** Community-wiki career override. Same semantics as roleFull. */
+  careerFull?: string;
+  /** Wiki's official display name for the ship matrix. Useful when
+   *  deep-linking to the wiki or displaying a secondary label. */
+  shipMatrixName?: string;
   crew: number;
   isGroundVehicle?: boolean;
   csValue?: number;

@@ -28,11 +28,11 @@
         <div class="ship-stats-row">
           <div class="stat-pill">
             <span class="stat-pill-label">Role</span>
-            <span class="stat-pill-val">{{ data.selectedShip()!.role || '—' }}</span>
+            <span class="stat-pill-val">{{ data.selectedShip()!.roleFull || data.selectedShip()!.role || '—' }}</span>
           </div>
           <div class="stat-pill">
             <span class="stat-pill-label">Career</span>
-            <span class="stat-pill-val">{{ data.selectedShip()!.career || '—' }}</span>
+            <span class="stat-pill-val">{{ data.selectedShip()!.careerFull || data.selectedShip()!.career || '—' }}</span>
           </div>
           <div class="stat-pill">
             <span class="stat-pill-label">Crew</span>

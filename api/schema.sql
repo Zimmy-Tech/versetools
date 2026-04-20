@@ -219,3 +219,28 @@ CREATE TABLE IF NOT EXISTS cooling_observations (
 );
 CREATE INDEX IF NOT EXISTS cooling_obs_ship_idx ON cooling_observations (ship_class_name);
 CREATE INDEX IF NOT EXISTS cooling_obs_status_idx ON cooling_observations (status);
+
+-- Ship role/career metadata sourced from the community wiki API
+-- (api.star-citizen.wiki). Held in its own table so it can refresh on a
+-- different cadence from the DCB-extracted ships JSONB: wiki updates
+-- daily-ish, our extraction runs per-patch. exportFullDb() LEFT JOINs
+-- this onto each ship and emits roleFull / careerFull / shipMatrixName
+-- as new fields — the DCB `role` / `career` values on ships stay
+-- untouched and authoritative for anything that cares about them.
+--
+-- className normalization (mkii↔mk2, Aurora _gs_ insertion, ship-name
+-- fallback) is done ONCE at ingest by the refresh endpoint so the
+-- read-side JOIN is a clean PK equality. Wiki entries whose normalized
+-- class_name doesn't match any of our ships still get stored — they
+-- simply never join. Useful for audit and for lighting up future ships
+-- the moment the DCB extractor picks them up.
+CREATE TABLE IF NOT EXISTS ship_wiki_metadata (
+  class_name        TEXT PRIMARY KEY,                 -- normalized to our ship.className
+  role              TEXT,                             -- e.g. "Light Fighter", "Heavy Cargo"
+  career            TEXT,                             -- e.g. "Combat", "Industrial"
+  ship_matrix_name  TEXT,                             -- wiki's display-name (fallback key)
+  source_url        TEXT NOT NULL DEFAULT 'api.star-citizen.wiki/api/v3/vehicles',
+  fetched_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS ship_wiki_metadata_role_idx   ON ship_wiki_metadata (role);
+CREATE INDEX IF NOT EXISTS ship_wiki_metadata_career_idx ON ship_wiki_metadata (career);

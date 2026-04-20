@@ -765,6 +765,104 @@ export async function refreshUexShopPrices({ actor }) {
   }
 }
 
+// ─── Ship wiki metadata: community-wiki refresh ────────────────────────
+
+/** Refresh the ship_wiki_metadata table from api.star-citizen.wiki.
+ *  Each refresh is a full DELETE + INSERT inside one transaction: the
+ *  wiki is the sole source for this table, there are no manual overrides
+ *  to preserve, and the full set is small (~300 rows). An import failure
+ *  rolls back cleanly, leaving the previous snapshot intact.
+ *
+ *  className normalization runs at ingest via buildNormalizer so the
+ *  stored class_name column matches what exportFullDb's LEFT JOIN will
+ *  look for. Wiki entries that can't be normalized to any existing
+ *  ship are still stored under their raw class_name so they light up
+ *  automatically if/when the DCB extractor picks up a matching ship.
+ *
+ *  Audit log gets one summary row per refresh. No changelog_entries
+ *  ceremony — that table is for player-visible build deltas, and wiki
+ *  role drift isn't one.
+ *
+ *  @returns {{ total: number, inserted: number, matched: number,
+ *    unmatched: number, fetchedAt: string }}
+ */
+export async function refreshShipWikiMetadata({ actor }) {
+  if (!pool) throw new Error('Database not configured');
+  if (!actor) throw new Error('actor is required');
+
+  const { fetchShipWikiVehicles, buildNormalizer, buildWikiRows } =
+    await import('./ship-wiki.js');
+
+  const { vehicles, totalInApi } = await fetchShipWikiVehicles();
+
+  // Use LIVE ships for className normalization. The wiki doesn't
+  // distinguish LIVE vs PTU; a single metadata row applies to both
+  // modes, matched at JOIN time by class_name equality.
+  const shipsRes = await pool.query(
+    "SELECT data->>'className' AS class_name, data->>'name' AS name FROM versedb.ships WHERE mode = 'live'"
+  );
+  const ships = shipsRes.rows.map(r => ({ className: r.class_name, name: r.name }));
+  const normalize = buildNormalizer(ships);
+
+  const rows = buildWikiRows(vehicles, normalize);
+
+  // Classification for the summary — does the normalized class_name
+  // correspond to a ship we actually carry?
+  const shipClassSet = new Set(ships.map(s => String(s.className || '').toLowerCase()));
+  let matched = 0;
+  for (const r of rows) if (shipClassSet.has(r.class_name)) matched += 1;
+  const unmatched = rows.length - matched;
+
+  const fetchedAt = new Date().toISOString();
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM versedb.ship_wiki_metadata');
+
+    // Batched multi-row INSERT. 300 rows × 5 cols = 1500 params, well
+    // within Postgres' ~65k bind-param limit; one statement suffices.
+    if (rows.length) {
+      const valueClauses = [];
+      const params = [];
+      let p = 1;
+      for (const r of rows) {
+        valueClauses.push(`($${p++}, $${p++}, $${p++}, $${p++}, $${p++})`);
+        params.push(r.class_name, r.role, r.career, r.ship_matrix_name, fetchedAt);
+      }
+      await client.query(
+        `INSERT INTO versedb.ship_wiki_metadata
+          (class_name, role, career, ship_matrix_name, fetched_at)
+         VALUES ${valueClauses.join(', ')}`,
+        params
+      );
+    }
+
+    await client.query(
+      `INSERT INTO versedb.audit_log (user_name, action, entity_type, entity_key, new_value)
+       VALUES ($1, 'ship_wiki_refresh', 'ship_wiki_metadata', NULL, $2)`,
+      [actor, JSON.stringify({
+        totalInApi, inserted: rows.length, matched, unmatched, fetchedAt,
+      })]
+    );
+
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+
+  return {
+    total: totalInApi,
+    inserted: rows.length,
+    matched,
+    unmatched,
+    fetchedAt,
+  };
+}
+
 /** Compute the diff between the previous source='uex' shop_prices state
  *  and the new set of rows about to be inserted. Returns lists for the
  *  changelog: changes (same key, different price), added (new keys),
@@ -828,7 +926,7 @@ export async function exportFullDb(mode = 'live') {
   await ensureReady();
   const m = normalizeMode(mode);
 
-  const [shipsRes, itemsRes, locsRes, elsRes, metaRes, shopPricesRes] = await Promise.all([
+  const [shipsRes, itemsRes, locsRes, elsRes, metaRes, shopPricesRes, wikiRes] = await Promise.all([
     pool.query('SELECT data FROM ships WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM items WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM mining_locations ORDER BY id'),
@@ -840,6 +938,10 @@ export async function exportFullDb(mode = 'live') {
              price_buy, price_sell, source, notes
       FROM shop_prices
       ORDER BY entity_type, entity_class, shop_nickname
+    `),
+    pool.query(`
+      SELECT class_name, role, career, ship_matrix_name
+      FROM ship_wiki_metadata
     `),
   ]);
 
@@ -871,13 +973,37 @@ export async function exportFullDb(mode = 'live') {
     map.get(row.entity_class).push(entry);
   }
 
-  // Reattach shopPrices to each ship/item without mutating the stored
-  // JSONB rows. We spread into a new object so the cached row data
-  // stays clean for any other reader.
+  // Ship wiki metadata map — keyed by lowercased class_name. Normalization
+  // happened at ingest, so lookups here are a straightforward case-
+  // insensitive equality against ship.className.
+  const wikiMap = new Map();
+  for (const row of wikiRes.rows) {
+    wikiMap.set(String(row.class_name || '').toLowerCase(), {
+      role: row.role,
+      career: row.career,
+      shipMatrixName: row.ship_matrix_name,
+    });
+  }
+
+  // Reattach shopPrices + wiki role/career to each ship without mutating
+  // the stored JSONB rows. Spread into a new object so the cached row
+  // stays clean for any other reader. DCB `role` and `career` on the
+  // ship are preserved; wiki values land on new `roleFull` / `careerFull`
+  // fields so consumers can choose which to display (Ship Explorer and
+  // Loadout prefer roleFull when present; all other pages that already
+  // read `role` are unaffected).
   const ships = shipsRes.rows.map((r) => {
     const ship = r.data;
     const prices = shipPriceMap.get(ship.className);
-    return prices ? { ...ship, shopPrices: prices } : ship;
+    const wiki = wikiMap.get(String(ship.className || '').toLowerCase());
+    const next = prices ? { ...ship, shopPrices: prices } : ship;
+    if (!wiki) return next;
+    return {
+      ...(next === ship ? { ...ship } : next),
+      roleFull: wiki.role ?? undefined,
+      careerFull: wiki.career ?? undefined,
+      shipMatrixName: wiki.shipMatrixName ?? undefined,
+    };
   });
   const items = itemsRes.rows.map((r) => {
     const item = r.data;

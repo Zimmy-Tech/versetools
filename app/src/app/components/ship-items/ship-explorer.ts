@@ -1,24 +1,6 @@
 import { Component, signal, computed, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../services/data.service';
 import { Ship } from '../../models/db.models';
-
-/** Entry from star-citizen.wiki v3 vehicles API — the only data the
- *  Ship Explorer needs beyond the local ship record. Deliberately
- *  isolated from the main DataService / Ship model so this third-party
- *  source can't leak into the loadout / compare / pickers. */
-interface ShipMatrixEntry {
-  role?: string;          // "Light Fighter", "Medium Fighter", …
-  career?: string;        // "Combat", "Transporter", …
-  shipMatrixName?: string;
-}
-
-interface ShipMatrixFile {
-  source: string;
-  fetched_at: string;
-  total_vehicles_in_api: number;
-  map: Record<string, ShipMatrixEntry>;
-}
 
 /** A configurable dropdown filter for the ship explorer. */
 interface ShipDropdownFilter {
@@ -81,57 +63,14 @@ export class ShipExplorerComponent {
     this.dropdownValues.set({});
   }
 
-  /** Lazy-loaded map from our internal className (lowercased) to the
-   *  star-citizen.wiki role/career entry. Only the Explorer consumes
-   *  this — it never lands in DataService or the Ship interface. */
-  private matrixMap = signal<Record<string, ShipMatrixEntry>>({});
+  constructor(public data: DataService) {}
 
-  constructor(public data: DataService, private http: HttpClient) {
-    // Fetch the static JSON once on init. Failure is non-fatal — the
-    // Explorer falls back to the local ship.role value, so the page
-    // still works if the file is missing (e.g. dev preview before
-    // running the fetcher).
-    this.http.get<ShipMatrixFile>('live/ship_matrix_roles.json').subscribe({
-      next: file => this.matrixMap.set(file?.map ?? {}),
-      error: () => this.matrixMap.set({}),
-    });
-  }
-
-  /** Resolve a ship to its star-citizen.wiki entry with a few fuzzy
-   *  fallbacks — the wiki's class_name field diverges from ours on a
-   *  handful of ships (e.g. `rsi_aurora_mr` ↔ `rsi_aurora_gs_mr`,
-   *  `*_mkii` ↔ `*_mk2`). */
-  private matrixEntry(s: Ship): ShipMatrixEntry | undefined {
-    const map = this.matrixMap();
-    const cn = (s.className ?? '').toLowerCase();
-    if (!cn) return undefined;
-    if (map[cn]) return map[cn];
-
-    // _mkii ↔ _mk2
-    const mkSwap = cn.replace(/_mkii\b/, '_mk2').replace(/_mk2\b/, '_mk2');
-    if (map[mkSwap]) return map[mkSwap];
-    const mkSwapRev = cn.replace(/_mk2\b/, '_mkii');
-    if (map[mkSwapRev]) return map[mkSwapRev];
-
-    // Aurora and a few others: wiki inserts a `_gs_` segment.
-    const withGs = cn.replace(/^(rsi_aurora)_/, '$1_gs_');
-    if (map[withGs]) return map[withGs];
-
-    // Name-based fallback: match against shipMatrixName.
-    const shipName = (s.name ?? '').toLowerCase();
-    if (shipName) {
-      for (const entry of Object.values(map)) {
-        if ((entry.shipMatrixName ?? '').toLowerCase() === shipName) return entry;
-      }
-    }
-    return undefined;
-  }
-
-  /** Public accessor used by the column config — returns the wiki role
-   *  if we have one, otherwise the local ship.role (fallback ensures
-   *  the column is never blank when either source has data). */
+  /** Wiki-sourced role if populated by the server-side JOIN on
+   *  ship_wiki_metadata, else the DCB role. Server does the fuzzy
+   *  className matching at ingest, so this is now a straight fallback
+   *  rather than a runtime lookup. */
   wikiRole(s: Ship): string {
-    return this.matrixEntry(s)?.role ?? s.role ?? '';
+    return s.roleFull ?? s.role ?? '';
   }
 
   /** Ships visible in the table — hidden ships (listed in DataService

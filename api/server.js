@@ -12,7 +12,7 @@ import cors from 'cors';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { dbEnabled, ensureReady, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting, recordChangelogEntry, getChangelogHistory, refreshUexShopPrices } from './db.js';
+import { dbEnabled, ensureReady, exportFullDb, pool, normalizeMode, syncPtuFromLive, getConfig, setSetting, recordChangelogEntry, getChangelogHistory, refreshUexShopPrices, refreshShipWikiMetadata } from './db.js';
 import { authConfigured, totpConfigured, verifyCredentials, verifyTotp, generateTotpSetup, issueToken, requireAdmin, checkRateLimit, recordFailedAttempt, clearRateLimit } from './auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -407,6 +407,26 @@ const refreshShopPricesHandler = async (req, res) => {
 };
 app.post('/admin/shop-prices/refresh', requireAdmin, refreshShopPricesHandler);
 app.post('/api/admin/shop-prices/refresh', requireAdmin, refreshShopPricesHandler);
+
+// ─── Ship wiki metadata: community-wiki refresh ──────────────────────
+//
+// Pulls role/career/shipMatrixName from api.star-citizen.wiki and replaces
+// the ship_wiki_metadata table. className normalization happens at ingest
+// (see api/ship-wiki.js) so the read-side JOIN in exportFullDb is a clean
+// PK equality. Rarely needed — the wiki updates ~daily and role changes
+// are infrequent.
+const refreshShipWikiHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
+  try {
+    const summary = await refreshShipWikiMetadata({ actor: req.user?.username || 'unknown' });
+    res.json({ ok: true, summary });
+  } catch (err) {
+    console.error('[ship-wiki/refresh] failed:', err);
+    res.status(500).json({ error: err.message || 'Refresh failed' });
+  }
+};
+app.post('/admin/ship-wiki/refresh', requireAdmin, refreshShipWikiHandler);
+app.post('/api/admin/ship-wiki/refresh', requireAdmin, refreshShipWikiHandler);
 
 // ─── Diff / import review ────────────────────────────────────────────
 //

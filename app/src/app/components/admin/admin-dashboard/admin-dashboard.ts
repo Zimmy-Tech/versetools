@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DataService } from '../../../services/data.service';
-import { AdminService, ShopPriceRefreshSummary } from '../admin.service';
+import { AdminService, ShopPriceRefreshSummary, ShipWikiRefreshSummary } from '../admin.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -31,6 +31,11 @@ export class AdminDashboardComponent {
   shopRefreshResult = signal<ShopPriceRefreshSummary | null>(null);
   shopRefreshError = signal<string | null>(null);
   showUnmatched = signal(false);
+
+  // Ship wiki refresh state
+  wikiRefreshing = signal(false);
+  wikiRefreshResult = signal<ShipWikiRefreshSummary | null>(null);
+  wikiRefreshError = signal<string | null>(null);
 
   constructor() {
     this.loadConfig();
@@ -90,6 +95,26 @@ export class AdminDashboardComponent {
       this.shopRefreshError.set(err?.error?.error || err?.message || 'Refresh failed');
     } finally {
       this.shopRefreshing.set(false);
+    }
+  }
+
+  /** Refresh ship_wiki_metadata from api.star-citizen.wiki. Replaces the
+   *  whole table in one transaction. Mirrors the shop-prices pattern. */
+  async refreshShipWiki(): Promise<void> {
+    this.wikiRefreshing.set(true);
+    this.wikiRefreshError.set(null);
+    this.wikiRefreshResult.set(null);
+    try {
+      const summary = await this.admin.refreshShipWiki();
+      this.wikiRefreshResult.set(summary);
+      // Force a DB re-fetch so ships in the cache pick up roleFull /
+      // careerFull without a page reload — Ship Explorer and any other
+      // consumer see the new values immediately.
+      await this.data.refreshDb();
+    } catch (err: any) {
+      this.wikiRefreshError.set(err?.error?.error || err?.message || 'Refresh failed');
+    } finally {
+      this.wikiRefreshing.set(false);
     }
   }
 

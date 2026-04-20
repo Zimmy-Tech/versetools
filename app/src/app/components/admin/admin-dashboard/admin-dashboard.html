@@ -123,6 +123,42 @@
     </div>
   </div>
 
+  <h2>Ship Wiki Metadata</h2>
+  <div class="settings-card">
+    <p class="settings-hint">
+      Pulls role, career, and ship-matrix name from
+      <code>api.star-citizen.wiki</code> and replaces the
+      <code>ship_wiki_metadata</code> table. Used to label ships with the
+      finer-grained role strings ("Light Fighter" vs just "Combat") on Ship
+      Explorer and future consumers. className normalization happens at
+      ingest so the server-side JOIN is clean. Safe to run any time.
+    </p>
+
+    @if (wikiRefreshError()) {
+      <div class="config-msg error">{{ wikiRefreshError() }}</div>
+    }
+
+    @if (wikiRefreshResult(); as summary) {
+      <div class="config-msg success">
+        Refreshed.
+        {{ summary.inserted }} rows written ({{ summary.matched }} matched our ships,
+        {{ summary.unmatched }} stored unmatched) out of
+        {{ summary.total }} vehicles in the wiki API.
+      </div>
+    }
+
+    <div class="settings-actions">
+      <button
+        type="button"
+        class="save-btn"
+        (click)="refreshShipWiki()"
+        [disabled]="wikiRefreshing()"
+      >
+        {{ wikiRefreshing() ? 'Refreshing…' : 'Refresh from wiki' }}
+      </button>
+    </div>
+  </div>
+
   <h2>Quick links</h2>
   <a routerLink="/admin/ships" class="link-card">
     <strong>Edit Ships</strong>
