@@ -91,6 +91,11 @@ export class HardpointSlotComponent {
   private readonly HIDE_LABEL_TYPES = new Set([
     'Shield', 'PowerPlant', 'Cooler', 'QuantumDrive', 'Radar', 'LifeSupportGenerator',
     'WeaponGun', 'WeaponTachyon', 'TractorBeam', 'Missile', 'Bomb',
+    // Jump module sits directly under the QD slot — its card shows the
+    // module name already, so the "Jump Module" label above was just
+    // stacking on top of the QD header. Drop it so the JD card butts
+    // flush against the bottom of the QD section.
+    'JumpDrive',
   ]);
   hideLabel = computed(() => this.HIDE_LABEL_TYPES.has(this.hardpoint().type));
 
