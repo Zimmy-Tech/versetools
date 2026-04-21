@@ -26,20 +26,46 @@
   display: flex;
   align-items: center;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--text3);
+  letter-spacing: 2.5px;
+  color: var(--text2);
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding-bottom: 6px;
-  margin-bottom: 6px;
+  margin: 6px 4px 10px;
+  padding: 6px 8px 4px;
+  position: relative;
+
+  // Corner-bracket frame — short cyan ticks at the top-left and
+  // top-right corners only. Reads as a mil-spec MFD callout
+  // ([‾TITLE‾] shape) without committing to a full panel or
+  // underline. Quiet but distinctly sci-fi.
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 12px;
+    height: 7px;
+    border-top: 1px solid rgba(0, 200, 255, 0.55);
+  }
+  &::before {
+    left: 0;
+    border-left: 1px solid rgba(0, 200, 255, 0.55);
+  }
+  &::after {
+    right: 0;
+    border-right: 1px solid rgba(0, 200, 255, 0.55);
+  }
 
   &.collapsible {
     justify-content: space-between;
     cursor: pointer;
     user-select: none;
-    &:hover { color: var(--text2); }
+    transition: color 0.15s;
+    &:hover {
+      color: var(--text);
+      &::before, &::after { border-color: var(--accent); }
+    }
   }
 }
 
@@ -516,97 +542,126 @@
 $accent-warn: #ff8a4a;     // amber — penetration / threat
 $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 
+// Armor Check reads as a regular inset section now — same panel
+// treatment as .stat-block (shields / hull bodies): dark gradient,
+// subtle border, scanline overlay. The .acc-header inside still
+// carries its top-corner cyan brackets, which now naturally frame
+// the card from the top.
 .armor-check-card {
   position: relative;
-  margin-top: 8px;
-  padding: 14px 12px 12px;
-  background:
-    linear-gradient(180deg, rgba(0, 200, 255, 0.025) 0%, rgba(0, 0, 0, 0) 60%),
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.018) 0px,
-      rgba(255, 255, 255, 0.018) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    linear-gradient(160deg, rgba(19, 26, 36, 0.85) 0%, rgba(8, 12, 18, 0.85) 100%);
-  border: 1px solid rgba(0, 200, 255, 0.18);
-  border-top: 1px solid rgba(0, 200, 255, 0.45);
+  overflow: hidden;
+  margin-top: 0;  // gap is owned by .acc-header's bottom margin
+  padding: 8px 10px 10px 12px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.12) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 2px 12px rgba(0, 0, 0, 0.35);
+    inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.2);
+
+  // Scanline overlay — matches .stat-block so the card reads as the
+  // same MFD panel family.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.018) 2px,
+      rgba(255, 255, 255, 0.018) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  > * { position: relative; z-index: 1; }
 }
 
-// Decorative corner brackets — sci-fi HUD framing
-.acc-corner {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  pointer-events: none;
-}
-.acc-corner-tl { top: -1px; left: -1px;
-  border-top: 1px solid rgba(0, 200, 255, 0.7);
-  border-left: 1px solid rgba(0, 200, 255, 0.7); }
-.acc-corner-tr { top: -1px; right: -1px;
-  border-top: 1px solid rgba(0, 200, 255, 0.7);
-  border-right: 1px solid rgba(0, 200, 255, 0.7); }
-.acc-corner-bl { bottom: -1px; left: -1px;
-  border-bottom: 1px solid rgba(0, 200, 255, 0.4);
-  border-left: 1px solid rgba(0, 200, 255, 0.4); }
-.acc-corner-br { bottom: -1px; right: -1px;
-  border-bottom: 1px solid rgba(0, 200, 255, 0.4);
-  border-right: 1px solid rgba(0, 200, 255, 0.4); }
+// Old card-frame corner brackets — the header's top-corner brackets
+// replace these. Hidden so markup can stay untouched.
+.acc-corner { display: none; }
 
-// Header bar with title + detail button
+// Matches .section-title — corner-bracket MFD frame. Margins match
+// .section-title; padding-bottom is tightened and the Detail button
+// uses slimmer vertical padding so the header doesn't inflate past
+// the plain text headers in the other sections.
 .acc-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 200, 255, 0.12);
+  margin: 6px 4px 6px;
+  padding: 6px 8px 2px;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 12px;
+    height: 7px;
+    border-top: 1px solid rgba(0, 200, 255, 0.55);
+  }
+  &::before {
+    left: 0;
+    border-left: 1px solid rgba(0, 200, 255, 0.55);
+  }
+  &::after {
+    right: 0;
+    border-right: 1px solid rgba(0, 200, 255, 0.55);
+  }
 }
 
 .acc-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--text);
-  position: relative;
-  padding-left: 10px;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 12px;
-    background: var(--accent);
-    box-shadow: 0 0 6px rgba(0, 200, 255, 0.6);
-  }
+  color: var(--text2);
 }
 
 .acc-detail-btn {
-  background: rgba(0, 200, 255, 0.08);
-  border: 1px solid rgba(0, 200, 255, 0.3);
-  color: var(--accent);
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  padding: 3px 9px;
+  color: var(--accent);
+  // Same 3D bevel as the loadout PARTS button — tri-stop dark
+  // gradient with cyan tint, full inset bevel, outer drop shadow.
+  background: linear-gradient(180deg,
+    rgba(40, 60, 78, 0.82) 0%,
+    rgba(20, 32, 45, 0.78) 55%,
+    rgba(8, 14, 22, 0.82) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.22);
+  border-radius: 3px;
+  // Slimmer vertical padding so the button doesn't inflate the header
+  // height past the plain-text section titles in Shields / Hull & Armor.
+  padding: 1px 10px;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset -1px 0 0 rgba(0, 0, 0, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.50),
+    0 3px 8px rgba(0, 0, 0, 0.42),
+    0 1px 2px rgba(0, 0, 0, 0.30);
 
   &:hover {
-    background: rgba(0, 200, 255, 0.18);
-    border-color: rgba(0, 200, 255, 0.6);
-    box-shadow: 0 0 8px rgba(0, 200, 255, 0.25);
+    border-color: rgba(0, 200, 255, 0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 1px 0 0 rgba(255, 255, 255, 0.05),
+      inset -1px 0 0 rgba(0, 0, 0, 0.30),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.52),
+      0 5px 14px rgba(0, 0, 0, 0.52),
+      0 0 12px rgba(0, 200, 255, 0.2);
+    transform: translateY(-1px);
   }
 }
 

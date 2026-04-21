@@ -348,9 +348,11 @@
 
           @if (pdcSlots().length) {
             <div class="slot-group-label">Point Defense <span class="collapse-btn" (click)="toggleSection('pdc')">{{ isCollapsed('pdc') ? '+ EXPAND' : '− COLLAPSE' }}</span></div>
-            @for (hp of pdcSlots(); track hp.id) {
-              <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('pdc')" />
-            }
+            <div class="pdc-section">
+              @for (hp of pdcSlots(); track hp.id) {
+                <app-hardpoint-slot [hardpoint]="hp" [collapsed]="isCollapsed('pdc')" />
+              }
+            </div>
           }
 
 

@@ -1,4 +1,5 @@
-<div class="hardpoint-slot">
+<div class="hardpoint-slot"
+     [class.is-mount-equipped]="isMountLikeEquipped()">
   @if (!hideLabel()) {
     <div class="slot-label">
       @if (hardpoint().type !== 'JumpDrive') {

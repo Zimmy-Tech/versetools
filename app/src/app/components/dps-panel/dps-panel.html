@@ -142,9 +142,7 @@
     <!-- Shield HP -->
     @if (totalShieldHP() > 0) {
       <div>
-        <div class="section-title">Shields
-          <span class="stat-label" style="color: var(--gold); font-size: 9px; letter-spacing: 1.5px; margin-left: auto;">RESIST MATH CONFIRMED IN-GAME</span>
-        </div>
+        <div class="section-title">Shields</div>
 
         <!-- HUD: hero card -->
         @if (displayMode() === 'hud') {
@@ -260,16 +258,15 @@
 
     <!-- Armor Check — threat matrix card -->
     @if (armorCheck(); as ac) {
+      <header class="acc-header">
+        <span class="acc-title">Armor Check</span>
+        <button class="acc-detail-btn" (click)="showArmorDetail.set(true)">Detail</button>
+      </header>
       <div class="armor-check-card">
         <div class="acc-corner acc-corner-tl"></div>
         <div class="acc-corner acc-corner-tr"></div>
         <div class="acc-corner acc-corner-bl"></div>
         <div class="acc-corner acc-corner-br"></div>
-
-        <header class="acc-header">
-          <span class="acc-title">Armor Check</span>
-          <button class="acc-detail-btn" (click)="showArmorDetail.set(true)">Detail</button>
-        </header>
 
         <div class="acc-col-headers">
           <span class="acc-col-spacer"></span>

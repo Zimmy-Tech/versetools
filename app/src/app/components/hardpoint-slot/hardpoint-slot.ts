@@ -56,6 +56,28 @@ export class HardpointSlotComponent {
     this.options().some(o => o.type === 'MissileLauncher')
   );
 
+  /** Slot is a "mount-like" container that holds sub-components below
+   *  it — a gimbal mount, missile rack, or a turret. The loadout view
+   *  gives these the angled-tab clip-path + shrink-to-content so they
+   *  read as a header over their attached leaves.
+   *
+   *  Two signals catch all the variants:
+   *   - Hardpoint type = Turret / TurretBase covers every turret slot
+   *     regardless of what's equipped (Salvage Arms on the Reclaimer
+   *     equip an `aegs_reclaimer_..._turret_right` item with a null
+   *     type, so checking the item wouldn't match — the hp type does).
+   *   - Currently-equipped item type = WeaponMount / MissileLauncher
+   *     covers gimbals and racks, which live on ordinary WeaponGun /
+   *     Missile hardpoints and only become mount-like when the player
+   *     fits a mount/rack item. */
+  private static readonly MOUNT_LIKE_SLOT_TYPES = new Set(['Turret', 'TurretBase']);
+  private static readonly MOUNT_LIKE_ITEM_TYPES = new Set(['WeaponMount', 'MissileLauncher']);
+  isMountLikeEquipped = computed(() => {
+    if (HardpointSlotComponent.MOUNT_LIKE_SLOT_TYPES.has(this.hardpoint().type)) return true;
+    const it = this.currentItem()?.type;
+    return !!it && HardpointSlotComponent.MOUNT_LIKE_ITEM_TYPES.has(it);
+  });
+
   isPowerPlantSlot = computed(() =>
     this.options().some(o => o.type === 'PowerPlant')
   );

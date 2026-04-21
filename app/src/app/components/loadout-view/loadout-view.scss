@@ -78,6 +78,70 @@
       0 0 14px rgba(0, 200, 255, 0.14) !important;
     transform: translateY(-1px);
   }
+
+  // Mount-like slots (gimbals, missile racks, turrets, turret bases)
+  // act as "headers" over their attached leaves below. Reuse the
+  // section-tab shape — flat top, angled bottom-right notch — but
+  // keep the slot's existing dark gradient so it doesn't compete
+  // with the cyan section tabs. The clip-path precludes outer drop
+  // shadows so lift comes from the inner bevel highlights instead.
+  ::ng-deep .hardpoint-slot.is-mount-equipped .slot-fixed,
+  ::ng-deep .hardpoint-slot.is-mount-equipped .weapon-trigger,
+  ::ng-deep .hardpoint-slot.is-mount-equipped .cmp-trigger {
+    // Shrink to the tab — fit-content sizes the card to its text, the
+    // extra padding-right gives a couple character widths plus room
+    // for the clipped notch.
+    width: fit-content !important;
+    max-width: 100%;
+    align-self: flex-start;
+    padding-right: 28px !important;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%) !important;
+    border-radius: 2px 0 0 0 !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 1px 0 0 rgba(255, 255, 255, 0.04) !important;
+  }
+  ::ng-deep .hardpoint-slot.is-mount-equipped .slot-fixed:hover,
+  ::ng-deep .hardpoint-slot.is-mount-equipped .weapon-trigger:hover,
+  ::ng-deep .hardpoint-slot.is-mount-equipped .cmp-trigger:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 1px 0 0 rgba(255, 255, 255, 0.05) !important;
+    transform: none;  // outer translateY looks wrong when the shape is clipped
+  }
+
+  // Point Defense slots happen to be typed `Turret`, so they got
+  // swept up by the mount-like rule above. PDCs are single-weapon
+  // units with no sub-components — the tab shape doesn't apply
+  // semantically. Explicit escape hatch via the `.pdc-section`
+  // wrapper restores the normal 3D card treatment.
+  // PDC slot labels (e.g. "S2 PDT 1") are meaningless to players —
+  // in-game there's no way to know which numbered slot is where, so
+  // the label reads as noise. Hide them section-wide.
+  ::ng-deep .pdc-section .slot-label {
+    display: none;
+  }
+
+  ::ng-deep .pdc-section .hardpoint-slot.is-mount-equipped .slot-fixed,
+  ::ng-deep .pdc-section .hardpoint-slot.is-mount-equipped .weapon-trigger,
+  ::ng-deep .pdc-section .hardpoint-slot.is-mount-equipped .cmp-trigger {
+    width: auto !important;
+    max-width: none !important;
+    // align-self:stretch is the default flex behavior — the base
+    // mount-like rule pins it to flex-start to shrink the card, so
+    // we have to explicitly restore stretch to get full width back.
+    align-self: stretch !important;
+    padding-right: 10px !important;   // matches the slot default
+    clip-path: none !important;
+    border-radius: 4px !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 1px 0 0 rgba(255, 255, 255, 0.04),
+      inset -1px 0 0 rgba(0, 0, 0, 0.28),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.50),
+      0 4px 10px rgba(0, 0, 0, 0.48),
+      0 1px 2px rgba(0, 0, 0, 0.32) !important;
+  }
 }
 
 .loadout-main {
@@ -1009,9 +1073,23 @@ app-hardpoint-slot:has(+ .sub-slot-indent) {
 
 
   &.excess-label {
+    // Sub-header inside the Shields section — strip the cyan tab
+    // treatment back to a plain muted text line. The tab styling
+    // was making 11px dim text fuzzy because the tab's clip-path
+    // creates a compositing layer that garbles subpixel AA.
     color: var(--text3);
-    opacity: 0.7;
+    opacity: 0.85;
     font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    padding: 4px 0;
+    margin-top: 6px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    clip-path: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     span { font-weight: 400; letter-spacing: 0.5px; text-transform: none; }
   }
 
@@ -1875,13 +1953,38 @@ select {
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--accent);
-  background: rgba(0, 200, 255, 0.06);
-  border: 1px solid rgba(0, 200, 255, 0.2);
-  padding: 1px 8px;
+  // Same 3D treatment as the loadout pickers — tri-stop dark gradient
+  // with a cyan tint, full inset bevel + outer drop shadow, hover
+  // lifts the button by 1px and adds a cyan rim glow.
+  background: linear-gradient(180deg,
+    rgba(40, 60, 78, 0.82) 0%,
+    rgba(20, 32, 45, 0.78) 55%,
+    rgba(8, 14, 22, 0.82) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.22);
+  border-radius: 3px;
+  padding: 2px 10px;
   margin-left: 6px;
   cursor: pointer;
-  transition: all 0.15s;
-  &:hover { background: rgba(0, 200, 255, 0.12); border-color: var(--accent); }
+  transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset -1px 0 0 rgba(0, 0, 0, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.50),
+    0 3px 8px rgba(0, 0, 0, 0.42),
+    0 1px 2px rgba(0, 0, 0, 0.30);
+
+  &:hover {
+    border-color: rgba(0, 200, 255, 0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 1px 0 0 rgba(255, 255, 255, 0.05),
+      inset -1px 0 0 rgba(0, 0, 0, 0.30),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.52),
+      0 5px 14px rgba(0, 0, 0, 0.52),
+      0 0 12px rgba(0, 200, 255, 0.2);
+    transform: translateY(-1px);
+  }
 }
 
 /* ── Hull Tree Panel ─────────────────────── */
