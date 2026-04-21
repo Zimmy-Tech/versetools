@@ -33,39 +33,13 @@
   text-transform: uppercase;
   margin: 6px 4px 10px;
   padding: 6px 8px 4px;
-  position: relative;
-
-  // Corner-bracket frame — short cyan ticks at the top-left and
-  // top-right corners only. Reads as a mil-spec MFD callout
-  // ([‾TITLE‾] shape) without committing to a full panel or
-  // underline. Quiet but distinctly sci-fi.
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 12px;
-    height: 7px;
-    border-top: 1px solid rgba(0, 200, 255, 0.55);
-  }
-  &::before {
-    left: 0;
-    border-left: 1px solid rgba(0, 200, 255, 0.55);
-  }
-  &::after {
-    right: 0;
-    border-right: 1px solid rgba(0, 200, 255, 0.55);
-  }
 
   &.collapsible {
     justify-content: space-between;
     cursor: pointer;
     user-select: none;
     transition: color 0.15s;
-    &:hover {
-      color: var(--text);
-      &::before, &::after { border-color: var(--accent); }
-    }
+    &:hover { color: var(--text); }
   }
 }
 
@@ -584,35 +558,13 @@ $accent-safe: #4adfd2;     // cyan-teal — deflection / covered
 // replace these. Hidden so markup can stay untouched.
 .acc-corner { display: none; }
 
-// Matches .section-title — corner-bracket MFD frame. Margins match
-// .section-title; padding-bottom is tightened and the Detail button
-// uses slimmer vertical padding so the header doesn't inflate past
-// the plain text headers in the other sections.
+// Matches .section-title — plain title row, no corner brackets.
 .acc-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 6px 4px 6px;
   padding: 6px 8px 2px;
-  position: relative;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 12px;
-    height: 7px;
-    border-top: 1px solid rgba(0, 200, 255, 0.55);
-  }
-  &::before {
-    left: 0;
-    border-left: 1px solid rgba(0, 200, 255, 0.55);
-  }
-  &::after {
-    right: 0;
-    border-right: 1px solid rgba(0, 200, 255, 0.55);
-  }
 }
 
 .acc-title {
