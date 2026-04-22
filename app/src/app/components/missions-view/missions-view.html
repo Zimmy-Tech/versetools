@@ -170,9 +170,45 @@
             <option value="">Main (no events)</option>
             <option value="__all__">All events + main</option>
             @for (ev of events(); track ev[0]) {
-              <option [value]="ev[0]">{{ ev[0] }}{{ ev[1] ? '' : ' (dormant)' }}</option>
+              <option [value]="ev[0]">{{ ev[0] }}</option>
             }
           </select>
+
+          <!-- Per-event opt-in: when the dropdown is "Main (no events)",
+               check specific events here to mix them into the main results.
+               Lets users surface live-ops content (e.g. NMP2) without
+               leaving the main view. -->
+          @if (eventFilter() === '') {
+            <div class="mv-include-events">
+              <button type="button" class="mv-include-toggle"
+                      [class.open]="includeEventsOpen()"
+                      (click)="includeEventsOpen.set(!includeEventsOpen())">
+                <span class="mv-include-caret">{{ includeEventsOpen() ? '▾' : '▸' }}</span>
+                <span class="mv-include-label">Include Event Missions</span>
+                @if (includedEvents().size > 0) {
+                  <span class="mv-include-count">{{ includedEvents().size }}</span>
+                }
+              </button>
+              @if (includeEventsOpen()) {
+                <div class="mv-include-list">
+                  <div class="mv-include-bulk">
+                    <button type="button" class="mv-include-bulk-btn"
+                            (click)="setAllIncludedEvents(true)">All</button>
+                    <button type="button" class="mv-include-bulk-btn"
+                            (click)="setAllIncludedEvents(false)">None</button>
+                  </div>
+                  @for (ev of events(); track ev[0]) {
+                    <label class="mv-include-row">
+                      <input type="checkbox"
+                             [checked]="includedEvents().has(ev[0])"
+                             (change)="toggleIncludedEvent(ev[0])" />
+                      <span class="mv-include-name">{{ ev[0] }}</span>
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+          }
         }
 
         @if (blueprintPools().length) {

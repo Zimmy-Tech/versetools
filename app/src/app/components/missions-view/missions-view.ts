@@ -168,6 +168,14 @@ export class MissionsViewComponent {
   /** Event filter. Empty string = main list (hide all event content); '__all__'
    *  = include everything; any specific event name = show only that event. */
   eventFilter = signal<string>('');
+  /** Per-event opt-in inclusion. When the dropdown is at default
+   *  ("Main no events"), events present in this set are mixed back into
+   *  the main results — letting users surface live-ops content (e.g. NMP2)
+   *  that CIG flips on server-side without a client patch. Independent
+   *  of the dropdown's "show only" semantics. */
+  includedEvents = signal<ReadonlySet<string>>(new Set());
+  /** Whether the include-events panel is expanded. */
+  includeEventsOpen = signal(false);
   sortBy = signal<'reward' | 'title' | 'category' | 'system' | 'rep' | 'chain' | 'faction' | 'type'>('reward');
   /** Sort direction toggles when the user clicks the same column header
    *  twice. Defaults chosen per field in `setSort()` so the first click
@@ -297,6 +305,7 @@ export class MissionsViewComponent {
            this.activityFilter() !== '' || this.contractorFilter() !== '' ||
            this.factionFilter() !== '' || this.rankFilter() !== '' ||
            this.riskFilter() !== '' || this.eventFilter() !== '' ||
+           this.includedEvents().size > 0 ||
            this.blueprintFilter() || this.chainFilter() ||
            this.blueprintNameFilter() !== '' || this.blueprintPoolFilter() !== '';
   });
@@ -361,6 +370,9 @@ export class MissionsViewComponent {
     }
     if (this.eventFilter() === '__all__') out.push({ key: 'event', label: 'Events: All' });
     else if (this.eventFilter()) out.push({ key: 'event', label: 'Event: ' + this.eventFilter() });
+    else if (this.includedEvents().size > 0) {
+      out.push({ key: 'includedEvents', label: `+${this.includedEvents().size} event` + (this.includedEvents().size === 1 ? '' : 's') });
+    }
     if (this.blueprintFilter()) out.push({ key: 'blueprint', label: 'Blueprints' });
     if (this.chainFilter()) out.push({ key: 'chain', label: 'Chains' });
     if (this.blueprintNameFilter()) out.push({ key: 'bpname', label: this.blueprintNameFilter() });
@@ -370,6 +382,22 @@ export class MissionsViewComponent {
     }
     return out;
   });
+
+  /** Toggle one event into/out of the inclusion set. Used by the per-event
+   *  checkbox list in the sidebar. */
+  toggleIncludedEvent(name: string): void {
+    const next = new Set(this.includedEvents());
+    if (next.has(name)) next.delete(name);
+    else next.add(name);
+    this.includedEvents.set(next);
+    this.resetPage();
+  }
+
+  /** Bulk toggle: select all events / clear all. */
+  setAllIncludedEvents(checked: boolean): void {
+    this.includedEvents.set(checked ? new Set(this.events().map(e => e[0])) : new Set());
+    this.resetPage();
+  }
 
   removeFilter(key: string): void {
     switch (key) {
@@ -382,6 +410,7 @@ export class MissionsViewComponent {
       case 'contractor': this.contractorFilter.set(''); break;
       case 'faction': this.factionFilter.set(''); this.rankFilter.set(''); break;
       case 'event': this.eventFilter.set(''); break;
+      case 'includedEvents': this.includedEvents.set(new Set()); break;
       case 'blueprint': this.blueprintFilter.set(false); break;
       case 'chain': this.chainFilter.set(false); break;
       case 'bpname': this.blueprintNameFilter.set(''); break;
@@ -447,12 +476,14 @@ export class MissionsViewComponent {
     if (cat) missions = missions.filter(m => m.category === cat);
     if (law === 'lawful') missions = missions.filter(m => m.lawful);
     if (law === 'unlawful') missions = missions.filter(m => !m.lawful);
-    // Event filter: default hides event-gated contracts from the main list
-    // (matches how other SC tools separate event content). '__all__' disables
-    // the filter; a specific event name narrows to just that event's contracts.
+    // Event filter: dropdown takes priority. When dropdown is at default,
+    // the per-event inclusion set lets users opt specific events back into
+    // the main results (live-ops content CIG enabled server-side).
     const ev = this.eventFilter();
-    if (!ev) missions = missions.filter(m => !m.event);
-    else if (ev !== '__all__') missions = missions.filter(m => m.event === ev);
+    if (!ev) {
+      const inc = this.includedEvents();
+      missions = missions.filter(m => !m.event || inc.has(m.event));
+    } else if (ev !== '__all__') missions = missions.filter(m => m.event === ev);
     if (sys) missions = missions.filter(m =>
       (m.systems?.length ? m.systems.includes(sys) : m.system === sys)
     );
