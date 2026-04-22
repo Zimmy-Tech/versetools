@@ -298,6 +298,17 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
     const fpsGearDiff  = fpsGear  ? diffFpsStreamForChangelog(prevFpsGear,  fpsGear)  : null;
     const fpsArmorDiff = fpsArmor ? diffFpsStreamForChangelog(prevFpsArmor, fpsArmor) : null;
 
+    // For streams NOT in this import, carry forward the prior snapshot.
+    // Otherwise a ship-only import would null out fps_*_snapshot and
+    // break the next build-over-build FPS diff (everything would read
+    // as newly-added because prev snapshot was lost).
+    const fpsItemsSnapshot = fpsItems ? JSON.stringify(fpsItems) :
+      (prev?.fps_items_snapshot != null ? JSON.stringify(prev.fps_items_snapshot) : null);
+    const fpsGearSnapshot = fpsGear ? JSON.stringify(fpsGear) :
+      (prev?.fps_gear_snapshot != null ? JSON.stringify(prev.fps_gear_snapshot) : null);
+    const fpsArmorSnapshot = fpsArmor ? JSON.stringify(fpsArmor) :
+      (prev?.fps_armor_snapshot != null ? JSON.stringify(prev.fps_armor_snapshot) : null);
+
     const insRes = await client.query(
       `INSERT INTO changelog_entries
        (from_version, from_channel, to_version, to_channel,
@@ -320,15 +331,12 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
         JSON.stringify(itemDiff.removed),
         JSON.stringify(ships || []),
         JSON.stringify(items || []),
-        // FPS: null for streams not in this import (preserves prior
-        // snapshot via COALESCE — wait, ALTER ADD COLUMN doesn't do
-        // COALESCE; we just write whatever was supplied or empty).
         JSON.stringify(fpsItemsDiff?.changes ?? []),
         JSON.stringify(fpsGearDiff?.changes ?? []),
         JSON.stringify(fpsArmorDiff?.changes ?? []),
-        fpsItems ? JSON.stringify(fpsItems) : null,
-        fpsGear  ? JSON.stringify(fpsGear)  : null,
-        fpsArmor ? JSON.stringify(fpsArmor) : null,
+        fpsItemsSnapshot,
+        fpsGearSnapshot,
+        fpsArmorSnapshot,
       ]
     );
 
