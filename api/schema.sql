@@ -73,6 +73,29 @@ CREATE TABLE IF NOT EXISTS fps_armor (
   PRIMARY KEY (class_name, mode)
 );
 
+-- Missions pipeline. `missions` stores contracts (className-keyed,
+-- diffable via the generic engine). `mission_refs` is a singleton blob
+-- per mode holding the non-entity reference data (missionGivers,
+-- factions, contractorProfiles, reputationRanks/Ladders/Tiers,
+-- scopeToLadder) — overwritten wholesale on import like the `meta`
+-- blob. Split this way because only contracts have className keys
+-- that fit the diff engine; ref data's shape is dicts-of-dicts.
+CREATE TABLE IF NOT EXISTS missions (
+  class_name      TEXT NOT NULL,
+  mode            TEXT NOT NULL DEFAULT 'live',
+  data            JSONB NOT NULL,
+  source          TEXT NOT NULL DEFAULT 'extracted',
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (class_name, mode)
+);
+
+CREATE TABLE IF NOT EXISTS mission_refs (
+  mode            TEXT PRIMARY KEY DEFAULT 'live',
+  data            JSONB NOT NULL,
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS mining_locations (
   id              SERIAL PRIMARY KEY,
   data            JSONB NOT NULL
@@ -201,6 +224,12 @@ CREATE TABLE IF NOT EXISTS changelog_entries (
   fps_items_changes   JSONB NOT NULL DEFAULT '[]'::jsonb,
   fps_gear_changes    JSONB NOT NULL DEFAULT '[]'::jsonb,
   fps_armor_changes   JSONB NOT NULL DEFAULT '[]'::jsonb,
+  -- Missions snapshot (contracts array + reference-data blob). Same
+  -- carry-forward semantics as ships/items/FPS so imports for any
+  -- stream can never corrupt another stream's history.
+  missions_snapshot      JSONB,
+  mission_refs_snapshot  JSONB,
+  missions_changes       JSONB NOT NULL DEFAULT '[]'::jsonb,
   notes           TEXT
 );
 CREATE INDEX IF NOT EXISTS changelog_entries_id_desc_idx ON changelog_entries (id DESC);

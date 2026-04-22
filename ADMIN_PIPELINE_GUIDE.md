@@ -1,16 +1,21 @@
-# Build Import Pipeline — ships, items, and FPS
+# Build Import Pipeline — ships, items, FPS, missions
 
 This document is the operating manual for promoting freshly-extracted
 game data from the destructive JSON files into the DB-backed production
-pipeline. It covers two pipelines that share one mechanism:
+pipeline. Every data stream in the app flows through one unified
+mechanism:
 
 - **Ship pipeline** — `versedb_data.json` (ships + items, the main
   catalog). Oldest pipeline in the repo.
 - **FPS pipeline** — three files (`versedb_fps.json`,
   `versedb_fps_gear.json`, `versedb_fps_armor.json`) promoted together
   as one atomic bundle.
+- **Missions pipeline** — `versedb_missions.json` split into the
+  contracts array (className-keyed, diffable) and the reference-data
+  blob (factions, reputation ladders, mission givers, etc. —
+  overwritten wholesale like `meta`).
 
-Both streams flow through the same `/admin` diff-review UI and the same
+All streams flow through the same `/admin` diff-review UI and the same
 `/api/admin/diff/preview` + `/api/admin/diff/apply` endpoints. The only
 difference is which arrays live in the uploaded JSON.
 
@@ -23,7 +28,7 @@ end-to-end before proposing extractor or pipeline changes.
 ## Table of contents
 
 1. [Mental model](#mental-model)
-2. [The five streams](#the-five-streams)
+2. [The six streams + one singleton](#the-six-streams--one-singleton)
 3. [Preview vs prod — where data actually comes from](#preview-vs-prod--where-data-actually-comes-from)
 4. [Extracting a fresh build](#extracting-a-fresh-build)
 5. [Building the merged payload](#building-the-merged-payload)
@@ -59,19 +64,28 @@ work without a DB round-trip. Only the prod host enforces curation.
 
 ---
 
-## The five streams
+## The six streams + one singleton
 
-| Stream key  | Payload array  | Backend table   | Source file                   |
-|-------------|---------------|-----------------|-------------------------------|
-| `ships`     | `ships[]`     | `ships`         | `versedb_data.json`           |
-| `items`     | `items[]`     | `items`         | `versedb_data.json`           |
-| `fpsItems`  | `fpsItems[]`  | `fps_items`     | `versedb_fps.json`            |
-| `fpsGear`   | `fpsGear[]`   | `fps_gear`      | `versedb_fps_gear.json`       |
-| `fpsArmor`  | `fpsArmor[]`  | `fps_armor`     | `versedb_fps_armor.json`      |
+| Stream key    | Payload array    | Backend table   | Source file                   |
+|---------------|-----------------|-----------------|-------------------------------|
+| `ships`       | `ships[]`       | `ships`         | `versedb_data.json`           |
+| `items`       | `items[]`       | `items`         | `versedb_data.json`           |
+| `fpsItems`    | `fpsItems[]`    | `fps_items`     | `versedb_fps.json`            |
+| `fpsGear`     | `fpsGear[]`     | `fps_gear`      | `versedb_fps_gear.json`       |
+| `fpsArmor`    | `fpsArmor[]`    | `fps_armor`     | `versedb_fps_armor.json`      |
+| `missions`    | `missions[]`    | `missions`      | `versedb_missions.json` (contracts) |
 
-All five tables share the same schema shape: `(class_name, mode, data
-JSONB, source)`. `mode` is `'live'` or `'ptu'`. `source` is
+All six entity tables share the same schema shape: `(class_name, mode,
+data JSONB, source)`. `mode` is `'live'` or `'ptu'`. `source` is
 `'extracted'` or `'curated'`.
+
+Plus two singletons (not entity-diffable — overwritten wholesale like
+the `meta` blob):
+
+| Singleton key  | Backend table   | Source                                  |
+|----------------|-----------------|-----------------------------------------|
+| `meta`         | `meta`          | `versedb_data.json → meta`              |
+| `missionRefs`  | `mission_refs`  | `versedb_missions.json → {factions, reputationLadders, missionGivers, contractorProfiles, reputationRanks, reputationTiers, scopeToLadder}` |
 
 `fpsItems` is special: the extractor writes three sub-arrays in
 `versedb_fps.json` (`weapons`, `magazines`, `attachments`), but the
@@ -98,8 +112,8 @@ The Angular app's `DataService` (`app/src/app/services/data.service.ts`)
 picks a source at runtime:
 
 - **Static host (`*.github.io`)** — reads `versedb_data.json` directly.
-  No API calls. FPS components fall through to their own
-  `versedb_fps*.json` fetches.
+  No API calls. FPS + missions components fall through to their own
+  `versedb_fps*.json` / `versedb_missions.json` fetches.
 - **Dynamic host (the DO droplet)** — reads `/api/db?mode=<mode>`
   which calls `exportFullDb(mode)` in `api/db.js`. Response shape:
 
@@ -110,18 +124,25 @@ picks a source at runtime:
     items: Item[],
     miningLocations: [...],
     miningElements: [...],
-    fpsItems: unknown[],    // weapons + magazines + attachments (tagged)
+    fpsItems: unknown[],         // weapons + magazines + attachments (tagged)
     fpsGear:  unknown[],
     fpsArmor: unknown[],
+    missions: unknown[],         // contracts (className-keyed)
+    missionRefs: {                // factions, ladders, givers, … (singleton blob)
+      missionGivers, factions, contractorProfiles,
+      reputationRanks, reputationLadders, reputationTiers,
+      scopeToLadder,
+    } | null,
   }
   ```
 
-FPS components (`FpsItemsComponent`, `FpsLoadoutComponent`) prefer
-the DataService payload when it has `fpsItems` / `fpsGear` / `fpsArmor`
-populated, and fall back to HTTP JSON fetch otherwise. They also won't
-clobber a successful DB hydration with a late-arriving JSON fetch.
+Every pipeline-backed component (FPS items, FPS loadout, missions view,
+rep builder, blueprint finder, crafting view) prefers the DataService
+payload when populated and falls back to HTTP JSON fetch otherwise. All
+use a race-guard so a late-arriving JSON response can't clobber a
+successful DB hydration.
 
-This means preview *never* sees curated FPS data, and prod *always*
+This means preview *never* sees curated data, and prod *always*
 sees it. Any time you change the JSON without running the admin
 import, the preview will show the new values but prod will not.
 
@@ -136,10 +157,11 @@ localization dump. All extractors default to `--target live`; use
 
 ```bash
 # From the repo root.
-python3 "PY SCRIPTS/versedb_extract.py"          --target live
-python3 "PY SCRIPTS/extract_fps_weapons.py"      --target live
-python3 "PY SCRIPTS/extract_fps_gear.py"         --target live
-python3 "PY SCRIPTS/extract_fps_armor.py"        --target live
+python3 "PY SCRIPTS/versedb_extract.py"           --target live
+python3 "PY SCRIPTS/extract_fps_weapons.py"       --target live
+python3 "PY SCRIPTS/extract_fps_gear.py"          --target live
+python3 "PY SCRIPTS/extract_fps_armor.py"         --target live
+# Missions extractor is part of versedb_extract.py — no separate step.
 ```
 
 Outputs land at `app/public/live/`:
@@ -148,6 +170,7 @@ Outputs land at `app/public/live/`:
 - `versedb_fps.json` — `{ meta, weapons, magazines, attachments }`
 - `versedb_fps_gear.json` — `{ meta, items }`
 - `versedb_fps_armor.json` — `{ meta, armor }`
+- `versedb_missions.json` — `{ meta, contracts, missionGivers, factions, contractorProfiles, reputationRanks, reputationLadders, reputationTiers, scopeToLadder }`
 
 At this point the preview deployment will pick up the new data on next
 reload. Prod still serves whatever is in the DB.
@@ -167,20 +190,23 @@ Output: `app/public/live/versedb_merged.json` with shape:
 
 ```json
 {
-  "meta":     { "version": "...", "shipCount": 200, ... },
-  "ships":    [ ... ],
-  "items":    [ ... ],
-  "fpsItems": [ /* weapons + mags + attachments, tagged with _kind */ ],
-  "fpsGear":  [ ... ],
-  "fpsArmor": [ ... ]
+  "meta":        { "version": "...", "shipCount": 200, ... },
+  "ships":       [ ... ],
+  "items":       [ ... ],
+  "fpsItems":    [ /* weapons + mags + attachments, tagged with _kind */ ],
+  "fpsGear":     [ ... ],
+  "fpsArmor":    [ ... ],
+  "missions":    [ /* contracts, className-keyed */ ],
+  "missionRefs": { /* factions, ladders, givers, contractorProfiles, … */ }
 }
 ```
 
 You can also upload partial payloads — the diff engine only proposes
 deletes for streams that are actually present in the uploaded JSON.
 So a ships-only upload (`versedb_data.json` directly) will propose
-ship/item changes and leave FPS streams alone. FPS-only payloads work
-the same way (omit `ships` / `items`).
+ship/item changes and leave every other stream alone. FPS-only and
+missions-only payloads work the same way (omit the streams you don't
+want to touch).
 
 ### The `--out` flag
 
@@ -197,12 +223,13 @@ python3 "PY SCRIPTS/merge_build_payload.py" --target live --out /tmp/4.8-import.
 
 1. Log into `/admin` (auth-gated).
 2. Navigate to **Diff & Import Review**.
-3. Choose the merged JSON file (or a raw `versedb_data.json` for
-   ships-only, or any of the FPS files for FPS-only).
+3. Choose the merged JSON file (or a raw single-stream file for a
+   narrower review — `versedb_data.json` for ships/items, any FPS
+   file, or `versedb_missions.json`).
 4. Click **Compute Diff**.
 5. Review the per-stream change lists. Each stream renders as its own
-   section (Ships, Items, FPS Items, FPS Gear, FPS Armor). Filters
-   on the top bar let you narrow by stream, action, or source.
+   section (Ships, Items, FPS Items, FPS Gear, FPS Armor, Missions).
+   Filters on the top bar let you narrow by stream, action, or source.
 6. Check/uncheck entities + individual fields. Defaults:
    - Non-curated creates + modifies: **checked**
    - Curated rows: **unchecked** (explicit opt-in required)
@@ -213,12 +240,14 @@ python3 "PY SCRIPTS/merge_build_payload.py" --target live --out /tmp/4.8-import.
 
 - Opens one Postgres transaction.
 - Walks every stream's selected changes in registry order (ships,
-  items, fpsItems, fpsGear, fpsArmor).
+  items, fpsItems, fpsGear, fpsArmor, missions).
 - For each change: `create` → INSERT; `modify` → merge selected
   fields into existing JSONB; `delete` → DELETE row.
 - Writes one `audit_log` row per change.
 - Overwrites the `meta` singleton row (version bump visible in the
   public header after reload).
+- Overwrites the `mission_refs` singleton row when the upload supplied
+  one (factions, ladders, etc. aren't diffable — always wholesale).
 - Commits.
 - Records one `changelog_entries` row summarizing the delta (post-
   commit, outside the transaction so a changelog failure can't roll
@@ -228,19 +257,20 @@ python3 "PY SCRIPTS/merge_build_payload.py" --target live --out /tmp/4.8-import.
 
 ## Atomic transaction semantics
 
-All five streams commit inside a single `BEGIN...COMMIT`. This is the
-critical guarantee that distinguishes the FPS bundle from a naive
-three-separate-refreshes approach:
+All six entity streams commit inside a single `BEGIN...COMMIT`, along
+with the `meta` and `mission_refs` singleton writes. This is the
+critical guarantee that distinguishes the pipeline from a naive
+per-stream refresh approach:
 
 > Armor port types drive which items fit which slots. Attachment mods
-> reference weapon ports. If armor lands without its matching item
-> changes (or vice versa), the loadout renders broken until the rest
-> catches up.
+> reference weapon ports. Missions reference faction ladders. If any
+> stream lands without its cross-referenced partners, the app renders
+> broken until the rest catches up.
 
 With the atomic transaction, *any* failure anywhere in the apply step
 rolls back the whole thing — you're back to exactly what was in the
-DB before the import. Meta, ships, items, all three FPS tables.
-Nothing half-applied.
+DB before the import. Meta, ships, items, all three FPS tables, both
+mission tables. Nothing half-applied.
 
 The same holds if you select changes from some streams but not others.
 The selected changes from every stream commit together.
@@ -263,9 +293,9 @@ Rows become curated via:
   flips the source. (See `ADMIN_EDITOR_GUIDE.md`.)
 - Explicit curate endpoints — `POST /api/admin/items/:className/curate`.
 
-For FPS tables: no curate endpoints exist yet (pending — the FPS data
-is currently 100% extracted). Adding one is a three-line change
-mirroring the ship/item equivalent.
+For FPS + missions tables: no curate endpoints exist yet (pending —
+those streams are currently 100% extracted). Adding one is a
+three-line change mirroring the ship/item equivalent.
 
 ---
 
@@ -286,11 +316,14 @@ If a bad import lands:
    `source` flips to `curated`, making it resistant to the next
    import.
 4. **Hard rollback (DB-level)** — the `changelog_entries` table
-   captures the `ship_snapshot` and `item_snapshot` of every build
-   import, and now also `fps_items_snapshot` / `fps_gear_snapshot` /
-   `fps_armor_snapshot`. You can restore by reading the prior
-   snapshot and re-importing it. There's no canned "restore from
-   changelog" button yet — this is a manual query.
+   captures a snapshot column per stream on every build import:
+   `ship_snapshot`, `item_snapshot`, `fps_items_snapshot`,
+   `fps_gear_snapshot`, `fps_armor_snapshot`, `missions_snapshot`,
+   `mission_refs_snapshot`. Streams absent from a given import
+   carry forward the prior row's snapshot byte-identical, so history
+   is never destroyed by a partial import. You can restore by
+   reading the desired snapshot and re-importing it — no canned
+   "restore from changelog" button yet.
 
 ---
 
@@ -303,9 +336,9 @@ diff engine only proposes deletes for streams that were present in
 the upload — a missing `fpsGear` array means "don't touch FPS Gear,"
 whereas an empty `fpsGear: []` array means "delete every FPS Gear row."
 
-The merge script always writes all five arrays, so if you see this
-pattern after uploading the merged file, double-check the extractor
-outputs.
+The merge script always writes all six arrays + missionRefs, so if
+you see this pattern after uploading the merged file, double-check
+the extractor outputs.
 
 ### Apply fails with `"entity not found in mode"`
 

@@ -318,12 +318,17 @@ export interface VerseDb {
   meta: DbMeta;
   ships: Ship[];
   items: Item[];
-  // FPS streams. Optional on the type because GitHub Pages preview
-  // loads versedb_data.json (no FPS bundle embedded) — consumers fall
-  // back to fetching versedb_fps*.json directly when these are absent.
+  // FPS + missions streams. Optional on the type because GitHub Pages
+  // preview loads versedb_data.json (no bundle embedded) — consumers
+  // fall back to fetching versedb_fps*.json / versedb_missions.json
+  // directly when these are absent.
   fpsItems?: unknown[];
   fpsGear?: unknown[];
   fpsArmor?: unknown[];
+  missions?: unknown[];
+  // Missions reference data (missionGivers, factions, repLadders, etc.)
+  // as a singleton blob — overwritten wholesale on import like meta.
+  missionRefs?: Record<string, unknown> | null;
 }
 
 /**

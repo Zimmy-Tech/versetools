@@ -110,15 +110,31 @@ export class RepBuilderComponent {
   }
 
   constructor(private http: HttpClient, private data: DataService) {
+    // DB-first (prod), JSON fallback (preview) — same dual-mode pattern
+    // every pipeline-backed component uses.
+    effect(() => {
+      const db = this.data.db();
+      const contracts = db?.missions as any[] | undefined;
+      const refs = db?.missionRefs as any | undefined;
+      if (contracts?.length && refs) {
+        this.missions.set(contracts);
+        this.repLadders.set(refs.reputationLadders ?? {});
+        this.scopeToLadder.set(refs.scopeToLadder ?? {});
+        this.loaded.set(true);
+      }
+    });
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion();
-      this.loaded.set(false);
-      this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe(d => {
-        this.missions.set(d.contracts ?? d.missions ?? []);
-        this.repLadders.set(d.reputationLadders ?? {});
-        this.scopeToLadder.set(d.scopeToLadder ?? {});
-        this.loaded.set(true);
+      if (this.loaded()) return;
+      this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe({
+        next: d => {
+          if (this.loaded()) return;
+          this.missions.set(d.contracts ?? d.missions ?? []);
+          this.repLadders.set(d.reputationLadders ?? {});
+          this.scopeToLadder.set(d.scopeToLadder ?? {});
+          this.loaded.set(true);
+        },
       });
     });
 

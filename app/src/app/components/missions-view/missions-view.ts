@@ -597,17 +597,38 @@ export class MissionsViewComponent {
   }
 
   constructor(private http: HttpClient, private data: DataService, private route: ActivatedRoute) {
+    // DB-first: when DataService carries missions + missionRefs (prod
+    // path), use them. Otherwise fall through to the static JSON fetch
+    // (preview / GitHub Pages). Non-empty guard keeps a fresh DB with
+    // empty mission tables from stranding us on a blank page.
+    effect(() => {
+      const db = this.data.db();
+      const contracts = db?.missions as Mission[] | undefined;
+      const refs = db?.missionRefs as any | undefined;
+      if (contracts?.length && refs) {
+        this.allMissions.set(contracts);
+        this.missionGivers.set(refs.missionGivers ?? {});
+        this.repLadders.set(refs.reputationLadders ?? {});
+        this.scopeToLadder.set(refs.scopeToLadder ?? {});
+        this.contractorProfiles.set(refs.contractorProfiles ?? {});
+        this.loaded.set(true);
+      }
+    });
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion(); // track mode changes
-      this.loaded.set(false);
-      this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe(data => {
-        this.allMissions.set(data.contracts ?? data.missions ?? []);
-        this.missionGivers.set(data.missionGivers);
-        this.repLadders.set(data.reputationLadders ?? {});
-        this.scopeToLadder.set(data.scopeToLadder ?? {});
-        this.contractorProfiles.set(data.contractorProfiles ?? {});
-        this.loaded.set(true);
+      // Skip the JSON fetch when the DB hydration already populated us.
+      if (this.loaded()) return;
+      this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe({
+        next: data => {
+          if (this.loaded()) return; // DB path won the race
+          this.allMissions.set(data.contracts ?? data.missions ?? []);
+          this.missionGivers.set(data.missionGivers);
+          this.repLadders.set(data.reputationLadders ?? {});
+          this.scopeToLadder.set(data.scopeToLadder ?? {});
+          this.contractorProfiles.set(data.contractorProfiles ?? {});
+          this.loaded.set(true);
+        },
       });
     });
 

@@ -258,7 +258,7 @@ function diffFpsStreamForChangelog(prevArr, nextArr) {
   return { changes, added, removed };
 }
 
-export async function recordChangelogEntry({ toVersion, toChannel, ships, items, fpsItems, fpsGear, fpsArmor }) {
+export async function recordChangelogEntry({ toVersion, toChannel, ships, items, fpsItems, fpsGear, fpsArmor, missions, missionRefs }) {
   if (!pool) return null;
   if (!toVersion || !toChannel) {
     throw new Error('toVersion and toChannel are required');
@@ -271,7 +271,8 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
     // entries so UEX price updates don't pollute the build changelog.
     const { rows: prevRows } = await client.query(
       `SELECT id, to_version, to_channel, ship_snapshot, item_snapshot,
-              fps_items_snapshot, fps_gear_snapshot, fps_armor_snapshot
+              fps_items_snapshot, fps_gear_snapshot, fps_armor_snapshot,
+              missions_snapshot, mission_refs_snapshot
        FROM changelog_entries
        WHERE entry_type IS DISTINCT FROM 'price_refresh'
        ORDER BY id DESC LIMIT 1`
@@ -289,36 +290,39 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
     const prevFpsItems = prev?.fps_items_snapshot || [];
     const prevFpsGear  = prev?.fps_gear_snapshot  || [];
     const prevFpsArmor = prev?.fps_armor_snapshot || [];
+    const prevMissions = prev?.missions_snapshot  || [];
 
     // A stream is "present in this import" only if the caller supplied a
     // non-null, non-empty array. Missing / null / empty → carry forward
     // the prior snapshot and write [] to the changes list (no change
     // recorded for this stream this build). Applies symmetrically to
-    // every stream so a FPS-only upload CAN'T corrupt ship/item
-    // snapshots and vice versa — the import-safety guarantee holds
-    // even if malformed input somehow slips past the request-level
-    // guards in diffApplyHandler.
+    // every stream so any-order / any-mix imports can't corrupt another
+    // stream's history, even if malformed input slips past the
+    // request-level guards in diffApplyHandler.
     const hasShips    = Array.isArray(ships)    && ships.length    > 0;
     const hasItems    = Array.isArray(items)    && items.length    > 0;
     const hasFpsItems = Array.isArray(fpsItems) && fpsItems.length > 0;
     const hasFpsGear  = Array.isArray(fpsGear)  && fpsGear.length  > 0;
     const hasFpsArmor = Array.isArray(fpsArmor) && fpsArmor.length > 0;
+    const hasMissions = Array.isArray(missions) && missions.length > 0;
+    // missionRefs is a non-array singleton blob; "present" = non-null object.
+    const hasMissionRefs = missionRefs && typeof missionRefs === 'object';
 
-    const shipDiff     = hasShips    ? diffArraysForChangelog(prevShips, ships, true)     : null;
-    const itemDiff     = hasItems    ? diffArraysForChangelog(prevItems, items, false)    : null;
-    const fpsItemsDiff = hasFpsItems ? diffFpsStreamForChangelog(prevFpsItems, fpsItems)  : null;
-    const fpsGearDiff  = hasFpsGear  ? diffFpsStreamForChangelog(prevFpsGear,  fpsGear)   : null;
-    const fpsArmorDiff = hasFpsArmor ? diffFpsStreamForChangelog(prevFpsArmor, fpsArmor)  : null;
+    const shipDiff     = hasShips    ? diffArraysForChangelog(prevShips, ships, true)      : null;
+    const itemDiff     = hasItems    ? diffArraysForChangelog(prevItems, items, false)     : null;
+    const fpsItemsDiff = hasFpsItems ? diffFpsStreamForChangelog(prevFpsItems, fpsItems)   : null;
+    const fpsGearDiff  = hasFpsGear  ? diffFpsStreamForChangelog(prevFpsGear,  fpsGear)    : null;
+    const fpsArmorDiff = hasFpsArmor ? diffFpsStreamForChangelog(prevFpsArmor, fpsArmor)   : null;
+    const missionsDiff = hasMissions ? diffFpsStreamForChangelog(prevMissions, missions)   : null;
 
-    // Carry-forward snapshots for streams absent from this import. Each
-    // stream's snapshot is independent — a FPS-only import preserves
-    // the prior ship/item snapshot untouched, and a ship-only import
-    // preserves the prior FPS snapshots.
-    const shipSnapshot     = hasShips    ? JSON.stringify(ships)    : (prev?.ship_snapshot       != null ? JSON.stringify(prev.ship_snapshot)       : null);
-    const itemSnapshot     = hasItems    ? JSON.stringify(items)    : (prev?.item_snapshot       != null ? JSON.stringify(prev.item_snapshot)       : null);
-    const fpsItemsSnapshot = hasFpsItems ? JSON.stringify(fpsItems) : (prev?.fps_items_snapshot  != null ? JSON.stringify(prev.fps_items_snapshot)  : null);
-    const fpsGearSnapshot  = hasFpsGear  ? JSON.stringify(fpsGear)  : (prev?.fps_gear_snapshot   != null ? JSON.stringify(prev.fps_gear_snapshot)   : null);
-    const fpsArmorSnapshot = hasFpsArmor ? JSON.stringify(fpsArmor) : (prev?.fps_armor_snapshot  != null ? JSON.stringify(prev.fps_armor_snapshot)  : null);
+    // Carry-forward snapshots for streams absent from this import.
+    const shipSnapshot         = hasShips        ? JSON.stringify(ships)       : (prev?.ship_snapshot         != null ? JSON.stringify(prev.ship_snapshot)         : null);
+    const itemSnapshot         = hasItems        ? JSON.stringify(items)       : (prev?.item_snapshot         != null ? JSON.stringify(prev.item_snapshot)         : null);
+    const fpsItemsSnapshot     = hasFpsItems     ? JSON.stringify(fpsItems)    : (prev?.fps_items_snapshot    != null ? JSON.stringify(prev.fps_items_snapshot)    : null);
+    const fpsGearSnapshot      = hasFpsGear      ? JSON.stringify(fpsGear)     : (prev?.fps_gear_snapshot     != null ? JSON.stringify(prev.fps_gear_snapshot)     : null);
+    const fpsArmorSnapshot     = hasFpsArmor     ? JSON.stringify(fpsArmor)    : (prev?.fps_armor_snapshot    != null ? JSON.stringify(prev.fps_armor_snapshot)    : null);
+    const missionsSnapshot     = hasMissions     ? JSON.stringify(missions)    : (prev?.missions_snapshot     != null ? JSON.stringify(prev.missions_snapshot)     : null);
+    const missionRefsSnapshot  = hasMissionRefs  ? JSON.stringify(missionRefs) : (prev?.mission_refs_snapshot != null ? JSON.stringify(prev.mission_refs_snapshot) : null);
 
     const insRes = await client.query(
       `INSERT INTO changelog_entries
@@ -326,8 +330,9 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
         ship_changes, item_changes, ship_added, item_added, ship_removed, item_removed,
         ship_snapshot, item_snapshot,
         fps_items_changes, fps_gear_changes, fps_armor_changes,
-        fps_items_snapshot, fps_gear_snapshot, fps_armor_snapshot)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+        fps_items_snapshot, fps_gear_snapshot, fps_armor_snapshot,
+        missions_changes, missions_snapshot, mission_refs_snapshot)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
        RETURNING id`,
       [
         prev?.to_version ?? null,
@@ -348,6 +353,9 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
         fpsItemsSnapshot,
         fpsGearSnapshot,
         fpsArmorSnapshot,
+        JSON.stringify(missionsDiff?.changes ?? []),
+        missionsSnapshot,
+        missionRefsSnapshot,
       ]
     );
 
@@ -627,13 +635,20 @@ async function migrateCoolingIrColumn() {
   console.log('[db] added reported_ir_value to cooling_observations');
 }
 
-// Add FPS snapshot/change columns to changelog_entries on existing DBs
-// that predate the FPS pipeline promotion. Fresh installs get these from
-// schema.sql directly; this migration backfills older databases.
-async function migrateChangelogFpsColumns() {
+// Add FPS + missions snapshot/change columns to changelog_entries on
+// existing DBs that predate those pipeline promotions. Fresh installs
+// get them from schema.sql directly; this migration backfills older
+// databases. Covers both the FPS triplet and the missions pair
+// (contracts array + ref-data singleton).
+async function migrateChangelogStreamColumns() {
   if (!pool) return;
-  const cols = ['fps_items_snapshot', 'fps_gear_snapshot', 'fps_armor_snapshot',
-                'fps_items_changes', 'fps_gear_changes', 'fps_armor_changes'];
+  const cols = [
+    // FPS
+    'fps_items_snapshot', 'fps_gear_snapshot', 'fps_armor_snapshot',
+    'fps_items_changes', 'fps_gear_changes', 'fps_armor_changes',
+    // Missions
+    'missions_snapshot', 'mission_refs_snapshot', 'missions_changes',
+  ];
   for (const col of cols) {
     const { rows } = await pool.query(`
       SELECT 1 FROM information_schema.columns
@@ -656,7 +671,7 @@ export async function ensureReady() {
   await importIfEmpty();
   await migrateExtractShopPrices();
   await migrateCoolingIrColumn();
-  await migrateChangelogFpsColumns();
+  await migrateChangelogStreamColumns();
 }
 
 /** Coerce arbitrary input into a valid mode value. */
@@ -1008,7 +1023,7 @@ export async function exportFullDb(mode = 'live') {
   const m = normalizeMode(mode);
 
   const [shipsRes, itemsRes, locsRes, elsRes, metaRes, shopPricesRes, wikiRes,
-         fpsItemsRes, fpsGearRes, fpsArmorRes] = await Promise.all([
+         fpsItemsRes, fpsGearRes, fpsArmorRes, missionsRes, missionRefsRes] = await Promise.all([
     pool.query('SELECT data FROM ships WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM items WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM mining_locations ORDER BY id'),
@@ -1028,6 +1043,8 @@ export async function exportFullDb(mode = 'live') {
     pool.query('SELECT data FROM fps_items WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM fps_gear  WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM fps_armor WHERE mode = $1 ORDER BY class_name', [m]),
+    pool.query('SELECT data FROM missions  WHERE mode = $1 ORDER BY class_name', [m]),
+    pool.query('SELECT data FROM mission_refs WHERE mode = $1', [m]),
   ]);
 
   // Group shop prices by entity for fast lookup
@@ -1105,5 +1122,7 @@ export async function exportFullDb(mode = 'live') {
     fpsItems: fpsItemsRes.rows.map((r) => r.data),
     fpsGear:  fpsGearRes.rows.map((r) => r.data),
     fpsArmor: fpsArmorRes.rows.map((r) => r.data),
+    missions: missionsRes.rows.map((r) => r.data),
+    missionRefs: missionRefsRes.rows[0]?.data ?? null,
   };
 }

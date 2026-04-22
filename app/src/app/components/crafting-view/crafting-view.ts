@@ -350,9 +350,17 @@ export class CraftingViewComponent {
           }
         }
       });
-      this.http.get<any>(`${prefix}versedb_missions.json`).subscribe(data => {
-        this.allMissions.set(data.contracts ?? data.missions ?? []);
-      });
+      // Missions: prefer DB when available (fps/ships/missions all
+      // promote through the same diff pipeline), fall back to the
+      // static JSON on preview hosts where no API is reachable.
+      const dbMissions = this.data.db()?.missions as any[] | undefined;
+      if (dbMissions?.length) {
+        this.allMissions.set(dbMissions);
+      } else {
+        this.http.get<any>(`${prefix}versedb_missions.json`).subscribe(data => {
+          this.allMissions.set(data.contracts ?? data.missions ?? []);
+        });
+      }
     });
   }
 

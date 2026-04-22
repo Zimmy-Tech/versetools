@@ -328,16 +328,32 @@ export class BlueprintFinderComponent {
   }
 
   constructor(private http: HttpClient, private data: DataService, private router: Router) {
+    // DB-first (prod), JSON fallback (preview).
+    effect(() => {
+      const db = this.data.db();
+      const contracts = db?.missions as any[] | undefined;
+      const refs = db?.missionRefs as any | undefined;
+      if (contracts?.length && refs) {
+        this.allMissions.set(contracts);
+        this.repLadders.set(refs.reputationLadders ?? {});
+        this.scopeToLadder.set(refs.scopeToLadder ?? {});
+        this.contractorProfiles.set(refs.contractorProfiles ?? {});
+        this.loaded.set(true);
+      }
+    });
     effect(() => {
       const prefix = this.data.dataPrefix();
       this.data.modeVersion();
-      this.loaded.set(false);
-      this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe(d => {
-        this.allMissions.set(d.contracts ?? d.missions ?? []);
-        this.repLadders.set(d.reputationLadders ?? {});
-        this.scopeToLadder.set(d.scopeToLadder ?? {});
-        this.contractorProfiles.set(d.contractorProfiles ?? {});
-        this.loaded.set(true);
+      if (this.loaded()) return;
+      this.http.get<MissionData>(`${prefix}versedb_missions.json`).subscribe({
+        next: d => {
+          if (this.loaded()) return;
+          this.allMissions.set(d.contracts ?? d.missions ?? []);
+          this.repLadders.set(d.reputationLadders ?? {});
+          this.scopeToLadder.set(d.scopeToLadder ?? {});
+          this.contractorProfiles.set(d.contractorProfiles ?? {});
+          this.loaded.set(true);
+        },
       });
     });
   }

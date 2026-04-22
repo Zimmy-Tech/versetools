@@ -263,6 +263,10 @@ export class DiffReviewComponent {
     const payload: any = {};
     const uploaded = this.uploadedJson();
     if (uploaded?.meta) payload.meta = uploaded.meta;
+    // Missions reference data (factions, ladders, givers, etc.) rides
+    // alongside as a singleton blob — same wholesale-overwrite semantics
+    // as `meta`. Only sent when the caller supplied it.
+    if (uploaded?.missionRefs) payload.missionRefs = uploaded.missionRefs;
 
     for (const s of this.streams) {
       const uploadedArr = (uploaded?.[s.payloadKey] ?? []) as any[];
@@ -290,6 +294,8 @@ export class DiffReviewComponent {
       if (app.fpsItems) parts.push(`${app.fpsItems} FPS item${app.fpsItems === 1 ? '' : 's'}`);
       if (app.fpsGear)  parts.push(`${app.fpsGear} FPS gear`);
       if (app.fpsArmor) parts.push(`${app.fpsArmor} FPS armor`);
+      if (app.missions) parts.push(`${app.missions} mission${app.missions === 1 ? '' : 's'}`);
+      if (app.missionRefs) parts.push('mission refs updated');
       this.applyResult.set(
         parts.length > 0
           ? `Applied: ${parts.join(', ')}. Reload the public site to see updates.`

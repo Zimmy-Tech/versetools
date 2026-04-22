@@ -514,6 +514,7 @@ const DIFF_ENTITY_TYPES = {
   fpsItems: { payloadKey: 'fpsItems', table: 'fps_items', entityType: 'fps_item' },
   fpsGear:  { payloadKey: 'fpsGear',  table: 'fps_gear',  entityType: 'fps_gear' },
   fpsArmor: { payloadKey: 'fpsArmor', table: 'fps_armor', entityType: 'fps_armor' },
+  missions: { payloadKey: 'missions', table: 'missions',  entityType: 'mission' },
 };
 
 const diffPreviewHandler = async (req, res) => {
@@ -621,6 +622,11 @@ const diffApplyHandler = async (req, res) => {
     return res.status(400).json({ error: 'Body must be an object' });
   }
   const meta = body.meta && typeof body.meta === 'object' ? body.meta : null;
+  // Missions reference data: non-entity, dicts-of-dicts (factions,
+  // missionGivers, reputation ladders, etc.). Overwritten wholesale
+  // on import like `meta`. Stored in its own singleton table —
+  // only present when the import actually includes refs.
+  const missionRefs = body.missionRefs && typeof body.missionRefs === 'object' ? body.missionRefs : null;
   const mode = normalizeMode(req.query.mode);
 
   // Normalize the payload into a {key: changes[]} map driven by the
@@ -681,6 +687,27 @@ const diffApplyHandler = async (req, res) => {
       applied.meta = true;
     }
 
+    // Upsert missionRefs singleton when an import supplies it. Same
+    // overwrite-wholesale semantics as meta — there's nothing to
+    // curate field-by-field on reputation ladders and mission giver
+    // descriptions, so the diff engine is bypassed here.
+    if (missionRefs) {
+      const oldRes = await client.query('SELECT data FROM mission_refs WHERE mode = $1', [mode]);
+      const before = oldRes.rows[0]?.data ?? null;
+      await client.query(
+        `INSERT INTO mission_refs (mode, data, updated_at) VALUES ($1, $2, NOW())
+         ON CONFLICT (mode) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+        [mode, missionRefs]
+      );
+      await logAudit(
+        client, req.admin.sub,
+        'import_mission_refs', 'mission_refs', 'mission_refs', mode, null,
+        before ? JSON.stringify(before) : null,
+        JSON.stringify(missionRefs)
+      );
+      applied.missionRefs = true;
+    }
+
     await client.query('COMMIT');
 
     // Record a changelog entry AFTER the apply transaction commits.
@@ -691,7 +718,8 @@ const diffApplyHandler = async (req, res) => {
     // FPS-only or ship-only) don't corrupt the other streams' history.
     const anyStreamSupplied =
       fullByType.ships || fullByType.items ||
-      fullByType.fpsItems || fullByType.fpsGear || fullByType.fpsArmor;
+      fullByType.fpsItems || fullByType.fpsGear || fullByType.fpsArmor ||
+      fullByType.missions || missionRefs;
     if (anyStreamSupplied && meta?.version) {
       try {
         const result = await recordChangelogEntry({
@@ -702,6 +730,8 @@ const diffApplyHandler = async (req, res) => {
           fpsItems: fullByType.fpsItems,
           fpsGear: fullByType.fpsGear,
           fpsArmor: fullByType.fpsArmor,
+          missions: fullByType.missions,
+          missionRefs,
         });
         applied.changelog = result;
       } catch (clErr) {
