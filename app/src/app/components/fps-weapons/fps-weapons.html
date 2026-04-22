@@ -6,48 +6,63 @@
     </div>
   } @else {
 
-    <div class="fps-header">
-      <div class="fps-title">FPS Weapons Database</div>
-      <div class="fps-sub">
-        @if (tab() === 'weapons') { {{ filtered().length }} of {{ weapons().length }} weapons }
-        @else { {{ magFiltered().length }} of {{ magazines().length }} magazines }
-      </div>
-    </div>
-
     <div class="fps-tabs">
       <button class="fps-tab" [class.active]="tab() === 'weapons'" (click)="tab.set('weapons')">Weapons</button>
       <button class="fps-tab" [class.active]="tab() === 'mags'" (click)="tab.set('mags')">Ammo / Mags</button>
     </div>
 
-    @if (tab() === 'weapons') {
-    <div class="fps-filters">
-      <select class="fps-select" [value]="typeFilter()" (change)="typeFilter.set($any($event.target).value)">
-        <option value="">All Types</option>
-        @for (t of types(); track t) {
-          @if (t) { <option [value]="t">{{ t }}</option> }
-        }
-      </select>
-      <select class="fps-select" [value]="subTypeFilter()" (change)="subTypeFilter.set($any($event.target).value)">
-        <option value="">All Ammo</option>
-        @for (t of subTypes(); track t) {
-          @if (t) { <option [value]="t">{{ t }}</option> }
-        }
-      </select>
-      <input class="fps-search" type="text" placeholder="Search..."
-             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
-    </div>
-    } @else {
-    <div class="fps-filters">
-      <select class="fps-select" [value]="magAmmoFilter()" (change)="magAmmoFilter.set($any($event.target).value)">
-        <option value="">All Ammo</option>
-        @for (t of magAmmoTypes(); track t) {
-          @if (t) { <option [value]="t">{{ t }}</option> }
-        }
-      </select>
-      <input class="fps-search" type="text" placeholder="Search..."
-             [value]="magSearch()" (input)="magSearch.set($any($event.target).value)" />
-    </div>
-    }
+  <div class="fps-body">
+    <aside class="fps-sidebar">
+      <div class="fps-sidebar-title">Filters</div>
+      <div class="fps-sidebar-sub">
+        @if (tab() === 'weapons') { {{ filtered().length }} / {{ weapons().length }} weapons }
+        @else { {{ magFiltered().length }} / {{ magazines().length }} magazines }
+      </div>
+
+      @if (tab() === 'weapons') {
+        <div class="fps-filter-group">
+          <label>Search</label>
+          <input class="fps-search" type="text" placeholder="Name or manufacturer…"
+                 [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+        </div>
+
+        <div class="fps-filter-group">
+          <label>Type</label>
+          <select class="fps-select" [value]="typeFilter()" (change)="typeFilter.set($any($event.target).value)">
+            <option value="">All Types</option>
+            @for (t of types(); track t) {
+              @if (t) { <option [value]="t">{{ t }}</option> }
+            }
+          </select>
+        </div>
+
+        <div class="fps-filter-group">
+          <label>Ammo</label>
+          <select class="fps-select" [value]="subTypeFilter()" (change)="subTypeFilter.set($any($event.target).value)">
+            <option value="">All Ammo</option>
+            @for (t of subTypes(); track t) {
+              @if (t) { <option [value]="t">{{ t }}</option> }
+            }
+          </select>
+        </div>
+      } @else {
+        <div class="fps-filter-group">
+          <label>Search</label>
+          <input class="fps-search" type="text" placeholder="Name or weapon…"
+                 [value]="magSearch()" (input)="magSearch.set($any($event.target).value)" />
+        </div>
+
+        <div class="fps-filter-group">
+          <label>Ammo</label>
+          <select class="fps-select" [value]="magAmmoFilter()" (change)="magAmmoFilter.set($any($event.target).value)">
+            <option value="">All Ammo</option>
+            @for (t of magAmmoTypes(); track t) {
+              @if (t) { <option [value]="t">{{ t }}</option> }
+            }
+          </select>
+        </div>
+      }
+    </aside>
 
     @if (tab() === 'weapons') {
     <div class="fps-table-wrap">
@@ -153,6 +168,7 @@
       </table>
     </div>
     }
+  </div>
 
   }
 

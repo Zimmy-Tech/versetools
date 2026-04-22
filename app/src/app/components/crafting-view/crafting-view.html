@@ -9,17 +9,22 @@
     <div class="crafting-layout">
 
     <!-- Sidebar: search + filters + item sets -->
-    <div class="craft-sidebar">
+    <aside class="craft-sidebar">
+      <div class="craft-sidebar-title">Filters</div>
+      <div class="craft-sidebar-sub">{{ totalFiltered() }} recipes</div>
+
       <div class="filter-group">
-        <span class="filter-label">Search</span>
-        <input class="filter-input" type="text" placeholder="item name, resource..."
+        <label>Search</label>
+        <input class="filter-input" type="text" placeholder="Name or resource…"
                [value]="searchQuery()"
                (input)="searchQuery.set($any($event.target).value); resetPage()">
       </div>
 
       <div class="filter-group">
-        <span class="filter-label">Category</span>
-        <select class="filter-select" (change)="categoryFilter.set($any($event.target).value); subtypeFilter.set(''); resetPage()">
+        <label>Category</label>
+        <select class="filter-select"
+                [value]="categoryFilter()"
+                (change)="categoryFilter.set($any($event.target).value); subtypeFilter.set(''); resetPage()">
           @for (cat of categories(); track cat) {
             <option [value]="cat">{{ cat || 'All' }}</option>
           }
@@ -28,8 +33,10 @@
 
       @if (subtypes().length > 1) {
         <div class="filter-group">
-          <span class="filter-label">Type</span>
-          <select class="filter-select" (change)="subtypeFilter.set($any($event.target).value); resetPage()">
+          <label>Type</label>
+          <select class="filter-select"
+                  [value]="subtypeFilter()"
+                  (change)="subtypeFilter.set($any($event.target).value); resetPage()">
             @for (sub of subtypes(); track sub) {
               <option [value]="sub">{{ sub || 'All' }}</option>
             }
@@ -38,8 +45,10 @@
       }
 
       <div class="filter-group">
-        <span class="filter-label">Resource</span>
-        <select class="filter-select" (change)="resourceFilter.set($any($event.target).value); resetPage()">
+        <label>Resource</label>
+        <select class="filter-select"
+                [value]="resourceFilter()"
+                (change)="resourceFilter.set($any($event.target).value); resetPage()">
           @for (res of resources(); track res) {
             <option [value]="res">{{ res || 'All' }}</option>
           }
@@ -47,7 +56,79 @@
       </div>
 
       <div class="filter-group">
-        <span class="filter-label">Sort</span>
+        <label>Armor Set</label>
+        <select class="filter-select"
+                [value]="armorSets.includes(setFilter()) ? setFilter() : ''"
+                (change)="setFilter.set($any($event.target).value); resetPage()">
+          <option value="">All Armor Sets</option>
+          @for (set of armorSets; track set) {
+            <option [value]="set">{{ set }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Pistol</label>
+        <select class="filter-select"
+                [value]="weaponPistols.includes(setFilter()) ? setFilter() : ''"
+                (change)="setFilter.set($any($event.target).value); resetPage()">
+          <option value="">All Pistols</option>
+          @for (w of weaponPistols; track w) { <option [value]="w">{{ w }}</option> }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Rifle</label>
+        <select class="filter-select"
+                [value]="weaponRifles.includes(setFilter()) ? setFilter() : ''"
+                (change)="setFilter.set($any($event.target).value); resetPage()">
+          <option value="">All Rifles</option>
+          @for (w of weaponRifles; track w) { <option [value]="w">{{ w }}</option> }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Sniper</label>
+        <select class="filter-select"
+                [value]="weaponSnipers.includes(setFilter()) ? setFilter() : ''"
+                (change)="setFilter.set($any($event.target).value); resetPage()">
+          <option value="">All Snipers</option>
+          @for (w of weaponSnipers; track w) { <option [value]="w">{{ w }}</option> }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Shotgun</label>
+        <select class="filter-select"
+                [value]="weaponShotguns.includes(setFilter()) ? setFilter() : ''"
+                (change)="setFilter.set($any($event.target).value); resetPage()">
+          <option value="">All Shotguns</option>
+          @for (w of weaponShotguns; track w) { <option [value]="w">{{ w }}</option> }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>SMG</label>
+        <select class="filter-select"
+                [value]="weaponSMGs.includes(setFilter()) ? setFilter() : ''"
+                (change)="setFilter.set($any($event.target).value); resetPage()">
+          <option value="">All SMGs</option>
+          @for (w of weaponSMGs; track w) { <option [value]="w">{{ w }}</option> }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>LMG</label>
+        <select class="filter-select"
+                [value]="weaponLMGs.includes(setFilter()) ? setFilter() : ''"
+                (change)="setFilter.set($any($event.target).value); resetPage()">
+          <option value="">All LMGs</option>
+          @for (w of weaponLMGs; track w) { <option [value]="w">{{ w }}</option> }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Sort</label>
         <select class="filter-select" (change)="sortBy.set($any($event.target).value)">
           <option value="name">Name (A-Z)</option>
           <option value="time">Craft Time</option>
@@ -56,78 +137,15 @@
       </div>
 
       @if (hasActiveFilter()) {
-        <button class="filter-clear" (click)="clearFilters()">Clear Filters</button>
+        <button class="filter-clear" (click)="clearFilters()">Clear all filters</button>
       }
+
       <div class="pager">
         <button class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">&#9664;</button>
-        <span class="pager-info">{{ page() }} / {{ totalPages() }} <span class="pager-total">({{ totalFiltered() }})</span></span>
+        <span class="pager-info">{{ page() }} / {{ totalPages() }}</span>
         <button class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">&#9654;</button>
       </div>
-
-      <div class="sb-section">
-        <span class="sb-label">Armor Sets</span>
-        <div class="sb-buttons">
-          @for (set of armorSets; track set) {
-            <button class="sb-btn" [class.active]="setFilter() === set"
-                    (click)="toggleSet(set)">{{ set }}</button>
-          }
-        </div>
-      </div>
-      <div class="sb-section">
-        <span class="sb-label">Pistols</span>
-        <div class="sb-buttons">
-          @for (w of weaponPistols; track w) {
-            <button class="sb-btn" [class.active]="setFilter() === w"
-                    (click)="toggleSet(w)">{{ w }}</button>
-          }
-        </div>
-      </div>
-      <div class="sb-section">
-        <span class="sb-label">Rifles</span>
-        <div class="sb-buttons">
-          @for (w of weaponRifles; track w) {
-            <button class="sb-btn" [class.active]="setFilter() === w"
-                    (click)="toggleSet(w)">{{ w }}</button>
-          }
-        </div>
-      </div>
-      <div class="sb-section">
-        <span class="sb-label">Snipers</span>
-        <div class="sb-buttons">
-          @for (w of weaponSnipers; track w) {
-            <button class="sb-btn" [class.active]="setFilter() === w"
-                    (click)="toggleSet(w)">{{ w }}</button>
-          }
-        </div>
-      </div>
-      <div class="sb-section">
-        <span class="sb-label">Shotguns</span>
-        <div class="sb-buttons">
-          @for (w of weaponShotguns; track w) {
-            <button class="sb-btn" [class.active]="setFilter() === w"
-                    (click)="toggleSet(w)">{{ w }}</button>
-          }
-        </div>
-      </div>
-      <div class="sb-section">
-        <span class="sb-label">SMGs</span>
-        <div class="sb-buttons">
-          @for (w of weaponSMGs; track w) {
-            <button class="sb-btn" [class.active]="setFilter() === w"
-                    (click)="toggleSet(w)">{{ w }}</button>
-          }
-        </div>
-      </div>
-      <div class="sb-section">
-        <span class="sb-label">LMGs</span>
-        <div class="sb-buttons">
-          @for (w of weaponLMGs; track w) {
-            <button class="sb-btn" [class.active]="setFilter() === w"
-                    (click)="toggleSet(w)">{{ w }}</button>
-          }
-        </div>
-      </div>
-    </div>
+    </aside>
 
     <!-- Main content -->
     <div class="craft-main">

@@ -98,35 +98,68 @@
 
 /* ── Grid Panels (System + Body selection) ───────────── */
 
-.grid-panel {
+/* Section containers — raised card recipe matching FPS loadout + DB
+   sidebars. Top padding leaves room for the hanging-tab h2 header. */
+.grid-panel,
+.detail-panel {
   max-width: 900px;
   margin: 0 auto;
-  text-align: center;
-}
-
-h2 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
-  margin: 0 0 16px;
-  padding-bottom: 8px;
-  border-bottom: none;
+  padding: 32px 18px 18px;
   position: relative;
+  background: linear-gradient(180deg,
+    rgba(28, 38, 52, 0.82) 0%,
+    rgba(20, 28, 40, 0.72) 50%,
+    rgba(15, 21, 30, 0.72) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.35);
 
-  &::after {
+  &::before {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+    top: 0; right: 0;
+    width: 24px; height: 1px;
+    background: linear-gradient(270deg, rgba(0, 200, 255, 0.3), transparent);
   }
+
+  & + & { margin-top: 16px; }
 }
+
+.grid-panel { text-align: center; }
+
+/* Section title as a hanging cyan tab sitting on top of the card —
+   same vocabulary as sidecar headers. */
+h2 {
+  position: absolute;
+  top: 0; left: 14px;
+  margin: 0;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(6, 24, 33, 0.92);
+  background: linear-gradient(180deg,
+    rgba(0, 220, 255, 0.95) 0%,
+    rgba(0, 180, 230, 0.88) 100%);
+  padding: 4px 20px 4px 12px;
+  border-radius: 2px 0 0 0;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  box-shadow:
+    0 2px 6px rgba(0, 200, 255, 0.18),
+    0 1px 0 rgba(0, 100, 130, 0.4);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  white-space: nowrap;
+  max-width: calc(100% - 28px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .card-grid {
   display: flex;
@@ -219,8 +252,6 @@ h2 {
 /* ── Detail Panel (Location minerals) ────────────────── */
 
 .detail-panel {
-  max-width: 900px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -244,16 +275,21 @@ h3 {
   border-left: 2px solid rgba(0, 200, 255, 0.3);
 }
 
-/* ── Mineral Table ───────────────────────────────────── */
+/* ── Mineral Table — recessed well with bevel header ────── */
 
 .mineral-table {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
-  border: 1px solid rgba(0, 200, 255, 0.08);
+  /* Recessed-well container — matches the stat-block + filter-input
+     pattern used across the site (darker than parent, inset top shadow). */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.18);
 }
 
 .mt-header, .mt-row {
@@ -271,8 +307,12 @@ h3 {
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text3);
-  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
-  background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+  /* Raised header bar sits above the recessed rows. */
+  background: linear-gradient(180deg, rgba(32, 42, 56, 0.75) 0%, rgba(20, 28, 40, 0.65) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .mt-row {
@@ -308,7 +348,6 @@ h3 {
   grid-template-columns: 1fr 100px 70px 100px 70px;
 }
 
-.section-spacer { margin-top: 28px; }
 
 .ore-browse-card {
   min-width: 200px;
@@ -346,19 +385,23 @@ h3 {
   align-items: center;
   gap: 6px;
   padding: 14px 12px;
-  background: linear-gradient(160deg, rgba(19, 26, 36, 0.7) 0%, rgba(0, 0, 0, 0.2) 100%);
+  /* Recessed-well readout cell — matches .stat-block on ship sidebars. */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.1) 100%);
   border: 1px solid rgba(255, 255, 255, 0.04);
-  border-left: 3px solid rgba(0, 200, 255, 0.3);
-  border-radius: 0 4px 4px 0;
+  border-radius: 4px;
   position: relative;
   overflow: hidden;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.18);
 
-  &::after {
+  &::before {
     content: '';
     position: absolute;
     top: 0; right: 0;
     width: 20px; height: 1px;
-    background: linear-gradient(270deg, rgba(0, 200, 255, 0.15), transparent);
+    background: linear-gradient(270deg, rgba(0, 200, 255, 0.25), transparent);
   }
 }
 

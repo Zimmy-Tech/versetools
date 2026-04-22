@@ -6,28 +6,35 @@
     </div>
   } @else {
 
-    <div class="sid-header">
-      <div class="sid-title">Ship Explorer</div>
-      <div class="sid-sub">{{ filtered().length }} of {{ ships().length }} ships</div>
-    </div>
+  <div class="sid-body">
+    <aside class="sid-sidebar">
+      <div class="sid-sidebar-title">Filters</div>
+      <div class="sid-sidebar-sub">{{ filtered().length }} / {{ ships().length }} ships</div>
 
-    <div class="sid-filters">
+      <div class="sid-filter-group">
+        <label>Search</label>
+        <input class="sid-search" type="text" placeholder="Name, manufacturer…"
+               [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+      </div>
+
       @for (filter of dropdowns; track filter.label) {
-        <select class="sid-select" [value]="dropdownValues()[filter.label] || ''"
-                (change)="setDropdownValue(filter.label, $any($event.target).value)">
-          <option value="">{{ filter.allLabel }}</option>
-          @for (opt of dropdownOptions(filter); track opt) {
-            <option [value]="opt">{{ opt }}</option>
-          }
-        </select>
+        <div class="sid-filter-group">
+          <label>{{ filter.label }}</label>
+          <select class="sid-select" [value]="dropdownValues()[filter.label] || ''"
+                  (change)="setDropdownValue(filter.label, $any($event.target).value)">
+            <option value="">{{ filter.allLabel }}</option>
+            @for (opt of dropdownOptions(filter); track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
       }
-      <input class="sid-search" type="text" placeholder="Search..."
-             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+
       @if (hasActiveFilter()) {
         <button class="sid-clear" (click)="clearFilters()"
-                title="Reset every filter to show all ships">Clear filters</button>
+                title="Reset every filter to show all ships">Clear all filters</button>
       }
-    </div>
+    </aside>
 
     <div class="sid-table-wrap">
       <table class="sid-table">
@@ -53,6 +60,7 @@
         </tbody>
       </table>
     </div>
+  </div>
 
   }
 </div>

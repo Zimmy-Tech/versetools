@@ -2,11 +2,6 @@
   @if (!loaded()) {
     <div class="empty-state"><div class="empty-title">Loading FPS items...</div></div>
   } @else {
-    <div class="fps-header">
-      <div class="fps-title">FPS Items Database</div>
-      <div class="fps-sub">{{ filtered().length }} of {{ items().length }} items</div>
-    </div>
-
     <div class="fps-tabs">
       <button class="fps-tab" [class.active]="tab() === 'barrels'" (click)="setTab('barrels')">
         Barrel Mods <span class="tab-count">{{ tabCounts().barrels }}</span>
@@ -31,10 +26,19 @@
       </button>
     </div>
 
-    <div class="fps-filters">
-      <input class="fps-search" type="text" placeholder="Search..."
-             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
-    </div>
+  <div class="fps-body">
+    <aside class="fps-sidebar">
+      <div class="fps-sidebar-title">Filters</div>
+      <div class="fps-sidebar-sub">{{ filtered().length }} / {{ items().length }} items</div>
+
+      <div class="fps-filter-group">
+        <label>Search</label>
+        <input class="fps-search" type="text" placeholder="Name or manufacturer…"
+               [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+      </div>
+    </aside>
+
+    <div class="fps-main">
 
     @if (tab() === 'melee') {
       <!-- Two stacked tables: blades on top, throwables underneath. Each
@@ -253,5 +257,7 @@
       </table>
     </div>
     }
+    </div>
+  </div>
   }
 </div>

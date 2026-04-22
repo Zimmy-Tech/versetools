@@ -9,16 +9,19 @@
     <div class="bp-layout">
 
       <!-- Sidebar: search + filters + item sets -->
-      <div class="bp-sidebar">
+      <aside class="bp-sidebar">
+        <div class="bp-sidebar-title">Filters</div>
+        <div class="bp-sidebar-sub">{{ filtered().length }} blueprints</div>
+
         <div class="filter-group">
-          <span class="filter-label">Search</span>
-          <input class="filter-input" type="text" placeholder="Search blueprints..."
+          <label>Search</label>
+          <input class="filter-input" type="text" placeholder="Blueprint name…"
                  [value]="searchQuery()"
                  (input)="searchQuery.set($any($event.target).value)">
         </div>
 
         <div class="filter-group">
-          <span class="filter-label">Type</span>
+          <label>Type</label>
           <select class="filter-select" (change)="typeFilter.set($any($event.target).value)">
             @for (t of types(); track t) {
               <option [value]="t">{{ t || 'All' }}</option>
@@ -26,28 +29,82 @@
           </select>
         </div>
 
-        <span class="bp-count">{{ filtered().length }} blueprints</span>
-
-        <div class="sb-section">
-          <span class="sb-label">Armor Sets</span>
-          <div class="sb-buttons">
+        <div class="filter-group">
+          <label>Armor Set</label>
+          <select class="filter-select"
+                  [value]="armorSets().includes(setFilter()) ? setFilter() : ''"
+                  (change)="setFilter.set($any($event.target).value)">
+            <option value="">All Armor Sets</option>
             @for (set of armorSets(); track set) {
-              <button class="sb-btn" [class.active]="setFilter() === set"
-                      (click)="toggleSet(set)">{{ set }}</button>
+              <option [value]="set">{{ set }}</option>
             }
-          </div>
+          </select>
         </div>
 
-        <div class="sb-section">
-          <span class="sb-label">Weapons</span>
-          <div class="sb-buttons">
-            @for (set of weaponSets(); track set) {
-              <button class="sb-btn" [class.active]="setFilter() === set"
-                      (click)="toggleSet(set)">{{ set }}</button>
-            }
-          </div>
+        <div class="filter-group">
+          <label>Pistol</label>
+          <select class="filter-select"
+                  [value]="pistolSets().includes(setFilter()) ? setFilter() : ''"
+                  (change)="setFilter.set($any($event.target).value)">
+            <option value="">All Pistols</option>
+            @for (w of pistolSets(); track w) { <option [value]="w">{{ w }}</option> }
+          </select>
         </div>
-      </div>
+
+        <div class="filter-group">
+          <label>Rifle</label>
+          <select class="filter-select"
+                  [value]="rifleSets().includes(setFilter()) ? setFilter() : ''"
+                  (change)="setFilter.set($any($event.target).value)">
+            <option value="">All Rifles</option>
+            @for (w of rifleSets(); track w) { <option [value]="w">{{ w }}</option> }
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Sniper</label>
+          <select class="filter-select"
+                  [value]="sniperSets().includes(setFilter()) ? setFilter() : ''"
+                  (change)="setFilter.set($any($event.target).value)">
+            <option value="">All Snipers</option>
+            @for (w of sniperSets(); track w) { <option [value]="w">{{ w }}</option> }
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Shotgun</label>
+          <select class="filter-select"
+                  [value]="shotgunSets().includes(setFilter()) ? setFilter() : ''"
+                  (change)="setFilter.set($any($event.target).value)">
+            <option value="">All Shotguns</option>
+            @for (w of shotgunSets(); track w) { <option [value]="w">{{ w }}</option> }
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>SMG</label>
+          <select class="filter-select"
+                  [value]="smgSets().includes(setFilter()) ? setFilter() : ''"
+                  (change)="setFilter.set($any($event.target).value)">
+            <option value="">All SMGs</option>
+            @for (w of smgSets(); track w) { <option [value]="w">{{ w }}</option> }
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>LMG</label>
+          <select class="filter-select"
+                  [value]="lmgSets().includes(setFilter()) ? setFilter() : ''"
+                  (change)="setFilter.set($any($event.target).value)">
+            <option value="">All LMGs</option>
+            @for (w of lmgSets(); track w) { <option [value]="w">{{ w }}</option> }
+          </select>
+        </div>
+
+        @if (searchQuery() || typeFilter() || setFilter()) {
+          <button class="bp-clear" (click)="clearFilters()">Clear all filters</button>
+        }
+      </aside>
 
       <!-- Main content -->
       <div class="bp-main">

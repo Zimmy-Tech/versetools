@@ -36,7 +36,10 @@
             </button>
           }
         </div>
-        <h2 class="section-spacer">Select Ore</h2>
+      </div>
+
+      <div class="grid-panel">
+        <h2>Select Ore</h2>
         <div class="card-grid">
           @for (ore of allOres(); track ore) {
             <button class="location-card ore-card" (click)="selectOre(ore)">

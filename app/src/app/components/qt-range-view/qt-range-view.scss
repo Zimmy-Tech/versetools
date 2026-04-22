@@ -21,7 +21,9 @@
   flex: 1;
   overflow: hidden;
   min-height: 0;
-  max-width: 1100px;
+  /* Widened to accommodate the expanded ship-name column (38ch) +
+     the drive-name / grade / qd-size columns sized in ch units. */
+  max-width: 1560px;
   width: 100%;
   margin: 0 auto;
   padding: 12px;
@@ -63,101 +65,238 @@
   flex-shrink: 0;
 }
 
-// ── Filter bar ──────────────────────────────────────────
+// ── Sidebar layout ──────────────────────────────────────
 
-.filter-bar {
+.qt-body {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px 12px;
-  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 4px;
-  margin-bottom: 10px;
+  flex: 1;
+  min-height: 0;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: center;
 }
 
-.class-buttons {
+.qt-sidebar {
+  width: 240px;
+  flex: 0 0 240px;
   display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px 12px 12px;
+  position: relative;
+  background: linear-gradient(180deg,
+    rgba(28, 38, 52, 0.82) 0%,
+    rgba(20, 28, 40, 0.72) 50%,
+    rgba(15, 21, 30, 0.72) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 24px; height: 1px;
+    background: linear-gradient(270deg, rgba(0, 200, 255, 0.3), transparent);
+  }
+}
+
+.qt-sidebar-title {
+  position: absolute;
+  top: 0; left: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(6, 24, 33, 0.92);
+  background: linear-gradient(180deg,
+    rgba(0, 220, 255, 0.95) 0%,
+    rgba(0, 180, 230, 0.88) 100%);
+  padding: 4px 18px 4px 10px;
+  border-radius: 2px 0 0 0;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  box-shadow:
+    0 2px 6px rgba(0, 200, 255, 0.18),
+    0 1px 0 rgba(0, 100, 130, 0.4);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.qt-sidebar-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 2px;
+}
+
+.qt-group {
+  display: flex; flex-direction: column; gap: 5px;
+
+  label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  &.grade-disabled .grade-buttons { opacity: 0.35; }
+}
+
+.qt-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+// ── Class buttons (6 drive classes) — raised 3D bevel ─────
+
+.class-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 4px;
-  flex-wrap: wrap;
 }
 
 .class-btn {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text3);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(40, 52, 68, 0.82) 0%, rgba(24, 32, 44, 0.82) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 3px;
-  padding: 6px 12px;
+  padding: 7px 8px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s, transform 0.12s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 1px 3px rgba(0, 0, 0, 0.2);
 
   &:hover {
     color: var(--text);
-    border-color: var(--accent2);
+    border-color: rgba(0, 200, 255, 0.25);
+    background: linear-gradient(180deg, rgba(48, 62, 80, 0.9) 0%, rgba(28, 38, 50, 0.9) 100%);
+    transform: translateY(-0.5px);
   }
 
   &.active {
-    background: rgba(0, 200, 255, 0.1);
     color: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 6px rgba(0, 200, 255, 0.2);
+    border-color: rgba(0, 200, 255, 0.45);
+    background: linear-gradient(180deg, rgba(0, 30, 45, 0.9) 0%, rgba(0, 22, 36, 0.9) 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(0, 200, 255, 0.15),
+      0 0 10px rgba(0, 200, 255, 0.22);
+    text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
   }
 
-  // Class-coloured active state
-  &.cls-military.active    { color: #ff6b6b; border-color: #ff6b6b; background: rgba(255, 107, 107, 0.12); box-shadow: 0 0 6px rgba(255, 107, 107, 0.25); }
-  &.cls-civilian.active    { color: #4aff7a; border-color: #4aff7a; background: rgba(74, 255, 122, 0.1);  box-shadow: 0 0 6px rgba(74, 255, 122, 0.2);  }
-  &.cls-stealth.active     { color: #b980ff; border-color: #b980ff; background: rgba(185, 128, 255, 0.1); box-shadow: 0 0 6px rgba(185, 128, 255, 0.2); }
-  &.cls-competition.active { color: #ffd166; border-color: #ffd166; background: rgba(255, 209, 102, 0.1); box-shadow: 0 0 6px rgba(255, 209, 102, 0.2); }
-  &.cls-industrial.active  { color: #ffaa4a; border-color: #ffaa4a; background: rgba(255, 170, 74, 0.1);  box-shadow: 0 0 6px rgba(255, 170, 74, 0.2);  }
+  // Class-coloured active state — each class gets its own accent
+  // rim + glow pressed-in treatment.
+  &.cls-military.active {
+    color: #ff8080;
+    border-color: rgba(255, 107, 107, 0.5);
+    background: linear-gradient(180deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.05) 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(255, 107, 107, 0.25),
+      0 0 10px rgba(255, 107, 107, 0.3);
+    text-shadow: 0 0 6px rgba(255, 107, 107, 0.45);
+  }
+  &.cls-civilian.active {
+    color: #72ff92;
+    border-color: rgba(74, 255, 122, 0.5);
+    background: linear-gradient(180deg, rgba(74, 255, 122, 0.18) 0%, rgba(74, 255, 122, 0.04) 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(74, 255, 122, 0.22),
+      0 0 10px rgba(74, 255, 122, 0.28);
+    text-shadow: 0 0 6px rgba(74, 255, 122, 0.4);
+  }
+  &.cls-stealth.active {
+    color: #cc99ff;
+    border-color: rgba(185, 128, 255, 0.5);
+    background: linear-gradient(180deg, rgba(185, 128, 255, 0.2) 0%, rgba(185, 128, 255, 0.05) 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(185, 128, 255, 0.24),
+      0 0 10px rgba(185, 128, 255, 0.3);
+    text-shadow: 0 0 6px rgba(185, 128, 255, 0.42);
+  }
+  &.cls-competition.active {
+    color: #ffd980;
+    border-color: rgba(255, 209, 102, 0.5);
+    background: linear-gradient(180deg, rgba(255, 209, 102, 0.2) 0%, rgba(255, 209, 102, 0.05) 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(255, 209, 102, 0.24),
+      0 0 10px rgba(255, 209, 102, 0.3);
+    text-shadow: 0 0 6px rgba(255, 209, 102, 0.42);
+  }
+  &.cls-industrial.active {
+    color: #ffbb66;
+    border-color: rgba(255, 170, 74, 0.5);
+    background: linear-gradient(180deg, rgba(255, 170, 74, 0.2) 0%, rgba(255, 170, 74, 0.05) 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(255, 170, 74, 0.24),
+      0 0 10px rgba(255, 170, 74, 0.3);
+    text-shadow: 0 0 6px rgba(255, 170, 74, 0.42);
+  }
 }
+
+// ── Grade buttons (A/B/C/D) — raised 3D bevel, pressed-in active ─
 
 .grade-buttons {
   display: flex;
-  align-items: center;
-  gap: 3px;
-
-  &.grade-disabled { opacity: 0.4; }
-
-  .filter-label {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-right: 4px;
-  }
+  gap: 4px;
 }
 
 .grade-btn {
+  flex: 1;
   font-family: 'Share Tech Mono', monospace;
   font-size: 12px;
   font-weight: 700;
-  width: 26px;
-  height: 26px;
+  height: 30px;
   color: var(--text3);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(40, 52, 68, 0.82) 0%, rgba(24, 32, 44, 0.82) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 3px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s, transform 0.12s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 1px 3px rgba(0, 0, 0, 0.2);
 
   &:hover:not(:disabled) {
     color: var(--text);
-    border-color: var(--accent2);
+    border-color: rgba(0, 200, 255, 0.25);
+    background: linear-gradient(180deg, rgba(48, 62, 80, 0.9) 0%, rgba(28, 38, 50, 0.9) 100%);
   }
 
   &.active {
-    background: rgba(0, 200, 255, 0.1);
     color: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 6px rgba(0, 200, 255, 0.2);
+    border-color: rgba(0, 200, 255, 0.45);
+    background: linear-gradient(180deg, rgba(0, 30, 45, 0.9) 0%, rgba(0, 22, 36, 0.9) 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(0, 200, 255, 0.15),
+      0 0 10px rgba(0, 200, 255, 0.22);
+    text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
   }
 
   &.unavailable {
@@ -165,30 +304,29 @@
     text-decoration: line-through;
   }
 
-  &:disabled {
-    cursor: not-allowed;
-  }
-}
-
-.filter-sep {
-  width: 1px;
-  height: 22px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0 4px;
+  &:disabled { cursor: not-allowed; }
 }
 
 .filter-input {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Exo 2', sans-serif;
   font-size: 13px;
   color: var(--text);
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-  padding: 5px 8px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.08) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 6px 10px;
   outline: none;
+  width: 100%;
+  transition: all 0.15s;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03);
 
   &:focus {
-    border-color: var(--accent);
+    border-color: rgba(0, 200, 255, 0.4);
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.35),
+      0 0 6px rgba(0, 200, 255, 0.2);
   }
 }
 
@@ -211,8 +349,8 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.22) 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 3px;
-  padding: 5px 10px 5px 10px;
-  min-width: 140px;
+  padding: 6px 10px;
+  width: 100%;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -294,33 +432,52 @@
   }
 }
 
-.filter-input { flex: 1; min-width: 160px; }
-
-.count-badge {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  padding: 3px 8px;
-  background: rgba(0, 200, 255, 0.1);
-  color: var(--accent);
-  border-radius: 3px;
-  letter-spacing: 1px;
-}
 
 // ── Ranking list ────────────────────────────────────────
 
+/* Column-width spec — kept as a CSS custom property so header + row
+   grids share a single definition and always line up. The `ch` unit
+   resolves against the element's own font, so both grid containers
+   must use the SAME font/size below for ch to compute identically —
+   otherwise the data cells and header cells would end up in different
+   column widths and the visual columns would drift. */
+.ranking-header,
+.ranking-row {
+  /* Ship · QT Fuel · QD Size · Drive Name · Grade · Class · Range bar · Gm
+       - Ship     38ch  longest name (36) + 2ch buffer
+       - QT Fuel  90px  numeric + SCU unit
+       - QD Size   8ch  "QD Size"   (7) + 1ch buffer
+       - Drive    24ch  longest drive name (22) + 2ch buffer
+       - Grade     6ch  "Grade"     (5) + 1ch buffer
+       - Class   120px  fits longest class label "Competition"
+       - Range   flex
+       - Gm      100px  numeric + " Gm" */
+  grid-template-columns: 38ch 90px 8ch 24ch 6ch 120px minmax(180px, 1.3fr) 100px;
+  /* Shared sizing font so ch is identical across header + row. */
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+}
+
 .ranking-header {
   display: grid;
-  grid-template-columns: 40px 1.6fr 80px 48px 2fr 2fr 110px;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--text3);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  text-transform: uppercase;
+
+  /* Container font stays at the shared 16px Rajdhani so `ch` resolves
+     identically to .ranking-row. Small-caps header text lives on the
+     child spans below. */
+
+  > span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text3);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .rh-name { text-align: left; }
 }
 
 .ranking-list {
@@ -333,7 +490,18 @@
 
 .ranking-row {
   display: grid;
-  grid-template-columns: 40px 1.6fr 80px 48px 2fr 2fr 110px;
+  /* Ship · QT Fuel · QD Size · Drive Name · Grade · Class · Range bar · Gm
+     Content-fit column widths so headers + values sit tight without
+     dead space:
+       - Ship     38ch  = longest name (36)  + 2ch buffer
+       - QT Fuel  90px  (numeric + SCU unit)
+       - QD Size   8ch  = "QD Size"    (7) + 1ch buffer
+       - Drive    24ch  = longest drive name (22) + 2ch buffer
+       - Grade     6ch  = "Grade"      (5) + 1ch buffer
+       - Class   120px  (fits longest class label "Competition")
+       - Range   flex
+       - Gm      100px  (numeric + " Gm") */
+  grid-template-columns: 38ch 90px 8ch 24ch 6ch 120px minmax(180px, 1.3fr) 100px;
   align-items: center;
   gap: 8px;
   padding: 7px 10px;
@@ -349,14 +517,6 @@
   }
 }
 
-.row-rank {
-  font-family: 'Exo 2', sans-serif;
-  font-variant-numeric: tabular-nums;
-  font-size: 13.5px;
-  color: var(--text3);
-  text-align: center;
-}
-.ranking-row.top3 .row-rank { color: var(--accent); font-weight: 700; }
 
 .row-name {
   display: flex;
@@ -380,7 +540,7 @@
   font-variant-numeric: tabular-nums;
   font-size: 13.5px;
   color: var(--text2);
-  text-align: right;
+  text-align: center;
 
   .row-fuel-unit {
     font-size: 10px;
@@ -397,31 +557,46 @@
   text-align: center;
 }
 
-.row-drive {
+.row-drive-name {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-width: 0;
 
   .drive-name {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
+    font-size: 13.5px;
     color: var(--text2);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: center;
   }
   .drive-missing {
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
     color: #ff6b6b;
     font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
   }
 }
 
-.drive-tags {
+.row-grade {
   display: flex;
-  gap: 4px;
-  margin-top: 2px;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.row-class {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  color: var(--text2);
+  text-align: center;
+  letter-spacing: 0.3px;
 }
 
 .tag {
@@ -467,12 +642,14 @@
 .row-val {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   font-family: 'Exo 2', sans-serif;
   font-variant-numeric: tabular-nums;
   font-size: 13.5px;
   font-weight: 700;
   color: var(--text);
+  text-align: center;
 }
 
 .ranking-row.top3 .row-val { color: var(--accent); }
@@ -488,10 +665,12 @@
 // ── Mobile ──────────────────────────────────────────────
 
 @media (max-width: 720px) {
+  /* Mobile: hide the range bar + drive class, keep essentials. */
   .ranking-header,
   .ranking-row {
-    grid-template-columns: 28px 1.2fr 60px 36px 1.2fr 70px;
+    grid-template-columns: 1.2fr 60px 8ch 1.2fr 6ch 70px;
   }
   .rh-bar, .row-bar { display: none; }
-  .ship-mfr, .drive-tags { display: none; }
+  .rh-class, .row-class { display: none; }
+  .ship-mfr { display: none; }
 }

@@ -1,82 +1,99 @@
 <div class="qt-range-outer">
 <div class="qt-range">
-  <div class="filter-bar">
-    <div class="class-buttons">
-      @for (b of classButtons; track b.id) {
-        <button class="class-btn"
-                [class.active]="classFilter() === b.id"
-                [class.cls-stock]="b.id === 'stock'"
-                [class.cls-military]="b.id === 'Military'"
-                [class.cls-civilian]="b.id === 'Civilian'"
-                [class.cls-stealth]="b.id === 'Stealth'"
-                [class.cls-competition]="b.id === 'Competition'"
-                [class.cls-industrial]="b.id === 'Industrial'"
-                (click)="setClassFilter(b.id)">{{ b.label }}</button>
-      }
-    </div>
+  <div class="qt-body">
 
-    <div class="filter-sep"></div>
+    <aside class="qt-sidebar">
+      <div class="qt-sidebar-title">Filters</div>
+      <div class="qt-sidebar-sub">{{ rankedShips().length }} ships</div>
 
-    <div class="grade-buttons" [class.grade-disabled]="classFilter() === 'stock'">
-      <span class="filter-label">GRADE</span>
-      @for (g of gradeButtons; track g) {
-        <button class="grade-btn"
-                [class.active]="gradeFilter() === g && classFilter() !== 'stock'"
-                [class.unavailable]="classFilter() !== 'stock' && !availableGrades().has(g)"
-                [disabled]="classFilter() === 'stock'"
-                (click)="setGradeFilter(g)">{{ g }}</button>
-      }
-    </div>
+      <div class="qt-group">
+        <label>Search</label>
+        <input class="filter-input" type="text" placeholder="Ship or manufacturer…"
+               [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+      </div>
 
-    <div class="filter-sep"></div>
-
-    <div class="filter-picker">
-      <button class="filter-picker-trigger" (click)="toggleShipSize($event)"
-              [class.open]="shipSizeOpen()">
-        {{ shipSizeFilter() || 'All Ship Sizes' }}
-        <span class="filter-picker-caret">{{ shipSizeOpen() ? '▴' : '▾' }}</span>
-      </button>
-      @if (shipSizeOpen()) {
-        <div class="filter-picker-list" (click)="$event.stopPropagation()">
-          <div class="filter-picker-opt" [class.selected]="shipSizeFilter() === ''"
-               (click)="pickShipSize('')">All Ship Sizes</div>
-          @for (s of shipSizeOptions.slice(1); track s) {
-            <div class="filter-picker-opt" [class.selected]="shipSizeFilter() === s"
-                 (click)="pickShipSize(s)">{{ s }}</div>
+      <div class="qt-group">
+        <label>Drive Class</label>
+        <div class="class-buttons">
+          @for (b of classButtons; track b.id) {
+            <button class="class-btn"
+                    [class.active]="classFilter() === b.id"
+                    [class.cls-stock]="b.id === 'stock'"
+                    [class.cls-military]="b.id === 'Military'"
+                    [class.cls-civilian]="b.id === 'Civilian'"
+                    [class.cls-stealth]="b.id === 'Stealth'"
+                    [class.cls-competition]="b.id === 'Competition'"
+                    [class.cls-industrial]="b.id === 'Industrial'"
+                    (click)="setClassFilter(b.id)">{{ b.label }}</button>
           }
         </div>
-      }
-    </div>
+      </div>
 
-    <div class="filter-picker">
-      <button class="filter-picker-trigger" (click)="toggleQdSize($event)"
-              [class.open]="qdSizeOpen()">
-        {{ sizeFilter() === '' ? 'All QD Sizes' : 'QD Size ' + sizeFilter() }}
-        <span class="filter-picker-caret">{{ qdSizeOpen() ? '▴' : '▾' }}</span>
-      </button>
-      @if (qdSizeOpen()) {
-        <div class="filter-picker-list" (click)="$event.stopPropagation()">
-          <div class="filter-picker-opt" [class.selected]="sizeFilter() === ''"
-               (click)="pickQdSize('')">All QD Sizes</div>
-          @for (s of sizeOptions.slice(1); track s) {
-            <div class="filter-picker-opt" [class.selected]="sizeFilter() === s"
-                 (click)="pickQdSize(+s)">QD Size {{ s }}</div>
+      <div class="qt-group" [class.grade-disabled]="classFilter() === 'stock'">
+        <label>Grade</label>
+        <div class="grade-buttons">
+          @for (g of gradeButtons; track g) {
+            <button class="grade-btn"
+                    [class.active]="gradeFilter() === g && classFilter() !== 'stock'"
+                    [class.unavailable]="classFilter() !== 'stock' && !availableGrades().has(g)"
+                    [disabled]="classFilter() === 'stock'"
+                    (click)="setGradeFilter(g)">{{ g }}</button>
           }
         </div>
-      }
-    </div>
+      </div>
 
-    <input class="filter-input" type="text" placeholder="Search ship or manufacturer..."
-           [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
-    <span class="count-badge">{{ rankedShips().length }}</span>
-  </div>
+      <div class="qt-group">
+        <label>Ship Size</label>
+        <div class="filter-picker">
+          <button class="filter-picker-trigger" (click)="toggleShipSize($event)"
+                  [class.open]="shipSizeOpen()">
+            {{ shipSizeFilter() || 'All Ship Sizes' }}
+            <span class="filter-picker-caret">{{ shipSizeOpen() ? '▴' : '▾' }}</span>
+          </button>
+          @if (shipSizeOpen()) {
+            <div class="filter-picker-list" (click)="$event.stopPropagation()">
+              <div class="filter-picker-opt" [class.selected]="shipSizeFilter() === ''"
+                   (click)="pickShipSize('')">All Ship Sizes</div>
+              @for (s of shipSizeOptions.slice(1); track s) {
+                <div class="filter-picker-opt" [class.selected]="shipSizeFilter() === s"
+                     (click)="pickShipSize(s)">{{ s }}</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="qt-group">
+        <label>QD Size</label>
+        <div class="filter-picker">
+          <button class="filter-picker-trigger" (click)="toggleQdSize($event)"
+                  [class.open]="qdSizeOpen()">
+            {{ sizeFilter() === '' ? 'All QD Sizes' : 'QD Size ' + sizeFilter() }}
+            <span class="filter-picker-caret">{{ qdSizeOpen() ? '▴' : '▾' }}</span>
+          </button>
+          @if (qdSizeOpen()) {
+            <div class="filter-picker-list" (click)="$event.stopPropagation()">
+              <div class="filter-picker-opt" [class.selected]="sizeFilter() === ''"
+                   (click)="pickQdSize('')">All QD Sizes</div>
+              @for (s of sizeOptions.slice(1); track s) {
+                <div class="filter-picker-opt" [class.selected]="sizeFilter() === s"
+                     (click)="pickQdSize(+s)">QD Size {{ s }}</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </aside>
+
+    <div class="qt-main">
 
   <div class="ranking-header">
-    <span class="rh-rank">#</span>
     <span class="rh-name">SHIP</span>
     <span class="rh-fuel">QT FUEL</span>
-    <span class="rh-size">QD</span>
-    <span class="rh-drive">DRIVE</span>
+    <span class="rh-size">QD SIZE</span>
+    <span class="rh-drive-name">DRIVE NAME</span>
+    <span class="rh-grade">GRADE</span>
+    <span class="rh-class">CLASS</span>
     <span class="rh-bar">RANGE</span>
     <span class="rh-val">Gm</span>
   </div>
@@ -84,27 +101,25 @@
   <div class="ranking-list">
     @for (entry of rankedShips(); track entry.ship.className) {
       <div class="ranking-row" [class.top3]="entry.rank <= 3" [class.missing]="entry.range <= 0">
-        <span class="row-rank">{{ entry.rank }}</span>
         <span class="row-name">
           <span class="ship-name">{{ entry.ship.name }}</span>
         </span>
         <span class="row-fuel">{{ fmtNum(entry.fuel, 1) }}<span class="row-fuel-unit"> SCU</span></span>
         <span class="row-size">S{{ entry.size }}</span>
-        <span class="row-drive">
+        <span class="row-drive-name">
           @if (entry.drive) {
             <span class="drive-name">{{ entry.drive.name }}</span>
-            <span class="drive-tags">
-              <span class="tag tag-grade">{{ entry.drive.grade }}</span>
-              <span class="tag tag-class"
-                    [class.cls-military]="entry.drive.itemClass === 'Military'"
-                    [class.cls-civilian]="entry.drive.itemClass === 'Civilian'"
-                    [class.cls-stealth]="entry.drive.itemClass === 'Stealth'"
-                    [class.cls-competition]="entry.drive.itemClass === 'Competition'"
-                    [class.cls-industrial]="entry.drive.itemClass === 'Industrial'">{{ entry.drive.itemClass }}</span>
-            </span>
           } @else {
             <span class="drive-missing">{{ entry.missingReason }}</span>
           }
+        </span>
+        <span class="row-grade">
+          @if (entry.drive) {
+            <span class="tag tag-grade">{{ entry.drive.grade }}</span>
+          }
+        </span>
+        <span class="row-class">
+          @if (entry.drive) { {{ entry.drive.itemClass }} }
         </span>
         <span class="row-bar">
           <div class="bar-track">
@@ -127,6 +142,9 @@
     @if (rankedShips().length === 0) {
       <div class="empty">No ships match the current filters.</div>
     }
+  </div>
+
+    </div>
   </div>
 </div>
 </div>

@@ -6,37 +6,51 @@
     </div>
   } @else {
 
-    <div class="fps-header">
-      <div class="fps-title">FPS Armor Database</div>
-      <div class="fps-sub">{{ filtered().length }} armor pieces</div>
-    </div>
+  <div class="fps-body">
+    <aside class="fps-sidebar">
+      <div class="fps-sidebar-title">Filters</div>
+      <div class="fps-sidebar-sub">{{ filtered().length }} armor pieces</div>
 
-    <div class="fps-filters">
-      <select class="fps-select" [value]="weightFilter()" (change)="weightFilter.set($any($event.target).value)">
-        <option value="">All Weights</option>
-        <option value="undersuit">Undersuit</option>
-        <option value="light">Light</option>
-        <option value="medium">Medium</option>
-        <option value="heavy">Heavy</option>
-      </select>
-      <select class="fps-select" [value]="slotFilter()" (change)="slotFilter.set($any($event.target).value)">
-        <option value="">All Slots</option>
-        <option value="helmet">Helmet</option>
-        <option value="core">Core</option>
-        <option value="arms">Arms</option>
-        <option value="legs">Legs</option>
-        <option value="backpack">Backpack</option>
-        <option value="undersuit">Undersuit</option>
-      </select>
-      <select class="fps-select" [value]="setFilter()" (change)="setFilter.set($any($event.target).value)">
-        <option value="">All Sets</option>
-        @for (s of setRoots(); track s) {
-          @if (s) { <option [value]="s">{{ s }}</option> }
-        }
-      </select>
-      <input class="fps-search" type="text" placeholder="Search..."
-             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
-    </div>
+      <div class="fps-filter-group">
+        <label>Search</label>
+        <input class="fps-search" type="text" placeholder="Name or set…"
+               [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+      </div>
+
+      <div class="fps-filter-group">
+        <label>Weight</label>
+        <select class="fps-select" [value]="weightFilter()" (change)="weightFilter.set($any($event.target).value)">
+          <option value="">All Weights</option>
+          <option value="undersuit">Undersuit</option>
+          <option value="light">Light</option>
+          <option value="medium">Medium</option>
+          <option value="heavy">Heavy</option>
+        </select>
+      </div>
+
+      <div class="fps-filter-group">
+        <label>Slot</label>
+        <select class="fps-select" [value]="slotFilter()" (change)="slotFilter.set($any($event.target).value)">
+          <option value="">All Slots</option>
+          <option value="helmet">Helmet</option>
+          <option value="core">Core</option>
+          <option value="arms">Arms</option>
+          <option value="legs">Legs</option>
+          <option value="backpack">Backpack</option>
+          <option value="undersuit">Undersuit</option>
+        </select>
+      </div>
+
+      <div class="fps-filter-group">
+        <label>Set</label>
+        <select class="fps-select" [value]="setFilter()" (change)="setFilter.set($any($event.target).value)">
+          <option value="">All Sets</option>
+          @for (s of setRoots(); track s) {
+            @if (s) { <option [value]="s">{{ s }}</option> }
+          }
+        </select>
+      </div>
+    </aside>
 
     <div class="fps-table-wrap">
       <table class="fps-table">
@@ -83,6 +97,7 @@
         </tbody>
       </table>
     </div>
+  </div>
 
   }
 </div>

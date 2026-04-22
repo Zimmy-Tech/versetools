@@ -108,6 +108,17 @@ export class BlueprintFinderComponent {
   readonly armorSets = computed(() => this.setsOfKind(this.ARMOR_TYPES));
   readonly weaponSets = computed(() => this.setsOfKind(this.WEAPON_TYPES));
 
+  /** Weapon-family breakouts so the sidebar can render one dropdown per
+   *  class (Pistols / Rifles / Snipers / Shotguns / SMGs / LMGs) instead
+   *  of a single 30-entry "Weapon Family" list. Short dropdowns scan
+   *  faster — user feedback after the crafting-view pattern landed. */
+  readonly pistolSets   = computed(() => this.setsOfKind(new Set(['Pistol'])));
+  readonly rifleSets    = computed(() => this.setsOfKind(new Set(['Rifle'])));
+  readonly sniperSets   = computed(() => this.setsOfKind(new Set(['Sniper'])));
+  readonly shotgunSets  = computed(() => this.setsOfKind(new Set(['Shotgun'])));
+  readonly smgSets      = computed(() => this.setsOfKind(new Set(['SMG'])));
+  readonly lmgSets      = computed(() => this.setsOfKind(new Set(['LMG'])));
+
   private setsOfKind(typeSet: Set<string>): string[] {
     const names = new Set<string>();
     for (const bp of this.blueprints()) {
@@ -122,6 +133,12 @@ export class BlueprintFinderComponent {
   toggleSet(set: string): void {
     this.setFilter.set(this.setFilter() === set ? '' : set);
     this.searchQuery.set('');
+  }
+
+  clearFilters(): void {
+    this.searchQuery.set('');
+    this.typeFilter.set('');
+    this.setFilter.set('');
   }
 
   private readonly TYPE_PATTERNS: [string, RegExp][] = [
