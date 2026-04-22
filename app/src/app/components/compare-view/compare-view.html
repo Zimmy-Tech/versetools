@@ -26,15 +26,6 @@
               </th>
             }
           </tr>
-          <tr>
-            <th>Stat</th>
-            @for (item of slots(); track $index; let i = $index) {
-              <th [class.item-col]="item !== null"
-                  [style.border-top-color]="item ? slotColors[i] : ''">
-                {{ item?.name ?? '—' }}
-              </th>
-            }
-          </tr>
         </thead>
         <tbody>
           @for (row of rows(); track row[0]) {

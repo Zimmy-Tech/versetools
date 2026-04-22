@@ -8,75 +8,92 @@
 
   <!-- Rankings Panel -->
   <div class="panel panel-rankings" [class.panel-hidden]="activePanel() !== 'rankings'">
-      <div class="filter-bar">
-        <div class="sort-buttons">
-          <span class="filter-label">ROT</span>
-          @for (f of ['pitch', 'yaw', 'roll']; track f) {
-            <button class="sort-btn" [class.active]="sortField() === f"
-                    (click)="setSort($any(f))">{{ f | uppercase }}</button>
-          }
+    <div class="rankings-body">
+
+      <aside class="rankings-sidebar">
+        <div class="rankings-sidebar-title">Filters</div>
+        <div class="rankings-sidebar-sub">{{ rankedShips().length }} ships</div>
+
+        <div class="rankings-group">
+          <label>Search</label>
+          <input class="filter-input" type="text" placeholder="Ship or manufacturer…"
+                 [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
         </div>
-        <div class="filter-sep"></div>
-        <div class="sort-buttons">
-          <span class="filter-label">ACCEL</span>
-          @for (f of ['accelFwd', 'accelRetro', 'accelStrafe', 'accelUp', 'accelDown']; track f) {
-            <button class="sort-btn" [class.active]="sortField() === f"
-                    (click)="setSort($any(f))">{{ {accelFwd:'FWD',accelRetro:'RET',accelStrafe:'STR',accelUp:'UP',accelDown:'DN'}[f] }}</button>
-          }
-        </div>
-        <div class="filter-sep"></div>
-        <label class="boost-toggle">
-          <input type="checkbox" [checked]="listBoosted()" (change)="listBoosted.set($any($event.target).checked)" />
-          <span>Boosted</span>
-        </label>
-        <div class="filter-sep"></div>
-        <select class="filter-select" [value]="sizeFilter()" (change)="sizeFilter.set($any($event.target).value)">
-          <option value="">All Sizes</option>
-          @for (s of sizeOptions.slice(1); track s) {
-            <option [value]="s">{{ s }}</option>
-          }
-        </select>
-        <input class="filter-input" type="text" placeholder="Search..."
-               [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
-        <span class="count-badge">{{ rankedShips().length }}</span>
-      </div>
-      <div class="ranking-header">
-        <span class="rh-rank">#</span>
-        <span class="rh-name">SHIP</span>
-        <span class="rh-bar">{{ fieldLabel(activeSortField()) | uppercase }}</span>
-        <span class="rh-val">{{ fieldUnit(activeSortField()) }}</span>
-      </div>
-      <div class="ranking-list">
-        @for (entry of rankedShips(); track entry.ship.className) {
-          <div class="ranking-row" [class.top3]="entry.rank <= 3">
-            <span class="row-rank">{{ entry.rank }}</span>
-            <span class="row-name">{{ entry.ship.name }}</span>
-            <span class="row-bar">
-              <div class="bar-track">
-                <div class="bar-fill" [style.width.%]="entry.bar"
-                     [class.bar-top]="entry.rank <= 3"
-                     [class.bar-high]="entry.rank > 3 && entry.bar >= 70"
-                     [class.bar-mid]="entry.bar >= 40 && entry.bar < 70"
-                     [class.bar-low]="entry.bar < 40"></div>
-              </div>
-            </span>
-            <span class="row-val">{{ fmtVal(entry.value) }}</span>
+
+        <div class="rankings-group">
+          <label>Rotation</label>
+          <div class="sort-btn-row rot-row">
+            @for (f of ['pitch', 'yaw', 'roll']; track f) {
+              <button class="sort-btn" [class.active]="sortField() === f"
+                      (click)="setSort($any(f))">{{ f | uppercase }}</button>
+            }
           </div>
-        }
+        </div>
+
+        <div class="rankings-group">
+          <label>Acceleration</label>
+          <div class="sort-btn-row accel-row">
+            @for (f of ['accelFwd', 'accelRetro', 'accelStrafe', 'accelUp', 'accelDown']; track f) {
+              <button class="sort-btn" [class.active]="sortField() === f"
+                      (click)="setSort($any(f))">{{ {accelFwd:'FWD',accelRetro:'RET',accelStrafe:'STR',accelUp:'UP',accelDown:'DN'}[f] }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="rankings-group">
+          <label>Ship Size</label>
+          <div class="size-btn-row">
+            <button class="size-btn" [class.active]="sizeFilter() === ''"
+                    (click)="sizeFilter.set('')">All</button>
+            @for (s of sizeOptions.slice(1); track s) {
+              <button class="size-btn" [class.active]="sizeFilter() === s"
+                      (click)="sizeFilter.set(s)">{{ s }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="rankings-group">
+          <label class="boost-toggle">
+            <input type="checkbox" [checked]="listBoosted()"
+                   (change)="listBoosted.set($any($event.target).checked)" />
+            <span>Boosted</span>
+          </label>
+        </div>
+      </aside>
+
+      <div class="rankings-main">
+        <div class="ranking-header">
+          <span class="rh-rank">#</span>
+          <span class="rh-name">SHIP</span>
+          <span class="rh-bar">{{ fieldLabel(activeSortField()) | uppercase }}</span>
+          <span class="rh-val">{{ fieldUnit(activeSortField()) }}</span>
+        </div>
+        <div class="ranking-list">
+          @for (entry of rankedShips(); track entry.ship.className) {
+            <div class="ranking-row" [class.top3]="entry.rank <= 3">
+              <span class="row-rank">{{ entry.rank }}</span>
+              <span class="row-name">{{ entry.ship.name }}</span>
+              <span class="row-bar">
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="entry.bar"
+                       [class.bar-top]="entry.rank <= 3"
+                       [class.bar-high]="entry.rank > 3 && entry.bar >= 70"
+                       [class.bar-mid]="entry.bar >= 40 && entry.bar < 70"
+                       [class.bar-low]="entry.bar < 40"></div>
+                </div>
+              </span>
+              <span class="row-val">{{ fmtVal(entry.value) }}</span>
+            </div>
+          }
+        </div>
       </div>
+
+    </div>
   </div>
 
   <!-- Flight Profile Panel (10-axis) -->
   <div class="panel panel-radar" [class.panel-hidden]="activePanel() !== 'acceleration'">
       <div class="radar-box">
-        <div class="radar-title-row">
-          <div class="radar-title">FLIGHT PROFILE</div>
-          <div class="profile-legend">
-            <span class="legend-item"><span class="legend-line legend-solid"></span> Normal</span>
-            <span class="legend-item"><span class="legend-line legend-dashed"></span> Boosted</span>
-            <span class="legend-item"><span class="legend-line legend-ghost"></span> Fleet Avg</span>
-          </div>
-        </div>
         <div class="radar-pickers">
           @for (slot of accelSlots(); track $index) {
             <div class="picker-row">
@@ -92,6 +109,11 @@
           }
         </div>
         <div class="profile-note"><span class="note-purple">Purple</span> values at each axis indicate boosted fleet maximums (outer ring)</div>
+        <div class="profile-legend">
+          <span class="legend-item"><span class="legend-line legend-solid"></span> Normal</span>
+          <span class="legend-item"><span class="legend-line legend-dashed"></span> Boosted</span>
+          <span class="legend-item"><span class="legend-line legend-ghost"></span> Fleet Avg</span>
+        </div>
         <div class="radar-and-stats">
           <div class="radar-wrap">
             <svg viewBox="-20 -20 440 440" class="radar-svg">
