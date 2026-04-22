@@ -8,9 +8,18 @@
 
     <div class="fps-header">
       <div class="fps-title">FPS Weapons Database</div>
-      <div class="fps-sub">{{ filtered().length }} of {{ weapons().length }} weapons</div>
+      <div class="fps-sub">
+        @if (tab() === 'weapons') { {{ filtered().length }} of {{ weapons().length }} weapons }
+        @else { {{ magFiltered().length }} of {{ magazines().length }} magazines }
+      </div>
     </div>
 
+    <div class="fps-tabs">
+      <button class="fps-tab" [class.active]="tab() === 'weapons'" (click)="tab.set('weapons')">Weapons</button>
+      <button class="fps-tab" [class.active]="tab() === 'mags'" (click)="tab.set('mags')">Ammo / Mags</button>
+    </div>
+
+    @if (tab() === 'weapons') {
     <div class="fps-filters">
       <select class="fps-select" [value]="typeFilter()" (change)="typeFilter.set($any($event.target).value)">
         <option value="">All Types</option>
@@ -27,7 +36,20 @@
       <input class="fps-search" type="text" placeholder="Search..."
              [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
     </div>
+    } @else {
+    <div class="fps-filters">
+      <select class="fps-select" [value]="magAmmoFilter()" (change)="magAmmoFilter.set($any($event.target).value)">
+        <option value="">All Ammo</option>
+        @for (t of magAmmoTypes(); track t) {
+          @if (t) { <option [value]="t">{{ t }}</option> }
+        }
+      </select>
+      <input class="fps-search" type="text" placeholder="Search..."
+             [value]="magSearch()" (input)="magSearch.set($any($event.target).value)" />
+    </div>
+    }
 
+    @if (tab() === 'weapons') {
     <div class="fps-table-wrap">
       <table class="fps-table">
         <thead>
@@ -42,6 +64,7 @@
             <th class="sortable" (click)="toggleSort('alphaDamage')">Alpha{{ sortIndicator('alphaDamage') }}</th>
             <th class="sortable" (click)="toggleSort('fireRate')">RPM{{ sortIndicator('fireRate') }}</th>
             <th class="sortable" (click)="toggleSort('magazineSize')">Mag{{ sortIndicator('magazineSize') }}</th>
+            <th class="sortable" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
             <th>Speed</th>
             <th>Range</th>
             <th>Dmg Type</th>
@@ -51,7 +74,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="section-header"><td colspan="16">Anti-Personnel</td></tr>
+          <tr class="section-header"><td colspan="17">Anti-Personnel</td></tr>
           @for (w of antiPersonnel(); track w.className) {
             <tr>
               <td class="col-name">{{ w.name }}</td>
@@ -64,6 +87,7 @@
               <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
               <td class="col-num">{{ fmtRpm(w) }}</td>
               <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
+              <td class="col-num">{{ fmt(w.mass ?? 0, 2) }}</td>
               <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
               <td class="col-num">{{ w.range ? w.range + 'm' : '\u2014' }}</td>
               <td>{{ dmgType(w) }}</td>
@@ -73,7 +97,7 @@
             </tr>
           }
           @if (antiShip().length) {
-            <tr class="section-header"><td colspan="16">Anti-Ship</td></tr>
+            <tr class="section-header"><td colspan="17">Anti-Ship</td></tr>
             @for (w of antiShip(); track w.className) {
               <tr>
                 <td class="col-name">{{ w.name }}</td>
@@ -86,6 +110,7 @@
                 <td class="col-num">{{ fmt(w.alphaDamage) }}</td>
                 <td class="col-num">{{ fmtRpm(w) }}</td>
                 <td class="col-num">{{ w.magazineSize || '\u2014' }}</td>
+                <td class="col-num">{{ fmt(w.mass ?? 0, 2) }}</td>
                 <td class="col-num">{{ w.projectileSpeed ? w.projectileSpeed + ' m/s' : '\u2014' }}</td>
                 <td class="col-num">&mdash;</td>
                 <td>{{ dmgType(w) }}</td>
@@ -98,6 +123,36 @@
         </tbody>
       </table>
     </div>
+    } @else {
+    <div class="fps-table-wrap">
+      <table class="fps-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="toggleMagSort('name')">Name{{ magSortIndicator('name') }}</th>
+            <th>Manufacturer</th>
+            <th>Weapon</th>
+            <th>Ammo Type</th>
+            <th class="sortable" (click)="toggleMagSort('ammoCount')">Capacity{{ magSortIndicator('ammoCount') }}</th>
+            <th class="sortable" (click)="toggleMagSort('mass')">Mass (kg){{ magSortIndicator('mass') }}</th>
+            <th class="sortable" (click)="toggleMagSort('size')">Size{{ magSortIndicator('size') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of magFiltered(); track m.className) {
+            <tr>
+              <td class="col-name">{{ m.name }}</td>
+              <td>{{ m.manufacturer }}</td>
+              <td>{{ weaponNameForMag(m) }}</td>
+              <td>{{ m.ammoType }}</td>
+              <td class="col-num">{{ m.ammoCount || '\u2014' }}</td>
+              <td class="col-num">{{ fmt(m.mass, 2) }}</td>
+              <td class="col-num">{{ m.size || '\u2014' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
 
   }
 

@@ -7,7 +7,7 @@ import { Ship, Item } from '../../models/db.models';
 import { LoadoutCompareComponent, StoredLoadout as StoredLoadoutExport } from '../loadout-compare/loadout-compare';
 import { AdminService } from '../admin/admin.service';
 
-export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'cart' | 'missions' | 'repBuilder' | 'blueprints' | 'crafting' | 'rankings' | 'qtRange' | 'armor' | 'mining' | 'miningSignatures' | 'miningLasers' | 'miningModules' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle' | 'shipShields' | 'shipCoolers' | 'shipWeaponsDb' | 'shipPowerPlants' | 'shipQuantumDrives' | 'shipExplorer';
+export type TabName = 'loadout' | 'components' | 'compare' | 'shipCompare' | 'finder' | 'fpsWeapons' | 'fpsArmor' | 'fpsTtk' | 'fpsItems' | 'fpsLoadout' | 'cart' | 'missions' | 'repBuilder' | 'blueprints' | 'crafting' | 'rankings' | 'qtRange' | 'armor' | 'mining' | 'miningSignatures' | 'miningLasers' | 'miningModules' | 'compact' | 'submit' | 'formulas' | 'updates' | 'changelog' | 'eveStyle' | 'shipShields' | 'shipCoolers' | 'shipWeaponsDb' | 'shipPowerPlants' | 'shipQuantumDrives' | 'shipExplorer';
 
 // Map tab IDs to route paths
 const TAB_ROUTES: Record<string, string> = {
@@ -20,6 +20,8 @@ const TAB_ROUTES: Record<string, string> = {
   fpsWeapons: 'fps-weapons',
   fpsArmor: 'fps-armor',
   fpsTtk: 'fps-ttk',
+  fpsItems: 'fps-items',
+  fpsLoadout: 'fps-loadout',
   eveStyle: 'eve-style',
   qtRange: 'qt-range',
   shipShields: 'ship-shields',
@@ -115,8 +117,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   readonly fpsGearTabs: { id: TabName; label: string }[] = [
+    { id: 'fpsLoadout', label: 'FPS Loadout' },
     { id: 'fpsWeapons', label: 'FPS Weapons' },
     { id: 'fpsArmor', label: 'FPS Armor' },
+    { id: 'fpsItems', label: 'FPS Items' },
     { id: 'fpsTtk', label: 'TTK Calculator' },
   ];
 

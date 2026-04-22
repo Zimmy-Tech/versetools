@@ -22,6 +22,19 @@ interface FpsWeapon {
   recoilPitch?: number | null;
   recoilYaw?: number | null;
   recoilSmooth?: number | null;
+  mass?: number;
+}
+
+interface FpsMagazine {
+  className: string;
+  name: string;
+  weaponTag: string;
+  manufacturer: string;
+  ammoCount: number;
+  mass: number;
+  size: number;
+  subType: string;
+  ammoType: string;
 }
 
 @Component({
@@ -32,13 +45,21 @@ interface FpsWeapon {
 })
 export class FpsWeaponsComponent {
   weapons = signal<FpsWeapon[]>([]);
+  magazines = signal<FpsMagazine[]>([]);
   loaded = signal(false);
+
+  tab = signal<'weapons' | 'mags'>('weapons');
 
   typeFilter = signal('');
   subTypeFilter = signal('');
   searchQuery = signal('');
-  sortBy = signal<'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name'>('name');
+  sortBy = signal<'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name' | 'mass'>('name');
   sortDir = signal<'asc' | 'desc'>('asc');
+
+  magSortBy = signal<'name' | 'ammoCount' | 'mass' | 'size'>('name');
+  magSortDir = signal<'asc' | 'desc'>('asc');
+  magAmmoFilter = signal('');
+  magSearch = signal('');
 
   types = computed(() => {
     const t = new Set(this.weapons().map(w => w.type));
@@ -70,6 +91,7 @@ export class FpsWeaponsComponent {
         case 'alphaDamage': av = a.alphaDamage; bv = b.alphaDamage; break;
         case 'fireRate': av = a.fireRate; bv = b.fireRate; break;
         case 'magazineSize': av = a.magazineSize; bv = b.magazineSize; break;
+        case 'mass': av = a.mass ?? 0; bv = b.mass ?? 0; break;
         default: av = a.dps; bv = b.dps;
       }
       return dir === 'asc' ? (av as number) - (bv as number) : (bv as number) - (av as number);
@@ -81,14 +103,51 @@ export class FpsWeaponsComponent {
   antiPersonnel = computed(() => this.filtered().filter(w => w.category !== 'Anti-Ship'));
   antiShip = computed(() => this.filtered().filter(w => w.category === 'Anti-Ship'));
 
+  magAmmoTypes = computed(() => {
+    const t = new Set(this.magazines().map(m => m.ammoType));
+    return ['', ...Array.from(t).sort()];
+  });
+
+  weaponByTag = computed(() => {
+    const map = new Map<string, FpsWeapon>();
+    for (const w of this.weapons()) map.set(w.className, w);
+    return map;
+  });
+
+  magFiltered = computed(() => {
+    let list = this.magazines();
+    const ammo = this.magAmmoFilter();
+    const q = this.magSearch().toLowerCase();
+    const sort = this.magSortBy();
+    const dir = this.magSortDir();
+
+    if (ammo) list = list.filter(m => m.ammoType === ammo);
+    if (q) list = list.filter(m =>
+      m.name.toLowerCase().includes(q) ||
+      m.manufacturer.toLowerCase().includes(q) ||
+      m.weaponTag.toLowerCase().includes(q)
+    );
+
+    list = [...list].sort((a, b) => {
+      if (sort === 'name') {
+        return dir === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+      }
+      const av = (a as any)[sort] ?? 0;
+      const bv = (b as any)[sort] ?? 0;
+      return dir === 'asc' ? av - bv : bv - av;
+    });
+    return list;
+  });
+
   constructor(private http: HttpClient) {
-    this.http.get<{ weapons: FpsWeapon[] }>('live/versedb_fps.json').subscribe(data => {
+    this.http.get<{ weapons: FpsWeapon[]; magazines?: FpsMagazine[] }>('live/versedb_fps.json').subscribe(data => {
       this.weapons.set(data.weapons);
+      this.magazines.set(data.magazines ?? []);
       this.loaded.set(true);
     });
   }
 
-  toggleSort(col: 'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name'): void {
+  toggleSort(col: 'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name' | 'mass'): void {
     if (this.sortBy() === col) {
       this.sortDir.set(this.sortDir() === 'desc' ? 'asc' : 'desc');
     } else {
@@ -97,9 +156,28 @@ export class FpsWeaponsComponent {
     }
   }
 
+  toggleMagSort(col: 'name' | 'ammoCount' | 'mass' | 'size'): void {
+    if (this.magSortBy() === col) {
+      this.magSortDir.set(this.magSortDir() === 'desc' ? 'asc' : 'desc');
+    } else {
+      this.magSortBy.set(col);
+      this.magSortDir.set(col === 'name' ? 'asc' : 'desc');
+    }
+  }
+
   sortIndicator(col: string): string {
     if (this.sortBy() !== col) return '';
     return this.sortDir() === 'desc' ? ' \u25BE' : ' \u25B4';
+  }
+
+  magSortIndicator(col: string): string {
+    if (this.magSortBy() !== col) return '';
+    return this.magSortDir() === 'desc' ? ' \u25BE' : ' \u25B4';
+  }
+
+  weaponNameForMag(m: FpsMagazine): string {
+    const w = this.weaponByTag().get(m.weaponTag);
+    return w?.name ?? m.weaponTag;
   }
 
   fmt(val: number, decimals = 1): string {

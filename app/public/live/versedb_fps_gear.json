@@ -1,0 +1,827 @@
+{
+  "meta": {
+    "count": 63,
+    "version": "4.7.0"
+  },
+  "items": [
+    {
+      "className": "orbgn_none_consumable_keycard_orbitalaccess",
+      "name": "Orbital Access Keycard",
+      "manufacturer": "Orbital",
+      "attachType": "FPS_Consumable",
+      "subType": "Hacking",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Hacking"
+    },
+    {
+      "className": "orbgn_none_consumable_keycard_orbitalsecurity",
+      "name": "Orbital High-Security Keycard",
+      "manufacturer": "Orbital",
+      "attachType": "FPS_Consumable",
+      "subType": "Hacking",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Hacking"
+    },
+    {
+      "className": "orbgn_none_consumable_keycard",
+      "name": "Orbital Keycard",
+      "manufacturer": "Orbital",
+      "attachType": "FPS_Consumable",
+      "subType": "Hacking",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Hacking"
+    },
+    {
+      "className": "orbgn_none_consumable_keycard_maintenance",
+      "name": "Orbital Maintenance Keycard",
+      "manufacturer": "Orbital",
+      "attachType": "FPS_Consumable",
+      "subType": "Hacking",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Hacking"
+    },
+    {
+      "className": "orbgn_none_consumable_keycard_security",
+      "name": "Orbital Security Keycard",
+      "manufacturer": "Orbital",
+      "attachType": "FPS_Consumable",
+      "subType": "Hacking",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Hacking"
+    },
+    {
+      "className": "rclmr_consumable_hackingchip_01",
+      "name": "Reclaimer Hacking Chip",
+      "manufacturer": "Reclaimer",
+      "attachType": "FPS_Consumable",
+      "subType": "Hacking",
+      "size": 1,
+      "mass": 1.0,
+      "category": "Consumable / Hacking"
+    },
+    {
+      "className": "crlf_consumable_ea_medicateall_01",
+      "name": "Emergency MedPack",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "MedPack",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / MedPack"
+    },
+    {
+      "className": "crlf_consumable_healing_01",
+      "name": "MedPen (Hemozal)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "MedPack",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / MedPack"
+    },
+    {
+      "className": "crlf_consumable_adrenaline_01",
+      "name": "AdrenaPen (Demexatrine)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_adrenaline_02",
+      "name": "AdrenaPen Xtra",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_gopill_01",
+      "name": "BoostPen (Modamphetamine)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_gopill_02",
+      "name": "BoostPen Xtra",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_steroid_01",
+      "name": "CorticoPen (Sterogen)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_steroid_02",
+      "name": "CorticoPen Xtra",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_radiation_01",
+      "name": "DeconPen (Canoiodide)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_radiationblocker_01",
+      "name": "DeconPen (Canoiodide)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_radiation_02",
+      "name": "DeconPen Xtra",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_overdoserevival_01",
+      "name": "DetoxPen (Resurgera)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_painkiller_01",
+      "name": "OpioPen (Roxaphen)",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_tpn_01",
+      "name": "VitalityPen",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "rrs_consumable_sedative_01",
+      "name": "Drema Injector",
+      "manufacturer": "RRS",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "none_consumable_slam_01",
+      "name": "SLAM",
+      "manufacturer": "Unknown",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "none_consumable_slam_02",
+      "name": "SLAM Xtra",
+      "manufacturer": "Unknown",
+      "attachType": "FPS_Consumable",
+      "subType": "Medical",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Medical"
+    },
+    {
+      "className": "crlf_consumable_oxygen_01",
+      "name": "OxyPen",
+      "manufacturer": "Crusader",
+      "attachType": "FPS_Consumable",
+      "subType": "OxygenCap",
+      "size": 1,
+      "mass": 0.25,
+      "category": "Consumable / Oxygen"
+    },
+    {
+      "className": "apar_melee_01",
+      "name": "Demon Fang Combat Knife",
+      "manufacturer": "Apocalypse Arms",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 15.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "banu_melee_04",
+      "name": "Eyaja Knife",
+      "manufacturer": "Banu",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "banu_melee_02",
+      "name": "Myondo Knife",
+      "manufacturer": "Banu",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "banu_melee_01",
+      "name": "Njakte Knife",
+      "manufacturer": "Banu",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "banu_melee_03",
+      "name": "Sizi Knife",
+      "manufacturer": "Banu",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "ksar_melee_01",
+      "name": "Sawtooth Combat Knife",
+      "manufacturer": "Kastak Arms",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "rrs_melee_01_fallout01",
+      "name": "TBF-4 \"Balefire\" Combat Knife",
+      "manufacturer": "RRS",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "utfl_melee_01",
+      "name": "FSK-8 Combat Knife",
+      "manufacturer": "UTFL",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "utfl_melee_01_gungame",
+      "name": "FSK-8 Combat Knife",
+      "manufacturer": "UTFL",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "none_melee_01",
+      "name": "Shiv",
+      "manufacturer": "Unknown",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "vncl_melee_01",
+      "name": "VCK-1 Blade",
+      "manufacturer": "VNCL",
+      "attachType": "WeaponPersonal",
+      "subType": "Knife",
+      "size": 1,
+      "mass": 1.0,
+      "meleeSpec": {
+        "bladeSizeCm": 16.0
+      },
+      "category": "Melee / Knife"
+    },
+    {
+      "className": "mining_gadget_grin_optimax",
+      "name": "OptiMax",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "Gadget",
+      "subType": "Gadget",
+      "size": 2,
+      "mass": 10.0,
+      "miningSpec": {
+        "resistancePct": -30.0,
+        "clusterFactorPct": 60.0,
+        "windowSizePct": -30.0
+      },
+      "category": "Mining Gadget"
+    },
+    {
+      "className": "mining_gadget_grin_waveshift",
+      "name": "Waveshift",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "Gadget",
+      "subType": "Gadget",
+      "size": 2,
+      "mass": 10.0,
+      "miningSpec": {
+        "instabilityPct": -35.0,
+        "windowSizePct": 100.0,
+        "windowRatePct": -30.0
+      },
+      "category": "Mining Gadget"
+    },
+    {
+      "className": "mining_gadget_shin_okunis",
+      "name": "Okunis",
+      "manufacturer": "Shubin Interstellar",
+      "attachType": "Gadget",
+      "subType": "Gadget",
+      "size": 2,
+      "mass": 10.0,
+      "miningSpec": {
+        "clusterFactorPct": -20.0,
+        "windowSizePct": 50.0,
+        "windowRatePct": 100.0
+      },
+      "category": "Mining Gadget"
+    },
+    {
+      "className": "mining_gadget_shin_sabir",
+      "name": "Sabir",
+      "manufacturer": "Shubin Interstellar",
+      "attachType": "Gadget",
+      "subType": "Gadget",
+      "size": 2,
+      "mass": 10.0,
+      "miningSpec": {
+        "instabilityPct": 15.0,
+        "resistancePct": -50.0,
+        "windowSizePct": 50.0
+      },
+      "category": "Mining Gadget"
+    },
+    {
+      "className": "mining_gadget_thcn_boremax",
+      "name": "BoreMax",
+      "manufacturer": "Thermyte Concern",
+      "attachType": "Gadget",
+      "subType": "Gadget",
+      "size": 2,
+      "mass": 10.0,
+      "miningSpec": {
+        "instabilityPct": -70.0,
+        "resistancePct": 10.0,
+        "clusterFactorPct": 30.0
+      },
+      "category": "Mining Gadget"
+    },
+    {
+      "className": "mining_gadget_thcn_stalwart",
+      "name": "Stalwart",
+      "manufacturer": "Thermyte Concern",
+      "attachType": "Gadget",
+      "subType": "Gadget",
+      "size": 2,
+      "mass": 10.0,
+      "miningSpec": {
+        "instabilityPct": -35.0,
+        "clusterFactorPct": 30.0,
+        "windowSizePct": -30.0,
+        "windowRatePct": 50.0
+      },
+      "category": "Mining Gadget"
+    },
+    {
+      "className": "behr_ltp_01_primed",
+      "name": "Behring LTP (Primed)",
+      "manufacturer": "Behring",
+      "attachType": "FPS_Deployable",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.0,
+      "throwableSpec": {
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
+        "damage": {
+          "physical": 15.0
+        },
+        "alphaDamage": 15.0,
+        "fuseSec": 2.35
+      },
+      "category": "Throwable / Deployable"
+    },
+    {
+      "className": "behr_ltp_01_primed_5m",
+      "name": "Behring LTP (Primed, 5m)",
+      "manufacturer": "Behring",
+      "attachType": "FPS_Deployable",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.0,
+      "throwableSpec": {
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
+        "damage": {
+          "physical": 15.0
+        },
+        "alphaDamage": 15.0,
+        "fuseSec": 2.35
+      },
+      "category": "Throwable / Deployable"
+    },
+    {
+      "className": "behr_ltp_01_primed_sweeping",
+      "name": "Behring LTP (Primed, Sweeping)",
+      "manufacturer": "Behring",
+      "attachType": "FPS_Deployable",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.0,
+      "throwableSpec": {
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
+        "damage": {
+          "physical": 15.0
+        },
+        "alphaDamage": 15.0,
+        "fuseSec": 2.35
+      },
+      "category": "Throwable / Deployable"
+    },
+    {
+      "className": "behr_ltp_01",
+      "name": "Behring LTP Device",
+      "manufacturer": "Behring",
+      "attachType": "FPS_Deployable",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.0,
+      "throwableSpec": {
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
+        "damage": {
+          "physical": 15.0
+        },
+        "alphaDamage": 15.0,
+        "fuseSec": 2.35
+      },
+      "category": "Throwable / Deployable"
+    },
+    {
+      "className": "behr_timed_explosive_01",
+      "name": "Behring Timed Explosive",
+      "manufacturer": "Behring",
+      "attachType": "FPS_Deployable",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.0,
+      "throwableSpec": {
+        "minRadiusM": 2.5,
+        "maxRadiusM": 5.0,
+        "soundRadiusM": 50.0,
+        "damage": {
+          "physical": 70.0
+        },
+        "alphaDamage": 70.0,
+        "fuseSec": 15.0
+      },
+      "category": "Throwable / Deployable"
+    },
+    {
+      "className": "behr_gren_frag_01",
+      "name": "MK-4 Frag Grenade",
+      "manufacturer": "Behring",
+      "attachType": "WeaponPersonal",
+      "subType": "Grenade",
+      "size": 1,
+      "mass": 0.4,
+      "throwableSpec": {
+        "minRadiusM": 4.0,
+        "maxRadiusM": 5.5,
+        "soundRadiusM": 150.0,
+        "damage": {
+          "physical": 20.0
+        },
+        "alphaDamage": 20.0,
+        "fuseSec": 3.0
+      },
+      "category": "Throwable / Grenade"
+    },
+    {
+      "className": "behr_ltp_kinetic_01",
+      "name": "ADO-5 Laser Mine",
+      "manufacturer": "Behring",
+      "attachType": "Grenade",
+      "subType": "Small",
+      "size": 1,
+      "mass": 0.0,
+      "throwableSpec": {
+        "triggerType": "Laser",
+        "laserLengthM": 2.0,
+        "areaOfEffectM": 15.0,
+        "damageType": "Kinetic"
+      },
+      "category": "Throwable / Mine"
+    },
+    {
+      "className": "behr_prx_kinetic_01",
+      "name": "Behring Proximity Mine",
+      "manufacturer": "Behring",
+      "attachType": "WeaponPersonal",
+      "subType": "Weapon",
+      "size": 1,
+      "mass": 0.0,
+      "throwableSpec": {
+        "triggerType": "Proximity",
+        "triggerRadiusM": 2.5,
+        "warningRadiusM": 3.0
+      },
+      "category": "Throwable / Mine"
+    },
+    {
+      "className": "crlf_medgun_01_msn_rwd03",
+      "name": "ParaMed \"AA Defense\" Medical Device",
+      "manufacturer": "Crusader",
+      "attachType": "WeaponPersonal",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Medical",
+      "medGunSpec": {
+        "mSCUPerSec": 10.0,
+        "ammoPerMSCU": 1.0,
+        "maxDistance": 1.5,
+        "maxSensorDistance": 20.0,
+        "wearPerSec": 0.0,
+        "batteryDrainPerSec": 0.0,
+        "autoDosageTargetBDLModifier": 0.725,
+        "healingBreakTime": 0.1,
+        "healingMode": "Target",
+        "healthSubtype": "2e3fc0d3-be97-4c57-972e-526872e4bd56"
+      }
+    },
+    {
+      "className": "crlf_medgun_01_msn_rwd02",
+      "name": "ParaMed \"AA Support\" Medical Device",
+      "manufacturer": "Crusader",
+      "attachType": "WeaponPersonal",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Medical",
+      "medGunSpec": {
+        "mSCUPerSec": 10.0,
+        "ammoPerMSCU": 1.0,
+        "maxDistance": 1.5,
+        "maxSensorDistance": 20.0,
+        "wearPerSec": 0.0,
+        "batteryDrainPerSec": 0.0,
+        "autoDosageTargetBDLModifier": 0.725,
+        "healingBreakTime": 0.1,
+        "healingMode": "Target",
+        "healthSubtype": "18603d6d-1a1a-43e5-a8c0-075de88afa49"
+      }
+    },
+    {
+      "className": "crlf_medgun_01_msn_rwd01",
+      "name": "ParaMed \"AA Transport\" Medical Device",
+      "manufacturer": "Crusader",
+      "attachType": "WeaponPersonal",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Medical",
+      "medGunSpec": {
+        "mSCUPerSec": 10.0,
+        "ammoPerMSCU": 1.0,
+        "maxDistance": 1.5,
+        "maxSensorDistance": 20.0,
+        "wearPerSec": 0.0,
+        "batteryDrainPerSec": 0.0,
+        "autoDosageTargetBDLModifier": 0.725,
+        "healingBreakTime": 0.1,
+        "healingMode": "Target",
+        "healthSubtype": "2e3fc0d3-be97-4c57-972e-526872e4bd56"
+      }
+    },
+    {
+      "className": "crlf_medgun_01",
+      "name": "ParaMed Medical Device",
+      "manufacturer": "Crusader",
+      "attachType": "WeaponPersonal",
+      "subType": "Small",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Medical",
+      "medGunSpec": {
+        "mSCUPerSec": 10.0,
+        "ammoPerMSCU": 1.0,
+        "maxDistance": 1.5,
+        "maxSensorDistance": 20.0,
+        "wearPerSec": 0.0,
+        "batteryDrainPerSec": 0.0,
+        "autoDosageTargetBDLModifier": 0.725,
+        "healingBreakTime": 0.1,
+        "healingMode": "Target",
+        "healthSubtype": "2e3fc0d3-be97-4c57-972e-526872e4bd56"
+      }
+    },
+    {
+      "className": "grin_multitool_01_default_healing",
+      "name": "LifeGuard Attachment",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Medical",
+      "medGunSpec": {
+        "mSCUPerSec": 8.0,
+        "ammoPerMSCU": 1.0,
+        "maxDistance": 1.5,
+        "maxSensorDistance": 20.0,
+        "wearPerSec": 0.0,
+        "batteryDrainPerSec": 0.0,
+        "autoDosageTargetBDLModifier": 0.75,
+        "healingBreakTime": 0.1,
+        "healingMode": "Target",
+        "healthSubtype": "2e3fc0d3-be97-4c57-972e-526872e4bd56"
+      }
+    },
+    {
+      "className": "grin_multitool_01",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool"
+    },
+    {
+      "className": "grin_multitool_01_default_charge_drain",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool Head \u2014 Charge Drain"
+    },
+    {
+      "className": "grin_multitool_01_default_cutter",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool Head \u2014 Cutter"
+    },
+    {
+      "className": "grin_multitool_01_default_grapple",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool Head \u2014 Grapple"
+    },
+    {
+      "className": "grin_multitool_01_default_mining",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool Head \u2014 Mining"
+    },
+    {
+      "className": "grin_multitool_01_default_salvage_repair",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool Head \u2014 Salvage Repair"
+    },
+    {
+      "className": "grin_multitool_01_default_tractorbeam",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool Head \u2014 Tractorbeam"
+    },
+    {
+      "className": "grin_multitool_01_default_tractorbeam_maelstromtest",
+      "name": "Pyro RYT Multi-Tool",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 1,
+      "mass": 1.5,
+      "category": "Tool / Multi-Tool Head \u2014 Tractorbeam Maelstromtest"
+    },
+    {
+      "className": "grin_tractor_01",
+      "name": "MaxLift Tractor Beam",
+      "manufacturer": "Greycat Industrial",
+      "attachType": "WeaponPersonal",
+      "subType": "Gadget",
+      "size": 2,
+      "mass": 4.0,
+      "category": "Tool / Tractor Beam"
+    }
+  ]
+}

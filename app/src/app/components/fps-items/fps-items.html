@@ -1,0 +1,257 @@
+<div class="fps-view">
+  @if (!loaded()) {
+    <div class="empty-state"><div class="empty-title">Loading FPS items...</div></div>
+  } @else {
+    <div class="fps-header">
+      <div class="fps-title">FPS Items Database</div>
+      <div class="fps-sub">{{ filtered().length }} of {{ items().length }} items</div>
+    </div>
+
+    <div class="fps-tabs">
+      <button class="fps-tab" [class.active]="tab() === 'barrels'" (click)="setTab('barrels')">
+        Barrel Mods <span class="tab-count">{{ tabCounts().barrels }}</span>
+      </button>
+      <button class="fps-tab" [class.active]="tab() === 'optics'" (click)="setTab('optics')">
+        Optics <span class="tab-count">{{ tabCounts().optics }}</span>
+      </button>
+      <button class="fps-tab" [class.active]="tab() === 'underbarrels'" (click)="setTab('underbarrels')">
+        Under-Barrel Mods <span class="tab-count">{{ tabCounts().underbarrels }}</span>
+      </button>
+      <button class="fps-tab" [class.active]="tab() === 'medical'" (click)="setTab('medical')">
+        Medical <span class="tab-count">{{ tabCounts().medical }}</span>
+      </button>
+      <button class="fps-tab" [class.active]="tab() === 'mining'" (click)="setTab('mining')">
+        Mining <span class="tab-count">{{ tabCounts().mining }}</span>
+      </button>
+      <button class="fps-tab" [class.active]="tab() === 'melee'" (click)="setTab('melee')">
+        Melee / Throwable <span class="tab-count">{{ tabCounts().melee }}</span>
+      </button>
+      <button class="fps-tab" [class.active]="tab() === 'tools'" (click)="setTab('tools')">
+        Tools <span class="tab-count">{{ tabCounts().tools }}</span>
+      </button>
+    </div>
+
+    <div class="fps-filters">
+      <input class="fps-search" type="text" placeholder="Search..."
+             [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
+    </div>
+
+    @if (tab() === 'melee') {
+      <!-- Two stacked tables: blades on top, throwables underneath. Each
+           section has its own column set since the stats don't overlap. -->
+      <div class="fps-table-wrap melee-wrap">
+        <div class="med-section-title">Melee</div>
+        <table class="fps-table melee-blades">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="toggleSort('category')">Category{{ sortIndicator('category') }}</th>
+              <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
+              <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
+              <th class="col-num" title="Physical blade length in centimeters, from the item's description text.">Blade (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (i of meleeBladeRows(); track i.className) {
+              <tr>
+                <td>{{ i.category }}</td>
+                <td class="col-name col-h-name" [title]="i.className">{{ i.name }}</td>
+                <td class="col-h-mfr">{{ i.manufacturer }}</td>
+                <td class="col-num col-h-size">{{ i.size || '\u2014' }}</td>
+                <td class="col-num col-h-mass">{{ fmt(i.mass, 2) }}</td>
+                <td class="col-num">{{ i.meleeSpec?.bladeSizeCm ? i.meleeSpec?.bladeSizeCm + ' cm' : '\u2014' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div class="med-section-title med-section-break">Throwable</div>
+        <table class="fps-table melee-throwables">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="toggleSort('category')">Category{{ sortIndicator('category') }}</th>
+              <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
+              <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
+              <th class="col-num" title="Proximity mines sense targets via a radius, Laser mines trip on an invisible beam, everything else is on a fuse timer.">Trigger</th>
+              <th class="col-num" title="Seconds from priming/throwing until detonation (or arming delay for mines).">Fuse (s)</th>
+              <th class="col-num" title="Outer blast radius in meters — edge of effective damage.">Radius (m)</th>
+              <th class="col-num" title="Raw damage of the primary explosion (sum across all damage types).">Damage</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (i of throwableRows(); track i.className) {
+              <tr>
+                <td>{{ i.category }}</td>
+                <td class="col-name col-h-name" [title]="i.className">{{ i.name }}</td>
+                <td class="col-h-mfr">{{ i.manufacturer }}</td>
+                <td class="col-num col-h-size">{{ i.size || '\u2014' }}</td>
+                <td class="col-num col-h-mass">{{ fmt(i.mass, 2) }}</td>
+                <td class="col-num">{{ throwableTriggerLabel(i) }}</td>
+                <td class="col-num">{{ i.throwableSpec?.fuseSec ? i.throwableSpec?.fuseSec + ' s' : '\u2014' }}</td>
+                <td class="col-num">{{ throwableRadius(i) }}</td>
+                <td class="col-num">{{ i.throwableSpec?.alphaDamage ? i.throwableSpec?.alphaDamage : '\u2014' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else if (tab() === 'medical') {
+      <!-- Medical is split into Pens (consumables) + MedGuns (healing tools).
+           Two stacked tables instead of one so each can have its own columns. -->
+      <div class="fps-table-wrap med-wrap">
+        <div class="med-section-title">Pens</div>
+        <table class="fps-table med-pens">
+          <thead>
+            <tr>
+              <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
+              <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (i of pensRows(); track i.className) {
+              <tr>
+                <td class="col-name col-h-name" [title]="i.className">{{ i.name }}</td>
+                <td class="col-h-mfr">{{ i.manufacturer }}</td>
+                <td class="col-num col-h-size">{{ i.size || '\u2014' }}</td>
+                <td class="col-num col-h-mass">{{ fmt(i.mass, 2) }}</td>
+                <td>{{ i.category.replace('Consumable / ', '') }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div class="med-section-title med-section-break">MedGuns</div>
+        <table class="fps-table med-guns">
+          <thead>
+            <tr>
+              <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
+              <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
+              <th class="col-num" title="Micro-SCU of medicine dispensed per second of continuous beam">Heal Rate</th>
+              <th class="col-num">Max Range</th>
+              <th class="col-num">Sensor Range</th>
+              <th class="col-num" title="Auto-dose triggers when target's blood-drug level is below this ratio">Auto-Dose Trigger</th>
+              <th title="Default loaded healing drug. AA Support uses a non-standard subtype (exact heal value pending DCB extraction).">Medicine</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (i of medGunsRows(); track i.className) {
+              @let mg = i.medGunSpec;
+              <tr>
+                <td class="col-name col-h-name" [title]="i.className">{{ i.name }}</td>
+                <td class="col-h-mfr">{{ i.manufacturer }}</td>
+                <td class="col-num col-h-size">{{ i.size || '\u2014' }}</td>
+                <td class="col-num col-h-mass">{{ fmt(i.mass, 2) }}</td>
+                <td class="col-num">{{ mg?.mSCUPerSec != null ? mg?.mSCUPerSec + ' mSCU/s' : '\u2014' }}</td>
+                <td class="col-num">{{ mg?.maxDistance != null ? mg?.maxDistance + ' m' : '\u2014' }}</td>
+                <td class="col-num">{{ mg?.maxSensorDistance != null ? mg?.maxSensorDistance + ' m' : '\u2014' }}</td>
+                <td class="col-num">{{ mg?.autoDosageTargetBDLModifier != null ? fmt((mg?.autoDosageTargetBDLModifier ?? 0) * 100, 1) + '%' : '\u2014' }}</td>
+                <td>{{ medicineName(mg?.healthSubtype) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+    <div class="fps-table-wrap">
+      <table class="fps-table"
+             [class.attach-layout]="tab() === 'barrels' || tab() === 'underbarrels' || tab() === 'optics' || tab() === 'mining'"
+             [class.attach-layout-barrels]="tab() === 'barrels'"
+             [class.attach-layout-optics]="tab() === 'optics'"
+             [class.attach-layout-underbarrels]="tab() === 'underbarrels'"
+             [class.attach-layout-mining]="tab() === 'mining'">
+        <thead>
+          <tr>
+            @if (tab() !== 'barrels' && tab() !== 'optics' && tab() !== 'underbarrels' && tab() !== 'mining') {
+              <th class="sortable" (click)="toggleSort('category')">Category{{ sortIndicator('category') }}</th>
+            }
+            <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
+            <th class="col-h-mfr">Manufacturer</th>
+            <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
+            <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
+            @if (tab() === 'optics') {
+              <th class="col-num col-opt">Zoom</th>
+              <th class="col-num col-opt">Alt Zoom</th>
+              <th class="col-num col-opt col-opt-ads">ADS Time</th>
+              <th class="col-scope" title="Special scope mode: Nightvision (LAMP) amplifies available light; Variable Zoom toggles between primary and alt magnification.">Scope</th>
+            } @else if (tab() === 'barrels' || tab() === 'underbarrels') {
+              @for (col of modColumns(); track col.key) {
+                <th class="mod-col-head">{{ col.label }}</th>
+              }
+            } @else if (tab() === 'mining') {
+              <th class="col-num col-mining" title="Higher instability means the laser is harder to keep in the green band.">Instability</th>
+              <th class="col-num col-mining" title="Lower resistance makes a deposit easier to crack.">Resistance</th>
+              <th class="col-num col-mining" title="Higher cluster keeps more of the shattered ore together for collection.">Cluster</th>
+              <th class="col-num col-mining" title="Wider optimal charge window — larger sweet-spot band.">Window Size</th>
+              <th class="col-num col-mining" title="Faster fill of the optimal charge window.">Window Rate</th>
+            } @else {
+              <th>Attach Type</th>
+              <th>Sub Type</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (i of filtered(); track i.className) {
+            <tr>
+              @if (tab() !== 'barrels' && tab() !== 'optics' && tab() !== 'underbarrels' && tab() !== 'mining') {
+                <td>{{ i.category }}</td>
+              }
+              <td class="col-name col-h-name" [title]="i.className">{{ i.name }}</td>
+              <td class="col-h-mfr">{{ i.manufacturer }}</td>
+              <td class="col-num col-h-size">{{ i.size || '\u2014' }}</td>
+              <td class="col-num col-h-mass">{{ fmt(i.mass, 2) }}</td>
+
+              @if (tab() === 'optics') {
+                <td class="col-num col-opt">{{ opticZoom(i, 'zoomScale') }}</td>
+                <td class="col-num col-opt">{{ hasAltZoom(i) ? opticZoom(i, 'secondZoomScale') : '\u2014' }}</td>
+                @let ads = opticAdsTimeCell(i);
+                <td class="col-num col-opt col-opt-ads mod-cell"
+                    [class.positive]="ads.positive"
+                    [class.negative]="ads.negative">{{ ads.text }}</td>
+                @let scope = opticScopeLabel(i);
+                <td class="col-scope">
+                  @if (scope.kind === 'nv') {
+                    <span class="scope-pill scope-nv" title="Light Amplification (LAMP) — night-vision mode">{{ scope.text }}</span>
+                  } @else if (scope.kind === 'zoom') {
+                    <span class="scope-pill scope-zoom">{{ scope.text }}</span>
+                  } @else {
+                    <span class="scope-none">{{ scope.text }}</span>
+                  }
+                </td>
+              } @else if (tab() === 'barrels' || tab() === 'underbarrels') {
+                @for (col of modColumns(); track col.key) {
+                  @let mc = modCell(i, col.key);
+                  <td class="col-num mod-cell"
+                      [class.positive]="mc.positive"
+                      [class.negative]="mc.negative">{{ mc.text }}</td>
+                }
+              } @else if (tab() === 'mining') {
+                @let mi = miningCell(i, 'instabilityPct');
+                <td class="col-num col-mining mod-cell" [class.positive]="mi.positive" [class.negative]="mi.negative">{{ mi.text }}</td>
+                @let mr = miningCell(i, 'resistancePct');
+                <td class="col-num col-mining mod-cell" [class.positive]="mr.positive" [class.negative]="mr.negative">{{ mr.text }}</td>
+                @let mc = miningCell(i, 'clusterFactorPct');
+                <td class="col-num col-mining mod-cell" [class.positive]="mc.positive" [class.negative]="mc.negative">{{ mc.text }}</td>
+                @let mw = miningCell(i, 'windowSizePct');
+                <td class="col-num col-mining mod-cell" [class.positive]="mw.positive" [class.negative]="mw.negative">{{ mw.text }}</td>
+                @let mrate = miningCell(i, 'windowRatePct');
+                <td class="col-num col-mining mod-cell" [class.positive]="mrate.positive" [class.negative]="mrate.negative">{{ mrate.text }}</td>
+              } @else {
+                <td>{{ i.attachType || '\u2014' }}</td>
+                <td>{{ i.subType || '\u2014' }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+  }
+</div>

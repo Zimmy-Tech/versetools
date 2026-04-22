@@ -1,6 +1,7 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../services/data.service';
+import { QualitySimulatorComponent, QualityEffect } from '../quality-simulator/quality-simulator';
 
 interface QualityModifier {
   property: string;
@@ -63,6 +64,7 @@ interface FpsWeaponRef {
 @Component({
   selector: 'app-crafting-view',
   standalone: true,
+  imports: [QualitySimulatorComponent],
   templateUrl: './crafting-view.html',
   styleUrl: './crafting-view.scss',
 })
@@ -138,7 +140,43 @@ export class CraftingViewComponent {
   });
 
   // Quality sliders: resource name → quality value (0–1000)
-  qualityValues = signal<Record<string, number>>({});
+  // Live stream of the simulator's computed effects. Fed by the simulator's
+  // (qualityEffectsChange) output so that armorResistances + any other
+  // downstream consumer stays reactive. Same name as the old computed so
+  // we don't have to rewire anything else.
+  qualityEffects = signal<QualityEffect[]>([]);
+  onQualityEffectsChange(e: QualityEffect[]): void { this.qualityEffects.set(e); }
+
+  /** BaseStats map for the simulator preview column of the currently
+   *  selected recipe — pulls from the armor + weapon lookups. */
+  baseStatsForRecipe(r: CraftingRecipe): Record<string, number | null | undefined> {
+    const armorLookup = this.armorLookup();
+    let armorPiece: ArmorPieceRef | undefined = armorLookup[r.className];
+    if (!armorPiece) {
+      const basePrefix = r.className.replace(/_\d+$/, '');
+      armorPiece = Object.values(armorLookup).find(p => p.className.startsWith(basePrefix));
+    }
+    const weaponLookup = this.weaponLookup();
+    let weaponPiece: FpsWeaponRef | undefined = weaponLookup[r.className];
+    if (!weaponPiece) {
+      const basePrefix = r.className.replace(/_\d+$/, '');
+      weaponPiece = Object.values(weaponLookup).find(w => w.className.startsWith(basePrefix));
+    }
+    return {
+      'damage reduction': armorPiece?.damageReduction ?? null,
+      'max temp':         armorPiece?.tempMax ?? null,
+      'min temp':         armorPiece?.tempMin ?? null,
+      'fire rate':        weaponPiece?.fireRate ?? null,
+      'impact force':     weaponPiece?.alphaDamage ?? null,
+      'alpha':            weaponPiece?.alphaDamage ?? null,
+      'recoil kick':      weaponPiece?.recoilPitch ?? null,
+      'recoilpitch':      weaponPiece?.recoilPitch ?? null,
+      'recoil handling':  weaponPiece?.recoilYaw ?? null,
+      'recoilyaw':        weaponPiece?.recoilYaw ?? null,
+      'recoil smooth':    weaponPiece?.recoilSmooth ?? null,
+      'recoilsmooth':     weaponPiece?.recoilSmooth ?? null,
+    };
+  }
 
   categories = computed(() => {
     const cats = new Set(this.allRecipes().map(r => r.category));
@@ -199,147 +237,6 @@ export class CraftingViewComponent {
   filteredRecipes = computed(() => {
     const start = (this.page() - 1) * this.pageSize;
     return this.allFiltered().slice(start, start + this.pageSize);
-  });
-
-  // Computed: aggregate quality effects for the selected recipe
-  qualityEffects = computed(() => {
-    const sr = this.selectedRecipe();
-    if (!sr) return [];
-    const qv = this.qualityValues();
-
-    // Aggregate all modifiers by property
-    const propMap: Record<string, { combined: number; contributions: { resource: string; modifier: number }[] }> = {};
-
-    for (let idx = 0; idx < sr.ingredients.length; idx++) {
-      const ing = sr.ingredients[idx];
-      const mods = ing.qualityModifiers ?? [];
-      const quality = qv[`${idx}_${ing.resource}`] ?? 500;
-
-      for (const m of mods) {
-        const range = m.endQuality - m.startQuality;
-        if (range <= 0) continue;
-        // Clamp quality to the modifier's range
-        const clampedQ = Math.max(m.startQuality, Math.min(m.endQuality, quality));
-        const t = (clampedQ - m.startQuality) / range;
-        const modifier = m.modifierAtStart + t * (m.modifierAtEnd - m.modifierAtStart);
-
-        if (!propMap[m.property]) {
-          propMap[m.property] = { combined: 1.0, contributions: [] };
-        }
-        propMap[m.property].combined *= modifier;
-        propMap[m.property].contributions.push({ resource: ing.resource, modifier });
-      }
-    }
-
-    // Look up base stats from armor and weapon data
-    // Try exact match first, then base prefix (strip last _XX suffix for color variants)
-    const armorLookup = this.armorLookup();
-    let armorPiece: ArmorPieceRef | undefined = armorLookup[sr.className];
-    if (!armorPiece) {
-      const basePrefix = sr.className.replace(/_\d+$/, '');
-      armorPiece = Object.values(armorLookup).find(p => p.className.startsWith(basePrefix));
-    }
-    const weaponLookup = this.weaponLookup();
-    let weaponPiece: FpsWeaponRef | undefined = weaponLookup[sr.className];
-    if (!weaponPiece) {
-      const basePrefix = sr.className.replace(/_\d+$/, '');
-      weaponPiece = Object.values(weaponLookup).find(w => w.className.startsWith(basePrefix));
-    }
-    const baseDR = armorPiece?.damageReduction ?? null;
-    const baseTempMin = armorPiece?.tempMin ?? null;
-    const baseTempMax = armorPiece?.tempMax ?? null;
-    const baseFireRate = weaponPiece?.fireRate ?? null;
-    const baseAlpha = weaponPiece?.alphaDamage ?? null;
-    const baseDPS = weaponPiece?.dps ?? null;
-    const baseRecoilPitch = weaponPiece?.recoilPitch ?? null;
-    const baseRecoilYaw = weaponPiece?.recoilYaw ?? null;
-    const baseRecoilSmooth = weaponPiece?.recoilSmooth ?? null;
-
-    return Object.entries(propMap).map(([prop, data]) => {
-      let baseValue: number | null = null;
-      let modifiedValue: number | null = null;
-      let unit = '';
-      const pl = prop.toLowerCase();
-
-      if (pl.includes('mitigation') || pl.includes('damage')) {
-        baseValue = baseDR;
-        if (baseValue != null) {
-          modifiedValue = Math.round(baseValue * data.combined * 100) / 100;
-          unit = '%';
-        }
-      } else if (pl.includes('max temp')) {
-        baseValue = baseTempMax;
-        if (baseValue != null) {
-          modifiedValue = Math.round(baseValue * data.combined * 10) / 10;
-          unit = '°C';
-        }
-      } else if (pl.includes('min temp')) {
-        baseValue = baseTempMin;
-        if (baseValue != null) {
-          modifiedValue = Math.round(baseValue * data.combined * 10) / 10;
-          unit = '°C';
-        }
-      } else if (pl.includes('fire rate')) {
-        baseValue = baseFireRate;
-        if (baseValue != null) {
-          modifiedValue = Math.round(baseValue * data.combined * 10) / 10;
-          unit = ' RPM';
-        }
-      } else if (pl.includes('impact force') && baseAlpha != null) {
-        baseValue = baseAlpha;
-        modifiedValue = Math.round(baseAlpha * data.combined * 100) / 100;
-        unit = ' dmg';
-      } else if (pl.includes('recoil') && pl.includes('kick') && baseRecoilPitch != null) {
-        baseValue = baseRecoilPitch;
-        modifiedValue = Math.round(baseRecoilPitch * data.combined * 1000) / 1000;
-        unit = '°';
-      } else if (pl.includes('recoil') && pl.includes('handling') && baseRecoilYaw != null) {
-        baseValue = baseRecoilYaw;
-        modifiedValue = Math.round(baseRecoilYaw * data.combined * 1000) / 1000;
-        unit = '°';
-      } else if (pl.includes('recoil') && pl.includes('smooth') && baseRecoilSmooth != null) {
-        baseValue = baseRecoilSmooth;
-        modifiedValue = Math.round(baseRecoilSmooth * data.combined * 1000) / 1000;
-        unit = 's';
-      }
-
-      // For min temp and recoil, lower is better. For everything else, higher is better.
-      const invertComparison = pl.includes('min temp') || pl.includes('recoil');
-
-      // Descriptive label for what the base value actually measures
-      let description = '';
-      if (pl.includes('recoil') && pl.includes('kick')) description = 'Vertical recoil (pitch)';
-      else if (pl.includes('recoil') && pl.includes('handling')) description = 'Horizontal recoil (yaw)';
-      else if (pl.includes('recoil') && pl.includes('smooth')) description = 'Convergence time';
-
-      // Determine color class for the modified value and % change
-      let colorClass = '';
-      if (pl.includes('min temp') && modifiedValue != null && baseValue != null) {
-        // Min temp is negative (e.g. -40°C). Lower (more negative) = better = green. Higher (closer to 0) = worse = red.
-        if (modifiedValue < baseValue) colorClass = 'positive';
-        else if (modifiedValue > baseValue) colorClass = 'negative';
-      } else if (invertComparison) {
-        // Recoil: green when lower, red when higher
-        if (data.combined < 0.999) colorClass = 'positive';
-        else if (data.combined > 1.001) colorClass = 'negative';
-      } else {
-        // Normal stats: green when higher, red when lower
-        if (data.combined > 1.001) colorClass = 'positive';
-        else if (data.combined < 0.999) colorClass = 'negative';
-      }
-
-      return {
-        property: prop,
-        combined: data.combined,
-        contributions: data.contributions,
-        baseValue,
-        modifiedValue,
-        unit,
-        invertComparison,
-        colorClass,
-        description,
-      };
-    }).sort((a, b) => a.property.localeCompare(b.property));
   });
 
   armorResistances = computed(() => {
@@ -481,31 +378,11 @@ export class CraftingViewComponent {
       this.addQty.set(1);
       this.popoutTab.set('crafting');
       this.expandedMission.set(null);
-      // Initialize quality sliders at midpoint for all ingredients
-      const qv: Record<string, number> = {};
-      for (let i = 0; i < r.ingredients.length; i++) {
-        if (r.ingredients[i].qualityModifiers?.length) {
-          qv[`${i}_${r.ingredients[i].resource}`] = 500;
-        }
-      }
-      this.qualityValues.set(qv);
+      // QualitySimulatorComponent resets its own sliders on recipe change.
     }
   }
 
   closePopout(): void { this.selectedRecipe.set(null); }
-
-  setQuality(key: string, value: number): void {
-    this.qualityValues.update(qv => ({ ...qv, [key]: value }));
-  }
-
-  setAllQuality(value: number): void {
-    const sr = this.selectedRecipe();
-    if (!sr) return;
-    const entries = this.ingredientsWithQuality(sr);
-    const updated: Record<string, number> = {};
-    for (const e of entries) updated[e.key] = value;
-    this.qualityValues.update(qv => ({ ...qv, ...updated }));
-  }
 
   fmtTime(seconds: number): string {
     const m = Math.floor(seconds / 60);
@@ -537,16 +414,6 @@ export class CraftingViewComponent {
 
   isGem(ing: CraftingIngredient): boolean {
     return ing.type === 'item' || (ing.type === 'resource' && ing.quantity >= 1);
-  }
-
-  hasQualityMods(recipe: CraftingRecipe): boolean {
-    return recipe.ingredients.some(i => i.qualityModifiers?.length);
-  }
-
-  ingredientsWithQuality(recipe: CraftingRecipe): { ing: CraftingIngredient; key: string }[] {
-    return recipe.ingredients
-      .map((ing, i) => ({ ing, key: `${i}_${ing.resource}` }))
-      .filter(x => x.ing.qualityModifiers?.length);
   }
 
   dismantleReturns = computed(() => {

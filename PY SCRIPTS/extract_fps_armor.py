@@ -120,6 +120,53 @@ def is_skin_variant(stem):
     return bool(SKIP_PATTERN.search(stem))
 
 
+def parse_ports(txt):
+    """Extract SItemPortDef entries from an armor XML.
+
+    Each port becomes: {name, displayName, minSize, maxSize, types[], flags, selectTag}.
+    - types[] are the AttachDef Types accepted (WeaponPersonal, FPS_Consumable, etc.)
+    - selectTag (from SItemPortDefExtensionFPS) hints at visual placement (backLeft,
+      hipRight, chestFront, etc.) — useful for paper-doll anchor positioning.
+    """
+    ports = []
+    for m in re.finditer(r'<SItemPortDef\s+([^>]+?)>(.*?)</SItemPortDef>', txt, re.DOTALL):
+        attrs = m.group(1)
+        body = m.group(2)
+
+        def _a(n):
+            mm = re.search(rf'(?<![A-Za-z]){n}="([^"]*)"', attrs)
+            return mm.group(1) if mm else ""
+
+        try:
+            min_size = int(_a("MinSize") or 0)
+            max_size = int(_a("MaxSize") or 0)
+        except ValueError:
+            min_size = max_size = 0
+
+        # Dedup accepted types (game files sometimes list a type twice)
+        raw_types = re.findall(r'<SItemPortDefTypes\s+Type="([^"]+)"', body)
+        seen = set(); types = []
+        for t in raw_types:
+            if t not in seen:
+                seen.add(t); types.append(t)
+
+        select_tag = ""
+        m_st = re.search(r'<SItemPortDefExtensionFPS[^>]*SelectTag="([^"]*)"', body)
+        if m_st:
+            select_tag = m_st.group(1)
+
+        ports.append({
+            "name": _a("Name"),
+            "displayName": _a("DisplayName").lstrip("@"),
+            "minSize": min_size,
+            "maxSize": max_size,
+            "types": types,
+            "flags": _a("Flags"),
+            "selectTag": select_tag,
+        })
+    return ports
+
+
 def parse_armor_piece(xml_path, loc, slot, weight):
     """Parse a single armor piece XML."""
     stem = xml_path.stem.replace(".xml", "")
@@ -202,6 +249,16 @@ def parse_armor_piece(xml_path, loc, slot, weight):
             set_name = set_name[:idx].strip()
             break
 
+    # Mass (loadout weight)
+    mass = None
+    m_mass = re.search(r'<SEntityRigidPhysicsControllerParams[^>]*Mass="([^"]+)"', txt)
+    if m_mass:
+        try: mass = float(m_mass.group(1))
+        except ValueError: mass = None
+
+    # Port schema — drives the paper-doll slot layout + picker filters
+    ports = parse_ports(txt)
+
     return {
         "className": stem,
         "name": display_name,
@@ -215,6 +272,8 @@ def parse_armor_piece(xml_path, loc, slot, weight):
         "radiationProtection": radiation_protection,
         "radiationScrub": radiation_scrub,
         "carryingCapacity": carrying,
+        "mass": round(mass, 4) if mass is not None else None,
+        "ports": ports,
     }
 
 

@@ -1,0 +1,303 @@
+{
+  "schema": 1,
+  "entries": {
+    "apar_special_ballistic_02": {
+      "wikiTitle": "Animus_Missile_Launcher",
+      "imageUrl": "https://media.starcitizen.tools/thumb/7/7e/Apar_ML_Shot_002_11Dec19-Min.jpg/800px-Apar_ML_Shot_002_11Dec19-Min.jpg.webp",
+      "imagePath": "weapon-images/apar_special_ballistic_02.webp",
+      "bytes": 27690,
+      "fetchedAt": "2026-04-21T18:42:14+00:00"
+    },
+    "apar_special_ballistic_01": {
+      "wikiTitle": "Scourge_Railgun",
+      "imageUrl": "https://media.starcitizen.tools/thumb/6/65/Scourge_-_On_crate_with_3_clips_-_Flat.jpg/800px-Scourge_-_On_crate_with_3_clips_-_Flat.jpg.webp",
+      "imagePath": "weapon-images/apar_special_ballistic_01.webp",
+      "bytes": 70740,
+      "fetchedAt": "2026-04-21T18:42:15+00:00"
+    },
+    "behr_gren_frag_01": {
+      "wikiTitle": "MK-4_Frag_Grenade",
+      "imageUrl": "https://media.starcitizen.tools/thumb/9/96/MK-4_Frag_Grenade_being_thrown.jpg/800px-MK-4_Frag_Grenade_being_thrown.jpg.webp",
+      "imagePath": "weapon-images/behr_gren_frag_01.webp",
+      "bytes": 69986,
+      "fetchedAt": "2026-04-21T18:42:15+00:00"
+    },
+    "behr_glauncher_ballistic_01": {
+      "wikiTitle": "GP-33_MOD_Grenade_Launcher",
+      "imageUrl": "https://media.starcitizen.tools/thumb/6/6d/Behr-GP-33.jpg/800px-Behr-GP-33.jpg.webp",
+      "imagePath": "weapon-images/behr_glauncher_ballistic_01.webp",
+      "bytes": 32510,
+      "fetchedAt": "2026-04-21T18:42:15+00:00"
+    },
+    "behr_lmg_ballistic_01": {
+      "wikiTitle": "FS-9_LMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/b/bd/FS-9_-_On_crate_with_extra_magazine.jpg/800px-FS-9_-_On_crate_with_extra_magazine.jpg.webp",
+      "imagePath": "weapon-images/behr_lmg_ballistic_01.webp",
+      "bytes": 44180,
+      "fetchedAt": "2026-04-21T18:42:16+00:00"
+    },
+    "behr_pistol_ballistic_01": {
+      "wikiTitle": "S-38_Pistol",
+      "imageUrl": "https://media.starcitizen.tools/thumb/8/82/S38_-_Lying_flat_with_clip.jpg/800px-S38_-_Lying_flat_with_clip.jpg.webp",
+      "imagePath": "weapon-images/behr_pistol_ballistic_01.webp",
+      "bytes": 39488,
+      "fetchedAt": "2026-04-21T18:42:16+00:00"
+    },
+    "behr_rifle_ballistic_01": {
+      "wikiTitle": "P4-AR_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/b/b2/P4-AR_4.6.png/800px-P4-AR_4.6.png.webp",
+      "imagePath": "weapon-images/behr_rifle_ballistic_01.webp",
+      "bytes": 64762,
+      "fetchedAt": "2026-04-21T18:42:16+00:00"
+    },
+    "behr_rifle_ballistic_02_civilian": {
+      "wikiTitle": "P8-AR_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/3/3d/P8-AR_Rifle.png/800px-P8-AR_Rifle.png.webp",
+      "imagePath": "weapon-images/behr_rifle_ballistic_02_civilian.webp",
+      "bytes": 50660,
+      "fetchedAt": "2026-04-21T18:42:16+00:00"
+    },
+    "behr_smg_ballistic_01": {
+      "wikiTitle": "P8-SC_SMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/f/fe/StarCitizen-Preview_BEHR_P8SC_01-pcgh.jpg/800px-StarCitizen-Preview_BEHR_P8SC_01-pcgh.jpg.webp",
+      "imagePath": "weapon-images/behr_smg_ballistic_01.webp",
+      "bytes": 22546,
+      "fetchedAt": "2026-04-21T18:42:17+00:00"
+    },
+    "behr_shotgun_ballistic_01": {
+      "wikiTitle": "BR-2_Shotgun",
+      "imageUrl": "https://media.starcitizen.tools/thumb/b/b0/BR2_Ballistic_Shotgun.png/800px-BR2_Ballistic_Shotgun.png.webp",
+      "imagePath": "weapon-images/behr_shotgun_ballistic_01.webp",
+      "bytes": 33276,
+      "fetchedAt": "2026-04-21T18:42:17+00:00"
+    },
+    "behr_sniper_ballistic_01": {
+      "wikiTitle": "P6-LR_Sniper_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/6/65/SniperShot_002_16_Dec_19-Min.jpg/800px-SniperShot_002_16_Dec_19-Min.jpg.webp",
+      "imagePath": "weapon-images/behr_sniper_ballistic_01.webp",
+      "bytes": 26346,
+      "fetchedAt": "2026-04-21T18:43:18+00:00"
+    },
+    "gmni_lmg_ballistic_01": {
+      "wikiTitle": "F55_LMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/1/1d/F55_-_x2_with_2_clips_-_Flat.jpg/800px-F55_-_x2_with_2_clips_-_Flat.jpg.webp",
+      "imagePath": "weapon-images/gmni_lmg_ballistic_01.webp",
+      "bytes": 91748,
+      "fetchedAt": "2026-04-21T18:43:18+00:00"
+    },
+    "gmni_pistol_ballistic_01": {
+      "wikiTitle": "LH86_Pistol",
+      "imageUrl": "https://media.starcitizen.tools/d/dd/Lh86pistol.jpg",
+      "imagePath": "weapon-images/gmni_pistol_ballistic_01.jpg",
+      "bytes": 171743,
+      "fetchedAt": "2026-04-21T18:43:18+00:00"
+    },
+    "gmni_rifle_ballistic_01": {
+      "wikiTitle": "S71_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/2/2c/Gmni-st71.png/800px-Gmni-st71.png.webp",
+      "imagePath": "weapon-images/gmni_rifle_ballistic_01.webp",
+      "bytes": 16580,
+      "fetchedAt": "2026-04-21T18:43:19+00:00"
+    },
+    "gmni_smg_ballistic_01": {
+      "wikiTitle": "C54_SMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/7/75/Gemini_-_C54.jpg/800px-Gemini_-_C54.jpg.webp",
+      "imagePath": "weapon-images/gmni_smg_ballistic_01.webp",
+      "bytes": 54788,
+      "fetchedAt": "2026-04-21T18:43:19+00:00"
+    },
+    "gmni_shotgun_ballistic_01": {
+      "wikiTitle": "R97_Shotgun",
+      "imageUrl": "https://media.starcitizen.tools/thumb/b/b0/R97_-_x2_with_2_clips_-_Flat.jpg/800px-R97_-_x2_with_2_clips_-_Flat.jpg.webp",
+      "imagePath": "weapon-images/gmni_shotgun_ballistic_01.webp",
+      "bytes": 87574,
+      "fetchedAt": "2026-04-21T18:43:19+00:00"
+    },
+    "gmni_sniper_ballistic_01": {
+      "wikiTitle": "A03_Sniper_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/6/64/Gemini_A03_Sniper_Rifle.jpg/800px-Gemini_A03_Sniper_Rifle.jpg.webp",
+      "imagePath": "weapon-images/gmni_sniper_ballistic_01.webp",
+      "bytes": 98568,
+      "fetchedAt": "2026-04-21T18:43:19+00:00"
+    },
+    "hdgw_pistol_ballistic_01": {
+      "wikiTitle": "Salvo_Frag_Pistol",
+      "imageUrl": "https://media.starcitizen.tools/thumb/b/b5/Salvo_Frag_-_Lying_flat_with_clip.jpg/800px-Salvo_Frag_-_Lying_flat_with_clip.jpg.webp",
+      "imagePath": "weapon-images/hdgw_pistol_ballistic_01.webp",
+      "bytes": 77944,
+      "fetchedAt": "2026-04-21T18:43:19+00:00"
+    },
+    "ksar_pistol_ballistic_01": {
+      "wikiTitle": "Coda_Pistol",
+      "imageUrl": "https://media.starcitizen.tools/thumb/e/e9/Coda_-_Flat_on_white_surface.png/800px-Coda_-_Flat_on_white_surface.png.webp",
+      "imagePath": "weapon-images/ksar_pistol_ballistic_01.webp",
+      "bytes": 46418,
+      "fetchedAt": "2026-04-21T18:43:20+00:00"
+    },
+    "ksar_rifle_energy_01": {
+      "wikiTitle": "Karna_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/c/cf/Karna_-_On_dark_background_-_Front_Left.jpg/800px-Karna_-_On_dark_background_-_Front_Left.jpg.webp",
+      "imagePath": "weapon-images/ksar_rifle_energy_01.webp",
+      "bytes": 42018,
+      "fetchedAt": "2026-04-21T18:43:20+00:00"
+    },
+    "ksar_smg_energy_01": {
+      "wikiTitle": "Custodian_SMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/a/a8/Custodian_-_with_x4_clips_-_Flat.jpg/800px-Custodian_-_with_x4_clips_-_Flat.jpg.webp",
+      "imagePath": "weapon-images/ksar_smg_energy_01.webp",
+      "bytes": 76956,
+      "fetchedAt": "2026-04-21T18:43:21+00:00"
+    },
+    "ksar_shotgun_energy_01": {
+      "wikiTitle": "Devastator_Shotgun",
+      "imageUrl": "https://media.starcitizen.tools/thumb/7/73/Devastator_-_with_2_clips_-_Flat.jpg/800px-Devastator_-_with_2_clips_-_Flat.jpg.webp",
+      "imagePath": "weapon-images/ksar_shotgun_energy_01.webp",
+      "bytes": 88802,
+      "fetchedAt": "2026-04-21T18:43:21+00:00"
+    },
+    "ksar_shotgun_ballistic_01": {
+      "wikiTitle": "Ravager-212_Twin_Shotgun",
+      "imageUrl": "https://media.starcitizen.tools/thumb/d/d0/Ravager_-_On_dark_background_-_Leftside.png/800px-Ravager_-_On_dark_background_-_Leftside.png.webp",
+      "imagePath": "weapon-images/ksar_shotgun_ballistic_01.webp",
+      "bytes": 34702,
+      "fetchedAt": "2026-04-21T18:43:21+00:00"
+    },
+    "ksar_sniper_ballistic_01": {
+      "wikiTitle": "Scalpel_Sniper_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/7/7b/Scalpel_-_On_gun_crate_-_Back_Right.jpg/800px-Scalpel_-_On_gun_crate_-_Back_Right.jpg.webp",
+      "imagePath": "weapon-images/ksar_sniper_ballistic_01.webp",
+      "bytes": 57550,
+      "fetchedAt": "2026-04-21T18:43:22+00:00"
+    },
+    "klwe_lmg_energy_01": {
+      "wikiTitle": "Demeco_LMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/0/02/Demeco_-_on_grey_background_-_Left.jpg/800px-Demeco_-_on_grey_background_-_Left.jpg.webp",
+      "imagePath": "weapon-images/klwe_lmg_energy_01.webp",
+      "bytes": 37934,
+      "fetchedAt": "2026-04-21T18:43:22+00:00"
+    },
+    "klwe_pistol_energy_01": {
+      "wikiTitle": "Arclight_Pistol",
+      "imageUrl": "https://media.starcitizen.tools/thumb/5/52/Arclight_II_-_with_2_clips_-_flat.jpg/800px-Arclight_II_-_with_2_clips_-_flat.jpg.webp",
+      "imagePath": "weapon-images/klwe_pistol_energy_01.webp",
+      "bytes": 114422,
+      "fetchedAt": "2026-04-21T18:43:22+00:00"
+    },
+    "klwe_rifle_energy_01": {
+      "wikiTitle": "Gallant_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/e/ef/Gallant_-_with_3_clips_and_ArcLight_-_Flat.png/800px-Gallant_-_with_3_clips_and_ArcLight_-_Flat.png.webp",
+      "imagePath": "weapon-images/klwe_rifle_energy_01.webp",
+      "bytes": 80152,
+      "fetchedAt": "2026-04-21T18:43:23+00:00"
+    },
+    "klwe_smg_energy_01": {
+      "wikiTitle": "Lumin_V_SMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/f/f6/Lumin_V_-_with_clip_on_grey_background_-_Flat.jpg/800px-Lumin_V_-_with_clip_on_grey_background_-_Flat.jpg.webp",
+      "imagePath": "weapon-images/klwe_smg_energy_01.webp",
+      "bytes": 61110,
+      "fetchedAt": "2026-04-21T18:43:23+00:00"
+    },
+    "klwe_sniper_energy_01": {
+      "wikiTitle": "Arrowhead_Sniper_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/b/bd/Arrowhead_-_Against_grey_background_-_Rightside.jpg/800px-Arrowhead_-_Against_grey_background_-_Rightside.jpg.webp",
+      "imagePath": "weapon-images/klwe_sniper_energy_01.webp",
+      "bytes": 35064,
+      "fetchedAt": "2026-04-21T18:43:23+00:00"
+    },
+    "lbco_pistol_energy_01": {
+      "wikiTitle": "Yubarev_Pistol",
+      "imageUrl": "https://media.starcitizen.tools/thumb/5/5c/Lbco-Pistol-03.jpg/800px-Lbco-Pistol-03.jpg.webp",
+      "imagePath": "weapon-images/lbco_pistol_energy_01.webp",
+      "bytes": 33488,
+      "fetchedAt": "2026-04-21T18:43:23+00:00"
+    },
+    "lbco_sniper_energy_01": {
+      "wikiTitle": "Atzkav_Sniper_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/5/57/Atzkav_-_Flat_with_Ammo_x_3.jpg/800px-Atzkav_-_Flat_with_Ammo_x_3.jpg.webp",
+      "imagePath": "weapon-images/lbco_sniper_energy_01.webp",
+      "bytes": 47304,
+      "fetchedAt": "2026-04-21T18:43:24+00:00"
+    },
+    "none_lmg_ballistic_01": {
+      "wikiTitle": "Pulverizer_LMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/8/8f/PulverizerLMG1.png/800px-PulverizerLMG1.png.webp",
+      "imagePath": "weapon-images/none_lmg_ballistic_01.webp",
+      "bytes": 28520,
+      "fetchedAt": "2026-04-21T18:43:24+00:00"
+    },
+    "none_rifle_multi_01": {
+      "wikiTitle": "Killshot_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/8/8d/KillshotRifle1.png/800px-KillshotRifle1.png.webp",
+      "imagePath": "weapon-images/none_rifle_multi_01.webp",
+      "bytes": 47748,
+      "fetchedAt": "2026-04-21T18:43:24+00:00"
+    },
+    "none_smg_energy_01": {
+      "wikiTitle": "Ripper",
+      "imageUrl": "https://media.starcitizen.tools/thumb/d/d8/Ripper.jpg/800px-Ripper.jpg.webp",
+      "imagePath": "weapon-images/none_smg_energy_01.webp",
+      "bytes": 57314,
+      "fetchedAt": "2026-04-21T18:48:03+00:00"
+    },
+    "none_shotgun_ballistic_01": {
+      "wikiTitle": "Deadrig_Shotgun",
+      "imageUrl": "https://media.starcitizen.tools/thumb/8/80/Deadrig_Shotgun_-_Contrast_adjusted_and_Cropped.jpg/800px-Deadrig_Shotgun_-_Contrast_adjusted_and_Cropped.jpg.webp",
+      "imagePath": "weapon-images/none_shotgun_ballistic_01.webp",
+      "bytes": 81464,
+      "fetchedAt": "2026-04-21T18:48:03+00:00"
+    },
+    "none_special_ballistic_01": {
+      "wikiTitle": "Boomtube_Rocket_Launcher",
+      "imageUrl": "https://media.starcitizen.tools/thumb/0/0c/GreyRocket1.png/800px-GreyRocket1.png.webp",
+      "imagePath": "weapon-images/none_special_ballistic_01.webp",
+      "bytes": 46136,
+      "fetchedAt": "2026-04-21T18:48:04+00:00"
+    },
+    "volt_lmg_energy_01": {
+      "wikiTitle": "Fresnel_Energy_LMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/9/94/VOLT_Fresnel_LMG_laying_flat_on_grey_surface_with_spare_magazine.jpg/800px-VOLT_Fresnel_LMG_laying_flat_on_grey_surface_with_spare_magazine.jpg.webp",
+      "imagePath": "weapon-images/volt_lmg_energy_01.webp",
+      "bytes": 45690,
+      "fetchedAt": "2026-04-21T18:48:04+00:00"
+    },
+    "volt_pistol_energy_01": {
+      "wikiTitle": "Pulse_Laser_Pistol",
+      "imageUrl": "https://media.starcitizen.tools/thumb/f/ff/VOLT-pulse-pistol-sneak-peek.jpg/800px-VOLT-pulse-pistol-sneak-peek.jpg.webp",
+      "imagePath": "weapon-images/volt_pistol_energy_01.webp",
+      "bytes": 56444,
+      "fetchedAt": "2026-04-21T18:48:04+00:00"
+    },
+    "volt_rifle_energy_01": {
+      "wikiTitle": "Parallax_Energy_Assault_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/f/f5/Parallax_AR_-_Inspecting_weapon.jpg/800px-Parallax_AR_-_Inspecting_weapon.jpg.webp",
+      "imagePath": "weapon-images/volt_rifle_energy_01.webp",
+      "bytes": 51366,
+      "fetchedAt": "2026-04-21T18:48:04+00:00"
+    },
+    "volt_smg_energy_01": {
+      "wikiTitle": "Quartz_Energy_SMG",
+      "imageUrl": "https://media.starcitizen.tools/thumb/7/79/Quartz_Energy_SMG.png/800px-Quartz_Energy_SMG.png.webp",
+      "imagePath": "weapon-images/volt_smg_energy_01.webp",
+      "bytes": 71630,
+      "fetchedAt": "2026-04-21T18:48:05+00:00"
+    },
+    "volt_shotgun_energy_01": {
+      "wikiTitle": "Prism_Laser_Shotgun",
+      "imageUrl": "https://media.starcitizen.tools/thumb/7/7c/VOLT_Prism_on_side_on_top_of_boxes.png/800px-VOLT_Prism_on_side_on_top_of_boxes.png.webp",
+      "imagePath": "weapon-images/volt_shotgun_energy_01.webp",
+      "bytes": 51852,
+      "fetchedAt": "2026-04-21T18:48:05+00:00"
+    },
+    "volt_sniper_energy_01": {
+      "wikiTitle": "Zenith_Laser_Sniper_Rifle",
+      "imageUrl": "https://media.starcitizen.tools/thumb/6/6a/VOLT-Laser-Sniper-Zenith_roadmap_preview.png/800px-VOLT-Laser-Sniper-Zenith_roadmap_preview.png.webp",
+      "imagePath": "weapon-images/volt_sniper_energy_01.webp",
+      "bytes": 53738,
+      "fetchedAt": "2026-04-21T18:48:05+00:00"
+    }
+  },
+  "missing": [
+    "none_pistol_ballistic_01"
+  ],
+  "lastRun": "2026-04-21T18:54:32+00:00"
+}

@@ -1,0 +1,620 @@
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3Cpolygon id='h' points='50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25' fill='none' stroke='%2300c8ff' stroke-width='0.5'/%3E%3C/defs%3E%3Cg opacity='0.04'%3E%3Cuse href='%23h' x='80' y='60'/%3E%3Cuse href='%23h' x='170' y='85'/%3E%3Cuse href='%23h' x='95' y='160'/%3E%3Cuse href='%23h' x='420' y='30'/%3E%3Cuse href='%23h' x='510' y='55'/%3E%3Cuse href='%23h' x='680' y='120'/%3E%3Cuse href='%23h' x='770' y='145'/%3E%3Cuse href='%23h' x='950' y='40'/%3E%3Cuse href='%23h' x='1040' y='65'/%3E%3Cuse href='%23h' x='1080' y='180'/%3E%3Cuse href='%23h' x='200' y='320'/%3E%3Cuse href='%23h' x='290' y='345'/%3E%3Cuse href='%23h' x='560' y='280'/%3E%3Cuse href='%23h' x='830' y='310'/%3E%3Cuse href='%23h' x='920' y='335'/%3E%3Cuse href='%23h' x='1100' y='370'/%3E%3Cuse href='%23h' x='60' y='480'/%3E%3Cuse href='%23h' x='350' y='520'/%3E%3Cuse href='%23h' x='440' y='545'/%3E%3Cuse href='%23h' x='700' y='460'/%3E%3Cuse href='%23h' x='1000' y='510'/%3E%3Cuse href='%23h' x='150' y='680'/%3E%3Cuse href='%23h' x='480' y='720'/%3E%3Cuse href='%23h' x='570' y='745'/%3E%3Cuse href='%23h' x='820' y='650'/%3E%3Cuse href='%23h' x='910' y='675'/%3E%3Cuse href='%23h' x='1060' y='740'/%3E%3Cuse href='%23h' x='300' y='830'/%3E%3Cuse href='%23h' x='650' y='860'/%3E%3Cuse href='%23h' x='740' y='810'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 1200px 900px;
+}
+
+.fps-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  padding: 16px 20px;
+  gap: 14px;
+  align-items: center;
+}
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  color: var(--text3);
+}
+
+.fps-header { text-align: center; }
+
+.fps-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
+}
+
+.fps-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.fps-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.fps-tab {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--bg2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  color: var(--text3);
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+  &:hover { color: var(--text); }
+  &.active {
+    color: var(--accent);
+    background: var(--bg3);
+    border-color: rgba(0, 200, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.15);
+  }
+  .tab-count {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text3);
+  }
+  &.active .tab-count {
+    background: rgba(0, 200, 255, 0.15);
+    color: var(--accent);
+  }
+}
+
+/* Medical tab — two stacked tables separated by a section heading. */
+.med-wrap {
+  width: fit-content;
+  max-width: 100%;
+  flex: 0 0 auto;
+  overflow: visible;
+  padding: 6px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .fps-table { width: auto; }
+  .fps-table th { text-align: center; }
+  .fps-table td.col-name { text-align: left; }
+}
+
+.med-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.15);
+  padding: 8px 0 4px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+}
+
+.med-section-break {
+  margin-top: 18px;
+}
+
+/* Melee / Throwable tab — same shape as med-wrap: hug content and stack
+ * the two sub-tables with a section heading between them. */
+.melee-wrap {
+  width: fit-content;
+  max-width: 100%;
+  flex: 0 0 auto;
+  overflow: visible;
+  padding: 6px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .fps-table { width: auto; }
+  .fps-table th { text-align: center; }
+  .fps-table td.col-name { text-align: left; }
+}
+
+/* Snug column widths for the Attachments tabs. Sizes are longest-value +
+ * the user-requested buffer (5ch for name/mfr/mass, 3ch for size; mfr
+ * defaults to header-label + 2 = 14ch except where a value won't fit). */
+.fps-table.attach-layout {
+  table-layout: fixed;
+
+  .col-h-size { width: 4ch; max-width: 4ch; }
+  .col-h-mass { width: 9ch; max-width: 9ch; }
+  .col-h-name, .col-h-mfr {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Barrels: longest name = "Sion 'Scorched' Compensator2" (28), longest
+ * manufacturer = "ARMA" (4). Mfr follows the header-label+2 rule. */
+.fps-table.attach-layout-barrels {
+  .col-h-name { width: 33ch; max-width: 33ch; }
+  .col-h-mfr  { width: 14ch; max-width: 14ch; }
+}
+
+/* Optics: longest name = "Tau Plus 'Scorched' (4x Telescopic)" (35),
+ * longest manufacturer = "Lightning Bolt Co." (18). Stat columns are
+ * short ("8x", "base", "+15%") so we keep them narrow but DON'T cap the
+ * whole table — that caused the right edge to clip at tight widths. */
+.fps-table.attach-layout-optics {
+  width: auto;
+  .col-h-name { width: 40ch; max-width: 40ch; }
+  .col-h-mfr  { width: 23ch; max-width: 23ch; }
+  /* "Size" header at Rajdhani semibold caps is a smidge wider than 4ch —
+   * bump to 7ch so the header word doesn't get clipped. */
+  .col-h-size { width: 7ch; max-width: 7ch; }
+  .col-opt    { width: 8ch;  max-width: 8ch; text-align: center; }
+  /* Extra breathing room on the rightmost optic column so values don't
+   * hug the table edge. */
+  .col-opt-ads { width: 9.5ch; max-width: 9.5ch; }
+
+  /* Force center on both header + cell — .mod-cell in the ADS Time cell
+   * inherits text-align: right from the base .mod-cell rule, which would
+   * otherwise override .col-opt's centering. */
+  th.col-opt, td.col-opt,
+  th.col-opt-ads, td.col-opt-ads { text-align: center; }
+
+  .col-scope { width: 13ch; max-width: 13ch; text-align: center; }
+}
+
+.scope-pill {
+  display: inline-block;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.scope-pill.scope-nv {
+  background: rgba(80, 230, 160, 0.10);
+  color: rgb(130, 240, 180);
+  border: 1px solid rgba(80, 230, 160, 0.35);
+}
+.scope-pill.scope-zoom {
+  background: rgba(0, 200, 255, 0.10);
+  color: rgb(100, 200, 255);
+  border: 1px solid rgba(0, 200, 255, 0.35);
+}
+.scope-none {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* Shrink the wrap on the optics tab so it hugs the table instead of
+ * leaving dead chrome to the right of the last column. `fit-content`
+ * sizes to the inner table's width; `max-width` keeps it from blowing
+ * past the main content if someone adds many more columns.
+ * Overflow visible on X so no horizontal scrollbar appears — the table
+ * is already sized to fit via `fit-content`. Y-only scroll for long lists.
+ *
+ * Padding carves out a dead-space border so the vertical scrollbar
+ * (when it appears for long rows) doesn't sit on top of the value cells. */
+.fps-view:has(.attach-layout-optics) .fps-table-wrap {
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: visible;
+  overflow-y: auto;
+  padding: 0 18px;
+}
+
+/* Under-Barrel Mods is a short list (~14 items) — don't stretch the
+ * wrap to fill the viewport; hug the content's natural height. */
+.fps-view:has(.attach-layout-underbarrels) .fps-table-wrap {
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: visible;
+  overflow-y: visible;
+  padding: 0 18px;
+}
+
+/* Mining tab: 6 gadgets with short names (≤9ch) and 5 property columns.
+ * Hug the content — this is a 6-row list, don't stretch across the viewport. */
+.fps-view:has(.attach-layout-mining) .fps-table-wrap {
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: visible;
+  overflow-y: visible;
+  padding: 0 18px;
+}
+
+.fps-table.attach-layout-mining {
+  width: auto;
+  .col-h-name { width: 14ch; max-width: 14ch; }
+  .col-h-mfr  { width: 22ch; max-width: 22ch; text-align: center; }
+  .col-h-size { width: 6ch;  max-width: 6ch;  text-align: center; }
+  .col-h-mass { width: 11ch; max-width: 11ch; text-align: center; }
+  .col-mining { width: 13ch; max-width: 13ch; text-align: center; }
+
+  th.col-h-mfr, th.col-h-size, th.col-h-mass, th.col-mining { text-align: center; }
+}
+
+/* Under-Barrels: longest name "Narrow Tactical Flashlight (Dark Blue)"
+ * (38) + 5ch buffer = 43ch. Mfr / Size / Mass sized to header-label + 2ch
+ * since no underbarrel values exceed header widths. Property cells
+ * (mfr/size/mass) center-aligned per request. */
+.fps-table.attach-layout-underbarrels {
+  width: auto;   /* hug content, don't fill the wrap like the base rule wants */
+  .col-h-name { width: 43ch; max-width: 43ch; }
+  .col-h-mfr  { width: 20ch; max-width: 20ch; text-align: center; }
+  .col-h-size { width: 6ch;  max-width: 6ch;  text-align: center; }
+  .col-h-mass { width: 11ch; max-width: 11ch; text-align: center; }
+
+  /* Center headers too so they line up with the centered values. */
+  th.col-h-mfr, th.col-h-size, th.col-h-mass { text-align: center; }
+}
+
+/* One column per modifier, mirroring the FPS Weapons table pattern.
+ * Headers use compact vertical-rotated labels on narrow columns so 10+
+ * mod columns stay readable without exploding horizontal space. */
+.mod-col-head {
+  width: 42px;
+  min-width: 42px;
+  max-width: 42px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: left;
+  padding: 8px 2px;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.fps-table td.mod-cell {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 3px 4px;
+  text-align: center;
+  color: var(--text3);
+  &.positive { color: rgb(130, 240, 180) !important; font-weight: 600; }
+  &.negative { color: rgb(255, 160, 160) !important; font-weight: 600; }
+}
+
+.fps-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+
+.fps-tab {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--bg2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  color: var(--text3);
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { color: var(--text); }
+  &.active {
+    color: var(--accent);
+    background: var(--bg3);
+    border-color: rgba(0, 200, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.15);
+  }
+}
+
+.fps-filters {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
+}
+
+.fps-select, .fps-search {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  background: var(--bg3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  color: var(--text);
+  padding: 6px 12px;
+  outline: none;
+  transition: all 0.2s;
+  &:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.1);
+  }
+  option {
+    background: var(--bg3);
+    color: var(--text);
+  }
+}
+
+.fps-select {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.fps-search { min-width: 180px; }
+
+.fps-table-wrap {
+  flex: 1;
+  overflow: auto;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: min(100%, 1920px);
+  width: 100%;
+
+  &::-webkit-scrollbar { width: 4px; height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+}
+
+.fps-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    white-space: nowrap;
+
+    /* Strip the trailing edge so the rightmost column doesn't show an
+     * orphan vertical line. */
+    &:last-child { border-right: none; }
+  }
+
+  /* Slight zebra-stripe so horizontal eye-tracking stays locked. */
+  tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.015);
+  }
+  tbody tr:hover {
+    background: rgba(0, 200, 255, 0.05);
+  }
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    th {
+      background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text3);
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+    }
+  }
+
+  .sortable {
+    cursor: pointer;
+    transition: color 0.15s;
+    &:hover { color: var(--accent); }
+  }
+
+  .col-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text);
+  }
+
+  .col-num {
+    text-align: right;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .col-modes {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  // Default body text
+  tbody td {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  tbody tr {
+    transition: background 0.15s;
+    &:hover { background: rgba(255, 255, 255, 0.03); }
+  }
+
+  .section-header td {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    text-align: left;
+    padding: 14px 10px 6px;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+    background: transparent;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent2), transparent);
+    }
+  }
+  .section-header:hover { background: transparent !important; }
+}
+
+// ── Real DPS column ────────────────────────────────────
+
+.real-dps-header {
+  white-space: nowrap;
+}
+
+.info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--accent2);
+  background: transparent;
+  color: var(--accent2);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 4px;
+  padding: 0;
+  vertical-align: middle;
+  &:hover { background: rgba(0, 200, 255, 0.1); }
+}
+
+.col-real-dps {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+// ── Recoil columns ─────────────────────────────────────
+
+.fps-table {
+  .recoil-header {
+    color: var(--accent2) !important;
+    &:first-of-type { border-left: 1px solid rgba(0, 200, 255, 0.12); }
+  }
+  .col-recoil {
+    color: var(--text3);
+    &:first-of-type { border-left: 1px solid rgba(0, 200, 255, 0.06); }
+  }
+}
+
+// ── Modal ──────────────────────────────────────────────
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-card {
+  background: var(--bg2);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  max-width: 540px;
+  width: 90%;
+  padding: 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+}
+
+.modal-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0 4px;
+  &:hover { color: var(--text); }
+}
+
+.modal-body {
+  padding: 16px 20px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+
+  p { margin: 0 0 10px; }
+  .formula {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 14px;
+    border-radius: 4px;
+    border-left: 3px solid var(--accent);
+  }
+}
+
+// ── Buttons ─────────────────────────────────────────────
+
+button {
+  border-radius: 4px;
+  transition: all 0.15s;
+  &:hover {
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.15);
+  }
+}

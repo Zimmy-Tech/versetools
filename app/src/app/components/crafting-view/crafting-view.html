@@ -296,74 +296,13 @@
             </div>
           }
 
-          <!-- Quality Simulator -->
-          @if (hasQualityMods(sr)) {
-            <div class="po-section quality-section">
-              <div class="po-section-title">Material Quality</div>
-
-              <div class="quality-presets">
-                <button class="qp-btn" (click)="setAllQuality(0)">Min</button>
-                <button class="qp-btn" (click)="setAllQuality(500)">Base</button>
-                <button class="qp-btn" (click)="setAllQuality(750)">750</button>
-                <button class="qp-btn" (click)="setAllQuality(1000)">Max</button>
-              </div>
-
-              <div class="quality-sliders">
-                @for (entry of ingredientsWithQuality(sr); track entry.key) {
-                  <div class="quality-row">
-                    <span class="qr-name" [class.ore]="isOre(entry.ing)" [class.gem]="isGem(entry.ing)">{{ entry.ing.resource }}</span>
-                    <input type="range" class="qr-slider" min="0" max="1000" step="10"
-                           [value]="qualityValues()[entry.key] ?? 500"
-                           (input)="setQuality(entry.key, +$any($event.target).value)">
-                    <span class="qr-val">{{ qualityValues()[entry.key] ?? 500 }}</span>
-                  </div>
-                }
-              </div>
-
-              @if (qualityEffects().length) {
-                <div class="ql-section-title">Crafted Bonus Stats</div>
-                <div class="quality-list">
-                  <div class="ql-header">
-                    <span class="ql-header-label">Property</span>
-                    <div class="ql-header-right">
-                      <span class="ql-header-label ql-h-base">Base</span>
-                      <span class="ql-header-label ql-h-arrow"></span>
-                      <span class="ql-header-label ql-h-mod">Modified</span>
-                      <span class="ql-header-label ql-h-pct">% Change</span>
-                    </div>
-                  </div>
-                  @for (eff of qualityEffects(); track eff.property) {
-                    <div class="ql-row">
-                      <div class="ql-left">
-                        <span class="ql-property">{{ eff.property }}</span>
-                        @if (eff.description) {
-                          <span class="ql-desc">{{ eff.description }}</span>
-                        }
-                      </div>
-                      <div class="ql-right">
-                        @if (eff.baseValue != null && eff.modifiedValue != null) {
-                          <span class="ql-base">{{ eff.baseValue }}{{ eff.unit }}</span>
-                          <span class="ql-arrow">&rarr;</span>
-                          <span class="ql-modified"
-                                [class.positive]="eff.colorClass === 'positive'"
-                                [class.cold]="eff.colorClass === 'cold'"
-                                [class.negative]="eff.colorClass === 'negative'">
-                            {{ eff.modifiedValue }}{{ eff.unit }}
-                          </span>
-                        }
-                        <span class="ql-pct"
-                              [class.positive]="eff.colorClass === 'positive'"
-                              [class.cold]="eff.colorClass === 'cold'"
-                              [class.negative]="eff.colorClass === 'negative'">
-                          {{ fmtMod(eff.combined) }}
-                        </span>
-                      </div>
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-          }
+          <!-- Quality Simulator (shared component) -->
+          <div class="po-section">
+            <app-quality-simulator
+              [recipe]="sr"
+              [baseStats]="baseStatsForRecipe(sr)"
+              (qualityEffectsChange)="onQualityEffectsChange($event)" />
+          </div>
 
           <!-- Armor Damage Resistance Breakdown -->
           @if (armorResistances(); as resists) {

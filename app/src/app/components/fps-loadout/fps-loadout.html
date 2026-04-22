@@ -1,0 +1,381 @@
+<div class="loadout-view">
+  @if (!loaded()) {
+    <div class="empty-state"><div class="empty-title">Loading FPS armor...</div></div>
+  } @else {
+    <div class="loadout-header">
+      <div class="loadout-title">FPS LOADOUT BUILDER &mdash; EARLY ALPHA BUILD</div>
+      <div class="loadout-sub">v1 · paper-doll preview · slot mapping WIP</div>
+    </div>
+
+    <section class="dps-panel">
+      <div class="dps-panel-title">Weapons DPS</div>
+      <div class="dps-cards">
+        @for (card of dpsCards(); track card.key) {
+          <div class="dps-card" [class.dps-card-empty]="!card.stats">
+            <div class="dps-card-head">
+              <span class="dps-slot-label">{{ card.label }}</span>
+              @if (card.weapon) {
+                <span class="dps-weapon-name">{{ card.weapon.name }}</span>
+                <span class="dps-weapon-meta">{{ card.weapon.type }} · S{{ card.weapon.size }}</span>
+              } @else {
+                <span class="dps-weapon-name dps-empty-label">— empty —</span>
+              }
+              @if (card.weapon && card.slotKey) {
+                <button class="dps-craft-btn" [class.crafted]="isCrafted(card.slotKey)"
+                        (click)="openCraft(card.slotKey)"
+                        title="Open crafting modal">
+                  {{ isCrafted(card.slotKey) ? 'CRAFTED' : 'CRAFT' }}
+                </button>
+              }
+            </div>
+
+            @if (card.stats; as stats) {
+              <div class="dps-hero">
+                <div class="dps-hero-label">DPS</div>
+                <div class="dps-hero-val">{{ fmt1(stats.dps) }}</div>
+                @if (stats.realDps !== null) {
+                  <div class="dps-hero-sub" title="Tick-quantized DPS — sequence weapons whose listed RPM doesn't land on the 30 Hz server tick boundary.">
+                    Real DPS {{ fmt1(stats.realDps) }}
+                  </div>
+                }
+              </div>
+
+              <div class="dps-body">
+                <div class="dps-col">
+                  <div class="dps-col-title">Damage</div>
+                  <div class="dps-col-grid">
+                    <span class="dps-rec-label">Alpha</span>
+                    <span class="dps-rec-val">{{ fmt1(stats.alphaDamage) }}</span>
+                    <span class="dps-rec-label">Fire Rate</span>
+                    <span class="dps-rec-val">{{ fmtRpm(stats) }}</span>
+                    <span class="dps-rec-label">Magazine</span>
+                    <span class="dps-rec-val">{{ stats.magazineSize || '—' }}</span>
+                    <span class="dps-rec-label">Mag Alpha</span>
+                    <span class="dps-rec-val">{{ stats.magAlpha ? fmt1(stats.magAlpha) : '—' }}</span>
+                    <span class="dps-rec-label">Range</span>
+                    <span class="dps-rec-val">{{ stats.range ? stats.range + 'm' : '—' }}</span>
+                    <span class="dps-rec-label">Type</span>
+                    <span class="dps-rec-val">{{ stats.damageType }}</span>
+                  </div>
+                </div>
+
+                <div class="dps-col">
+                  <div class="dps-col-title">Handling</div>
+                  <div class="dps-col-grid">
+                    <span class="dps-rec-label" title="Vertical kick per shot (pitch)">Kick ↕</span>
+                    <span class="dps-rec-val">{{ fmt2(stats.recoilPitch) }}°</span>
+                    <span class="dps-rec-label" title="Horizontal kick per shot (yaw)">Drift ↔</span>
+                    <span class="dps-rec-val">{{ fmt2(stats.recoilYaw) }}°</span>
+                    <span class="dps-rec-label" title="Time in seconds for the camera to return to rest">Recovery</span>
+                    <span class="dps-rec-val">{{ fmt2(stats.recoilSmooth) }}s</span>
+                    <span class="dps-rec-label" title="Multiplier on first-shot kick vs sustained fire">First-Shot</span>
+                    <span class="dps-rec-val" [class.positive]="multPolarity(stats.firstShotKickMult) === 'positive'"
+                                             [class.negative]="multPolarity(stats.firstShotKickMult) === 'negative'">
+                      {{ fmtMultPct(stats.firstShotKickMult) }}
+                    </span>
+                    <span class="dps-rec-label" title="Bullet dispersion — lower is tighter grouping">Spread</span>
+                    <span class="dps-rec-val" [class.positive]="multPolarity(stats.spreadMult) === 'positive'"
+                                             [class.negative]="multPolarity(stats.spreadMult) === 'negative'">
+                      {{ fmtMultPct(stats.spreadMult) }}
+                    </span>
+                    <span class="dps-rec-label" title="On-screen shake + weapon oscillation — cosmetic, but affects aim clarity">Visual</span>
+                    <span class="dps-rec-val" [class.positive]="multPolarity(stats.visualRecoilMult) === 'positive'"
+                                             [class.negative]="multPolarity(stats.visualRecoilMult) === 'negative'">
+                      {{ fmtMultPct(stats.visualRecoilMult) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dps-footer">{{ fmt1(stats.mass) }} kg</div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
+    <div class="loadout-body">
+      <aside class="picker">
+        <div class="picker-group">
+          <label>Armor Tier</label>
+          <div class="tier-buttons">
+            <button [class.active]="tier() === 'light'"  (click)="setTier('light')">Light</button>
+            <button [class.active]="tier() === 'medium'" (click)="setTier('medium')">Medium</button>
+            <button [class.active]="tier() === 'heavy'"  (click)="setTier('heavy')">Heavy</button>
+          </div>
+        </div>
+
+        <div class="picker-group">
+          <label>Undersuit</label>
+          <select [value]="undersuitClass() ?? ''" (change)="undersuitClass.set($any($event.target).value || null)">
+            <option value="">— none —</option>
+            @for (u of undersuits(); track u.className) {
+              <option [value]="u.className">{{ u.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="picker-group">
+          <label>Core</label>
+          <select [value]="coreClass() ?? ''" (change)="coreClass.set($any($event.target).value || null)">
+            <option value="">— none —</option>
+            @for (c of cores(); track c.className) {
+              <option [value]="c.className">{{ c.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="picker-group">
+          <label>Arms</label>
+          <select [value]="armsClass() ?? ''" (change)="armsClass.set($any($event.target).value || null)">
+            <option value="">— none —</option>
+            @for (a of arms(); track a.className) {
+              <option [value]="a.className">{{ a.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="picker-group">
+          <label>Legs</label>
+          <select [value]="legsClass() ?? ''" (change)="legsClass.set($any($event.target).value || null)">
+            <option value="">— none —</option>
+            @for (l of legs(); track l.className) {
+              <option [value]="l.className">{{ l.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="picker-group">
+          <label>Backpack</label>
+          <select [value]="backpackClass() ?? ''" (change)="backpackClass.set($any($event.target).value || null)">
+            <option value="">— none —</option>
+            @for (b of backpacks(); track b.className) {
+              <option [value]="b.className">{{ b.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="summary">
+          <div class="summary-row"><span>Armor mass</span><span>{{ totalMass() }} kg</span></div>
+          <div class="summary-row"><span>Total loadout</span><span>{{ totalLoadoutMass() }} kg</span></div>
+          <div class="summary-row"><span>Open slots</span><span>{{ slots().length }}</span></div>
+        </div>
+
+        <div class="encumbrance" [class]="'enc-' + encumbranceLevel()">
+          <div class="enc-title">Encumbrance</div>
+
+          <div class="enc-metric">
+            <span class="enc-label">Sprint</span>
+            <span class="enc-value">{{ fmt1(effectiveSprintSpeed()) }} m/s</span>
+          </div>
+          <div class="enc-bar">
+            <div class="enc-bar-fill" [style.width.%]="velocityPct()"></div>
+          </div>
+          <div class="enc-sub">
+            {{ velocityPct() }}% of base (7.2 m/s)
+          </div>
+
+          <div class="enc-metric">
+            <span class="enc-label">Run (sustained)</span>
+            <span class="enc-value">{{ fmt1(effectiveRunSpeed()) }} m/s</span>
+          </div>
+
+          <div class="enc-footnote"
+               title="Velocity model (empirically validated to 0.5%): armor takes −0.325% per kg of armor mass; each stocked-slot weapon is ×0.944 (S2–S3) or ×0.887 (S4+); sidearm slot is free. Sprint endurance is tied to the in-game heart-rate monitor and re-engages after each cooldown — not modelled here yet.">
+            ⓘ velocity validated · sprint endurance: heart-rate-tied, TBD
+          </div>
+        </div>
+      </aside>
+
+      <section class="doll-wrap">
+        <div class="doll-row">
+        <div class="doll">
+          <!-- Simple body outline: head, torso, arms, legs -->
+          <svg class="body-outline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <circle cx="50" cy="10" r="6" />
+            <!-- torso -->
+            <rect x="38" y="18" width="24" height="34" rx="3" />
+            <!-- arms -->
+            <rect x="28" y="20" width="8" height="28" rx="3" />
+            <rect x="64" y="20" width="8" height="28" rx="3" />
+            <!-- hips/belt -->
+            <rect x="38" y="52" width="24" height="6" rx="2" />
+            <!-- legs -->
+            <rect x="40" y="58" width="8" height="32" rx="2" />
+            <rect x="52" y="58" width="8" height="32" rx="2" />
+          </svg>
+
+          @if (slots().length === 0) {
+            <div class="doll-empty">Pick an armor piece on the left to render slots.</div>
+          }
+          @for (s of dollSlots(); track s.key) {
+            <div class="slot" [class]="'slot-' + s.source"
+                 [class.slot-filled]="equippedLabel(s.key)"
+                 [class.slot-focused]="focusedSlotKey() === s.key"
+                 [style.left.%]="s.x" [style.top.%]="s.y"
+                 [title]="slotTitle(s)"
+                 (click)="focusSlot(s.key)">
+              {{ slotLabel(s) }}
+            </div>
+          }
+        </div>
+
+        <div class="sidecar-column">
+          @for (g of slotGroups(); track g.key) {
+            <div class="sidecar">
+              <div class="sidecar-title">{{ g.label }}</div>
+              @for (s of g.slots; track s.key) {
+                <button class="sidecar-row" [id]="'slot-row-' + s.key"
+                        [class]="'slot-' + s.source"
+                        [class.slot-filled]="equippedLabel(s.key)"
+                        [class.slot-focused]="focusedSlotKey() === s.key"
+                        [title]="slotTitle(s)"
+                        (click)="openPicker(s.key)">
+                  @if (!equippedLabel(s.key)) {
+                    <span class="sidecar-label">{{ slotLabel(s) }}</span>
+                    <span class="sidecar-item">empty</span>
+                  } @else {
+                    <span class="sidecar-item">{{ equippedLabel(s.key) }}</span>
+                    <span class="sidecar-clear" (click)="$event.stopPropagation(); unequipSlot(s.key)">×</span>
+                  }
+                </button>
+              }
+            </div>
+          }
+        </div>
+        </div>
+
+        <div class="legend">
+          <span class="chip chip-undersuit">Undersuit</span>
+          <span class="chip chip-core">Core</span>
+          <span class="chip chip-legs">Legs</span>
+          <span class="chip chip-arms">Arms</span>
+          <span class="chip chip-backpack">Backpack</span>
+        </div>
+
+        <details class="port-dump">
+          <summary>Raw port list ({{ slots().length }})</summary>
+          <table class="port-table">
+            <thead>
+              <tr><th>Source</th><th>Port</th><th>Size</th><th>Types</th><th>Tag</th></tr>
+            </thead>
+            <tbody>
+              @for (s of slots(); track s.key) {
+                <tr>
+                  <td>{{ s.source }}</td>
+                  <td>{{ s.port.name }}</td>
+                  <td>{{ s.port.minSize === s.port.maxSize ? 'S' + s.port.minSize : 'S' + s.port.minSize + '-' + s.port.maxSize }}</td>
+                  <td>{{ s.port.types.join(', ') || '—' }}</td>
+                  <td>{{ s.port.selectTag || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </details>
+      </section>
+    </div>
+  }
+
+  @if (activeSlot(); as slot) {
+    <div class="picker-overlay" (click)="closePicker()">
+      <div class="picker-modal" (click)="$event.stopPropagation()">
+        <div class="picker-header">
+          <div class="picker-title">
+            Equip → <span class="picker-port">{{ slot.port.name }}</span>
+            <span class="picker-meta">
+              {{ slot.port.minSize === slot.port.maxSize ? 'S' + slot.port.minSize : 'S' + slot.port.minSize + '-' + slot.port.maxSize }}
+              · {{ slot.port.types.join(', ') }}
+            </span>
+          </div>
+          <button class="picker-close" (click)="closePicker()">×</button>
+        </div>
+        <input class="picker-search" type="text" placeholder="Search compatible items..."
+               [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)"
+               autofocus />
+        <div class="picker-list">
+          @if (pickerOptions().length === 0) {
+            <div class="picker-empty">No compatible items.</div>
+          }
+          @for (item of pickerOptions(); track item.className) {
+            <button class="picker-row"
+                    [class.picker-row-wide]="pickerIsBarrel() || pickerIsOptics()"
+                    (click)="equipItem(item)">
+              <span class="picker-row-main">
+                <span class="picker-row-name">{{ item.name }}</span>
+                <span class="picker-row-mfr">{{ item.manufacturer }}</span>
+              </span>
+              <span class="picker-row-detail">{{ item.detail }}</span>
+              <span class="picker-row-mass">{{ item.mass || '—' }} kg</span>
+
+              @if (pickerIsBarrel()) {
+                <span class="picker-row-stats">
+                  @for (chip of pickerModChips(item); track chip.label) {
+                    <span class="picker-chip"
+                          [class.positive]="chip.positive"
+                          [class.negative]="chip.negative">
+                      <span class="picker-chip-label">{{ chip.label }}</span>
+                      <span class="picker-chip-val">{{ chip.text }}</span>
+                    </span>
+                  }
+                  @if (pickerModChips(item).length === 0) {
+                    <span class="picker-chip-empty">no stat changes</span>
+                  }
+                </span>
+              } @else if (pickerIsOptics()) {
+                <span class="picker-row-stats">
+                  @for (chip of pickerOpticInfo(item); track chip.label) {
+                    <span class="picker-chip"
+                          [class.chip-nv]="chip.kind === 'nv'"
+                          [class.chip-zoom]="chip.kind === 'zoom'">
+                      <span class="picker-chip-label">{{ chip.label }}</span>
+                      <span class="picker-chip-val">{{ chip.text }}</span>
+                    </span>
+                  }
+                  @if (pickerOpticInfo(item).length === 0) {
+                    <span class="picker-chip-empty">no scope data</span>
+                  }
+                </span>
+              }
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (craftModalTarget(); as tgt) {
+    <div class="picker-overlay" (click)="closeCraft()">
+      <div class="craft-modal" (click)="$event.stopPropagation()">
+        <div class="picker-header">
+          <div class="picker-title">
+            Craft → <span class="picker-port">{{ tgt.weapon.name }}</span>
+            <span class="picker-meta">{{ tgt.label }} slot</span>
+          </div>
+          <button class="picker-close" (click)="closeCraft()">×</button>
+        </div>
+
+        <div class="craft-body">
+          @if (recipeForWeapon(tgt.weapon); as recipe) {
+            <app-quality-simulator
+              [recipe]="recipe"
+              [baseStats]="baseStatsForWeapon(tgt.weapon)"
+              (qualityEffectsChange)="onCraftEffectsChange(tgt.slotKey, $event)" />
+
+            <div class="craft-actions">
+              <button class="craft-reset" (click)="resetCraft(tgt.slotKey)">Reset to base</button>
+              <button class="craft-done" (click)="closeCraft()">Done</button>
+            </div>
+          } @else {
+            <div class="craft-empty">
+              No crafting recipe found for <code>{{ tgt.weapon.className }}</code>.
+              This weapon may be stock-only or its recipe isn't in the current data set.
+            </div>
+            <div class="craft-actions">
+              <button class="craft-done" (click)="closeCraft()">Close</button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

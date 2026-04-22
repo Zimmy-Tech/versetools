@@ -42,6 +42,7 @@ _SC   = _BASE / "SC FILES"
 
 FORGE_DIR    = _SC / f"sc_data_forge_{_MODE}" / "libs" / "foundry" / "records"
 FPS_WPN_DIR  = FORGE_DIR / "entities" / "scitem" / "weapons" / "fps_weapons"
+THROWABLE_DIR= FORGE_DIR / "entities" / "scitem" / "weapons" / "throwable"
 MAG_DIR      = FORGE_DIR / "entities" / "scitem" / "weapons" / "magazines"
 AMMO_DIR     = FORGE_DIR / "ammoparams" / "fps"
 RECOIL_DIR   = FORGE_DIR / "weaponproceduralrecoil"
@@ -54,6 +55,7 @@ OUT_FILE = _BASE / "app" / "public" / _MODE / "versedb_fps.json"
 if not FORGE_DIR.exists():
     FORGE_DIR = _SC / "sc_data_forge" / "libs" / "foundry" / "records"
     FPS_WPN_DIR = FORGE_DIR / "entities" / "scitem" / "weapons" / "fps_weapons"
+    THROWABLE_DIR = FORGE_DIR / "entities" / "scitem" / "weapons" / "throwable"
     MAG_DIR = FORGE_DIR / "entities" / "scitem" / "weapons" / "magazines"
     AMMO_DIR = FORGE_DIR / "ammoparams" / "fps"
     RECOIL_DIR = FORGE_DIR / "weaponproceduralrecoil"
@@ -63,6 +65,19 @@ if not GLOBAL_INI.exists():
     GLOBAL_INI = _SC / "sc_data_xml_live" / "Data" / "Localization" / "english" / "global.ini"
 
 # ── Manufacturer prefix mapping ─────────────────────────────────────────────
+
+# Manual display-name overrides for items that the game tags @LOC_PLACEHOLDER.
+# Keyed by className; used as a fallback when the loc table has no entry.
+MANUAL_NAMES: dict[str, str] = {
+    # Orphan magazine — the Gallenson shotgun itself isn't in the weapons list
+    # (upcoming content), so its mag has no parent, but the mag file exists.
+    "glsn_shotgun_ballistic_01_mag":               "Gallenson Shotgun Magazine",
+    # Underbarrel flashlights — internal, but can appear in loadouts.
+    "weapon_underbarrel_light_narrow":             "Narrow Tactical Flashlight",
+    "weapon_underbarrel_light_narrow_darkblue_01": "Narrow Tactical Flashlight (Dark Blue)",
+    "weapon_underbarrel_light_wide":               "Wide Tactical Flashlight",
+    "weapon_underbarrel_light_wide_darkblue_01":   "Wide Tactical Flashlight (Dark Blue)",
+}
 
 MANUFACTURER_MAP = {
     "behr": "Behring",
@@ -96,6 +111,14 @@ SKIP_VARIANT_RE = re.compile(
     r'orange|grey|chrome|gold|silver|purple|arctic|urban|engraved|chromic|'
     r'acid|sunset|lumi|uee|camo|headhunters|spc|tow|reward|msn_rwd|prop|'
     r'ea_elim|brown|digi|iae\d{4}|cc\d{2}|optic_)'
+)
+# Attachment-specific regex — same as weapons, but allows
+# `contestedzonereward` (Tweaker) and `firerats0N` (Scorched) variants.
+# Both have distinct stats on barrels/optics/underbarrels. Weapon-side
+# variants of the same suffix are skin-only or broken stubs, so weapons
+# keep them skipped.
+SKIP_VARIANT_ATTACH_RE = re.compile(
+    SKIP_VARIANT_RE.pattern.replace('contestedzone|', '', 1).replace('firerats|', '', 1)
 )
 
 SKIP_DIRS = ["dev"]
@@ -137,6 +160,7 @@ def classify_weapon_type(class_name: str) -> str:
     if "_railgun_" in cn:    return "Railgun"
     if "_medgun_" in cn:     return "Medical Tool"
     if "_special_" in cn:    return "Special"
+    if "_gren_" in cn or "_grenade_" in cn: return "Grenade"
     return "Unknown"
 
 
@@ -164,6 +188,12 @@ def safe_float(v, default=0.0) -> float:
 # ── Localization ─────────────────────────────────────────────────────────────
 
 def load_localization(ini_path: Path) -> dict:
+    """Load the localization INI.
+
+    Some entries carry a grammatical suffix (e.g. ",P" for plural, ",F"/",M"
+    for gendered languages) baked into the key. We strip those and prefer
+    the plain-key value — that's what item lookups assume.
+    """
     loc = {}
     if not ini_path.exists():
         print(f"  WARNING: localization file not found: {ini_path}")
@@ -171,9 +201,14 @@ def load_localization(ini_path: Path) -> dict:
     with open(ini_path, "r", encoding="utf-8-sig", errors="replace") as f:
         for line in f:
             line = line.strip()
-            if "=" in line and not line.startswith("#") and not line.startswith(";"):
+            if "=" in line and not line.startswith(("#", ";")):
                 key, _, val = line.partition("=")
-                loc[key.strip().lower()] = val.strip()
+                key = key.strip().lower()
+                # Drop a trailing grammatical tag: ",p", ",f", ",m" etc.
+                base = re.sub(r",\w$", "", key)
+                # Don't let a tagged entry overwrite a plain one if both exist.
+                if base not in loc:
+                    loc[base] = val.strip()
     print(f"  Loaded {len(loc)} localization entries")
     return loc
 
@@ -189,20 +224,20 @@ def resolve_name(loc: dict, class_name: str) -> str:
 
 # ── Magazine index ───────────────────────────────────────────────────────────
 
-def build_magazine_index(mag_dir: Path) -> dict:
-    """Build map: weapon_tag -> (maxAmmoCount, ammoParamsRecord_guid)
+def build_magazine_index(mag_dir: Path) -> tuple[dict, list]:
+    """Return (index, records).
 
-    Prefer canonical magazine files (whose name matches {weapon}_mag) over
-    other files that happen to share a tag (e.g. vlk_spewgun mags).
+    index: weapon_tag -> (maxAmmoCount, ammoParamsRecord_guid) — used for
+           weapon-to-mag linkage. Prefers canonical mags ({weapon}_mag).
+    records: list of magazine dicts for the Ammo/Mags tab, with className,
+             locKey, weaponTag, ammoCount, mass, size, subType.
     """
     index = {}
-    # Track which tags came from canonical mags so we don't overwrite them
+    records: list[dict] = []
     canonical_tags = set()
     if not mag_dir.exists():
-        return index
+        return index, records
 
-    # Sort files so canonical mags (shorter names) are processed;
-    # then process non-canonical only if tag not already claimed
     all_files = sorted(mag_dir.iterdir(), key=lambda p: len(p.name))
 
     for f in all_files:
@@ -212,36 +247,75 @@ def build_magazine_index(mag_dir: Path) -> dict:
             xml_text = f.read_text(errors="replace")
             stem = f.stem.replace(".xml", "").lower()
 
-            # Get maxAmmoCount
             m_ammo = re.search(r'maxAmmoCount="(\d+)"', xml_text)
             if not m_ammo:
                 continue
             max_ammo = int(m_ammo.group(1))
 
-            # Get ammoParamsRecord GUID
             m_apr = re.search(r'ammoParamsRecord="([^"]+)"', xml_text)
             ammo_guid = m_apr.group(1) if m_apr else ""
 
-            # Get weapon tag from AttachDef Tags
-            m_tags = re.search(r'<AttachDef[^>]*Tags="([^"]+)"', xml_text)
-            if m_tags:
-                tags = m_tags.group(1).split()
+            # AttachDef: weapon tag + size + subtype + loc key
+            weapon_tag = ""
+            size = 0
+            sub_type = ""
+            m_attach = re.search(r'<AttachDef([^>]+?)>', xml_text)
+            attach_type = ""
+            if m_attach:
+                attrs = m_attach.group(1)
+                def _attr(name):
+                    mm = re.search(rf'(?<![A-Za-z]){name}="([^"]*)"', attrs)
+                    return mm.group(1) if mm else ""
+                attach_type = _attr("Type")
+                sub_type = _attr("SubType")
+                try:
+                    size = int(_attr("Size") or 0)
+                except ValueError:
+                    size = 0
+                tags = _attr("Tags").split()
                 for t in tags:
-                    # Skip generic tags
                     if t in ("stocked", "pistol", "rifle", "smg", "shotgun", "sniper", "lmg"):
                         continue
-                    # Check if this is the canonical mag for this tag
                     is_canonical = stem == f"{t}_mag" or stem.startswith(f"{t}_mag")
                     if is_canonical:
                         index[t] = (max_ammo, ammo_guid)
                         canonical_tags.add(t)
+                        weapon_tag = t
                     elif t not in canonical_tags:
-                        # Only set non-canonical if not already claimed
                         if t not in index:
                             index[t] = (max_ammo, ammo_guid)
+                        if not weapon_tag:
+                            weapon_tag = t
+            else:
+                attach_type = ""
+
+            if attach_type and attach_type != "WeaponAttachment":
+                continue
+
+            # Mass from physics controller
+            mass = 0.0
+            m_mass = re.search(
+                r'<SEntityRigidPhysicsControllerParams[^>]*Mass="([^"]+)"',
+                xml_text,
+            )
+            if m_mass:
+                mass = safe_float(m_mass.group(1))
+
+            m_name = re.search(r'Name="(@item_Name[^"]+)"', xml_text)
+            loc_key = m_name.group(1) if m_name else f"@item_Name{stem}"
+
+            records.append({
+                "className": stem,
+                "locKey": loc_key.lstrip("@").lower(),
+                "weaponTag": weapon_tag,
+                "ammoCount": max_ammo,
+                "mass": round(mass, 4),
+                "size": size,
+                "subType": sub_type,
+            })
         except Exception:
             pass
-    return index
+    return index, records
 
 
 # ── Ammo index ───────────────────────────────────────────────────────────────
@@ -608,6 +682,41 @@ def is_skin_variant(filename: str) -> bool:
     return bool(SKIP_VARIANT_RE.search(stem))
 
 
+def parse_weapon_ports(xml_text: str) -> list[dict]:
+    """Pull attachment ports from a weapon XML.
+
+    We emit {name, minSize, maxSize, requiredPortTags} per port.
+    attachSlot is derived from the port name:
+      magazine_attach → magazine, optics_attach → optics,
+      barrel_attach → barrel, underbarrel_attach → underbarrel.
+    item_grab and other housekeeping ports are skipped.
+    """
+    out = []
+    for m in re.finditer(r'<SItemPortDef\s+([^>]+?)>', xml_text):
+        attrs = m.group(1)
+        def _a(n):
+            mm = re.search(rf'(?<![A-Za-z]){n}="([^"]*)"', attrs)
+            return mm.group(1) if mm else ""
+        name = _a("Name")
+        if not name or name == "item_grab" or not name.endswith("_attach"):
+            continue
+        slot_key = name.replace("_attach", "")   # magazine|optics|barrel|underbarrel
+        try:
+            min_s = int(_a("MinSize") or 0)
+            max_s = int(_a("MaxSize") or 0)
+        except ValueError:
+            min_s = max_s = 0
+        req = _a("RequiredPortTags")
+        out.append({
+            "name": name,
+            "attachSlot": slot_key,
+            "minSize": min_s,
+            "maxSize": max_s,
+            "requiredPortTags": req.split() if req else [],
+        })
+    return out
+
+
 def parse_weapon_xml(xml_path: Path) -> dict | None:
     """Parse a single FPS weapon XML and extract key data."""
     try:
@@ -705,6 +814,15 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
     m_acr = re.search(r'ammoContainerRecord="([^"]+)"', xml_text)
     ammo_container_guid = m_acr.group(1) if m_acr else ""
 
+    # Mass from physics controller
+    mass = 0.0
+    m_mass = re.search(
+        r'<SEntityRigidPhysicsControllerParams[^>]*Mass="([^"]+)"',
+        xml_text,
+    )
+    if m_mass:
+        mass = safe_float(m_mass.group(1))
+
     # Extract SProjectileLauncher refs (for pellet counts, legacy DCB format)
     spl_refs = re.findall(r'SProjectileLauncher\[([0-9A-Fa-f]+)\]', xml_text)
 
@@ -768,6 +886,8 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
         "inlinePelletCount": inline_pellet_count,
         "beamRefs": beam_refs,
         "inlineBeamDamage": inline_beam_damage,
+        "mass": round(mass, 4),
+        "ports": parse_weapon_ports(xml_text),
     }
 
 
@@ -784,8 +904,8 @@ def extract_fps_weapons():
 
     # 2. Build magazine index
     print("\n[2] Building magazine index...")
-    mag_index = build_magazine_index(MAG_DIR)
-    print(f"  Magazine entries: {len(mag_index)}")
+    mag_index, mag_records = build_magazine_index(MAG_DIR)
+    print(f"  Magazine entries: {len(mag_index)} tags, {len(mag_records)} records")
 
     # 3. Build ammo index
     print("\n[3] Building ammo index...")
@@ -813,7 +933,17 @@ def extract_fps_weapons():
         print(f"  ERROR: Weapon directory not found: {FPS_WPN_DIR}")
         return
 
-    for xml_file in sorted(FPS_WPN_DIR.iterdir()):
+    # Weapons dir + throwables dir (grenades). Templates in throwable/ get
+    # filtered out the same way by SKIP_CLASSNAMES.
+    scan_dirs = [FPS_WPN_DIR]
+    if THROWABLE_DIR.exists():
+        scan_dirs.append(THROWABLE_DIR)
+
+    all_files = []
+    for d in scan_dirs:
+        all_files.extend(sorted(d.iterdir()))
+
+    for xml_file in all_files:
         if xml_file.is_dir():
             continue
         if not xml_file.name.endswith(".xml.xml"):
@@ -828,6 +958,11 @@ def extract_fps_weapons():
 
         # Skip skin variants
         if is_skin_variant(xml_file.name):
+            skipped += 1
+            continue
+
+        # Template files
+        if stem.endswith("_template"):
             skipped += 1
             continue
 
@@ -1041,6 +1176,8 @@ def extract_fps_weapons():
             "pelletCount": pellet_count if pellet_count > 1 else None,
             "isBeam": is_beam or None,
             "category": "Anti-Ship" if class_name in ANTI_SHIP else "Anti-Personnel",
+            "mass": wpn.get("mass", 0),
+            "ports": wpn.get("ports", []),
         }
         if recoil:
             record.update(recoil)
@@ -1082,17 +1219,208 @@ def extract_fps_weapons():
         except Exception:
             pass
 
+    # ── Attachments (optics / barrels / underbarrels) ─────────────────────
+    print("\n[7] Scanning weapon_modifier (attachments)...")
+    ATTACH_DIR = FORGE_DIR / "entities" / "scitem" / "weapons" / "weapon_modifier"
+    attachments: list[dict] = []
+
+    SUBTYPE_TO_SLOT = {
+        "IronSight":        "optics",
+        "Barrel":           "barrel",
+        "BottomAttachment": "underbarrel",
+        "Utility":          "underbarrel",
+        "Magazine":         "magazine",  # present on a few; real mags live elsewhere
+    }
+    # Non-WeaponAttachment items that still ride underbarrel rails (flashlights).
+    TYPE_FALLBACK_SLOT = {
+        ("Light", "Weapon"): "underbarrel",
+    }
+
+    if ATTACH_DIR.exists():
+        for f in sorted(ATTACH_DIR.iterdir()):
+            if f.is_dir() or not f.name.endswith(".xml.xml"):
+                continue
+            stem = f.stem.replace(".xml", "").lower()
+            # Skip templates + skins + multitool heads (handled by gear extractor).
+            # Use the relaxed regex so Tweaker/contestedzonereward barrels pass.
+            if stem.endswith(("_template", "_attachment")):
+                continue
+            if SKIP_VARIANT_ATTACH_RE.search(stem):
+                continue
+            if stem.startswith("grin_multitool_"):
+                continue
+
+            xml_text = f.read_text(errors="replace")
+            m = re.search(r'<AttachDef\s+([^>]+?)>', xml_text)
+            if not m:
+                continue
+            attrs = m.group(1)
+            def _a(n, attrs=attrs):
+                mm = re.search(rf'(?<![A-Za-z]){n}="([^"]*)"', attrs)
+                return mm.group(1) if mm else ""
+            a_type = _a("Type")
+            a_sub  = _a("SubType")
+            try: a_size = int(_a("Size") or 0)
+            except ValueError: a_size = 0
+            a_tags = _a("Tags").split()
+            a_req  = _a("RequiredTags").split()
+
+            slot = SUBTYPE_TO_SLOT.get(a_sub)
+            if slot is None:
+                slot = TYPE_FALLBACK_SLOT.get((a_type, a_sub))
+            if slot is None:
+                continue  # skip anything we can't slot
+
+            # Name via Localization element. Case-insensitive + tolerant of
+            # the typo variant (`@item_nam...` missing the trailing "e") that
+            # some contested-zone reward items use. First match wins — it's
+            # the item-specific reference, not the base-weapon fallback.
+            mn = re.search(r'Name="(@item_[Nn]ame?[^"]+)"', xml_text)
+            loc_key = (mn.group(1) if mn else f"@item_Name{stem}").lstrip("@").lower()
+            display = loc.get(loc_key, "") or MANUAL_NAMES.get(stem) or stem
+
+            # Mass.
+            mass = 0.0
+            mm2 = re.search(r'<SEntityRigidPhysicsControllerParams[^>]*Mass="([^"]+)"', xml_text)
+            if mm2:
+                mass = safe_float(mm2.group(1))
+
+            # ─── Stat modifiers ─────────────────────────────────────────
+            # Each attachment has a <modifier><weaponStats><recoilModifier>
+            # chain. We pull every meaningful multiplier; entries that are
+            # the identity value (1.0) or zero additives are dropped so the
+            # output stays readable.
+            mods: dict[str, float] = {}
+
+            # Attrs I care about on <weaponStats>. Multipliers default to 1,
+            # additive deltas default to 0.
+            WS_MULT_ATTRS = [
+                "fireRateMultiplier", "damageMultiplier", "damageOverTimeMultiplier",
+                "projectileSpeedMultiplier", "ammoCostMultiplier",
+                "heatGenerationMultiplier", "soundRadiusMultiplier", "chargeTimeMultiplier",
+            ]
+            WS_ADD_ATTRS = ["fireRate", "pellets", "burstShots", "ammoCost"]
+
+            RECOIL_MULT_ATTRS = [
+                "decayMultiplier", "endDecayMultiplier",
+                "fireRecoilTimeMultiplier",
+                "fireRecoilStrengthFirstMultiplier", "fireRecoilStrengthMultiplier",
+                "angleRecoilStrengthMultiplier",
+                "randomnessMultiplier", "randomnessBackPushMultiplier",
+                "animatedRecoilMultiplier",
+            ]
+
+            m_ws = re.search(r'<weaponStats\s+([^>]+?)>', xml_text)
+            if m_ws:
+                ws = m_ws.group(1)
+                for k in WS_MULT_ATTRS:
+                    mm = re.search(rf'(?<![A-Za-z]){k}="([^"]+)"', ws)
+                    if mm:
+                        v = safe_float(mm.group(1), 1.0)
+                        if abs(v - 1.0) > 1e-6:
+                            mods[k] = round(v, 4)
+                for k in WS_ADD_ATTRS:
+                    mm = re.search(rf'(?<![A-Za-z]){k}="([^"]+)"', ws)
+                    if mm:
+                        v = safe_float(mm.group(1), 0.0)
+                        if abs(v) > 1e-6:
+                            mods[k] = round(v, 4)
+
+            m_rc = re.search(r'<recoilModifier\s+([^>]+?)>', xml_text)
+            if m_rc:
+                rc = m_rc.group(1)
+                for k in RECOIL_MULT_ATTRS:
+                    mm = re.search(rf'(?<![A-Za-z]){k}="([^"]+)"', rc)
+                    if mm:
+                        v = safe_float(mm.group(1), 1.0)
+                        if abs(v - 1.0) > 1e-6:
+                            mods[f"recoil_{k}"] = round(v, 4)
+
+            # ─── Optic-specific fields ─────────────────────────────────
+            # Pulled from <aimModifier> + <SWeaponModifierComponentParams>.
+            # Present on every weapon_modifier XML, but only meaningful for
+            # sighting attachments — the extractor emits this block on the
+            # optics slot only, to keep JSON tight.
+            optic_spec = None
+            if slot == "optics":
+                optic_spec = {}
+                m_aim = re.search(r'<aimModifier\s+([^>]+?)/>', xml_text)
+                if m_aim:
+                    aim_attrs = m_aim.group(1)
+                    for k in ["zoomScale", "secondZoomScale", "zoomTimeScale", "fstopMultiplier"]:
+                        mm = re.search(rf'(?<![A-Za-z]){k}="([^"]+)"', aim_attrs)
+                        if mm: optic_spec[k] = safe_float(mm.group(1), 0.0)
+                    mm = re.search(r'(?<![A-Za-z])hideWeaponInADS="([^"]+)"', aim_attrs)
+                    if mm: optic_spec["hideWeaponInADS"] = mm.group(1) == "1"
+                m_mod = re.search(r'<SWeaponModifierComponentParams\s+([^>]+?)>', xml_text)
+                if m_mod:
+                    mod_attrs = m_mod.group(1)
+                    mm = re.search(r'(?<![A-Za-z])adsNearClipPlaneMultiplier="([^"]+)"', mod_attrs)
+                    if mm: optic_spec["adsNearClipPlaneMultiplier"] = safe_float(mm.group(1), 1.0)
+                    mm = re.search(r'(?<![A-Za-z])forceIronSightSetup="([^"]+)"', mod_attrs)
+                    if mm: optic_spec["forceIronSightSetup"] = mm.group(1) == "1"
+                # Scope attachment — three observed types: Zoom, Nightvision,
+                # None. Absence of the block means the optic has no alt-mode
+                # feature at all (basic iron sights / reflex).
+                m_scope = re.search(r'<SScopeAttachmentParams\s+scopeType="([^"]+)"\s+activateByDefault="([^"]+)"', xml_text)
+                if m_scope:
+                    st = m_scope.group(1)
+                    optic_spec["scopeType"] = st
+                    optic_spec["scopeDefault"] = m_scope.group(2) == "1"
+
+            rec = {
+                "className":    stem,
+                "name":         display,
+                "manufacturer": get_manufacturer(stem),
+                "attachSlot":   slot,
+                "attachType":   a_type,
+                "subType":      a_sub,
+                "size":         a_size,
+                "mass":         round(mass, 4),
+                "tags":         a_tags,
+                "requiredTags": a_req,
+                "modifiers":    mods,
+            }
+            if optic_spec:
+                rec["opticSpec"] = optic_spec
+            attachments.append(rec)
+
+    attachments.sort(key=lambda x: (x["attachSlot"], x["size"], x["manufacturer"], x["name"]))
+    print(f"  Attachments: {len(attachments)}")
+
+    # Resolve magazine display names + classify ammo type
+    magazines = []
+    for m in mag_records:
+        display_name = loc.get(m["locKey"], "") or MANUAL_NAMES.get(m["className"]) or m["className"]
+        magazines.append({
+            "className": m["className"],
+            "name": display_name,
+            "weaponTag": m["weaponTag"],
+            "manufacturer": get_manufacturer(m["className"]),
+            "ammoCount": m["ammoCount"],
+            "mass": m["mass"],
+            "size": m["size"],
+            "subType": m["subType"],
+            "ammoType": classify_ammo_type(m["className"]),
+        })
+    magazines.sort(key=lambda m: (m["manufacturer"], m["name"]))
+    print(f"  Magazines: {len(magazines)}")
+
     # Build output
     output = {
         "meta": {
             "count": len(weapons),
+            "magazineCount": len(magazines),
+            "attachmentCount": len(attachments),
             "version": version,
         },
         "weapons": weapons,
+        "magazines": magazines,
+        "attachments": attachments,
     }
 
     # Write output
-    print(f"\n[7] Writing output ({_MODE})...")
+    print(f"\n[8] Writing output ({_MODE})...")
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_FILE, "w") as f:
         json.dump(output, f, indent=2)
