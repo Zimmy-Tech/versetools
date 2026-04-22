@@ -290,24 +290,35 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
     const prevFpsGear  = prev?.fps_gear_snapshot  || [];
     const prevFpsArmor = prev?.fps_armor_snapshot || [];
 
-    const shipDiff = diffArraysForChangelog(prevShips, ships, true);
-    const itemDiff = diffArraysForChangelog(prevItems, items, false);
-    // FPS streams optional — only diff when the caller supplied one.
-    // Null snapshot + null supplied = no change recorded for that stream.
-    const fpsItemsDiff = fpsItems ? diffFpsStreamForChangelog(prevFpsItems, fpsItems) : null;
-    const fpsGearDiff  = fpsGear  ? diffFpsStreamForChangelog(prevFpsGear,  fpsGear)  : null;
-    const fpsArmorDiff = fpsArmor ? diffFpsStreamForChangelog(prevFpsArmor, fpsArmor) : null;
+    // A stream is "present in this import" only if the caller supplied a
+    // non-null, non-empty array. Missing / null / empty → carry forward
+    // the prior snapshot and write [] to the changes list (no change
+    // recorded for this stream this build). Applies symmetrically to
+    // every stream so a FPS-only upload CAN'T corrupt ship/item
+    // snapshots and vice versa — the import-safety guarantee holds
+    // even if malformed input somehow slips past the request-level
+    // guards in diffApplyHandler.
+    const hasShips    = Array.isArray(ships)    && ships.length    > 0;
+    const hasItems    = Array.isArray(items)    && items.length    > 0;
+    const hasFpsItems = Array.isArray(fpsItems) && fpsItems.length > 0;
+    const hasFpsGear  = Array.isArray(fpsGear)  && fpsGear.length  > 0;
+    const hasFpsArmor = Array.isArray(fpsArmor) && fpsArmor.length > 0;
 
-    // For streams NOT in this import, carry forward the prior snapshot.
-    // Otherwise a ship-only import would null out fps_*_snapshot and
-    // break the next build-over-build FPS diff (everything would read
-    // as newly-added because prev snapshot was lost).
-    const fpsItemsSnapshot = fpsItems ? JSON.stringify(fpsItems) :
-      (prev?.fps_items_snapshot != null ? JSON.stringify(prev.fps_items_snapshot) : null);
-    const fpsGearSnapshot = fpsGear ? JSON.stringify(fpsGear) :
-      (prev?.fps_gear_snapshot != null ? JSON.stringify(prev.fps_gear_snapshot) : null);
-    const fpsArmorSnapshot = fpsArmor ? JSON.stringify(fpsArmor) :
-      (prev?.fps_armor_snapshot != null ? JSON.stringify(prev.fps_armor_snapshot) : null);
+    const shipDiff     = hasShips    ? diffArraysForChangelog(prevShips, ships, true)     : null;
+    const itemDiff     = hasItems    ? diffArraysForChangelog(prevItems, items, false)    : null;
+    const fpsItemsDiff = hasFpsItems ? diffFpsStreamForChangelog(prevFpsItems, fpsItems)  : null;
+    const fpsGearDiff  = hasFpsGear  ? diffFpsStreamForChangelog(prevFpsGear,  fpsGear)   : null;
+    const fpsArmorDiff = hasFpsArmor ? diffFpsStreamForChangelog(prevFpsArmor, fpsArmor)  : null;
+
+    // Carry-forward snapshots for streams absent from this import. Each
+    // stream's snapshot is independent — a FPS-only import preserves
+    // the prior ship/item snapshot untouched, and a ship-only import
+    // preserves the prior FPS snapshots.
+    const shipSnapshot     = hasShips    ? JSON.stringify(ships)    : (prev?.ship_snapshot       != null ? JSON.stringify(prev.ship_snapshot)       : null);
+    const itemSnapshot     = hasItems    ? JSON.stringify(items)    : (prev?.item_snapshot       != null ? JSON.stringify(prev.item_snapshot)       : null);
+    const fpsItemsSnapshot = hasFpsItems ? JSON.stringify(fpsItems) : (prev?.fps_items_snapshot  != null ? JSON.stringify(prev.fps_items_snapshot)  : null);
+    const fpsGearSnapshot  = hasFpsGear  ? JSON.stringify(fpsGear)  : (prev?.fps_gear_snapshot   != null ? JSON.stringify(prev.fps_gear_snapshot)   : null);
+    const fpsArmorSnapshot = hasFpsArmor ? JSON.stringify(fpsArmor) : (prev?.fps_armor_snapshot  != null ? JSON.stringify(prev.fps_armor_snapshot)  : null);
 
     const insRes = await client.query(
       `INSERT INTO changelog_entries
@@ -323,14 +334,14 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items,
         prev?.to_channel ?? null,
         toVersion,
         toChannel,
-        JSON.stringify(shipDiff.changes),
-        JSON.stringify(itemDiff.changes),
-        JSON.stringify(shipDiff.added),
-        JSON.stringify(itemDiff.added),
-        JSON.stringify(shipDiff.removed),
-        JSON.stringify(itemDiff.removed),
-        JSON.stringify(ships || []),
-        JSON.stringify(items || []),
+        JSON.stringify(shipDiff?.changes ?? []),
+        JSON.stringify(itemDiff?.changes ?? []),
+        JSON.stringify(shipDiff?.added   ?? []),
+        JSON.stringify(itemDiff?.added   ?? []),
+        JSON.stringify(shipDiff?.removed ?? []),
+        JSON.stringify(itemDiff?.removed ?? []),
+        shipSnapshot,
+        itemSnapshot,
         JSON.stringify(fpsItemsDiff?.changes ?? []),
         JSON.stringify(fpsGearDiff?.changes ?? []),
         JSON.stringify(fpsArmorDiff?.changes ?? []),

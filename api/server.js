@@ -686,8 +686,13 @@ const diffApplyHandler = async (req, res) => {
     // Record a changelog entry AFTER the apply transaction commits.
     // Done outside the transaction so a changelog failure can never
     // roll back a successful apply. Idempotent / de-duped on duplicate
-    // builds.
-    if (fullByType.ships && fullByType.items && meta?.version) {
+    // builds. recordChangelogEntry carries forward prior snapshots
+    // for streams absent from this import, so partial uploads (e.g.
+    // FPS-only or ship-only) don't corrupt the other streams' history.
+    const anyStreamSupplied =
+      fullByType.ships || fullByType.items ||
+      fullByType.fpsItems || fullByType.fpsGear || fullByType.fpsArmor;
+    if (anyStreamSupplied && meta?.version) {
       try {
         const result = await recordChangelogEntry({
           toVersion: meta.version,
