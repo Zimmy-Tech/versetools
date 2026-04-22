@@ -179,12 +179,39 @@ reload. Prod still serves whatever is in the DB.
 
 ## Building the merged payload
 
-The admin diff UI accepts **one** JSON file per upload. To review
-ships + FPS in a single pass, run the merge helper:
+The admin diff UI accepts **one** JSON file per upload, so every
+import goes through the merge helper. It stitches the raw extractor
+outputs (`versedb_data.json` + the three FPS files +
+`versedb_missions.json`) into a single blob the diff engine
+understands:
 
 ```bash
 python3 "PY SCRIPTS/merge_build_payload.py" --target live
 ```
+
+**Re-run the merge script any time an extractor re-runs.** The merged
+file is a regenerable artifact — it's committed alongside the other
+`app/public/live/*.json` extractor outputs purely so the preview
+deployment has a consistent snapshot, not because it's authoritative.
+Authoritative source is always the individual extractor JSONs + the
+DB.
+
+### What the script does internally
+
+- Ships + items flow through unchanged from `versedb_data.json`.
+- FPS weapons, magazines, and attachments are flattened into a
+  single `fpsItems[]` array with each record stamped `_kind:
+  'weapon' | 'magazine' | 'attachment'`. This is why you can't just
+  upload `versedb_fps.json` directly — the diff engine needs a flat
+  className-keyed array, not three sub-arrays.
+- FPS gear and armor pass through as-is.
+- Missions split: `contracts[]` becomes `missions[]` (diffable);
+  everything else (`missionGivers`, `factions`, `reputationLadders`,
+  `reputationRanks`, `reputationTiers`, `contractorProfiles`,
+  `scopeToLadder`) bundles into `missionRefs` (singleton blob,
+  overwritten wholesale like `meta`).
+- The top-level `meta` blob is promoted from whichever extractor
+  output has one (they all ship the same game version).
 
 Output: `app/public/live/versedb_merged.json` with shape:
 
