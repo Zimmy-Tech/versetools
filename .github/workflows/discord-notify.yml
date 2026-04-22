@@ -46,9 +46,13 @@ jobs:
               'url': 'https://zimmy-tech.github.io/versetools/',
               'color': 5814783,
               'footer': {'text': 'VerseTools'},
-              'timestamp': datetime.datetime.utcnow().isoformat() + 'Z'
+              'timestamp': datetime.datetime.now(datetime.timezone.utc).isoformat().replace('+00:00', 'Z'),
           }
           desc = os.environ['DESCRIPTION']
+          # Discord caps embed descriptions at 4096 chars; leave headroom
+          # for the truncation marker so long commit bodies still post.
+          if len(desc) > 4000:
+              desc = desc[:4000].rsplit('\n', 1)[0] + '\n\n…(truncated — see full commit on GitHub)'
           if desc:
               embed['description'] = desc
           print(json.dumps({'embeds': [embed]}))
