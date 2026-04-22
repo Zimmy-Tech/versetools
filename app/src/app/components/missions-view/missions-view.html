@@ -288,8 +288,8 @@
                     }
                     @if (m.event) {
                       <span class="mv-badge b-event" [class.b-event-dormant]="!m.eventActive"
-                            [title]="m.eventActive ? 'Event: ' + m.event + ' (active)' : 'Event: ' + m.event + ' (dormant — not currently in-game)'">
-                        {{ m.eventActive ? 'Event' : 'Dormant' }}: {{ m.event }}
+                            [title]="'Event: ' + m.event">
+                        Event: {{ m.event }}
                       </span>
                     }
                   </div>
