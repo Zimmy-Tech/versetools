@@ -229,6 +229,10 @@ export class FpsLoadoutComponent {
   // Picker state.
   pickerSlotKey = signal<string | null>(null);
   pickerSearch = signal('');
+  // Sort state for the columnar weapon picker. Default: highest DPS
+  // first, since that's the most common "what should I pick?" lens.
+  pickerSortKey = signal<string>('dps');
+  pickerSortDir = signal<'asc' | 'desc'>('desc');
 
   private data = inject(DataService);
 
@@ -425,8 +429,186 @@ export class FpsLoadoutComponent {
       it.manufacturer.toLowerCase().includes(q) ||
       it.className.toLowerCase().includes(q)
     );
+
+    // Columnar-table pickers (weapons + attachments) use the user-
+    // selected column sort. Everything else keeps the existing
+    // source-then-name order.
+    if (this.pickerIsColumnarTable()) {
+      const key = this.pickerSortKey();
+      const dir = this.pickerSortDir() === 'desc' ? -1 : 1;
+      return [...list].sort((a, b) => {
+        const va = this.columnarSortValue(a, key);
+        const vb = this.columnarSortValue(b, key);
+        if (typeof va === 'number' && typeof vb === 'number') {
+          return (va - vb) * dir;
+        }
+        return String(va).localeCompare(String(vb)) * dir;
+      });
+    }
     return list.sort((a, b) => a.source.localeCompare(b.source) || a.name.localeCompare(b.name));
   });
+
+  /** Extract the sortable value for a given (item, column) pair. Covers
+   *  both weapon-picker columns (dps/alpha/rpm/…) and attachment-picker
+   *  columns (mod multipliers, optic zoom/ADS/scope). Numeric columns
+   *  return 0 when absent; string columns return '' so em-dash rows
+   *  don't crash sort. */
+  private columnarSortValue(item: Equippable, key: string): number | string {
+    // Common across all table pickers.
+    if (key === 'name')         return item.name;
+    if (key === 'manufacturer') return item.manufacturer;
+    if (key === 'size')         return item.size;
+    if (key === 'mass')         return item.mass ?? 0;
+
+    // Weapon-specific.
+    if (this.pickerIsWeapon()) {
+      const w = this.weaponForItem(item);
+      if (!w) return key === 'type' ? '' : 0;
+      if (key === 'type')            return w.type ?? '';
+      if (key === 'dps')             return w.dps ?? 0;
+      if (key === 'alphaDamage')     return w.alphaDamage ?? 0;
+      if (key === 'fireRate')        return w.fireRate ?? 0;
+      if (key === 'range')           return w.range ?? 0;
+      if (key === 'projectileSpeed') return w.projectileSpeed ?? 0;
+      if (key === 'magazineSize')    return w.magazineSize ?? 0;
+      return 0;
+    }
+
+    // Optic-specific.
+    if (this.pickerIsOptics()) {
+      const s = item.opticSpec;
+      if (key === 'zoomScale')       return s?.zoomScale       ?? 0;
+      if (key === 'secondZoomScale') return s?.secondZoomScale ?? 0;
+      if (key === 'zoomTimeScale')   return s?.zoomTimeScale   ?? 1;
+      if (key === 'scopeType')       return s?.scopeType       ?? '';
+    }
+
+    // Barrel / underbarrel-specific: any mod key like
+    // 'damageMultiplier' is looked up on item.modifiers. Missing =
+    // identity (1 for multiplicative, 0 for additive) — push to sort
+    // neutral.
+    const mult = item.modifiers?.[key];
+    if (mult !== undefined) {
+      const ADDITIVE = new Set(['fireRate','pellets','burstShots','ammoCost']);
+      return ADDITIVE.has(key) ? mult : mult;  // raw value sorts fine either way
+    }
+    return key === 'scopeType' || key === 'type' ? '' : 0;
+  }
+
+  /** Click a weapon-picker column header to (re-)sort. Same column
+   *  toggles direction; different column resets to sensible defaults
+   *  — desc for numeric columns (biggest = best at a glance), asc
+   *  for string columns (alphabetical). */
+  toggleWeaponSort(col: string): void {
+    if (this.pickerSortKey() === col) {
+      this.pickerSortDir.set(this.pickerSortDir() === 'desc' ? 'asc' : 'desc');
+      return;
+    }
+    this.pickerSortKey.set(col);
+    const NUMERIC = new Set([
+      'size','mass','dps','alphaDamage','fireRate','range',
+      'projectileSpeed','magazineSize',
+      'zoomScale','secondZoomScale','zoomTimeScale',
+      // Every barrel/underbarrel mod key is numeric — default to desc.
+      'damageMultiplier','fireRateMultiplier','projectileSpeedMultiplier',
+      'recoil_fireRecoilStrengthMultiplier','recoil_fireRecoilStrengthFirstMultiplier',
+      'recoil_randomnessMultiplier','recoil_animatedRecoilMultiplier',
+      'recoil_fireRecoilTimeMultiplier','recoil_decayMultiplier',
+      'recoil_endDecayMultiplier','recoil_angleRecoilStrengthMultiplier',
+      'recoil_randomnessBackPushMultiplier',
+      'heatGenerationMultiplier','soundRadiusMultiplier',
+      'ammoCostMultiplier','chargeTimeMultiplier',
+    ]);
+    this.pickerSortDir.set(NUMERIC.has(col) ? 'desc' : 'asc');
+  }
+
+  weaponSortIndicator(col: string): string {
+    if (this.pickerSortKey() !== col) return '';
+    return this.pickerSortDir() === 'desc' ? ' \u25BE' : ' \u25B4';
+  }
+
+  /** Barrel picker columns: fixed priority list (label + data key). Only
+   *  mods present on at least one filtered option render, so tables
+   *  stay tight when a particular barrel family has few mods. */
+  private static BARREL_COLS: Array<{ label: string; key: string; title?: string }> = [
+    { label: 'DMG',   key: 'damageMultiplier',                         title: 'Damage multiplier' },
+    { label: 'RPM',   key: 'fireRateMultiplier',                       title: 'Fire rate multiplier' },
+    { label: 'VEL',   key: 'projectileSpeedMultiplier',                title: 'Projectile speed multiplier' },
+    { label: 'KICK',  key: 'recoil_fireRecoilStrengthMultiplier',      title: 'Sustained kick multiplier' },
+    { label: '1ST',   key: 'recoil_fireRecoilStrengthFirstMultiplier', title: 'First-shot kick multiplier' },
+    { label: 'SPRD',  key: 'recoil_randomnessMultiplier',              title: 'Spread multiplier' },
+    { label: 'VIS',   key: 'recoil_animatedRecoilMultiplier',          title: 'Visual recoil multiplier' },
+    { label: 'TIME',  key: 'recoil_fireRecoilTimeMultiplier',          title: 'Recoil duration multiplier' },
+    { label: 'DECAY', key: 'recoil_decayMultiplier',                   title: 'Recoil recovery-rate multiplier' },
+    { label: 'HEAT',  key: 'heatGenerationMultiplier',                 title: 'Heat-per-shot multiplier' },
+    { label: 'SND',   key: 'soundRadiusMultiplier',                    title: 'Sound-radius multiplier' },
+  ];
+
+  /** Prune the barrel column set to only those actually present on the
+   *  filtered options. Empty columns otherwise just render em-dashes. */
+  barrelColumns = computed<Array<{ label: string; key: string; title?: string }>>(() => {
+    if (!this.pickerIsBarrel()) return [];
+    const present = new Set<string>();
+    for (const it of this.pickerOptions()) {
+      if (!it.modifiers) continue;
+      for (const k of Object.keys(it.modifiers)) present.add(k);
+    }
+    return FpsLoadoutComponent.BARREL_COLS.filter(c => present.has(c.key));
+  });
+
+  /** Render one (item × mod) cell for the barrel picker. Reuses the
+   *  polarity table we already built for pickerModChips. */
+  barrelModCell(item: Equippable, key: string): { text: string; positive: boolean; negative: boolean } {
+    const v = item.modifiers?.[key];
+    if (v === undefined) return { text: '\u2014', positive: false, negative: false };
+    const higherBetter = FpsLoadoutComponent.HIGHER_IS_BETTER[key] ?? true;
+    const ADDITIVE = new Set(['fireRate','pellets','burstShots','ammoCost']);
+    let text: string, delta: number;
+    if (ADDITIVE.has(key)) {
+      text = (v > 0 ? '+' : '') + v;
+      delta = v;
+    } else {
+      const pct = (v - 1) * 100;
+      if (Math.abs(pct) < 0.1) return { text: 'base', positive: false, negative: false };
+      text = (pct > 0 ? '+' : '') + pct.toFixed(Math.abs(pct) < 10 ? 1 : 0) + '%';
+      delta = pct;
+    }
+    if (Math.abs(delta) < 1e-6) return { text, positive: false, negative: false };
+    const isBetter = higherBetter ? delta > 0 : delta < 0;
+    return { text, positive: isBetter, negative: !isBetter };
+  }
+
+  /** Optic picker cells (Zoom / Alt Zoom / ADS / Scope). */
+  opticCell(item: Equippable, key: 'zoomScale' | 'secondZoomScale' | 'zoomTimeScale' | 'scopeType'):
+    { text: string; positive: boolean; negative: boolean; kind?: 'nv' | 'zoom' } {
+    const dash = '\u2014';
+    const s = item.opticSpec;
+    if (!s) return { text: dash, positive: false, negative: false };
+    if (key === 'zoomScale') {
+      const v = s.zoomScale ?? 0;
+      return { text: v > 0 ? `${v}x` : dash, positive: false, negative: false };
+    }
+    if (key === 'secondZoomScale') {
+      const useable = s.scopeType === 'Zoom' && s.secondZoomScale && s.secondZoomScale > 0
+        && Math.abs((s.secondZoomScale ?? 0) - (s.zoomScale ?? 0)) > 1e-6;
+      return { text: useable ? `${s.secondZoomScale}x` : dash, positive: false, negative: false };
+    }
+    if (key === 'zoomTimeScale') {
+      const v = s.zoomTimeScale;
+      if (v == null) return { text: dash, positive: false, negative: false };
+      const pct = (v - 1) * 100;
+      if (Math.abs(pct) < 0.1) return { text: 'base', positive: false, negative: false };
+      // ADS-time polarity — user confirmed + is good, − is bad.
+      return {
+        text: (pct > 0 ? '+' : '') + pct.toFixed(Math.abs(pct) < 10 ? 1 : 0) + '%',
+        positive: pct > 0, negative: pct < 0,
+      };
+    }
+    // scopeType
+    if (s.scopeType === 'Nightvision') return { text: 'Nightvision', positive: false, negative: false, kind: 'nv' };
+    if (s.scopeType === 'Zoom')        return { text: 'Variable',    positive: false, negative: false, kind: 'zoom' };
+    return { text: dash, positive: false, negative: false };
+  }
 
   openPicker(slotKey: string): void {
     this.pickerSlotKey.set(slotKey);
@@ -1130,6 +1312,67 @@ export class FpsLoadoutComponent {
   /** True when the picker is currently open for a barrel-attach slot. */
   pickerIsBarrel = computed(() => (this.activeSlot()?.port as any)?.attachSlot === 'barrel');
   pickerIsOptics = computed(() => (this.activeSlot()?.port as any)?.attachSlot === 'optics');
+
+  /** True when the picker is open for an armor-side weapon mount —
+   *  stocked back slots (wep_stocked_*) or the sidearm hip slot. Used
+   *  to swap the line-of-data rows for the columnar ship-style picker
+   *  so weapon comparisons surface DPS/alpha/RPM side-by-side. */
+  pickerIsWeapon = computed(() => {
+    const n = this.activeSlot()?.port?.name?.toLowerCase() ?? '';
+    return n.startsWith('wep_stocked_') || n === 'wep_sidearm';
+  });
+
+  /** Any "columnar table" picker — weapon + attachment pickers all
+   *  render a sortable stat table, so the modal widens + layout flips
+   *  away from the card style. */
+  pickerIsColumnarTable = computed(() =>
+    this.pickerIsWeapon() || this.pickerIsBarrel() || this.pickerIsOptics() || this.pickerIsUnderbarrel()
+  );
+
+  pickerIsUnderbarrel = computed(() => (this.activeSlot()?.port as any)?.attachSlot === 'underbarrel');
+
+  /** Resolve an Equippable (catalog entry — trimmed fields) to its full
+   *  FpsWeaponRaw record so the columnar picker can read fire rate,
+   *  alpha, projectile speed, mag size, etc. without the catalog
+   *  builder having to thread every weapon field through Equippable. */
+  weaponForItem(item: Equippable): FpsWeaponRaw | null {
+    if (item.source !== 'weapon') return null;
+    return this.weapons().find(w => w.className === item.className) ?? null;
+  }
+
+  /** Short classification label for the Type column in the weapon
+   *  picker. Falls back to `type`/`subType` as-is when we don't have
+   *  a specific shortening rule. */
+  fpsWeaponTypeLabel(w: FpsWeaponRaw): string {
+    const t = (w.type || '').trim();
+    if (!t) return w.subType ?? '—';
+    return t;
+  }
+
+  /** Pre-format every cell for one row of the weapon picker table. Done
+   *  in TS so the template stays readable and we don't wrestle Angular
+   *  strict-template null-narrowing through a dozen `?` operators. */
+  weaponPickerRow(item: Equippable, w: FpsWeaponRaw | null): {
+    type: string; dps: string; alpha: string; rpm: string;
+    range: string; vel: string; mag: string; mass: string;
+  } {
+    const dash = '\u2014';
+    if (!w) {
+      const mass = item.mass ? this.fmt1(item.mass) + ' kg' : dash;
+      return { type: dash, dps: dash, alpha: dash, rpm: dash,
+               range: dash, vel: dash, mag: dash, mass };
+    }
+    return {
+      type:  this.fpsWeaponTypeLabel(w),
+      dps:   w.dps          ? this.fmt1(w.dps)         : dash,
+      alpha: w.alphaDamage  ? this.fmt1(w.alphaDamage) : dash,
+      rpm:   w.fireRate     ? w.fireRate + ' rpm'      : dash,
+      range: w.range        ? w.range + ' m'           : dash,
+      vel:   w.projectileSpeed ? w.projectileSpeed + ' m/s' : dash,
+      mag:   w.magazineSize ? String(w.magazineSize)   : dash,
+      mass:  item.mass      ? this.fmt1(item.mass) + ' kg' : dash,
+    };
+  }
 
   /** Condensed stat chips for the barrel-attachment picker — one per
    *  non-identity modifier, in priority order, with +/− text and polarity. */

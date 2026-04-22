@@ -328,6 +328,121 @@
   &:has(.picker-row-wide) {
     width: min(820px, 96vw);
   }
+
+  /* Weapon picker: wide enough for the 11-column stat table without
+     forcing a horizontal scrollbar until the viewport is genuinely
+     narrow. Mirrors the ship-side hardpoint picker proportions. */
+  &.picker-modal-weapon {
+    width: min(1180px, 96vw);
+  }
+}
+
+/* ── Columnar weapon picker (mirrors ship-side hardpoint picker) ── */
+.picker-table-wrap {
+  flex: 1;
+  overflow: auto;
+  padding: 0 4px 6px;
+}
+
+.picker-table.fps-weapon-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(25, 32, 48, 0.95) 0%, rgba(19, 26, 36, 0.95) 100%);
+  }
+
+  th {
+    padding: 8px 10px;
+    color: var(--text3);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+
+    &.col-num { text-align: right; }
+    &.col-name { text-align: left; }
+
+    &.sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+      &:hover { color: var(--accent); }
+    }
+  }
+
+  td {
+    padding: 6px 10px;
+    color: var(--text2);
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    text-align: left;
+
+    &.col-num { text-align: right; font-variant-numeric: tabular-nums; }
+    &.col-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 180px;
+    }
+    &.col-mfr {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      color: var(--text3);
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background 0.1s;
+
+    &:hover td { background: rgba(0, 200, 255, 0.06); }
+    &:hover td.col-name { color: var(--accent); }
+  }
+
+  /* Barrel / optics mod cells carry the same polarity colors used on
+     the FPS Items DB — positive = green (improvement), negative = red
+     (trade-off). Identity mods stay neutral grey. */
+  td.mod-cell {
+    &.positive { color: rgb(130, 240, 180); font-weight: 600; }
+    &.negative { color: rgb(255, 160, 160); font-weight: 600; }
+  }
+
+  /* Scope-type pills (Nightvision / Variable Zoom / none). */
+  .scope-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    &.scope-nv {
+      background: rgba(150, 230, 140, 0.1);
+      border: 1px solid rgba(150, 230, 140, 0.35);
+      color: rgb(150, 230, 140);
+    }
+    &.scope-zoom {
+      background: rgba(140, 200, 255, 0.1);
+      border: 1px solid rgba(140, 200, 255, 0.35);
+      color: rgb(140, 200, 255);
+    }
+  }
+  .scope-none {
+    color: var(--text3);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+  }
 }
 
 .picker-header {
@@ -385,7 +500,11 @@
   font-size: 12px;
 }
 
-.picker-row {
+/* Scoped to <button> so the card-style grid layout doesn't clobber the
+   table-row semantics of <tr class="picker-row"> in the weapon picker
+   — otherwise every <td> lands in grid column 1 and the columns
+   collapse into one block. */
+button.picker-row {
   display: grid;
   grid-template-columns: 1fr auto 70px;
   gap: 14px;

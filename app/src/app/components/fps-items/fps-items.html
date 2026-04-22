@@ -46,10 +46,10 @@
             <tr>
               <th class="sortable" (click)="toggleSort('category')">Category{{ sortIndicator('category') }}</th>
               <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
-              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-mfr" (click)="toggleSort('manufacturer')">Manufacturer{{ sortIndicator('manufacturer') }}</th>
               <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
               <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
-              <th class="col-num" title="Physical blade length in centimeters, from the item's description text.">Blade (cm)</th>
+              <th class="col-num sortable" title="Physical blade length in centimeters, from the item's description text." (click)="toggleSort('meleeSpec.bladeSizeCm')">Blade (cm){{ sortIndicator('meleeSpec.bladeSizeCm') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -72,13 +72,13 @@
             <tr>
               <th class="sortable" (click)="toggleSort('category')">Category{{ sortIndicator('category') }}</th>
               <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
-              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-mfr" (click)="toggleSort('manufacturer')">Manufacturer{{ sortIndicator('manufacturer') }}</th>
               <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
               <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
-              <th class="col-num" title="Proximity mines sense targets via a radius, Laser mines trip on an invisible beam, everything else is on a fuse timer.">Trigger</th>
-              <th class="col-num" title="Seconds from priming/throwing until detonation (or arming delay for mines).">Fuse (s)</th>
-              <th class="col-num" title="Outer blast radius in meters — edge of effective damage.">Radius (m)</th>
-              <th class="col-num" title="Raw damage of the primary explosion (sum across all damage types).">Damage</th>
+              <th class="col-num sortable" title="Proximity mines sense targets via a radius, Laser mines trip on an invisible beam, everything else is on a fuse timer." (click)="toggleSort('throwableSpec.triggerType')">Trigger{{ sortIndicator('throwableSpec.triggerType') }}</th>
+              <th class="col-num sortable" title="Seconds from priming/throwing until detonation (or arming delay for mines)." (click)="toggleSort('throwableSpec.fuseSec')">Fuse (s){{ sortIndicator('throwableSpec.fuseSec') }}</th>
+              <th class="col-num sortable" title="Outer blast radius in meters — edge of effective damage." (click)="toggleSort('throwableSpec.maxRadiusM')">Radius (m){{ sortIndicator('throwableSpec.maxRadiusM') }}</th>
+              <th class="col-num sortable" title="Raw damage of the primary explosion (sum across all damage types)." (click)="toggleSort('throwableSpec.alphaDamage')">Damage{{ sortIndicator('throwableSpec.alphaDamage') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -107,10 +107,10 @@
           <thead>
             <tr>
               <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
-              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-mfr" (click)="toggleSort('manufacturer')">Manufacturer{{ sortIndicator('manufacturer') }}</th>
               <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
               <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
-              <th>Category</th>
+              <th class="sortable" (click)="toggleSort('category')">Category{{ sortIndicator('category') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -131,14 +131,14 @@
           <thead>
             <tr>
               <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
-              <th class="col-h-mfr">Manufacturer</th>
+              <th class="sortable col-h-mfr" (click)="toggleSort('manufacturer')">Manufacturer{{ sortIndicator('manufacturer') }}</th>
               <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
               <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
-              <th class="col-num" title="Micro-SCU of medicine dispensed per second of continuous beam">Heal Rate</th>
-              <th class="col-num">Max Range</th>
-              <th class="col-num">Sensor Range</th>
-              <th class="col-num" title="Auto-dose triggers when target's blood-drug level is below this ratio">Auto-Dose Trigger</th>
-              <th title="Default loaded healing drug. AA Support uses a non-standard subtype (exact heal value pending DCB extraction).">Medicine</th>
+              <th class="col-num sortable" title="Micro-SCU of medicine dispensed per second of continuous beam" (click)="toggleSort('medGunSpec.mSCUPerSec')">Heal Rate{{ sortIndicator('medGunSpec.mSCUPerSec') }}</th>
+              <th class="col-num sortable" (click)="toggleSort('medGunSpec.maxDistance')">Max Range{{ sortIndicator('medGunSpec.maxDistance') }}</th>
+              <th class="col-num sortable" (click)="toggleSort('medGunSpec.maxSensorDistance')">Sensor Range{{ sortIndicator('medGunSpec.maxSensorDistance') }}</th>
+              <th class="col-num sortable" title="Auto-dose triggers when target's blood-drug level is below this ratio" (click)="toggleSort('medGunSpec.autoDosageTargetBDLModifier')">Auto-Dose Trigger{{ sortIndicator('medGunSpec.autoDosageTargetBDLModifier') }}</th>
+              <th class="sortable" title="Default loaded healing drug. AA Support uses a non-standard subtype (exact heal value pending DCB extraction)." (click)="toggleSort('medGunSpec.healthSubtype')">Medicine{{ sortIndicator('medGunSpec.healthSubtype') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -173,27 +173,27 @@
               <th class="sortable" (click)="toggleSort('category')">Category{{ sortIndicator('category') }}</th>
             }
             <th class="sortable col-h-name" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
-            <th class="col-h-mfr">Manufacturer</th>
+            <th class="sortable col-h-mfr" (click)="toggleSort('manufacturer')">Manufacturer{{ sortIndicator('manufacturer') }}</th>
             <th class="sortable col-h-size" (click)="toggleSort('size')">Size{{ sortIndicator('size') }}</th>
             <th class="sortable col-h-mass" (click)="toggleSort('mass')">Mass (kg){{ sortIndicator('mass') }}</th>
             @if (tab() === 'optics') {
-              <th class="col-num col-opt">Zoom</th>
-              <th class="col-num col-opt">Alt Zoom</th>
-              <th class="col-num col-opt col-opt-ads">ADS Time</th>
-              <th class="col-scope" title="Special scope mode: Nightvision (LAMP) amplifies available light; Variable Zoom toggles between primary and alt magnification.">Scope</th>
+              <th class="col-num col-opt sortable" (click)="toggleSort('opticSpec.zoomScale')">Zoom{{ sortIndicator('opticSpec.zoomScale') }}</th>
+              <th class="col-num col-opt sortable" (click)="toggleSort('opticSpec.secondZoomScale')">Alt Zoom{{ sortIndicator('opticSpec.secondZoomScale') }}</th>
+              <th class="col-num col-opt col-opt-ads sortable" (click)="toggleSort('opticSpec.zoomTimeScale')">ADS Time{{ sortIndicator('opticSpec.zoomTimeScale') }}</th>
+              <th class="col-scope sortable" title="Special scope mode: Nightvision (LAMP) amplifies available light; Variable Zoom toggles between primary and alt magnification." (click)="toggleSort('opticSpec.scopeType')">Scope{{ sortIndicator('opticSpec.scopeType') }}</th>
             } @else if (tab() === 'barrels' || tab() === 'underbarrels') {
               @for (col of modColumns(); track col.key) {
-                <th class="mod-col-head">{{ col.label }}</th>
+                <th class="mod-col-head sortable" (click)="toggleSort('modifiers.' + col.key)">{{ col.label }}{{ sortIndicator('modifiers.' + col.key) }}</th>
               }
             } @else if (tab() === 'mining') {
-              <th class="col-num col-mining" title="Higher instability means the laser is harder to keep in the green band.">Instability</th>
-              <th class="col-num col-mining" title="Lower resistance makes a deposit easier to crack.">Resistance</th>
-              <th class="col-num col-mining" title="Higher cluster keeps more of the shattered ore together for collection.">Cluster</th>
-              <th class="col-num col-mining" title="Wider optimal charge window — larger sweet-spot band.">Window Size</th>
-              <th class="col-num col-mining" title="Faster fill of the optimal charge window.">Window Rate</th>
+              <th class="col-num col-mining sortable" title="Higher instability means the laser is harder to keep in the green band." (click)="toggleSort('miningSpec.instabilityPct')">Instability{{ sortIndicator('miningSpec.instabilityPct') }}</th>
+              <th class="col-num col-mining sortable" title="Lower resistance makes a deposit easier to crack." (click)="toggleSort('miningSpec.resistancePct')">Resistance{{ sortIndicator('miningSpec.resistancePct') }}</th>
+              <th class="col-num col-mining sortable" title="Higher cluster keeps more of the shattered ore together for collection." (click)="toggleSort('miningSpec.clusterFactorPct')">Cluster{{ sortIndicator('miningSpec.clusterFactorPct') }}</th>
+              <th class="col-num col-mining sortable" title="Wider optimal charge window — larger sweet-spot band." (click)="toggleSort('miningSpec.windowSizePct')">Window Size{{ sortIndicator('miningSpec.windowSizePct') }}</th>
+              <th class="col-num col-mining sortable" title="Faster fill of the optimal charge window." (click)="toggleSort('miningSpec.windowRatePct')">Window Rate{{ sortIndicator('miningSpec.windowRatePct') }}</th>
             } @else {
-              <th>Attach Type</th>
-              <th>Sub Type</th>
+              <th class="sortable" (click)="toggleSort('attachType')">Attach Type{{ sortIndicator('attachType') }}</th>
+              <th class="sortable" (click)="toggleSort('subType')">Sub Type{{ sortIndicator('subType') }}</th>
             }
           </tr>
         </thead>

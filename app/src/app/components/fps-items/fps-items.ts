@@ -168,7 +168,11 @@ export class FpsItemsComponent {
 
   tab = signal<TabKey>('barrels');
   searchQuery = signal('');
-  sortBy = signal<'name' | 'mass' | 'size' | 'category'>('category');
+  // Generic column sort. Key can be a plain field name ('name', 'mass',
+  // …) or a dotted path into a sub-spec ('modifiers.damageMultiplier',
+  // 'opticSpec.zoomScale', 'medGunSpec.mSCUPerSec', …). The filtered()
+  // computed resolves the path at sort time.
+  sortBy = signal<string>('category');
   sortDir = signal<'asc' | 'desc'>('asc');
 
   /** Counts per tab for the header pills. */
@@ -195,17 +199,38 @@ export class FpsItemsComponent {
     );
 
     list = [...list].sort((a, b) => {
-      if (sort === 'name' || sort === 'category') {
-        const av = (a as any)[sort] as string;
-        const bv = (b as any)[sort] as string;
-        return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      const av = this.sortValue(a, sort);
+      const bv = this.sortValue(b, sort);
+      if (typeof av === 'string' || typeof bv === 'string') {
+        return dir === 'asc'
+          ? String(av).localeCompare(String(bv))
+          : String(bv).localeCompare(String(av));
       }
-      const av = (a as any)[sort] as number;
-      const bv = (b as any)[sort] as number;
-      return dir === 'asc' ? av - bv : bv - av;
+      const na = typeof av === 'number' ? av : 0;
+      const nb = typeof bv === 'number' ? bv : 0;
+      return dir === 'asc' ? na - nb : nb - na;
     });
     return list;
   });
+
+  /** Resolve the sort value for a given (item, column) pair. Supports
+   *  plain fields and dotted paths like "opticSpec.zoomScale" so any
+   *  column header in any tab can be made sortable by passing its
+   *  data key through toggleSort(). Missing branches collapse to
+   *  0 (numeric) or '' (string fallback at sort time). */
+  private sortValue(item: FpsItem, key: string): number | string {
+    if (!key) return '';
+    if (!key.includes('.')) {
+      const v = (item as any)[key];
+      return v ?? '';
+    }
+    let cur: any = item;
+    for (const part of key.split('.')) {
+      if (cur == null) return 0;
+      cur = cur[part];
+    }
+    return cur ?? 0;
+  }
 
   private data = inject(DataService);
 
@@ -288,13 +313,20 @@ export class FpsItemsComponent {
     }));
   }
 
-  toggleSort(col: 'name' | 'mass' | 'size' | 'category'): void {
+  toggleSort(col: string): void {
     if (this.sortBy() === col) {
       this.sortDir.set(this.sortDir() === 'desc' ? 'asc' : 'desc');
-    } else {
-      this.sortBy.set(col);
-      this.sortDir.set(col === 'name' || col === 'category' ? 'asc' : 'desc');
+      return;
     }
+    this.sortBy.set(col);
+    // Default direction: strings ascend (alphabetical), numbers
+    // descend (biggest-first = most informative at a glance). Name /
+    // category / manufacturer / type keys are treated as strings.
+    const STRING_KEYS = new Set([
+      'name', 'category', 'manufacturer', 'className', 'attachType', 'subType',
+      'opticSpec.scopeType', 'throwableSpec.triggerType', 'throwableSpec.damageType',
+    ]);
+    this.sortDir.set(STRING_KEYS.has(col) ? 'asc' : 'desc');
   }
 
   sortIndicator(col: string): string {

@@ -278,7 +278,9 @@
 
   @if (activeSlot(); as slot) {
     <div class="picker-overlay" (click)="closePicker()">
-      <div class="picker-modal" (click)="$event.stopPropagation()">
+      <div class="picker-modal"
+           [class.picker-modal-weapon]="pickerIsColumnarTable()"
+           (click)="$event.stopPropagation()">
         <div class="picker-header">
           <div class="picker-title">
             Equip → <span class="picker-port">{{ slot.port.name }}</span>
@@ -292,53 +294,222 @@
         <input class="picker-search" type="text" placeholder="Search compatible items..."
                [value]="pickerSearch()" (input)="pickerSearch.set($any($event.target).value)"
                autofocus />
-        <div class="picker-list">
-          @if (pickerOptions().length === 0) {
-            <div class="picker-empty">No compatible items.</div>
-          }
-          @for (item of pickerOptions(); track item.className) {
-            <button class="picker-row"
-                    [class.picker-row-wide]="pickerIsBarrel() || pickerIsOptics()"
-                    (click)="equipItem(item)">
-              <span class="picker-row-main">
-                <span class="picker-row-name">{{ item.name }}</span>
-                <span class="picker-row-mfr">{{ item.manufacturer }}</span>
-              </span>
-              <span class="picker-row-detail">{{ item.detail }}</span>
-              <span class="picker-row-mass">{{ item.mass || '—' }} kg</span>
 
-              @if (pickerIsBarrel()) {
-                <span class="picker-row-stats">
-                  @for (chip of pickerModChips(item); track chip.label) {
-                    <span class="picker-chip"
-                          [class.positive]="chip.positive"
-                          [class.negative]="chip.negative">
-                      <span class="picker-chip-label">{{ chip.label }}</span>
-                      <span class="picker-chip-val">{{ chip.text }}</span>
-                    </span>
+        @if (pickerIsWeapon()) {
+          <!-- Columnar weapon picker — mirrors the ship-side hardpoint
+               picker so weapon comparisons surface alpha / DPS / RPM /
+               range side-by-side instead of as an inline line of text. -->
+          <div class="picker-table-wrap">
+            @if (pickerOptions().length === 0) {
+              <div class="picker-empty">No compatible weapons.</div>
+            } @else {
+              <table class="picker-table fps-weapon-table">
+                <thead>
+                  <tr>
+                    <th class="sortable" (click)="toggleWeaponSort('size')">Sz{{ weaponSortIndicator('size') }}</th>
+                    <th class="col-name sortable" (click)="toggleWeaponSort('name')">Name{{ weaponSortIndicator('name') }}</th>
+                    <th class="sortable" (click)="toggleWeaponSort('manufacturer')">Mfr{{ weaponSortIndicator('manufacturer') }}</th>
+                    <th class="sortable" (click)="toggleWeaponSort('type')">Type{{ weaponSortIndicator('type') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('dps')">DPS{{ weaponSortIndicator('dps') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('alphaDamage')">Alpha{{ weaponSortIndicator('alphaDamage') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('fireRate')">RPM{{ weaponSortIndicator('fireRate') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('range')">Range{{ weaponSortIndicator('range') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('projectileSpeed')">Vel{{ weaponSortIndicator('projectileSpeed') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('magazineSize')">Mag{{ weaponSortIndicator('magazineSize') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('mass')">Mass{{ weaponSortIndicator('mass') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of pickerOptions(); track item.className) {
+                    @let w = weaponForItem(item);
+                    @let row = weaponPickerRow(item, w);
+                    <tr class="picker-row" (click)="equipItem(item)">
+                      <td>S{{ item.size }}</td>
+                      <td class="col-name" [title]="item.className">{{ item.name }}</td>
+                      <td class="col-mfr">{{ item.manufacturer }}</td>
+                      <td>{{ row.type }}</td>
+                      <td class="col-num">{{ row.dps }}</td>
+                      <td class="col-num">{{ row.alpha }}</td>
+                      <td class="col-num">{{ row.rpm }}</td>
+                      <td class="col-num">{{ row.range }}</td>
+                      <td class="col-num">{{ row.vel }}</td>
+                      <td class="col-num">{{ row.mag }}</td>
+                      <td class="col-num">{{ row.mass }}</td>
+                    </tr>
                   }
-                  @if (pickerModChips(item).length === 0) {
-                    <span class="picker-chip-empty">no stat changes</span>
+                </tbody>
+              </table>
+            }
+          </div>
+        } @else if (pickerIsBarrel()) {
+          <!-- Barrel picker: same columnar layout, dynamic mod columns
+               (only shows keys present on at least one filtered option). -->
+          <div class="picker-table-wrap">
+            @if (pickerOptions().length === 0) {
+              <div class="picker-empty">No compatible barrel mods.</div>
+            } @else {
+              <table class="picker-table fps-weapon-table">
+                <thead>
+                  <tr>
+                    <th class="sortable" (click)="toggleWeaponSort('size')">Sz{{ weaponSortIndicator('size') }}</th>
+                    <th class="col-name sortable" (click)="toggleWeaponSort('name')">Name{{ weaponSortIndicator('name') }}</th>
+                    <th class="sortable" (click)="toggleWeaponSort('manufacturer')">Mfr{{ weaponSortIndicator('manufacturer') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('mass')">Mass{{ weaponSortIndicator('mass') }}</th>
+                    @for (col of barrelColumns(); track col.key) {
+                      <th class="col-num sortable" [title]="col.title || col.label" (click)="toggleWeaponSort(col.key)">{{ col.label }}{{ weaponSortIndicator(col.key) }}</th>
+                    }
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of pickerOptions(); track item.className) {
+                    <tr class="picker-row" (click)="equipItem(item)">
+                      <td>S{{ item.size }}</td>
+                      <td class="col-name" [title]="item.className">{{ item.name }}</td>
+                      <td class="col-mfr">{{ item.manufacturer }}</td>
+                      <td class="col-num">{{ item.mass ? fmt1(item.mass) + ' kg' : '\u2014' }}</td>
+                      @for (col of barrelColumns(); track col.key) {
+                        @let c = barrelModCell(item, col.key);
+                        <td class="col-num mod-cell"
+                            [class.positive]="c.positive"
+                            [class.negative]="c.negative">{{ c.text }}</td>
+                      }
+                    </tr>
                   }
+                </tbody>
+              </table>
+            }
+          </div>
+        } @else if (pickerIsOptics()) {
+          <!-- Optics picker: zoom / alt zoom / ADS time / scope type. -->
+          <div class="picker-table-wrap">
+            @if (pickerOptions().length === 0) {
+              <div class="picker-empty">No compatible optics.</div>
+            } @else {
+              <table class="picker-table fps-weapon-table">
+                <thead>
+                  <tr>
+                    <th class="sortable" (click)="toggleWeaponSort('size')">Sz{{ weaponSortIndicator('size') }}</th>
+                    <th class="col-name sortable" (click)="toggleWeaponSort('name')">Name{{ weaponSortIndicator('name') }}</th>
+                    <th class="sortable" (click)="toggleWeaponSort('manufacturer')">Mfr{{ weaponSortIndicator('manufacturer') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('mass')">Mass{{ weaponSortIndicator('mass') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('zoomScale')">Zoom{{ weaponSortIndicator('zoomScale') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('secondZoomScale')">Alt Zoom{{ weaponSortIndicator('secondZoomScale') }}</th>
+                    <th class="col-num sortable" title="ADS time (positive = slower = more stable; negative = faster swap-in)" (click)="toggleWeaponSort('zoomTimeScale')">ADS Time{{ weaponSortIndicator('zoomTimeScale') }}</th>
+                    <th class="sortable" (click)="toggleWeaponSort('scopeType')">Scope{{ weaponSortIndicator('scopeType') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of pickerOptions(); track item.className) {
+                    @let z  = opticCell(item, 'zoomScale');
+                    @let az = opticCell(item, 'secondZoomScale');
+                    @let ads = opticCell(item, 'zoomTimeScale');
+                    @let sc  = opticCell(item, 'scopeType');
+                    <tr class="picker-row" (click)="equipItem(item)">
+                      <td>S{{ item.size }}</td>
+                      <td class="col-name" [title]="item.className">{{ item.name }}</td>
+                      <td class="col-mfr">{{ item.manufacturer }}</td>
+                      <td class="col-num">{{ item.mass ? fmt1(item.mass) + ' kg' : '\u2014' }}</td>
+                      <td class="col-num">{{ z.text }}</td>
+                      <td class="col-num">{{ az.text }}</td>
+                      <td class="col-num mod-cell"
+                          [class.positive]="ads.positive"
+                          [class.negative]="ads.negative">{{ ads.text }}</td>
+                      <td>
+                        @if (sc.kind === 'nv') {
+                          <span class="scope-pill scope-nv" title="Light Amplification (LAMP) — night-vision mode">{{ sc.text }}</span>
+                        } @else if (sc.kind === 'zoom') {
+                          <span class="scope-pill scope-zoom">{{ sc.text }}</span>
+                        } @else {
+                          <span class="scope-none">{{ sc.text }}</span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          </div>
+        } @else if (pickerIsUnderbarrel()) {
+          <!-- Underbarrel picker: minimal columns — underbarrel mods
+               don't currently carry meaningful gameplay stats, so this
+               is mostly name/mfr for selection. -->
+          <div class="picker-table-wrap">
+            @if (pickerOptions().length === 0) {
+              <div class="picker-empty">No compatible under-barrel mods.</div>
+            } @else {
+              <table class="picker-table fps-weapon-table">
+                <thead>
+                  <tr>
+                    <th class="sortable" (click)="toggleWeaponSort('size')">Sz{{ weaponSortIndicator('size') }}</th>
+                    <th class="col-name sortable" (click)="toggleWeaponSort('name')">Name{{ weaponSortIndicator('name') }}</th>
+                    <th class="sortable" (click)="toggleWeaponSort('manufacturer')">Mfr{{ weaponSortIndicator('manufacturer') }}</th>
+                    <th class="col-num sortable" (click)="toggleWeaponSort('mass')">Mass{{ weaponSortIndicator('mass') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of pickerOptions(); track item.className) {
+                    <tr class="picker-row" (click)="equipItem(item)">
+                      <td>S{{ item.size }}</td>
+                      <td class="col-name" [title]="item.className">{{ item.name }}</td>
+                      <td class="col-mfr">{{ item.manufacturer }}</td>
+                      <td class="col-num">{{ item.mass ? fmt1(item.mass) + ' kg' : '\u2014' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          </div>
+        } @else {
+          <!-- Original card/row picker for everything else: magazines,
+               gear, FPS attachments (barrel/optics/underbarrel/etc.). -->
+          <div class="picker-list">
+            @if (pickerOptions().length === 0) {
+              <div class="picker-empty">No compatible items.</div>
+            }
+            @for (item of pickerOptions(); track item.className) {
+              <button class="picker-row"
+                      [class.picker-row-wide]="pickerIsBarrel() || pickerIsOptics()"
+                      (click)="equipItem(item)">
+                <span class="picker-row-main">
+                  <span class="picker-row-name">{{ item.name }}</span>
+                  <span class="picker-row-mfr">{{ item.manufacturer }}</span>
                 </span>
-              } @else if (pickerIsOptics()) {
-                <span class="picker-row-stats">
-                  @for (chip of pickerOpticInfo(item); track chip.label) {
-                    <span class="picker-chip"
-                          [class.chip-nv]="chip.kind === 'nv'"
-                          [class.chip-zoom]="chip.kind === 'zoom'">
-                      <span class="picker-chip-label">{{ chip.label }}</span>
-                      <span class="picker-chip-val">{{ chip.text }}</span>
-                    </span>
-                  }
-                  @if (pickerOpticInfo(item).length === 0) {
-                    <span class="picker-chip-empty">no scope data</span>
-                  }
-                </span>
-              }
-            </button>
-          }
-        </div>
+                <span class="picker-row-detail">{{ item.detail }}</span>
+                <span class="picker-row-mass">{{ item.mass || '—' }} kg</span>
+
+                @if (pickerIsBarrel()) {
+                  <span class="picker-row-stats">
+                    @for (chip of pickerModChips(item); track chip.label) {
+                      <span class="picker-chip"
+                            [class.positive]="chip.positive"
+                            [class.negative]="chip.negative">
+                        <span class="picker-chip-label">{{ chip.label }}</span>
+                        <span class="picker-chip-val">{{ chip.text }}</span>
+                      </span>
+                    }
+                    @if (pickerModChips(item).length === 0) {
+                      <span class="picker-chip-empty">no stat changes</span>
+                    }
+                  </span>
+                } @else if (pickerIsOptics()) {
+                  <span class="picker-row-stats">
+                    @for (chip of pickerOpticInfo(item); track chip.label) {
+                      <span class="picker-chip"
+                            [class.chip-nv]="chip.kind === 'nv'"
+                            [class.chip-zoom]="chip.kind === 'zoom'">
+                        <span class="picker-chip-label">{{ chip.label }}</span>
+                        <span class="picker-chip-val">{{ chip.text }}</span>
+                      </span>
+                    }
+                    @if (pickerOpticInfo(item).length === 0) {
+                      <span class="picker-chip-empty">no scope data</span>
+                    }
+                  </span>
+                }
+              </button>
+            }
+          </div>
+        }
       </div>
     </div>
   }
