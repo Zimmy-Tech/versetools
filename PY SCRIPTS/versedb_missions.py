@@ -2784,6 +2784,38 @@ def main():
     for entry in all_entries:
         entry.pop("_titleLocKey", None)
 
+    # className-collision dedup: ensure every contract has a unique
+    # className so the (class_name, mode) PK in the missions table doesn't
+    # silently drop variants on insert. Some CIG records share a className
+    # across truly-different missions (e.g. `shubininterstellar` covers 29
+    # mining-rights stations distinguished only by title; the
+    # `HaulCargo_AToB_Interstellar_Bulk_Ammon_PlasFu_Arg_PreIce_CM` key is
+    # shared by Covalex and Red Wind hauling variants with different
+    # contractors / rewards / descriptions). Without disambiguation, each
+    # colliding variant overwrites the prior on import, costing ~30
+    # contracts of fidelity in the DB-backed prod view (preview JSON
+    # iteration is unaffected; only the keyed insert collapses them).
+    #
+    # Suffix is a stable per-variant hash so the same variant in a future
+    # extraction round-trips to the same className — diff stays idempotent.
+    import hashlib as _hashlib
+    from collections import Counter as _Counter
+    _class_counts = _Counter(e.get("className", "") for e in all_entries)
+    _class_dups = {cn for cn, n in _class_counts.items() if n > 1 and cn}
+    if _class_dups:
+        _entries_renamed = 0
+        for entry in all_entries:
+            cn = entry.get("className", "")
+            if cn not in _class_dups:
+                continue
+            identity = "|".join(str(entry.get(f, "")) for f in
+                                ("generator", "contractor", "title", "reward"))
+            suffix = _hashlib.md5(identity.encode("utf-8")).hexdigest()[:8]
+            entry["className"] = f"{cn}_{suffix}"
+            _entries_renamed += 1
+        print(f"  Disambiguated {len(_class_dups)} colliding classNames "
+              f"({_entries_renamed} entries got unique suffixes)")
+
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
