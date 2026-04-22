@@ -503,107 +503,103 @@ function diffEntity(uploaded, current) {
   return changes;
 }
 
+// Entity-type registry for the diff pipeline. Adding a new stream is a
+// dictionary entry — the preview/apply handlers iterate this map and
+// the admin UI mirrors the keys in its payload. `payloadKey` is the
+// array name in the uploaded JSON and the apply-payload; `table` is
+// the underlying Postgres table; `entityType` is the audit-log label.
+const DIFF_ENTITY_TYPES = {
+  ships:    { payloadKey: 'ships',    table: 'ships',     entityType: 'ship' },
+  items:    { payloadKey: 'items',    table: 'items',     entityType: 'item' },
+  fpsItems: { payloadKey: 'fpsItems', table: 'fps_items', entityType: 'fps_item' },
+  fpsGear:  { payloadKey: 'fpsGear',  table: 'fps_gear',  entityType: 'fps_gear' },
+  fpsArmor: { payloadKey: 'fpsArmor', table: 'fps_armor', entityType: 'fps_armor' },
+};
+
 const diffPreviewHandler = async (req, res) => {
   if (!dbEnabled) return res.status(503).json({ error: 'Database not available' });
   const body = req.body;
   if (!body || typeof body !== 'object') {
-    return res.status(400).json({ error: 'Body must be an object containing ships and items arrays' });
+    return res.status(400).json({ error: 'Body must be an object containing entity arrays (ships, items, fpsItems, fpsGear, fpsArmor)' });
   }
-  const uploadedShips = Array.isArray(body.ships) ? body.ships : [];
-  const uploadedItems = Array.isArray(body.items) ? body.items : [];
   const mode = normalizeMode(req.query.mode);
 
   try {
-    const [shipRows, itemRows] = await Promise.all([
-      pool.query('SELECT class_name, data, source FROM ships WHERE mode = $1', [mode]),
-      pool.query('SELECT class_name, data, source FROM items WHERE mode = $1', [mode]),
-    ]);
-
-    const currentShips = new Map(shipRows.rows.map((r) => [r.class_name, { data: r.data, source: r.source }]));
-    const currentItems = new Map(itemRows.rows.map((r) => [r.class_name, { data: r.data, source: r.source }]));
-
-    const result = { ships: [], items: [] };
-
-    // Pass 1: walk uploaded entities (modifies + creates)
-    for (const ship of uploadedShips) {
-      if (!ship || !ship.className) continue;
-      const cur = currentShips.get(ship.className);
-      if (!cur) {
-        result.ships.push({
-          className: ship.className,
-          action: 'create',
-          currentSource: null,
-          changes: [{ field: '*', oldValue: null, newValue: ship }],
-        });
-      } else {
-        const changes = diffEntity(ship, cur.data);
-        if (changes.length > 0) {
-          result.ships.push({
-            className: ship.className,
-            action: 'modify',
-            currentSource: cur.source,
-            changes,
-          });
-        }
-      }
-    }
-
-    for (const item of uploadedItems) {
-      if (!item || !item.className) continue;
-      const cur = currentItems.get(item.className);
-      if (!cur) {
-        result.items.push({
-          className: item.className,
-          action: 'create',
-          currentSource: null,
-          changes: [{ field: '*', oldValue: null, newValue: item }],
-        });
-      } else {
-        const changes = diffEntity(item, cur.data);
-        if (changes.length > 0) {
-          result.items.push({
-            className: item.className,
-            action: 'modify',
-            currentSource: cur.source,
-            changes,
-          });
-        }
-      }
-    }
-
-    // Pass 2: entities in DB but missing from upload (potential deletes)
-    const uploadedShipKeys = new Set(uploadedShips.map((s) => s?.className).filter(Boolean));
-    const uploadedItemKeys = new Set(uploadedItems.map((i) => i?.className).filter(Boolean));
-    for (const [className, cur] of currentShips) {
-      if (!uploadedShipKeys.has(className)) {
-        result.ships.push({
-          className,
-          action: 'delete',
-          currentSource: cur.source,
-          changes: [{ field: '*', oldValue: cur.data, newValue: null }],
-        });
-      }
-    }
-    for (const [className, cur] of currentItems) {
-      if (!uploadedItemKeys.has(className)) {
-        result.items.push({
-          className,
-          action: 'delete',
-          currentSource: cur.source,
-          changes: [{ field: '*', oldValue: cur.data, newValue: null }],
-        });
-      }
-    }
-
-    res.json({
-      mode,
-      ships: result.ships,
-      items: result.items,
-      stats: {
-        shipChanges: result.ships.length,
-        itemChanges: result.items.length,
-      },
+    // Load current DB state for every registered entity type in parallel.
+    // Each entry lands in a Map<className, {data, source}> for fast lookup.
+    const keys = Object.keys(DIFF_ENTITY_TYPES);
+    const currentByType = {};
+    const loadPromises = keys.map(async (key) => {
+      const { table } = DIFF_ENTITY_TYPES[key];
+      const { rows } = await pool.query(
+        `SELECT class_name, data, source FROM ${table} WHERE mode = $1`,
+        [mode]
+      );
+      currentByType[key] = new Map(rows.map((r) => [r.class_name, { data: r.data, source: r.source }]));
     });
+    await Promise.all(loadPromises);
+
+    const result = {};
+    const stats = {};
+
+    for (const key of keys) {
+      const uploaded = Array.isArray(body[key]) ? body[key] : [];
+      const current = currentByType[key];
+      const changes = [];
+      const uploadedKeys = new Set();
+
+      // Pass 1: walk uploaded entities (creates + modifies)
+      for (const entity of uploaded) {
+        if (!entity || !entity.className) continue;
+        uploadedKeys.add(entity.className);
+        const cur = current.get(entity.className);
+        if (!cur) {
+          changes.push({
+            className: entity.className,
+            action: 'create',
+            currentSource: null,
+            changes: [{ field: '*', oldValue: null, newValue: entity }],
+          });
+        } else {
+          const fieldChanges = diffEntity(entity, cur.data);
+          if (fieldChanges.length > 0) {
+            changes.push({
+              className: entity.className,
+              action: 'modify',
+              currentSource: cur.source,
+              changes: fieldChanges,
+            });
+          }
+        }
+      }
+
+      // Pass 2: entities in DB but missing from upload (potential deletes).
+      // Only runs when an array for this type was actually supplied — a
+      // missing array means "don't touch this stream" (lets the admin
+      // upload ships-only or FPS-only payloads without proposing deletes
+      // for the untouched streams).
+      if (Array.isArray(body[key])) {
+        for (const [className, cur] of current) {
+          if (!uploadedKeys.has(className)) {
+            changes.push({
+              className,
+              action: 'delete',
+              currentSource: cur.source,
+              changes: [{ field: '*', oldValue: cur.data, newValue: null }],
+            });
+          }
+        }
+      }
+
+      result[key] = changes;
+      stats[`${key}Changes`] = changes.length;
+    }
+    // Legacy singular aliases so older admin clients still read the
+    // counts the original handler emitted before FPS streams landed.
+    stats.shipChanges = stats.shipsChanges ?? 0;
+    stats.itemChanges = stats.itemsChanges ?? 0;
+
+    res.json({ mode, ...result, stats });
   } catch (err) {
     console.error('diff preview failed:', err);
     res.status(500).json({ error: 'Diff failed', detail: err.message });
@@ -624,27 +620,38 @@ const diffApplyHandler = async (req, res) => {
   if (!body || typeof body !== 'object') {
     return res.status(400).json({ error: 'Body must be an object' });
   }
-  const ships = Array.isArray(body.ships) ? body.ships : [];
-  const items = Array.isArray(body.items) ? body.items : [];
   const meta = body.meta && typeof body.meta === 'object' ? body.meta : null;
-  // Full uploaded arrays — used by the changelog recorder so the
-  // changelog reflects the entire build, not just the user's selection.
-  const fullShips = Array.isArray(body.fullShips) ? body.fullShips : null;
-  const fullItems = Array.isArray(body.fullItems) ? body.fullItems : null;
   const mode = normalizeMode(req.query.mode);
 
+  // Normalize the payload into a {key: changes[]} map driven by the
+  // DIFF_ENTITY_TYPES registry. Every registered stream gets a slot even
+  // if the caller didn't supply it — keeps the applied-counts shape
+  // consistent for the response.
+  const changesByType = {};
+  const fullByType = {};
+  for (const key of Object.keys(DIFF_ENTITY_TYPES)) {
+    changesByType[key] = Array.isArray(body[key]) ? body[key] : [];
+    // Full uploaded array sibling: payloadKey='fpsItems' → full='fullFpsItems'.
+    const fullKey = 'full' + key.charAt(0).toUpperCase() + key.slice(1);
+    fullByType[key] = Array.isArray(body[fullKey]) ? body[fullKey] : null;
+  }
+
   const client = await pool.connect();
-  let applied = { ships: 0, items: 0, meta: false, changelog: null };
+  const applied = { meta: false, changelog: null };
+  for (const key of Object.keys(DIFF_ENTITY_TYPES)) applied[key] = 0;
   try {
+    // Single transaction spans every stream: ships + items + FPS bundle
+    // commit atomically or roll back together. The atomic guarantee is
+    // what keeps cross-references (armor ports ↔ FPS item attachTypes,
+    // weapon ports ↔ attachment modifiers) from ever landing half-broken.
     await client.query('BEGIN');
 
-    for (const change of ships) {
-      await applyEntityChange(client, 'ships', 'ship', change, req.admin.sub, mode);
-      applied.ships++;
-    }
-    for (const change of items) {
-      await applyEntityChange(client, 'items', 'item', change, req.admin.sub, mode);
-      applied.items++;
+    for (const key of Object.keys(DIFF_ENTITY_TYPES)) {
+      const { table, entityType } = DIFF_ENTITY_TYPES[key];
+      for (const change of changesByType[key]) {
+        await applyEntityChange(client, table, entityType, change, req.admin.sub, mode);
+        applied[key]++;
+      }
     }
 
     // Always overwrite meta when an upload includes it. Meta is pure
@@ -680,13 +687,16 @@ const diffApplyHandler = async (req, res) => {
     // Done outside the transaction so a changelog failure can never
     // roll back a successful apply. Idempotent / de-duped on duplicate
     // builds.
-    if (fullShips && fullItems && meta?.version) {
+    if (fullByType.ships && fullByType.items && meta?.version) {
       try {
         const result = await recordChangelogEntry({
           toVersion: meta.version,
           toChannel: mode,
-          ships: fullShips,
-          items: fullItems,
+          ships: fullByType.ships,
+          items: fullByType.items,
+          fpsItems: fullByType.fpsItems,
+          fpsGear: fullByType.fpsGear,
+          fpsArmor: fullByType.fpsArmor,
         });
         applied.changelog = result;
       } catch (clErr) {

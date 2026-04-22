@@ -1,5 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from '../../services/data.service';
 
 interface OpticSpec {
   zoomScale?: number;
@@ -206,9 +207,37 @@ export class FpsItemsComponent {
     return list;
   });
 
+  private data = inject(DataService);
+
   constructor(private http: HttpClient) {
-    // Merge gear items + weapon attachments into one table. Attachments ride
-    // the same shape; we synthesise a category like "Attachment / Optics".
+    // Prefer the DB-backed payload when DataService has it — that's the
+    // prod path after an admin import. Fall back to the raw JSON files
+    // on the preview deployment (GitHub Pages) where no API is reachable,
+    // so feature work against the extractor output keeps working
+    // without a DB round-trip.
+    effect(() => {
+      const db = this.data.db();
+      const fpsItems = db?.fpsItems as any[] | undefined;
+      const fpsGear  = db?.fpsGear  as any[] | undefined;
+      // Require non-empty arrays so a freshly-migrated DB with empty
+      // FPS tables doesn't strand the user on a blank page — the
+      // static-JSON fallback will still run.
+      if (fpsItems?.length && fpsGear?.length) {
+        this.hydrateFromDb(fpsItems, fpsGear);
+      }
+    });
+    // Kick off the JSON fallback regardless — it's a no-op if DataService
+    // wins the race, and it prevents a blank table on the preview host.
+    this.loadFromStaticJson();
+  }
+
+  private hydrateFromDb(fpsItems: any[], fpsGear: any[]): void {
+    const attachItems = this.mapAttachments(fpsItems.filter((x) => x._kind === 'attachment'));
+    this.items.set([...this.normalizeGear(fpsGear), ...attachItems]);
+    this.loaded.set(true);
+  }
+
+  private loadFromStaticJson(): void {
     const gear$ = this.http.get<{ items: FpsItem[] }>('live/versedb_fps_gear.json');
     const fps$  = this.http.get<{ attachments?: any[] }>('live/versedb_fps.json');
     let gearItems: FpsItem[] = [];
@@ -216,33 +245,47 @@ export class FpsItemsComponent {
     let gearDone = false, fpsDone = false;
     const commit = () => {
       if (!gearDone || !fpsDone) return;
+      // Skip if the DB path has already populated us — no need to
+      // clobber a potentially curated DB read with raw extract JSON.
+      if (this.loaded()) return;
       this.items.set([...gearItems, ...attachItems]);
       this.loaded.set(true);
     };
-    gear$.subscribe(d => { gearItems = d.items; gearDone = true; commit(); });
-    fps$.subscribe(d => {
-      const slotToCat: Record<string, string> = {
-        optics: 'Attachment / Optics',
-        barrel: 'Attachment / Barrel',
-        underbarrel: 'Attachment / Underbarrel',
-        magazine: 'Attachment / Magazine',
-      };
-      attachItems = (d.attachments ?? []).map(a => ({
-        className: a.className,
-        name: a.name,
-        manufacturer: a.manufacturer,
-        attachType: a.attachType,
-        subType: a.subType,
-        size: a.size,
-        mass: a.mass,
-        category: slotToCat[a.attachSlot] ?? `Attachment / ${a.attachSlot}`,
-        modifiers: a.modifiers,
-        opticSpec: a.opticSpec,
-      }));
-      // Gear items already carry medGunSpec in the JSON — it flows through
-      // the `gearItems = d.items` assignment above automatically.
-      fpsDone = true; commit();
+    gear$.subscribe({
+      next: d => { gearItems = this.normalizeGear(d.items ?? []); gearDone = true; commit(); },
+      error: () => { gearDone = true; commit(); },
     });
+    fps$.subscribe({
+      next: d => { attachItems = this.mapAttachments(d.attachments ?? []); fpsDone = true; commit(); },
+      error: () => { fpsDone = true; commit(); },
+    });
+  }
+
+  private normalizeGear(items: any[]): FpsItem[] {
+    // Gear records already match FpsItem shape (classname, name, category,
+    // medGunSpec, miningSpec, meleeSpec, throwableSpec, …). Pass-through.
+    return items as FpsItem[];
+  }
+
+  private mapAttachments(raws: any[]): FpsItem[] {
+    const slotToCat: Record<string, string> = {
+      optics: 'Attachment / Optics',
+      barrel: 'Attachment / Barrel',
+      underbarrel: 'Attachment / Underbarrel',
+      magazine: 'Attachment / Magazine',
+    };
+    return raws.map((a: any) => ({
+      className: a.className,
+      name: a.name,
+      manufacturer: a.manufacturer,
+      attachType: a.attachType,
+      subType: a.subType,
+      size: a.size,
+      mass: a.mass,
+      category: slotToCat[a.attachSlot] ?? `Attachment / ${a.attachSlot}`,
+      modifiers: a.modifiers,
+      opticSpec: a.opticSpec,
+    }));
   }
 
   toggleSort(col: 'name' | 'mass' | 'size' | 'category'): void {

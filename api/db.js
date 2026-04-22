@@ -237,7 +237,28 @@ function diffArraysForChangelog(prevArr, nextArr, isShip) {
  *  the most recent stored entry's snapshot. Idempotent: if the most
  *  recent entry already has the same to_version + to_channel, skips.
  *  Prunes older entries beyond CHANGELOG_RETENTION. */
-export async function recordChangelogEntry({ toVersion, toChannel, ships, items }) {
+// Lightweight per-className diff for FPS streams. Added/removed capture
+// new + gone entries; changes capture any className whose stringified
+// data differs between builds. We don't drill into field-level diffs
+// for FPS here — the Items DB shows current values directly, so the
+// changelog just needs to signal "FPS X changed this build" for review.
+function diffFpsStreamForChangelog(prevArr, nextArr) {
+  const prevMap = new Map((prevArr || []).map((e) => [e.className, e]));
+  const nextMap = new Map((nextArr || []).map((e) => [e.className, e]));
+  const added = [], removed = [], changes = [];
+  for (const key of new Set([...prevMap.keys(), ...nextMap.keys()])) {
+    const prev = prevMap.get(key);
+    const next = nextMap.get(key);
+    if (!prev && next) { added.push({ className: key, name: next.name || key }); continue; }
+    if (prev && !next) { removed.push({ className: key, name: prev.name || key }); continue; }
+    if (JSON.stringify(prev) !== JSON.stringify(next)) {
+      changes.push({ className: key, name: next.name || key });
+    }
+  }
+  return { changes, added, removed };
+}
+
+export async function recordChangelogEntry({ toVersion, toChannel, ships, items, fpsItems, fpsGear, fpsArmor }) {
   if (!pool) return null;
   if (!toVersion || !toChannel) {
     throw new Error('toVersion and toChannel are required');
@@ -249,7 +270,8 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items 
     // Only compare against previous BUILD entries — skip price_refresh
     // entries so UEX price updates don't pollute the build changelog.
     const { rows: prevRows } = await client.query(
-      `SELECT id, to_version, to_channel, ship_snapshot, item_snapshot
+      `SELECT id, to_version, to_channel, ship_snapshot, item_snapshot,
+              fps_items_snapshot, fps_gear_snapshot, fps_armor_snapshot
        FROM changelog_entries
        WHERE entry_type IS DISTINCT FROM 'price_refresh'
        ORDER BY id DESC LIMIT 1`
@@ -264,16 +286,26 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items 
 
     const prevShips = prev?.ship_snapshot || [];
     const prevItems = prev?.item_snapshot || [];
+    const prevFpsItems = prev?.fps_items_snapshot || [];
+    const prevFpsGear  = prev?.fps_gear_snapshot  || [];
+    const prevFpsArmor = prev?.fps_armor_snapshot || [];
 
     const shipDiff = diffArraysForChangelog(prevShips, ships, true);
     const itemDiff = diffArraysForChangelog(prevItems, items, false);
+    // FPS streams optional — only diff when the caller supplied one.
+    // Null snapshot + null supplied = no change recorded for that stream.
+    const fpsItemsDiff = fpsItems ? diffFpsStreamForChangelog(prevFpsItems, fpsItems) : null;
+    const fpsGearDiff  = fpsGear  ? diffFpsStreamForChangelog(prevFpsGear,  fpsGear)  : null;
+    const fpsArmorDiff = fpsArmor ? diffFpsStreamForChangelog(prevFpsArmor, fpsArmor) : null;
 
     const insRes = await client.query(
       `INSERT INTO changelog_entries
        (from_version, from_channel, to_version, to_channel,
         ship_changes, item_changes, ship_added, item_added, ship_removed, item_removed,
-        ship_snapshot, item_snapshot)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        ship_snapshot, item_snapshot,
+        fps_items_changes, fps_gear_changes, fps_armor_changes,
+        fps_items_snapshot, fps_gear_snapshot, fps_armor_snapshot)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
        RETURNING id`,
       [
         prev?.to_version ?? null,
@@ -288,6 +320,15 @@ export async function recordChangelogEntry({ toVersion, toChannel, ships, items 
         JSON.stringify(itemDiff.removed),
         JSON.stringify(ships || []),
         JSON.stringify(items || []),
+        // FPS: null for streams not in this import (preserves prior
+        // snapshot via COALESCE — wait, ALTER ADD COLUMN doesn't do
+        // COALESCE; we just write whatever was supplied or empty).
+        JSON.stringify(fpsItemsDiff?.changes ?? []),
+        JSON.stringify(fpsGearDiff?.changes ?? []),
+        JSON.stringify(fpsArmorDiff?.changes ?? []),
+        fpsItems ? JSON.stringify(fpsItems) : null,
+        fpsGear  ? JSON.stringify(fpsGear)  : null,
+        fpsArmor ? JSON.stringify(fpsArmor) : null,
       ]
     );
 
@@ -567,6 +608,26 @@ async function migrateCoolingIrColumn() {
   console.log('[db] added reported_ir_value to cooling_observations');
 }
 
+// Add FPS snapshot/change columns to changelog_entries on existing DBs
+// that predate the FPS pipeline promotion. Fresh installs get these from
+// schema.sql directly; this migration backfills older databases.
+async function migrateChangelogFpsColumns() {
+  if (!pool) return;
+  const cols = ['fps_items_snapshot', 'fps_gear_snapshot', 'fps_armor_snapshot',
+                'fps_items_changes', 'fps_gear_changes', 'fps_armor_changes'];
+  for (const col of cols) {
+    const { rows } = await pool.query(`
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'versedb' AND table_name = 'changelog_entries' AND column_name = $1
+    `, [col]);
+    if (rows.length > 0) continue;
+    const isSnapshot = col.endsWith('_snapshot');
+    const defClause = isSnapshot ? '' : " NOT NULL DEFAULT '[]'::jsonb";
+    await pool.query(`ALTER TABLE versedb.changelog_entries ADD COLUMN ${col} JSONB${defClause}`);
+    console.log(`[db] added ${col} to changelog_entries`);
+  }
+}
+
 // uses CREATE TABLE / INDEX IF NOT EXISTS so re-running it on a populated
 // database is a no-op for everything that already exists.
 export async function ensureReady() {
@@ -576,6 +637,7 @@ export async function ensureReady() {
   await importIfEmpty();
   await migrateExtractShopPrices();
   await migrateCoolingIrColumn();
+  await migrateChangelogFpsColumns();
 }
 
 /** Coerce arbitrary input into a valid mode value. */
@@ -926,7 +988,8 @@ export async function exportFullDb(mode = 'live') {
   await ensureReady();
   const m = normalizeMode(mode);
 
-  const [shipsRes, itemsRes, locsRes, elsRes, metaRes, shopPricesRes, wikiRes] = await Promise.all([
+  const [shipsRes, itemsRes, locsRes, elsRes, metaRes, shopPricesRes, wikiRes,
+         fpsItemsRes, fpsGearRes, fpsArmorRes] = await Promise.all([
     pool.query('SELECT data FROM ships WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM items WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM mining_locations ORDER BY id'),
@@ -943,6 +1006,9 @@ export async function exportFullDb(mode = 'live') {
       SELECT class_name, role, career, ship_matrix_name
       FROM ship_wiki_metadata
     `),
+    pool.query('SELECT data FROM fps_items WHERE mode = $1 ORDER BY class_name', [m]),
+    pool.query('SELECT data FROM fps_gear  WHERE mode = $1 ORDER BY class_name', [m]),
+    pool.query('SELECT data FROM fps_armor WHERE mode = $1 ORDER BY class_name', [m]),
   ]);
 
   // Group shop prices by entity for fast lookup
@@ -1017,5 +1083,8 @@ export async function exportFullDb(mode = 'live') {
     items,
     miningLocations: locsRes.rows.map((r) => r.data),
     miningElements: elsRes.rows.map((r) => r.data),
+    fpsItems: fpsItemsRes.rows.map((r) => r.data),
+    fpsGear:  fpsGearRes.rows.map((r) => r.data),
+    fpsArmor: fpsArmorRes.rows.map((r) => r.data),
   };
 }

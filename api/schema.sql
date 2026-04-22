@@ -38,6 +38,41 @@ CREATE TABLE IF NOT EXISTS items (
   PRIMARY KEY (class_name, mode)
 );
 
+-- FPS pipeline tables. Same shape as ships/items so the generic diff
+-- handlers can dispatch to them by table name. The three are promoted
+-- atomically in one transaction because their cross-references (armor
+-- port types drive weapon-slot eligibility, attachment mods reference
+-- weapon ports) would break if partially applied.
+CREATE TABLE IF NOT EXISTS fps_items (
+  class_name      TEXT NOT NULL,
+  mode            TEXT NOT NULL DEFAULT 'live',
+  data            JSONB NOT NULL,
+  source          TEXT NOT NULL DEFAULT 'extracted',
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (class_name, mode)
+);
+
+CREATE TABLE IF NOT EXISTS fps_gear (
+  class_name      TEXT NOT NULL,
+  mode            TEXT NOT NULL DEFAULT 'live',
+  data            JSONB NOT NULL,
+  source          TEXT NOT NULL DEFAULT 'extracted',
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (class_name, mode)
+);
+
+CREATE TABLE IF NOT EXISTS fps_armor (
+  class_name      TEXT NOT NULL,
+  mode            TEXT NOT NULL DEFAULT 'live',
+  data            JSONB NOT NULL,
+  source          TEXT NOT NULL DEFAULT 'extracted',
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (class_name, mode)
+);
+
 CREATE TABLE IF NOT EXISTS mining_locations (
   id              SERIAL PRIMARY KEY,
   data            JSONB NOT NULL
@@ -157,6 +192,15 @@ CREATE TABLE IF NOT EXISTS changelog_entries (
   price_added     JSONB NOT NULL DEFAULT '[]'::jsonb,
   price_removed   JSONB NOT NULL DEFAULT '[]'::jsonb,
   price_snapshot  JSONB,
+  -- FPS bundle snapshot (items + gear + armor) captured when a build-import
+  -- touched any of the FPS tables. Empty arrays / null when an import was
+  -- ship/item-only. Mirrors the ship/item_snapshot pattern.
+  fps_items_snapshot  JSONB,
+  fps_gear_snapshot   JSONB,
+  fps_armor_snapshot  JSONB,
+  fps_items_changes   JSONB NOT NULL DEFAULT '[]'::jsonb,
+  fps_gear_changes    JSONB NOT NULL DEFAULT '[]'::jsonb,
+  fps_armor_changes   JSONB NOT NULL DEFAULT '[]'::jsonb,
   notes           TEXT
 );
 CREATE INDEX IF NOT EXISTS changelog_entries_id_desc_idx ON changelog_entries (id DESC);

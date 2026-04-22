@@ -1,19 +1,26 @@
-// Diff review — upload a freshly-extracted versedb_data.json and pick
-// which changes to apply to the database. Curated edits are flagged
-// and default to "rejected" so re-extraction never silently clobbers
-// hand-curated values.
+// Diff review — upload a freshly-extracted build payload and pick which
+// changes to apply to the database. Curated rows default to "rejected"
+// so re-extraction never silently clobbers hand-curated values.
+//
+// Handles five streams through one component: ships + items (from
+// versedb_data.json) and the FPS triplet (fpsItems / fpsGear / fpsArmor
+// from versedb_fps*.json). All five commit atomically — the backend
+// wraps every stream's changes in a single Postgres transaction.
 
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AdminService,
+  DIFF_STREAMS,
   type DiffApply,
   type DiffEntity,
   type DiffResult,
+  type DiffStreamKind,
 } from '../admin.service';
 
 interface SelectionMap {
-  // entityKey "ship:className" → set of selected field names (or '*')
+  // entityKey "kind:className" → set of selected field names (or '*'),
+  // where kind is one of DIFF_STREAMS[].kind (ship / item / fpsItem / …).
   [entityKey: string]: Set<string>;
 }
 
@@ -26,6 +33,8 @@ interface SelectionMap {
 })
 export class DiffReviewComponent {
   private admin = inject(AdminService);
+
+  readonly streams = DIFF_STREAMS;
 
   // Upload state
   uploadedFileName = signal<string | null>(null);
@@ -40,7 +49,7 @@ export class DiffReviewComponent {
   // Filters
   filterAction = signal<'all' | 'create' | 'modify' | 'delete'>('all');
   filterSource = signal<'all' | 'extracted' | 'curated' | 'new'>('all');
-  filterEntityType = signal<'all' | 'ships' | 'items'>('all');
+  filterEntityType = signal<'all' | DiffStreamKind>('all');
   searchQuery = signal('');
 
   // Apply state
@@ -49,8 +58,35 @@ export class DiffReviewComponent {
 
   // ─── Derived ──────────────────────────────────────────────────────
 
-  visibleShipChanges = computed(() => this.applyFilters(this.diff()?.ships ?? []));
-  visibleItemChanges = computed(() => this.applyFilters(this.diff()?.items ?? []));
+  /** Per-stream visible change list. Keyed by stream.kind so the
+   *  template can pull the right list for each section in one lookup. */
+  visibleByStream = computed<Record<DiffStreamKind, DiffEntity[]>>(() => {
+    const d = this.diff();
+    const out: any = {};
+    for (const s of this.streams) {
+      out[s.kind] = this.applyFilters(s.kind, d ? (d as any)[s.payloadKey] ?? [] : []);
+    }
+    return out;
+  });
+
+  /** True when the current entity-type filter hides a stream. The template
+   *  uses this to skip rendering the section entirely when irrelevant. */
+  showStream(kind: DiffStreamKind): boolean {
+    const f = this.filterEntityType();
+    return f === 'all' || f === kind;
+  }
+
+  /** Per-stream change count from the stats blob. Server emits keys of
+   *  the form <payloadKey>Changes (e.g. fpsItemsChanges) from the loop,
+   *  plus legacy singular aliases shipChanges / itemChanges. */
+  countForStream(kind: DiffStreamKind): number {
+    const d = this.diff();
+    if (!d) return 0;
+    const stats = d.stats as Record<string, number | undefined>;
+    const stream = this.streams.find((s) => s.kind === kind);
+    if (!stream) return 0;
+    return stats[`${stream.payloadKey}Changes`] ?? 0;
+  }
 
   totalSelected = computed(() => {
     const sel = this.selection();
@@ -59,11 +95,20 @@ export class DiffReviewComponent {
     return n;
   });
 
-  private applyFilters(entities: DiffEntity[]): DiffEntity[] {
+  /** Total visible changes across every stream — drives the empty state. */
+  totalVisible = computed(() => {
+    const vs = this.visibleByStream();
+    let n = 0;
+    for (const s of this.streams) n += (vs as any)[s.kind].length;
+    return n;
+  });
+
+  private applyFilters(kind: DiffStreamKind, entities: DiffEntity[]): DiffEntity[] {
     const fa = this.filterAction();
     const fs = this.filterSource();
     const fe = this.filterEntityType();
     const q = this.searchQuery().toLowerCase().trim();
+    if (fe !== 'all' && fe !== kind) return [];
     return entities.filter((e) => {
       if (fa !== 'all' && e.action !== fa) return false;
       if (fs === 'curated' && e.currentSource !== 'curated') return false;
@@ -113,8 +158,11 @@ export class DiffReviewComponent {
       // Pre-select all non-curated modifications + creates by default.
       // Curated rows stay unselected so the admin has to opt in.
       const sel: SelectionMap = {};
-      for (const e of result.ships) this.preselect(sel, 'ship', e);
-      for (const e of result.items) this.preselect(sel, 'item', e);
+      for (const s of this.streams) {
+        for (const e of (result as any)[s.payloadKey] ?? []) {
+          this.preselect(sel, s.kind, e);
+        }
+      }
       this.selection.set(sel);
     } catch (err: any) {
       this.error.set(err?.error?.error || err?.message || 'Diff failed');
@@ -123,22 +171,22 @@ export class DiffReviewComponent {
     }
   }
 
-  private preselect(sel: SelectionMap, kind: 'ship' | 'item', e: DiffEntity): void {
+  private preselect(sel: SelectionMap, kind: DiffStreamKind, e: DiffEntity): void {
     if (e.currentSource === 'curated') return; // require explicit opt-in
-    if (e.action === 'delete') return; // require explicit opt-in
+    if (e.action === 'delete') return;         // require explicit opt-in
     const key = `${kind}:${e.className}`;
     sel[key] = new Set(e.action === 'create' ? ['*'] : e.changes.map((c) => c.field));
   }
 
   // ─── Selection handling ──────────────────────────────────────────
 
-  isFieldSelected(kind: 'ship' | 'item', className: string, field: string): boolean {
+  isFieldSelected(kind: DiffStreamKind, className: string, field: string): boolean {
     const sel = this.selection()[`${kind}:${className}`];
     if (!sel) return false;
     return sel.has(field) || sel.has('*');
   }
 
-  toggleField(kind: 'ship' | 'item', className: string, field: string): void {
+  toggleField(kind: DiffStreamKind, className: string, field: string): void {
     const key = `${kind}:${className}`;
     this.selection.update((sel) => {
       const next: SelectionMap = { ...sel };
@@ -151,13 +199,13 @@ export class DiffReviewComponent {
     });
   }
 
-  isEntitySelected(kind: 'ship' | 'item', className: string): 'all' | 'some' | 'none' {
+  isEntitySelected(kind: DiffStreamKind, className: string): 'all' | 'some' | 'none' {
     const sel = this.selection()[`${kind}:${className}`];
     if (!sel || sel.size === 0) return 'none';
-    return 'all'; // we don't distinguish partial here for the V1
+    return 'all'; // partial-selection distinction not exposed in v1
   }
 
-  toggleEntityAll(kind: 'ship' | 'item', e: DiffEntity): void {
+  toggleEntityAll(kind: DiffStreamKind, e: DiffEntity): void {
     const key = `${kind}:${e.className}`;
     const cur = this.selection()[key];
     const fields = e.action === 'create' || e.action === 'delete' ? ['*'] : e.changes.map((c) => c.field);
@@ -175,15 +223,13 @@ export class DiffReviewComponent {
   selectAllVisible(): void {
     this.selection.update((sel) => {
       const next: SelectionMap = { ...sel };
-      for (const e of this.visibleShipChanges()) {
-        next[`ship:${e.className}`] = new Set(
-          e.action === 'create' || e.action === 'delete' ? ['*'] : e.changes.map((c) => c.field)
-        );
-      }
-      for (const e of this.visibleItemChanges()) {
-        next[`item:${e.className}`] = new Set(
-          e.action === 'create' || e.action === 'delete' ? ['*'] : e.changes.map((c) => c.field)
-        );
+      const vs = this.visibleByStream();
+      for (const s of this.streams) {
+        for (const e of (vs as any)[s.kind]) {
+          next[`${s.kind}:${e.className}`] = new Set(
+            e.action === 'create' || e.action === 'delete' ? ['*'] : e.changes.map((c: any) => c.field)
+          );
+        }
       }
       return next;
     });
@@ -202,64 +248,34 @@ export class DiffReviewComponent {
     const nothingSelected = this.totalSelected() === 0;
 
     const confirmMsg = nothingSelected
-      ? 'No entity changes selected. Record this build in the changelog and update the version metadata without modifying any ships/items?'
+      ? 'No entity changes selected. Record this build in the changelog and update the version metadata without modifying any rows?'
       : `Apply ${this.totalSelected()} entity changes to the database?\n\n` +
+        'Every stream (ships, items, FPS triplet) commits atomically inside a single transaction. ' +
         'Modifications and creates are persisted directly. Deletes remove the row. ' +
         'Every change is recorded in the audit log.';
     const ok = window.confirm(confirmMsg);
     if (!ok) return;
 
-    const payload: {
-      ships: DiffApply[];
-      items: DiffApply[];
-      meta?: any;
-      fullShips?: any[];
-      fullItems?: any[];
-    } = { ships: [], items: [] };
-    // Always send the uploaded meta blob — extraction metadata (version,
-    // counts, etc.) has no curation review, so the API just overwrites it.
-    if (this.uploadedJson()?.meta) {
-      payload.meta = this.uploadedJson().meta;
-    }
-    // Send the full uploaded arrays so the API can record a complete
-    // changelog entry (independent of which fields the user selected).
-    if (Array.isArray(this.uploadedJson()?.ships)) {
-      payload.fullShips = this.uploadedJson().ships;
-    }
-    if (Array.isArray(this.uploadedJson()?.items)) {
-      payload.fullItems = this.uploadedJson().items;
-    }
+    // Build the payload by walking the stream registry. Each stream
+    // pulls its change list from the diff, maps to DiffApply shape,
+    // and attaches the full uploaded array under `full*` so the
+    // changelog recorder gets build-accurate totals.
+    const payload: any = {};
+    const uploaded = this.uploadedJson();
+    if (uploaded?.meta) payload.meta = uploaded.meta;
 
-    const buildChange = (kind: 'ship' | 'item', e: DiffEntity, uploadedItem: any): DiffApply | null => {
-      const fieldsSel = sel[`${kind}:${e.className}`];
-      if (!fieldsSel || fieldsSel.size === 0) return null;
-      if (e.action === 'create') {
-        return { className: e.className, action: 'create', data: uploadedItem };
+    for (const s of this.streams) {
+      const uploadedArr = (uploaded?.[s.payloadKey] ?? []) as any[];
+      const byCls = new Map(uploadedArr.map((x) => [x.className, x]));
+      const changes: DiffApply[] = [];
+      for (const e of (diff as any)[s.payloadKey] ?? []) {
+        const change = this.buildChange(s.kind, e, byCls.get(e.className), sel);
+        if (change) changes.push(change);
       }
-      if (e.action === 'delete') {
-        return { className: e.className, action: 'delete' };
+      payload[s.payloadKey] = changes;
+      if (Array.isArray(uploadedArr) && uploadedArr.length > 0) {
+        payload[s.fullKey] = uploadedArr;
       }
-      // modify
-      return {
-        className: e.className,
-        action: 'modify',
-        fields: fieldsSel.has('*') ? '*' : Array.from(fieldsSel),
-        data: uploadedItem,
-      };
-    };
-
-    const uploadedShips = (this.uploadedJson()?.ships ?? []) as any[];
-    const uploadedItems = (this.uploadedJson()?.items ?? []) as any[];
-    const shipsByCls = new Map(uploadedShips.map((s) => [s.className, s]));
-    const itemsByCls = new Map(uploadedItems.map((i) => [i.className, i]));
-
-    for (const e of diff.ships) {
-      const change = buildChange('ship', e, shipsByCls.get(e.className));
-      if (change) payload.ships.push(change);
-    }
-    for (const e of diff.items) {
-      const change = buildChange('item', e, itemsByCls.get(e.className));
-      if (change) payload.items.push(change);
     }
 
     this.applying.set(true);
@@ -267,8 +283,17 @@ export class DiffReviewComponent {
     this.applyResult.set(null);
     try {
       const result = await this.admin.applyDiff(payload);
+      const app = result.applied;
+      const parts: string[] = [];
+      if (app.ships)    parts.push(`${app.ships} ship${app.ships === 1 ? '' : 's'}`);
+      if (app.items)    parts.push(`${app.items} item${app.items === 1 ? '' : 's'}`);
+      if (app.fpsItems) parts.push(`${app.fpsItems} FPS item${app.fpsItems === 1 ? '' : 's'}`);
+      if (app.fpsGear)  parts.push(`${app.fpsGear} FPS gear`);
+      if (app.fpsArmor) parts.push(`${app.fpsArmor} FPS armor`);
       this.applyResult.set(
-        `Applied ${result.applied.ships} ship changes and ${result.applied.items} item changes. Reload the public site to see updates.`
+        parts.length > 0
+          ? `Applied: ${parts.join(', ')}. Reload the public site to see updates.`
+          : 'Build recorded with no entity changes.'
       );
       // Re-diff so the user sees the residual unselected changes
       await this.runDiff();
@@ -277,6 +302,23 @@ export class DiffReviewComponent {
     } finally {
       this.applying.set(false);
     }
+  }
+
+  private buildChange(kind: DiffStreamKind, e: DiffEntity, uploadedItem: any, sel: SelectionMap): DiffApply | null {
+    const fieldsSel = sel[`${kind}:${e.className}`];
+    if (!fieldsSel || fieldsSel.size === 0) return null;
+    if (e.action === 'create') {
+      return { className: e.className, action: 'create', data: uploadedItem };
+    }
+    if (e.action === 'delete') {
+      return { className: e.className, action: 'delete' };
+    }
+    return {
+      className: e.className,
+      action: 'modify',
+      fields: fieldsSel.has('*') ? '*' : Array.from(fieldsSel),
+      data: uploadedItem,
+    };
   }
 
   // ─── Display helpers ─────────────────────────────────────────────

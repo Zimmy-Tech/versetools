@@ -160,21 +160,35 @@ export class AdminService {
       .toPromise();
   }
 
-  /** Compute a diff between an uploaded versedb_data.json blob and the
-   *  current database (in the active admin mode). */
+  /** Compute a diff between an uploaded build payload and the current
+   *  database. Accepts ships/items (versedb_data.json shape) AND the
+   *  optional FPS triplet — ships-only and FPS-only uploads are both
+   *  valid. Streams not present in the upload aren't proposed for
+   *  deletes, so partial payloads are safe. */
   async previewDiff(uploaded: any): Promise<DiffResult> {
     const resp = await this.http
       .post<DiffResult>(this.withMode('/api/admin/diff/preview'), uploaded, {
         headers: this.authHeaders(),
       })
       .toPromise();
-    return resp ?? { ships: [], items: [], stats: { shipChanges: 0, itemChanges: 0 } };
+    return resp ?? {
+      ships: [], items: [], fpsItems: [], fpsGear: [], fpsArmor: [],
+      stats: { shipChanges: 0, itemChanges: 0 },
+    };
   }
 
-  /** Apply a set of selected changes from a diff preview. */
-  async applyDiff(payload: { ships: DiffApply[]; items: DiffApply[] }): Promise<{ applied: { ships: number; items: number } }> {
+  /** Apply selected changes from a diff preview. Every registered stream
+   *  (ships, items, fpsItems, fpsGear, fpsArmor) commits inside one
+   *  Postgres transaction — partial imports are impossible. */
+  async applyDiff(payload: {
+    ships?: DiffApply[]; items?: DiffApply[];
+    fpsItems?: DiffApply[]; fpsGear?: DiffApply[]; fpsArmor?: DiffApply[];
+    meta?: any;
+    fullShips?: any[]; fullItems?: any[];
+    fullFpsItems?: any[]; fullFpsGear?: any[]; fullFpsArmor?: any[];
+  }): Promise<{ applied: { ships: number; items: number; fpsItems?: number; fpsGear?: number; fpsArmor?: number; meta?: boolean; changelog?: any } }> {
     const resp = await this.http
-      .post<{ applied: { ships: number; items: number } }>(this.withMode('/api/admin/diff/apply'), payload, {
+      .post<{ applied: { ships: number; items: number; fpsItems?: number; fpsGear?: number; fpsArmor?: number; meta?: boolean; changelog?: any } }>(this.withMode('/api/admin/diff/apply'), payload, {
         headers: this.authHeaders(),
       })
       .toPromise();
@@ -319,8 +333,33 @@ export interface DiffEntity {
 export interface DiffResult {
   ships: DiffEntity[];
   items: DiffEntity[];
-  stats: { shipChanges: number; itemChanges: number };
+  // FPS streams are optional — the API returns empty arrays when the
+  // upload didn't include them, but every DiffResult carries the keys
+  // so consumers can iterate a stable shape.
+  fpsItems: DiffEntity[];
+  fpsGear: DiffEntity[];
+  fpsArmor: DiffEntity[];
+  stats: {
+    shipChanges: number;
+    itemChanges: number;
+    fpsItemsChanges?: number;
+    fpsGearChanges?: number;
+    fpsArmorChanges?: number;
+  };
 }
+
+/** Registry for the five diff streams — kept in one place so adding a
+ *  new stream is a single-entry append. `kind` is the selection-map
+ *  prefix ("ship:className", "fpsItem:className", …) and `payloadKey`
+ *  is the API array name on both the preview request and apply payload. */
+export const DIFF_STREAMS = [
+  { kind: 'ship',     payloadKey: 'ships',    fullKey: 'fullShips',    label: 'Ships' },
+  { kind: 'item',     payloadKey: 'items',    fullKey: 'fullItems',    label: 'Items' },
+  { kind: 'fpsItem',  payloadKey: 'fpsItems', fullKey: 'fullFpsItems', label: 'FPS Items' },
+  { kind: 'fpsGear',  payloadKey: 'fpsGear',  fullKey: 'fullFpsGear',  label: 'FPS Gear' },
+  { kind: 'fpsArmor', payloadKey: 'fpsArmor', fullKey: 'fullFpsArmor', label: 'FPS Armor' },
+] as const;
+export type DiffStreamKind = typeof DIFF_STREAMS[number]['kind'];
 
 export interface DiffApply {
   className: string;

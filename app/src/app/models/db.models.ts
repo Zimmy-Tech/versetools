@@ -318,6 +318,12 @@ export interface VerseDb {
   meta: DbMeta;
   ships: Ship[];
   items: Item[];
+  // FPS streams. Optional on the type because GitHub Pages preview
+  // loads versedb_data.json (no FPS bundle embedded) — consumers fall
+  // back to fetching versedb_fps*.json directly when these are absent.
+  fpsItems?: unknown[];
+  fpsGear?: unknown[];
+  fpsArmor?: unknown[];
 }
 
 /**

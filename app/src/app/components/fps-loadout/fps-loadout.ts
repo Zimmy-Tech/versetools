@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   QualitySimulatorComponent,
@@ -6,6 +6,7 @@ import {
   QualityEffect,
   BaseStats,
 } from '../quality-simulator/quality-simulator';
+import { DataService } from '../../services/data.service';
 
 interface Port {
   name: string;
@@ -229,28 +230,75 @@ export class FpsLoadoutComponent {
   pickerSlotKey = signal<string | null>(null);
   pickerSearch = signal('');
 
+  private data = inject(DataService);
+
   constructor(private http: HttpClient) {
-    this.http.get<{ armor: ArmorPiece[] }>('live/versedb_fps_armor.json').subscribe(d => {
-      this.armor.set(d.armor);
-      this.loaded.set(true);
-      // Seed defaults so the doll populates on first visit. User can
-      // clear via dropdown's "— none —" option.
-      const pickFirst = (slot: string, weight: string) =>
-        d.armor.find(a => a.slot === slot && a.weight === weight)?.className ?? null;
-      this.undersuitClass.set(pickFirst('undersuit', 'undersuit'));
-      this.coreClass.set(pickFirst('core', 'medium'));
-      this.legsClass.set(pickFirst('legs', 'medium'));
-      this.armsClass.set(pickFirst('arms', 'medium'));
-      this.backpackClass.set(pickFirst('backpack', 'medium'));
+    // DB-first path: read the FPS arrays off DataService's db() signal.
+    // Fires any time the mode toggles, so live/ptu switches rehydrate.
+    effect(() => {
+      const db = this.data.db();
+      const fpsArmor = db?.fpsArmor as ArmorPiece[] | undefined;
+      const fpsItems = db?.fpsItems as any[] | undefined;
+      const fpsGear  = db?.fpsGear  as FpsGearRaw[] | undefined;
+      // Require non-empty so a fresh DB (empty FPS tables before the
+      // first import) doesn't leave the loadout page stranded —
+      // static-JSON fallback still runs and populates the doll.
+      if (fpsArmor?.length && fpsItems?.length && fpsGear?.length) {
+        this.hydrateFromDb(fpsArmor, fpsItems, fpsGear);
+      }
     });
-    this.http.get<{ weapons: FpsWeaponRaw[]; magazines: FpsMagRaw[]; attachments?: FpsAttachRaw[] }>('live/versedb_fps.json').subscribe(d => {
-      this.weapons.set(d.weapons);
-      this.magazines.set(d.magazines ?? []);
-      this.attachments.set(d.attachments ?? []);
+    // JSON-first path (preview / GitHub Pages): no-op once DB has won
+    // but keeps the preview deployment populated without an API.
+    this.loadFromStaticJson();
+  }
+
+  private hydrateFromDb(fpsArmor: ArmorPiece[], fpsItems: any[], fpsGear: FpsGearRaw[]): void {
+    this.armor.set(fpsArmor);
+    this.seedArmorDefaults(fpsArmor);
+    this.weapons.set(fpsItems.filter((x) => x._kind === 'weapon') as FpsWeaponRaw[]);
+    this.magazines.set(fpsItems.filter((x) => x._kind === 'magazine') as FpsMagRaw[]);
+    this.attachments.set(fpsItems.filter((x) => x._kind === 'attachment') as FpsAttachRaw[]);
+    this.gear.set(fpsGear);
+    this.loaded.set(true);
+  }
+
+  private seedArmorDefaults(armor: ArmorPiece[]): void {
+    if (this.undersuitClass() !== null) return; // don't clobber a user pick
+    const pickFirst = (slot: string, weight: string) =>
+      armor.find(a => a.slot === slot && a.weight === weight)?.className ?? null;
+    this.undersuitClass.set(pickFirst('undersuit', 'undersuit'));
+    this.coreClass.set(pickFirst('core', 'medium'));
+    this.legsClass.set(pickFirst('legs', 'medium'));
+    this.armsClass.set(pickFirst('arms', 'medium'));
+    this.backpackClass.set(pickFirst('backpack', 'medium'));
+  }
+
+  private loadFromStaticJson(): void {
+    this.http.get<{ armor: ArmorPiece[] }>('live/versedb_fps_armor.json').subscribe({
+      next: d => {
+        if (this.loaded()) return; // DB path already won
+        this.armor.set(d.armor);
+        this.seedArmorDefaults(d.armor);
+        this.loaded.set(true);
+      },
     });
-    this.http.get<{ items: FpsGearRaw[] }>('live/versedb_fps_gear.json').subscribe(d => {
-      this.gear.set(d.items);
+    this.http.get<{ weapons: FpsWeaponRaw[]; magazines: FpsMagRaw[]; attachments?: FpsAttachRaw[] }>('live/versedb_fps.json').subscribe({
+      next: d => {
+        if (this.weapons().length > 0) return;
+        this.weapons.set(d.weapons);
+        this.magazines.set(d.magazines ?? []);
+        this.attachments.set(d.attachments ?? []);
+      },
     });
+    this.http.get<{ items: FpsGearRaw[] }>('live/versedb_fps_gear.json').subscribe({
+      next: d => {
+        if (this.gear().length > 0) return;
+        this.gear.set(d.items);
+      },
+    });
+    // Crafting recipes stay JSON-only for now — they're not part of the
+    // FPS DB promotion. A follow-up can move them once the schema
+    // stabilizes around the upcoming CIG crafting revamp.
     this.http.get<{ recipes: CraftingRecipe[] }>('live/versedb_crafting.json').subscribe(d => {
       this.recipes.set(d.recipes);
     });

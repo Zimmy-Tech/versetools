@@ -3,9 +3,11 @@
     <div>
       <h1>Diff &amp; Import Review</h1>
       <p class="subtitle">
-        Upload a freshly-extracted versedb_data.json and pick which changes to apply.
-        Curated rows default to <strong>unselected</strong> so re-extraction never silently
-        overwrites hand-curated data.
+        Upload a build payload — versedb_data.json for ships/items, or a
+        merged payload that also includes the FPS triplet. Curated rows
+        default to <strong>unselected</strong> so re-extraction never
+        silently overwrites hand-curated data. Every stream commits
+        atomically in one transaction.
       </p>
     </div>
   </div>
@@ -35,17 +37,18 @@
     <div class="success-banner">{{ applyResult() }}</div>
   }
 
-  @if (diff()) {
+  @if (diff(); as d) {
     <!-- Summary -->
     <div class="summary">
-      <div class="summary-stat">
-        <div class="stat-label">Ship changes</div>
-        <div class="stat-value">{{ diff()?.stats?.shipChanges }}</div>
-      </div>
-      <div class="summary-stat">
-        <div class="stat-label">Item changes</div>
-        <div class="stat-value">{{ diff()?.stats?.itemChanges }}</div>
-      </div>
+      @for (s of streams; track s.kind) {
+        @let count = countForStream(s.kind);
+        @if (count > 0) {
+          <div class="summary-stat">
+            <div class="stat-label">{{ s.label }}</div>
+            <div class="stat-value">{{ count }}</div>
+          </div>
+        }
+      }
       <div class="summary-stat selected">
         <div class="stat-label">Selected</div>
         <div class="stat-value">{{ totalSelected() }}</div>
@@ -61,9 +64,10 @@
         (ngModelChange)="searchQuery.set($event)"
       />
       <select [ngModel]="filterEntityType()" (ngModelChange)="filterEntityType.set($event)">
-        <option value="all">All entities</option>
-        <option value="ships">Ships only</option>
-        <option value="items">Items only</option>
+        <option value="all">All streams</option>
+        @for (s of streams; track s.kind) {
+          <option [value]="s.kind">{{ s.label }} only</option>
+        }
       </select>
       <select [ngModel]="filterAction()" (ngModelChange)="filterAction.set($event)">
         <option value="all">All actions</option>
@@ -81,97 +85,56 @@
       <button type="button" class="link-btn" (click)="clearAllSelection()">Clear selection</button>
     </div>
 
-    <!-- Ship changes -->
-    @if ((filterEntityType() === 'all' || filterEntityType() === 'ships') && visibleShipChanges().length > 0) {
-      <h2 class="group-header">Ships ({{ visibleShipChanges().length }})</h2>
-      <div class="entity-list">
-        @for (e of visibleShipChanges(); track e.className) {
-          <div class="entity-card" [class]="'action-' + e.action">
-            <div class="entity-header">
-              <input
-                type="checkbox"
-                [checked]="isEntitySelected('ship', e.className) === 'all'"
-                (change)="toggleEntityAll('ship', e)"
-              />
-              <span class="action-pill">{{ e.action }}</span>
-              @if (e.currentSource) {
-                <span class="source-pill" [class.curated]="e.currentSource === 'curated'">
-                  {{ e.currentSource }}
-                </span>
-              } @else {
-                <span class="source-pill new">new</span>
-              }
-              <span class="cls">{{ e.className }}</span>
-              <span class="change-count">{{ e.action === 'modify' ? e.changes.length + ' fields' : e.action }}</span>
-            </div>
-            @if (e.action === 'modify') {
-              <div class="changes">
-                @for (c of e.changes; track c.field) {
-                  <label class="change-row">
-                    <input
-                      type="checkbox"
-                      [checked]="isFieldSelected('ship', e.className, c.field)"
-                      (change)="toggleField('ship', e.className, c.field)"
-                    />
-                    <span class="field-name">{{ c.field }}</span>
-                    <span class="old">{{ formatValue(c.oldValue) }}</span>
-                    <span class="arrow">→</span>
-                    <span class="new">{{ formatValue(c.newValue) }}</span>
-                  </label>
+    <!-- One section per stream. Each renders the same card structure,
+         driven by the stream registry + visibleByStream lookup. -->
+    @for (s of streams; track s.kind) {
+      @let list = visibleByStream()[s.kind];
+      @if (showStream(s.kind) && list.length > 0) {
+        <h2 class="group-header">{{ s.label }} ({{ list.length }})</h2>
+        <div class="entity-list">
+          @for (e of list; track e.className) {
+            <div class="entity-card" [class]="'action-' + e.action">
+              <div class="entity-header">
+                <input
+                  type="checkbox"
+                  [checked]="isEntitySelected(s.kind, e.className) === 'all'"
+                  (change)="toggleEntityAll(s.kind, e)"
+                />
+                <span class="action-pill">{{ e.action }}</span>
+                @if (e.currentSource) {
+                  <span class="source-pill" [class.curated]="e.currentSource === 'curated'">
+                    {{ e.currentSource }}
+                  </span>
+                } @else {
+                  <span class="source-pill new">new</span>
                 }
+                <span class="cls">{{ e.className }}</span>
+                <span class="change-count">{{ e.action === 'modify' ? e.changes.length + ' fields' : e.action }}</span>
               </div>
-            }
-          </div>
-        }
-      </div>
+              @if (e.action === 'modify') {
+                <div class="changes">
+                  @for (c of e.changes; track c.field) {
+                    <label class="change-row">
+                      <input
+                        type="checkbox"
+                        [checked]="isFieldSelected(s.kind, e.className, c.field)"
+                        (change)="toggleField(s.kind, e.className, c.field)"
+                      />
+                      <span class="field-name">{{ c.field }}</span>
+                      <span class="old">{{ formatValue(c.oldValue) }}</span>
+                      <span class="arrow">→</span>
+                      <span class="new">{{ formatValue(c.newValue) }}</span>
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
     }
 
-    <!-- Item changes -->
-    @if ((filterEntityType() === 'all' || filterEntityType() === 'items') && visibleItemChanges().length > 0) {
-      <h2 class="group-header">Items ({{ visibleItemChanges().length }})</h2>
-      <div class="entity-list">
-        @for (e of visibleItemChanges(); track e.className) {
-          <div class="entity-card" [class]="'action-' + e.action">
-            <div class="entity-header">
-              <input
-                type="checkbox"
-                [checked]="isEntitySelected('item', e.className) === 'all'"
-                (change)="toggleEntityAll('item', e)"
-              />
-              <span class="action-pill">{{ e.action }}</span>
-              @if (e.currentSource) {
-                <span class="source-pill" [class.curated]="e.currentSource === 'curated'">
-                  {{ e.currentSource }}
-                </span>
-              } @else {
-                <span class="source-pill new">new</span>
-              }
-              <span class="cls">{{ e.className }}</span>
-              <span class="change-count">{{ e.action === 'modify' ? e.changes.length + ' fields' : e.action }}</span>
-            </div>
-            @if (e.action === 'modify') {
-              <div class="changes">
-                @for (c of e.changes; track c.field) {
-                  <label class="change-row">
-                    <input
-                      type="checkbox"
-                      [checked]="isFieldSelected('item', e.className, c.field)"
-                      (change)="toggleField('item', e.className, c.field)"
-                    />
-                    <span class="field-name">{{ c.field }}</span>
-                    <span class="old">{{ formatValue(c.oldValue) }}</span>
-                    <span class="arrow">→</span>
-                    <span class="new">{{ formatValue(c.newValue) }}</span>
-                  </label>
-                }
-              </div>
-            }
-          </div>
-        }
-      </div>
-    }
-
-    @if (visibleShipChanges().length === 0 && visibleItemChanges().length === 0) {
+    @if (totalVisible() === 0) {
       <div class="empty-result">No changes match the current filters.</div>
     }
 
