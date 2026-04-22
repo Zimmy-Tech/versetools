@@ -146,15 +146,17 @@ function anchorFor(portName: string, index: number): Anchor {
   // Sidearm: hip right.
   if (n === 'wep_sidearm')   return { x: 66, y: 58, label: 'HIP' };
 
-  // Grenades: chest row (stagger left → center → right).
+  // Grenades: chest row, centered three-slot cluster with a touch of
+  // breathing room so the slot boxes don't kiss at hover scale.
   if (n.startsWith('grenade_attach_')) {
-    const xs = [36, 50, 64];
+    const xs = [40, 50, 60];
     return { x: xs[index % xs.length], y: 30, label: 'GREN' };
   }
 
-  // Mag pouches: chest/belt row below grenades.
+  // Mag pouches: one wide belt row, 8 evenly spaced positions
+  // symmetric around x=50 (10-unit gaps, 15..85 range).
   if (n.startsWith('magazine_attach_')) {
-    const xs = [32, 42, 50, 58, 68, 30, 70, 38];
+    const xs = [15, 25, 35, 45, 55, 65, 75, 85];
     return { x: xs[index % xs.length], y: 42, label: 'MAG' };
   }
 
@@ -266,8 +268,8 @@ export class FpsLoadoutComponent {
     this.loaded.set(true);
   }
 
-  private seedArmorDefaults(armor: ArmorPiece[]): void {
-    if (this.undersuitClass() !== null) return; // don't clobber a user pick
+  private seedArmorDefaults(armor: ArmorPiece[], force = false): void {
+    if (!force && this.undersuitClass() !== null) return; // don't clobber user pick
     const pickFirst = (slot: string, weight: string) =>
       armor.find(a => a.slot === slot && a.weight === weight)?.className ?? null;
     this.undersuitClass.set(pickFirst('undersuit', 'undersuit'));
@@ -275,6 +277,27 @@ export class FpsLoadoutComponent {
     this.legsClass.set(pickFirst('legs', 'medium'));
     this.armsClass.set(pickFirst('arms', 'medium'));
     this.backpackClass.set(pickFirst('backpack', 'medium'));
+  }
+
+  /** Wipe the entire loadout back to the medium-tier armor defaults.
+   *  Clears every equipped item, every crafting override, and any
+   *  open picker/focus state. User gets a confirm prompt first since
+   *  this is destructive to in-flight work. */
+  resetToDefault(): void {
+    const ok = window.confirm(
+      'Reset the loadout?\n\n' +
+      'This clears every equipped weapon, magazine, attachment, grenade, ' +
+      'medpen, and utility item, plus any crafting quality rolls. Armor ' +
+      'reverts to the default medium set. This cannot be undone.'
+    );
+    if (!ok) return;
+    this.equipped.set({});
+    this.craftEffects.set({});
+    this.tier.set('medium');
+    this.seedArmorDefaults(this.armor(), true);
+    this.pickerSlotKey.set(null);
+    this.focusedSlotKey.set(null);
+    this.craftModalSlotKey.set(null);
   }
 
   private loadFromStaticJson(): void {

@@ -15,14 +15,38 @@
   width: 100%;
 }
 
-.loadout-header { text-align: center; }
+.loadout-header {
+  text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+
+  /* Cyan gradient underline — same "section-floor" accent used across
+     the ship loadout. Fades to transparent at the edges. */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%; bottom: 0;
+    transform: translateX(-50%);
+    width: min(520px, 80%);
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(0, 200, 255, 0.35) 50%,
+      transparent 100%);
+  }
+}
 .loadout-title {
   font-family: 'Rajdhani', sans-serif;
   font-size: 22px; font-weight: 700; letter-spacing: 4px;
   text-transform: uppercase; color: var(--accent);
-  text-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
+  text-shadow: 0 0 12px rgba(0, 200, 255, 0.25);
 }
-.loadout-sub { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text3); }
+.loadout-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px; color: var(--text3);
+  margin-top: 4px;
+}
 
 .loadout-body {
   display: flex;
@@ -34,13 +58,32 @@
 
 .picker {
   display: flex; flex-direction: column; gap: 12px;
-  background: var(--bg2);
+  /* Tri-stop gradient: slightly lighter at top for a raised-surface
+     read. Matches the ship-loadout sidebar. */
+  background: linear-gradient(180deg,
+    rgba(28, 38, 52, 0.82) 0%,
+    rgba(20, 28, 40, 0.72) 50%,
+    rgba(15, 21, 30, 0.72) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
   padding: 14px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.35);
   width: 320px;
   flex: 0 0 320px;
+  position: relative;
+
+  /* Cyan top-right corner tick — matches .stat-block accent. */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 24px; height: 1px;
+    background: linear-gradient(270deg, rgba(0, 200, 255, 0.3), transparent);
+  }
 }
 
 .picker-group {
@@ -52,12 +95,21 @@
   }
   select {
     font-family: 'Exo 2', sans-serif; font-size: 13px;
-    background: var(--bg3);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Recessed-well: darker than its container, inset top shadow. */
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     color: var(--text); padding: 6px 10px; border-radius: 4px;
     outline: none;
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.35),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.03);
     option { background: var(--bg3); color: var(--text); }
-    &:focus { border-color: var(--accent2); }
+    &:focus {
+      border-color: rgba(0, 200, 255, 0.4);
+      box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.35),
+        0 0 6px rgba(0, 200, 255, 0.2);
+    }
   }
 }
 
@@ -65,44 +117,141 @@
   display: flex; gap: 4px;
   button {
     flex: 1;
-    background: var(--bg3);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Raised bevel: lighter at top, inset highlight + inset shadow. */
+    background: linear-gradient(180deg, rgba(40, 52, 68, 0.82) 0%, rgba(24, 32, 44, 0.82) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     color: var(--text3);
     font-family: 'Rajdhani', sans-serif;
     font-size: 12px; font-weight: 700; letter-spacing: 1px;
     text-transform: uppercase;
     padding: 6px 8px; border-radius: 4px;
     cursor: pointer; transition: all 0.15s;
-    &:hover { color: var(--text); }
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+      0 1px 2px rgba(0, 0, 0, 0.18);
+    &:hover {
+      color: var(--text);
+      border-color: rgba(0, 200, 255, 0.2);
+      background: linear-gradient(180deg, rgba(48, 62, 80, 0.9) 0%, rgba(28, 38, 50, 0.9) 100%);
+    }
     &.active {
+      /* Pressed-in: inset dark top shadow instead of raised bevel. */
       color: var(--accent);
-      border-color: rgba(0, 200, 255, 0.3);
-      box-shadow: 0 0 8px rgba(0, 200, 255, 0.15);
+      border-color: rgba(0, 200, 255, 0.35);
+      background: linear-gradient(180deg, rgba(0, 30, 45, 0.85) 0%, rgba(0, 22, 36, 0.85) 100%);
+      box-shadow:
+        inset 0 2px 3px rgba(0, 0, 0, 0.45),
+        inset 0 -1px 0 rgba(0, 200, 255, 0.12),
+        0 0 8px rgba(0, 200, 255, 0.2);
+      text-shadow: 0 0 6px rgba(0, 200, 255, 0.3);
     }
   }
 }
 
 .summary {
-  margin-top: 8px; padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 4px;
+  padding: 10px 12px;
+  /* Recessed well — matches .stat-block on the ship sidebar. */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.18);
   font-family: 'Share Tech Mono', monospace; font-size: 12px;
   display: flex; flex-direction: column; gap: 4px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 20px; height: 1px;
+    background: linear-gradient(270deg, rgba(0, 200, 255, 0.25), transparent);
+  }
+
   .summary-row {
     display: flex; justify-content: space-between;
     color: var(--text2);
-    span:last-child { color: var(--accent); }
+    span:last-child { color: var(--accent); font-weight: 700; }
+  }
+}
+
+/* Reset-loadout: subtle muted button at the bottom of the picker
+   sidebar. Hover flips to red to signal "this wipes your work."
+   Matches the 3D bevel language used for other buttons. */
+.reset-loadout-btn {
+  margin-top: 6px;
+  padding: 8px 10px;
+  width: 100%;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: linear-gradient(180deg, rgba(38, 48, 62, 0.75) 0%, rgba(22, 30, 42, 0.75) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s, transform 0.12s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    color: rgb(255, 150, 140);
+    border-color: rgba(255, 120, 120, 0.4);
+    background: linear-gradient(180deg, rgba(52, 30, 36, 0.85) 0%, rgba(32, 18, 22, 0.85) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 150, 140, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 2px 6px rgba(0, 0, 0, 0.28),
+      0 0 10px rgba(255, 120, 120, 0.18);
+    transform: translateY(-0.5px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.4),
+      inset 0 -1px 0 rgba(255, 120, 120, 0.15);
   }
 }
 
 .encumbrance {
-  margin-top: 10px;
+  margin-top: 4px;
   padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  background: rgba(13, 17, 23, 0.5);
+  /* Recessed well, same shape as .summary so they read as a cluster. */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 4px rgba(0, 0, 0, 0.18);
+  position: relative;
+  overflow: hidden;
   font-family: 'Share Tech Mono', monospace;
   font-size: 12px;
   display: flex; flex-direction: column; gap: 4px;
+
+  /* Scanline texture — subtle readout/CRT vibe. Layered under content. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 4px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  > * { position: relative; z-index: 1; }
 
   --enc-accent: var(--accent);
 
@@ -181,20 +330,46 @@
 
 .sidecar {
   display: flex; flex-direction: column; gap: 4px;
-  background: var(--bg2);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  /* Raised card — same tri-stop + inset-bevel recipe as .picker. */
+  background: linear-gradient(180deg,
+    rgba(28, 38, 52, 0.78) 0%,
+    rgba(20, 28, 40, 0.68) 50%,
+    rgba(15, 21, 30, 0.68) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 6px;
-  padding: 10px 12px;
+  padding: 32px 12px 10px;  /* top pad clears the hanging-tab header */
   width: 100%;
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 6px rgba(0, 0, 0, 0.22),
+    0 6px 18px rgba(0, 0, 0, 0.28);
 }
 
 .sidecar-title {
+  /* Hanging-tab treatment: cyan gradient with clip-path notch,
+     sitting ABOVE the sidecar card so it reads as a folder tab. */
+  position: absolute;
+  top: 0; left: 10px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--text3);
-  margin-bottom: 4px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(6, 24, 33, 0.92);
+  background: linear-gradient(180deg,
+    rgba(0, 220, 255, 0.95) 0%,
+    rgba(0, 180, 230, 0.88) 100%);
+  padding: 4px 18px 4px 10px;
+  border-radius: 2px 0 0 0;
+  margin-bottom: 0;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  box-shadow:
+    0 2px 6px rgba(0, 200, 255, 0.18),
+    0 1px 0 rgba(0, 100, 130, 0.4);
+  /* Force grayscale AA so dark-on-cyan small text stays crisp through
+     the clip-path compositing layer. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .sidecar-row {
@@ -202,20 +377,50 @@
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
-  background: rgba(13, 17, 23, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Raised micro-button bevel: slightly lighter at top. */
+  background: linear-gradient(180deg, rgba(26, 34, 46, 0.85) 0%, rgba(14, 20, 28, 0.85) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 3px;
   color: var(--text);
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   text-align: left;
   cursor: pointer;
-  &:hover { background: rgba(0, 200, 255, 0.06); border-color: rgba(0, 200, 255, 0.3); }
-  &.slot-filled { background: rgba(0, 40, 60, 0.8); font-weight: 600; }
+  transition: all 0.15s, transform 0.12s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.18);
+
+  &:hover {
+    border-color: rgba(0, 200, 255, 0.28);
+    background: linear-gradient(180deg, rgba(32, 44, 60, 0.92) 0%, rgba(18, 26, 36, 0.92) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+      0 2px 6px rgba(0, 0, 0, 0.28),
+      0 0 8px rgba(0, 200, 255, 0.12);
+    transform: translateY(-0.5px);
+  }
+
+  /* Filled slot: pressed-in look, cyan accent rim. */
+  &.slot-filled {
+    background: linear-gradient(180deg, rgba(0, 32, 48, 0.85) 0%, rgba(0, 22, 36, 0.85) 100%);
+    border-color: rgba(0, 200, 255, 0.28);
+    font-weight: 600;
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.4),
+      inset 0 -1px 0 rgba(0, 200, 255, 0.12),
+      0 0 6px rgba(0, 200, 255, 0.12);
+  }
+
   &.slot-focused {
-    outline: 2px solid var(--accent);
+    outline: 1px solid var(--accent);
     outline-offset: -1px;
-    box-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
+    border-color: rgba(0, 200, 255, 0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.12),
+      0 0 14px rgba(0, 200, 255, 0.35);
   }
 }
 
@@ -239,18 +444,62 @@
 
 .doll {
   position: relative;
-  background: linear-gradient(180deg, rgba(0, 200, 255, 0.03), rgba(0, 0, 0, 0.2));
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(0, 200, 255, 0.05) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(0, 30, 45, 0.6) 0%, rgba(0, 0, 0, 0.45) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.15);
   border-radius: 6px;
   width: 520px;
   flex: 0 0 520px;
   height: 720px;
   overflow: hidden;
+  /* Deep inset shadow = "looking into a screen" vibe. Outer drop
+     shadow keeps the doll floating off the background. */
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.6),
+    inset 0 0 40px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(0, 200, 255, 0.08),
+    0 4px 20px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(0, 200, 255, 0.06);
+
+  /* CRT scanlines over the body outline — establishes the screen
+     metaphor without obscuring slot labels. Sits above the SVG
+     body-outline (z-index:0) but below .slot (z-index:2) so the
+     slot buttons stay crisp. */
+  &::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.018) 3px,
+      rgba(255, 255, 255, 0.018) 5px);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* MFD corner ticks — tiny cyan L-brackets in each corner. */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px;
+    width: 10px; height: 10px;
+    border-top: 1px solid rgba(0, 200, 255, 0.45);
+    border-left: 1px solid rgba(0, 200, 255, 0.45);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* Body-outline SVG sits at the bottom of the stack — scanlines paint
+     over it for the CRT feel. */
+  .body-outline { z-index: 0; }
 }
 
 .doll-empty {
   position: absolute;
   inset: 0;
+  z-index: 2;           /* above scanline overlay */
   display: flex; align-items: center; justify-content: center;
   color: var(--text3);
   font-family: 'Share Tech Mono', monospace;
@@ -270,6 +519,7 @@
 .slot {
   position: absolute;
   transform: translate(-50%, -50%);
+  z-index: 2;           /* above scanline (z:1) + body-outline (z:0) */
   min-width: 44px; max-width: 140px;
   padding: 3px 6px;
   border-radius: 3px;
@@ -278,17 +528,48 @@
   line-height: 1.1;
   text-align: center;
   color: var(--text);
-  background: rgba(13, 17, 23, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Raised micro-button with inset bevel. */
+  background: linear-gradient(180deg, rgba(28, 38, 52, 0.88) 0%, rgba(14, 20, 28, 0.88) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis;
   user-select: none;
-  &:hover { transform: translate(-50%, -50%) scale(1.1); z-index: 5; }
-  &.slot-filled { background: rgba(0, 40, 60, 0.9); font-weight: 600; }
+  transition: transform 0.12s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 1px 3px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    z-index: 5;
+    border-color: rgba(0, 200, 255, 0.4);
+    background: linear-gradient(180deg, rgba(34, 46, 62, 0.95) 0%, rgba(18, 26, 36, 0.95) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+      0 2px 8px rgba(0, 0, 0, 0.35),
+      0 0 10px rgba(0, 200, 255, 0.2);
+  }
+
+  /* Filled = pressed-in look. */
+  &.slot-filled {
+    background: linear-gradient(180deg, rgba(0, 36, 54, 0.95) 0%, rgba(0, 22, 36, 0.95) 100%);
+    font-weight: 600;
+    border-color: rgba(0, 200, 255, 0.35);
+    box-shadow:
+      inset 0 2px 3px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 0 rgba(0, 200, 255, 0.15),
+      0 0 6px rgba(0, 200, 255, 0.15);
+  }
+
   &.slot-focused {
-    outline: 2px solid var(--accent);
-    box-shadow: 0 0 14px rgba(0, 200, 255, 0.5);
+    outline: 1px solid var(--accent);
+    outline-offset: 1px;
+    box-shadow:
+      inset 0 1px 0 rgba(0, 200, 255, 0.15),
+      0 0 16px rgba(0, 200, 255, 0.5);
     z-index: 6;
   }
 }
@@ -639,15 +920,30 @@ button.picker-row {
 .dps-panel {
   width: 100%;
   max-width: 1460px;
+  position: relative;
+  padding-top: 26px;   /* leave room for hanging-tab title */
 }
 
 .dps-panel-title {
+  /* Hanging tab at the top-left of the DPS cluster — same vocabulary
+     as ship loadout section tabs (cyan gradient + bottom-right notch). */
+  position: absolute;
+  top: 0; left: 4px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 14px; font-weight: 700; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--accent);
-  text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
-  margin-bottom: 10px;
-  text-align: center;
+  font-size: 12px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(6, 24, 33, 0.92);
+  background: linear-gradient(180deg,
+    rgba(0, 220, 255, 0.95) 0%,
+    rgba(0, 180, 230, 0.88) 100%);
+  padding: 5px 22px 5px 12px;
+  border-radius: 2px 0 0 0;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  box-shadow:
+    0 2px 8px rgba(0, 200, 255, 0.2),
+    0 1px 0 rgba(0, 100, 130, 0.4);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .dps-cards {
@@ -658,20 +954,59 @@ button.picker-row {
 }
 
 .dps-card {
-  background: linear-gradient(180deg, var(--bg2) 0%, rgba(13, 17, 23, 0.95) 100%);
-  border: 1px solid rgba(0, 200, 255, 0.25);
+  background: linear-gradient(180deg,
+    rgba(28, 38, 52, 0.85) 0%,
+    rgba(18, 24, 32, 0.92) 50%,
+    rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.22);
   border-radius: 6px;
   padding: 16px 18px 14px;
   display: flex; flex-direction: column; gap: 14px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 200, 255, 0.05);
   position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 3px 10px rgba(0, 0, 0, 0.3),
+    0 0 24px rgba(0, 200, 255, 0.06);
+
+  /* MFD corner brackets — two 1px cyan L-shapes sitting at the top
+     corners of the card. Same language as the ship DPS panel's
+     section titles. */
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    width: 14px; height: 14px;
+    border-top: 1px solid rgba(0, 200, 255, 0.5);
+    pointer-events: none;
+    z-index: 2;
+  }
+  &::before  { left: 6px;  border-left:  1px solid rgba(0, 200, 255, 0.5); }
+  &::after   { right: 6px; border-right: 1px solid rgba(0, 200, 255, 0.5); }
 
   &.dps-card-empty {
     border-color: rgba(255, 255, 255, 0.06);
     box-shadow: none;
-    opacity: 0.65;
+    opacity: 0.55;
+    &::before, &::after { opacity: 0.3; }
   }
 }
+
+/* Scanline overlay inside each card. Keeps DPS numbers + columns above
+   it via z-index. Sits under content so text stays crisp. */
+.dps-card > .dps-card-scanlines {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 255, 255, 0.018) 3px,
+    rgba(255, 255, 255, 0.018) 5px);
+  pointer-events: none;
+  z-index: 0;
+}
+.dps-card > *:not(.dps-card-scanlines) { position: relative; z-index: 1; }
 
 /* Head: centred block at the top, CRAFT button tucked in the corner. */
 .dps-card-head {

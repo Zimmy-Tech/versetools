@@ -12,6 +12,7 @@
       <div class="dps-cards">
         @for (card of dpsCards(); track card.key) {
           <div class="dps-card" [class.dps-card-empty]="!card.stats">
+            <div class="dps-card-scanlines" aria-hidden="true"></div>
             <div class="dps-card-head">
               <span class="dps-slot-label">{{ card.label }}</span>
               @if (card.weapon) {
@@ -185,6 +186,12 @@
             ⓘ velocity validated · sprint endurance: heart-rate-tied, TBD
           </div>
         </div>
+
+        <button type="button" class="reset-loadout-btn"
+                (click)="resetToDefault()"
+                title="Clear every equipped item and revert armor to the default medium set.">
+          Reset Loadout
+        </button>
       </aside>
 
       <section class="doll-wrap">
@@ -245,33 +252,6 @@
         </div>
         </div>
 
-        <div class="legend">
-          <span class="chip chip-undersuit">Undersuit</span>
-          <span class="chip chip-core">Core</span>
-          <span class="chip chip-legs">Legs</span>
-          <span class="chip chip-arms">Arms</span>
-          <span class="chip chip-backpack">Backpack</span>
-        </div>
-
-        <details class="port-dump">
-          <summary>Raw port list ({{ slots().length }})</summary>
-          <table class="port-table">
-            <thead>
-              <tr><th>Source</th><th>Port</th><th>Size</th><th>Types</th><th>Tag</th></tr>
-            </thead>
-            <tbody>
-              @for (s of slots(); track s.key) {
-                <tr>
-                  <td>{{ s.source }}</td>
-                  <td>{{ s.port.name }}</td>
-                  <td>{{ s.port.minSize === s.port.maxSize ? 'S' + s.port.minSize : 'S' + s.port.minSize + '-' + s.port.maxSize }}</td>
-                  <td>{{ s.port.types.join(', ') || '—' }}</td>
-                  <td>{{ s.port.selectTag || '—' }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </details>
       </section>
     </div>
   }
