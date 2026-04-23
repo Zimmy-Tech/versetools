@@ -224,6 +224,12 @@
 
           @if (sm.blueprintRewards?.length) {
             <div class="popout-section">
+              <button type="button" class="bp-to-missions-btn"
+                      (click)="openPoolInMissions(sm.blueprintRewards, $event)"
+                      title="Open the Missions page with this blueprint pool pre-filtered">
+                <span class="bp-to-missions-icon">→</span>
+                Apply this filter to Contracts
+              </button>
               <div class="popout-section-title">Blueprint Rewards</div>
               <ul class="bp-reward-list">
                 @for (bp of sm.blueprintRewards; track bp) {

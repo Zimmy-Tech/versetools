@@ -344,6 +344,18 @@ export class BlueprintFinderComponent {
     this.router.navigate(['/crafting']);
   }
 
+  /** Deep-link to /missions with this mission's blueprint-reward pool
+   *  pre-selected as the active filter. The pool key matches the one
+   *  the missions view computes (`bpPoolKey`): sorted blueprint names
+   *  joined by `|`. Missions view reads ?pool= on init. */
+  openPoolInMissions(blueprintRewards: string[] | undefined, e: Event): void {
+    e.stopPropagation();
+    const bps = blueprintRewards ?? [];
+    if (!bps.length) return;
+    const poolKey = [...bps].sort().join('|');
+    this.router.navigate(['/missions'], { queryParams: { pool: poolKey } });
+  }
+
   constructor(private http: HttpClient, private data: DataService, private router: Router) {
     // DB-first (prod), JSON fallback (preview).
     effect(() => {

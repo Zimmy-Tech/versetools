@@ -710,12 +710,23 @@ export class MissionsViewComponent {
     // Accept deep-links from the Rep Builder: `?faction=<scope>&rank=<name>`
     // pre-selects the filter pair. Any other filters (search, category, …)
     // stay clear so the narrowed list really reflects the deep-link.
+    // Also accepts `?pool=<sortedBpKey>` from the Blueprint Finder popout.
     this.route.queryParamMap.subscribe(params => {
       const f = params.get('faction');
       const r = params.get('rank');
       if (f) {
         this.factionFilter.set(f);
         this.rankFilter.set(r ?? '');
+        this.resetPage();
+      }
+      const pool = params.get('pool');
+      if (pool) {
+        this.blueprintPoolFilter.set(pool);
+        // Event-gated contracts are hidden by default — if the pool
+        // belongs to an event (e.g. NMP2 Aves), the filter would
+        // silently return zero missions. Flip the dropdown to
+        // "All events + main" so the pool's missions actually surface.
+        this.eventFilter.set('__all__');
         this.resetPage();
       }
     });
