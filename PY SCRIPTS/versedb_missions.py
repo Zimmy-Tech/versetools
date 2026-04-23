@@ -1335,6 +1335,20 @@ def main():
                 title_loc_key = title_m.group(1).lstrip("@").lower() if title_m else ""
                 desc = loc_lookup(loc, desc_m.group(1)) if desc_m else ""
 
+                # Contractor string-param: some contracts live under a generic
+                # generator (e.g. unaffiliated_generator) but carry a real
+                # contractor tag in their ContractStringParam block. Without
+                # this, the prefix-based fallback mis-labels them as
+                # contractor-less (e.g. Bit Zeros' "Easy Pickings" ShipHeist
+                # contracts in Unaffiliated_ShipHeist_List).
+                contractor_sp = None
+                contractor_m = re.search(r'param="Contractor"\s+value="([^"]+)"', body)
+                if contractor_m:
+                    val = contractor_m.group(1).lstrip("@")
+                    resolved = loc.get(val.lower(), "")
+                    if resolved:
+                        contractor_sp = resolved
+
                 # Try debug-name-based localization lookup (strip suffixes like -Stanton4)
                 if not title:
                     base_name = debug_name.split("-")[0] if "-" in debug_name else debug_name
@@ -1600,8 +1614,15 @@ def main():
                         if info.get("enabled") is not None:
                             entry["eventActive"] = bool(info["enabled"])
 
-                # Resolve contractor early so scope display can use it
-                contractor = _resolve_contractor(debug_name, loc) or _resolve_contractor(gen_name, loc) or ""
+                # Resolve contractor early so scope display can use it.
+                # ContractStringParam ("@BitZeros_from" → "Bit Zeros") wins
+                # over the className/generator prefix fallback — some contracts
+                # live under generic generators (unaffiliated_generator, etc.)
+                # and only the string-param tells us their real contractor.
+                contractor = (contractor_sp
+                              or _resolve_contractor(debug_name, loc)
+                              or _resolve_contractor(gen_name, loc)
+                              or "")
                 if contractor:
                     entry["contractor"] = contractor
                 if result_scopes:
@@ -1968,6 +1989,27 @@ def main():
                     break
 
         m["title"] = title
+
+    # ── Resolve procedurally-generated contract titles (EARLY pass) ──
+    # Must run BEFORE the second-pass dedup below — BitZeros / Hockrow /
+    # DeadSaints BlackBoxRecovery + RecoverItem variants all share the
+    # placeholder title "<contractor-name>" after the [Contractor]
+    # replacement above. Without per-variant resolution, the dedup_key
+    # (which keys on title) collapses every difficulty tier into one
+    # row and silently drops the rest (e.g. Bit Zeros' VeryEasy
+    # "Pick Up, Put Down" was vanishing). Resolving here gives each
+    # variant a distinct title so they survive dedup.
+    for m in missions + contracts:
+        t, d = resolve_procedural_narrative(m.get("className", ""), loc)
+        title = m.get("title", "") or ""
+        desc = m.get("description", "") or ""
+        needs_title = (title == m.get("contractor", "") or
+                       title.startswith("~mission(") or not title)
+        needs_desc = (desc.startswith("~mission(")
+                      or desc.startswith("[Contractor")
+                      or not desc)
+        if t and needs_title: m["title"] = t
+        if d and needs_desc:  m["description"] = d
 
     # ── Contractor sign-off substitution in descriptions ─────────────
     # Replace ~mission(Contractor|SignOff) with the first sign-off text

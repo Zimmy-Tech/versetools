@@ -1,7 +1,158 @@
 {
   "meta": {
-    "generatedAt": "2026-04-23T12:00:00+00:00",
-    "entries": 0
+    "generatedAt": "2026-04-23T14:31:54.304582+00:00",
+    "entries": 1
   },
-  "changelog": []
+  "changelog": [
+    {
+      "fromVersion": "4.7.2-live.11674325",
+      "toVersion": "4.7.2-live.11674325",
+      "date": "2026-04-23",
+      "changes": [
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Easy",
+          "name": "Getting To the Bottom of It"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Hard",
+          "name": "Legendary Info?"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Intro",
+          "name": "Data Transfer"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Medium",
+          "name": "Too Smart For Our Own Good"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Super",
+          "name": "Bad at Goodbyes"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_VeryHard",
+          "name": "Our Version of The Truth"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Easy",
+          "name": "Getting To the Bottom of It"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Hard",
+          "name": "Legendary Info?"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Intro",
+          "name": "Data Transfer"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Medium",
+          "name": "Too Smart For Our Own Good"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Super",
+          "name": "Bad at Goodbyes"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_VeryHard",
+          "name": "Our Version of The Truth"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Nyx_MicroSatellite_1Box",
+          "name": "Bleeding Edge Tech"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Stanton_MicroSatellite_1Box",
+          "name": "Bleeding Edge Tech"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_EliminateAll_FrontierFighters",
+          "name": "cfp_EliminateAllFF_Title_001"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Nyx_Maze_1Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Intro",
+          "name": "Dead Saints"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Intro",
+          "name": "Dead Saints"
+        },
+        {
+          "category": "mission",
+          "className": "LawlessSalvage_Clovus",
+          "name": "In the Wake of Disaster"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_FoodOrder",
+          "name": "Very Hungry"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_Intro",
+          "name": "Wikelo Arrive to System"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_Vehicle_Polaris",
+          "name": "Now make Polaris. Short Time Deal."
+        },
+        {
+          "category": "mission",
+          "className": "UnafilliatedHH_Pyro_RegionA_E_1AsteroidBase_Criminals_ShipHeist",
+          "name": "Easy Pickings"
+        },
+        {
+          "category": "mission",
+          "className": "UnafilliatedHH_Pyro_RegionA_H_3AsteroidBase_XenoThreat_ShipHeist",
+          "name": "XenoThreat = GoodLoot"
+        },
+        {
+          "category": "mission",
+          "className": "UnafilliatedHH_Pyro_RegionA_M_2steroidBase_Criminals_ShipHeist",
+          "name": "Goods for the Getting"
+        },
+        {
+          "category": "mission_refs",
+          "className": "missionRefs",
+          "name": "Mission reference data"
+        }
+      ],
+      "added": [
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_VeryEasy",
+          "name": "Pick Up, Put Down"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_VeryEasy",
+          "name": "Pick Up, Put Down"
+        }
+      ],
+      "removed": []
+    }
+  ]
 }
