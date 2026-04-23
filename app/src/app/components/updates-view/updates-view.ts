@@ -22,6 +22,67 @@ interface UpdateEntry {
 export class UpdatesViewComponent {
   readonly updates: UpdateEntry[] = [
     {
+      version: '1.1',
+      date: '2026-04-23',
+      highlights: [
+        'FPS Loadout Builder — full character loadout with weapons, armor, attachments, mags, grenades, and crafting-quality simulator',
+        'Nyx Mission Pack 2 support — all 294 NMP2 contracts surface via a new opt-in event toggle with per-event checkboxes',
+        'Site-wide UI refresh — unified sidecar filters, hanging-tab section headers, 3D panel aesthetic across every data page',
+      ],
+      features: [],
+      sections: [
+        { title: 'FPS Loadout Builder (Early Alpha)', items: [
+          'Full FPS character loadout: armor (helmet/core/arms/legs/undersuit), primary + secondary weapons, grenades, medical, mining, utility gadgets',
+          'Paperdoll view with slot indicators and live tier/quality readouts',
+          'Columnar attachment pickers for barrels, optics, underbarrels, and magazines — sortable by DPS / alpha / RPM / range / power',
+          'Crafting-quality simulator shared with the ship-component pipeline — interpolates stats based on the crafting tier (T1–T5)',
+          'Reset-to-default button and individual slot clearing',
+        ]},
+        { title: 'Missions & Events', items: [
+          'Event Missions toggle — "Include Event Missions" collapsible panel lets you opt specific event scenarios (NMP2, FFFinale, Luminalia, etc.) back into the main results',
+          'Per-event checkboxes with "All / None" bulk controls; selected events surface on the active-filters chip bar so you can see and clear inclusions at a glance',
+          'Nyx Mission Pack 2 content fully indexed — 23 bombing-run contracts (Headhunters + Foxwell Enforcement), 12 Aves-armor reward missions, 294 total NMP2 contracts',
+          'Blueprint Pool grid picker — replaces the pool dropdown with a modal grid where every pool renders as a card showing all its blueprint names; search highlights matching items in green across any pool',
+          'Mission dedup fidelity fix — previously-collapsed className variants (29 Shubin station mining-rights, 2 HaulCargo variants) now each have unique rows, restoring ~30 missions of prod coverage',
+        ]},
+        { title: 'Blueprint Finder Enhancements', items: [
+          'Deep-link from mission popout to /missions — "Apply this filter to Contracts" button jumps straight from "what mission drops Aves armor?" to every mission that shares the same reward pool',
+          'Shareable pool URLs: /missions?pool=<key> preserves the filter for bookmarking or linking',
+        ]},
+        { title: 'Ship Tools Refresh', items: [
+          'Compare view polished: slot triggers as 3D raised cards with per-slot color accents, recessed-well comparison table, radar chart promoted to raised panel with hanging cyan tab',
+          'Rankings view: sidecar filters (Rotation / Acceleration / Ship Size button grids with pressed-in cyan active state), raised-bevel header strip, recessed list container',
+          'Flight Profile panel: raised-card radar box, 3D ship pickers with glowing slot-color bars, ship stats cards with slot-color accent + glow text',
+          'QT Range: 3D class/grade buttons (Military / Civilian / Stealth / Competition / Industrial), unified column alignment, plain-text class labels',
+          'Ship Explorer + component DB pages: sortable columns across every data table site-wide',
+        ]},
+        { title: 'UI/UX Refresh', items: [
+          'Unified sidecar pattern — every data page gains a raised-card filter sidebar with hanging cyan tab (Blueprint Finder, Crafting, Mining, Mining Signatures, Missions, QT Range, FPS Weapons/Armor/Items, Contracts)',
+          '3D bevel vocabulary: raised panel cards with inset highlights, recessed-well inputs, pressed-in active states, MFD-style chamfered tab corners',
+          'Hanging-tab section headers across Loadout, DPS panel, Mission popout, and every filter sidebar — consistent identity signal for panel titles',
+          'Centered data in comparison tables with more readable Exo 2 typography',
+          'Terser event pills on mission cards — dropped the "Dormant:" prefix since the toggle handles activation state',
+        ]},
+        { title: 'Data Pipeline & Changelog', items: [
+          'FPS + Missions DB promotion — fps_items, fps_gear, fps_armor, and missions tables with atomic diff/import through the admin review UI',
+          'className dedup in the missions extractor — colliding keys get a stable per-variant hash suffix so the (class_name, mode) PK stops dropping variants',
+          'New merged-vs-previous-merged changelog — one script covers every stream (ships / items / FPS triplet / missions / missionRefs / meta). Captures same-version reships (like the 4.7.2 NMP2 activation) that the old version-gated flow silently skipped',
+          'Changelog is hand-editable static JSON — existing entries survive across runs, prune manually when it gets long',
+        ]},
+        { title: 'FPS Weapons & Gear', items: [
+          'Universal sortable DB tables — click any column header to sort ascending/descending on Weapons, Gear, Armor, and Items pages',
+          'FPS Items DB: dropped the broken Categories dropdown in favor of per-tab browsing; Melee/Throwable tab combines both; Mining tab surfaces hand-carried gadgets (Stalwart, BoreMax, WaveShift, Sabir, etc.)',
+          'Curated alpha damage values for Fresnel, Parallax, and Quartz beam weapons while the beam-DPS extractor fix is parked post-4.8',
+          'Recoil column additions + StarBreaker inline XML extractor compatibility',
+        ]},
+        { title: 'Other', items: [
+          'Build version bumped to 4.7.2-live.11674325 to match the launcher display after CIG live-ops activated NMP2 server-side',
+          'Rep Builder deep-links into Missions with faction + rank filters pre-applied',
+          'Mobile-friendly event toggles and grid pickers — single-column layout at narrow viewports',
+        ]},
+      ],
+    },
+    {
       version: '1.0',
       date: '2026-03-27',
       highlights: [
