@@ -213,14 +213,12 @@
 
         @if (blueprintPools().length) {
           <h4>Blueprint Pool</h4>
-          <select class="mv-select" [value]="blueprintPoolFilter()"
-                  (change)="blueprintPoolFilter.set($any($event.target).value); resetPage()"
+          <button type="button" class="mv-picker-trigger bp-pool-trigger"
+                  (click)="openBpPicker()"
                   title="Filter to missions that share a blueprint reward pool">
-            <option value="">All pools</option>
-            @for (pool of blueprintPools(); track pool.key) {
-              <option [value]="pool.key">{{ pool.label }}</option>
-            }
-          </select>
+            <span class="mv-picker-val">{{ currentBpPoolLabel() }}</span>
+            <span class="mv-picker-caret">▾</span>
+          </button>
         }
 
         <h4>Special</h4>
@@ -767,5 +765,58 @@
       </div>
     }
 
+  }
+
+  <!-- Blueprint Pool grid picker (modal). Shows every qualifying pool
+       as a card listing all its blueprints, so users can find a pool by
+       any member name — the old dropdown only surfaced the alphabetically
+       first blueprint, which hid pools like the Aves armor set behind
+       "Arrowhead Sniper Rifle +11". -->
+  @if (bpPickerOpen()) {
+    <div class="bp-picker-backdrop" (click)="closeBpPicker()">
+      <div class="bp-picker-modal" (click)="$event.stopPropagation()">
+        <div class="bp-picker-header">
+          <span class="bp-picker-title">Blueprint Pools</span>
+          <input class="bp-picker-search" type="text"
+                 placeholder="Search any blueprint or pool…"
+                 [value]="bpPickerSearch()"
+                 (input)="bpPickerSearch.set($any($event.target).value)"
+                 autofocus />
+          <button type="button" class="bp-picker-close"
+                  (click)="closeBpPicker()" title="Close (Esc)">×</button>
+        </div>
+
+        <div class="bp-picker-grid">
+          <button type="button" class="bp-pool-card bp-pool-card-all"
+                  [class.selected]="blueprintPoolFilter() === ''"
+                  (click)="pickBpPool('')">
+            <div class="bp-pool-card-header">
+              <span class="bp-pool-card-name">All Pools</span>
+            </div>
+            <div class="bp-pool-card-sub">Clear filter — show missions from every pool</div>
+          </button>
+
+          @for (pool of filteredBpPools(); track pool.key) {
+            <button type="button" class="bp-pool-card"
+                    [class.selected]="blueprintPoolFilter() === pool.key"
+                    (click)="pickBpPool(pool.key)">
+              <div class="bp-pool-card-header">
+                <span class="bp-pool-card-count">{{ pool.missionCount }} missions</span>
+                <span class="bp-pool-card-bp-count">{{ pool.bpCount }} items</span>
+              </div>
+              <div class="bp-pool-card-items">
+                @for (bp of pool.blueprints; track bp) {
+                  <span class="bp-chip" [class.match]="bpChipMatches(bp)">{{ bp }}</span>
+                }
+              </div>
+            </button>
+          }
+
+          @if (!filteredBpPools().length) {
+            <div class="bp-picker-empty">No pools match "{{ bpPickerSearch() }}"</div>
+          }
+        </div>
+      </div>
+    </div>
   }
 </div>

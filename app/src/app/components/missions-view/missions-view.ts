@@ -266,8 +266,10 @@ export class MissionsViewComponent {
 
   /** Distinct pools that are shared by 2+ missions. Single-mission pools
    *  exist but have no filtering value in a list that shows them already.
-   *  Sorted by mission count desc, then first-blueprint asc. */
-  readonly blueprintPools = computed<{ key: string; label: string; missionCount: number; bpCount: number }[]>(() => {
+   *  Sorted by mission count desc, then first-blueprint asc.
+   *  `blueprints` carries the full sorted list — consumed by the grid
+   *  picker so users can scan all pool contents at a glance. */
+  readonly blueprintPools = computed<{ key: string; label: string; missionCount: number; bpCount: number; blueprints: string[] }[]>(() => {
     const groups = new Map<string, { missions: number; blueprints: string[] }>();
     for (const m of this.allMissions()) {
       const key = this.bpPoolKey(m);
@@ -276,7 +278,7 @@ export class MissionsViewComponent {
       if (g) g.missions++;
       else groups.set(key, { missions: 1, blueprints: [...(m.blueprintRewards ?? [])].sort() });
     }
-    const result: { key: string; label: string; missionCount: number; bpCount: number }[] = [];
+    const result: { key: string; label: string; missionCount: number; bpCount: number; blueprints: string[] }[] = [];
     for (const [key, g] of groups) {
       if (g.missions < 2) continue; // only shared pools in the dropdown
       const first = g.blueprints[0] ?? '';
@@ -284,11 +286,53 @@ export class MissionsViewComponent {
       const label = extra > 0
         ? `${first} +${extra} (${g.missions})`
         : `${first} (${g.missions})`;
-      result.push({ key, label, missionCount: g.missions, bpCount: g.blueprints.length });
+      result.push({ key, label, missionCount: g.missions, bpCount: g.blueprints.length, blueprints: g.blueprints });
     }
     result.sort((a, b) => b.missionCount - a.missionCount || a.label.localeCompare(b.label));
     return result;
   });
+
+  /** Grid-picker state for the Blueprint Pool filter. Modal-style UI
+   *  that renders every pool as a card with all its blueprints visible,
+   *  so users can find pools by any member name (the old dropdown only
+   *  showed the alphabetically-first blueprint). */
+  bpPickerOpen = signal(false);
+  bpPickerSearch = signal('');
+
+  openBpPicker(): void { this.bpPickerOpen.set(true); this.bpPickerSearch.set(''); }
+  closeBpPicker(): void { this.bpPickerOpen.set(false); }
+  pickBpPool(key: string): void {
+    this.blueprintPoolFilter.set(key);
+    this.closeBpPicker();
+    this.resetPage();
+  }
+
+  /** Pools filtered by the search query — matches pool label OR any
+   *  blueprint name in the pool. Empty query returns all pools. */
+  readonly filteredBpPools = computed(() => {
+    const q = this.bpPickerSearch().trim().toLowerCase();
+    const all = this.blueprintPools();
+    if (!q) return all;
+    return all.filter(p =>
+      p.label.toLowerCase().includes(q) ||
+      p.blueprints.some(bp => bp.toLowerCase().includes(q))
+    );
+  });
+
+  /** Label shown on the closed trigger button for the current selection. */
+  readonly currentBpPoolLabel = computed(() => {
+    const k = this.blueprintPoolFilter();
+    if (!k) return 'All pools';
+    const match = this.blueprintPools().find(p => p.key === k);
+    return match ? match.label : 'All pools';
+  });
+
+  /** Case-insensitive substring check used by the card chips to highlight
+   *  blueprints that match the current picker search. */
+  bpChipMatches(bp: string): boolean {
+    const q = this.bpPickerSearch().trim().toLowerCase();
+    return q.length > 0 && bp.toLowerCase().includes(q);
+  }
 
   /** Mission count for the active pool filter — used to gate the "filter
    *  by this pool" button in the expanded detail so it only appears when
