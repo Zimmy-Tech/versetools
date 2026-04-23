@@ -35,11 +35,19 @@ interface ChangelogData {
   changelog: ChangelogEntry[];
 }
 
-const CATEGORY_ORDER = ['ship', 'weapon', 'shield', 'powerplant', 'cooler', 'quantumdrive', 'radar', 'missile', 'missilelauncher', 'tractor'];
+const CATEGORY_ORDER = [
+  'ship', 'weapon', 'shield', 'powerplant', 'cooler', 'quantumdrive',
+  'radar', 'missile', 'missilelauncher', 'tractor',
+  'fps_weapon', 'fps_magazine', 'fps_attachment', 'fps_gear', 'fps_armor',
+  'mission', 'mission_refs',
+];
 const CATEGORY_LABELS: Record<string, string> = {
   ship: 'Ships', weapon: 'Weapons', shield: 'Shields', powerplant: 'Power Plants',
   cooler: 'Coolers', quantumdrive: 'Quantum Drives', radar: 'Radar',
   missile: 'Missiles', missilelauncher: 'Missile Racks', tractor: 'Tractor Beams',
+  fps_weapon: 'FPS Weapons', fps_magazine: 'FPS Magazines',
+  fps_attachment: 'FPS Attachments', fps_gear: 'FPS Gear', fps_armor: 'FPS Armor',
+  mission: 'Missions', mission_refs: 'Mission Reference Data',
 };
 
 interface ChangelogEntryDisplay extends ChangelogEntry {

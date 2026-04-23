@@ -33,6 +33,7 @@ Usage:
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 _parser = argparse.ArgumentParser(description="Merge extractor outputs for admin diff/import")
@@ -117,6 +118,17 @@ def main() -> None:
     }
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    # Snapshot the previous merged file as the changelog baseline BEFORE
+    # we overwrite it. diff_merged.py reads this sibling to compute the
+    # stream-wide delta after the new merged is written. Only snapshotted
+    # when writing to the canonical location (the --out override is
+    # treated as a side-channel and doesn't affect changelog state).
+    is_canonical_out = (OUT_FILE == (_PUB / "versedb_merged.json"))
+    if is_canonical_out and OUT_FILE.exists():
+        import shutil
+        shutil.copy2(OUT_FILE, _PUB / "versedb_merged_prev.json")
+
     with open(OUT_FILE, "w") as f:
         json.dump(out, f, indent=2)
 
@@ -133,6 +145,18 @@ def main() -> None:
           f"({len(mission_refs)} ref categories)")
     print()
     print(f"Wrote {OUT_FILE}")
+
+    # Generate the changelog entry (diff current merged vs previous
+    # snapshot). Skipped silently for non-canonical --out overrides,
+    # since those are typically dry-runs or one-off exports.
+    if is_canonical_out:
+        import subprocess
+        print()
+        subprocess.run(
+            [sys.executable, str(_BASE / "PY SCRIPTS" / "diff_merged.py"),
+             "--target", _args.target],
+            check=False,
+        )
 
 
 if __name__ == "__main__":
