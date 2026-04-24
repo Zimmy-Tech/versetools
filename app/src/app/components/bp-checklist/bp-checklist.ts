@@ -159,6 +159,219 @@ export class BpChecklistComponent {
     return q.length > 0 && bp.toLowerCase().includes(q);
   }
 
+  // ── Export ────────────────────────────────────────────────────────
+  // Two formats: Markdown (best for Discord / forum sharing — renders
+  // as a live checklist with pool headers) and CSV (best for
+  // spreadsheet tracking). Both are generated entirely client-side
+  // from current state; nothing leaves the browser unless the user
+  // saves the downloaded file.
+  exportMenuOpen = signal(false);
+
+  toggleExportMenu(): void { this.exportMenuOpen.set(!this.exportMenuOpen()); }
+
+  private todayStr(): string {
+    const d = new Date();
+    const p = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  }
+
+  private poolLabel(p: PoolGroup): string {
+    const first = p.blueprints[0];
+    const extra = p.blueprints.length - 1;
+    return extra > 0 ? `${first} +${extra}` : first;
+  }
+
+  private triggerDownload(filename: string, content: string, mime: string): void {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    this.exportMenuOpen.set(false);
+  }
+
+  exportMarkdown(): void {
+    const o = this.owned();
+    const lines: string[] = [];
+    lines.push('# VerseTools Blueprint Checklist');
+    lines.push(`Generated: ${this.todayStr()}`);
+    lines.push(`Progress: ${this.totalOwned()} / ${this.totalAll()} (${this.percentOwned()}%)`);
+    lines.push('');
+    for (const p of this.pools()) {
+      const n = this.ownedInPool(p);
+      lines.push(`## ${this.poolLabel(p)}  (${n} / ${p.blueprints.length} acquired)`);
+      for (const bp of p.blueprints) {
+        lines.push(`- [${o.has(bp) ? 'x' : ' '}] ${bp}`);
+      }
+      lines.push('');
+    }
+    this.triggerDownload(
+      `versetools-blueprint-checklist-${this.todayStr()}.md`,
+      lines.join('\n'),
+      'text/markdown'
+    );
+  }
+
+  exportCsv(): void {
+    const o = this.owned();
+    const esc = (s: string) => `"${s.replace(/"/g, '""')}"`;
+    const lines: string[] = ['Pool,Blueprint,Acquired'];
+    for (const p of this.pools()) {
+      const label = this.poolLabel(p);
+      for (const bp of p.blueprints) {
+        lines.push(`${esc(label)},${esc(bp)},${o.has(bp) ? 'Yes' : 'No'}`);
+      }
+    }
+    this.triggerDownload(
+      `versetools-blueprint-checklist-${this.todayStr()}.csv`,
+      lines.join('\n'),
+      'text/csv'
+    );
+  }
+
+  // ── Import ────────────────────────────────────────────────────────
+  // Safety posture: whitelist-filtered against allBlueprints() so only
+  // names the current data knows about are ever applied. Anything else
+  // is silently discarded — makes the import surface effectively
+  // tamper-proof (malicious content can't become state because the
+  // matcher won't let it). 500 KB size cap prevents storage-quota
+  // griefing. Preview modal shows exactly what will change before
+  // anything touches localStorage.
+  private readonly MAX_IMPORT_SIZE = 500 * 1024; // 500 KB
+
+  /** Parsed-and-filtered staging area. The preview counts derive from
+   *  this + current mode, so flipping Replace/Merge updates live. */
+  importStaged = signal<{ checked: Set<string>; unmatched: number; filename: string } | null>(null);
+  importMergeMode = signal<'replace' | 'merge'>('replace');
+
+  readonly importPreview = computed(() => {
+    const staged = this.importStaged();
+    if (!staged) return null;
+    const current = this.owned();
+    const mode = this.importMergeMode();
+    const incoming = staged.checked;
+    const added = [...incoming].filter(bp => !current.has(bp)).sort();
+    const removed = mode === 'replace'
+      ? [...current].filter(bp => !incoming.has(bp)).sort()
+      : [];
+    return { added, removed, unmatched: staged.unmatched, filename: staged.filename };
+  });
+
+  onImportFile(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    if (file.size > this.MAX_IMPORT_SIZE) {
+      alert(`File too large (${Math.round(file.size / 1024)} KB). Max is ${Math.round(this.MAX_IMPORT_SIZE / 1024)} KB.`);
+      input.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = typeof reader.result === 'string' ? reader.result : '';
+      this.stageImport(text, file.name);
+      input.value = ''; // allow re-import of same file
+    };
+    reader.onerror = () => {
+      alert('Failed to read file.');
+      input.value = '';
+    };
+    reader.readAsText(file);
+  }
+
+  private stageImport(text: string, filename: string): void {
+    const isCsv = /\.csv$/i.test(filename);
+    const parsed = isCsv ? this.parseCsvChecked(text) : this.parseMarkdownChecked(text);
+    const known = new Set(this.allBlueprints());
+    const valid = new Set(parsed.filter(bp => known.has(bp)));
+    const unmatched = parsed.length - valid.size;
+    this.importStaged.set({ checked: valid, unmatched, filename });
+  }
+
+  applyImport(): void {
+    const preview = this.importPreview();
+    if (!preview) return;
+    const next = new Set(this.owned());
+    for (const bp of preview.added) next.add(bp);
+    for (const bp of preview.removed) next.delete(bp);
+    this.owned.set(next);
+    this.writeStorage(next);
+    this.importStaged.set(null);
+  }
+
+  cancelImport(): void { this.importStaged.set(null); }
+
+  setMergeMode(mode: 'replace' | 'merge'): void { this.importMergeMode.set(mode); }
+
+  /** Pull `- [x] Name` lines out of a Markdown file. Unchecked rows
+   *  (`- [ ]`) are intentionally ignored — only names marked acquired
+   *  are returned. */
+  private parseMarkdownChecked(text: string): string[] {
+    const out: string[] = [];
+    const re = /^\s*-\s*\[([xX\s])\]\s+(.+?)\s*$/gm;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(text)) !== null) {
+      const checked = m[1].toLowerCase() === 'x';
+      const name = m[2].trim();
+      if (checked && name) out.push(name);
+    }
+    return out;
+  }
+
+  /** Parse a CSV with columns including `Blueprint` and `Acquired`
+   *  (case-insensitive). Acquired accepts Yes/Y/True/1/X as checked,
+   *  everything else as unchecked. Column order doesn't matter. */
+  private parseCsvChecked(text: string): string[] {
+    const rows = this.csvRows(text);
+    if (rows.length < 2) return [];
+    const header = rows[0].map(h => h.toLowerCase().trim());
+    const bpIdx = header.indexOf('blueprint');
+    const acqIdx = header.indexOf('acquired');
+    if (bpIdx < 0 || acqIdx < 0) return [];
+    const truthy = new Set(['yes', 'y', 'true', '1', 'x']);
+    const out: string[] = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      const name = (r[bpIdx] ?? '').trim();
+      const acq = (r[acqIdx] ?? '').toLowerCase().trim();
+      if (truthy.has(acq) && name) out.push(name);
+    }
+    return out;
+  }
+
+  /** Minimal CSV row splitter handling double-quoted fields with `""`
+   *  escape. Not a full RFC 4180 parser, but covers what Excel /
+   *  Sheets / our own exporter emit. */
+  private csvRows(text: string): string[][] {
+    const rows: string[][] = [];
+    let row: string[] = [];
+    let field = '';
+    let inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { field += '"'; i++; }
+          else inQuotes = false;
+        } else {
+          field += c;
+        }
+      } else {
+        if (c === '"') inQuotes = true;
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\n') { row.push(field); field = ''; rows.push(row); row = []; }
+        else if (c === '\r') { /* skip CR */ }
+        else field += c;
+      }
+    }
+    if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+    return rows;
+  }
+
   // ── localStorage plumbing ─────────────────────────────────────────
   private readStorage(): ReadonlySet<string> {
     try {

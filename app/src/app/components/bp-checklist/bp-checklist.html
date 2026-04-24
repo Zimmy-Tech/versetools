@@ -24,6 +24,35 @@
              placeholder="Search any blueprint or pool…"
              [value]="searchQuery()"
              (input)="searchQuery.set($any($event.target).value)" />
+
+      <!-- Export dropdown (Markdown / CSV) -->
+      <div class="bpc-io-group">
+        <button type="button" class="bpc-io-btn" (click)="toggleExportMenu()"
+                title="Download your checklist as a file">
+          Export <span class="bpc-io-caret">{{ exportMenuOpen() ? '▾' : '▸' }}</span>
+        </button>
+        @if (exportMenuOpen()) {
+          <div class="bpc-io-menu" (click)="$event.stopPropagation()">
+            <button type="button" class="bpc-io-opt" (click)="exportMarkdown()">
+              <span class="bpc-io-opt-name">Markdown</span>
+              <span class="bpc-io-opt-hint">Best for Discord / forum sharing</span>
+            </button>
+            <button type="button" class="bpc-io-opt" (click)="exportCsv()">
+              <span class="bpc-io-opt-name">CSV</span>
+              <span class="bpc-io-opt-hint">Best for spreadsheet tracking</span>
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- Import: file picker hidden behind styled label -->
+      <label class="bpc-io-btn bpc-io-import"
+             title="Load a previously exported checklist (Markdown or CSV)">
+        Import…
+        <input type="file" accept=".md,.markdown,.csv,.txt" hidden
+               (change)="onImportFile($event)" />
+      </label>
+
       <button type="button" class="bpc-clear" (click)="clearAll()"
               [disabled]="totalOwned() === 0"
               title="Reset every checkbox">Clear All</button>
@@ -78,6 +107,69 @@
           </div>
         </div>
       }
+    </div>
+  }
+
+  <!-- Import preview — shown after parsing a file, before anything
+       touches localStorage. Always whitelist-filtered, so unknown
+       names are reported in the 'ignored' count rather than applied. -->
+  @if (importPreview(); as p) {
+    <div class="bpc-import-overlay" (click)="cancelImport()">
+      <div class="bpc-import-modal" (click)="$event.stopPropagation()">
+        <div class="bpc-import-header">
+          <span class="bpc-import-title">Preview Import</span>
+          <span class="bpc-import-filename">{{ p.filename }}</span>
+        </div>
+
+        <div class="bpc-import-body">
+          <div class="bpc-import-stats">
+            <div class="bpc-import-stat bpc-add">
+              <span class="bpc-import-count">+{{ p.added.length }}</span>
+              <span class="bpc-import-label">to check</span>
+            </div>
+            <div class="bpc-import-stat bpc-remove">
+              <span class="bpc-import-count">−{{ p.removed.length }}</span>
+              <span class="bpc-import-label">to uncheck</span>
+            </div>
+            @if (p.unmatched > 0) {
+              <div class="bpc-import-stat bpc-ignore">
+                <span class="bpc-import-count">{{ p.unmatched }}</span>
+                <span class="bpc-import-label">ignored (unknown blueprint)</span>
+              </div>
+            }
+          </div>
+
+          <div class="bpc-import-mode">
+            <label class="bpc-mode-row" [class.selected]="importMergeMode() === 'replace'">
+              <input type="radio" name="bpc-merge"
+                     [checked]="importMergeMode() === 'replace'"
+                     (change)="setMergeMode('replace')" />
+              <div class="bpc-mode-text">
+                <span class="bpc-mode-name">Replace</span>
+                <span class="bpc-mode-hint">Your current checks are replaced with the file's state. Blueprints not in the file become unchecked.</span>
+              </div>
+            </label>
+            <label class="bpc-mode-row" [class.selected]="importMergeMode() === 'merge'">
+              <input type="radio" name="bpc-merge"
+                     [checked]="importMergeMode() === 'merge'"
+                     (change)="setMergeMode('merge')" />
+              <div class="bpc-mode-text">
+                <span class="bpc-mode-name">Merge</span>
+                <span class="bpc-mode-hint">Add the file's checks to your current state. Nothing gets unchecked.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="bpc-import-actions">
+          <button type="button" class="bpc-io-btn" (click)="cancelImport()">Cancel</button>
+          <button type="button" class="bpc-io-btn bpc-apply"
+                  (click)="applyImport()"
+                  [disabled]="p.added.length === 0 && p.removed.length === 0">
+            Apply
+          </button>
+        </div>
+      </div>
     </div>
   }
 
