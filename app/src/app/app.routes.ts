@@ -23,6 +23,7 @@ import { FpsArmorComponent } from './components/fps-armor/fps-armor';
 import { FpsTtkComponent } from './components/fps-ttk/fps-ttk';
 import { FpsItemsComponent } from './components/fps-items/fps-items';
 import { FpsLoadoutComponent } from './components/fps-loadout/fps-loadout';
+import { BpChecklistComponent } from './components/bp-checklist/bp-checklist';
 import { EveStyleComponent } from './components/eve-style/eve-style';
 import { AltLayoutComponent } from './components/alt-layout/alt-layout';
 import {
@@ -47,6 +48,7 @@ export const routes: Routes = [
   { path: 'fps-ttk',            component: FpsTtkComponent },
   { path: 'fps-items',          component: FpsItemsComponent },
   { path: 'fps-loadout',        component: FpsLoadoutComponent },
+  { path: 'bp-checklist',       component: BpChecklistComponent },
   { path: 'compare',            component: CompareViewComponent },
   { path: 'finder',             component: ComponentFinderComponent },
   { path: 'cart',               component: CartViewComponent },

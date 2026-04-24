@@ -1,0 +1,84 @@
+<div class="bpc-shell">
+
+  <!-- Explainer + top-level progress + controls -->
+  <div class="bpc-header">
+    <div class="bpc-title-row">
+      <h2 class="bpc-title">Blueprint Checklist</h2>
+      <div class="bpc-progress">
+        <span class="bpc-progress-count">{{ totalOwned() }} / {{ totalAll() }}</span>
+        <span class="bpc-progress-pct">{{ percentOwned() }}%</span>
+      </div>
+    </div>
+
+    <p class="bpc-note">
+      Track the crafting blueprints you've acquired in-game. Check off each
+      blueprint as you unlock it and the checklist will remember — even
+      after a refresh or browser restart. Your progress is saved locally
+      to this browser (no account needed), so it won't sync across
+      devices. Pools and blueprints update automatically when new
+      missions ship in a game patch.
+    </p>
+
+    <div class="bpc-controls">
+      <input class="bpc-search" type="text"
+             placeholder="Search any blueprint or pool…"
+             [value]="searchQuery()"
+             (input)="searchQuery.set($any($event.target).value)" />
+      <button type="button" class="bpc-clear" (click)="clearAll()"
+              [disabled]="totalOwned() === 0"
+              title="Reset every checkbox">Clear All</button>
+    </div>
+  </div>
+
+  <!-- Pool grid -->
+  @if (!loaded()) {
+    <div class="bpc-empty">Loading blueprint data…</div>
+  } @else if (filteredPools().length === 0) {
+    <div class="bpc-empty">
+      @if (searchQuery()) {
+        No pools match "{{ searchQuery() }}"
+      } @else {
+        No blueprint pools found in the current data.
+      }
+    </div>
+  } @else {
+    <div class="bpc-grid">
+      @for (pool of filteredPools(); track pool.key) {
+        <div class="bpc-pool-card"
+             [class.complete]="ownedInPool(pool) === pool.blueprints.length">
+          <div class="bpc-pool-header">
+            <div class="bpc-pool-progress">
+              <span class="bpc-pool-owned">{{ ownedInPool(pool) }}</span>
+              <span class="bpc-pool-sep">/</span>
+              <span class="bpc-pool-total">{{ pool.blueprints.length }}</span>
+              <span class="bpc-pool-label">acquired</span>
+            </div>
+            <div class="bpc-pool-bulk">
+              <button type="button" class="bpc-pool-bulk-btn"
+                      (click)="setPoolOwned(pool, true)"
+                      [disabled]="ownedInPool(pool) === pool.blueprints.length"
+                      title="Check every blueprint in this pool">All</button>
+              <button type="button" class="bpc-pool-bulk-btn"
+                      (click)="setPoolOwned(pool, false)"
+                      [disabled]="ownedInPool(pool) === 0"
+                      title="Uncheck every blueprint in this pool">None</button>
+            </div>
+          </div>
+          <div class="bpc-pool-items">
+            @for (bp of pool.blueprints; track bp) {
+              <label class="bpc-bp-row"
+                     [class.owned]="owned().has(bp)"
+                     [class.match]="bpMatches(bp)">
+                <input type="checkbox"
+                       [checked]="owned().has(bp)"
+                       (change)="toggleOwned(bp)" />
+                <span class="bpc-bp-name">{{ bp }}</span>
+              </label>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

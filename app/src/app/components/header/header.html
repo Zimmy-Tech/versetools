@@ -75,6 +75,10 @@
         </div>
       }
     </div>
+    <!-- Blueprint Checklist — flat tab between FPS Gear and Submit Data -->
+    <button class="nav-tab" [class.active]="isTabActive('bpChecklist')"
+            (click)="navigateTo('bpChecklist')">BP Checklist</button>
+
     <!-- Remaining flat tabs -->
     @for (tab of ['submit', 'formulas', 'updates', 'changelog']; track tab) {
       <button class="nav-tab" [class.active]="isTabActive(tab)"
@@ -149,6 +153,7 @@
     @for (tab of fpsGearTabs; track tab.id) {
       <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
     }
+    <button class="mobile-nav-item" [class.active]="isTabActive('bpChecklist')" (click)="navigateTo('bpChecklist')">BP Checklist</button>
     <div class="mobile-nav-title">MORE</div>
     <button class="mobile-nav-item" [class.active]="isTabActive('submit')" (click)="navigateTo('submit')">Submit Data</button>
     <button class="mobile-nav-item" [class.active]="isTabActive('formulas')" (click)="navigateTo('formulas')">Formulas</button>
