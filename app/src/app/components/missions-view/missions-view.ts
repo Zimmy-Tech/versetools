@@ -280,7 +280,12 @@ export class MissionsViewComponent {
     }
     const result: { key: string; label: string; missionCount: number; bpCount: number; blueprints: string[] }[] = [];
     for (const [key, g] of groups) {
-      if (g.missions < 2) continue; // only shared pools in the dropdown
+      // Include every pool (even 1-mission ones). Previously gated on
+      // >=2 missions, but that hid ~13 single-mission pools — users had
+      // no way to discover them without stumbling onto the one mission
+      // that awards them. The grid picker is browsable, so extra rows
+      // are fine; the BP Checklist page also shows this full set for
+      // consistency.
       const first = g.blueprints[0] ?? '';
       const extra = g.blueprints.length - 1;
       const label = extra > 0
