@@ -1261,22 +1261,29 @@ def main():
                     pass
             print(f"  Built scitem display name cache: {len(scitem_display)} items")
 
-        # Strip color qualifier from canonical armor blueprint names.
-        # Armor pools in DCB reference the `_01_01_01` variant (the first
-        # of N color variants), but CIG's localization names that variant
-        # inconsistently:
-        #   PAB-1 / ADP / ORC-mkX → "<set> <piece> Woodland"
-        #   TrueDef-Pro / CBH-3   → "<set> <piece> Base"
-        #   Aves / Neoni          → "<set> <piece>" (already clean)
-        # In-game, the unlocked blueprint shows just "<set> <piece>"
-        # because the player picks the color at craft time. Match that
-        # convention by truncating the display name after the piece
-        # word, ONLY for blueprints whose className ends with the
-        # canonical-variant suffix.
+        # Strip color qualifier from canonical legacy-armor blueprint
+        # names. The `_legacy_` armor families (PAB-1, plain ADP,
+        # CBH-3) ship with 19+ color variants under `_01_01_NN`, where
+        # `_01_01_01` is the canonical first-color blueprint that the
+        # in-game pool actually awards. CIG localizes that as
+        # "PAB-1 Arms Woodland" / "ADP Arms Woodland" / "CBH-3 Helmet
+        # Base", but in-game players see just "PAB-1 Arms" because the
+        # color is chosen at craft time.
+        #
+        # Newer non-legacy armor sets (ADP-mk4 = `cds_armor_heavy`,
+        # ORC-mkX = `cds_armor_medium`) DO ship Woodland-pattern as
+        # the literal product name — the pool awards a Woodland-only
+        # blueprint and the in-game name keeps the "Woodland" word.
+        # Filtering on `_legacy_` is the only reliable signal: the
+        # per-piece localization data is too inconsistent (some
+        # pieces resolve via direct className→loc keys, others via
+        # entity displayName fallback, with no per-set rhythm).
         _ARMOR_PIECES = ('Helmet', 'Core', 'Arms', 'Legs')
         def _strip_canonical_color(name: str, raw: str) -> str:
             if not raw.endswith('_01_01_01'):
                 return name
+            if '_legacy_' not in raw:
+                return name  # ADP-mk4 / ORC-mkX / etc. — keep color word
             for piece in _ARMOR_PIECES:
                 # Find " <Piece>" as a whole word, keep everything up to
                 # and including the piece, drop the trailing color
