@@ -42,6 +42,7 @@ def load_localization(ini_path):
 
 _NARR_CLS_RE = re.compile(
     r"^(?P<faction>[A-Za-z]+)_(?P<genre>BlackBoxRecovery|RecoverItem)_"
+    r"(?:Space_)?"  # optional `Space_` qualifier (DeadSaints classNames use this)
     r"(?P<system>Stanton|Nyx|Pyro)_(?P<rest>.+)$"
 )
 _NARR_DIFF = {"Intro": "Intro", "VeryEasy": "VE", "Easy": "E", "Medium": "M",
@@ -50,30 +51,84 @@ _NARR_GENRE = {"BlackBoxRecovery": "blackbox", "RecoverItem": "RecoverItem_Gener
 _NARR_EM_RE = re.compile(r"</?EM\d+>")
 _NARR_MISSION_RE = re.compile(r'~mission\(([^|)]+)(?:\|[^)]+)?\)')
 
-def resolve_procedural_narrative(class_name, loc):
-    """For contractor-generator contracts whose title/description stay as
-    runtime templates, compose the faction-specific localization key from
-    the className and pull the concrete narrative. Returns (title, desc)
-    or (None, None). Covers BitZeros/Hockrow/DeadSaints generators."""
+def _narrative_clean(s):
+    if not s: return ""
+    s = s.replace("\\n", "\n").strip()
+    s = _NARR_EM_RE.sub("", s)
+    s = _NARR_MISSION_RE.sub(lambda mm: f"[{mm.group(1)}]", s)
+    return s
+
+def resolve_procedural_narratives(class_name, loc):
+    """For contractor-generator contracts whose title/description stay
+    as runtime templates, return every concrete narrative variant the
+    in-game generator might surface. Returns a list of
+    `(title, desc, suffix)` tuples — first tuple updates the original
+    contract entry, additional tuples represent clones that get
+    appended with their `suffix` added to the className.
+
+    Covers BitZeros / Hockrow / DeadSaints generators. RecoverItem
+    contracts often cycle three random titles per spawn (e.g. BitZeros
+    RecoverItem rolls between "Bleeding Edge Tech" / "Turning the
+    Tables" / "Upgrade Grab"); we surface all three so users searching
+    for any of the in-game titles find a row. Difficulty-tiered
+    RecoverItem (DeadSaints' Intro / Easy / Medium / Hard / Very-Hard
+    variants like `_Space_Nyx_Intro` → "Easy Creds for Easy Work")
+    falls through to the difficulty-specific localization key.
+    """
     m = _NARR_CLS_RE.match(class_name)
-    if not m: return None, None
+    if not m: return []
     fac = m.group("faction"); gen = m.group("genre"); rest = m.group("rest")
     genre = _NARR_GENRE[gen]
+
     if gen == "BlackBoxRecovery":
-        if rest not in _NARR_DIFF: return None, None
+        if rest not in _NARR_DIFF: return []
         code = _NARR_DIFF[rest]
         t = loc.get(f"{fac}_{genre}_{code}_title_001".lower(), "")
         d = loc.get(f"{fac}_{genre}_{code}_desc_001".lower(), "")
-    else:  # RecoverItem — deterministic variant 001 from the 001-003 pool
-        t = loc.get(f"{fac}_{genre}_title_001".lower(), "")
-        d = loc.get(f"{fac}_{genre}_desc_001".lower(), "")
-    def clean(s):
-        if not s: return ""
-        s = s.replace("\\n", "\n").strip()
-        s = _NARR_EM_RE.sub("", s)
-        s = _NARR_MISSION_RE.sub(lambda mm: f"[{mm.group(1)}]", s)
-        return s
-    return (clean(t) or None, clean(d) or None)
+        if t or d:
+            return [(_narrative_clean(t), _narrative_clean(d), "")]
+        return []
+
+    # RecoverItem — try difficulty-tier first (matches a className
+    # segment like "_Intro" / "_VeryEasy" / "_Easy" / etc.), then fall
+    # through to the generic 001/002/003 pool.
+    cn_segments = set(class_name.split("_"))
+    diff_code = next((code for word, code in _NARR_DIFF.items()
+                      if word in cn_segments), None)
+    if diff_code:
+        # CIG localization sometimes uses lowercase + plain key (no
+        # _Generic_ infix) for difficulty-tiered titles, e.g.
+        # `deadsaints_recoveritem_Intro_title_001=Easy Creds for Easy Work`.
+        # Strip the `_Generic` from the genre prefix when looking up.
+        bare_genre = genre.replace("_Generic", "")
+        t = loc.get(f"{fac}_{bare_genre}_{diff_code}_title_001".lower(), "")
+        d = loc.get(f"{fac}_{bare_genre}_{diff_code}_desc_001".lower(), "")
+        if t or d:
+            return [(_narrative_clean(t), _narrative_clean(d), "")]
+
+    # Generic 001/002/003 pool — surface every variant the loc file
+    # provides so all in-game title rolls have a row.
+    out = []
+    for vidx in range(1, 4):
+        v = f"{vidx:03d}"
+        t = loc.get(f"{fac}_{genre}_title_{v}".lower(), "")
+        d = loc.get(f"{fac}_{genre}_desc_{v}".lower(), "")
+        if t or d:
+            suffix = "" if vidx == 1 else f"_v{v}"
+            out.append((_narrative_clean(t), _narrative_clean(d), suffix))
+    return out
+
+
+def resolve_procedural_narrative(class_name, loc):
+    """Single-tuple compatibility shim — returns just the first variant
+    so existing call sites don't need to change.  New code that wants
+    to surface every variant should call `resolve_procedural_narratives`
+    directly and clone its contract entry per tuple beyond the first."""
+    variants = resolve_procedural_narratives(class_name, loc)
+    if not variants:
+        return None, None
+    t, d, _ = variants[0]
+    return (t or None, d or None)
 
 def build_contractor_profiles(loc, contracts):
     """Group global.ini {key}_RepUI_* fields into profile dicts, then map
@@ -1206,6 +1261,34 @@ def main():
                     pass
             print(f"  Built scitem display name cache: {len(scitem_display)} items")
 
+        # Strip color qualifier from canonical armor blueprint names.
+        # Armor pools in DCB reference the `_01_01_01` variant (the first
+        # of N color variants), but CIG's localization names that variant
+        # inconsistently:
+        #   PAB-1 / ADP / ORC-mkX → "<set> <piece> Woodland"
+        #   TrueDef-Pro / CBH-3   → "<set> <piece> Base"
+        #   Aves / Neoni          → "<set> <piece>" (already clean)
+        # In-game, the unlocked blueprint shows just "<set> <piece>"
+        # because the player picks the color at craft time. Match that
+        # convention by truncating the display name after the piece
+        # word, ONLY for blueprints whose className ends with the
+        # canonical-variant suffix.
+        _ARMOR_PIECES = ('Helmet', 'Core', 'Arms', 'Legs')
+        def _strip_canonical_color(name: str, raw: str) -> str:
+            if not raw.endswith('_01_01_01'):
+                return name
+            for piece in _ARMOR_PIECES:
+                # Find " <Piece>" as a whole word, keep everything up to
+                # and including the piece, drop the trailing color
+                # qualifier (which may be one or more words / slashes).
+                idx = name.rfind(' ' + piece)
+                if idx >= 0:
+                    end = idx + 1 + len(piece)
+                    # Only truncate if there's actually a suffix to strip
+                    if end < len(name):
+                        return name[:end]
+            return name
+
         # Build craft blueprint GUID → display name
         craft_dir = FORGE_DIR / "crafting" / "blueprints"
         craft_names = {}  # sorted GUID → display name
@@ -1220,6 +1303,8 @@ def main():
                         display = (loc.get(f"item_name{raw}".lower(), "") or
                                    loc.get(f"item_name_{raw}".lower(), "") or
                                    scitem_display.get(raw, ""))
+                        if display:
+                            display = _strip_canonical_color(display, raw)
                         craft_names[guid_key(cref.group(1))] = display or raw
                 except Exception:
                     pass
@@ -2030,17 +2115,51 @@ def main():
     # row and silently drops the rest (e.g. Bit Zeros' VeryEasy
     # "Pick Up, Put Down" was vanishing). Resolving here gives each
     # variant a distinct title so they survive dedup.
-    for m in missions + contracts:
-        t, d = resolve_procedural_narrative(m.get("className", ""), loc)
-        title = m.get("title", "") or ""
-        desc = m.get("description", "") or ""
-        needs_title = (title == m.get("contractor", "") or
+    #
+    # Some generators (BitZeros / DeadSaints RecoverItem) cycle THREE
+    # random titles per spawn ("Bleeding Edge Tech" / "Turning the
+    # Tables" / "Upgrade Grab"). We surface all of them by cloning the
+    # contract entry per variant, with a `_v002` / `_v003` className
+    # suffix so dedup keeps them separate.
+    contract_clones: list = []
+    def _apply_first_variant(entry, variants):
+        if not variants:
+            return
+        t0, d0, _ = variants[0]
+        title = entry.get("title", "") or ""
+        desc = entry.get("description", "") or ""
+        needs_title = (title == entry.get("contractor", "") or
                        title.startswith("~mission(") or not title)
         needs_desc = (desc.startswith("~mission(")
                       or desc.startswith("[Contractor")
                       or not desc)
-        if t and needs_title: m["title"] = t
-        if d and needs_desc:  m["description"] = d
+        if t0 and needs_title: entry["title"] = t0
+        if d0 and needs_desc:  entry["description"] = d0
+
+    for m in missions:
+        variants = resolve_procedural_narratives(m.get("className", ""), loc)
+        _apply_first_variant(m, variants)
+        # Mission entries are not cloned — alt titles only matter for
+        # contract-generator output where the user-facing variant is
+        # picked at spawn time.
+
+    for c in contracts:
+        variants = resolve_procedural_narratives(c.get("className", ""), loc)
+        if not variants:
+            continue
+        _apply_first_variant(c, variants)
+        for (tv, dv, suffix) in variants[1:]:
+            if not tv:
+                continue
+            clone = dict(c)
+            clone["className"] = c["className"] + suffix
+            clone["title"] = tv
+            if dv: clone["description"] = dv
+            contract_clones.append(clone)
+    if contract_clones:
+        contracts.extend(contract_clones)
+        print(f"  Surfaced {len(contract_clones)} additional contract title variants "
+              f"(generators that cycle multiple in-game titles per spawn)")
 
     # ── Contractor sign-off substitution in descriptions ─────────────
     # Replace ~mission(Contractor|SignOff) with the first sign-off text
