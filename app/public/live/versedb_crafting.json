@@ -63100,7 +63100,7 @@
     },
     {
       "className": "cool_lplt_s02_fullfrost_scitem",
-      "itemName": "COOL_LPLT_S02_FullFrost_SCItem",
+      "itemName": "FullFrost",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63109,7 +63109,7 @@
     },
     {
       "className": "cool_lplt_s01_arcticstorm_scitem",
-      "itemName": "COOL_LPLT_S01_ArcticStorm_SCItem",
+      "itemName": "ArcticStorm",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63118,7 +63118,7 @@
     },
     {
       "className": "cool_aegs_s02_avalanche_scitem",
-      "itemName": "COOL_AEGS_S02_Avalanche_SCItem",
+      "itemName": "Avalanche",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63127,7 +63127,7 @@
     },
     {
       "className": "cool_aegs_s01_tundra_scitem",
-      "itemName": "COOL_AEGS_S01_Tundra_SCItem",
+      "itemName": "Tundra",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63136,7 +63136,7 @@
     },
     {
       "className": "cool_aegs_s02_permafrost_scitem",
-      "itemName": "COOL_AEGS_S02_Permafrost_SCItem",
+      "itemName": "Permafrost",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63145,7 +63145,7 @@
     },
     {
       "className": "cool_just_s01_ecoflow_scitem",
-      "itemName": "COOL_JUST_S01_EcoFlow_SCItem",
+      "itemName": "EcoFlow",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63154,7 +63154,7 @@
     },
     {
       "className": "cool_wcpr_s00_fridan_scitem",
-      "itemName": "COOL_WCPR_S00_Fridan_SCItem",
+      "itemName": "Fridan",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63163,7 +63163,7 @@
     },
     {
       "className": "cool_wcpr_s00_kelvid_scitem",
-      "itemName": "COOL_WCPR_S00_Kelvid_SCItem",
+      "itemName": "Kelvid",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63172,7 +63172,7 @@
     },
     {
       "className": "cool_tydt_s01_snowblind_scitem",
-      "itemName": "COOL_TYDT_S01_SnowBlind_SCItem",
+      "itemName": "SnowBlind",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63181,7 +63181,7 @@
     },
     {
       "className": "cool_just_s02_snowfall_scitem",
-      "itemName": "COOL_JUST_S02_Snowfall_SCItem",
+      "itemName": "Snowfall",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63190,7 +63190,7 @@
     },
     {
       "className": "cool_just_s03_chillmax_scitem",
-      "itemName": "COOL_JUST_S03_ChillMax_SCItem",
+      "itemName": "Chill-Max",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63199,7 +63199,7 @@
     },
     {
       "className": "cool_acom_s02_icedive_scitem",
-      "itemName": "COOL_ACOM_S02_IceDive_SCItem",
+      "itemName": "IceDive",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63208,7 +63208,7 @@
     },
     {
       "className": "cool_jspn_s02_winterstarex_scitem",
-      "itemName": "COOL_JSPN_S02_WinterStarEX_SCItem",
+      "itemName": "Winter-Star EX",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63217,7 +63217,7 @@
     },
     {
       "className": "cool_tydt_s01_vaporblock_scitem",
-      "itemName": "COOL_TYDT_S01_VaporBlock_SCItem",
+      "itemName": "VaporBlock",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63226,7 +63226,7 @@
     },
     {
       "className": "cool_jspn_s03_winterstarxl_scitem",
-      "itemName": "COOL_JSPN_S03_WinterStarXL_SCItem",
+      "itemName": "Winter-Star XL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63235,7 +63235,7 @@
     },
     {
       "className": "cool_wcpr_s01_berian_scitem",
-      "itemName": "COOL_WCPR_S01_Berian_SCItem",
+      "itemName": "Berian",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63244,7 +63244,7 @@
     },
     {
       "className": "cool_jspn_s02_cryostarex_scitem",
-      "itemName": "COOL_JSPN_S02_CryoStarEX_SCItem",
+      "itemName": "Cryo-Star EX",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63253,7 +63253,7 @@
     },
     {
       "className": "cool_aegs_s04_idris_scitem",
-      "itemName": "COOL_AEGS_S04_Idris_SCItem",
+      "itemName": "Aegis S4 Cooler",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63262,7 +63262,7 @@
     },
     {
       "className": "cool_aegs_s04_javelin_scitem",
-      "itemName": "COOL_AEGS_S04_Javelin_SCItem",
+      "itemName": "Aegis S4 Cooler",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63271,7 +63271,7 @@
     },
     {
       "className": "cool_just_s01_thermax_scitem",
-      "itemName": "COOL_JUST_S01_Thermax_SCItem",
+      "itemName": "Thermax",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63280,7 +63280,7 @@
     },
     {
       "className": "cool_lplt_s02_coldsnap_scitem",
-      "itemName": "COOL_LPLT_S02_ColdSnap_SCItem",
+      "itemName": "ColdSnap",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63289,7 +63289,7 @@
     },
     {
       "className": "cool_jspn_s00_cryostarsl_scitem",
-      "itemName": "COOL_JSPN_S00_CryoStarSL_SCItem",
+      "itemName": "Cryo-Star SL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63298,7 +63298,7 @@
     },
     {
       "className": "cool_jspn_s00_cryostarsl_scitem",
-      "itemName": "COOL_JSPN_S00_CryoStarSL_SCItem",
+      "itemName": "Cryo-Star SL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63307,7 +63307,7 @@
     },
     {
       "className": "cool_jspn_s01_froststar_scitem",
-      "itemName": "COOL_JSPN_S01_FrostStar_SCItem",
+      "itemName": "Frost-Star",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63316,7 +63316,7 @@
     },
     {
       "className": "cool_wcpr_s03_draug_scitem",
-      "itemName": "COOL_WCPR_S03_Draug_SCItem",
+      "itemName": "Draug",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63325,7 +63325,7 @@
     },
     {
       "className": "cool_acom_s02_rapidcool_scitem",
-      "itemName": "COOL_ACOM_S02_RapidCool_SCItem",
+      "itemName": "RapidCool",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63334,7 +63334,7 @@
     },
     {
       "className": "cool_jspn_s02_froststarex_scitem",
-      "itemName": "COOL_JSPN_S02_FrostStarEX_SCItem",
+      "itemName": "Frost-Star EX",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63343,7 +63343,7 @@
     },
     {
       "className": "cool_wcpr_s03_kragen_scitem",
-      "itemName": "COOL_WCPR_S03_Kragen_SCItem",
+      "itemName": "Kragen",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63352,7 +63352,7 @@
     },
     {
       "className": "cool_just_s02_hydrojet_scitem",
-      "itemName": "COOL_JUST_S02_Hydrojet_SCItem",
+      "itemName": "HydroJet",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63361,7 +63361,7 @@
     },
     {
       "className": "cool_aegs_s02_arctic_scitem",
-      "itemName": "COOL_AEGS_S02_Arctic_SCItem",
+      "itemName": "Arctic",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63370,7 +63370,7 @@
     },
     {
       "className": "cool_lplt_s03_frostbite_scitem",
-      "itemName": "COOL_LPLT_S03_FrostBite_SCItem",
+      "itemName": "FrostBite",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63379,7 +63379,7 @@
     },
     {
       "className": "cool_just_s01_ultraflow_scitem",
-      "itemName": "COOL_JUST_S01_UltraFlow_SCItem",
+      "itemName": "Ultra-Flow",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63388,7 +63388,7 @@
     },
     {
       "className": "cool_lplt_s03_frostburn_scitem",
-      "itemName": "COOL_LPLT_S03_FrostBurn_SCItem",
+      "itemName": "FrostBurn",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63397,7 +63397,7 @@
     },
     {
       "className": "cool_wcpr_s02_graupel_scitem",
-      "itemName": "COOL_WCPR_S02_Graupel_SCItem",
+      "itemName": "Graupel",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63406,7 +63406,7 @@
     },
     {
       "className": "cool_lplt_s01_flashfreeze_scitem",
-      "itemName": "COOL_LPLT_S01_FlashFreeze_SCItem",
+      "itemName": "FlashFreeze",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63415,7 +63415,7 @@
     },
     {
       "className": "cool_just_s03_thermalcore_scitem",
-      "itemName": "COOL_JUST_S03_ThermalCore_SCItem",
+      "itemName": "ThermalCore",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63424,7 +63424,7 @@
     },
     {
       "className": "cool_acom_s02_absolutezero_scitem",
-      "itemName": "COOL_ACOM_S02_AbsoluteZero_SCItem",
+      "itemName": "AbsoluteZero",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63433,7 +63433,7 @@
     },
     {
       "className": "cool_lplt_s01_blastchill_scitem",
-      "itemName": "COOL_LPLT_S01_BlastChill_SCItem",
+      "itemName": "BlastChill",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63442,7 +63442,7 @@
     },
     {
       "className": "cool_aegs_s01_polar_scitem",
-      "itemName": "COOL_AEGS_S01_Polar_SCItem",
+      "itemName": "Polar",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63451,7 +63451,7 @@
     },
     {
       "className": "cool_jspn_s03_froststarxl_scitem",
-      "itemName": "COOL_JSPN_S03_FrostStarXL_SCItem",
+      "itemName": "Frost-Star XL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63460,7 +63460,7 @@
     },
     {
       "className": "cool_just_s03_iceflush_scitem",
-      "itemName": "COOL_JUST_S03_IceFlush_SCItem",
+      "itemName": "Ice-Flush",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63469,7 +63469,7 @@
     },
     {
       "className": "cool_jspn_s01_cryostar_scitem",
-      "itemName": "COOL_JSPN_S01_CryoStar_SCItem",
+      "itemName": "Cryo-Star",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63478,7 +63478,7 @@
     },
     {
       "className": "cool_jspn_s00_cryostarsl_scitem",
-      "itemName": "COOL_JSPN_S00_CryoStarSL_SCItem",
+      "itemName": "Cryo-Star SL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63487,7 +63487,7 @@
     },
     {
       "className": "cool_wcpr_s03_elsen_scitem",
-      "itemName": "COOL_WCPR_S03_Elsen_SCItem",
+      "itemName": "Elsen",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63496,7 +63496,7 @@
     },
     {
       "className": "cool_jspn_s00_cryostarsl_scitem",
-      "itemName": "COOL_JSPN_S00_CryoStarSL_SCItem",
+      "itemName": "Cryo-Star SL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63505,7 +63505,7 @@
     },
     {
       "className": "cool_acom_s01_quickcool_scitem",
-      "itemName": "COOL_ACOM_S01_QuickCool_SCItem",
+      "itemName": "QuikCool",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63514,7 +63514,7 @@
     },
     {
       "className": "cool_wcpr_s01_endo_scitem",
-      "itemName": "COOL_WCPR_S01_Endo_SCItem",
+      "itemName": "Endo",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63523,7 +63523,7 @@
     },
     {
       "className": "cool_jspn_s03_cryostarxl_scitem",
-      "itemName": "COOL_JSPN_S03_CryoStarXL_SCItem",
+      "itemName": "Cryo-Star XL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63532,7 +63532,7 @@
     },
     {
       "className": "cool_wcpr_s00_tepilo_scitem",
-      "itemName": "COOL_WCPR_S00_Tepilo_SCItem",
+      "itemName": "Tepilo",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63541,7 +63541,7 @@
     },
     {
       "className": "cool_just_s01_hydrocel_scitem",
-      "itemName": "COOL_JUST_S01_Hydrocel_SCItem",
+      "itemName": "Hydrocel",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63550,7 +63550,7 @@
     },
     {
       "className": "cool_jspn_s01_winterstar_scitem",
-      "itemName": "COOL_JSPN_S01_WinterStar_SCItem",
+      "itemName": "Winter-Star",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63559,7 +63559,7 @@
     },
     {
       "className": "cool_aegs_s04_reclaimer",
-      "itemName": "COOL_AEGS_S04_Reclaimer",
+      "itemName": "Algid",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63568,7 +63568,7 @@
     },
     {
       "className": "cool_aegs_s01_glacier_scitem",
-      "itemName": "COOL_AEGS_S01_Glacier_SCItem",
+      "itemName": "Glacier",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63577,7 +63577,7 @@
     },
     {
       "className": "cool_just_s02_snowpack_scitem",
-      "itemName": "COOL_JUST_S02_Snowpack_SCItem",
+      "itemName": "Snowpack",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63586,7 +63586,7 @@
     },
     {
       "className": "cool_aegs_s03_blizzard_scitem",
-      "itemName": "COOL_AEGS_S03_Blizzard_SCItem",
+      "itemName": "Blizzard",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63595,7 +63595,7 @@
     },
     {
       "className": "cool_rsi_s04_polaris_scitem",
-      "itemName": "COOL_RSI_S04_Polaris_SCItem",
+      "itemName": "RSI S4 Cooler",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63604,7 +63604,7 @@
     },
     {
       "className": "cool_just_s02_coolcore_scitem",
-      "itemName": "COOL_JUST_S02_CoolCore_SCItem",
+      "itemName": "S2 Cooler",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63613,7 +63613,7 @@
     },
     {
       "className": "cool_just_s03_hydropulse_scitem",
-      "itemName": "COOL_JUST_S03_Hydropulse_SCItem",
+      "itemName": "Hydropulse",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63622,7 +63622,7 @@
     },
     {
       "className": "cool_aegs_s01_bracer_scitem",
-      "itemName": "COOL_AEGS_S01_Bracer_SCItem",
+      "itemName": "Bracer",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63631,7 +63631,7 @@
     },
     {
       "className": "cool_lplt_s03_coldsurge_scitem",
-      "itemName": "COOL_LPLT_S03_ColdSurge_SCItem",
+      "itemName": "ColdSurge",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63640,7 +63640,7 @@
     },
     {
       "className": "cool_lplt_s02_whiteout_scitem",
-      "itemName": "COOL_LPLT_S02_WhiteOut_SCItem",
+      "itemName": "WhiteOut",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63649,7 +63649,7 @@
     },
     {
       "className": "cool_wcpr_s02_taiga_scitem",
-      "itemName": "COOL_WCPR_S02_Taiga_SCItem",
+      "itemName": "Taiga",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63658,7 +63658,7 @@
     },
     {
       "className": "cool_acom_s01_zerorush_scitem",
-      "itemName": "COOL_ACOM_S01_ZeroRush_SCItem",
+      "itemName": "ZeroRush",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63667,7 +63667,7 @@
     },
     {
       "className": "cool_aegs_s02_boreal_scitem",
-      "itemName": "COOL_AEGS_S02_Boreal_SCItem",
+      "itemName": "Boreal",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63676,7 +63676,7 @@
     },
     {
       "className": "cool_aegs_s03_tempest_scitem",
-      "itemName": "COOL_AEGS_S03_Tempest_SCItem",
+      "itemName": "Tempest",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63685,7 +63685,7 @@
     },
     {
       "className": "cool_aegs_s03_mercury_scitem",
-      "itemName": "COOL_AEGS_S03_Mercury_SCItem",
+      "itemName": "Mercury",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63694,7 +63694,7 @@
     },
     {
       "className": "cool_orig_s04_890j_scitem",
-      "itemName": "COOL_ORIG_S04_890J_SCItem",
+      "itemName": "Serac",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63703,7 +63703,7 @@
     },
     {
       "className": "cool_acom_s01_iceplunge_scitem",
-      "itemName": "COOL_ACOM_S01_IcePlunge_SCItem",
+      "itemName": "IcePlunge",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63712,7 +63712,7 @@
     },
     {
       "className": "cool_wcpr_s01_gelid_scitem",
-      "itemName": "COOL_WCPR_S01_Gelid_SCItem",
+      "itemName": "Gelid",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63721,7 +63721,7 @@
     },
     {
       "className": "cool_aegs_s03_galinstan_scitem",
-      "itemName": "COOL_AEGS_S03_Galinstan_SCItem",
+      "itemName": "Galinstan",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63730,7 +63730,7 @@
     },
     {
       "className": "cool_tydt_s01_heatsafe_scitem",
-      "itemName": "COOL_TYDT_S01_HeatSafe_SCItem",
+      "itemName": "HeatSafe",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63739,7 +63739,7 @@
     },
     {
       "className": "cool_jspn_s00_winterstarsl_scitem",
-      "itemName": "COOL_JSPN_S00_WinterStarSL_SCItem",
+      "itemName": "Winter-Star SL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63748,7 +63748,7 @@
     },
     {
       "className": "cool_wcpr_s02_aufeis_scitem",
-      "itemName": "COOL_WCPR_S02_Aufeis_SCItem",
+      "itemName": "Aufeis",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63757,7 +63757,7 @@
     },
     {
       "className": "cool_jspn_s00_froststarsl_scitem",
-      "itemName": "COOL_JSPN_S00_FrostStarSL_SCItem",
+      "itemName": "Frost-Star SL",
       "category": "ShipCooler",
       "subtype": "",
       "tier": 0,
@@ -63766,7 +63766,7 @@
     },
     {
       "className": "mining_laser_shin_hofstede_s0",
-      "itemName": "Mining_Laser_SHIN_Hofstede_S0",
+      "itemName": "S00 Hofstede",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63775,7 +63775,7 @@
     },
     {
       "className": "mining_laser_thcn_helix_s0",
-      "itemName": "Mining_Laser_THCN_Helix_S0",
+      "itemName": "S0 Helix",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63784,7 +63784,7 @@
     },
     {
       "className": "mining_laser_grin_lancet_s1",
-      "itemName": "Mining_Laser_GRIN_Lancet_S1",
+      "itemName": "Lancet MH1 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63793,7 +63793,7 @@
     },
     {
       "className": "mining_laser_shin_klein_s2",
-      "itemName": "Mining_Laser_SHIN_Klein_S2",
+      "itemName": "Klein-S2 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63802,7 +63802,7 @@
     },
     {
       "className": "mining_laser_grin_lancet_s2",
-      "itemName": "Mining_Laser_GRIN_Lancet_S2",
+      "itemName": "Lancet MH2 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63811,7 +63811,7 @@
     },
     {
       "className": "mining_laser_shin_klein_s0",
-      "itemName": "Mining_Laser_SHIN_Klein_S0",
+      "itemName": "Lawson Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63820,7 +63820,7 @@
     },
     {
       "className": "mining_laser_thcn_impact_s2",
-      "itemName": "Mining_Laser_THCN_Impact_S2",
+      "itemName": "Impact II Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63829,7 +63829,7 @@
     },
     {
       "className": "mining_laser_thcn_helix_s1",
-      "itemName": "Mining_Laser_THCN_Helix_S1",
+      "itemName": "Helix I Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63838,7 +63838,7 @@
     },
     {
       "className": "mining_laser_shin_hofstede_s2",
-      "itemName": "Mining_Laser_SHIN_Hofstede_S2",
+      "itemName": "Hofstede-S2 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63847,7 +63847,7 @@
     },
     {
       "className": "mining_laser_thcn_helix_s2",
-      "itemName": "Mining_Laser_THCN_Helix_S2",
+      "itemName": "Helix II Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63856,7 +63856,7 @@
     },
     {
       "className": "mining_laser_grin_arbor_s2",
-      "itemName": "Mining_Laser_GRIN_Arbor_S2",
+      "itemName": "Arbor MH2 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63865,7 +63865,7 @@
     },
     {
       "className": "mining_laser_shin_klein_s1",
-      "itemName": "Mining_Laser_SHIN_Klein_S1",
+      "itemName": "Klein-S1 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63874,7 +63874,7 @@
     },
     {
       "className": "mining_laser_thcn_impact_s1",
-      "itemName": "Mining_Laser_THCN_Impact_S1",
+      "itemName": "Impact I Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63883,7 +63883,7 @@
     },
     {
       "className": "mining_laser_drak_golem_s1",
-      "itemName": "Mining_Laser_DRAK_Golem_S1",
+      "itemName": "Pitman Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63892,7 +63892,7 @@
     },
     {
       "className": "mining_laser_shin_hofstede_s1",
-      "itemName": "Mining_Laser_SHIN_Hofstede_S1",
+      "itemName": "Hofstede-S1 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63901,7 +63901,7 @@
     },
     {
       "className": "mining_laser_grin_arbor_s0",
-      "itemName": "Mining_Laser_GRIN_Arbor_S0",
+      "itemName": "Arbor MHV Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63910,7 +63910,7 @@
     },
     {
       "className": "mining_laser_grin_arbor_s1",
-      "itemName": "Mining_Laser_GRIN_Arbor_S1",
+      "itemName": "Arbor MH1 Mining Laser",
       "category": "ShipMiningLaser",
       "subtype": "",
       "tier": 0,
@@ -63919,7 +63919,7 @@
     },
     {
       "className": "powr_lplt_s02_fullforce_scitem",
-      "itemName": "POWR_LPLT_S02_FullForce_SCItem",
+      "itemName": "FullForce",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63928,7 +63928,7 @@
     },
     {
       "className": "powr_aegs_s04_idris_scitem",
-      "itemName": "POWR_AEGS_S04_Idris_SCItem",
+      "itemName": "Aegis S4 Power Plant",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63937,7 +63937,7 @@
     },
     {
       "className": "powr_lplt_s01_powerbolt_scitem",
-      "itemName": "POWR_LPLT_S01_PowerBolt_SCItem",
+      "itemName": "PowerBolt",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63946,7 +63946,7 @@
     },
     {
       "className": "powr_just_s02_diligence_scitem",
-      "itemName": "POWR_JUST_S02_Diligence_SCItem",
+      "itemName": "Diligence",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63955,7 +63955,7 @@
     },
     {
       "className": "powr_just_s01_breton_scitem",
-      "itemName": "POWR_JUST_S01_Breton_SCItem",
+      "itemName": "Breton",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63964,7 +63964,7 @@
     },
     {
       "className": "powr_aegs_s03_fulgur_scitem",
-      "itemName": "POWR_AEGS_S03_Fulgur_SCItem",
+      "itemName": "Fulgur",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63973,7 +63973,7 @@
     },
     {
       "className": "powr_amrs_s02_ultraflux_scitem",
-      "itemName": "POWR_AMRS_S02_UltraFlux_SCItem",
+      "itemName": "UltraFlux",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63982,7 +63982,7 @@
     },
     {
       "className": "powr_lplt_s03_ionsurgepro_scitem",
-      "itemName": "POWR_LPLT_S03_IonSurgePro_SCItem",
+      "itemName": "IonSurge Pro",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -63991,7 +63991,7 @@
     },
     {
       "className": "powr_just_s03_ginzel_scitem",
-      "itemName": "POWR_JUST_S03_Ginzel_SCItem",
+      "itemName": "Ginzel",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64000,7 +64000,7 @@
     },
     {
       "className": "powr_amrs_s02_exogen_scitem",
-      "itemName": "POWR_AMRS_S02_ExoGen_SCItem",
+      "itemName": "ExoGen",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64009,7 +64009,7 @@
     },
     {
       "className": "powr_aegs_s01_charger_scitem",
-      "itemName": "POWR_AEGS_S01_Charger_SCItem",
+      "itemName": "Charger",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64018,7 +64018,7 @@
     },
     {
       "className": "powr_aegs_s01_regulus_scitem",
-      "itemName": "POWR_AEGS_S01_Regulus_SCItem",
+      "itemName": "Regulus",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64027,7 +64027,7 @@
     },
     {
       "className": "powr_tydt_s02_gammamax_scitem",
-      "itemName": "POWR_TYDT_S02_GammaMax_SCItem",
+      "itemName": "GammaMax",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64036,7 +64036,7 @@
     },
     {
       "className": "powr_just_s00_defiant_scitem",
-      "itemName": "POWR_JUST_S00_Defiant_SCItem",
+      "itemName": "Defiant",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64045,7 +64045,7 @@
     },
     {
       "className": "powr_amrs_s01_overdrive_scitem",
-      "itemName": "POWR_AMRS_S01_OverDrive_SCItem",
+      "itemName": "OverDrive",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64054,7 +64054,7 @@
     },
     {
       "className": "powr_amrs_s01_hypergen_scitem",
-      "itemName": "POWR_AMRS_S01_HyperGen_SCItem",
+      "itemName": "HyperGen",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64063,7 +64063,7 @@
     },
     {
       "className": "powr_acom_s02_luxcore_scitem",
-      "itemName": "POWR_ACOM_S02_LuxCore_SCItem",
+      "itemName": "LuxCore",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64072,7 +64072,7 @@
     },
     {
       "className": "powr_just_s02_genoa_scitem",
-      "itemName": "POWR_JUST_S02_Genoa_SCItem",
+      "itemName": "Genoa",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64081,7 +64081,7 @@
     },
     {
       "className": "powr_lplt_s01_ionburst_scitem",
-      "itemName": "POWR_LPLT_S01_IonBurst_SCItem",
+      "itemName": "IonBurst",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64090,7 +64090,7 @@
     },
     {
       "className": "powr_aegs_s03_drassik_scitem",
-      "itemName": "POWR_AEGS_S03_Drassik_SCItem",
+      "itemName": "Drassik",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64099,7 +64099,7 @@
     },
     {
       "className": "powr_lplt_s01_zapjet_scitem",
-      "itemName": "POWR_LPLT_S01_ZapJet_SCItem",
+      "itemName": "ZapJet",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64108,7 +64108,7 @@
     },
     {
       "className": "powr_just_s00_defiant_scitem",
-      "itemName": "POWR_JUST_S00_Defiant_SCItem",
+      "itemName": "Defiant",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64117,7 +64117,7 @@
     },
     {
       "className": "powr_aegs_s02_maelstrom_scitem",
-      "itemName": "POWR_AEGS_S02_Maelstrom_SCItem",
+      "itemName": "Maelstrom",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64126,7 +64126,7 @@
     },
     {
       "className": "powr_just_s02_trommel_scitem",
-      "itemName": "POWR_JUST_S02_Trommel_SCItem",
+      "itemName": "Trommel",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64135,7 +64135,7 @@
     },
     {
       "className": "powr_sasu_s02_lotus_scitem",
-      "itemName": "POWR_SASU_S02_Lotus_SCItem",
+      "itemName": "Lotus",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64144,7 +64144,7 @@
     },
     {
       "className": "powr_just_s01_roughneck_scitem",
-      "itemName": "POWR_JUST_S01_Roughneck_SCItem",
+      "itemName": "Roughneck",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64153,7 +64153,7 @@
     },
     {
       "className": "powr_just_s01_fortitude_scitem",
-      "itemName": "POWR_JUST_S01_Fortitude_SCItem",
+      "itemName": "Fortitude",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64162,7 +64162,7 @@
     },
     {
       "className": "powr_tydt_s01_soniclite_scitem",
-      "itemName": "POWR_TYDT_S01_SonicLite_SCItem",
+      "itemName": "SonicLite",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64171,7 +64171,7 @@
     },
     {
       "className": "powr_aegs_s02_bolide_scitem",
-      "itemName": "POWR_AEGS_S02_Bolide_SCItem",
+      "itemName": "Bolide",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64180,7 +64180,7 @@
     },
     {
       "className": "powr_just_s03_durango_scitem",
-      "itemName": "POWR_JUST_S03_Durango_SCItem",
+      "itemName": "Durango",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64189,7 +64189,7 @@
     },
     {
       "className": "powr_acom_s01_starheart_scitem",
-      "itemName": "POWR_ACOM_S01_StarHeart_SCItem",
+      "itemName": "StarHeart",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64198,7 +64198,7 @@
     },
     {
       "className": "powr_tydt_s02_eclipse_scitem",
-      "itemName": "POWR_TYDT_S02_Eclipse_SCItem",
+      "itemName": "Eclipse",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64207,7 +64207,7 @@
     },
     {
       "className": "powr_tydt_s01_deltamax_scitem",
-      "itemName": "POWR_TYDT_S01_DeltaMax_SCItem",
+      "itemName": "DeltaMax",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64216,7 +64216,7 @@
     },
     {
       "className": "powr_sasu_s03_tigerlilly_scitem",
-      "itemName": "POWR_SASU_S03_TigerLilly_SCItem",
+      "itemName": "TigerLilly",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64225,7 +64225,7 @@
     },
     {
       "className": "powr_lplt_s02_fullforce_scitem",
-      "itemName": "POWR_LPLT_S02_FullForce_SCItem",
+      "itemName": "FullForce",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64234,7 +64234,7 @@
     },
     {
       "className": "powr_amrs_s02_js400_scitem",
-      "itemName": "POWR_AMRS_S02_JS400_SCItem",
+      "itemName": "JS-400",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64243,7 +64243,7 @@
     },
     {
       "className": "powr_sasu_s01_lightblossom_scitem",
-      "itemName": "POWR_SASU_S01_LightBlossom_SCItem",
+      "itemName": "LightBlossom",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64252,7 +64252,7 @@
     },
     {
       "className": "powr_acom_s02_starburn_scitem",
-      "itemName": "POWR_ACOM_S02_StarBurn_SCItem",
+      "itemName": "StarBurn",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64261,7 +64261,7 @@
     },
     {
       "className": "powr_aegs_s03_centurion_scitem",
-      "itemName": "POWR_AEGS_S03_Centurion_SCItem",
+      "itemName": "Centurion",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64270,7 +64270,7 @@
     },
     {
       "className": "powr_tydt_s01_slipstream_scitem",
-      "itemName": "POWR_TYDT_S01_Slipstream_SCItem",
+      "itemName": "Slipstream",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64279,7 +64279,7 @@
     },
     {
       "className": "powr_acom_s01_sunflare_scitem",
-      "itemName": "POWR_ACOM_S01_SunFlare_SCItem",
+      "itemName": "SunFlare",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64288,7 +64288,7 @@
     },
     {
       "className": "powr_lplt_s00_ionwave_scitem",
-      "itemName": "POWR_LPLT_S00_IonWave_SCItem",
+      "itemName": "IonWave",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64297,7 +64297,7 @@
     },
     {
       "className": "powr_acom_s02_solarflare_scitem",
-      "itemName": "POWR_ACOM_S02_SolarFlare_SCItem",
+      "itemName": "SolarFlare",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64306,7 +64306,7 @@
     },
     {
       "className": "powr_orig_s04_890j_scitem",
-      "itemName": "POWR_ORIG_S04_890J_SCItem",
+      "itemName": "Stellate",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64315,7 +64315,7 @@
     },
     {
       "className": "powr_just_s00_steadfast_scitem",
-      "itemName": "POWR_JUST_S00_SteadFast_SCItem",
+      "itemName": "Steadfast",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64324,7 +64324,7 @@
     },
     {
       "className": "powr_sasu_s02_radiance_scitem",
-      "itemName": "POWR_SASU_S02_Radiance_SCItem",
+      "itemName": "Radiance",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64333,7 +64333,7 @@
     },
     {
       "className": "powr_lplt_s00_durajet_scitem",
-      "itemName": "POWR_LPLT_S00_DuraJet_SCItem",
+      "itemName": "DuraJet",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64342,7 +64342,7 @@
     },
     {
       "className": "powr_lplt_s03_sparkjetpro_scitem",
-      "itemName": "POWR_LPLT_S03_SparkJetPro_SCItem",
+      "itemName": "SparkJet Pro",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64351,7 +64351,7 @@
     },
     {
       "className": "powr_amrs_s02_turbodrive_scitem",
-      "itemName": "POWR_AMRS_S02_TurboDrive_SCItem",
+      "itemName": "TurboDrive",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64360,7 +64360,7 @@
     },
     {
       "className": "powr_aegs_s01_fierellcascade_scitem",
-      "itemName": "POWR_AEGS_S01_FierellCascade_SCItem",
+      "itemName": "Fierell Cascade",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64369,7 +64369,7 @@
     },
     {
       "className": "powr_sasu_s03_newdawn_scitem",
-      "itemName": "POWR_SASU_S03_NewDawn_SCItem",
+      "itemName": "NewDawn",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64378,7 +64378,7 @@
     },
     {
       "className": "powr_aegs_s01_quadracell_scitem",
-      "itemName": "POWR_AEGS_S01_Quadracell_SCItem",
+      "itemName": "QuadraCell",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64387,7 +64387,7 @@
     },
     {
       "className": "powr_amrs_s03_superdrive_scitem",
-      "itemName": "POWR_AMRS_S03_SuperDrive_SCItem",
+      "itemName": "SuperDrive",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64396,7 +64396,7 @@
     },
     {
       "className": "powr_just_s00_jennet_scitem",
-      "itemName": "POWR_JUST_S00_Jennet_SCItem",
+      "itemName": "Jennet",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64405,7 +64405,7 @@
     },
     {
       "className": "powr_aegs_s03_quadracellmx_scitem",
-      "itemName": "POWR_AEGS_S03_QuadracellMX_SCItem",
+      "itemName": "QuadraCell MX",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64414,7 +64414,7 @@
     },
     {
       "className": "powr_tydt_s02_cirrus_scitem",
-      "itemName": "POWR_TYDT_S02_Cirrus_SCItem",
+      "itemName": "Cirrus",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64423,7 +64423,7 @@
     },
     {
       "className": "powr_amrs_s03_megaflux_scitem",
-      "itemName": "POWR_AMRS_S03_MegaFlux_SCItem",
+      "itemName": "MegaFlux",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64432,7 +64432,7 @@
     },
     {
       "className": "powr_just_s00_defiant_scitem",
-      "itemName": "POWR_JUST_S00_Defiant_SCItem",
+      "itemName": "Defiant",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64441,7 +64441,7 @@
     },
     {
       "className": "powr_amrs_s01_js300_scitem",
-      "itemName": "POWR_AMRS_S01_JS300_SCItem",
+      "itemName": "JS-300",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64450,7 +64450,7 @@
     },
     {
       "className": "powr_amrs_s01_dynaflux_scitem",
-      "itemName": "POWR_AMRS_S01_DynaFlux_SCItem",
+      "itemName": "DynaFlux",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64459,7 +64459,7 @@
     },
     {
       "className": "powr_lplt_s02_ionsurge_scitem",
-      "itemName": "POWR_LPLT_S02_IonSurge_SCItem",
+      "itemName": "IonSurge",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64468,7 +64468,7 @@
     },
     {
       "className": "powr_aegs_s04_reclaimer_scitem",
-      "itemName": "POWR_AEGS_S04_Reclaimer_SCItem",
+      "itemName": "Aegis S4 Power Plant",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64477,7 +64477,7 @@
     },
     {
       "className": "powr_lplt_s03_fullforcepro_scitem",
-      "itemName": "POWR_LPLT_S03_FullForcePro_SCItem",
+      "itemName": "FullForce Pro",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64486,7 +64486,7 @@
     },
     {
       "className": "powr_lplt_s00_radix_scitem",
-      "itemName": "POWR_LPLT_S00_Radix_SCItem",
+      "itemName": "Radix",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64495,7 +64495,7 @@
     },
     {
       "className": "powr_amrs_s03_smartgen_scitem",
-      "itemName": "POWR_AMRS_S03_SmartGen_SCItem",
+      "itemName": "SmartGen",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64504,7 +64504,7 @@
     },
     {
       "className": "powr_lplt_s02_sparkjet_scitem",
-      "itemName": "POWR_LPLT_S02_SparkJet_SCItem",
+      "itemName": "SparkJet",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64513,7 +64513,7 @@
     },
     {
       "className": "powr_just_s03_reliance_scitem",
-      "itemName": "POWR_JUST_S03_Reliance_SCItem",
+      "itemName": "Reliance",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64522,7 +64522,7 @@
     },
     {
       "className": "powr_aegs_s03_quadracellmx_scitem",
-      "itemName": "POWR_AEGS_S03_QuadracellMX_SCItem",
+      "itemName": "QuadraCell MX",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64531,7 +64531,7 @@
     },
     {
       "className": "powr_acom_s01_lumacore_scitem",
-      "itemName": "POWR_ACOM_S01_LumaCore_SCItem",
+      "itemName": "LumaCore",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64540,7 +64540,7 @@
     },
     {
       "className": "powr_sasu_s03_celestial_scitem",
-      "itemName": "POWR_SASU_S03_Celestial_SCItem",
+      "itemName": "Celestial",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64549,7 +64549,7 @@
     },
     {
       "className": "powr_rsi_s04_polaris_scitem",
-      "itemName": "POWR_RSI_S04_Polaris_SCItem",
+      "itemName": "RSI S4 Power Plant",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64558,7 +64558,7 @@
     },
     {
       "className": "powr_aegs_s02_vortex_scitem",
-      "itemName": "POWR_AEGS_S02_Vortex_SCItem",
+      "itemName": "Vortex",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64567,7 +64567,7 @@
     },
     {
       "className": "powr_sasu_s01_magnabloom_scitem",
-      "itemName": "POWR_SASU_S01_MagnaBloom_SCItem",
+      "itemName": "MagnaBloom",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64576,7 +64576,7 @@
     },
     {
       "className": "powr_just_s02_sedulity_scitem",
-      "itemName": "POWR_JUST_S02_Sedulity_SCItem",
+      "itemName": "Sedulity",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64585,7 +64585,7 @@
     },
     {
       "className": "powr_aegs_s02_quadracellmt_scitem",
-      "itemName": "POWR_AEGS_S02_QuadracellMT_SCItem",
+      "itemName": "QuadraCell MT",
       "category": "ShipPowerPlant",
       "subtype": "",
       "tier": 0,
@@ -64594,7 +64594,7 @@
     },
     {
       "className": "qdrv_just_s02_bolon_scitem",
-      "itemName": "QDRV_JUST_S02_Bolon_SCItem",
+      "itemName": "Bolon",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64603,7 +64603,7 @@
     },
     {
       "className": "qdrv_rsi_s02_aither_scitem",
-      "itemName": "QDRV_RSI_S02_Aither_SCItem",
+      "itemName": "Aither",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64612,7 +64612,7 @@
     },
     {
       "className": "qdrv_acas_s02_sparkfire_scitem",
-      "itemName": "QDRV_ACAS_S02_SparkFire_SCItem",
+      "itemName": "SparkFire",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64621,7 +64621,7 @@
     },
     {
       "className": "qdrv_rsi_s02_khaos_scitem",
-      "itemName": "QDRV_RSI_S02_Khaos_SCItem",
+      "itemName": "Khaos",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64630,7 +64630,7 @@
     },
     {
       "className": "qdrv_acas_s02_sunfire_scitem",
-      "itemName": "QDRV_ACAS_S02_SunFire_SCItem",
+      "itemName": "SunFire",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64639,7 +64639,7 @@
     },
     {
       "className": "qdrv_arcc_s02_cascade_scitem",
-      "itemName": "QDRV_ARCC_S02_Cascade_SCItem",
+      "itemName": "Cascade",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64648,7 +64648,7 @@
     },
     {
       "className": "qdrv_arcc_s02_torrent_scitem",
-      "itemName": "QDRV_ARCC_S02_Torrent_SCItem",
+      "itemName": "Torrent",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64657,7 +64657,7 @@
     },
     {
       "className": "qdrv_just_s02_huracan_scitem",
-      "itemName": "QDRV_JUST_S02_Huracan_SCItem",
+      "itemName": "Huracan",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64666,7 +64666,7 @@
     },
     {
       "className": "qdrv_wetk_s02_xl1_scitem",
-      "itemName": "QDRV_WETK_S02_XL1_SCItem",
+      "itemName": "XL-1",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64675,7 +64675,7 @@
     },
     {
       "className": "qdrv_tars_s02_sojourn_scitem",
-      "itemName": "QDRV_TARS_S02_Sojourn_SCItem",
+      "itemName": "Sojourn",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64684,7 +64684,7 @@
     },
     {
       "className": "qdrv_raco_s02_nova_scitem",
-      "itemName": "QDRV_RACO_S02_Nova_SCItem",
+      "itemName": "Nova",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64693,7 +64693,7 @@
     },
     {
       "className": "qdrv_raco_s02_spicule_scitem",
-      "itemName": "QDRV_RACO_S02_Spicule_SCItem",
+      "itemName": "Spicule",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64702,7 +64702,7 @@
     },
     {
       "className": "qdrv_wetk_s02_yeager_scitem",
-      "itemName": "QDRV_WETK_S02_Yeager_SCItem",
+      "itemName": "Yeager",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64711,7 +64711,7 @@
     },
     {
       "className": "qdrv_just_s02_yaluk_scitem",
-      "itemName": "QDRV_JUST_S02_Yaluk_SCItem",
+      "itemName": "Yaluk",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64720,7 +64720,7 @@
     },
     {
       "className": "qdrv_tars_s02_odyssey_scitem",
-      "itemName": "QDRV_TARS_S02_Odyssey_SCItem",
+      "itemName": "Odyssey",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64729,7 +64729,7 @@
     },
     {
       "className": "qdrv_arcc_s02_flash_scitem",
-      "itemName": "QDRV_ARCC_S02_Flash_SCItem",
+      "itemName": "Flash",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64738,7 +64738,7 @@
     },
     {
       "className": "qdrv_rsi_s02_hemera_scitem",
-      "itemName": "QDRV_RSI_S02_Hemera_SCItem",
+      "itemName": "Hemera",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64747,7 +64747,7 @@
     },
     {
       "className": "qdrv_wetk_s02_crossfield_scitem",
-      "itemName": "QDRV_WETK_S02_Crossfield_SCItem",
+      "itemName": "Crossfield",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64756,7 +64756,7 @@
     },
     {
       "className": "qdrv_raco_s02_bolt_scitem",
-      "itemName": "QDRV_RACO_S02_Bolt_SCItem",
+      "itemName": "Bolt",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64765,7 +64765,7 @@
     },
     {
       "className": "qdrv_tars_s02_quest_scitem",
-      "itemName": "QDRV_TARS_S02_Quest_SCItem",
+      "itemName": "Quest",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64774,7 +64774,7 @@
     },
     {
       "className": "qdrv_orig_s04_890j_scitem",
-      "itemName": "QDRV_ORIG_S04_890J_SCItem",
+      "itemName": "Allegro",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64783,7 +64783,7 @@
     },
     {
       "className": "qdrv_wetk_s04_idris_temp",
-      "itemName": "QDRV_WETK_S04_Idris_TEMP",
+      "itemName": "S4 Quantum Drive",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64792,7 +64792,7 @@
     },
     {
       "className": "qdrv_rsi_s03_tyche_scitem",
-      "itemName": "QDRV_RSI_S03_Tyche_SCItem",
+      "itemName": "Tyche",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64801,7 +64801,7 @@
     },
     {
       "className": "qdrv_just_s03_vesta_scitem",
-      "itemName": "QDRV_JUST_S03_Vesta_SCItem",
+      "itemName": "Vesta",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64810,7 +64810,7 @@
     },
     {
       "className": "qdrv_rsi_s03_metis_scitem",
-      "itemName": "QDRV_RSI_S03_Metis_SCItem",
+      "itemName": "Metis",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64819,7 +64819,7 @@
     },
     {
       "className": "qdrv_tars_s03_ranger_scitem",
-      "itemName": "QDRV_TARS_S03_Ranger_SCItem",
+      "itemName": "Ranger",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64828,7 +64828,7 @@
     },
     {
       "className": "qdrv_rsi_s03_erebos_scitem",
-      "itemName": "QDRV_RSI_S03_Erebos_SCItem",
+      "itemName": "Erebos",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64837,7 +64837,7 @@
     },
     {
       "className": "qdrv_just_s03_kama_scitem",
-      "itemName": "QDRV_JUST_S03_Kama_SCItem",
+      "itemName": "Kama",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64846,7 +64846,7 @@
     },
     {
       "className": "qdrv_wetk_s03_ts2_scitem",
-      "itemName": "QDRV_WETK_S03_TS2_SCItem",
+      "itemName": "TS-2",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64855,7 +64855,7 @@
     },
     {
       "className": "qdrv_tars_s03_wanderer_scitem",
-      "itemName": "QDRV_TARS_S03_Wanderer_SCItem",
+      "itemName": "Wanderer",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64864,7 +64864,7 @@
     },
     {
       "className": "qdrv_wetk_s03_pontes_scitem",
-      "itemName": "QDRV_WETK_S03_Pontes_SCItem",
+      "itemName": "Pontes",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64873,7 +64873,7 @@
     },
     {
       "className": "qdrv_arcc_s03_fissure_scitem",
-      "itemName": "QDRV_ARCC_S03_Fissure_SCItem",
+      "itemName": "Fissure",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64882,7 +64882,7 @@
     },
     {
       "className": "qdrv_wetk_s03_balandin_scitem",
-      "itemName": "QDRV_WETK_S03_Balandin_SCItem",
+      "itemName": "Balandin",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64891,7 +64891,7 @@
     },
     {
       "className": "qdrv_arcc_s03_echo_scitem",
-      "itemName": "QDRV_ARCC_S03_Echo_SCItem",
+      "itemName": "Echo",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64900,7 +64900,7 @@
     },
     {
       "className": "qdrv_arcc_s03_impulse_scitem",
-      "itemName": "QDRV_ARCC_S03_Impulse_SCItem",
+      "itemName": "Impulse",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64909,7 +64909,7 @@
     },
     {
       "className": "qdrv_tars_s03_drifter_scitem",
-      "itemName": "QDRV_TARS_S03_Drifter_SCItem",
+      "itemName": "Drifter",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64918,7 +64918,7 @@
     },
     {
       "className": "qdrv_just_s03_agni_scitem",
-      "itemName": "QDRV_JUST_S03_Agni_SCItem",
+      "itemName": "Agni",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64927,7 +64927,7 @@
     },
     {
       "className": "qdrv_tars_s01_expedition_scitem",
-      "itemName": "QDRV_TARS_S01_Expedition_SCItem",
+      "itemName": "Expedition",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64936,7 +64936,7 @@
     },
     {
       "className": "qdrv_rsi_s01_hyperion_scitem",
-      "itemName": "QDRV_RSI_S01_Hyperion_SCItem",
+      "itemName": "Hyperion",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64945,7 +64945,7 @@
     },
     {
       "className": "qdrv_acas_s01_foxfire_scitem",
-      "itemName": "QDRV_ACAS_S01_FoxFire_SCItem",
+      "itemName": "S1 Quantum Drive",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64954,7 +64954,7 @@
     },
     {
       "className": "qdrv_just_s01_colossus_scitem",
-      "itemName": "QDRV_JUST_S01_Colossus_SCItem",
+      "itemName": "Colossus",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64963,7 +64963,7 @@
     },
     {
       "className": "qdrv_arcc_s01_burst_scitem",
-      "itemName": "QDRV_ARCC_S01_Burst_SCItem",
+      "itemName": "Burst",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64972,7 +64972,7 @@
     },
     {
       "className": "qdrv_rsi_s01_eos_scitem",
-      "itemName": "QDRV_RSI_S01_Eos_SCItem",
+      "itemName": "Eos",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64981,7 +64981,7 @@
     },
     {
       "className": "qdrv_tars_s01_voyage_scitem",
-      "itemName": "QDRV_TARS_S01_Voyage_SCItem",
+      "itemName": "Voyage",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64990,7 +64990,7 @@
     },
     {
       "className": "qdrv_raco_s01_drift_scitem",
-      "itemName": "QDRV_RACO_S01_Drift_SCItem",
+      "itemName": "Drift",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -64999,7 +64999,7 @@
     },
     {
       "className": "qdrv_arcc_s01_flood_scitem",
-      "itemName": "QDRV_ARCC_S01_Flood_SCItem",
+      "itemName": "Flood",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65008,7 +65008,7 @@
     },
     {
       "className": "qdrv_just_s01_vulcan_scitem",
-      "itemName": "QDRV_JUST_S01_Vulcan_SCItem",
+      "itemName": "Vulcan",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65017,7 +65017,7 @@
     },
     {
       "className": "qdrv_wetk_s01_vk00_scitem",
-      "itemName": "QDRV_WETK_S01_VK00_SCItem",
+      "itemName": "VK-00",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65026,7 +65026,7 @@
     },
     {
       "className": "qdrv_acas_s01_foxfire_scitem",
-      "itemName": "QDRV_ACAS_S01_FoxFire_SCItem",
+      "itemName": "S1 Quantum Drive",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65035,7 +65035,7 @@
     },
     {
       "className": "qdrv_tars_s01_wayfare_scitem",
-      "itemName": "QDRV_TARS_S01_Wayfare_SCItem",
+      "itemName": "Wayfare",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65044,7 +65044,7 @@
     },
     {
       "className": "qdrv_raco_s01_spectre_scitem",
-      "itemName": "QDRV_RACO_S01_Spectre_SCItem",
+      "itemName": "Spectre",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65053,7 +65053,7 @@
     },
     {
       "className": "qdrv_rsi_s01_atlas_scitem",
-      "itemName": "QDRV_RSI_S01_Atlas_SCItem",
+      "itemName": "Atlas",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65062,7 +65062,7 @@
     },
     {
       "className": "qdrv_raco_s01_zephyr_scitem",
-      "itemName": "QDRV_RACO_S01_Zephyr_SCItem",
+      "itemName": "Zephyr",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65071,7 +65071,7 @@
     },
     {
       "className": "qdrv_acas_s01_foxfire_scitem",
-      "itemName": "QDRV_ACAS_S01_FoxFire_SCItem",
+      "itemName": "S1 Quantum Drive",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65080,7 +65080,7 @@
     },
     {
       "className": "qdrv_arcc_s01_rush_scitem",
-      "itemName": "QDRV_ARCC_S01_Rush_SCItem",
+      "itemName": "Rush",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65089,7 +65089,7 @@
     },
     {
       "className": "qdrv_wetk_s01_siren_scitem",
-      "itemName": "QDRV_WETK_S01_Siren_SCItem",
+      "itemName": "Siren",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65098,7 +65098,7 @@
     },
     {
       "className": "qdrv_acas_s01_lightfire_scitem",
-      "itemName": "QDRV_ACAS_S01_LightFire_SCItem",
+      "itemName": "S1 Quantum Drive",
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
@@ -65107,7 +65107,7 @@
     },
     {
       "className": "radr_chco_s00_surveyorgo",
-      "itemName": "RADR_CHCO_S00_SurveyorGo",
+      "itemName": "Surveyor-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65116,7 +65116,7 @@
     },
     {
       "className": "radr_grnp_s00_sens",
-      "itemName": "RADR_GRNP_S00_Sens",
+      "itemName": "Sens",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65125,7 +65125,7 @@
     },
     {
       "className": "radr_nave_s02_snsr7x",
-      "itemName": "RADR_NAVE_S02_SNSR7x",
+      "itemName": "SNS-R7x",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65134,7 +65134,7 @@
     },
     {
       "className": "radr_wlop_s01_abetti",
-      "itemName": "RADR_WLOP_S01_Abetti",
+      "itemName": "Abetti",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65143,7 +65143,7 @@
     },
     {
       "className": "radr_nave_s01_snsr7",
-      "itemName": "RADR_NAVE_S01_SNSR7",
+      "itemName": "SNSR7",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65152,7 +65152,7 @@
     },
     {
       "className": "radr_grno_s00_agure",
-      "itemName": "RADR_GRNO_S00_Agure",
+      "itemName": "Agure",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65161,7 +65161,7 @@
     },
     {
       "className": "radr_chco_s02_fullspec",
-      "itemName": "RADR_CHCO_S02_FullSpec",
+      "itemName": "FullSpec",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65170,7 +65170,7 @@
     },
     {
       "className": "radr_wlop_s02_chernykh",
-      "itemName": "RADR_WLOP_S02_Chernykh",
+      "itemName": "Chernykh",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65179,7 +65179,7 @@
     },
     {
       "className": "radr_wlop_s02_fawad",
-      "itemName": "RADR_WLOP_S02_Fawad",
+      "itemName": "Fawad",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65188,7 +65188,7 @@
     },
     {
       "className": "radr_chco_s03_broudspec",
-      "itemName": "RADR_CHCO_S03_BroudSpec",
+      "itemName": "BroadSpec",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65197,7 +65197,7 @@
     },
     {
       "className": "radr_chco_s00_broadspecgo",
-      "itemName": "RADR_CHCO_S00_BroadSpecGo",
+      "itemName": "BroadSpec-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65206,7 +65206,7 @@
     },
     {
       "className": "radr_chco_s00_broadspecgo",
-      "itemName": "RADR_CHCO_S00_BroadSpecGo",
+      "itemName": "BroadSpec-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65215,7 +65215,7 @@
     },
     {
       "className": "radr_chco_s01_surveyorlite",
-      "itemName": "RADR_CHCO_S01_SurveyorLite",
+      "itemName": "Surveyor-Lite",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65224,7 +65224,7 @@
     },
     {
       "className": "radr_grnp_s02_vb80112",
-      "itemName": "RADR_GRNP_S02_VB80112",
+      "itemName": "V801-12",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65233,7 +65233,7 @@
     },
     {
       "className": "radr_grnp_s00_v6026",
-      "itemName": "RADR_GRNP_S00_V6026",
+      "itemName": "V60-26",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65242,7 +65242,7 @@
     },
     {
       "className": "radr_wlop_s03_socoria",
-      "itemName": "RADR_WLOP_S03_Socoria",
+      "itemName": "Socoria",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65251,7 +65251,7 @@
     },
     {
       "className": "radr_chco_s03_fullspecmax",
-      "itemName": "RADR_CHCO_S03_FullSpecMax",
+      "itemName": "FullSpec-Max",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65260,7 +65260,7 @@
     },
     {
       "className": "radr_bltr_s02_cassandra",
-      "itemName": "RADR_BLTR_S02_Cassandra",
+      "itemName": "Cassandra",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65269,7 +65269,7 @@
     },
     {
       "className": "radr_wlop_s01_backlund",
-      "itemName": "RADR_WLOP_S01_Backlund",
+      "itemName": "Backlund",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65278,7 +65278,7 @@
     },
     {
       "className": "radr_nave_s01_snsr5",
-      "itemName": "RADR_NAVE_S01_SNSR5",
+      "itemName": "SNSR5",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65287,7 +65287,7 @@
     },
     {
       "className": "radr_grnp_s02_vigilance",
-      "itemName": "RADR_GRNP_S02_Vigilance",
+      "itemName": "Vigilance",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65296,7 +65296,7 @@
     },
     {
       "className": "radr_nave_s02_sns_r6x",
-      "itemName": "RADR_NAVE_S02_SNS_R6x",
+      "itemName": "SNS-R6x",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65305,7 +65305,7 @@
     },
     {
       "className": "radr_chco_s00_fullspecgo",
-      "itemName": "RADR_CHCO_S00_FullSpecGo",
+      "itemName": "FullSpec-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65314,7 +65314,7 @@
     },
     {
       "className": "radr_bltr_s02_spyglass",
-      "itemName": "RADR_BLTR_S02_Spyglass",
+      "itemName": "Spyglass",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65323,7 +65323,7 @@
     },
     {
       "className": "radr_nave_s01_snsr6",
-      "itemName": "RADR_NAVE_S01_SNSR6",
+      "itemName": "SNS-R6",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65332,7 +65332,7 @@
     },
     {
       "className": "radr_chco_s03_observermax",
-      "itemName": "RADR_CHCO_S03_ObserverMax",
+      "itemName": "Observer-Max",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65341,7 +65341,7 @@
     },
     {
       "className": "radr_grnp_s03_resolu",
-      "itemName": "RADR_GRNP_S03_Resolu",
+      "itemName": "Resolu",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65350,7 +65350,7 @@
     },
     {
       "className": "radr_grnp_s03_devoue",
-      "itemName": "RADR_GRNP_S03_Devoue",
+      "itemName": "Devoue",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65359,7 +65359,7 @@
     },
     {
       "className": "radr_bltr_s01_pelerous",
-      "itemName": "RADR_BLTR_S01_Pelerous",
+      "itemName": "Pelerous",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65368,7 +65368,7 @@
     },
     {
       "className": "radr_chco_s02_broadspec_lite",
-      "itemName": "RADR_CHCO_S02_BroadSpec_Lite",
+      "itemName": "BroadSpec",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65377,7 +65377,7 @@
     },
     {
       "className": "radr_chco_s00_broadspecgo",
-      "itemName": "RADR_CHCO_S00_BroadSpecGo",
+      "itemName": "BroadSpec-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65386,7 +65386,7 @@
     },
     {
       "className": "radr_chco_s02_observer",
-      "itemName": "RADR_CHCO_S02_Observer",
+      "itemName": "Observer",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65395,7 +65395,7 @@
     },
     {
       "className": "radr_chco_s00_observergo",
-      "itemName": "RADR_CHCO_S00_ObserverGo",
+      "itemName": "Observer-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65404,7 +65404,7 @@
     },
     {
       "className": "radr_grnp_s01_ecouter",
-      "itemName": "RADR_GRNP_S01_Ecouter",
+      "itemName": "Ecouter",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65413,7 +65413,7 @@
     },
     {
       "className": "radr_nave_s02_snsr5x",
-      "itemName": "RADR_NAVE_S02_SNSR5x",
+      "itemName": "SNS-R5x",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65422,7 +65422,7 @@
     },
     {
       "className": "radr_chco_s01_observerlite",
-      "itemName": "RADR_CHCO_S01_ObserverLite",
+      "itemName": "Observer-Lite",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65431,7 +65431,7 @@
     },
     {
       "className": "radr_bltr_s02_predator",
-      "itemName": "RADR_BLTR_S02_Predator",
+      "itemName": "Predator",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65440,7 +65440,7 @@
     },
     {
       "className": "radr_wlop_s02_agrippa",
-      "itemName": "RADR_WLOP_S02_Agrippa",
+      "itemName": "Agrippa",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65449,7 +65449,7 @@
     },
     {
       "className": "radr_chco_s00_broadspecgo",
-      "itemName": "RADR_CHCO_S00_BroadSpecGo",
+      "itemName": "BroadSpec-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65458,7 +65458,7 @@
     },
     {
       "className": "radr_grnp_s03_v880",
-      "itemName": "RADR_GRNP_S03_V880",
+      "itemName": "V880",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65467,7 +65467,7 @@
     },
     {
       "className": "radr_bltr_s01_hunter",
-      "itemName": "RADR_BLTR_S01_Hunter",
+      "itemName": "Hunter",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65476,7 +65476,7 @@
     },
     {
       "className": "radr_grnp_s01_v80111",
-      "itemName": "RADR_GRNP_S01_V80111",
+      "itemName": "V801-11",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65485,7 +65485,7 @@
     },
     {
       "className": "radr_chco_s00_broadspecgo",
-      "itemName": "RADR_CHCO_S00_BroadSpecGo",
+      "itemName": "BroadSpec-Go",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65494,7 +65494,7 @@
     },
     {
       "className": "radr_wlop_s01_fleming",
-      "itemName": "RADR_WLOP_S01_Fleming",
+      "itemName": "Fleming",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65503,7 +65503,7 @@
     },
     {
       "className": "radr_wlop_s03_anysta",
-      "itemName": "RADR_WLOP_S03_Anysta",
+      "itemName": "Anysta",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65512,7 +65512,7 @@
     },
     {
       "className": "radr_bltr_s01_prophet",
-      "itemName": "RADR_BLTR_S01_Prophet",
+      "itemName": "Prophet",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65521,7 +65521,7 @@
     },
     {
       "className": "radr_grnp_s01_voir",
-      "itemName": "RADR_GRNP_S01_Voir",
+      "itemName": "Voir",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65530,7 +65530,7 @@
     },
     {
       "className": "radr_grnp_s00_prevenir",
-      "itemName": "RADR_GRNP_S00_Prevenir",
+      "itemName": "Prevenir",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65539,7 +65539,7 @@
     },
     {
       "className": "radr_chco_s03_surveyormax",
-      "itemName": "RADR_CHCO_S03_SurveyorMax",
+      "itemName": "Surveyor-Max",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65548,7 +65548,7 @@
     },
     {
       "className": "radr_grnp_s03_fidele",
-      "itemName": "RADR_GRNP_S03_Fidele",
+      "itemName": "Fidele",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65557,7 +65557,7 @@
     },
     {
       "className": "radr_grnp_s02_savoir",
-      "itemName": "RADR_GRNP_S02_Savoir",
+      "itemName": "Savoir",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65566,7 +65566,7 @@
     },
     {
       "className": "radr_rsi_s04_polaris",
-      "itemName": "RADR_RSI_S04_Polaris",
+      "itemName": "RSI S4 Radar",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65575,7 +65575,7 @@
     },
     {
       "className": "radr_chco_s04_broadspecmax",
-      "itemName": "RADR_CHCO_S04_BroadSpecMax",
+      "itemName": "BroadSpec-Max",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65584,7 +65584,7 @@
     },
     {
       "className": "radr_chco_s02_surveyor",
-      "itemName": "RADR_CHCO_S02_Surveyor",
+      "itemName": "Surveyor",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65593,7 +65593,7 @@
     },
     {
       "className": "radr_gnrp_s03_idris_temp",
-      "itemName": "RADR_GNRP_S03_Idris_TEMP",
+      "itemName": "S3 Radar",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65602,7 +65602,7 @@
     },
     {
       "className": "radr_wlop_s02_battani",
-      "itemName": "RADR_WLOP_S02_Battani",
+      "itemName": "Battani",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65611,7 +65611,7 @@
     },
     {
       "className": "radr_grnp_s01_tige",
-      "itemName": "RADR_GRNP_S01_Tige",
+      "itemName": "Tige",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65620,7 +65620,7 @@
     },
     {
       "className": "radr_grnp_s02_epier",
-      "itemName": "RADR_GRNP_S02_Epier",
+      "itemName": "Epier",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65629,7 +65629,7 @@
     },
     {
       "className": "radr_wlop_s03_capsulo",
-      "itemName": "RADR_WLOP_S03_Capsulo",
+      "itemName": "Capsulo",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65638,7 +65638,7 @@
     },
     {
       "className": "radr_wlop_s03_lephari",
-      "itemName": "RADR_WLOP_S03_Lephari",
+      "itemName": "Wei-Tek S3 Radar",
       "category": "ShipRadar",
       "subtype": "",
       "tier": 0,
@@ -65647,7 +65647,7 @@
     },
     {
       "className": "salvage_modifier_scraper_salvation_small",
-      "itemName": "Salvage_Modifier_Scraper_Salvation_Small",
+      "itemName": "Cinch Scraper Module",
       "category": "ShipSalvage",
       "subtype": "",
       "tier": 0,
@@ -65656,7 +65656,7 @@
     },
     {
       "className": "salvage_modifier_scraper_small",
-      "itemName": "Salvage_Modifier_Scraper_Small",
+      "itemName": "Cinch Scraper Module",
       "category": "ShipSalvage",
       "subtype": "",
       "tier": 0,
@@ -65665,7 +65665,7 @@
     },
     {
       "className": "salvage_modifier_scraper_medium",
-      "itemName": "Salvage_Modifier_Scraper_Medium",
+      "itemName": "Abrade Scraper Module",
       "category": "ShipSalvage",
       "subtype": "",
       "tier": 0,
@@ -65674,7 +65674,7 @@
     },
     {
       "className": "salvage_modifier_scraper_salvation_medium",
-      "itemName": "Salvage_Modifier_Scraper_Salvation_Medium",
+      "itemName": "Cinch Scraper Module",
       "category": "ShipSalvage",
       "subtype": "",
       "tier": 0,
@@ -65683,7 +65683,7 @@
     },
     {
       "className": "salvage_modifier_scraper_large",
-      "itemName": "Salvage_Modifier_Scraper_Large",
+      "itemName": "Trawler Scraper Module",
       "category": "ShipSalvage",
       "subtype": "",
       "tier": 0,
@@ -65692,7 +65692,7 @@
     },
     {
       "className": "shld_behr_s02_5ma_scitem",
-      "itemName": "SHLD_BEHR_S02_5MA_SCItem",
+      "itemName": "5MA 'Chimalli'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65701,7 +65701,7 @@
     },
     {
       "className": "shld_godi_s01_forcewall_scitem",
-      "itemName": "SHLD_GODI_S01_ForceWall_SCItem",
+      "itemName": "ForceWall",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65710,7 +65710,7 @@
     },
     {
       "className": "shld_godi_s02_fullstop_scitem",
-      "itemName": "SHLD_GODI_S02_FullStop_SCItem",
+      "itemName": "FullStop",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65719,7 +65719,7 @@
     },
     {
       "className": "shld_godi_s04_idris_scitem",
-      "itemName": "SHLD_GODI_S04_Idris_SCItem",
+      "itemName": "Holdstrong",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65728,7 +65728,7 @@
     },
     {
       "className": "shld_behr_s03_6ca_scitem",
-      "itemName": "SHLD_BEHR_S03_6CA_SCItem",
+      "itemName": "6CA 'Bila'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65737,7 +65737,7 @@
     },
     {
       "className": "shld_godi_s02_fr76_scitem",
-      "itemName": "SHLD_GODI_S02_FR76_SCItem",
+      "itemName": "FR-76",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65746,7 +65746,7 @@
     },
     {
       "className": "shld_aegs_s04_reclaimer_scitem",
-      "itemName": "SHLD_AEGS_S04_Reclaimer_SCItem",
+      "itemName": "RS-Barrier",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65755,7 +65755,7 @@
     },
     {
       "className": "shld_behr_s02_7ma_scitem",
-      "itemName": "SHLD_BEHR_S02_7MA_SCItem",
+      "itemName": "7MA 'Lorica'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65764,7 +65764,7 @@
     },
     {
       "className": "shld_orig_s04_890j_scitem",
-      "itemName": "SHLD_ORIG_S04_890J_SCItem",
+      "itemName": "Glacis",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65773,7 +65773,7 @@
     },
     {
       "className": "shld_asas_s01_shimmer_scitem",
-      "itemName": "SHLD_ASAS_S01_Shimmer_SCItem",
+      "itemName": "Shimmer",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65782,7 +65782,7 @@
     },
     {
       "className": "shld_basl_s00_castra_scitem",
-      "itemName": "SHLD_BASL_S00_Castra_SCItem",
+      "itemName": "Castra",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65791,7 +65791,7 @@
     },
     {
       "className": "shld_behr_s01_6sa_scitem",
-      "itemName": "SHLD_BEHR_S01_6SA_SCItem",
+      "itemName": "6SA",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65800,7 +65800,7 @@
     },
     {
       "className": "shld_seco_s01_web_scitem",
-      "itemName": "SHLD_SECO_S01_WEB_SCItem",
+      "itemName": "WEB",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65809,7 +65809,7 @@
     },
     {
       "className": "shld_seco_s01_hex_scitem",
-      "itemName": "SHLD_SECO_S01_HEX_SCItem",
+      "itemName": "HEX",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65818,7 +65818,7 @@
     },
     {
       "className": "shld_behr_s01_7sa_scitem",
-      "itemName": "SHLD_BEHR_S01_7SA_SCItem",
+      "itemName": "7SA",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65827,7 +65827,7 @@
     },
     {
       "className": "shld_basl_s02_citadel_scitem",
-      "itemName": "SHLD_BASL_S02_Citadel_SCItem",
+      "itemName": "Citadel",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65836,7 +65836,7 @@
     },
     {
       "className": "shld_basl_s01_palisade_scitem",
-      "itemName": "SHLD_BASL_S01_Palisade_SCItem",
+      "itemName": "Palisade",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65845,7 +65845,7 @@
     },
     {
       "className": "shld_basl_s02_aspis_scitem",
-      "itemName": "SHLD_BASL_S02_Aspis_SCItem",
+      "itemName": "Aspis",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65854,7 +65854,7 @@
     },
     {
       "className": "shld_seco_s03_haven_scitem",
-      "itemName": "SHLD_SECO_S03_HAVEN_SCItem",
+      "itemName": "HAVEN",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65863,7 +65863,7 @@
     },
     {
       "className": "shld_godi_s03_securescreen_scitem",
-      "itemName": "SHLD_GODI_S03_SecureScreen_SCItem",
+      "itemName": "SecureScreen",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65872,7 +65872,7 @@
     },
     {
       "className": "shld_seco_s03_guard_scitem",
-      "itemName": "SHLD_SECO_S03_GUARD_SCItem",
+      "itemName": "GUARD",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65881,7 +65881,7 @@
     },
     {
       "className": "shld_asas_s02_shroud_scitem",
-      "itemName": "SHLD_ASAS_S02_Shroud_SCItem",
+      "itemName": "Shroud",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65890,7 +65890,7 @@
     },
     {
       "className": "shld_basl_s01_steward_scitem",
-      "itemName": "SHLD_BASL_S01_Steward_SCItem",
+      "itemName": "Steward",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65899,7 +65899,7 @@
     },
     {
       "className": "shld_seco_s02_rpel_scitem",
-      "itemName": "SHLD_SECO_S02_RPEL_SCItem",
+      "itemName": "RPEL",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65908,7 +65908,7 @@
     },
     {
       "className": "shld_basl_s03_ward_scitem",
-      "itemName": "SHLD_BASL_S03_Ward_SCItem",
+      "itemName": "Ward",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65917,7 +65917,7 @@
     },
     {
       "className": "shld_godi_s03_fullblock_scitem",
-      "itemName": "SHLD_GODI_S03_FullBlock_SCItem",
+      "itemName": "FullBlock",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65926,7 +65926,7 @@
     },
     {
       "className": "shld_yorm_s02_bamoty_scitem",
-      "itemName": "SHLD_YORM_S02_Bamoty_SCItem",
+      "itemName": "Bamoty",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65935,7 +65935,7 @@
     },
     {
       "className": "shld_godi_s03_fr86_scitem",
-      "itemName": "SHLD_GODI_S03_FR86_SCItem",
+      "itemName": "FR-86",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65944,7 +65944,7 @@
     },
     {
       "className": "shld_yorm_s01_jaghte_scitem",
-      "itemName": "SHLD_YORM_S01_Jaghte_SCItem",
+      "itemName": "Jaghte",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65953,7 +65953,7 @@
     },
     {
       "className": "shld_yorm_s01_targa_scitem",
-      "itemName": "SHLD_YORM_S01_Targa_SCItem",
+      "itemName": "Targa",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65962,7 +65962,7 @@
     },
     {
       "className": "shld_basl_s02_rampart_scitem",
-      "itemName": "SHLD_BASL_S02_Rampart_SCItem",
+      "itemName": "Rampart",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65971,7 +65971,7 @@
     },
     {
       "className": "shld_asas_s01_cloak_scitem",
-      "itemName": "SHLD_ASAS_S01_Cloak_SCItem",
+      "itemName": "Cloak",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65980,7 +65980,7 @@
     },
     {
       "className": "shld_seco_s00_pin_scitem",
-      "itemName": "SHLD_SECO_S00_PIN_SCItem",
+      "itemName": "PIN",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65989,7 +65989,7 @@
     },
     {
       "className": "shld_asas_s02_umbra_scitem",
-      "itemName": "SHLD_ASAS_S02_Umbra_SCItem",
+      "itemName": "Umbra",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -65998,7 +65998,7 @@
     },
     {
       "className": "shld_behr_s03_6ca_scitem",
-      "itemName": "SHLD_BEHR_S03_6CA_SCItem",
+      "itemName": "6CA 'Bila'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66007,7 +66007,7 @@
     },
     {
       "className": "shld_godi_s01_fr66_scitem",
-      "itemName": "SHLD_GODI_S01_FR66_SCItem",
+      "itemName": "FR-66",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66016,7 +66016,7 @@
     },
     {
       "className": "shld_basl_s03_stronghold_scitem",
-      "itemName": "SHLD_BASL_S03_Stronghold_SCItem",
+      "itemName": "Stronghold",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66025,7 +66025,7 @@
     },
     {
       "className": "shld_basl_s01_bulwark_scitem",
-      "itemName": "SHLD_BASL_S01_Bulwark_SCItem",
+      "itemName": "Bulwark",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66034,7 +66034,7 @@
     },
     {
       "className": "shld_basl_s03_barbican_scitem",
-      "itemName": "SHLD_BASL_S03_Barbican_SCItem",
+      "itemName": "Barbican",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66043,7 +66043,7 @@
     },
     {
       "className": "shld_yorm_s02_trenta_scitem",
-      "itemName": "SHLD_YORM_S02_Trenta_SCItem",
+      "itemName": "Trenta",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66052,7 +66052,7 @@
     },
     {
       "className": "shld_yorm_s01_falco_scitem",
-      "itemName": "SHLD_YORM_S01_Falco_SCItem",
+      "itemName": "Falco",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66061,7 +66061,7 @@
     },
     {
       "className": "shld_godi_s02_secureshield_scitem",
-      "itemName": "SHLD_GODI_S02_SecureShield_SCItem",
+      "itemName": "SecureShield",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66070,7 +66070,7 @@
     },
     {
       "className": "shld_seco_s02_stop_scitem",
-      "itemName": "SHLD_SECO_S02_STOP_SCItem",
+      "itemName": "STOP",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66079,7 +66079,7 @@
     },
     {
       "className": "shld_godi_s01_securehyde_scitem",
-      "itemName": "SHLD_GODI_S01_SecureHyde_SCItem",
+      "itemName": "SecureHyde",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66088,7 +66088,7 @@
     },
     {
       "className": "shld_basl_s01_guardian_scitem",
-      "itemName": "SHLD_BASL_S01_Guardian_SCItem",
+      "itemName": "Guardian",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66097,7 +66097,7 @@
     },
     {
       "className": "shld_asas_s02_obscura_scitem",
-      "itemName": "SHLD_ASAS_S02_Obscura_SCItem",
+      "itemName": "Obscura",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66106,7 +66106,7 @@
     },
     {
       "className": "shld_yorm_s02_haltur_scitem",
-      "itemName": "SHLD_YORM_S02_Haltur_SCItem",
+      "itemName": "Haltur",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66115,7 +66115,7 @@
     },
     {
       "className": "shld_seco_s01_ink_scitem",
-      "itemName": "SHLD_SECO_S01_INK_SCItem",
+      "itemName": "INK",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66124,7 +66124,7 @@
     },
     {
       "className": "shld_behr_s02_6ma_scitem",
-      "itemName": "SHLD_BEHR_S02_6MA_SCItem",
+      "itemName": "6MA 'Kozane'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66133,7 +66133,7 @@
     },
     {
       "className": "shld_basl_s02_armada_scitem",
-      "itemName": "SHLD_BASL_S02_Armada_SCItem",
+      "itemName": "Armada",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66142,7 +66142,7 @@
     },
     {
       "className": "shld_behr_s01_5sa_scitem",
-      "itemName": "SHLD_BEHR_S01_5SA_SCItem",
+      "itemName": "5SA 'Rhada'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66151,7 +66151,7 @@
     },
     {
       "className": "shld_asas_s01_mirage_scitem",
-      "itemName": "SHLD_ASAS_S01_Mirage_SCItem",
+      "itemName": "Mirage",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66160,7 +66160,7 @@
     },
     {
       "className": "shld_behr_s03_7ca_scitem",
-      "itemName": "SHLD_BEHR_S03_7CA_SCItem",
+      "itemName": "7CA 'Nargun'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66169,7 +66169,7 @@
     },
     {
       "className": "shld_seco_s02_bloc_scitem",
-      "itemName": "SHLD_SECO_S02_BLOC_SCItem",
+      "itemName": "BLOC",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66178,7 +66178,7 @@
     },
     {
       "className": "shld_orig_s04_890j_scitem",
-      "itemName": "SHLD_ORIG_S04_890J_SCItem",
+      "itemName": "Glacis",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66187,7 +66187,7 @@
     },
     {
       "className": "shld_godi_s02_coverall_scitem",
-      "itemName": "SHLD_GODI_S02_CoverAll_SCItem",
+      "itemName": "CoverAll",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66196,7 +66196,7 @@
     },
     {
       "className": "shld_godi_s01_allstop_scitem",
-      "itemName": "SHLD_GODI_S01_AllStop_SCItem",
+      "itemName": "AllStop",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66205,7 +66205,7 @@
     },
     {
       "className": "shld_basl_s03_parapet_scitem",
-      "itemName": "SHLD_BASL_S03_Parapet_SCItem",
+      "itemName": "Parapet",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66214,7 +66214,7 @@
     },
     {
       "className": "shld_behr_s03_5ca_scitem",
-      "itemName": "SHLD_BEHR_S03_5CA_SCItem",
+      "itemName": "5CA 'Akura'",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66223,7 +66223,7 @@
     },
     {
       "className": "shld_asas_s01_veil_scitem",
-      "itemName": "SHLD_ASAS_S01_Veil_SCItem",
+      "itemName": "Veil",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66232,7 +66232,7 @@
     },
     {
       "className": "shld_asas_s02_sheut_scitem",
-      "itemName": "SHLD_ASAS_S02_Sheut_SCItem",
+      "itemName": "Sheut",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66241,7 +66241,7 @@
     },
     {
       "className": "shld_godi_s03_surestop_scitem",
-      "itemName": "SHLD_GODI_S03_SureStop_SCItem",
+      "itemName": "SureStop",
       "category": "ShipShield",
       "subtype": "",
       "tier": 0,
@@ -66250,7 +66250,7 @@
     },
     {
       "className": "wep_tractorbeam_s2_military_1",
-      "itemName": "WEP_TractorBeam_S2_Military_1",
+      "itemName": "ViseLock S2 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66259,7 +66259,7 @@
     },
     {
       "className": "wep_tractorbeam_s2_utility_2",
-      "itemName": "WEP_TractorBeam_S2_Utility_2",
+      "itemName": "SureGrip PR-S2 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66268,7 +66268,7 @@
     },
     {
       "className": "wep_tractorbeam_s1_utility_2",
-      "itemName": "WEP_TractorBeam_S1_Utility_2",
+      "itemName": "SureGrip PR-S1 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66286,7 +66286,7 @@
     },
     {
       "className": "wep_tractorbeam_s1_utility_1",
-      "itemName": "WEP_TractorBeam_S1_Utility_1",
+      "itemName": "SureGrip HV-S1 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66313,7 +66313,7 @@
     },
     {
       "className": "wep_tractorbeam_s2_utility_1",
-      "itemName": "WEP_TractorBeam_S2_Utility_1",
+      "itemName": "SureGrip HV-S2 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66331,7 +66331,7 @@
     },
     {
       "className": "wep_tractorbeam_s1_military_1",
-      "itemName": "WEP_TractorBeam_S1_Military_1",
+      "itemName": "ViseLock S1 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66340,7 +66340,7 @@
     },
     {
       "className": "grin_tractorbeam_s1",
-      "itemName": "GRIN_TractorBeam_S1",
+      "itemName": "SureGrip S1 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66349,7 +66349,7 @@
     },
     {
       "className": "grin_tractorbeam_s2",
-      "itemName": "GRIN_TractorBeam_S2",
+      "itemName": "SureGrip S2 Tractor Beam",
       "category": "ShipTractorBeam",
       "subtype": "",
       "tier": 0,
@@ -66358,7 +66358,7 @@
     },
     {
       "className": "behr_ballisticcannon_s4",
-      "itemName": "BEHR_BallisticCannon_S4",
+      "itemName": "C-788 Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66367,7 +66367,7 @@
     },
     {
       "className": "gats_ballisticcannon_s2",
-      "itemName": "GATS_BallisticCannon_S2",
+      "itemName": "Tarantula GT-870 Mark 2 Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66376,7 +66376,7 @@
     },
     {
       "className": "espr_ballisticcannon_s4",
-      "itemName": "ESPR_BallisticCannon_S4",
+      "itemName": "Deadbolt IV Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66385,7 +66385,7 @@
     },
     {
       "className": "espr_ballisticcannon_s1",
-      "itemName": "ESPR_BallisticCannon_S1",
+      "itemName": "Deadbolt I Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66394,7 +66394,7 @@
     },
     {
       "className": "kbar_ballisticcannon_s1",
-      "itemName": "KBAR_BallisticCannon_S1",
+      "itemName": "9-Series Longsword Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66403,7 +66403,7 @@
     },
     {
       "className": "gats_ballisticcannon_s1",
-      "itemName": "GATS_BallisticCannon_S1",
+      "itemName": "Tarantula GT-870 Mark 1 Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66412,7 +66412,7 @@
     },
     {
       "className": "espr_ballisticcannon_s2",
-      "itemName": "ESPR_BallisticCannon_S2",
+      "itemName": "Deadbolt II Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66421,7 +66421,7 @@
     },
     {
       "className": "behr_ballisticcannon_vng_s2",
-      "itemName": "BEHR_BallisticCannon_VNG_S2",
+      "itemName": "CVSA Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66430,7 +66430,7 @@
     },
     {
       "className": "kbar_ballisticcannon_s2",
-      "itemName": "KBAR_BallisticCannon_S2",
+      "itemName": "10-Series Greatsword Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66439,7 +66439,7 @@
     },
     {
       "className": "kbar_ballisticcannon_s3",
-      "itemName": "KBAR_BallisticCannon_S3",
+      "itemName": "11-Series Broadsword Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66448,7 +66448,7 @@
     },
     {
       "className": "espr_ballisticcannon_s3",
-      "itemName": "ESPR_BallisticCannon_S3",
+      "itemName": "Deadbolt III Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66457,7 +66457,7 @@
     },
     {
       "className": "espr_ballisticcannon_s6",
-      "itemName": "ESPR_BallisticCannon_S6",
+      "itemName": "Deadbolt VI Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66466,7 +66466,7 @@
     },
     {
       "className": "gats_ballisticcannon_s3",
-      "itemName": "GATS_BallisticCannon_S3",
+      "itemName": "Tarantula GT-870 Mark 3 Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66475,7 +66475,7 @@
     },
     {
       "className": "espr_ballisticcannon_s5",
-      "itemName": "ESPR_BallisticCannon_S5",
+      "itemName": "Deadbolt V Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,
@@ -66484,7 +66484,7 @@
     },
     {
       "className": "espr_lasercannon_s6",
-      "itemName": "ESPR_LaserCannon_S6",
+      "itemName": "Lightstrike VI Cannon",
       "category": "ShipWeapon",
       "subtype": "",
       "tier": 0,

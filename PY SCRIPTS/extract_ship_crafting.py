@@ -148,7 +148,31 @@ def _resolve_display(loc_key: str | None, loc: dict[str, str], fallback: str) ->
     return fallback
 
 
-def extract(target: str) -> list[dict]:
+def _load_item_names(write_to: str) -> dict[str, str]:
+    """Load className → display name from the destination's already-
+    extracted versedb_data.json. The pipeline's main extractor has
+    already resolved names through proper localization + manufacturer
+    enrichment, so reusing those values is more reliable than
+    re-resolving from entity XML Localization tags (which often hold
+    placeholder strings like "@LOC_PLACEHOLDER" or the raw className)."""
+    out: dict[str, str] = {}
+    p = APP_PUB / write_to / "versedb_data.json"
+    if not p.exists():
+        return out
+    try:
+        with p.open(encoding="utf-8") as f:
+            data = json.load(f)
+        for it in data.get("items") or []:
+            cls = it.get("className")
+            name = it.get("name")
+            if cls and name:
+                out[cls.lower()] = name
+    except Exception:
+        pass
+    return out
+
+
+def extract(target: str, write_to: str) -> list[dict]:
     forge_dir = SC_FILES / f"sc_data_forge_{target}" / "libs" / "foundry" / "records"
     bp_root = forge_dir / "crafting" / "blueprints" / "crafting" / "vehiclegear"
     if not bp_root.exists():
@@ -159,6 +183,9 @@ def extract(target: str) -> list[dict]:
     print(f"[ship-craft] building scitem GUID map…")
     guid_to_item = _build_guid_to_item(forge_dir)
     print(f"  scitem records mapped: {len(guid_to_item):,}")
+
+    item_names = _load_item_names(write_to)
+    print(f"  live-item display names indexed: {len(item_names):,}")
 
     loc = _load_localization(target)
     print(f"  localization entries:  {len(loc):,}")
@@ -189,7 +216,15 @@ def extract(target: str) -> list[dict]:
                 continue
 
             craft_time = _parse_craft_time_seconds(txt)
-            display_name = _resolve_display(item.get("locName"), loc, item["className"])
+            class_lower = item["className"].lower()
+            # Prefer the live items' resolved display name (e.g.
+            # "Glacier") over the entity XML's Localization tag,
+            # which is often a placeholder. Falls back through the
+            # raw loc lookup, then the className as a last resort.
+            display_name = (
+                item_names.get(class_lower)
+                or _resolve_display(item.get("locName"), loc, item["className"])
+            )
 
             recipes.append({
                 # Live item classNames are lowercase (e.g.
@@ -198,7 +233,7 @@ def extract(target: str) -> list[dict]:
                 # (`COOL_LPLT_S02_FullFrost_SCItem`). Normalize so
                 # the frontend `r.className === item.className`
                 # match succeeds.
-                "className":        item["className"].lower(),
+                "className":        class_lower,
                 "itemName":         display_name,
                 "category":         category,
                 "subtype":          "",
@@ -255,9 +290,10 @@ def main():
                              "--write-to live so the frontend (which reads live JSON) "
                              "sees ship recipes before CIG ships them.")
     args = parser.parse_args()
-    recipes = extract(args.target)
+    write_to = args.write_to or args.target
+    recipes = extract(args.target, write_to)
     if recipes:
-        merge_into_crafting_json(args.write_to or args.target, recipes)
+        merge_into_crafting_json(write_to, recipes)
 
 
 if __name__ == "__main__":
