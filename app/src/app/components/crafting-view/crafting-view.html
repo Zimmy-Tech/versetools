@@ -127,6 +127,119 @@
         </select>
       </div>
 
+      <!-- Ship-component dropdowns. Each lists every craftable item in
+           that category and applies an exact-name match — separate from
+           the prefix-matched setFilter used for armor/FPS-weapon families.
+           Auto-populated from data, so new TP/PTU/LIVE recipes surface
+           without code changes. -->
+      @if (shipCoolers().length) {
+        <div class="filter-group">
+          <label>Ship Cooler</label>
+          <select class="filter-select"
+                  [value]="shipCoolers().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Coolers</option>
+            @for (n of shipCoolers(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipPowerPlants().length) {
+        <div class="filter-group">
+          <label>Power Plant</label>
+          <select class="filter-select"
+                  [value]="shipPowerPlants().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Power Plants</option>
+            @for (n of shipPowerPlants(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipShields().length) {
+        <div class="filter-group">
+          <label>Shield</label>
+          <select class="filter-select"
+                  [value]="shipShields().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Shields</option>
+            @for (n of shipShields(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipRadars().length) {
+        <div class="filter-group">
+          <label>Radar</label>
+          <select class="filter-select"
+                  [value]="shipRadars().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Radars</option>
+            @for (n of shipRadars(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipQuantumDrives().length) {
+        <div class="filter-group">
+          <label>Quantum Drive</label>
+          <select class="filter-select"
+                  [value]="shipQuantumDrives().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Quantum Drives</option>
+            @for (n of shipQuantumDrives(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipMiningLasers().length) {
+        <div class="filter-group">
+          <label>Mining Laser</label>
+          <select class="filter-select"
+                  [value]="shipMiningLasers().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Mining Lasers</option>
+            @for (n of shipMiningLasers(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipWeapons().length) {
+        <div class="filter-group">
+          <label>Ship Weapon</label>
+          <select class="filter-select"
+                  [value]="shipWeapons().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Ship Weapons</option>
+            @for (n of shipWeapons(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipTractorBeams().length) {
+        <div class="filter-group">
+          <label>Tractor Beam</label>
+          <select class="filter-select"
+                  [value]="shipTractorBeams().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Tractor Beams</option>
+            @for (n of shipTractorBeams(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
+      @if (shipSalvage().length) {
+        <div class="filter-group">
+          <label>Salvage Module</label>
+          <select class="filter-select"
+                  [value]="shipSalvage().includes(shipItemFilter()) ? shipItemFilter() : ''"
+                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
+            <option value="">All Salvage Modules</option>
+            @for (n of shipSalvage(); track n) { <option [value]="n">{{ n }}</option> }
+          </select>
+        </div>
+      }
+
       <div class="filter-group">
         <label>Sort</label>
         <select class="filter-select" (change)="sortBy.set($any($event.target).value)">

@@ -79,6 +79,13 @@ export class CraftingViewComponent {
   subtypeFilter = signal('');
   resourceFilter = signal('');
   setFilter = signal('');
+  /** Exact item-name filter for ship-component dropdowns (Cooler, Power
+   *  Plant, Shield, Radar, Quantum Drive, Mining Laser, Ship Weapon,
+   *  Tractor Beam). Distinct from setFilter (which is prefix-matched
+   *  for armor sets and FPS weapon families) — ship components don't
+   *  share a common name prefix per category, so each item is its own
+   *  filter target. */
+  shipItemFilter = signal('');
   sortBy = signal<'name' | 'time' | 'ingredients'>('name');
   page = signal(1);
   readonly pageSize = 100;
@@ -97,6 +104,26 @@ export class CraftingViewComponent {
   readonly weaponShotguns = ['BR-2', 'Deadrig', 'Devastator', 'Prism', 'R97', 'Ravager'];
   readonly weaponSMGs = ['C54', 'Custodian', 'Lumin', 'P8-SC', 'Quartz', 'S-38'];
   readonly weaponLMGs = ['Demeco', 'F55', 'FS-9', 'Fresnel', 'Pulverizer'];
+
+  /** Unique sorted itemNames per ship-component category. Drives the
+   *  per-category dropdowns in the sidebar — auto-populates from data
+   *  so new TP/PTU/LIVE recipes surface without code changes. */
+  private shipItemsForCategory(category: string): string[] {
+    const set = new Set<string>();
+    for (const r of this.allRecipes()) {
+      if (r.category === category) set.add(r.itemName);
+    }
+    return [...set].sort((a, b) => a.localeCompare(b));
+  }
+  shipCoolers       = computed(() => this.shipItemsForCategory('ShipCooler'));
+  shipPowerPlants   = computed(() => this.shipItemsForCategory('ShipPowerPlant'));
+  shipShields       = computed(() => this.shipItemsForCategory('ShipShield'));
+  shipRadars        = computed(() => this.shipItemsForCategory('ShipRadar'));
+  shipQuantumDrives = computed(() => this.shipItemsForCategory('ShipQuantumDrive'));
+  shipMiningLasers  = computed(() => this.shipItemsForCategory('ShipMiningLaser'));
+  shipWeapons       = computed(() => this.shipItemsForCategory('ShipWeapon'));
+  shipTractorBeams  = computed(() => this.shipItemsForCategory('ShipTractorBeam'));
+  shipSalvage       = computed(() => this.shipItemsForCategory('ShipSalvage'));
 
   toggleSet(set: string): void {
     this.setFilter.set(this.setFilter() === set ? '' : set);
@@ -200,7 +227,8 @@ export class CraftingViewComponent {
 
   hasActiveFilter = computed(() =>
     this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
-    this.resourceFilter() !== '' || this.setFilter() !== ''
+    this.resourceFilter() !== '' || this.setFilter() !== '' ||
+    this.shipItemFilter() !== ''
   );
 
   private allFiltered = computed(() => {
@@ -209,6 +237,7 @@ export class CraftingViewComponent {
     const sub = this.subtypeFilter();
     const res = this.resourceFilter();
     const setF = this.setFilter();
+    const shipItem = this.shipItemFilter();
     const sort = this.sortBy();
 
     let recipes = this.allRecipes();
@@ -216,6 +245,7 @@ export class CraftingViewComponent {
     if (sub) recipes = recipes.filter(r => r.subtype === sub);
     if (res) recipes = recipes.filter(r => r.ingredients.some(i => i.resource === res));
     if (setF) recipes = recipes.filter(r => r.itemName.toLowerCase().startsWith(setF.toLowerCase()));
+    if (shipItem) recipes = recipes.filter(r => r.itemName === shipItem);
     if (search) {
       recipes = recipes.filter(r =>
         r.itemName.toLowerCase().includes(search) ||
@@ -374,6 +404,7 @@ export class CraftingViewComponent {
     this.subtypeFilter.set('');
     this.resourceFilter.set('');
     this.setFilter.set('');
+    this.shipItemFilter.set('');
     this.page.set(1);
   }
 
