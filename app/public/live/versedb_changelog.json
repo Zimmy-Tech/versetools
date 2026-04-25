@@ -1,9 +1,28 @@
 {
   "meta": {
-    "generatedAt": "2026-04-23T14:31:54.304582+00:00",
-    "entries": 1
+    "generatedAt": "2026-04-25T02:03:07.642771+00:00",
+    "entries": 2
   },
   "changelog": [
+    {
+      "fromVersion": "4.7.2-live.11674325",
+      "toVersion": "4.7.2-live.11674325",
+      "date": "2026-04-25",
+      "changes": [
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_EliminateAll_FrontierFighters",
+          "name": "cfp_EliminateAllFF_Title_001"
+        },
+        {
+          "category": "mission_refs",
+          "className": "missionRefs",
+          "name": "Mission reference data"
+        }
+      ],
+      "added": [],
+      "removed": []
+    },
     {
       "fromVersion": "4.7.2-live.11674325",
       "toVersion": "4.7.2-live.11674325",

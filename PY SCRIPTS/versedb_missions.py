@@ -691,6 +691,22 @@ def _resolve_contractor(class_name, loc):
             return display
     return None
 
+# Canonical contractor names — keys are lowercased lookups, values are
+# the preferred display string. Some CIG localization entries spell the
+# same faction differently (e.g. `Citizens for Prosperity` vs
+# `Citizens For Prosperity`), which would otherwise show up as two
+# separate entries in the missions Faction filter and the rep ladder.
+# Apply this map after any contractor / scope assignment so the
+# downstream UI sees one canonical name per faction.
+_CONTRACTOR_ALIASES = {
+    "citizens for prosperity": "Citizens For Prosperity",
+}
+
+def _canonical_contractor(name):
+    if not name:
+        return name
+    return _CONTRACTOR_ALIASES.get(name.lower(), name)
+
 _DANGER_KEYWORDS = [
     # Order matters — check longer patterns first
     ("_veryhard", "Very High"),
@@ -1347,7 +1363,7 @@ def main():
                     val = contractor_m.group(1).lstrip("@")
                     resolved = loc.get(val.lower(), "")
                     if resolved:
-                        contractor_sp = resolved
+                        contractor_sp = _canonical_contractor(resolved)
 
                 # Try debug-name-based localization lookup (strip suffixes like -Stanton4)
                 if not title:
@@ -1837,6 +1853,21 @@ def main():
                  "Faction Standing" if s.lower() == "factionreputationscope" else s)
                 for s in c["repScopes"]
             ]
+
+    # Canonicalize contractor + scope strings against the alias map so
+    # CIG's localization casing inconsistencies don't produce duplicate
+    # factions in the missions Faction filter (e.g.
+    # `Citizens for Prosperity` vs `Citizens For Prosperity` was
+    # surfacing as two separate dropdown entries with one orphan
+    # mission under the lowercase variant).
+    for c in contracts:
+        if c.get("contractor"):
+            c["contractor"] = _canonical_contractor(c["contractor"])
+        for rr in c.get("repRequirements", []) or []:
+            if rr.get("scope"):
+                rr["scope"] = _canonical_contractor(rr["scope"])
+        if c.get("repScopes"):
+            c["repScopes"] = [_canonical_contractor(s) for s in c["repScopes"]]
 
 
     # Supplement: add template-spawned sub-missions that aren't standalone Contract elements.
