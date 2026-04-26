@@ -1,9 +1,113 @@
 {
   "meta": {
-    "generatedAt": "2026-04-25T04:23:37.406900+00:00",
-    "entries": 4
+    "generatedAt": "2026-04-26T04:40:21.518322+00:00",
+    "entries": 5
   },
   "changelog": [
+    {
+      "fromVersion": "4.7.2-live.11674325",
+      "toVersion": "4.7.2-live.11674325",
+      "date": "2026-04-26",
+      "changes": [
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_e_stanton1",
+          "name": "Quick Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_e_stanton2",
+          "name": "Quick Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_e_stanton3",
+          "name": "Quick Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_e_stanton4",
+          "name": "Quick Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_h_stanton1",
+          "name": "Heavy Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_h_stanton2",
+          "name": "Heavy Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_h_stanton4",
+          "name": "Heavy Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_m_stanton1",
+          "name": "Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_m_stanton2",
+          "name": "Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_m_stanton3",
+          "name": "Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_m_stanton4",
+          "name": "Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_ve_stanton1",
+          "name": "Easy Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_ve_stanton2",
+          "name": "Easy Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_ve_stanton3",
+          "name": "Easy Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_ve_stanton4",
+          "name": "Easy Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_vh_stanton1",
+          "name": "Massive Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_vh_stanton2",
+          "name": "Massive Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_vh_stanton3",
+          "name": "Massive Data Grab at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "dataheist_unlawful_vh_stanton4",
+          "name": "Massive Data Grab at [Location]"
+        }
+      ],
+      "added": [],
+      "removed": []
+    },
     {
       "fromVersion": "4.7.2-live.11674325",
       "toVersion": "4.7.2-live.11674325",
