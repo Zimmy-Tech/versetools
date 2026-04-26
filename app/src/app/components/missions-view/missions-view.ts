@@ -165,17 +165,17 @@ export class MissionsViewComponent {
   systemOpen = signal(false);
   activityOpen = signal(false);
   riskFilter = signal<'' | 'low' | 'med' | 'high'>('');
-  /** Event filter. Empty string = main list (hide all event content); '__all__'
-   *  = include everything; any specific event name = show only that event. */
-  eventFilter = signal<string>('');
-  /** Per-event opt-in inclusion. When the dropdown is at default
-   *  ("Main no events"), events present in this set are mixed back into
-   *  the main results — letting users surface live-ops content (e.g. NMP2)
-   *  that CIG flips on server-side without a client patch. Independent
-   *  of the dropdown's "show only" semantics. */
-  includedEvents = signal<ReadonlySet<string>>(new Set());
-  /** Whether the include-events panel is expanded. */
-  includeEventsOpen = signal(false);
+  /** Event filter. '__all__' = default, show events + main; '' = main only;
+   *  any specific event name = show only that event. */
+  eventFilter = signal<string>('__all__');
+  /** Per-event opt-out exclusion. When the dropdown is at default
+   *  ("All events + main"), events present in this set are *removed* from
+   *  the merged view — letting users hide a noisy live-ops event without
+   *  losing the rest of the data. Independent of the dropdown's
+   *  "show only" semantics. */
+  excludedEvents = signal<ReadonlySet<string>>(new Set());
+  /** Whether the exclude-events panel is expanded. */
+  excludeEventsOpen = signal(false);
   sortBy = signal<'reward' | 'title' | 'category' | 'system' | 'rep' | 'chain' | 'faction' | 'type'>('reward');
   /** Sort direction toggles when the user clicks the same column header
    *  twice. Defaults chosen per field in `setSort()` so the first click
@@ -353,8 +353,8 @@ export class MissionsViewComponent {
            this.lawfulFilter() !== '' || this.systemFilter() !== '' ||
            this.activityFilter() !== '' || this.contractorFilter() !== '' ||
            this.factionFilter() !== '' || this.rankFilter() !== '' ||
-           this.riskFilter() !== '' || this.eventFilter() !== '' ||
-           this.includedEvents().size > 0 ||
+           this.riskFilter() !== '' || this.eventFilter() !== '__all__' ||
+           this.excludedEvents().size > 0 ||
            this.blueprintFilter() || this.chainFilter() ||
            this.blueprintNameFilter() !== '' || this.blueprintPoolFilter() !== '';
   });
@@ -417,10 +417,10 @@ export class MissionsViewComponent {
       const label = this.rankFilter() ? `${base} @ ${this.rankFilter()}` : base;
       out.push({ key: 'faction', label });
     }
-    if (this.eventFilter() === '__all__') out.push({ key: 'event', label: 'Events: All' });
-    else if (this.eventFilter()) out.push({ key: 'event', label: 'Event: ' + this.eventFilter() });
-    else if (this.includedEvents().size > 0) {
-      out.push({ key: 'includedEvents', label: `+${this.includedEvents().size} event` + (this.includedEvents().size === 1 ? '' : 's') });
+    if (this.eventFilter() === '') out.push({ key: 'event', label: 'Main only' });
+    else if (this.eventFilter() !== '__all__') out.push({ key: 'event', label: 'Event: ' + this.eventFilter() });
+    if (this.excludedEvents().size > 0 && this.eventFilter() === '__all__') {
+      out.push({ key: 'excludedEvents', label: `−${this.excludedEvents().size} event` + (this.excludedEvents().size === 1 ? '' : 's') });
     }
     if (this.blueprintFilter()) out.push({ key: 'blueprint', label: 'Blueprints' });
     if (this.chainFilter()) out.push({ key: 'chain', label: 'Chains' });
@@ -432,19 +432,19 @@ export class MissionsViewComponent {
     return out;
   });
 
-  /** Toggle one event into/out of the inclusion set. Used by the per-event
-   *  checkbox list in the sidebar. */
-  toggleIncludedEvent(name: string): void {
-    const next = new Set(this.includedEvents());
+  /** Toggle one event into/out of the exclusion set. Used by the per-event
+   *  checkbox list in the sidebar (when the dropdown is at the All default). */
+  toggleExcludedEvent(name: string): void {
+    const next = new Set(this.excludedEvents());
     if (next.has(name)) next.delete(name);
     else next.add(name);
-    this.includedEvents.set(next);
+    this.excludedEvents.set(next);
     this.resetPage();
   }
 
-  /** Bulk toggle: select all events / clear all. */
-  setAllIncludedEvents(checked: boolean): void {
-    this.includedEvents.set(checked ? new Set(this.events().map(e => e[0])) : new Set());
+  /** Bulk toggle: exclude every event / clear all exclusions. */
+  setAllExcludedEvents(checked: boolean): void {
+    this.excludedEvents.set(checked ? new Set(this.events().map(e => e[0])) : new Set());
     this.resetPage();
   }
 
@@ -458,8 +458,8 @@ export class MissionsViewComponent {
       case 'activity': this.activityFilter.set(''); break;
       case 'contractor': this.contractorFilter.set(''); break;
       case 'faction': this.factionFilter.set(''); this.rankFilter.set(''); break;
-      case 'event': this.eventFilter.set(''); break;
-      case 'includedEvents': this.includedEvents.set(new Set()); break;
+      case 'event': this.eventFilter.set('__all__'); break;
+      case 'excludedEvents': this.excludedEvents.set(new Set()); break;
       case 'blueprint': this.blueprintFilter.set(false); break;
       case 'chain': this.chainFilter.set(false); break;
       case 'bpname': this.blueprintNameFilter.set(''); break;
@@ -525,14 +525,18 @@ export class MissionsViewComponent {
     if (cat) missions = missions.filter(m => m.category === cat);
     if (law === 'lawful') missions = missions.filter(m => m.lawful);
     if (law === 'unlawful') missions = missions.filter(m => !m.lawful);
-    // Event filter: dropdown takes priority. When dropdown is at default,
-    // the per-event inclusion set lets users opt specific events back into
-    // the main results (live-ops content CIG enabled server-side).
+    // Event filter: dropdown takes priority. When dropdown is at the
+    // "All events + main" default, the per-event exclusion set lets users
+    // hide specific noisy events without losing the rest.
     const ev = this.eventFilter();
-    if (!ev) {
-      const inc = this.includedEvents();
-      missions = missions.filter(m => !m.event || inc.has(m.event));
-    } else if (ev !== '__all__') missions = missions.filter(m => m.event === ev);
+    if (ev === '') {
+      missions = missions.filter(m => !m.event);
+    } else if (ev === '__all__') {
+      const exc = this.excludedEvents();
+      if (exc.size) missions = missions.filter(m => !m.event || !exc.has(m.event));
+    } else {
+      missions = missions.filter(m => m.event === ev);
+    }
     if (sys) missions = missions.filter(m =>
       (m.systems?.length ? m.systems.includes(sys) : m.system === sys)
     );

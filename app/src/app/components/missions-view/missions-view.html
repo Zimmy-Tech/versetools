@@ -167,41 +167,41 @@
           <h4>Event</h4>
           <select class="mv-select" [value]="eventFilter()"
                   (change)="eventFilter.set($any($event.target).value); resetPage()">
-            <option value="">Main (no events)</option>
             <option value="__all__">All events + main</option>
+            <option value="">Main only (no events)</option>
             @for (ev of events(); track ev[0]) {
               <option [value]="ev[0]">{{ ev[0] }}</option>
             }
           </select>
 
-          <!-- Per-event opt-in: when the dropdown is "Main (no events)",
-               check specific events here to mix them into the main results.
-               Lets users surface live-ops content (e.g. NMP2) without
-               leaving the main view. -->
-          @if (eventFilter() === '') {
+          <!-- Per-event opt-out: when the dropdown is at the "All events +
+               main" default, check specific events here to hide them from
+               the merged view. Lets users mute a noisy live-ops event
+               without losing everything else. -->
+          @if (eventFilter() === '__all__') {
             <div class="mv-include-events">
               <button type="button" class="mv-include-toggle"
-                      [class.open]="includeEventsOpen()"
-                      (click)="includeEventsOpen.set(!includeEventsOpen())">
-                <span class="mv-include-caret">{{ includeEventsOpen() ? '▾' : '▸' }}</span>
-                <span class="mv-include-label">Include Event Missions</span>
-                @if (includedEvents().size > 0) {
-                  <span class="mv-include-count">{{ includedEvents().size }}</span>
+                      [class.open]="excludeEventsOpen()"
+                      (click)="excludeEventsOpen.set(!excludeEventsOpen())">
+                <span class="mv-include-caret">{{ excludeEventsOpen() ? '▾' : '▸' }}</span>
+                <span class="mv-include-label">Exclude Event Missions</span>
+                @if (excludedEvents().size > 0) {
+                  <span class="mv-include-count">{{ excludedEvents().size }}</span>
                 }
               </button>
-              @if (includeEventsOpen()) {
+              @if (excludeEventsOpen()) {
                 <div class="mv-include-list">
                   <div class="mv-include-bulk">
                     <button type="button" class="mv-include-bulk-btn"
-                            (click)="setAllIncludedEvents(true)">All</button>
+                            (click)="setAllExcludedEvents(true)">All</button>
                     <button type="button" class="mv-include-bulk-btn"
-                            (click)="setAllIncludedEvents(false)">None</button>
+                            (click)="setAllExcludedEvents(false)">None</button>
                   </div>
                   @for (ev of events(); track ev[0]) {
                     <label class="mv-include-row">
                       <input type="checkbox"
-                             [checked]="includedEvents().has(ev[0])"
-                             (change)="toggleIncludedEvent(ev[0])" />
+                             [checked]="excludedEvents().has(ev[0])"
+                             (change)="toggleExcludedEvent(ev[0])" />
                       <span class="mv-include-name">{{ ev[0] }}</span>
                     </label>
                   }
@@ -286,8 +286,8 @@
                     }
                     @if (m.event) {
                       <span class="mv-badge b-event" [class.b-event-dormant]="!m.eventActive"
-                            [title]="'Event: ' + m.event">
-                        Event: {{ m.event }}
+                            [title]="m.eventActive ? ('Live event: ' + m.event) : ('Dormant event: ' + m.event)">
+                        EVENT<span class="b-event-name">· {{ m.event }}</span>
                       </span>
                     }
                   </div>
@@ -465,6 +465,9 @@
                             <span class="mv-standings-name">{{ pair.ladder.displayName }} · Standing</span>
                             @if (m.repReward) { <span class="mv-standings-rate">+{{ m.repReward | number }} / mission</span> }
                           </div>
+                          @if (pair.scope === 'hiredmuscle') {
+                            <div class="mv-ladder-note">In-game, this ladder is tracked under your <b>Bit Zeros</b> faction page.</div>
+                          }
                           <table class="mv-standings">
                             <thead>
                               <tr>

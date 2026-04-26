@@ -2036,6 +2036,30 @@ def main():
     before = len(missions)
     missions = [m for m in missions if m.get("reward", 0) > 0]
 
+    # Data Heist missions ship as anonymous MissionBrokerEntry records with
+    # unresolved `~mission(Contractor|...)` placeholders. The actual narrative
+    # lives under the Bit Zeros localization keys; map tier letter → 01-05 and
+    # rebind title/description/contractor so the Weevil-signed copy surfaces.
+    _dataheist_tier = {"ve": "01", "e": "02", "m": "03", "h": "04", "vh": "05"}
+    _dataheist_re = re.compile(r"^dataheist_unlawful_(ve|e|m|h|vh)_stanton\d+$")
+    dh_fixed = 0
+    for m in missions:
+        mt = _dataheist_re.match(m.get("className", ""))
+        if not mt:
+            continue
+        tier = _dataheist_tier[mt.group(1)]
+        title = loc_lookup(loc, f"@bitzeros_dataheist_title_{tier}")
+        desc = loc_lookup(loc, f"@bitzeros_dataheist_desc_{tier}")
+        if title:
+            m["title"] = title.replace("~mission(location)", "~mission(Location)")
+        if desc:
+            m["description"] = desc
+        m["contractor"] = "Bit Zeros"
+        m["giver"] = "Bit Zeros"
+        dh_fixed += 1
+    if dh_fixed:
+        print(f"  Fixed {dh_fixed} Data Heist entries (Bit Zeros narrative)")
+
     # Clean up template variables in titles/givers for display
     for m in missions:
         if "~mission(" in m.get("title", ""):

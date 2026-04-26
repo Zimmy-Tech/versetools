@@ -872,6 +872,14 @@ $cols: minmax(0, 1fr) 160px 80px 140px 80px 60px 140px 20px;
     color: #b98cff;
     border: 1px solid rgba(185, 140, 255, 0.45);
     background: rgba(185, 140, 255, 0.08);
+    font-weight: 700;
+  }
+
+  .b-event-name {
+    margin-left: 6px;
+    font-weight: 400;
+    opacity: 0.78;
+    letter-spacing: 0.06em;
   }
   &.b-event-dormant {
     color: var(--text3);
@@ -1264,6 +1272,16 @@ $cols: minmax(0, 1fr) 160px 80px 140px 80px 60px 140px 20px;
   font-size: 11px;
   color: var(--green);
   letter-spacing: 0.06em;
+}
+
+.mv-ladder-note {
+  font-size: 11px;
+  color: var(--text3);
+  margin: -2px 0 8px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid var(--green);
+  letter-spacing: 0.02em;
 }
 
 .mv-standings {
