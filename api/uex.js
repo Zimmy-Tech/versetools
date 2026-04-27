@@ -188,8 +188,12 @@ export function matchUexVehiclesToShips(uexVehiclePrices, terminalsMap, ships) {
  *    1. Try the full normalized item name
  *    2. Fall back to "${name} ${subType}" — UEX sometimes appends the
  *       size or grade to the display name
+ *
+ *  @param {string} entityType - 'item' (ship components) or 'fps_item'
+ *         (FPS weapons / gear / armor). Stored as shop_prices.entity_type
+ *         so the export step knows which bucket to attach prices to.
  */
-export function matchUexItemsToItems(uexItemPrices, terminalsMap, items) {
+export function matchUexItemsToItems(uexItemPrices, terminalsMap, items, entityType = 'item') {
   const uexByName = new Map();
   for (const rec of uexItemPrices) {
     const key = normalizeName(rec?.item_name);
@@ -218,7 +222,7 @@ export function matchUexItemsToItems(uexItemPrices, terminalsMap, items) {
     matchedUexKeys.add(normalizeName(matches[0].item_name));
     for (const rec of matches) {
       const row = buildShopPriceRow({
-        entityType: 'item',
+        entityType,
         entityClass: item.className,
         uexRecord: rec,
         terminalsMap,

@@ -393,8 +393,10 @@ export interface AuditEntry {
 export interface ShopPriceRefreshSummary {
   shipsMatched: number;
   itemsMatched: number;
+  fpsItemsMatched: number;
   shipPricesInserted: number;
   itemPricesInserted: number;
+  fpsItemPricesInserted: number;
   priceChanges: number;
   priceAdded: number;
   priceRemoved: number;

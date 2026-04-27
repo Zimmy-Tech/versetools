@@ -722,20 +722,29 @@ export async function refreshUexShopPrices({ actor }) {
     fetchUexItemPrices(),
   ]);
 
-  // 2. Get current ship and item lists from the DB. We only need
+  // 2. Get current ship / item / FPS lists from the DB. We only need
   //    className/name/subType for matching — pull these from the LIVE
   //    side since both modes are mode-agnostic for prices.
-  const [shipsRes, itemsRes] = await Promise.all([
+  const [shipsRes, itemsRes, fpsItemsRes, fpsGearRes, fpsArmorRes] = await Promise.all([
     pool.query("SELECT data->>'className' AS class_name, data->>'name' AS name FROM versedb.ships WHERE mode = 'live'"),
     pool.query("SELECT data->>'className' AS class_name, data->>'name' AS name, data->>'subType' AS sub_type FROM versedb.items WHERE mode = 'live'"),
+    pool.query("SELECT data->>'className' AS class_name, data->>'name' AS name, data->>'subType' AS sub_type FROM versedb.fps_items WHERE mode = 'live'"),
+    pool.query("SELECT data->>'className' AS class_name, data->>'name' AS name, data->>'subType' AS sub_type FROM versedb.fps_gear  WHERE mode = 'live'"),
+    pool.query("SELECT data->>'className' AS class_name, data->>'name' AS name FROM versedb.fps_armor WHERE mode = 'live'"),
   ]);
   const ships = shipsRes.rows.map(r => ({ className: r.class_name, name: r.name }));
   const items = itemsRes.rows.map(r => ({ className: r.class_name, name: r.name, subType: r.sub_type }));
+  const fpsAll = [
+    ...fpsItemsRes.rows.map(r => ({ className: r.class_name, name: r.name, subType: r.sub_type })),
+    ...fpsGearRes.rows.map(r  => ({ className: r.class_name, name: r.name, subType: r.sub_type })),
+    ...fpsArmorRes.rows.map(r => ({ className: r.class_name, name: r.name })),
+  ];
 
   // 3. Match
   const shipMatch = matchUexVehiclesToShips(vehiclePrices, terminals, ships);
   const itemMatch = matchUexItemsToItems(itemPrices, terminals, items);
-  const newRows = [...shipMatch.rows, ...itemMatch.rows];
+  const fpsMatch  = matchUexItemsToItems(itemPrices, terminals, fpsAll, 'fps_item');
+  const newRows = [...shipMatch.rows, ...itemMatch.rows, ...fpsMatch.rows];
 
   // 4. Capture the previous UEX state for the diff
   const { rows: prevRows } = await pool.query(`
@@ -759,6 +768,7 @@ export async function refreshUexShopPrices({ actor }) {
     const BATCH_ROWS = 500;
     let shipPricesInserted = 0;
     let itemPricesInserted = 0;
+    let fpsItemPricesInserted = 0;
     for (let i = 0; i < newRows.length; i += BATCH_ROWS) {
       const batch = newRows.slice(i, i + BATCH_ROWS);
       const valueClauses = [];
@@ -775,6 +785,7 @@ export async function refreshUexShopPrices({ actor }) {
           row.price_buy, row.price_sell, row.source, row.uex_terminal_id, row.notes
         );
         if (row.entity_type === 'ship') shipPricesInserted++;
+        else if (row.entity_type === 'fps_item') fpsItemPricesInserted++;
         else itemPricesInserted++;
       }
       await client.query(
@@ -832,6 +843,7 @@ export async function refreshUexShopPrices({ actor }) {
         JSON.stringify({
           shipPricesInserted,
           itemPricesInserted,
+          fpsItemPricesInserted,
           priceChanges: diff.changes.length,
           priceAdded: diff.added.length,
           priceRemoved: diff.removed.length,
@@ -844,8 +856,10 @@ export async function refreshUexShopPrices({ actor }) {
     return {
       shipsMatched: shipMatch.matchedShipCount,
       itemsMatched: itemMatch.matchedItemCount,
+      fpsItemsMatched: fpsMatch.matchedItemCount,
       shipPricesInserted,
       itemPricesInserted,
+      fpsItemPricesInserted,
       priceChanges: diff.changes.length,
       priceAdded: diff.added.length,
       priceRemoved: diff.removed.length,
@@ -1050,6 +1064,7 @@ export async function exportFullDb(mode = 'live') {
   // Group shop prices by entity for fast lookup
   const shipPriceMap = new Map();
   const itemPriceMap = new Map();
+  const fpsPriceMap  = new Map();
   for (const row of shopPricesRes.rows) {
     // Build the legacy {price, shop} entry the frontend expects today,
     // plus the richer fields appended for future use. Existing UI code
@@ -1070,7 +1085,10 @@ export async function exportFullDb(mode = 'live') {
       source: row.source,
       notes: row.notes,
     };
-    const map = row.entity_type === 'ship' ? shipPriceMap : itemPriceMap;
+    const map =
+      row.entity_type === 'ship'     ? shipPriceMap :
+      row.entity_type === 'fps_item' ? fpsPriceMap  :
+                                       itemPriceMap;
     if (!map.has(row.entity_class)) map.set(row.entity_class, []);
     map.get(row.entity_class).push(entry);
   }
@@ -1113,15 +1131,25 @@ export async function exportFullDb(mode = 'live') {
     return prices ? { ...item, shopPrices: prices } : item;
   });
 
+  // Reattach shop prices to FPS rows. fpsItems / fpsGear / fpsArmor
+  // share the 'fps_item' entity_type bucket — overlaps between the three
+  // arrays are a curiosity of how DCB groups them, not separate items,
+  // so a single map keyed by className is sufficient.
+  const reattachFps = (rows) => rows.map((r) => {
+    const entity = r.data;
+    const prices = fpsPriceMap.get(entity.className);
+    return prices ? { ...entity, shopPrices: prices } : entity;
+  });
+
   return {
     meta: metaRes.rows[0]?.data ?? { shipCount: shipsRes.rowCount, itemCount: itemsRes.rowCount },
     ships,
     items,
     miningLocations: locsRes.rows.map((r) => r.data),
     miningElements: elsRes.rows.map((r) => r.data),
-    fpsItems: fpsItemsRes.rows.map((r) => r.data),
-    fpsGear:  fpsGearRes.rows.map((r) => r.data),
-    fpsArmor: fpsArmorRes.rows.map((r) => r.data),
+    fpsItems: reattachFps(fpsItemsRes.rows),
+    fpsGear:  reattachFps(fpsGearRes.rows),
+    fpsArmor: reattachFps(fpsArmorRes.rows),
     missions: missionsRes.rows.map((r) => r.data),
     missionRefs: missionRefsRes.rows[0]?.data ?? null,
   };

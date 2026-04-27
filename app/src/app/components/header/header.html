@@ -20,6 +20,10 @@
       <span class="cart-badge">{{ data.cartCount() }}</span>
     }</button>
 
+    <!-- Shopping Assistant -->
+    <button class="nav-tab" [class.active]="isTabActive('shop')"
+            (click)="navigateTo('shop')">Shopping</button>
+
     <!-- Ship Tools dropdown -->
     <div class="nav-group">
       <button class="nav-tab" [class.active]="isShipToolActive()"
@@ -137,6 +141,7 @@
     <button class="mobile-nav-item" [class.active]="isTabActive('compact')" (click)="navigateTo('compact')">Compact UI</button>
     <button class="mobile-nav-item" [class.active]="isTabActive('loadout')" (click)="navigateTo('loadout')">Loadout</button>
     <button class="mobile-nav-item" [class.active]="isTabActive('cart')" (click)="navigateTo('cart')">Cart</button>
+    <button class="mobile-nav-item" [class.active]="isTabActive('shop')" (click)="navigateTo('shop')">Shopping</button>
     <div class="mobile-nav-title">SHIP TOOLS</div>
     @for (tab of shipToolsTabs; track tab.id) {
       <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>

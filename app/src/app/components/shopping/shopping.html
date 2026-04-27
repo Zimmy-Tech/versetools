@@ -1,0 +1,148 @@
+<div class="shop-shell">
+
+  <div class="shop-construction-banner">
+    <span class="shop-construction-tag">Under Construction</span>
+    <span class="shop-construction-msg">Shopping Assistant is in active development. Some categories may be incomplete until the next UEX refresh runs.</span>
+  </div>
+
+  <div class="shop-view">
+
+  @if (!data.isLoaded()) {
+    <div class="empty-state">
+      <div class="empty-title">Loading shopping data...</div>
+    </div>
+  } @else {
+
+    <!-- ─── Sidebar ─────────────────────────────────────── -->
+    <aside class="shop-side">
+      <div class="shop-side-title">Shopping Assistant</div>
+
+      <div class="shop-search">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/>
+        </svg>
+        <input placeholder="Search by name or manufacturer"
+               [value]="searchQuery()"
+               (input)="searchQuery.set($any($event.target).value)" />
+      </div>
+
+      <div class="shop-side-section">
+        <div class="shop-side-row">
+          <h4>Categories</h4>
+          @if (activeCategories().size > 0) {
+            <button class="shop-link-btn" (click)="clearCategories()">Clear</button>
+          }
+        </div>
+        <div class="shop-chips">
+          @for (cat of allCategories; track cat) {
+            <button class="shop-chip"
+                    [class.active]="isCategoryActive(cat)"
+                    [class.empty]="categoryCounts()[cat] === 0"
+                    (click)="toggleCategory(cat)">
+              {{ cat }}
+              <span class="shop-chip-count">{{ categoryCounts()[cat] }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="shop-side-section">
+        <h4>Star System</h4>
+        <select class="shop-select"
+                [value]="systemFilter()"
+                (change)="systemFilter.set($any($event.target).value)">
+          <option value="">All systems</option>
+          @for (s of availableSystems(); track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="shop-side-section">
+        <h4>Shop</h4>
+        <select class="shop-select"
+                [value]="shopFilter()"
+                (change)="shopFilter.set($any($event.target).value)">
+          <option value="">All shops</option>
+          @for (s of availableShops(); track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="shop-side-section">
+        <label class="shop-toggle">
+          <input type="checkbox"
+                 [checked]="showNoShop()"
+                 (change)="showNoShop.set($any($event.target).checked)" />
+          Show items with no known seller
+        </label>
+      </div>
+
+      <div class="shop-side-section">
+        <button class="shop-clear-all" (click)="clearAll()">Reset filters</button>
+      </div>
+    </aside>
+
+    <!-- ─── Results ─────────────────────────────────────── -->
+    <section class="shop-main">
+      <div class="shop-main-header">
+        <div class="shop-results-count">
+          {{ results().length }} result{{ results().length === 1 ? '' : 's' }}
+        </div>
+      </div>
+
+      @if (results().length === 0) {
+        <div class="empty-state">
+          <div class="empty-title">No items match your filters</div>
+          <div class="empty-sub">Try clearing categories or your search query.</div>
+        </div>
+      } @else {
+        <div class="shop-list">
+          @for (entry of results(); track entry.className) {
+            <div class="shop-item">
+              <div class="shop-item-header">
+                <div class="shop-item-info">
+                  <span class="shop-item-name">{{ entry.name }}</span>
+                  <span class="shop-item-meta">
+                    <span class="shop-item-cat">{{ entry.category }}</span>
+                    @if (entry.meta) { <span class="dot">·</span> {{ entry.meta }} }
+                    @if (entry.manufacturer) { <span class="dot">·</span> {{ entry.manufacturer }} }
+                  </span>
+                </div>
+              </div>
+
+              @if (entry.prices.length > 0) {
+                <div class="shop-listings">
+                  @for (sp of sortedShops(entry.prices); track sp.shop; let i = $index) {
+                    <div class="shop-card" [class.cheapest]="i === 0">
+                      <div class="shop-card-info">
+                        <div class="shop-card-name">{{ shopLabel(sp) }}</div>
+                        @if (hasLocation(sp)) {
+                          <div class="shop-card-loc">{{ shopLocation(sp) }}</div>
+                        } @else {
+                          <div class="shop-card-loc shop-card-loc-missing">Location pending UEX refresh</div>
+                        }
+                      </div>
+                      <div class="shop-card-price">
+                        @if (i === 0 && entry.prices.length > 1) { <span class="shop-card-tag">CHEAPEST</span> }
+                        <div class="shop-card-amount">{{ fmtPrice(sp.price) }}</div>
+                        <div class="shop-card-sub">
+                          aUEC@if (sp.priceSell) { <span class="shop-card-sell">· sell {{ fmtPrice(sp.priceSell) }}</span> }
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="shop-no-data">No known seller</div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+  }
+  </div>
+</div>

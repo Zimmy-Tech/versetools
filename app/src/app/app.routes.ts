@@ -3,6 +3,7 @@ import { LoadoutViewComponent } from './components/loadout-view/loadout-view';
 import { CompareViewComponent } from './components/compare-view/compare-view';
 import { ComponentFinderComponent } from './components/component-finder/component-finder';
 import { CartViewComponent } from './components/cart-view/cart-view';
+import { ShoppingComponent } from './components/shopping/shopping';
 import { MissionsViewComponent } from './components/missions-view/missions-view';
 import { RepBuilderComponent } from './components/rep-builder/rep-builder';
 import { BlueprintFinderComponent } from './components/blueprint-finder/blueprint-finder';
@@ -52,6 +53,7 @@ export const routes: Routes = [
   { path: 'compare',            component: CompareViewComponent },
   { path: 'finder',             component: ComponentFinderComponent },
   { path: 'cart',               component: CartViewComponent },
+  { path: 'shop',               component: ShoppingComponent },
   { path: 'missions',           component: MissionsViewComponent },
   { path: 'rep-builder',        component: RepBuilderComponent },
   { path: 'blueprints',         component: BlueprintFinderComponent },

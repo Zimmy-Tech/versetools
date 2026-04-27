@@ -74,7 +74,8 @@
       <div class="config-msg success">
         Refreshed.
         {{ summary.shipsMatched }} ships matched ({{ summary.shipPricesInserted }} prices),
-        {{ summary.itemsMatched }} items matched ({{ summary.itemPricesInserted }} prices).
+        {{ summary.itemsMatched }} ship items matched ({{ summary.itemPricesInserted }} prices),
+        {{ summary.fpsItemsMatched }} FPS items matched ({{ summary.fpsItemPricesInserted }} prices).
         @if (summary.priceChanges + summary.priceAdded + summary.priceRemoved > 0) {
           <br>
           <strong>Changes:</strong>
