@@ -2,8 +2,9 @@ import { Component, computed, signal } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Item, Ship, ShopPrice } from '../../models/db.models';
 
-/** A single line in the shopping list. Wraps a ship/item/fps entry with a
- *  display category and the underlying shopPrices array. */
+/** A single line in the shopping results. Wraps a ship/item/fps entry
+ *  with a display category and the shopPrices array, pre-sorted cheapest
+ *  first so the template iterates a stable reference. */
 interface ShopEntry {
   className: string;
   name: string;
@@ -11,43 +12,26 @@ interface ShopEntry {
   category: ShopCategory;
   /** Optional one-line meta shown next to the name (size, subType, etc.). */
   meta: string;
+  /** Already sorted cheapest-first when the entry is built. */
   prices: ShopPrice[];
 }
 
 type ShopCategory =
-  | 'Ships'
-  | 'Ship Weapons'
-  | 'Weapon Mounts'
-  | 'Shields'
-  | 'Coolers'
-  | 'Power Plants'
-  | 'Quantum Drives'
-  | 'Radars'
-  | 'Mining Modules'
+  | 'Ship'
+  | 'Ship Weapon'
+  | 'Weapon Mount'
+  | 'Shield'
+  | 'Cooler'
+  | 'Power Plant'
+  | 'Quantum Drive'
+  | 'Radar'
+  | 'Mining Module'
   | 'Salvage'
-  | 'Other Components'
-  | 'FPS Weapons'
-  | 'FPS Attachments'
+  | 'Component'
+  | 'FPS Weapon'
+  | 'FPS Attachment'
   | 'FPS Gear'
   | 'FPS Armor';
-
-const ALL_CATEGORIES: ShopCategory[] = [
-  'Ships',
-  'Ship Weapons',
-  'Weapon Mounts',
-  'Shields',
-  'Coolers',
-  'Power Plants',
-  'Quantum Drives',
-  'Radars',
-  'Mining Modules',
-  'Salvage',
-  'Other Components',
-  'FPS Weapons',
-  'FPS Attachments',
-  'FPS Gear',
-  'FPS Armor',
-];
 
 const SHIP_WEAPON_TYPES = new Set(['WeaponGun', 'WeaponMining', 'Missile', 'Bomb']);
 const WEAPON_MOUNT_TYPES = new Set(['WeaponMount', 'MissileLauncher', 'BombLauncher', 'Turret', 'TurretBase']);
@@ -64,17 +48,10 @@ const FPS_WEAPON_TYPES = new Set([
 })
 export class ShoppingComponent {
   searchQuery = signal('');
-  // Empty set = "all categories"
-  activeCategories = signal<Set<ShopCategory>>(new Set());
-  systemFilter = signal('');
-  shopFilter = signal('');
-  showNoShop = signal(false);
-
-  readonly allCategories = ALL_CATEGORIES;
 
   constructor(public data: DataService) {}
 
-  /** Build the master flat list once per data change. */
+  /** Master list — built once per data change, then filtered by search. */
   readonly allEntries = computed<ShopEntry[]>(() => {
     const out: ShopEntry[] = [];
 
@@ -83,21 +60,20 @@ export class ShoppingComponent {
         className: ship.className,
         name: ship.name || ship.className,
         manufacturer: ship.manufacturer || '',
-        category: 'Ships',
+        category: 'Ship',
         meta: this.shipMeta(ship),
-        prices: ship.shopPrices ?? [],
+        prices: this.sortPrices(ship.shopPrices),
       });
     }
 
     for (const item of this.data.items()) {
-      const cat = this.categoryForItem(item);
       out.push({
         className: item.className,
         name: item.name || item.className,
         manufacturer: item.manufacturer || '',
-        category: cat,
+        category: this.categoryForItem(item),
         meta: this.itemMeta(item),
-        prices: item.shopPrices ?? [],
+        prices: this.sortPrices(item.shopPrices),
       });
     }
 
@@ -109,16 +85,14 @@ export class ShoppingComponent {
 
       for (const fi of fpsItems) {
         const cat: ShopCategory =
-          FPS_WEAPON_TYPES.has(fi.type) ? 'FPS Weapons'
-          : FPS_ATTACH_SUBTYPES.has(fi.subType) ? 'FPS Attachments'
-          : 'FPS Attachments';
+          FPS_WEAPON_TYPES.has(fi.type) ? 'FPS Weapon' : 'FPS Attachment';
         out.push({
           className: fi.className,
           name: fi.name || fi.className,
           manufacturer: fi.manufacturer || '',
           category: cat,
           meta: this.fpsItemMeta(fi),
-          prices: (fi.shopPrices as ShopPrice[] | undefined) ?? [],
+          prices: this.sortPrices(fi.shopPrices),
         });
       }
       for (const fg of fpsGear) {
@@ -128,7 +102,7 @@ export class ShoppingComponent {
           manufacturer: fg.manufacturer || '',
           category: 'FPS Gear',
           meta: fg.subType || '',
-          prices: (fg.shopPrices as ShopPrice[] | undefined) ?? [],
+          prices: this.sortPrices(fg.shopPrices),
         });
       }
       for (const fa of fpsArmor) {
@@ -138,7 +112,7 @@ export class ShoppingComponent {
           manufacturer: fa.manufacturer || '',
           category: 'FPS Armor',
           meta: fa.slot || '',
-          prices: (fa.shopPrices as ShopPrice[] | undefined) ?? [],
+          prices: this.sortPrices(fa.shopPrices),
         });
       }
     }
@@ -146,114 +120,34 @@ export class ShoppingComponent {
     return out;
   });
 
-  /** Distinct star systems present in the current data. */
-  readonly availableSystems = computed<string[]>(() => {
-    const set = new Set<string>();
-    for (const e of this.allEntries()) {
-      for (const p of e.prices) {
-        if (p.starSystem) set.add(p.starSystem);
-      }
-    }
-    return [...set].sort();
-  });
-
-  /** Distinct shop names (company preferred, falling back to nickname). */
-  readonly availableShops = computed<string[]>(() => {
-    const set = new Set<string>();
-    for (const e of this.allEntries()) {
-      for (const p of e.prices) {
-        const label = (p.shopCompany && p.shopCompany.trim()) || p.shop;
-        if (label) set.add(label);
-      }
-    }
-    return [...set].sort();
-  });
-
-  /** Filtered + sorted result list. */
+  /** Filtered + sorted result list. Empty when the search query is empty. */
   readonly results = computed<ShopEntry[]>(() => {
     const q = this.searchQuery().trim().toLowerCase();
-    const cats = this.activeCategories();
-    const sys = this.systemFilter();
-    const shop = this.shopFilter();
-    const showEmpty = this.showNoShop();
+    if (!q) return [];
 
-    let arr = this.allEntries();
-
-    if (cats.size > 0) {
-      arr = arr.filter(e => cats.has(e.category));
-    }
-
-    if (q) {
-      arr = arr.filter(e =>
-        e.name.toLowerCase().includes(q) ||
-        e.className.toLowerCase().includes(q) ||
-        e.manufacturer.toLowerCase().includes(q)
-      );
-    }
-
-    if (sys) {
-      arr = arr.filter(e => e.prices.some(p => p.starSystem === sys));
-    }
-    if (shop) {
-      arr = arr.filter(e =>
-        e.prices.some(p => ((p.shopCompany && p.shopCompany.trim()) || p.shop) === shop)
-      );
-    }
-
-    if (!showEmpty) {
-      arr = arr.filter(e => e.prices.length > 0);
-    }
+    const arr = this.allEntries().filter(e =>
+      e.name.toLowerCase().includes(q) ||
+      e.className.toLowerCase().includes(q) ||
+      e.manufacturer.toLowerCase().includes(q)
+    );
 
     return [...arr].sort((a, b) => a.name.localeCompare(b.name));
   });
-
-  /** Counts per category over the *unfiltered* list — useful for chips. */
-  readonly categoryCounts = computed<Record<string, number>>(() => {
-    const showEmpty = this.showNoShop();
-    const counts: Record<string, number> = {};
-    for (const c of ALL_CATEGORIES) counts[c] = 0;
-    for (const e of this.allEntries()) {
-      if (!showEmpty && e.prices.length === 0) continue;
-      counts[e.category]++;
-    }
-    return counts;
-  });
-
-  // ─── Filter UI handlers ──────────────────────────────────────────
-
-  toggleCategory(cat: ShopCategory): void {
-    const cur = new Set(this.activeCategories());
-    if (cur.has(cat)) cur.delete(cat); else cur.add(cat);
-    this.activeCategories.set(cur);
-  }
-
-  isCategoryActive(cat: ShopCategory): boolean {
-    return this.activeCategories().has(cat);
-  }
-
-  clearCategories(): void { this.activeCategories.set(new Set()); }
-
-  clearAll(): void {
-    this.searchQuery.set('');
-    this.activeCategories.set(new Set());
-    this.systemFilter.set('');
-    this.shopFilter.set('');
-  }
 
   // ─── Bucket assignment ───────────────────────────────────────────
 
   private categoryForItem(item: Item): ShopCategory {
     const t = item.type;
-    if (SHIP_WEAPON_TYPES.has(t)) return 'Ship Weapons';
-    if (WEAPON_MOUNT_TYPES.has(t)) return 'Weapon Mounts';
-    if (t === 'Shield') return 'Shields';
-    if (t === 'Cooler') return 'Coolers';
-    if (t === 'PowerPlant') return 'Power Plants';
-    if (t === 'QuantumDrive') return 'Quantum Drives';
-    if (t === 'Radar') return 'Radars';
-    if (t === 'MiningModifier') return 'Mining Modules';
+    if (SHIP_WEAPON_TYPES.has(t)) return 'Ship Weapon';
+    if (WEAPON_MOUNT_TYPES.has(t)) return 'Weapon Mount';
+    if (t === 'Shield') return 'Shield';
+    if (t === 'Cooler') return 'Cooler';
+    if (t === 'PowerPlant') return 'Power Plant';
+    if (t === 'QuantumDrive') return 'Quantum Drive';
+    if (t === 'Radar') return 'Radar';
+    if (t === 'MiningModifier') return 'Mining Module';
     if (t === 'SalvageModifier' || t === 'SalvageHead') return 'Salvage';
-    return 'Other Components';
+    return 'Component';
   }
 
   // ─── Metadata strings (right of name) ────────────────────────────
@@ -280,15 +174,19 @@ export class ShoppingComponent {
     return parts.join(' · ');
   }
 
-  // ─── Shop display helpers — mirror cart-view conventions ─────────
+  // ─── Price helpers ────────────────────────────────────────────────
+
+  /** Sort once at entry-build time so the template doesn't re-sort on
+   *  every change-detection pass. New array, so the original is left
+   *  alone. Returns [] for missing/null. */
+  private sortPrices(prices: ShopPrice[] | undefined): ShopPrice[] {
+    if (!prices?.length) return [];
+    return [...prices].sort((a, b) => a.price - b.price);
+  }
 
   fmtPrice(n: number | null | undefined): string {
     if (n == null) return '';
     return n.toLocaleString('en-US');
-  }
-
-  sortedShops(prices: ShopPrice[]): ShopPrice[] {
-    return [...prices].sort((a, b) => a.price - b.price);
   }
 
   shopLabel(sp: ShopPrice): string {
