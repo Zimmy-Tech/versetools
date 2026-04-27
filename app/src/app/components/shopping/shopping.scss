@@ -5,46 +5,6 @@
   background-color: var(--bg);
 }
 
-.shop-shell {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  width: 100%;
-  min-width: 0;
-}
-
-.shop-construction-banner {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 16px;
-  background: rgba(255, 180, 30, 0.08);
-  border-bottom: 1px solid rgba(255, 180, 30, 0.4);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  color: rgba(255, 200, 90, 0.95);
-}
-
-.shop-construction-tag {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgb(255, 200, 90);
-  background: rgba(255, 180, 30, 0.12);
-  border: 1px solid rgba(255, 180, 30, 0.55);
-  padding: 2px 8px;
-  flex-shrink: 0;
-}
-
-.shop-construction-msg {
-  flex: 1;
-  min-width: 0;
-}
-
 .shop-view {
   flex: 1;
   display: flex;
