@@ -171,6 +171,12 @@
   font-size: 13px;
 }
 
+/* Zebra striping — odd rows (1, 3, 5, 7…) get a subtle tint so the
+   eye stays locked on a row across the wide signal-count columns. */
+.sig-table tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .sig-table td.col-name {
   text-align: left;
   font-family: 'Rajdhani', sans-serif;
