@@ -6025,19 +6025,13 @@ def main(mode: str = "live"):
         override = accel_lower.get(ship["className"].lower())
         if override:
             ship.update(override)
-        else:
-            ship["accelFwd"] = 0
-            ship["accelRetro"] = 0
-            ship["accelStrafe"] = 0
-            ship["accelUp"] = 0
-            ship["accelDown"] = 0
-            ship["accelAbFwd"] = 0
-            ship["accelAbRetro"] = 0
-            ship["accelAbStrafe"] = 0
-            ship["accelAbUp"] = 0
-            ship["accelAbDown"] = 0
-            ship["accelTestedDate"] = ""
-            ship["accelCheckedBy"] = ""
+        # Else: do NOT zero accel fields — leaving them missing means the
+        # admin diff/import treats them as "no change" so existing
+        # community-curated values in the DB are preserved across
+        # re-extractions. Previously this branch wrote explicit zeros,
+        # which meant any ship whose className wasn't in accel_overrides
+        # would lose its acceleration data on the next admin import.
+        # See versetools 2026-04-28 4.8 PTU push for the incident.
 
     # 4. Components
     print("\n[4/6] Scanning components…")
@@ -6548,6 +6542,37 @@ def main(mode: str = "live"):
         "miningLocations": mining_locations.get("locations", []),
         "miningElements": mining_locations.get("elements", []),
     }
+
+    # Strip internal extractor scratch fields from the public output.
+    # `_modifications` (variant-transform table) and `_idToHp` (hardpoint
+    # name → tag map) are needed during extraction by _apply_vehicle_modification
+    # but have ZERO downstream consumers in the app or admin UI. They were
+    # leaking into versedb_data.json and producing massive admin-diff noise
+    # on every re-extraction (insertion-order changes, internal CIG variant
+    # rule tweaks). Drop them at output-write time.
+    for ship in output["ships"]:
+        ship.pop("_modifications", None)
+        ship.pop("_idToHp", None)
+
+    # Normalize whole-number floats to ints so 78400.0 and 78400 don't
+    # diff as different values across re-extractions. Most of our numeric
+    # fields are either explicitly int (counts, sizes) or floats from
+    # `round(x, 0)` (which Python returns as float even when the result
+    # is whole). The diff/import compares JSON values literally, so the
+    # 0.0/.0 difference shows up as a "change" on every re-run.
+    def _coerce_floats(obj):
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                obj[k] = _coerce_floats(v)
+            return obj
+        if isinstance(obj, list):
+            for i, v in enumerate(obj):
+                obj[i] = _coerce_floats(v)
+            return obj
+        if isinstance(obj, float) and obj.is_integer():
+            return int(obj)
+        return obj
+    _coerce_floats(output)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
