@@ -130,7 +130,10 @@ def main() -> None:
         shutil.copy2(OUT_FILE, _PUB / "versedb_merged_prev.json")
 
     with open(OUT_FILE, "w") as f:
-        json.dump(out, f, indent=2)
+        # Sorted keys → admin diff doesn't see insertion-order shuffles
+        # as "every dict completely different." See versedb_extract.py
+        # for the same fix on the upstream JSON.
+        json.dump(out, f, indent=2, sort_keys=True)
 
     print(f"  ships:     {len(out['ships'])}")
     print(f"  items:     {len(out['items'])}")

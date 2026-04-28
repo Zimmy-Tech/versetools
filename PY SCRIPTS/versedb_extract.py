@@ -6575,7 +6575,11 @@ def main(mode: str = "live"):
     _coerce_floats(output)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+        # sort_keys=True so dict insertion order doesn't generate
+        # spurious diffs between extraction runs (e.g. defaultLoadout
+        # showing "completely different" when only one key actually
+        # changed, because Python dict order shifted under us).
+        json.dump(output, f, indent=2, ensure_ascii=False, sort_keys=True)
 
     # Auto-copy to app/public/<live|ptu>/
     APP_DATA_DIR.mkdir(parents=True, exist_ok=True)
