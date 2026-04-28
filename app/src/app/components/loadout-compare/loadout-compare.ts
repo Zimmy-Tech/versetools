@@ -13,6 +13,9 @@ export interface StoredLoadout {
   timestamp: number;
   peakDps?: number;
   totalAlpha?: number;
+  /** Per-slot crafting QualityEffect[]. Optional — older saves
+   *  without it restore as un-crafted. */
+  craftEffects?: Record<string, unknown[]>;
 }
 
 interface WeaponEntry {

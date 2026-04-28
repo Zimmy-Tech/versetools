@@ -58,6 +58,10 @@ interface StoredLoadout {
   timestamp: number;
   peakDps?: number;
   totalAlpha?: number;
+  /** Per-slot QualityEffect[] from the crafting simulator. Optional
+   *  for backward compatibility with loadouts saved before crafting
+   *  shipped — older entries restore with no rolled quality. */
+  craftEffects?: Record<string, unknown[]>;
 }
 
 const STORAGE_KEY = 'versedb_loadouts';
@@ -320,6 +324,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     const existing = this.readStorage();
     const name = `${ship.name} #${existing.filter(l => l.shipClassName === ship.className).length + 1}`;
+    // Snapshot any rolled crafting state. Stored as plain
+    // Record<slotId, QualityEffect[]> so it round-trips through
+    // localStorage JSON without any custom (de)serializer.
+    const craftEffects = this.data.craftEffects();
+    const craftSnapshot = Object.keys(craftEffects).length > 0
+      ? JSON.parse(JSON.stringify(craftEffects))
+      : undefined;
     existing.push({
       name,
       shipClassName: ship.className,
@@ -331,6 +342,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       timestamp: Date.now(),
       peakDps: Math.round(peakDps),
       totalAlpha: Math.round(totalAlpha * 10) / 10,
+      craftEffects: craftSnapshot,
     });
     this.writeStorage(existing);
   }
@@ -351,6 +363,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.data.powerAlloc.set(stored.powerAlloc);
     this.data.weaponsPower.set(stored.weaponsPower);
     this.data.thrusterPower.set(stored.thrusterPower);
+    // Restore per-slot crafting state (optional — pre-crafting saves
+    // omit the field, which leaves the loadout un-crafted).
+    this.data.craftEffects.set((stored.craftEffects ?? {}) as Record<string, never[]>);
     this.loadoutDropdownOpen.set(false);
   }
 
