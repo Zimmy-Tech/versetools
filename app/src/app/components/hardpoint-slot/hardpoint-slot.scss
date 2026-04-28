@@ -4,17 +4,23 @@
   background: transparent;
   transition: border-color 0.15s;
   overflow-anchor: none;
+  position: relative; // anchor the absolute-positioned CRAFT badge
 }
 
 .craft-btn {
-  align-self: flex-end;
-  margin-top: 4px;
-  padding: 2px 9px;
+  // Anchored to the top-right corner of the slot so it stays out of
+  // the natural content flow — adjacent slots (e.g. the jump drive
+  // sub-slot directly under a Quantum Drive) can't crash into it.
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  z-index: 2;
+  padding: 1px 8px;
   font-family: 'Rajdhani', sans-serif;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  background: rgba(8, 14, 22, 0.7);
+  background: rgba(8, 14, 22, 0.85);
   color: rgba(159, 223, 255, 0.85);
   border: 1px solid rgba(80, 180, 255, 0.45);
   border-radius: 2px;
@@ -23,7 +29,7 @@
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 
   &:hover {
-    background: rgba(80, 180, 255, 0.12);
+    background: rgba(80, 180, 255, 0.18);
     color: #c8edff;
     border-color: rgba(80, 180, 255, 0.85);
   }
@@ -31,10 +37,10 @@
   &.crafted {
     color: #4aff7a;
     border-color: rgba(74, 255, 122, 0.7);
-    background: rgba(74, 255, 122, 0.08);
+    background: rgba(74, 255, 122, 0.12);
 
     &:hover {
-      background: rgba(74, 255, 122, 0.18);
+      background: rgba(74, 255, 122, 0.22);
       color: #80ff9c;
     }
   }
