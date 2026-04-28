@@ -481,15 +481,28 @@ function deepEqualUnordered(a, b) {
   return true;
 }
 
-function diffEntity(uploaded, current) {
+function diffEntity(uploaded, current, partial = false) {
   // Returns a list of { field, oldValue, newValue } describing fields
   // that differ between the uploaded blob and the current DB blob.
+  //
+  // partial=true: only walk fields present in the upload. Fields that
+  // exist in the DB but are missing from the upload are treated as
+  // "no change" (preserve DB value). Used by chunked uploads so that
+  // the extractor's intentional omissions (e.g. accel data, which now
+  // lives DB-side only via community submissions) don't surface as
+  // proposed deletes on every diff.
+  //
+  // partial=false (default): walk the union — any field present in
+  // either side is considered. A field missing from the upload but
+  // present in the DB shows as a "→ null" proposed change.
   const changes = [];
-  const allKeys = new Set([
-    ...Object.keys(uploaded || {}),
-    ...Object.keys(current || {}),
-  ]);
-  for (const key of allKeys) {
+  const keys = partial
+    ? new Set(Object.keys(uploaded || {}))
+    : new Set([
+        ...Object.keys(uploaded || {}),
+        ...Object.keys(current || {}),
+      ]);
+  for (const key of keys) {
     const a = current ? current[key] : undefined;
     const b = uploaded ? uploaded[key] : undefined;
     if (!deepEqualUnordered(a, b)) {
@@ -562,7 +575,7 @@ const diffPreviewHandler = async (req, res) => {
             changes: [{ field: '*', oldValue: null, newValue: entity }],
           });
         } else {
-          const fieldChanges = diffEntity(entity, cur.data);
+          const fieldChanges = diffEntity(entity, cur.data, !!body.partial);
           if (fieldChanges.length > 0) {
             changes.push({
               className: entity.className,
