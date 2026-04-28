@@ -527,16 +527,12 @@ def _parse_flight_stats_from_root(root):
         "yawBoosted":    boost_yaw,
         "rollBoosted":   boost_roll,
         "qdSpoolDelay":  round(qd_spool, 1),
-        "accelFwd":      round(accel_fwd, 1),
-        "accelRetro":    round(accel_retro, 1),
-        "accelStrafe":   round(accel_strafe, 1),
-        "accelUp":       round(accel_up, 1),
-        "accelDown":     round(accel_down, 1),
-        "accelAbFwd":    round(accel_ab_fwd, 1),
-        "accelAbRetro":  round(accel_ab_retro, 1),
-        "accelAbStrafe": round(accel_ab_strafe, 1),
-        "accelAbUp":     round(accel_ab_up, 1),
-        "accelAbDown":   round(accel_ab_down, 1),
+        # Accel fields intentionally NOT emitted from flight-stats. CIG's
+        # XML carries nominal design-intent jerk/thrust/mass figures, but
+        # those don't match in-game-tested reality (encumbrance, server
+        # sync, etc.). Player-tested values live in `accel_overrides`
+        # below; ships without an override entry simply omit the accel
+        # fields so admin diff/import preserves any DB-side curation.
         "thrusterPowerBars":  thruster_power_bars,
     }
 
