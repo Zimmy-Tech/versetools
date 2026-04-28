@@ -1126,6 +1126,27 @@ export class DataService {
                                hp.id.toLowerCase().startsWith('hardpoint_weapon_gun_nose_fixed');
     const isWolfShip = shipCls.includes('wolf') || shipCls.includes('alphawolf') || shipCls.includes('alpha_wolf');
 
+    // ── Hornet-only port-tag-driven picker (2026-04-28) ─────────────────
+    // CIG's portTag/itemTag system is the authoritative compatibility map
+    // for Mk II Hornet variants. Trust it instead of inferring exclusivity
+    // from default-loadout patterns. Scope-limited to Hornets for now;
+    // expand to other ship families after per-family validation.
+    const isHornet = shipCls.startsWith('anvl_hornet');
+    const defaultLoadout = this.selectedShip()?.defaultLoadout ?? {};
+    const slotDefaultCls = (defaultLoadout[hp.id] ?? '').toLowerCase();
+    // Effective tag set = slot's own portTags ∪ default item's itemTags.
+    // CIG sometimes leaves portTags empty but the default item carries
+    // the correct tag-set, which we read back as authoritative.
+    let hornetEffectiveTags: Set<string> | null = null;
+    if (isHornet) {
+      const tags = new Set<string>(hpPortTagSet ?? []);
+      if (slotDefaultCls) {
+        const di = this.itemMap().get(slotDefaultCls);
+        for (const t of di?.itemTags ?? []) tags.add(t.toLowerCase());
+      }
+      hornetEffectiveTags = tags.size > 0 ? tags : null;
+    }
+
     // PDC hardpoints: show PDC weapons/turrets directly (flat, no nesting)
     if (hp.id.toLowerCase().includes('_pdc')) {
       const PDC_ITEMS = new Set([
@@ -1194,22 +1215,38 @@ export class DataService {
         if (this.WOLF_WEAPONS.has(clsL)) return isWolfShip;
         if (isWolfShip && (acceptsGun || acceptsTurret) && i.type !== 'WeaponMount' && !this.WOLF_WEAPONS.has(clsL)) return false;
 
-        // Ship-exclusive items: only show when that ship is selected
-        if (exclusiveShip && exclusiveShip !== shipCls) return false;
-
-        // Port-tag filtering: if an item has itemTags, it is ship-specific and
-        // requires a hardpoint with matching portTags. Untagged hardpoints never
-        // show tagged items. With exclusive_tags flag, items WITHOUT tags are also
-        // excluded. FlightController slots always require matching tags.
-        if (hpPortTagSet) {
-          const isExclusive = hp.flags?.includes('exclusive_tags');
-          if (i.itemTags && i.itemTags.length > 0) {
-            if (!i.itemTags.some(t => hpPortTagSet.has(t.toLowerCase()))) return false;
-          } else if (isExclusive || i.type === 'FlightController') {
-            return false;  // no matching tags → excluded
+        // ── Hornet-only path: CIG tag system is authoritative ──────────
+        // The slot's exact default always passes (safety net). Otherwise
+        // require itemTags/portTags overlap (where portTags is inferred
+        // from the default item if the slot left them blank). Universal
+        // slots (no portTags, no default-item tags) only accept untagged
+        // items. Skips the exclusive-ship heuristic entirely.
+        if (isHornet) {
+          if (clsL === slotDefaultCls) return true;
+          const itemTagSet = (i.itemTags ?? []).map(t => t.toLowerCase());
+          if (hornetEffectiveTags) {
+            if (!itemTagSet.some(t => hornetEffectiveTags!.has(t))) return false;
+          } else {
+            if (itemTagSet.length > 0) return false;
           }
-        } else if (i.itemTags && i.itemTags.length > 0) {
-          return false;  // item has tags but hardpoint has none — not compatible
+        } else {
+          // Ship-exclusive items: only show when that ship is selected
+          if (exclusiveShip && exclusiveShip !== shipCls) return false;
+
+          // Port-tag filtering: if an item has itemTags, it is ship-specific and
+          // requires a hardpoint with matching portTags. Untagged hardpoints never
+          // show tagged items. With exclusive_tags flag, items WITHOUT tags are also
+          // excluded. FlightController slots always require matching tags.
+          if (hpPortTagSet) {
+            const isExclusive = hp.flags?.includes('exclusive_tags');
+            if (i.itemTags && i.itemTags.length > 0) {
+              if (!i.itemTags.some(t => hpPortTagSet.has(t.toLowerCase()))) return false;
+            } else if (isExclusive || i.type === 'FlightController') {
+              return false;  // no matching tags → excluded
+            }
+          } else if (i.itemTags && i.itemTags.length > 0) {
+            return false;  // item has tags but hardpoint has none — not compatible
+          }
         }
         // Filter internal flight controller variants (_mm_ = master mode test)
         if (i.type === 'FlightController' && clsL.includes('_mm_')) {
