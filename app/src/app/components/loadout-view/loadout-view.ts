@@ -5,17 +5,48 @@ import { DataService } from '../../services/data.service';
 import { DpsPanelComponent } from '../dps-panel/dps-panel';
 import { HardpointSlotComponent } from '../hardpoint-slot/hardpoint-slot';
 import { PowerBarsComponent } from '../power-bars/power-bars';
+import { QualitySimulatorComponent, QualityEffect } from '../quality-simulator/quality-simulator';
 import { Hardpoint, Item, Ship } from '../../models/db.models';
 
 @Component({
   selector: 'app-loadout-view',
   standalone: true,
-  imports: [DpsPanelComponent, HardpointSlotComponent, PowerBarsComponent, UpperCasePipe],
+  imports: [DpsPanelComponent, HardpointSlotComponent, PowerBarsComponent, QualitySimulatorComponent, UpperCasePipe],
   templateUrl: './loadout-view.html',
   styleUrl: './loadout-view.scss',
 })
 export class LoadoutViewComponent {
   hullTreeOpen = signal(false);
+
+  /** Resolves the page-level CRAFT modal — pulls the slot id, current
+   *  effective item, and the slot's hardpoint label from data service
+   *  state set by the per-slot CRAFT button. Null when the modal is
+   *  closed. */
+  craftModalContext = computed(() => {
+    const slotId = this.data.craftModalSlotId();
+    if (!slotId) return null;
+    const item = this.data.effectiveItem(slotId);
+    if (!item) return null;
+    const recipe = this.data.recipeForItem(item);
+    if (!recipe) return null;
+    const ship = this.data.selectedShip();
+    const hp = (ship?.hardpoints ?? []).find(h => h.id === slotId);
+    const label = hp?.label ?? slotId;
+    return { slotId, item, recipe, label };
+  });
+
+  closeCraftModal(): void {
+    this.data.craftModalSlotId.set(null);
+  }
+
+  onCraftEffects(slotId: string, effects: QualityEffect[]): void {
+    this.data.setCraftEffects(slotId, effects);
+  }
+
+  resetCraft(slotId: string): void {
+    this.data.clearCraftEffects(slotId);
+    this.data.craftModalSlotId.set(null);
+  }
 
   private readonly CATEGORY_ICONS: Record<string, string> = {
     vital: '✦', secondary: '◌', breakable: '⇄', sub: '⊢', thruster: '∷',

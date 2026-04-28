@@ -2268,3 +2268,78 @@ select {
 
   .slot-group-label { font-size: 14px; }
 }
+
+/* ── Crafting modal ──────────────────────────────────────────── */
+.craft-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+
+.craft-modal {
+  width: min(680px, 92vw);
+  max-height: 86vh;
+  background: var(--bg2);
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 200, 255, 0.15);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+.craft-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.craft-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  .craft-item { color: var(--accent); }
+  .craft-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px; font-weight: 400; letter-spacing: 0;
+    text-transform: none;
+    color: var(--text3);
+    margin-left: 10px;
+  }
+}
+
+.craft-close {
+  background: transparent; border: none; color: var(--text2);
+  font-size: 22px; line-height: 1; cursor: pointer; padding: 0 4px;
+  &:hover { color: var(--accent); }
+}
+
+.craft-body {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 12px 16px 14px;
+  overflow-y: auto;
+}
+
+.craft-actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+  margin-top: 6px;
+  button {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px; border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .craft-reset {
+    background: transparent; color: var(--text3);
+    &:hover { color: rgb(255, 120, 120); border-color: rgba(255, 120, 120, 0.3); }
+  }
+  .craft-done {
+    background: rgba(0, 200, 255, 0.12); color: var(--accent);
+    border-color: rgba(0, 200, 255, 0.4);
+    &:hover { background: rgba(0, 200, 255, 0.18); }
+  }
+}

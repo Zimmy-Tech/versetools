@@ -2,6 +2,11 @@ import { Injectable, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { VerseDb, Ship, Item, CartEntry, calcMaxPips } from '../models/db.models';
 import { applyDataOverrides } from './data-overrides';
+import {
+  CraftingRecipe,
+  QualityEffect,
+  BaseStats,
+} from '../components/quality-simulator/quality-simulator';
 
 export type DataMode = 'live' | 'ptu';
 
@@ -18,6 +23,16 @@ export class DataService {
   weaponsPower = signal<number>(0);
   thrusterPower = signal<number>(4);
   flightMode = signal<'scm' | 'nav'>('scm');
+
+  // ─── Ship-component crafting state ──────────────────────────────────
+  // `recipes` is loaded once per data-mode change. `craftEffects` stores
+  // the live QualityEffect[] emitted by QualitySimulatorComponent for
+  // each crafted slot, keyed by hardpoint id. `craftModalSlotId` drives
+  // a single page-level modal in loadout-view (per-slot CRAFT buttons
+  // toggle this signal — only one modal at a time).
+  readonly recipes = signal<CraftingRecipe[]>([]);
+  readonly craftEffects = signal<Record<string, QualityEffect[]>>({});
+  readonly craftModalSlotId = signal<string | null>(null);
 
   // Ships hidden from picker (non-player ships only)
   private readonly hiddenShips = new Set([
@@ -176,10 +191,21 @@ export class DataService {
         this.db.set(applyDataOverrides(db));
         this.selectedShip.set(null);
         this.loadout.set({});
+        this.craftEffects.set({});
+        this.craftModalSlotId.set(null);
         this.modeVersion.update(v => v + 1);
         const gladius = db.ships.find(s => s.className === 'aegs_gladius');
         if (gladius) this.selectShip(gladius);
       };
+
+      // Load crafting recipes for the new mode. Static fallback only —
+      // the recipe set is large but rarely changes between imports, so
+      // it stays JSON-only for now.
+      this.http.get<{ recipes: CraftingRecipe[] }>(`${prefix}versedb_crafting.json`,
+        { headers: { 'Cache-Control': 'no-cache' } }).subscribe({
+          next: (d) => this.recipes.set(d?.recipes ?? []),
+          error: () => this.recipes.set([]),
+        });
 
       // No-cache header forces the browser HTTP cache to revalidate. The
       // service worker's dataGroup for this URL uses `freshness` strategy
@@ -556,6 +582,104 @@ export class DataService {
     this.tractorPower.set(0);
   }
 
+  // ─── Crafting helpers ────────────────────────────────────────────────
+  /** Crafting recipe matching the item's className, or null if none. */
+  recipeForItem(item: Item | null | undefined): CraftingRecipe | null {
+    if (!item) return null;
+    return this.recipes().find(r => r.className === item.className) ?? null;
+  }
+
+  /** BaseStats lookup map for QualitySimulator's before→after preview.
+   *  Loose aliases — keys are matched case-insensitively via includes(),
+   *  so the same map covers every ship-component category. */
+  baseStatsForItem(item: Item | null | undefined): BaseStats {
+    if (!item) return {};
+    return {
+      // "Integrity" → componentHp on most components, hp on shields/QDs.
+      'integrity':         item.componentHp ?? item.hp ?? null,
+      'shield strength':   item.type === 'Shield' ? (item.hp ?? null) : null,
+      'shield hp':         item.type === 'Shield' ? (item.hp ?? null) : null,
+      'coolant rating':    item.coolingRate ?? null,
+      'coolant':           item.coolingRate ?? null,
+      'cooling':           item.coolingRate ?? null,
+      'power pips':        item.powerOutput ?? null,
+      'power output':      item.powerOutput ?? null,
+      'aim min':           item.aimMin ?? null,
+      'min assist':        item.aimMin ?? null,
+      'aim max':           item.aimMax ?? null,
+      'max assist':        item.aimMax ?? null,
+      'quantum speed':     item.speed ?? null,
+      'qd speed':          item.speed ?? null,
+      'quantum fuel':      item.fuelRate ?? null,
+      'fuel rate':         item.fuelRate ?? null,
+      'fuel burn':         item.fuelRate ?? null,
+    };
+  }
+
+  setCraftEffects(slotId: string, effects: QualityEffect[]): void {
+    this.craftEffects.update(m => ({ ...m, [slotId]: effects }));
+  }
+
+  clearCraftEffects(slotId: string): void {
+    this.craftEffects.update(m => {
+      if (!(slotId in m)) return m;
+      const next = { ...m };
+      delete next[slotId];
+      return next;
+    });
+  }
+
+  /** Has the player rolled non-identity quality on this slot? */
+  isCrafted(slotId: string | null | undefined): boolean {
+    if (!slotId) return false;
+    const effects = this.craftEffects()[slotId];
+    if (!effects?.length) return false;
+    return effects.some(e => Math.abs(e.combined - 1.0) > 1e-4);
+  }
+
+  /** Returns the equipped item with crafting modifiers layered onto its
+   *  numeric stats. When nothing is crafted, returns the item by reference
+   *  so existing identity comparisons stay cheap. The crafting layer is
+   *  the OUTERMOST in any stat pipeline — apply this last on top of pip
+   *  scaling, attachments, etc. */
+  effectiveItem(slotId: string | null | undefined): Item | null {
+    if (!slotId) return null;
+    const base = this.loadout()[slotId];
+    if (!base) return null;
+    const effects = this.craftEffects()[slotId];
+    if (!effects?.length) return base;
+    let dirty = false;
+    const eff: any = { ...base };
+    for (const e of effects) {
+      const m = e.combined;
+      if (Math.abs(m - 1) < 1e-4) continue;
+      const p = e.property.toLowerCase();
+      if (p.includes('integrity')) {
+        if (eff.componentHp != null) { eff.componentHp = eff.componentHp * m; dirty = true; }
+        else if (eff.hp != null)     { eff.hp = eff.hp * m;                   dirty = true; }
+      } else if (p.includes('coolant')) {
+        if (eff.coolingRate != null) { eff.coolingRate = eff.coolingRate * m; dirty = true; }
+      } else if (p.includes('shield strength') || p.includes('shield hp')) {
+        if (eff.type === 'Shield' && eff.hp != null) { eff.hp = eff.hp * m; dirty = true; }
+      } else if (p.includes('power pips') || p.includes('power output')) {
+        // Today the PTU recipe values are 1.0×1.0 stubs — this branch is
+        // a no-op until CIG fills them in. Wired now so the day they ship
+        // real numbers, the powerOutput rolls through with no further
+        // changes here or in the simulator.
+        if (eff.powerOutput != null) { eff.powerOutput = eff.powerOutput * m; dirty = true; }
+      } else if (p.includes('min') && p.includes('assist')) {
+        if (eff.aimMin != null) { eff.aimMin = eff.aimMin * m; dirty = true; }
+      } else if (p.includes('max') && p.includes('assist')) {
+        if (eff.aimMax != null) { eff.aimMax = eff.aimMax * m; dirty = true; }
+      } else if (p.includes('quantum speed')) {
+        if (eff.speed != null) { eff.speed = eff.speed * m; dirty = true; }
+      } else if (p.includes('quantum') && p.includes('fuel')) {
+        if (eff.fuelRate != null) { eff.fuelRate = eff.fuelRate * m; dirty = true; }
+      }
+    }
+    return dirty ? (eff as Item) : base;
+  }
+
   setLoadoutItem(slotId: string, item: Item | null): void {
     const current = { ...this.loadout() };
     const prefix = slotId.toLowerCase() + '.';
@@ -567,6 +691,21 @@ export class DataService {
         delete current[key];
       }
     }
+
+    // Drop any crafting state for the slot (and its children) — the
+    // modifier set is item-specific and doesn't carry across swaps.
+    this.craftEffects.update(m => {
+      let touched = false;
+      const next = { ...m };
+      for (const key of Object.keys(next)) {
+        const lk = key.toLowerCase();
+        if (lk === slotId.toLowerCase() || lk.startsWith(prefix)) {
+          delete next[key];
+          touched = true;
+        }
+      }
+      return touched ? next : m;
+    });
 
     if (item) {
       current[slotId] = item;

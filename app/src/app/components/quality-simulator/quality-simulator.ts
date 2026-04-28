@@ -189,8 +189,56 @@ export class QualitySimulatorComponent {
         baseValue = this.lookupBase('recoil smooth') ?? this.lookupBase('recoilsmooth');
         if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined * 1000) / 1000; unit = 's'; }
       }
+      // ── Ship-component branches ───────────────────────────────────────
+      // Integrity is universal — ship recipes apply it to whatever the
+      // component's "health" stat is (componentHp for most, hp for shields/QDs).
+      // The baseStats lookup tries both aliases.
+      else if (pl.includes('integrity')) {
+        baseValue = this.lookupBase('integrity');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined); unit = ' HP'; }
+      }
+      // Cooler: coolingRate.
+      else if (pl.includes('coolant')) {
+        baseValue = this.lookupBase('coolant') ?? this.lookupBase('cooling');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined); unit = ''; }
+      }
+      // Shield HP (the user-facing pool, not componentHp).
+      else if (pl.includes('shield strength') || pl.includes('shield hp')) {
+        baseValue = this.lookupBase('shield strength') ?? this.lookupBase('shield hp') ?? this.lookupBase('hp');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined); unit = ' HP'; }
+      }
+      // Power Pips — current PTU values are stub 1.0×1.0 placeholders so this
+      // is a no-op today, but we wire the pipe so the moment CIG ships real
+      // numbers the simulator + effective-stats layer pick them up for free.
+      else if (pl.includes('power pips') || pl.includes('power output')) {
+        baseValue = this.lookupBase('power pips') ?? this.lookupBase('power output');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined * 10) / 10; unit = ' SEG'; }
+      }
+      // Radar aim distances.
+      else if (pl.includes('min') && pl.includes('assist')) {
+        baseValue = this.lookupBase('aim min') ?? this.lookupBase('min assist');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined); unit = ' m'; }
+      }
+      else if (pl.includes('max') && pl.includes('assist')) {
+        baseValue = this.lookupBase('aim max') ?? this.lookupBase('max assist');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined); unit = ' m'; }
+      }
+      // Quantum drive — speed + fuel-burn (lower is better).
+      else if (pl.includes('quantum speed')) {
+        baseValue = this.lookupBase('quantum speed') ?? this.lookupBase('qd speed');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined); unit = ' m/s'; }
+      }
+      else if (pl.includes('quantum') && pl.includes('fuel')) {
+        baseValue = this.lookupBase('quantum fuel') ?? this.lookupBase('fuel rate') ?? this.lookupBase('fuel burn');
+        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined * 10000) / 10000; unit = ' SCU/Mm'; }
+      }
 
-      const invertComparison = pl.includes('min temp') || pl.includes('recoil');
+      // Lower-is-better metrics flag invertComparison so the colour /
+      // CRAFTED indicator treat downward shifts as buffs.
+      const invertComparison =
+        pl.includes('min temp') ||
+        pl.includes('recoil') ||
+        (pl.includes('quantum') && pl.includes('fuel'));
 
       let description = '';
       if (pl.includes('recoil') && pl.includes('kick')) description = 'Vertical recoil (pitch)';

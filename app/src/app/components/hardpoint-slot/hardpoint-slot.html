@@ -930,4 +930,13 @@
       }
     </div>
   }
+
+  @if (isCraftable() && !isLocked() && !pickerOpen() && !collapsed()) {
+    <button type="button"
+            class="craft-btn"
+            [class.crafted]="isCrafted()"
+            (click)="openCraft($event)">
+      {{ isCrafted() ? 'CRAFTED' : 'CRAFT' }}
+    </button>
+  }
 </div>

@@ -989,3 +989,29 @@
     </div>
   }
 }
+
+@if (craftModalContext(); as ctx) {
+  <div class="craft-overlay" (click)="closeCraftModal()">
+    <div class="craft-modal" (click)="$event.stopPropagation()">
+      <div class="craft-header">
+        <div class="craft-title">
+          Craft → <span class="craft-item">{{ ctx.item.name }}</span>
+          <span class="craft-meta">{{ ctx.label }}</span>
+        </div>
+        <button class="craft-close" (click)="closeCraftModal()" aria-label="Close">×</button>
+      </div>
+
+      <div class="craft-body">
+        <app-quality-simulator
+          [recipe]="ctx.recipe"
+          [baseStats]="data.baseStatsForItem(ctx.item)"
+          (qualityEffectsChange)="onCraftEffects(ctx.slotId, $event)" />
+
+        <div class="craft-actions">
+          <button class="craft-reset" (click)="resetCraft(ctx.slotId)">Reset to base</button>
+          <button class="craft-done" (click)="closeCraftModal()">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

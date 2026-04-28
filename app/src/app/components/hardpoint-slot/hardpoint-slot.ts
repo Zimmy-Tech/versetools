@@ -138,7 +138,24 @@ export class HardpointSlotComponent {
     };
   });
 
-  currentItem = computed(() => this.data.loadout()[this.hardpoint().id] ?? null);
+  /** Equipped item with crafting modifiers layered on. Pulls from the
+   *  shared `DataService.effectiveItem()` so quality-rolled stats flow
+   *  through every consumer (jane card, weapon-compact, slotStat, the
+   *  full itemStatRows table) automatically. */
+  currentItem = computed(() => this.data.effectiveItem(this.hardpoint().id));
+
+  /** Has this slot's item been quality-rolled? Drives the CRAFTED label
+   *  on the per-card badge. */
+  isCrafted = computed(() => this.data.isCrafted(this.hardpoint().id));
+
+  /** True when the equipped item has a recipe in the data set. The
+   *  CRAFT button only renders for craftable items. */
+  isCraftable = computed(() => !!this.data.recipeForItem(this.currentItem()));
+
+  openCraft(e: MouseEvent): void {
+    e.stopPropagation();
+    this.data.craftModalSlotId.set(this.hardpoint().id);
+  }
 
   hasPowerToggle = computed(() => {
     const item = this.currentItem();
