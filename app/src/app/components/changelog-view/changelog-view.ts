@@ -1,11 +1,11 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from '../../services/data.service';
 
 interface FieldDiff {
   field: string;
   old: number | string | null;
   new: number | string | null;
+  pct?: number;
 }
 
 interface ChangeEntry {
@@ -22,6 +22,7 @@ interface AddRemoveEntry {
 }
 
 interface ChangelogEntry {
+  channel?: string;
   fromVersion: string;
   toVersion: string;
   date: string;
@@ -36,24 +37,50 @@ interface ChangelogData {
 }
 
 const CATEGORY_ORDER = [
-  'ship', 'weapon', 'shield', 'powerplant', 'cooler', 'quantumdrive',
-  'radar', 'missile', 'missilelauncher', 'tractor',
+  'ship',
+  'weapon', 'turret', 'weapon_mount',
+  'shield', 'powerplant', 'cooler', 'quantumdrive',
+  'radar', 'flight_controller', 'jumpdrive', 'life_support',
+  'qig', 'emp', 'module',
+  'missile', 'missilelauncher',
+  'tractor',
+  'mining_laser', 'mining_modifier',
+  'salvage', 'salvage_modifier', 'tool',
   'fps_weapon', 'fps_magazine', 'fps_attachment', 'fps_gear', 'fps_armor',
   'mission', 'mission_refs',
 ];
 const CATEGORY_LABELS: Record<string, string> = {
-  ship: 'Ships', weapon: 'Weapons', shield: 'Shields', powerplant: 'Power Plants',
-  cooler: 'Coolers', quantumdrive: 'Quantum Drives', radar: 'Radar',
-  missile: 'Missiles', missilelauncher: 'Missile Racks', tractor: 'Tractor Beams',
-  fps_weapon: 'FPS Weapons', fps_magazine: 'FPS Magazines',
-  fps_attachment: 'FPS Attachments', fps_gear: 'FPS Gear', fps_armor: 'FPS Armor',
-  mission: 'Missions', mission_refs: 'Mission Reference Data',
+  ship: 'Ships',
+  weapon: 'Ship Weapons',
+  turret: 'Turrets',
+  weapon_mount: 'Weapon Mounts',
+  shield: 'Shields',
+  powerplant: 'Power Plants',
+  cooler: 'Coolers',
+  quantumdrive: 'Quantum Drives',
+  radar: 'Radar',
+  flight_controller: 'Flight Controllers',
+  jumpdrive: 'Jump Drives',
+  life_support: 'Life Support',
+  qig: 'QED Generators',
+  emp: 'EMPs',
+  module: 'Modules',
+  missile: 'Missiles',
+  missilelauncher: 'Missile Racks',
+  tractor: 'Tractor Beams',
+  mining_laser: 'Mining Lasers',
+  mining_modifier: 'Mining Modules',
+  salvage: 'Salvage Heads',
+  salvage_modifier: 'Salvage Modules',
+  tool: 'Tools',
+  fps_weapon: 'FPS Weapons',
+  fps_magazine: 'FPS Magazines',
+  fps_attachment: 'FPS Attachments',
+  fps_gear: 'FPS Gear',
+  fps_armor: 'FPS Armor',
+  mission: 'Missions',
+  mission_refs: 'Mission Reference Data',
 };
-
-interface ChangelogEntryDisplay extends ChangelogEntry {
-  toChannel?: string;
-  fromChannel?: string;
-}
 
 @Component({
   selector: 'app-changelog-view',
@@ -62,7 +89,7 @@ interface ChangelogEntryDisplay extends ChangelogEntry {
   styleUrl: './changelog-view.scss',
 })
 export class ChangelogViewComponent {
-  entries = signal<ChangelogEntryDisplay[]>([]);
+  entries = signal<ChangelogEntry[]>([]);
   loaded = signal(false);
 
   /** Indices of entries that are currently expanded. The newest entry
@@ -140,20 +167,14 @@ export class ChangelogViewComponent {
     }
   }
 
-  constructor(private http: HttpClient, private data: DataService) {
-    // Read from the static per-mode JSON written by the extractor.
-    // The DB-backed /api/changelog/history path was removed — the
-    // extractor is already the source of truth and the file is
-    // deployed alongside versedb_data.json.
-    effect(() => {
-      const prefix = this.data.dataPrefix();
-      this.data.modeVersion(); // track mode changes
-      this.loaded.set(false);
-      const url = `${prefix}versedb_changelog.json`;
-      this.http.get<ChangelogData>(url).subscribe({
-        next: (d) => { this.entries.set(d.changelog); this.loaded.set(true); },
-        error: () => this.loaded.set(true),
-      });
+  constructor(private http: HttpClient) {
+    // Single unified changelog file at the public root — not per-mode.
+    // The Changelog tab is global; toggling LIVE/PTU does not change
+    // its content. Each entry carries a `channel` field which is
+    // surfaced as a pill in the header.
+    this.http.get<ChangelogData>('versedb_changelog.json').subscribe({
+      next: (d) => { this.entries.set(d.changelog ?? []); this.loaded.set(true); },
+      error: () => this.loaded.set(true),
     });
   }
 
@@ -161,6 +182,12 @@ export class ChangelogViewComponent {
     if (v == null) return '—';
     if (typeof v === 'number') return v % 1 === 0 ? v.toString() : v.toFixed(2);
     return v;
+  }
+
+  fmtPct(p: number | undefined): string {
+    if (p == null) return '';
+    const sign = p > 0 ? '+' : '';
+    return `${sign}${p.toFixed(p % 1 === 0 ? 0 : 1)}%`;
   }
 
   isNerfed(d: FieldDiff): boolean {
@@ -182,6 +209,10 @@ export class ChangelogViewComponent {
       .replace('Dps', 'DPS')
       .replace('Hp', 'HP')
       .replace('Em ', 'EM ')
+      .replace('Ir ', 'IR ')
+      .replace('Cs ', 'CS ')
+      .replace('Qd ', 'QD ')
+      .replace('Scm', 'SCM')
       .trim();
   }
 }

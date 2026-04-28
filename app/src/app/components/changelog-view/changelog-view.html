@@ -8,14 +8,14 @@
     <div class="empty-state">
       <div class="empty-icon">&#9662;</div>
       <div class="empty-title">No Changelog Data</div>
-      <div class="empty-sub">Import a fresh extraction via the admin panel to populate the changelog.</div>
+      <div class="empty-sub">A new entry is generated when CIG ships a new patch build.</div>
     </div>
   } @else {
 
     <div class="changelog-header">
       <div>
         <h1>Changelog</h1>
-        <p class="hint">Most recent {{ entries().length }} build imports, newest first.</p>
+        <p class="hint">{{ entries().length }} patch{{ entries().length === 1 ? '' : 'es' }}, newest first.</p>
       </div>
       <div class="header-actions">
         <button type="button" class="link-btn" (click)="expandAll()">Expand all</button>
@@ -24,22 +24,19 @@
     </div>
 
     <div class="entry-list">
-      @for (entry of entries(); track entry.toVersion + '|' + entry.toChannel + '|' + entry.date; let i = $index) {
+      @for (entry of entries(); track entry.toVersion + '|' + entry.channel + '|' + entry.date; let i = $index) {
         <div class="entry-card" [class.expanded]="isExpanded(i)">
           <button type="button" class="entry-header" (click)="toggleExpand(i)">
             <span class="caret">{{ isExpanded(i) ? '▾' : '▸' }}</span>
+            @if (entry.channel) {
+              <span class="channel-pill" [class.ptu]="entry.channel === 'ptu'">{{ channelLabel(entry.channel) }}</span>
+            }
             <div class="version-block">
-              @if (entry.fromVersion) {
-                <span class="from">
-                  @if (entry.fromChannel) { <span class="channel-pill" [class.ptu]="entry.fromChannel === 'ptu'">{{ channelLabel(entry.fromChannel) }}</span> }
-                  {{ entry.fromVersion }}
-                </span>
+              @if (entry.fromVersion && entry.fromVersion !== entry.toVersion) {
+                <span class="from">{{ entry.fromVersion }}</span>
                 <span class="arrow">→</span>
               }
-              <span class="to">
-                @if (entry.toChannel) { <span class="channel-pill" [class.ptu]="entry.toChannel === 'ptu'">{{ channelLabel(entry.toChannel) }}</span> }
-                {{ entry.toVersion }}
-              </span>
+              <span class="to">{{ entry.toVersion }}</span>
             </div>
             <span class="entry-date">{{ fmtDate(entry.date) }}</span>
             <span class="change-count">
@@ -63,7 +60,10 @@
                       <div class="group-label">{{ group.label }}</div>
                       <div class="add-remove-list">
                         @for (item of group.items; track item.className) {
-                          <div class="ar-item added">+ {{ item.name }}</div>
+                          <div class="ar-item added">
+                            <span class="ar-name">+ {{ item.name }}</span>
+                            <span class="ar-class">{{ item.className }}</span>
+                          </div>
                         }
                       </div>
                     }
@@ -77,7 +77,10 @@
                       <div class="group-label">{{ group.label }}</div>
                       <div class="add-remove-list">
                         @for (item of group.items; track item.className) {
-                          <div class="ar-item removed">- {{ item.name }}</div>
+                          <div class="ar-item removed">
+                            <span class="ar-name">- {{ item.name }}</span>
+                            <span class="ar-class">{{ item.className }}</span>
+                          </div>
                         }
                       </div>
                     }
@@ -90,7 +93,10 @@
                     <div class="changes-list">
                       @for (item of group.items; track item.className) {
                         <div class="change-card">
-                          <div class="change-name">{{ item.name }}</div>
+                          <div class="change-name">
+                            <span class="cn-name">{{ item.name }}</span>
+                            <span class="cn-class">{{ item.className }}</span>
+                          </div>
                           <div class="change-fields">
                             @for (d of item.fields; track d.field) {
                               <div class="field-row">
@@ -98,6 +104,7 @@
                                 <span class="field-old">{{ fmtVal(d.old) }}</span>
                                 <span class="field-arrow">→</span>
                                 <span class="field-new" [class.buffed]="isBuffed(d)" [class.nerfed]="isNerfed(d)">{{ fmtVal(d.new) }}</span>
+                                <span class="field-pct" [class.buffed]="isBuffed(d)" [class.nerfed]="isNerfed(d)">{{ fmtPct(d.pct) }}</span>
                               </div>
                             }
                           </div>

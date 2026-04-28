@@ -1,7 +1,4542 @@
 {
   "meta": {
-    "generatedAt": "2026-04-20T19:04:39.398434+00:00",
-    "entries": 0
+    "generatedAt": "2026-04-28T09:15:46.330046+00:00",
+    "entries": 1
   },
-  "changelog": []
+  "changelog": [
+    {
+      "channel": "ptu",
+      "fromVersion": "4.7.2-live.11715810",
+      "toVersion": "4.8.0-ptu.11733560",
+      "date": "2026-04-28",
+      "changes": [
+        {
+          "category": "ship",
+          "className": "AEGS_Hammerhead",
+          "name": "Aegis Hammerhead",
+          "fields": [
+            {
+              "field": "navSpeed",
+              "old": 950.0,
+              "new": 1000,
+              "pct": 5.3
+            },
+            {
+              "field": "boostSpeedFwd",
+              "old": 320.0,
+              "new": 340,
+              "pct": 6.2
+            }
+          ]
+        },
+        {
+          "category": "ship",
+          "className": "drak_caterpillar",
+          "name": "Drake Caterpillar",
+          "fields": [
+            {
+              "field": "totalHp",
+              "old": 92700.0,
+              "new": 91500,
+              "pct": -1.3
+            }
+          ]
+        },
+        {
+          "category": "ship",
+          "className": "drak_caterpillar_pirate",
+          "name": "Drake Caterpillar Pirate",
+          "fields": [
+            {
+              "field": "totalHp",
+              "old": 92700.0,
+              "new": 91500,
+              "pct": -1.3
+            }
+          ]
+        },
+        {
+          "category": "ship",
+          "className": "rsi_aurora_mk2",
+          "name": "RSI Aurora Mk II",
+          "fields": [
+            {
+              "field": "totalHp",
+              "old": 18021.0,
+              "new": 19417,
+              "pct": 7.7
+            }
+          ]
+        },
+        {
+          "category": "weapon",
+          "className": "amrs_scattergun_s3",
+          "name": "PyroBurst Scattergun",
+          "fields": [
+            {
+              "field": "projectileSpeed",
+              "old": 1200.0,
+              "new": 0,
+              "pct": -100.0
+            }
+          ]
+        },
+        {
+          "category": "weapon",
+          "className": "behr_javelinballisticcannon_s7",
+          "name": "M9A Cannon",
+          "fields": [
+            {
+              "field": "alphaDamage",
+              "old": 2306.3401,
+              "new": 2306.34,
+              "pct": -0.0
+            }
+          ]
+        },
+        {
+          "category": "weapon",
+          "className": "behr_lasercannon_s7",
+          "name": "M9A Cannon",
+          "fields": [
+            {
+              "field": "alphaDamage",
+              "old": 2075.7061,
+              "new": 2075.706,
+              "pct": -0.0
+            }
+          ]
+        },
+        {
+          "category": "weapon",
+          "className": "behr_lasercannon_s8",
+          "name": "M9A Cannon",
+          "fields": [
+            {
+              "field": "alphaDamage",
+              "old": 3113.6399,
+              "new": 3113.64,
+              "pct": 0.0
+            }
+          ]
+        },
+        {
+          "category": "weapon",
+          "className": "bengal_ballisticcannon_s7",
+          "name": "Tarantula GT-870 Mark 3 Cannon",
+          "fields": [
+            {
+              "field": "alphaDamage",
+              "old": 2562.6001,
+              "new": 2562.6,
+              "pct": -0.0
+            }
+          ]
+        },
+        {
+          "category": "flight_controller",
+          "className": "controller_flight_aegs_hammerhead",
+          "name": "Hammerhead Standard Flight Blade",
+          "fields": [
+            {
+              "field": "navSpeed",
+              "old": 950.0,
+              "new": 1000,
+              "pct": 5.3
+            },
+            {
+              "field": "boostSpeedFwd",
+              "old": 320.0,
+              "new": 340,
+              "pct": 6.2
+            }
+          ]
+        },
+        {
+          "category": "flight_controller",
+          "className": "controller_flight_aegs_hammerhead_flight_blade_hnd",
+          "name": "Hammerhead PHB Flight Blade",
+          "fields": [
+            {
+              "field": "navSpeed",
+              "old": 940.0,
+              "new": 990,
+              "pct": 5.3
+            },
+            {
+              "field": "boostSpeedFwd",
+              "old": 310.0,
+              "new": 330,
+              "pct": 6.5
+            }
+          ]
+        },
+        {
+          "category": "flight_controller",
+          "className": "controller_flight_aegs_hammerhead_flight_blade_spd",
+          "name": "Hammerhead TSB Flight Blade",
+          "fields": [
+            {
+              "field": "navSpeed",
+              "old": 960.0,
+              "new": 1010,
+              "pct": 5.2
+            },
+            {
+              "field": "boostSpeedFwd",
+              "old": 330.0,
+              "new": 350,
+              "pct": 6.1
+            }
+          ]
+        },
+        {
+          "category": "weapon",
+          "className": "hrst_nova_ballisticcannon_s5",
+          "name": "Slayer Cannon",
+          "fields": [
+            {
+              "field": "dps",
+              "old": 18500.0,
+              "new": 13500,
+              "pct": -27.0
+            },
+            {
+              "field": "alphaDamage",
+              "old": 18500.0,
+              "new": 13500,
+              "pct": -27.0
+            }
+          ]
+        },
+        {
+          "category": "weapon",
+          "className": "mxox_neutroncannon_s2",
+          "name": "NN-14 Cannon",
+          "fields": [
+            {
+              "field": "ammoCount",
+              "old": 90,
+              "new": 25,
+              "pct": -72.2
+            },
+            {
+              "field": "maxRegenPerSec",
+              "old": 2112.0,
+              "new": 3,
+              "pct": -99.9
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s01_foxfire_scitem",
+          "name": "S1 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s01_lightfire_scitem",
+          "name": "S1 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s02_sparkfire_scitem",
+          "name": "SparkFire",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_acas_s02_sunfire_scitem",
+          "name": "SunFire",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_aegs_s04_javelin_scitem",
+          "name": "Aegis S4 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s01_burst_scitem",
+          "name": "Burst",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s01_flood_scitem",
+          "name": "Flood",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s01_rush_scitem",
+          "name": "Rush",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s02_cascade_scitem",
+          "name": "Cascade",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s02_flash_scitem",
+          "name": "Flash",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s02_torrent_scitem",
+          "name": "Torrent",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s03_echo_scitem",
+          "name": "Echo",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s03_fissure_scitem",
+          "name": "Fissure",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_arcc_s03_impulse_scitem",
+          "name": "Impulse",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s01_colossus_scitem",
+          "name": "Colossus",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s01_goliath_scitem",
+          "name": "Goliath",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s01_vulcan_scitem",
+          "name": "Vulcan",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s02_bolon_scitem",
+          "name": "Bolon",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s02_huracan_scitem",
+          "name": "Huracan",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s02_yaluk_scitem",
+          "name": "Yaluk",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s03_agni_scitem",
+          "name": "Agni",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s03_kama_scitem",
+          "name": "Kama",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_just_s03_vesta_scitem",
+          "name": "Vesta",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_orig_s04_890j_scitem",
+          "name": "Allegro",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s01_drift_scitem",
+          "name": "Drift",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s01_spectre_scitem",
+          "name": "Spectre",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s01_zephyr_scitem",
+          "name": "Zephyr",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s02_bolt_scitem",
+          "name": "Bolt",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s02_nova_scitem",
+          "name": "Nova",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_raco_s02_spicule_scitem",
+          "name": "Spicule",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s01_atlas_scitem",
+          "name": "Atlas",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s01_eos_scitem",
+          "name": "Eos",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s01_hyperion_scitem",
+          "name": "Hyperion",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s02_aither_scitem",
+          "name": "Aither",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s02_hemera_scitem",
+          "name": "Hemera",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s02_khaos_scitem",
+          "name": "Khaos",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s03_erebos_scitem",
+          "name": "Erebos",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s03_metis_scitem",
+          "name": "Metis",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_rsi_s03_tyche_scitem",
+          "name": "Tyche",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s01_template",
+          "name": "S1 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s02_template",
+          "name": "S2 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s03_template",
+          "name": "S3 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s04_template",
+          "name": "S4 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s01_expedition_scitem",
+          "name": "Expedition",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s01_voyage_scitem",
+          "name": "Voyage",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s01_wayfare_scitem",
+          "name": "Wayfare",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s02_odyssey_scitem",
+          "name": "Odyssey",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s02_quest_scitem",
+          "name": "Quest",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s02_sojourn_scitem",
+          "name": "Sojourn",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s03_drifter_scitem",
+          "name": "Drifter",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s03_ranger_scitem",
+          "name": "Ranger",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_tars_s03_wanderer_scitem",
+          "name": "Wanderer",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s01_beacon_scitem",
+          "name": "Beacon",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s01_siren_scitem",
+          "name": "Siren",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s01_vk00_scitem",
+          "name": "VK-00",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s02_crossfield_scitem",
+          "name": "Crossfield",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s02_xl1_scitem",
+          "name": "XL-1",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s02_yeager_scitem",
+          "name": "Yeager",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s03_balandin_scitem",
+          "name": "Balandin",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s03_pontes_scitem",
+          "name": "Pontes",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s03_ts2_scitem",
+          "name": "TS-2",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_wetk_s04_idris_temp",
+          "name": "S4 Quantum Drive",
+          "fields": [
+            {
+              "field": "interdictionTime",
+              "old": 5.0,
+              "new": 3,
+              "pct": -40.0
+            }
+          ]
+        },
+        {
+          "category": "qig",
+          "className": "qed_wetk_s03_reynie",
+          "name": "Reynie QED",
+          "fields": [
+            {
+              "field": "powerDraw",
+              "old": 3,
+              "new": 1,
+              "pct": -66.7
+            }
+          ]
+        },
+        {
+          "category": "fps_weapon",
+          "className": "apar_special_ballistic_01",
+          "name": "Scourge Railgun"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "apar_special_ballistic_01_mag",
+          "name": "Scourge Railgun Magazine (5 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "apar_special_ballistic_02",
+          "name": "Animus Missile Launcher"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "apar_special_ballistic_02_mag",
+          "name": "Animus Missile Launcher Magazine (3 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_glauncher_ballistic_01",
+          "name": "GP-33 MOD Grenade Launcher"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_glauncher_ballistic_01_mag",
+          "name": "GP-33 MOD Grenade Launcher Magazine (6 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_lmg_ballistic_01",
+          "name": "FS-9 LMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_lmg_ballistic_01_mag",
+          "name": "FS-9 Magazine (75 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_pistol_ballistic_01",
+          "name": "S-38 Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_pistol_ballistic_01_mag",
+          "name": "S-38 Magazine (20 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_rifle_ballistic_01",
+          "name": "P4-AR Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_rifle_ballistic_01_mag",
+          "name": "P4-AR Magazine (40 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_rifle_ballistic_02_civilian",
+          "name": "P8-AR Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_rifle_ballistic_02_mag",
+          "name": "P8-ARM Rifle Magazine (30 cap)"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_rifle_ballistic_02_mag_civilian",
+          "name": "P8-AR Rifle Magazine (15 Cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_shotgun_ballistic_01",
+          "name": "BR-2 Shotgun"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_shotgun_ballistic_01_mag",
+          "name": "BR-2 Shotgun Magazine (12 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_smg_ballistic_01",
+          "name": "P8-SC SMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_smg_ballistic_01_mag",
+          "name": "P8-SC SMG Magazine (45 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_sniper_ballistic_01",
+          "name": "P6-LR Sniper Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "behr_sniper_ballistic_01_mag",
+          "name": "P6-LR Magazine (8 cap)"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "crlf_medgun_vial_01",
+          "name": "ParaMed Refill"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "glsn_shotgun_ballistic_01_mag",
+          "name": "Gallenson Shotgun Magazine"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_lmg_ballistic_01",
+          "name": "F55 LMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "gmni_lmg_ballistic_01_mag",
+          "name": "F55 LMG Magazine (150 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_pistol_ballistic_01",
+          "name": "LH86 Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "gmni_pistol_ballistic_01_mag",
+          "name": "LH86 Pistol Magazine (25 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_rifle_ballistic_01",
+          "name": "S71 Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "gmni_rifle_ballistic_01_mag",
+          "name": "S71 Rifle Magazine (30 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_shotgun_ballistic_01",
+          "name": "R97 Shotgun"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "gmni_shotgun_ballistic_01_mag",
+          "name": "R97 Shotgun Magazine (18 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_smg_ballistic_01",
+          "name": "C54 SMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "gmni_smg_ballistic_01_mag",
+          "name": "C54 SMG Magazine (50 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_sniper_ballistic_01",
+          "name": "A03 Sniper Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "gmni_sniper_ballistic_01_mag",
+          "name": "A03 Sniper Rifle Magazine (15 cap)"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_multitool_energy_01_mag",
+          "name": "Pyro RYT Multi-Tool Battery"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_multitool_resource_healing_01",
+          "name": "LifeGuard Refill"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_multitool_resource_salvage_repair_01",
+          "name": "Cambio-Lite SRT Canister"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_multitool_resource_salvage_repair_01_filled",
+          "name": "Cambio-Lite SRT Canister"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_tool_01_mag",
+          "name": "Cambrio SRT Battery"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_tool_resource_salvage_repair_01",
+          "name": "Cambio SRT Canister"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_tool_resource_salvage_repair_01_filled",
+          "name": "Cambio SRT Canister"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "grin_tractor_01_mag",
+          "name": "MaxLift Tractor Beam Battery"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "hdgw_pistol_ballistic_01",
+          "name": "Salvo Frag Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "hdgw_pistol_ballistic_01_mag",
+          "name": "Salvo Frag Pistol Magazine (8 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "klwe_lmg_energy_01",
+          "name": "Demeco LMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "klwe_lmg_energy_01_mag",
+          "name": "Demeco LMG Battery (100 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "klwe_pistol_energy_01",
+          "name": "Arclight Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "klwe_pistol_energy_01_mag",
+          "name": "Arclight Pistol Battery (30 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "klwe_rifle_energy_01",
+          "name": "Gallant Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "klwe_rifle_energy_01_mag",
+          "name": "Gallant Rifle Battery (45 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "klwe_smg_energy_01",
+          "name": "Lumin V SMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "klwe_smg_energy_01_mag",
+          "name": "Lumin V SMG Battery (45 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "klwe_sniper_energy_01",
+          "name": "Arrowhead Sniper Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "klwe_sniper_energy_01_mag",
+          "name": "Arrowhead Sniper Rifle Battery (16 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "ksar_pistol_ballistic_01",
+          "name": "Coda Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "ksar_pistol_ballistic_01_mag",
+          "name": "Coda Pistol Magazine (6 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "ksar_rifle_energy_01",
+          "name": "Karna Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "ksar_rifle_energy_01_mag",
+          "name": "Karna Rifle Battery (35 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "ksar_shotgun_ballistic_01",
+          "name": "Ravager-212 Twin Shotgun"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "ksar_shotgun_ballistic_01_mag",
+          "name": "Ravager-212 Twin Shotgun Magazine (16 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "ksar_shotgun_energy_01",
+          "name": "Devastator Shotgun"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "ksar_shotgun_energy_01_mag",
+          "name": "Devastator Shotgun Battery (12 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "ksar_smg_energy_01",
+          "name": "Custodian SMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "ksar_smg_energy_01_mag",
+          "name": "Custodian SMG Magazine (60 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "ksar_sniper_ballistic_01",
+          "name": "Scalpel Sniper Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "ksar_sniper_ballistic_01_mag",
+          "name": "Scalpel Sniper Rifle Magazine (12 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "lbco_pistol_energy_01",
+          "name": "Yubarev Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "lbco_pistol_energy_01_mag",
+          "name": "Yubarev Pistol Battery (10 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "lbco_sniper_energy_01",
+          "name": "Atzkav Sniper Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "lbco_sniper_energy_01_mag",
+          "name": "Atzkav Sniper Rifle Battery (8 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "none_lmg_ballistic_01",
+          "name": "Pulverizer LMG"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "none_pistol_ballistic_01",
+          "name": "Tripledown Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "none_pistol_ballistic_01_mag",
+          "name": "Tripledown Pistol Magazine (12 Cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "none_rifle_multi_01",
+          "name": "Killshot Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "none_rifle_multi_01_mag",
+          "name": "Killshot Rifle Magazine (45 Cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "none_shotgun_ballistic_01",
+          "name": "Deadrig Shotgun"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "none_shotgun_ballistic_01_mag",
+          "name": "Deadrig Shotgun Magazine (8 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "none_smg_energy_01",
+          "name": "Ripper \"Sunblock\" SMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "none_smg_energy_01_mag",
+          "name": "Ripper SMG Battery (60 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "none_special_ballistic_01",
+          "name": "Boomtube Rocket Launcher"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "none_special_ballistic_01_rocket",
+          "name": "Boomtube Rocket"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "sasu_pistol_toy_01_mag",
+          "name": "WowBlast Desperado Toy Pistol Magazine (10 cap)"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "sasu_pistol_toy_01_mag_ea_elim",
+          "name": "WowBlast Desperado Toy Pistol Magazine (10 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "volt_lmg_energy_01",
+          "name": "Fresnel Energy LMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "volt_lmg_energy_01_mag",
+          "name": "Fresnel Energy LMG Battery (165 Cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "volt_pistol_energy_01",
+          "name": "Pulse Laser Pistol"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "volt_pistol_energy_01_mag",
+          "name": "Pulse Laser Pistol Battery (60 Cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "volt_rifle_energy_01",
+          "name": "Parallax Energy Assault Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "volt_rifle_energy_01_mag",
+          "name": "Parallax Rifle Battery (80 Cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "volt_shotgun_energy_01",
+          "name": "Prism Laser Shotgun"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "volt_shotgun_energy_01_mag",
+          "name": "Prism Laser Shotgun Battery (20 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "volt_smg_energy_01",
+          "name": "Quartz Energy SMG"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "volt_smg_energy_01_mag",
+          "name": "Quartz Energy SMG Battery (45 cap)"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "volt_sniper_energy_01",
+          "name": "Zenith Laser Sniper Rifle"
+        },
+        {
+          "category": "fps_magazine",
+          "className": "volt_sniper_energy_01_mag",
+          "name": "Zenith Laser Sniper Rifle Battery (22 Cap)"
+        },
+        {
+          "category": "fps_gear",
+          "className": "crlf_medgun_01",
+          "name": "ParaMed Medical Device"
+        },
+        {
+          "category": "fps_gear",
+          "className": "crlf_medgun_01_msn_rwd01",
+          "name": "ParaMed \"AA Transport\" Medical Device"
+        },
+        {
+          "category": "fps_gear",
+          "className": "crlf_medgun_01_msn_rwd02",
+          "name": "ParaMed \"AA Support\" Medical Device"
+        },
+        {
+          "category": "fps_gear",
+          "className": "crlf_medgun_01_msn_rwd03",
+          "name": "ParaMed \"AA Defense\" Medical Device"
+        },
+        {
+          "category": "fps_gear",
+          "className": "grin_tractor_01",
+          "name": "MaxLift Tractor Beam"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_arms_02_01_01",
+          "name": "Monde Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_core_02_01_01",
+          "name": "Monde Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_helmet_02_01_01",
+          "name": "Monde Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_legs_02_01_01",
+          "name": "Monde Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_arms_01_01_01",
+          "name": "Antium Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_helmet_01_01_01",
+          "name": "Antium Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_arms_01_01_01",
+          "name": "Chiron Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_backpack_01_01_01",
+          "name": "Chiron Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_core_01_01_01",
+          "name": "Chiron Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_helmet_01_01_01",
+          "name": "Chiron Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_legs_01_01_01",
+          "name": "Chiron Legs"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Nyx_Canisters_S0Components",
+          "name": "Salvager Needed (Small Supply of RMC / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Nyx_Intro",
+          "name": "Adagio Holdings in Need of Salvagers"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Pyro_Canisters_S0Components",
+          "name": "Salvager Needed (Small Supply of RMC / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Pyro_Canisters_S1Components_Unique",
+          "name": "Salvager Needed (Small Special Order of RMC / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Pyro_Intro",
+          "name": "Adagio Holdings in Need of Salvagers"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Stanton_Canisters_S0Components",
+          "name": "Salvager Needed (Small Supply of RMC / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Stanton_Canisters_S1Components_Unique",
+          "name": "Salvager Needed (Small Special Order of RMC / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_FPSSalvage_Stanton_Intro",
+          "name": "Adagio Holdings in Need of Salvagers"
+        },
+        {
+          "category": "mission",
+          "className": "Adaigo_Nyx_Lawful_Salvage_Intro",
+          "name": "Claim #[Claim]: [Ship] Salvage Rights"
+        },
+        {
+          "category": "mission",
+          "className": "Adaigo_PyroRegionA_Lawful_Salvage_Intro",
+          "name": "Claim #[Claim]: [Ship] Salvage Rights"
+        },
+        {
+          "category": "mission",
+          "className": "Adaigo_Stanton1_Lawful_Salvage_Intro",
+          "name": "Claim #[Claim]: [Ship] Salvage Rights"
+        },
+        {
+          "category": "mission",
+          "className": "BHG_ASDFacilityDelving_EngineeringWing_EliminateSpecific",
+          "name": "Verified Bounty: [TargetName] at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "BHG_ASDFacilityDelving_ResearchWing_EliminateSpecific",
+          "name": "Verified Bounty: [TargetName] at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "BHG_FPS_Intro",
+          "name": "Preliminary Bounty: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "BHG_Rockcracker_Power_EliminateSpecific",
+          "name": "Verified Bounty: [TargetName] at QV Breaker Station"
+        },
+        {
+          "category": "mission",
+          "className": "BHG_Rockcracker_Zone1_EliminateSpecific",
+          "name": "Verified Bounty: [TargetName] at QV Breaker Station"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Easy",
+          "name": "Getting To the Bottom of It"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Hard",
+          "name": "Legendary Info?"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Intro",
+          "name": "Data Transfer"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Medium",
+          "name": "Too Smart For Our Own Good"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_Super",
+          "name": "Bad at Goodbyes"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_VeryEasy",
+          "name": "Pick Up, Put Down"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Nyx_VeryHard",
+          "name": "Our Version of The Truth"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Easy",
+          "name": "Getting To the Bottom of It"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Hard",
+          "name": "Legendary Info?"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Intro",
+          "name": "Data Transfer"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Medium",
+          "name": "Too Smart For Our Own Good"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_Super",
+          "name": "Bad at Goodbyes"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_VeryEasy",
+          "name": "Pick Up, Put Down"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_BlackBoxRecovery_Stanton_VeryHard",
+          "name": "Our Version of The Truth"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Nyx_MicroSatellite_1Box",
+          "name": "Bleeding Edge Tech"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Nyx_MicroSatellite_1Box_v002",
+          "name": "Turning the Tables"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Nyx_MicroSatellite_1Box_v003",
+          "name": "Upgrade Grab"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Stanton_MicroSatellite_1Box",
+          "name": "Bleeding Edge Tech"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Stanton_MicroSatellite_1Box_v002",
+          "name": "Turning the Tables"
+        },
+        {
+          "category": "mission",
+          "className": "BitZeros_RecoverItem_Stanton_MicroSatellite_1Box_v003",
+          "name": "Upgrade Grab"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Nyx_Hard",
+          "name": "Reclusive Bounty: [TargetName] | High Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Nyx_Super",
+          "name": "Reclusive Bounty: [TargetName] | Extreme Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Nyx_VeryHard",
+          "name": "Reclusive Bounty: [TargetName] | Very-High Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Pyro_Hard",
+          "name": "Reclusive Bounty: [TargetName] | High Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Pyro_Super",
+          "name": "Reclusive Bounty: [TargetName] | Extreme Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Pyro_VeryHard",
+          "name": "Reclusive Bounty: [TargetName] | Very-High Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Stanton_Hard",
+          "name": "Reclusive Bounty: [TargetName] | High Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Stanton_Super",
+          "name": "Reclusive Bounty: [TargetName] | Extreme Risk"
+        },
+        {
+          "category": "mission",
+          "className": "BountyHuntersGuild_ShipWaveAttack_DrawOutBoss_Stanton_VeryHard",
+          "name": "Reclusive Bounty: [TargetName] | Very-High Risk"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_Hard_RecoverCargo",
+          "name": "Crucial Supplies Need Retrieving"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_Intro_EliminateAll",
+          "name": "Establishing Security"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_Medium_RecoverCargo",
+          "name": "Recovering Valuable Supplies"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_CrimBase_HRT_RetrieveCargo",
+          "name": "Raid to Recover Supplies"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_CrimBase_MRT_RetrieveCargo",
+          "name": "Reclaim Stolen Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_Lagrange_LRT_RetrieveCargo",
+          "name": "Retrieve Supplies"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_Lagrange_MRT_RetrieveCargo",
+          "name": "Find Lost Supply Ship"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_M_DerelictOutposts_NearOutposts_KillAnimals",
+          "name": "Protect CFP Members from Overactive Kopions"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_Rank0_VE_1AsteroidBase_Criminals_RetrieveCargo",
+          "name": "Recover Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_VE_1AsteroidBase_Criminals_RetrieveCargo",
+          "name": "Recover Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_XTBase_VHRT_RetrieveCargo",
+          "name": "Regain Supplies from XenoThreat"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionB_H_Derelicts_EliminateAnimals",
+          "name": "Protect Settlement from Kopion Packs"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionB_M_Derelicts_EliminateAnimals",
+          "name": "Overaggressive Kopions Need Removing"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionB_VE_1AsteroidBase_Criminals_RetrieveCargo",
+          "name": "Recover Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionC_Caves_E_KillAnimals",
+          "name": "Kopion Culling for CFP"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionC_Caves_M_KillAnimals",
+          "name": "Overaggressive Kopions Need Removing"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionC_CrimBase_MRT_RetrieveCargo",
+          "name": "Reclaim Stolen Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_Super_RecoverCargo",
+          "name": "Special Recovery Operation"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_VeryEasy_RecoverCargo",
+          "name": "Intercepted Supply Run"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_VeryHard_RecoverCargo",
+          "name": "Cargo Shipment Must Be Completed"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Nyx_E",
+          "name": "Clear CFP Route of Hostiles"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Nyx_H",
+          "name": "Neutralize Dangerous Criminal Fleet"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Nyx_M",
+          "name": "Remove Upstart Gang From Sector"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Nyx_VE",
+          "name": "Help Deal with Outlaw Hunting Party"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_E",
+          "name": "Clear CFP Route of Hostiles"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_H",
+          "name": "Neutralize Dangerous Criminal Fleet"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_M",
+          "name": "Remove Upstart Gang From Sector"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_ShipWaveAttack_ClearOutHostiles_Pyro_VE",
+          "name": "Help Deal with Outlaw Hunting Party"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Nyx_MedgelMedicalFood_Rank0",
+          "name": "Med. Distance Covalex Delivery Nyx"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_AgriculturalPingalaProtaFlourine_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_AgricuturalCK13SeedRataDungDecaripodPitambu_Rank2",
+          "name": "Very Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_AsatineFlourineOganiSample_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_CK13SeedBlendBlueBilvaGoldenMedmonDecariPod_Rank2",
+          "name": "Very Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_CompBoardScrapWasteNitrogenCopperConstruction_Rank3",
+          "name": "Special Covalex Delivery Stanton System"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_FoodConstructionMedical_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_GoldMercuryCobaltTingsten_Rank2",
+          "name": "Very Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_GoldTungstenDymantiumMercury_Rank3",
+          "name": "Special Covalex Delivery Stanton System"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_IronCopperQuartz_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_MazeMedGelMilitary_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_MedgelMedicalFood_Rank0",
+          "name": "Med. Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_MedicalOrganMedGelAmmoniaPartiullium_Rank2",
+          "name": "Very Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_MoldSampleTreatmentOrganiMassBioplastic_Rank2",
+          "name": "Very Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_OrganiMassOrgan_Rank0",
+          "name": "Med. Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_OrganiMassOrgansMilitarySamplesTreatment_Rank3",
+          "name": "Special Covalex Delivery Stanton System"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_OrganiMassSampleTreatmentSuppliesMedGelOrgans_Rank3",
+          "name": "Special Covalex Delivery Stanton System"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_PartyFavorsFoodSpiritsSouvenirsFreshFood_Rank2",
+          "name": "Very Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_ProcessedFoodMedicalMilitaryHyperprocessorsBioplastic_Rank3",
+          "name": "Special Covalex Delivery Stanton System"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_RataDungDegnousRootCK13SeedAgricultural_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_SampleMedicalTreatment_Rank0",
+          "name": "Med. Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_TinPotassiumBoraseLindinium_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_WasteScrapCompBoard_Rank1",
+          "name": "Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_DeliveryPilot_Stanton_WasteScrapWaseCompBoardThermalfoam_Rank2",
+          "name": "Very Long Distance Covalex Delivery Stanton"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Nyx_Easy_RecoverCargo",
+          "name": "Small Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Nyx_Hard_RecoverCargo",
+          "name": "Large Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Nyx_Medium_RecoverCargo",
+          "name": "Med. Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Nyx_Super_RecoverCargo",
+          "name": "Recover VIP Covalex Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Nyx_VeryEasy_RecoverCargo",
+          "name": "Extra Small Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Nyx_VeryHard_RecoverCargo",
+          "name": "Bulk Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Pyro_Easy_RecoverCargo",
+          "name": "Small Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Pyro_Hard_RecoverCargo",
+          "name": "Large Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Pyro_Medium_RecoverCargo",
+          "name": "Med. Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Pyro_Super_RecoverCargo",
+          "name": "Recover VIP Covalex Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Pyro_VeryEasy_RecoverCargo",
+          "name": "Extra Small Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Pyro_VeryHard_RecoverCargo",
+          "name": "Bulk Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Stanton_Easy_RecoverCargo",
+          "name": "Small Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Stanton_Hard_RecoverCargo",
+          "name": "Large Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Stanton_Medium_RecoverCargo",
+          "name": "Med. Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Stanton_Super_RecoverCargo",
+          "name": "Recover VIP Covalex Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Stanton_VeryEasy_RecoverCargo",
+          "name": "Extra Small Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "Covalex_Stanton_VeryHard_RecoverCargo",
+          "name": "Bulk Covalex Shipment Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Nyx_Easy_RecoverCargo",
+          "name": "Cleaning Up Someone Else’s Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Nyx_Hard_RecoverCargo",
+          "name": "Taking Back Our Goods"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Nyx_Super_RecoverCargo",
+          "name": "Lost But Not Gone"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Nyx_VeryEasy_RecoverCargo",
+          "name": "Finishing The Job"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Nyx_VeryHard_RecoverCargo",
+          "name": "Finishing The Job"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Nyx_Maze_1Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Nyx_Maze_1Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Nyx_Maze_1Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_1Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_1Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_1Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_2Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_2Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_2Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_3Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_3Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_3Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_4Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_4Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_4Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_5Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_5Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Drugs_5Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Nyx_Intro",
+          "name": "Easy Creds for Easy Work"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_1Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_1Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_1Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_2Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_2Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_2Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_3Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_3Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_3Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_4Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_4Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_4Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_5Box",
+          "name": "Getting Our Gear Back"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_5Box_v002",
+          "name": "Stash Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Drugs_5Box_v003",
+          "name": "Cleaning Up a Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_RecoverItem_Space_Stanton_Intro",
+          "name": "Easy Creds for Easy Work"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Stanton_Easy_RecoverCargo",
+          "name": "Cleaning Up Someone Else’s Mess"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Stanton_Hard_RecoverCargo",
+          "name": "Taking Back Our Goods"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Stanton_Super_RecoverCargo",
+          "name": "Lost But Not Gone"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Stanton_VeryEasy_RecoverCargo",
+          "name": "Finishing The Job"
+        },
+        {
+          "category": "mission",
+          "className": "DeadSaints_Stanton_VeryHard_RecoverCargo",
+          "name": "Finishing The Job"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Nyx_Easy_RecoverCargo",
+          "name": "Client's Cargo Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Nyx_Hard_RecoverCargo",
+          "name": "High Risk Shipment Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Nyx_Medium_RecoverCargo",
+          "name": "Standard Cargo Recovery Op."
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Nyx_Super_RecoverCargo",
+          "name": "Extreme Risk Cargo Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Nyx_VeryEasy_RecoverCargo",
+          "name": "Low Risk Cargo Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Nyx_VeryHard_RecoverCargo",
+          "name": "Critical Cargo Extraction"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Pyro_Easy_RecoverCargo",
+          "name": "Client's Cargo Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Pyro_Hard_RecoverCargo",
+          "name": "High Risk Shipment Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Pyro_Medium_RecoverCargo",
+          "name": "Standard Cargo Recovery Op."
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Pyro_Super_RecoverCargo",
+          "name": "Extreme Risk Cargo Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Pyro_VeryEasy_RecoverCargo",
+          "name": "Low Risk Cargo Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Pyro_VeryHard_RecoverCargo",
+          "name": "Critical Cargo Extraction"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Stanton_Easy_RecoverCargo",
+          "name": "Client's Cargo Needs Recovering"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Stanton_Hard_RecoverCargo",
+          "name": "High Risk Shipment Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Stanton_Medium_RecoverCargo",
+          "name": "Standard Cargo Recovery Op."
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Stanton_Super_RecoverCargo",
+          "name": "Extreme Risk Cargo Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Stanton_VeryEasy_RecoverCargo",
+          "name": "Low Risk Cargo Retrieval"
+        },
+        {
+          "category": "mission",
+          "className": "EchhartSecurity_Stanton_VeryHard_RecoverCargo",
+          "name": "Critical Cargo Extraction"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Nyx_Fluorine_Rank0",
+          "name": "ENTRY LVL. COURIER NEEDED IN NYX"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Stanton_Chlorine_Rank1",
+          "name": "JR. LVL. COURIER NEEDED IN STANTON"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Stanton_Food_Rank0",
+          "name": "ENTRY LVL. COURIER NEEDED IN STANTON"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Stanton_LocalDC_Any_Rank0",
+          "name": "ENTRY LVL. COURIER NEEDED IN STANTON"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_BombingRun_Stanton_E",
+          "name": "Yellow Level Contract: Disrupt Operations"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_BombingRun_Stanton_H",
+          "name": "Orange Level Contract: Destroy Outlaw Infrastructure"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_BombingRun_Stanton_M",
+          "name": "Orange Level Contract: Take Out Fuel Supplies"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_BombingRun_Stanton_S",
+          "name": "Red Level Contract: Destroy Outlaw Infrastructure"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_BombingRun_Stanton_VE",
+          "name": "Yellow Level Contract: Limiting Potential Threat"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_BombingRun_Stanton_VH",
+          "name": "Red Level Contract: Fuel Container Demolition"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_DestroyNarcotics_Easy",
+          "name": "Knock Out New Drug Op"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_EliminateAll",
+          "name": "Sweep and Clear Location"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_EliminateAll_NonHostiles",
+          "name": "Carefully Clear Site"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_EliminateAll_WithHelp",
+          "name": "Help Protect Site"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_EliminateSpecific",
+          "name": "Track Down [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_EliminateSpecific_NonHostiles",
+          "name": "Precision Strike on [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_Mercenary_Intro",
+          "name": "Exciting New Opportunities with Foxwell Enforcement"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_Mercenary_Rehire",
+          "name": "Still Looking for Work?"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_OLP_EliminateAll",
+          "name": "Yellow Level Contract: Merc Work"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_PAF_EliminateAll",
+          "name": "Yellow Level Contract: Clear Out PAF"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Pyro_Easy",
+          "name": "Yellow Level Contract: Surprise Strike"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Pyro_Hard",
+          "name": "Orange Level Contract: Return the Favor"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Pyro_Medium",
+          "name": "Orange Level Contract: Spring a Trap"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Pyro_Super",
+          "name": "Red Level Contract: Surprise Attack"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Pyro_VeryEasy",
+          "name": "Yellow Level Contract: Ambush An Amateur"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Pyro_VeryHard",
+          "name": "Red Level Contract: Ambush Attack Squad"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Stanton_Easy",
+          "name": "Yellow Level Contract: Surprise Strike"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Stanton_Hard",
+          "name": "Orange Level Contract: Return the Favor"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Stanton_Medium",
+          "name": "Orange Level Contract: Spring a Trap"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Stanton_Super",
+          "name": "Red Level Contract: Surprise Attack"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Stanton_VeryEasy",
+          "name": "Yellow Level Contract: Ambush An Amateur"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipAmbush_Stanton_VeryHard",
+          "name": "Red Level Contract: Ambush Attack Squad"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipWaveAttack_ClearOutHostiles_Stanton_E",
+          "name": "Yellow Level Contract: Neutralize Shipjacking Gang"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipWaveAttack_ClearOutHostiles_Stanton_H",
+          "name": "Orange Level Contract: Take Out Criminal Fleet"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipWaveAttack_ClearOutHostiles_Stanton_M",
+          "name": "Orange Level Contract: Destroy Outlaw Threat"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_ShipWaveAttack_ClearOutHostiles_Stanton_VE",
+          "name": "Yellow Level Contract: Clear Shipjacking Group"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_Stanton_DefendShipNamed_E",
+          "name": "Yellow Level Contract: Ship Under Attack"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_Stanton_DefendShipNamed_H",
+          "name": "Red Level Contract: Ship Under Attack"
+        },
+        {
+          "category": "mission",
+          "className": "FoxwellEnforcement_Stanton_DefendShipNamed_M",
+          "name": "Orange Level Contract: [Ship] Needs Assistance"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_Legal_DestroySatellite",
+          "name": "Foxwell Enforcement"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_OLP_HaulCargo_AtoB_Small_Carbon",
+          "name": "Red Level Contract: Retrieve Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_PAF_HaulCargo_AtoB_Small_AgriculturalSupplies",
+          "name": "Red Level Contract: Recoup Stolen Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_PAF_HaulCargo_Multi2ToSingle_Small_Aluminum",
+          "name": "Red Level Contract: Clear PAFs, Recover Cargo, and Deliver to OLP"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_Intro_RetrieveCargo",
+          "name": "Test Your Mettle"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_CrimBase_HRT_RetrieveCargo",
+          "name": "Get the Good Stuff"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_CrimBase_MRT_RetrieveCargo",
+          "name": "Return Goods"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_E_CFPXSOutposts_BombingRun",
+          "name": "Take Out Citizens for Prosperity Fuel Supply"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_Lagrange_LRT_RetrieveCargo",
+          "name": "Get Our Shit!"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_Lagrange_MRT_RetrieveCargo",
+          "name": "Search for Ship"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_M_2AsteroidBase_Criminals_BombingRun_Killship",
+          "name": "Convince Upstarts to Abandon Sector"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_M_2AsteroidBase_Criminals_MultiSabotage",
+          "name": "Knock Power Out"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_M_CFPOutposts_BombingRun",
+          "name": "Blow Up Citizens for Prosperity Fuel Reserves"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_M_CFPOutposts_Sabotage",
+          "name": "Wipe Citizens for Prosperity Data Farm"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_Rank0_VE_1AsteroidBase_Criminals_Sabotage",
+          "name": "Shut Off Power at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_Stage1_RegionLink_ToRegionB_RetrieveCargo",
+          "name": "Gone But Not Forgotten"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_VE_1AsteroidBase_Criminals_Sabotage",
+          "name": "Shut Off Power at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_VH_LastDitch_BombingRunSabotage",
+          "name": "Stop Rivals from Launching Heist"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_XTBase_VHRT_RetrieveCargo",
+          "name": "Two Birds, One Stone"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_E_CFPOutpost_MultiBombingRun",
+          "name": "Teach Citizens for Prosperity A Lesson"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_E_CFPXSOutposts_BombingRun",
+          "name": "Take Out Citizens for Prosperity Fuel Supply"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_E_CFPXSOutposts_Sabotage",
+          "name": "Clear Citizens for Prosperity Servers"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_H_XTXSOutposts_Sabotage",
+          "name": "Wipe Out XenoThreat Servers"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_M_CFPOutposts_BombingRun",
+          "name": "Blow Up Citizens for Prosperity Fuel Reserves"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_M_CFPOutposts_Sabotage",
+          "name": "Wipe Citizens for Prosperity Data Farm"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_VH_Shadowfall_BombingRun",
+          "name": "Destroy XenoThreat Fuel Reserves"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_VH_Shadowfall_Sabotage",
+          "name": "Purge XenoThreat Servers"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_CFPOutpost_BombingRun",
+          "name": "Blow Up Citizens for Prosperity Fuel Reserves"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_CFPOutpost_Sabotage",
+          "name": "Wipe Citizens for Prosperity Data Farm"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_CFPXSOutpost_Sabotage",
+          "name": "Cut Citizens For Prosperity Power"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_CFPOutpost_BombingRun",
+          "name": "Blow Up Citizens for Prosperity Fuel Reserves"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_CFPOutpost_Sabotage",
+          "name": "Wipe Citizens for Prosperity Data Farm"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_XTOutpost_BombingRun",
+          "name": "Blow Up XenoThreat Fuel Reserves"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_XTOutpost_Sabotage",
+          "name": "Wipe Out XenoThreat Servers"
+        },
+        {
+          "category": "mission",
+          "className": "HWS_Pyro_RegionA_E_DerelictOutposts_KillAnimals",
+          "name": "Pack of Kopions Threatening CFP"
+        },
+        {
+          "category": "mission",
+          "className": "HWS_Pyro_RegionA_E_DerelictOutposts_NearOutposts_KillAnimals",
+          "name": "Overpopulated Kopions Need Exterminating"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Nyx_Easy_RecoverCargo",
+          "name": "Taking what’s ours"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Nyx_Hard_RecoverCargo",
+          "name": "Jackpot"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Nyx_Medium_RecoverCargo",
+          "name": "Finish the job"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Nyx_Super_RecoverCargo",
+          "name": "Worth the trouble"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Nyx_VeryEasy_RecoverCargo",
+          "name": "Grab ‘n’ go"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Nyx_VeryHard_RecoverCargo",
+          "name": "Getting what we deserve"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Pyro_Easy_RecoverCargo",
+          "name": "Taking what’s ours"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Pyro_Hard_RecoverCargo",
+          "name": "Jackpot"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Pyro_Medium_RecoverCargo",
+          "name": "Finish the job"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Pyro_Super_RecoverCargo",
+          "name": "Worth the trouble"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Pyro_VeryEasy_RecoverCargo",
+          "name": "Grab ‘n’ go"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Pyro_VeryHard_RecoverCargo",
+          "name": "Getting what we deserve"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Stanton_Easy_RecoverCargo",
+          "name": "Taking what’s ours"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Stanton_Hard_RecoverCargo",
+          "name": "Jackpot"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Stanton_Medium_RecoverCargo",
+          "name": "Finish the job"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Stanton_Super_RecoverCargo",
+          "name": "Worth the trouble"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Stanton_VeryEasy_RecoverCargo",
+          "name": "Grab ‘n’ go"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_Stanton_VeryHard_RecoverCargo",
+          "name": "Getting what we deserve"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_E",
+          "name": "No Fly Zone"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_H",
+          "name": "Wasting Their Stockpile"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_M",
+          "name": "Stopping the Competition"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_S",
+          "name": "Outsmarting our Enemies"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_VE",
+          "name": "Ground The Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_VH",
+          "name": "Trapping a Rat"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_IrradiatedKopions_RegionA_KillAnimals",
+          "name": "Cull Irradiated Kopions"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimalsAtLocation_Stanton1_Easy",
+          "name": "Pest Control"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimalsAtLocation_Stanton1_Hard",
+          "name": "Pest Control"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimalsAtLocation_Stanton1_Medium",
+          "name": "Pest Control"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Easy_NoRep",
+          "name": "Reduce Overpopulation"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Hard_NoRep",
+          "name": "Intensive Eradication Effort"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Medium_NoRep",
+          "name": "Cull Invasive Creatures"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Nyx_Easy",
+          "name": "Reduce Valakkar Breaker Station Population"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Stanton1_Easy",
+          "name": "Reduce Overpopulation"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Stanton4_Easy",
+          "name": "Reduce Overpopulation"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Stanton4_Hard",
+          "name": "Intensive Eradication Effort"
+        },
+        {
+          "category": "mission",
+          "className": "HighpointWildernessSpecialists_KillAnimals_Stanton4_Medium",
+          "name": "Cull Invasive Creatures"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_FacilityDelve_P2M1-Stanton4_Repeat",
+          "name": "Jorrit Dossier: Updated Energy Anomaly Data"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_FacilityDelve_P2M2-Stanton4_Repeat",
+          "name": "Jorrit Dossier: Updated Security Data"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_FacilityDelve_P2M3-Stanton4_Repeat",
+          "name": "Jorrit Dossier: Updated Seismic Data"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_FacilityDelve_P2M4-Stanton4_Repeat",
+          "name": "Jorrit Dossier: Updated Power Usage Data"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_Easy_MissingPersons",
+          "name": "Locate Missing Employee"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_Hard_MissingPersons",
+          "name": "Locate Missing Family Member"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_Medium_MissingPersons",
+          "name": "Locate Missing Team"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_MissingPersonSpace_Easy",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_MissingPersonSpace_Hard",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_MissingPersonSpace_Intro",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_MissingPersonSpace_Medium",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_MissingPersonSpace_Super",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_MissingPersonSpace_VeryEasy",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_MissingPersonSpace_VeryHard",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_Super_MissingPersons",
+          "name": "Locate Missing Crew"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_VeryEasy_MissingPersons",
+          "name": "Locate Missing Clients"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Nyx_VeryHard_MissingPersons",
+          "name": "Locate Missing Contractors"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Stanton_MissingPersonSpace_Easy",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Stanton_MissingPersonSpace_Hard",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Stanton_MissingPersonSpace_Intro",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Stanton_MissingPersonSpace_Medium",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Stanton_MissingPersonSpace_Super",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Stanton_MissingPersonSpace_VeryEasy",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "Hockrow_Stanton_MissingPersonSpace_VeryHard",
+          "name": "Hockrow Agency"
+        },
+        {
+          "category": "mission",
+          "className": "IDS_RecoverEncryptedData",
+          "name": "Retrieve Additional Smuggler Intel"
+        },
+        {
+          "category": "mission",
+          "className": "IDS_ResourceGathering_CryoP",
+          "name": "Recover Vanduul Corpses"
+        },
+        {
+          "category": "mission",
+          "className": "IDS_ResourceGathering_Tech",
+          "name": "Recover Vanduul Tech"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_DefendShip_Nyx_Easy",
+          "name": "Defend InterSec Operative"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_DefendShip_Nyx_Hard",
+          "name": "Protect Vital Asset"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_DefendShip_Nyx_Medium",
+          "name": "Operative Extraction"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_DefendShip_Nyx_Super",
+          "name": "Handle Vanduul Attack on Ship"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_DefendShip_Nyx_VeryHard",
+          "name": "Pilot Under Fire From Vanduul"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Patrol_Nyx_Hard",
+          "name": "Patrol Dangerous Sector"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Patrol_Nyx_Super",
+          "name": "Patrol Vanduul Hunting Ground"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Patrol_Nyx_VeryHard",
+          "name": "Patrol to Prevent Possible Attack"
+        },
+        {
+          "category": "mission",
+          "className": "Intersec_ShipWaveAttack_DrawOutBoss_Nyx_Super",
+          "name": "Eradicate UEE Threat: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "Intersec_ShipWaveAttack_DrawOutBoss_Nyx_VeryHard",
+          "name": "Terminate UEE Threat: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Nyx_Easy_RecoverCargo",
+          "name": "Ling Shipment Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Nyx_Hard_RecoverCargo",
+          "name": "Complete Stranded Ling Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Nyx_Medium_RecoverCargo",
+          "name": "Rescue Incomplete Ling Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Nyx_Super_RecoverCargo",
+          "name": "Stuck Ling Shipment Pending Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Nyx_VeryEasy_RecoverCargo",
+          "name": "Finish Interrupted Ling Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Nyx_VeryHard_RecoverCargo",
+          "name": "Delivery of Abandoned Ling Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Pyro_Easy_RecoverCargo",
+          "name": "Ling Shipment Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Pyro_Hard_RecoverCargo",
+          "name": "Complete Stranded Ling Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Pyro_Medium_RecoverCargo",
+          "name": "Rescue Incomplete Ling Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Pyro_Super_RecoverCargo",
+          "name": "Stuck Ling Shipment Pending Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Pyro_VeryEasy_RecoverCargo",
+          "name": "Finish Interrupted Ling Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Pyro_VeryHard_RecoverCargo",
+          "name": "Delivery of Abandoned Ling Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Stanton_Easy_RecoverCargo",
+          "name": "Ling Shipment Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Stanton_Hard_RecoverCargo",
+          "name": "Complete Stranded Ling Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Stanton_Medium_RecoverCargo",
+          "name": "Rescue Incomplete Ling Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Stanton_Super_RecoverCargo",
+          "name": "Stuck Ling Shipment Pending Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Stanton_VeryEasy_RecoverCargo",
+          "name": "Finish Interrupted Ling Delivery"
+        },
+        {
+          "category": "mission",
+          "className": "Ling_Stanton_VeryHard_RecoverCargo",
+          "name": "Delivery of Abandoned Ling Cargo"
+        },
+        {
+          "category": "mission",
+          "className": "Rayari_Intro",
+          "name": "Interested in Building a Better Future?"
+        },
+        {
+          "category": "mission",
+          "className": "Rayari_Rank2_IrradiatedValakkarPearl_Gathering",
+          "name": "Obtain Irradiated Valakkar Pearls"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Nyx_Easy_RecoverCargo",
+          "name": "Red Wind Easy Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Nyx_Hard_RecoverCargo",
+          "name": "Red Wind Challenging Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Nyx_Medium_RecoverCargo",
+          "name": "Red Wind Straightforward Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Nyx_Super_RecoverCargo",
+          "name": "Red Wind Special Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Nyx_VeryHard_RecoverCargo",
+          "name": "Red Wind Dangerous Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Pyro_Easy_RecoverCargo",
+          "name": "Red Wind Easy Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Pyro_Hard_RecoverCargo",
+          "name": "Red Wind Challenging Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Pyro_Medium_RecoverCargo",
+          "name": "Red Wind Straightforward Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Pyro_Super_RecoverCargo",
+          "name": "Red Wind Special Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Pyro_SupplyGrade_RegionA_CFP_StationToTradepost_Carbon_CargoHauling_AtoB_Intro",
+          "name": "Red Wind Seeking New Haulers"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Pyro_VeryHard_RecoverCargo",
+          "name": "Red Wind Dangerous Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Nyx_1Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Nyx_2Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Nyx_3Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Nyx_4Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Nyx_5Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Stanton_1Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Stanton_2Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Stanton_3Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Stanton_4Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_RecoverPackage_Stanton_5Box",
+          "name": "Red Wind Linehaul"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Stanton_Easy_RecoverCargo",
+          "name": "Red Wind Easy Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Stanton_Hard_RecoverCargo",
+          "name": "Red Wind Challenging Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Stanton_Medium_RecoverCargo",
+          "name": "Red Wind Straightforward Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Stanton_Super_RecoverCargo",
+          "name": "Red Wind Special Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Stanton_VeryHard_RecoverCargo",
+          "name": "Red Wind Dangerous Cargo Recovery"
+        },
+        {
+          "category": "mission",
+          "className": "Redwind_Intro",
+          "name": "Red Wind Seeking New Haulers"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Nyx_Rank1_MediumQuantity_Sadaryx",
+          "name": "Small Mining Order: Sadaryx"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Nyx_Rank1_SadaryxLenses",
+          "name": "Supply Order: Sadaryx Focus Lenses"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Pyro/Nyx_Rank3_LowQuantity_Jacli_Saldy",
+          "name": "XL Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Pyro_Rank1_MediumQuantity_Doliv",
+          "name": "Med. Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Pyro_Rank2_MediumQuantity_Apho_Had",
+          "name": "Lrg. Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Pyro_Rank3_HighQuantity_Apho_Had",
+          "name": "XL Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Stanton_Rank1_MediumQuantity_Apho",
+          "name": "Med. Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Stanton_Rank1_MediumQuantity_Had",
+          "name": "Med. Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Stanton_Rank2_MediumQuantity_Apho",
+          "name": "Lrg. Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Stanton_Rank2_MediumQuantity_Had",
+          "name": "Lrg. Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_FPSMine_Stanton_Rank3_LowQuantity_Jacli_Saldy",
+          "name": "XL Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_FPSMine_Pyro_Intro",
+          "name": "Small Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_FPSMine_Stanton_Intro",
+          "name": "Small Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Local_FPSMine_Pyro_LowQuantity_Apho_Doliv_Had",
+          "name": "Small Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Local_FPSMine_Stanton_LowQuantity_Apho_Doliv_Had",
+          "name": "Small Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Local_FPSMine_Stanton_PlanetarySystem_LowQuantity_Apho_Doliv_Had",
+          "name": "Small Purchase Order: Hand Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Vaughn_Rockcracker_Maintenance_EliminateSpecific",
+          "name": "A Well Deserved Break"
+        },
+        {
+          "category": "mission",
+          "className": "Vaughn_Rockcracker_Power_EliminateSpecific",
+          "name": "A Well Deserved Break"
+        },
+        {
+          "category": "mission",
+          "className": "haulcargo_atob_stanton1_intro",
+          "name": "Opportunity for Independent Cargo Hauler"
+        },
+        {
+          "category": "mission",
+          "className": "haulcargo_atob_stanton2_intro",
+          "name": "Opportunity for Independent Cargo Hauler"
+        },
+        {
+          "category": "mission",
+          "className": "haulcargo_atob_stanton3_intro",
+          "name": "Opportunity for Independent Cargo Hauler"
+        },
+        {
+          "category": "mission",
+          "className": "haulcargo_atob_stanton4_intro",
+          "name": "Opportunity for Independent Cargo Hauler"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_rehiring",
+          "name": "Another Chance to Impress"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_1_easy",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_1_medium",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_1_super",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_1_veryeasy",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_2",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_2_hard",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_2_veryeasy",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_assassination_pve_vaughn_stanton_2_vhard",
+          "name": "Vaughn"
+        },
+        {
+          "category": "mission",
+          "className": "pu_destroynarcotics_legal_stanton2_e",
+          "name": "Destroy Illegal Drugs"
+        },
+        {
+          "category": "mission",
+          "className": "pu_destroynarcotics_legal_stanton3_h",
+          "name": "Destroy Dangerous Drugs"
+        },
+        {
+          "category": "mission_refs",
+          "className": "missionRefs",
+          "name": "Mission reference data"
+        }
+      ],
+      "added": [
+        {
+          "category": "ship",
+          "className": "aegs_hammerhead_gs",
+          "name": "aegs hammerhead gs"
+        },
+        {
+          "category": "ship",
+          "className": "aegs_idris_p_tsg",
+          "name": "Aegs Idris P Tsg"
+        },
+        {
+          "category": "ship",
+          "className": "drak_command_module",
+          "name": "Drake Command Module"
+        },
+        {
+          "category": "ship",
+          "className": "vncl_mauler",
+          "name": "Vncl Mauler"
+        },
+        {
+          "category": "ship",
+          "className": "vncl_mauler_ai",
+          "name": "Vncl Mauler Ai"
+        },
+        {
+          "category": "turret",
+          "className": "aegs_hammerhead_gs_scitem_turret_rear",
+          "name": "Manned Turret"
+        },
+        {
+          "category": "turret",
+          "className": "aegs_hammerhead_gs_scitem_turret_side",
+          "name": "Manned Turret"
+        },
+        {
+          "category": "turret",
+          "className": "aegs_hammerhead_gs_scitem_turret_side_backleft",
+          "name": "Manned Turret"
+        },
+        {
+          "category": "turret",
+          "className": "aegs_hammerhead_gs_scitem_turret_side_backright",
+          "name": "Manned Turret"
+        },
+        {
+          "category": "turret",
+          "className": "aegs_hammerhead_gs_scitem_turret_side_frontleft",
+          "name": "Manned Turret"
+        },
+        {
+          "category": "turret",
+          "className": "aegs_hammerhead_gs_scitem_turret_side_frontright",
+          "name": "Manned Turret"
+        },
+        {
+          "category": "turret",
+          "className": "aegs_hammerhead_gs_scitem_turret_top",
+          "name": "Manned Turret"
+        },
+        {
+          "category": "flight_controller",
+          "className": "controller_flight_drak_command_module",
+          "name": "Flight Blade"
+        },
+        {
+          "category": "flight_controller",
+          "className": "controller_flight_vncl_mauler",
+          "name": "Flight Blade"
+        },
+        {
+          "category": "cooler",
+          "className": "cool_vncl_s04_mauler",
+          "name": "Vanduul S4 Cooler"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "drak_command_module_remote_turret",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "missile",
+          "className": "misl_s10_template",
+          "name": "Misl S10 Template"
+        },
+        {
+          "category": "missile",
+          "className": "misl_s12_template",
+          "name": "Misl S12 Template"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "mount_gimbal_s6_mauler",
+          "name": "VariPuck S6 Gimbal Mount"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "mount_gimbal_s7_mauler",
+          "name": "VariPuck S6 Gimbal Mount"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "mount_gimbal_s8_mauler",
+          "name": "VariPuck S6 Gimbal Mount"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "mount_gimbal_s9_mauler",
+          "name": "VariPuck S6 Gimbal Mount"
+        },
+        {
+          "category": "powerplant",
+          "className": "powr_vncl_s04_mauler",
+          "name": "Vanduul S4 Power Plant"
+        },
+        {
+          "category": "quantumdrive",
+          "className": "qdrv_s04_vncl_mauler",
+          "name": "Vanduul S4 Quantum Drive"
+        },
+        {
+          "category": "radar",
+          "className": "radr_unmanned_ai_s00",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "radar",
+          "className": "radr_unmanned_ai_s01",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "radar",
+          "className": "radr_unmanned_ai_s02",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "radar",
+          "className": "radr_unmanned_ai_s03",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "radar",
+          "className": "radr_unmanned_ai_s04",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "radar",
+          "className": "radr_unmanned_ai_s05",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "radar",
+          "className": "radr_unmanned_ai_s05_tsglaser",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "radar",
+          "className": "radr_vncl_s02_mauler",
+          "name": "Vanduul S2 Radar"
+        },
+        {
+          "category": "shield",
+          "className": "shld_vncl_s04_mauler",
+          "name": "Vanduul S4 Shield"
+        },
+        {
+          "category": "turret",
+          "className": "turret_pdc_vncl",
+          "name": "M2C \"Swarm\""
+        },
+        {
+          "category": "weapon",
+          "className": "vanduul_laserbeam_s12_tsg",
+          "name": "Exodus-10 Laser Beam"
+        },
+        {
+          "category": "weapon",
+          "className": "vncl_gen2_laserbeam_s9",
+          "name": "Vncl Gen2 Laserbeam S9"
+        },
+        {
+          "category": "weapon",
+          "className": "vncl_gen2_lasercannon_s1",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "weapon",
+          "className": "vncl_gen2_laserrepeater_s6",
+          "name": "Vncl Gen2 Laserrepeater S6"
+        },
+        {
+          "category": "weapon",
+          "className": "vncl_gen2_plasmacannon_s8",
+          "name": "Vncl Gen2 Plasmacannon S8"
+        },
+        {
+          "category": "weapon",
+          "className": "vncl_gen2_tachyonbeam_s10",
+          "name": "Vncl Gen2 Tachyonbeam S10"
+        },
+        {
+          "category": "weapon",
+          "className": "vncl_gen2_tachyoncannon_s7",
+          "name": "Vncl Gen2 Tachyoncannon S7"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "vncl_mauler_remote_turret",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "vncl_mauler_remote_turret_s6_double",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "vncl_mauler_remote_turret_s6_single",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "vncl_mauler_remote_turret_s7",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "vncl_mauler_remote_turret_s8",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "weapon_mount",
+          "className": "vncl_mauler_remote_turret_s9",
+          "name": "Remote Turret"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "behr_shotgun_ballistic_01_mr01",
+          "name": "behr_shotgun_ballistic_01_mr01"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_rifle_ballistic_01_mr01",
+          "name": "gmni_rifle_ballistic_01_mr01"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "gmni_smg_ballistic_01_sf01",
+          "name": "gmni_smg_ballistic_01_sf01"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "klwe_lmg_energy_01_mr01",
+          "name": "klwe_lmg_energy_01_mr01"
+        },
+        {
+          "category": "fps_weapon",
+          "className": "klwe_rifle_energy_01_sf01",
+          "name": "klwe_rifle_energy_01_sf01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "hdtc_undersuit_01_01_02",
+          "name": "Lamont Xy'kara Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_arms_01_02_01",
+          "name": "Tetsudo Arms Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_backpack_01_02_01",
+          "name": "Tetsudo Backpack Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_core_01_02_01",
+          "name": "Tetsudo Core Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_helmet_01_02_01",
+          "name": "Tetsudo Helmet Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_legs_01_02_01",
+          "name": "Tetsudo Legs Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_arms_01_01_13",
+          "name": "Antium Helmet Jet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_helmet_01_01_12",
+          "name": "Antium Core Jet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_arms_01_01_01",
+          "name": "Xy'kara Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_core_01_01_01",
+          "name": "Xy'kara Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_helmet_01_01_01",
+          "name": "Xy'kara Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_legs_01_01_01",
+          "name": "Xy'kara Legs"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Pyro_Intro",
+          "name": "New Opportunity - Ambush Strike"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Nyx_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Nyx_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Nyx_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Nyx_Super",
+          "name": "Red Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Nyx_VeryEasy",
+          "name": "Yellow Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Nyx_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Pyro_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Pyro_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Pyro_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Pyro_Super",
+          "name": "Red Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Pyro_VeryEasy",
+          "name": "Yellow Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Pyro_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Stanton_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Stanton_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Stanton_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Stanton_Super",
+          "name": "Red Lvl. Contract: Protect [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Stanton_VeryEasy",
+          "name": "Yellow Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendDestructibleEntities_Stanton_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Super",
+          "name": "Red Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_VeryEasy_From",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_VeryEasy_To",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Super",
+          "name": "Red Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_VeryEasy_From",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_VeryEasy_To",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Super",
+          "name": "Red Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_VeryEasy_From",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_VeryEasy_To",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Nyx_Easy",
+          "name": "Protect [Objects] From Luggers"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Nyx_Hard",
+          "name": "Stop Gang From Destroying [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Nyx_Medium",
+          "name": "Secure [Objects] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Nyx_Super",
+          "name": "Guard [Objects] At All Costs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Nyx_VeryEasy",
+          "name": "Keep ~misison(Objects) Safe From Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Nyx_VeryHard",
+          "name": "Defend [Objects] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Pyro_Easy",
+          "name": "Protect [Objects] From Luggers"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Pyro_Hard",
+          "name": "Stop Gang From Destroying [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Pyro_Medium",
+          "name": "Secure [Objects] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Pyro_Super",
+          "name": "Guard [Objects] At All Costs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Pyro_VeryEasy",
+          "name": "Keep ~misison(Objects) Safe From Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Pyro_VeryHard",
+          "name": "Defend [Objects] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Stanton_Easy",
+          "name": "Protect [Objects] From Luggers"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Stanton_Hard",
+          "name": "Stop Gang From Destroying [Objects]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Stanton_Medium",
+          "name": "Secure [Objects] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Stanton_Super",
+          "name": "Guard [Objects] At All Costs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Stanton_VeryEasy",
+          "name": "Keep ~misison(Objects) Safe From Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Stanton_VeryHard",
+          "name": "Defend [Objects] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Easy",
+          "name": "Provide Protection at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Hard",
+          "name": "Stop Rival Attack at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Medium",
+          "name": "Secure [Location] from Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Super",
+          "name": "Guard [Location] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_VeryEasy_From",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_VeryEasy_To",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_VeryHard",
+          "name": "Defend [Location] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Easy",
+          "name": "Provide Protection at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Hard",
+          "name": "Stop Rival Attack at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Medium",
+          "name": "Secure [Location] from Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Super",
+          "name": "Guard [Location] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_VeryEasy_From",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_VeryEasy_To",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_VeryHard",
+          "name": "Defend [Location] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Easy",
+          "name": "Provide Protection at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Hard",
+          "name": "Stop Rival Attack at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Medium",
+          "name": "Secure [Location] from Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Super",
+          "name": "Guard [Location] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_VeryEasy_From",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_VeryEasy_To",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_VeryHard",
+          "name": "Defend [Location] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Nyx_TSG_AssistShipInCombat",
+          "name": "Assist People's Alliance Vessel Tranquility"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Nyx_TSG_BombingRun",
+          "name": "Strategic Bombing"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Nyx_TSG_FullStrikeOnStation",
+          "name": "Tactical Strike Group Needed"
+        },
+        {
+          "category": "mission",
+          "className": "Redwind_Nyx_Intro",
+          "name": "Red Wind Seeking New Haulers"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Nyx",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Pyro",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Stanton",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Nyx_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Pyro_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Stanton_Hard",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Stanton_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Stanton_Super",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Easy",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Moderate",
+          "name": "URGENT REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Easy",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Moderate",
+          "name": "URGENT REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Stanton_Easy",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Stanton_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Stanton_Moderate",
+          "name": "URGENT REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "RoX_DOB",
+          "name": "Eliminate XenoThreat Enforcer"
+        },
+        {
+          "category": "mission",
+          "className": "RoX_SA",
+          "name": "Ambush XenoThreat Strike Wing"
+        },
+        {
+          "category": "mission",
+          "className": "RoX_SD",
+          "name": "Urgent - Ship Under XenoThreat Attack"
+        },
+        {
+          "category": "mission",
+          "className": "RoX_SWA",
+          "name": "Interdict XenoThreat Attack Force"
+        },
+        {
+          "category": "mission",
+          "className": "Ship_Refueling_Intro_Nyx",
+          "name": "UWC'S HIRING REFUELERS"
+        },
+        {
+          "category": "mission",
+          "className": "Ship_Refueling_Intro_Pyro",
+          "name": "UWC'S HIRING REFUELERS"
+        },
+        {
+          "category": "mission",
+          "className": "Ship_Refueling_Intro_Stanton",
+          "name": "UWC'S HIRING REFUELERS"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_NoneAssultRifle",
+          "name": "Your Best Shot"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_Vehicle_L22_Wolf",
+          "name": "Extra Special Wolf"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_vglFlightsuit",
+          "name": "Suit Up Take Off"
+        }
+      ],
+      "removed": [
+        {
+          "category": "radar",
+          "className": "radr_unmaned_turret",
+          "name": "<= PLACEHOLDER =>"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionA_M_2AsteroidBase_Criminals_Sabotage",
+          "name": "Halt Narcotics Operation"
+        },
+        {
+          "category": "mission",
+          "className": "CFP_Pyro_RegionC_M_2AsteroidBase_Criminals_Sabotage",
+          "name": "Halt Narcotics Operation"
+        }
+      ]
+    }
+  ]
 }

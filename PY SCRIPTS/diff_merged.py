@@ -1,33 +1,37 @@
 """
-diff_merged.py — changelog generator
+diff_merged.py — changelog generator (per-version, unified)
 
-Diffs the current `versedb_merged.json` against its previous snapshot
-(`versedb_merged_prev.json`) and prepends a new entry to
-`versedb_changelog.json`. Covers every stream that the merged file
-carries (ships + items + fpsItems + fpsGear + fpsArmor + missions +
-missionRefs + meta), so any content change in any stream surfaces on
-the /changelog page.
+Diffs the current `app/public/<target>/versedb_merged.json` against its
+previous snapshot (`versedb_merged_prev.json`) and prepends a new entry
+to the **single** unified `app/public/versedb_changelog.json`. Entries
+are tagged with `channel: 'live' | 'ptu'` so one page shows both
+streams interleaved.
 
 Design notes:
+- **Per-version trigger**: an entry is only written when the meta.version
+  string actually changes (e.g. CIG ships a new build). Re-extractions
+  inside the same patch (curation tweaks, extractor fixes) roll the
+  prev snapshot forward silently. This kills the noise users complained
+  about — within-patch churn no longer surfaces.
 - The changelog file is hand-editable static JSON. This script only
   prepends new entries; existing entries are preserved byte-identical
   across runs. Safe to edit wording, merge duplicates, reorder, or
   delete noise between runs.
-- Dedup key is (fromVersion, toVersion, contentHash). Same version
-  pair + identical content delta → skip. Same version pair + DIFFERENT
-  content delta (e.g. CIG reshipping under the same version string,
-  like the 4.7.2 / NMP2 case) → new entry is written.
-- Retention is unbounded; prune by hand if it gets long.
-- Ship + item diffs drill into a whitelist of user-relevant fields to
-  keep the signal-to-noise ratio high. FPS and mission streams emit
-  coarse `{className, name}` change markers matching the app's
-  DB-backed changelog shape — users see "which entities changed" and
-  click through to the DB page for current values.
+- Dedup key is (channel, fromVersion, toVersion, contentHash). Same
+  trio + identical content delta → skip.
+- Field diffs include `pct` (percent change for numeric fields) when
+  meaningful — suppressed when the baseline is a sentinel (0/1/10) or
+  the magnitude is absurd (>500%, usually a unit swap).
+- Each change entry carries both `name` (display) and `className`
+  (internal id) so users can search either one.
+- FPS + missions stay coarse (className-only "changed" markers); the
+  dedicated DB pages show current values.
 
 Usage:
     python3 diff_merged.py --target live    # default
     python3 diff_merged.py --target ptu
     python3 diff_merged.py --dry-run        # print entry, don't write
+    python3 diff_merged.py --force          # emit even if version unchanged
 """
 
 from __future__ import annotations
@@ -43,44 +47,100 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 APP_PUB = REPO_ROOT / "app" / "public"
 
-# Fields we drill into for ship/item diffs. Keeping the whitelist tight
-# means power-fluctuation noise from extraction-pipeline tweaks doesn't
-# pollute the user-facing changelog. Mirrors the set previously
-# embedded in versedb_extract.py.
+# Tracked fields per entity type. Whitelisted to keep the user-facing
+# changelog tight; the DB pages always show full current values.
 TRACKED_FIELDS: dict[str, list[str]] = {
     "ship": [
-        "mass", "hp", "cargoCapacity", "weaponPowerPoolSize",
-        "thrusterPowerBars", "armorPhysical", "armorEnergy",
-        "armorDistortion", "armorThermal",
+        "mass", "scmSpeed", "navSpeed", "boostSpeedFwd",
+        "pitch", "roll", "yaw", "totalHp", "bodyHp", "armorHp",
+        "cargoCapacity", "oreCapacity", "weaponPowerPoolSize",
+        "thrusterPowerBars", "hydrogenFuelCapacity", "quantumFuelCapacity",
+        "crew", "armorDeflectPhys", "armorDeflectEnrg",
+        "durabilityPhys", "durabilityEnrg", "durabilityDist",
+        "hullDmgPhys", "hullDmgEnrg", "hullDmgDist",
+        "qdSpoolDelay", "flightSpoolDelay",
     ],
     "WeaponGun": [
-        "dps", "alphaDamage", "fireRate", "projectileSpeed", "range",
+        "dps", "alphaDamage", "fireRate", "projectileSpeed", "maxRange",
         "maxHeat", "heatPerShot", "overheatCooldown", "ammoCount",
         "maxRegenPerSec", "powerDraw",
     ],
     "WeaponTachyon": [
-        "dps", "alphaDamage", "fireRate", "projectileSpeed", "range",
+        "dps", "alphaDamage", "fireRate", "projectileSpeed", "maxRange",
         "maxHeat", "heatPerShot", "overheatCooldown", "ammoCount",
         "maxRegenPerSec", "powerDraw",
     ],
-    "TractorBeam": ["dps", "alphaDamage", "fireRate", "powerDraw"],
+    "WeaponMining": [
+        "dps", "alphaDamage", "fireRate", "miningMinPower",
+        "miningMaxPower", "miningInstability", "miningOptimalRange",
+        "miningMaxRange", "powerDraw",
+    ],
+    "TractorBeam": [
+        "dps", "alphaDamage", "fireRate", "powerDraw",
+        "maxRange", "optimalRange",
+    ],
     "Shield": [
         "hp", "regenRate", "damagedRegenDelay", "downedRegenDelay",
-        "resistPhysMax", "resistPhysMin", "resistEnrgMax", "resistEnrgMin",
-        "resistDistMax", "resistDistMin",
+        "absPhysMax", "absPhysMin", "absEnrgMax", "absEnrgMin",
+        "absDistMax", "absDistMin", "powerDraw", "emMax",
     ],
-    "PowerPlant": ["powerOutput"],
-    "Cooler": ["coolingRate"],
-    "QuantumDrive": ["speed", "spoolTime", "fuelRate"],
-    "Radar": ["aimMin", "aimMax"],
+    "PowerPlant": [
+        "powerOutput", "componentHp", "emMax", "distortionMax",
+        "selfRepairRatio", "selfRepairTime",
+    ],
+    "Cooler": [
+        "coolingRate", "componentHp", "emMax", "powerDraw",
+    ],
+    "QuantumDrive": [
+        "speed", "fuelRate", "calDelay", "cooldownTime",
+        "interdictionTime", "powerDraw", "emMax", "hp",
+    ],
+    "Radar": [
+        "aimMin", "aimMax", "aimBuffer", "componentHp", "emMax",
+        "csSensitivity", "emSensitivity", "irSensitivity",
+        "rsSensitivity", "powerDraw",
+    ],
     "MissileLauncher": ["missileSize", "capacity"],
-    "Missile": ["alphaDamage", "speed", "lockTime", "lockRangeMax"],
+    "BombLauncher": ["missileSize", "capacity"],
+    "Missile": [
+        "alphaDamage", "projectileSpeed", "lockTime",
+        "lockRangeMax", "lockAngle", "explosionMaxRadius",
+    ],
+    "Bomb": [
+        "alphaDamage", "projectileSpeed", "armTime", "igniteTime",
+        "explosionMaxRadius", "explosionMinRadius",
+    ],
+    "EMP": [
+        "chargeTime", "cooldownTime", "distortionDamage", "empRadius",
+    ],
+    "JumpDrive": [
+        "alignmentRate", "distortionMax", "fuelEfficiency", "hp",
+        "tuningRate",
+    ],
+    "LifeSupportGenerator": [
+        "powerDraw", "powerMax", "distortionMax", "emMax",
+    ],
+    "MiningModifier": [
+        "miningPowerMult", "miningInstability", "miningOvercharge",
+        "charges",
+    ],
+    "FlightController": [
+        "scmSpeed", "navSpeed", "boostSpeedFwd", "boostSpeedBwd",
+        "pitch", "roll", "yaw", "pitchBoosted", "rollBoosted",
+        "yawBoosted", "qdSpoolDelay", "thrusterPowerBars",
+    ],
+    "Module": ["cargoBonus"],
+    "QuantumInterdictionGenerator": [
+        "powerDraw", "powerMax", "basePowerDrawFraction",
+    ],
 }
 
-# Maps item `type` → display category used by the /changelog page.
+# Maps item `type` → display category. Keys also drive the section
+# headers in the UI (sorted via CATEGORY_ORDER in the component).
 ITEM_TYPE_TO_CATEGORY: dict[str, str] = {
     "WeaponGun": "weapon",
     "WeaponTachyon": "weapon",
+    "WeaponMining": "mining_laser",
     "TractorBeam": "tractor",
     "Shield": "shield",
     "PowerPlant": "powerplant",
@@ -90,6 +150,20 @@ ITEM_TYPE_TO_CATEGORY: dict[str, str] = {
     "Missile": "missile",
     "MissileLauncher": "missilelauncher",
     "BombLauncher": "missilelauncher",
+    "Bomb": "missile",
+    "EMP": "emp",
+    "JumpDrive": "jumpdrive",
+    "LifeSupportGenerator": "life_support",
+    "MiningModifier": "mining_modifier",
+    "FlightController": "flight_controller",
+    "Module": "module",
+    "QuantumInterdictionGenerator": "qig",
+    "SalvageHead": "salvage",
+    "SalvageModifier": "salvage_modifier",
+    "Turret": "turret",
+    "TurretBase": "turret",
+    "WeaponMount": "weapon_mount",
+    "ToolArm": "tool",
 }
 
 
@@ -99,11 +173,26 @@ def _item_category(item: dict) -> str:
 
 
 def _fps_category(fps_item: dict) -> str:
-    # versedb_merged.json tags every fpsItem with `_kind`
-    # ('weapon' | 'magazine' | 'attachment'). Separating the three in
-    # the changelog makes it easier to scan "which weapons changed".
     kind = fps_item.get("_kind", "")
     return f"fps_{kind}" if kind else "fps_item"
+
+
+def _calc_pct(old, new) -> float | None:
+    """Return the % change from old → new, or None if not meaningful.
+
+    Suppressed when the baseline is too small to make a percent
+    meaningful (likely a sentinel / placeholder seed value), and when
+    the magnitude is absurd (>500%, usually a unit/format change).
+    """
+    if not isinstance(old, (int, float)) or not isinstance(new, (int, float)):
+        return None
+    if old == 0 or abs(old) < 2:
+        # 0 → N is undefined; 1 → 100 reads as +9900% which is noise.
+        return None
+    pct = (new - old) / old * 100.0
+    if abs(pct) > 500:
+        return None
+    return round(pct, 1)
 
 
 def _deep_diff(old: dict, new: dict, fields: list[str]) -> list[dict]:
@@ -113,7 +202,11 @@ def _deep_diff(old: dict, new: dict, fields: list[str]) -> list[dict]:
         if ov is None and nv is None:
             continue
         if ov != nv:
-            out.append({"field": f, "old": ov, "new": nv})
+            entry = {"field": f, "old": ov, "new": nv}
+            pct = _calc_pct(ov, nv)
+            if pct is not None:
+                entry["pct"] = pct
+            out.append(entry)
     return out
 
 
@@ -160,13 +253,7 @@ def _diff_shallow_stream(
     *,
     category_fn,
 ) -> tuple[list[dict], list[dict], list[dict]]:
-    """Coarse className diff for FPS + missions. Matches
-    diffFpsStreamForChangelog in api/db.js — signals "this entity
-    changed" without field-level drill (the Items DB / Missions page
-    shows current values directly).
-
-    `category_fn(entity)` returns the display category per entry.
-    """
+    """Coarse className diff for FPS + missions — entity-level only."""
     prev_map = {e["className"]: e for e in prev_list if e.get("className")}
     new_map = {e["className"]: e for e in new_list if e.get("className")}
     changes, added, removed = [], [], []
@@ -178,68 +265,54 @@ def _diff_shallow_stream(
         if p and not n:
             removed.append({"category": category_fn(p), "className": key, "name": p.get("name", p.get("title", key))})
             continue
-        # Shallow content compare — any field difference triggers a
-        # "changed" entry. Stable key order so re-extracts with the
-        # same content don't spuriously diff on dict ordering.
         if json.dumps(p, sort_keys=True) != json.dumps(n, sort_keys=True):
             changes.append({"category": category_fn(n), "className": key, "name": n.get("name", n.get("title", key))})
     return changes, added, removed
 
 
 def _content_hash(entry: dict) -> str:
-    # Hash the diff arrays (not the whole entry — exclude date/version).
-    # Used as a dedup key so same-version-different-content reships
-    # (e.g. NMP2) still generate a new changelog entry.
     key_fields = {k: entry[k] for k in ("changes", "added", "removed") if k in entry}
     return hashlib.sha256(json.dumps(key_fields, sort_keys=True).encode()).hexdigest()[:12]
 
 
-def build_entry(prev_merged: dict, new_merged: dict) -> dict:
+def build_entry(prev_merged: dict, new_merged: dict, channel: str) -> dict:
     """Compute the complete changelog entry from two merged snapshots."""
     changes, added, removed = [], [], []
 
-    # Ships
     c, a, r = _diff_ship_item_stream(
         prev_merged.get("ships", []), new_merged.get("ships", []), is_ship=True,
     )
     changes += c; added += a; removed += r
 
-    # Items (ship components)
     c, a, r = _diff_ship_item_stream(
         prev_merged.get("items", []), new_merged.get("items", []), is_ship=False,
     )
     changes += c; added += a; removed += r
 
-    # FPS items (weapons + magazines + attachments, tagged by _kind)
     c, a, r = _diff_shallow_stream(
         prev_merged.get("fpsItems", []), new_merged.get("fpsItems", []),
         category_fn=_fps_category,
     )
     changes += c; added += a; removed += r
 
-    # FPS gear
     c, a, r = _diff_shallow_stream(
         prev_merged.get("fpsGear", []), new_merged.get("fpsGear", []),
         category_fn=lambda _: "fps_gear",
     )
     changes += c; added += a; removed += r
 
-    # FPS armor
     c, a, r = _diff_shallow_stream(
         prev_merged.get("fpsArmor", []), new_merged.get("fpsArmor", []),
         category_fn=lambda _: "fps_armor",
     )
     changes += c; added += a; removed += r
 
-    # Missions (contracts)
     c, a, r = _diff_shallow_stream(
         prev_merged.get("missions", []), new_merged.get("missions", []),
         category_fn=lambda _: "mission",
     )
     changes += c; added += a; removed += r
 
-    # Mission refs (singleton blob: factions, ladders, givers, etc.).
-    # Emit a single synthetic "changed" marker if the blob differs.
     prev_refs = prev_merged.get("missionRefs") or {}
     new_refs = new_merged.get("missionRefs") or {}
     if json.dumps(prev_refs, sort_keys=True) != json.dumps(new_refs, sort_keys=True):
@@ -253,6 +326,7 @@ def build_entry(prev_merged: dict, new_merged: dict) -> dict:
     new_version = (new_merged.get("meta") or {}).get("version", "unknown")
 
     return {
+        "channel": channel,
         "fromVersion": prev_version,
         "toVersion": new_version,
         "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
@@ -266,20 +340,21 @@ def main():
     parser = argparse.ArgumentParser(description="Diff merged.json against its previous snapshot and update versedb_changelog.json")
     parser.add_argument("--target", choices=["live", "ptu"], default="live")
     parser.add_argument("--dry-run", action="store_true", help="Print the entry without writing it")
+    parser.add_argument("--force", action="store_true", help="Emit an entry even if meta.version matches the prev snapshot (use to backfill demo entries or stitch together a release notes pass)")
     args = parser.parse_args()
 
     pub = APP_PUB / args.target
     merged_path = pub / "versedb_merged.json"
     prev_path = pub / "versedb_merged_prev.json"
-    changelog_path = pub / "versedb_changelog.json"
+    # SINGLE shared changelog file lives at the public root, not per-mode.
+    changelog_path = APP_PUB / "versedb_changelog.json"
 
     if not merged_path.exists():
         print(f"[diff_merged] {merged_path} not found — run merge_build_payload.py first", file=sys.stderr)
         sys.exit(1)
 
     if not prev_path.exists():
-        # First run: no baseline, just snapshot and exit quietly. The
-        # next extraction will have a prev to diff against.
+        # First run on a fresh checkout: snapshot and exit quietly.
         shutil.copy2(merged_path, prev_path)
         print(f"[diff_merged] baseline snapshot saved -> {prev_path.name} (no changelog entry on first run)")
         return
@@ -289,24 +364,38 @@ def main():
     with open(merged_path, encoding="utf-8") as f:
         new_merged = json.load(f)
 
-    entry = build_entry(prev_merged, new_merged)
+    prev_version = (prev_merged.get("meta") or {}).get("version", "unknown")
+    new_version = (new_merged.get("meta") or {}).get("version", "unknown")
 
-    # Short-circuit if nothing changed at all.
+    # Per-version gate: same version string = same CIG patch+build.
+    # Skip silently and DO NOT roll prev forward — we want the next
+    # real version bump to diff against the freshest extract of the
+    # current patch (so within-patch extractor improvements don't
+    # leak into the next entry).
+    if prev_version == new_version and not args.force:
+        # But still roll prev forward — within-patch extractor
+        # improvements should NOT pollute the next real diff. By
+        # taking the latest extract as the baseline for the next
+        # version bump, only CIG-side changes show up there.
+        shutil.copy2(merged_path, prev_path)
+        print(f"[diff_merged] version unchanged ({new_version}) — rolled prev forward, no entry written")
+        return
+
+    entry = build_entry(prev_merged, new_merged, channel=args.target)
+
     if not entry["changes"] and not entry["added"] and not entry["removed"]:
         print(f"[diff_merged] no deltas between {entry['fromVersion']} and {entry['toVersion']} — no entry written")
-        # Still refresh the snapshot so next run doesn't see a stale baseline.
         if not args.dry_run:
             shutil.copy2(merged_path, prev_path)
         return
 
-    print(f"[diff_merged] {entry['fromVersion']} -> {entry['toVersion']}")
+    print(f"[diff_merged] [{args.target}] {entry['fromVersion']} -> {entry['toVersion']}")
     print(f"  changes: {len(entry['changes'])}, added: {len(entry['added'])}, removed: {len(entry['removed'])}")
 
     if args.dry_run:
         print(json.dumps(entry, indent=2)[:2000])
         return
 
-    # Load existing changelog (preserves hand-edits across runs).
     changelog = {"meta": {"generatedAt": "", "entries": 0}, "changelog": []}
     if changelog_path.exists():
         try:
@@ -315,12 +404,10 @@ def main():
         except Exception as e:
             print(f"[diff_merged] warning: couldn't parse existing changelog ({e}); starting fresh")
 
-    # Dedup by (fromVersion, toVersion, contentHash). Same-version
-    # reships with different content produce a new entry; identical
-    # content redundant runs skip.
     new_hash = _content_hash(entry)
     for existing in changelog["changelog"]:
-        if (existing.get("fromVersion") == entry["fromVersion"]
+        if (existing.get("channel") == entry["channel"]
+                and existing.get("fromVersion") == entry["fromVersion"]
                 and existing.get("toVersion") == entry["toVersion"]
                 and _content_hash(existing) == new_hash):
             print(f"[diff_merged] identical entry already present — skipping")
@@ -335,7 +422,6 @@ def main():
         json.dump(changelog, f, indent=2, ensure_ascii=False)
     print(f"[diff_merged] wrote entry to {changelog_path.name}")
 
-    # Roll the snapshot forward for next time.
     shutil.copy2(merged_path, prev_path)
 
 
