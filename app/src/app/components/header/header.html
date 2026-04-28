@@ -31,8 +31,8 @@
       @if (shipToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of shipToolsTabs; track tab.id) {
-            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
-                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+            <div class="nav-drop-item" [class.active]="isNavTabActive(tab)"
+                 (click)="navigateTo(tab); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
@@ -45,8 +45,8 @@
       @if (missionsOpen()) {
         <div class="nav-dropdown">
           @for (tab of missionsTabs; track tab.id) {
-            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
-                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+            <div class="nav-drop-item" [class.active]="isNavTabActive(tab)"
+                 (click)="navigateTo(tab); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
@@ -59,8 +59,8 @@
       @if (industryToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of industryToolsTabs; track tab.id) {
-            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
-                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+            <div class="nav-drop-item" [class.active]="isNavTabActive(tab)"
+                 (click)="navigateTo(tab); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
@@ -73,8 +73,8 @@
       @if (fpsGearOpen()) {
         <div class="nav-dropdown">
           @for (tab of fpsGearTabs; track tab.id) {
-            <div class="nav-drop-item" [class.active]="isTabActive(tab.id)"
-                 (click)="navigateTo(tab.id); $event.stopPropagation()">{{ tab.label }}</div>
+            <div class="nav-drop-item" [class.active]="isNavTabActive(tab)"
+                 (click)="navigateTo(tab); $event.stopPropagation()">{{ tab.label }}</div>
           }
         </div>
       }
@@ -144,19 +144,19 @@
     <button class="mobile-nav-item" [class.active]="isTabActive('shop')" (click)="navigateTo('shop')">Shopping</button>
     <div class="mobile-nav-title">SHIP TOOLS</div>
     @for (tab of shipToolsTabs; track tab.id) {
-      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+      <button class="mobile-nav-item" [class.active]="isNavTabActive(tab)" (click)="navigateTo(tab)">{{ tab.label }}</button>
     }
     <div class="mobile-nav-title">MISSIONS</div>
     @for (tab of missionsTabs; track tab.id) {
-      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+      <button class="mobile-nav-item" [class.active]="isNavTabActive(tab)" (click)="navigateTo(tab)">{{ tab.label }}</button>
     }
     <div class="mobile-nav-title">MINING / CRAFTING</div>
     @for (tab of industryToolsTabs; track tab.id) {
-      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+      <button class="mobile-nav-item" [class.active]="isNavTabActive(tab)" (click)="navigateTo(tab)">{{ tab.label }}</button>
     }
     <div class="mobile-nav-title">FPS GEAR</div>
     @for (tab of fpsGearTabs; track tab.id) {
-      <button class="mobile-nav-item" [class.active]="isTabActive(tab.id)" (click)="navigateTo(tab.id)">{{ tab.label }}</button>
+      <button class="mobile-nav-item" [class.active]="isNavTabActive(tab)" (click)="navigateTo(tab)">{{ tab.label }}</button>
     }
     <button class="mobile-nav-item" [class.active]="isTabActive('bpChecklist')" (click)="navigateTo('bpChecklist')">BP Checklist</button>
     <div class="mobile-nav-title">MORE</div>

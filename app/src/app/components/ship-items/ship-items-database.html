@@ -1,0 +1,22 @@
+<div class="sid-shell">
+  <nav class="sid-tabs" role="tablist" aria-label="Ship items category">
+    @for (cat of categories; track cat.slug) {
+      <button class="sid-tab"
+              role="tab"
+              [class.active]="isActive(cat.slug)"
+              [attr.aria-selected]="isActive(cat.slug)"
+              (click)="selectCategory(cat.slug)">
+        {{ cat.label }}
+      </button>
+    }
+  </nav>
+
+  <div class="sid-body">
+    <app-ship-item-db
+      [title]="active().title"
+      [itemType]="active().itemType"
+      [columns]="active().columns"
+      [dropdownFilters]="active().dropdowns"
+      [defaultSort]="active().defaultSort" />
+  </div>
+</div>

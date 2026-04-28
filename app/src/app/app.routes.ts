@@ -27,18 +27,8 @@ import { FpsLoadoutComponent } from './components/fps-loadout/fps-loadout';
 import { BpChecklistComponent } from './components/bp-checklist/bp-checklist';
 import { EveStyleComponent } from './components/eve-style/eve-style';
 import { AltLayoutComponent } from './components/alt-layout/alt-layout';
-import {
-  ShipShieldsComponent,
-  ShipCoolersComponent,
-  ShipWeaponsDbComponent,
-  ShipPowerPlantsComponent,
-  ShipQuantumDrivesComponent,
-} from './components/ship-items/ship-dbs';
 import { ShipExplorerComponent } from './components/ship-items/ship-explorer';
-import {
-  MiningLasersDbComponent,
-  MiningModulesDbComponent,
-} from './components/ship-items/mining-dbs';
+import { ShipItemsDatabaseComponent } from './components/ship-items/ship-items-database';
 import { adminGuard } from './components/admin/admin-guard';
 
 export const routes: Routes = [
@@ -61,18 +51,23 @@ export const routes: Routes = [
   { path: 'rankings',           component: RankingsViewComponent },
   { path: 'qt-range',           component: QtRangeViewComponent },
   { path: 'armor',              component: ArmorViewComponent },
-  { path: 'ship-shields',       component: ShipShieldsComponent },
-  { path: 'ship-coolers',       component: ShipCoolersComponent },
-  { path: 'ship-weapons-db',    component: ShipWeaponsDbComponent },
-  { path: 'ship-power-plants',  component: ShipPowerPlantsComponent },
-  { path: 'ship-quantum-drives',component: ShipQuantumDrivesComponent },
+  { path: 'ship-items',         component: ShipItemsDatabaseComponent },
+
+  // Legacy per-component routes — redirect to the consolidated DB so
+  // bookmarks, Discord links, and saved tabs keep working.
+  { path: 'ship-weapons-db',    redirectTo: '/ship-items?cat=weapons',        pathMatch: 'full' },
+  { path: 'ship-shields',       redirectTo: '/ship-items?cat=shields',        pathMatch: 'full' },
+  { path: 'ship-coolers',       redirectTo: '/ship-items?cat=coolers',        pathMatch: 'full' },
+  { path: 'ship-power-plants',  redirectTo: '/ship-items?cat=power-plants',   pathMatch: 'full' },
+  { path: 'ship-quantum-drives',redirectTo: '/ship-items?cat=quantum-drives', pathMatch: 'full' },
+
   { path: 'ship-explorer',      component: ShipExplorerComponent },
   { path: 'submit',             component: SubmitViewComponent },
   { path: 'formulas',           component: FormulasViewComponent },
   { path: 'mining',             component: MiningViewComponent },
   { path: 'mining-signatures',  component: MiningSignaturesComponent },
-  { path: 'mining-lasers',      component: MiningLasersDbComponent },
-  { path: 'mining-modules',     component: MiningModulesDbComponent },
+  { path: 'mining-lasers',      redirectTo: '/ship-items?cat=mining-lasers',  pathMatch: 'full' },
+  { path: 'mining-modules',     redirectTo: '/ship-items?cat=mining-modules', pathMatch: 'full' },
   { path: 'compact',            component: CompactViewComponent },
   { path: 'eve-style',          component: EveStyleComponent },
   { path: 'alt-layout',         component: AltLayoutComponent },

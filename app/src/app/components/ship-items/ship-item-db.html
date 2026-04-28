@@ -2,7 +2,7 @@
 
   @if (!data.isLoaded()) {
     <div class="empty-state">
-      <div class="empty-title">Loading {{ title.toLowerCase() }}...</div>
+      <div class="empty-title">Loading {{ title().toLowerCase() }}...</div>
     </div>
   } @else {
 
@@ -17,13 +17,13 @@
                [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
       </div>
 
-      @if (subTypeFilters.length) {
+      @if (subTypeFilters().length) {
         <div class="sid-filter-group">
           <label>Category</label>
           <select class="sid-select" [value]="subTypeFilter()"
                   (change)="subTypeFilter.set($any($event.target).value)">
             <option value="">All</option>
-            @for (f of subTypeFilters; track f.label) {
+            @for (f of subTypeFilters(); track f.label) {
               <option [value]="f.label">{{ f.label }}</option>
             }
           </select>
@@ -43,7 +43,7 @@
         </div>
       }
 
-      @for (filter of dropdownFilters; track filter.label) {
+      @for (filter of dropdownFilters(); track filter.label) {
         <div class="sid-filter-group">
           <label>{{ filter.label }}</label>
           <select class="sid-select" [value]="dropdownValues()[filter.label] || ''"
@@ -66,7 +66,7 @@
       <table class="sid-table">
         <thead>
           <tr>
-            @for (col of columns; track col.field) {
+            @for (col of columns(); track col.field) {
               <th [class.sortable]="col.sortable" [class.col-num-head]="col.align === 'right'"
                   (click)="toggleSort(col)">{{ col.label }}{{ sortIndicator(col) }}</th>
             }
@@ -75,13 +75,13 @@
         <tbody>
           @for (item of filtered(); track item.className; let first = $first; let i = $index) {
             <tr class="clickable-row" (click)="openItemModal(item)">
-              @for (col of columns; track col.field; let isFirst = $first) {
+              @for (col of columns(); track col.field; let isFirst = $first) {
                 <td [class]="tdClass(col, isFirst)">{{ formatted(item, col) }}</td>
               }
             </tr>
           }
           @if (!filtered().length) {
-            <tr><td [attr.colspan]="columns.length" class="empty-row">No items match the current filters.</td></tr>
+            <tr><td [attr.colspan]="columns().length" class="empty-row">No items match the current filters.</td></tr>
           }
         </tbody>
       </table>

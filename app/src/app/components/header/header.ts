@@ -36,6 +36,17 @@ function tabToRoute(id: string): string {
   return TAB_ROUTES[id] ?? id;
 }
 
+/** Dropdown nav entry. Most entries just specify an `id` whose route is
+ *  derived via TAB_ROUTES. Entries that need to deep-link into a tabbed
+ *  page (e.g., Mining Lasers → /ship-items?cat=mining-lasers) override
+ *  `route` and may attach `queryParams`. */
+export interface NavTab {
+  id: string;
+  label: string;
+  route?: string;
+  queryParams?: Record<string, string>;
+}
+
 interface StoredLoadout {
   name: string;
   shipClassName: string;
@@ -87,7 +98,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.routerSub?.unsubscribe();
   }
 
-  readonly shipToolsTabs: { id: TabName; label: string }[] = [
+  readonly shipToolsTabs: NavTab[] = [
     { id: 'shipExplorer', label: 'Ship Explorer' },
     { id: 'shipCompare', label: 'Ship Comparator' },
     { id: 'rankings', label: 'Flight Performance' },
@@ -95,25 +106,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { id: 'armor', label: 'Armor Damage' },
     { id: 'compare', label: 'Weapon Performance' },
     { id: 'finder', label: 'Default Loadout Finder' },
-    { id: 'shipWeaponsDb', label: 'Ship Weapons' },
-    { id: 'shipShields', label: 'Shields' },
-    { id: 'shipCoolers', label: 'Coolers' },
-    { id: 'shipPowerPlants', label: 'Power Plants' },
-    { id: 'shipQuantumDrives', label: 'Quantum Drives' },
+    { id: 'shipItems', label: 'Ship Items DB', route: '/ship-items' },
     // { id: 'eveStyle', label: 'Eve Style (Pilot)' },  // hidden until ready
   ];
 
-  readonly missionsTabs: { id: TabName; label: string }[] = [
+  readonly missionsTabs: NavTab[] = [
     { id: 'missions', label: 'Contracts' },
     { id: 'repBuilder', label: 'Rep Builder' },
     { id: 'blueprints', label: 'Blueprint Finder' },
   ];
 
-  readonly industryToolsTabs: { id: TabName; label: string }[] = [
+  readonly industryToolsTabs: NavTab[] = [
     { id: 'mining', label: 'Mining Ore Locations' },
     { id: 'miningSignatures', label: 'Mining Signatures' },
-    { id: 'miningLasers', label: 'Mining Lasers' },
-    { id: 'miningModules', label: 'Mining Modules' },
+    { id: 'miningLasers',  label: 'Mining Lasers',  route: '/ship-items', queryParams: { cat: 'mining-lasers' } },
+    { id: 'miningModules', label: 'Mining Modules', route: '/ship-items', queryParams: { cat: 'mining-modules' } },
     { id: 'crafting', label: 'Crafting' },
   ];
 
@@ -135,10 +142,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return path === '/' + tabToRoute(id);
   }
 
-  isShipToolActive = computed(() => { this.currentUrl(); return this.shipToolsTabs.some(t => this.isTabActive(t.id)); });
-  isMissionsActive = computed(() => { this.currentUrl(); return this.missionsTabs.some(t => this.isTabActive(t.id)); });
-  isIndustryToolActive = computed(() => { this.currentUrl(); return this.industryToolsTabs.some(t => this.isTabActive(t.id)); });
-  isFpsGearActive = computed(() => { this.currentUrl(); return this.fpsGearTabs.some(t => this.isTabActive(t.id)); });
+  /** A nav tab is active when the current URL matches its target route +
+   *  query params. For id-based entries we compare the path against
+   *  tabToRoute(id); for entries with explicit `route`/`queryParams` we
+   *  match both. */
+  isNavTabActive(t: NavTab): boolean {
+    const url = this.currentUrl();
+    const [pathPart, queryPart = ''] = url.split('?');
+    const path = pathPart.split('#')[0];
+    const targetPath = t.route ?? '/' + tabToRoute(t.id);
+    if (path !== targetPath) return false;
+    if (!t.queryParams) return true;
+    const params = new URLSearchParams(queryPart);
+    return Object.entries(t.queryParams).every(([k, v]) => params.get(k) === v);
+  }
+
+  isShipToolActive = computed(() => { this.currentUrl(); return this.shipToolsTabs.some(t => this.isNavTabActive(t)); });
+  isMissionsActive = computed(() => { this.currentUrl(); return this.missionsTabs.some(t => this.isNavTabActive(t)); });
+  isIndustryToolActive = computed(() => { this.currentUrl(); return this.industryToolsTabs.some(t => this.isNavTabActive(t)); });
+  isFpsGearActive = computed(() => { this.currentUrl(); return this.fpsGearTabs.some(t => this.isNavTabActive(t)); });
 
   isOnLoadout(): boolean {
     const path = this.currentUrl().split('?')[0].split('#')[0];
@@ -190,8 +212,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.closeAllGroups();
     this.fpsGearOpen.set(open);
   }
-  navigateTo(id: string): void {
-    this._router.navigate(['/' + tabToRoute(id)]);
+  navigateTo(idOrTab: string | NavTab): void {
+    if (typeof idOrTab === 'string') {
+      this._router.navigate(['/' + tabToRoute(idOrTab)]);
+    } else {
+      const path = idOrTab.route ?? '/' + tabToRoute(idOrTab.id);
+      this._router.navigate([path], { queryParams: idOrTab.queryParams ?? null });
+    }
     this.closeAllGroups();
     this.hamburgerOpen.set(false);
   }

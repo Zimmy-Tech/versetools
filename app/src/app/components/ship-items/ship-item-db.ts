@@ -1,4 +1,4 @@
-import { Component, Input, signal, computed } from '@angular/core';
+import { Component, signal, computed, input } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Item, Ship } from '../../models/db.models';
 
@@ -41,21 +41,25 @@ export interface ItemColumn {
   styleUrl: './ship-item-db.scss',
 })
 export class ShipItemDbComponent {
-  @Input() title = '';
+  /** Signal inputs so the filter computeds re-track when the parent
+   *  rebinds (e.g., the consolidated Ship Items DB tab strip swaps the
+   *  config when the user picks a different category). Classic @Input()
+   *  is not signal-tracked, so dependent computeds would never re-run. */
+  title = input('');
   /** Matches against Item.type — set to 'Shield', 'Cooler', 'WeaponGun', etc. */
-  @Input() itemType = '';
+  itemType = input('');
   /** Optional secondary filter for WeaponGun (Ballistic vs Energy). Label =
    *  dropdown prompt, predicate picks the rows. Pass multiple for a multi-group. */
-  @Input() subTypeFilters: { label: string; test: (i: Item) => boolean }[] = [];
+  subTypeFilters = input<{ label: string; test: (i: Item) => boolean }[]>([]);
   /** Extra dropdown filters (Class / Grade / Type / ...). Each has a label,
    *  an all-option text, and a value accessor. The component harvests the
    *  distinct values from the unfiltered item set and renders options. */
-  @Input() dropdownFilters: DropdownFilter[] = [];
-  @Input() columns: ItemColumn[] = [];
+  dropdownFilters = input<DropdownFilter[]>([]);
+  columns = input<ItemColumn[]>([]);
   /** Fields checked by the text search input. Defaults to name + manufacturer. */
-  @Input() searchFields: string[] = ['name', 'manufacturer'];
+  searchFields = input<string[]>(['name', 'manufacturer']);
   /** Initial sort column. */
-  @Input() defaultSort = 'name';
+  defaultSort = input('name');
 
   searchQuery = signal('');
   subTypeFilter = signal(''); // label of active subType filter or ''
@@ -81,7 +85,7 @@ export class ShipItemDbComponent {
   openItemModal(item: Item): void { this.selectedItem.set(item); }
   closeItemModal(): void { this.selectedItem.set(null); }
 
-  private currentSort = computed(() => this.sortField() || this.defaultSort);
+  private currentSort = computed(() => this.sortField() || this.defaultSort());
 
   /** Page-local blocklist for phantom variants that CIG left in the game data
    *  but are never player-equippable. These database pages are meant to show
@@ -154,7 +158,7 @@ export class ShipItemDbComponent {
   ]);
 
   readonly items = computed<Item[]>(() =>
-    this.data.items().filter(i => i.type === this.itemType && !this.shouldHide(i))
+    this.data.items().filter(i => i.type === this.itemType() && !this.shouldHide(i))
   );
 
   /** Distinct sizes present in the unfiltered item set, sorted ascending.
@@ -215,7 +219,7 @@ export class ShipItemDbComponent {
     const q = this.searchQuery().toLowerCase().trim();
     if (q) {
       list = list.filter(i =>
-        this.searchFields.some(f => {
+        this.searchFields().some(f => {
           const v = (i as any)[f];
           return v != null && String(v).toLowerCase().includes(q);
         })
@@ -223,7 +227,7 @@ export class ShipItemDbComponent {
     }
     const sub = this.subTypeFilter();
     if (sub) {
-      const match = this.subTypeFilters.find(f => f.label === sub);
+      const match = this.subTypeFilters().find(f => f.label === sub);
       if (match) list = list.filter(match.test);
     }
     const size = this.sizeFilter();
@@ -231,7 +235,7 @@ export class ShipItemDbComponent {
       list = list.filter(i => i.size === size);
     }
     const dropVals = this.dropdownValues();
-    for (const filter of this.dropdownFilters) {
+    for (const filter of this.dropdownFilters()) {
       const selected = dropVals[filter.label];
       if (selected) {
         list = list.filter(i => {
@@ -244,7 +248,7 @@ export class ShipItemDbComponent {
     const field = this.currentSort();
     const dir = this.sortDir();
     const sign = dir === 'asc' ? 1 : -1;
-    const col = this.columns.find(c => c.field === field);
+    const col = this.columns().find(c => c.field === field);
     return [...list].sort((a, b) => {
       const av = this.rawValue(a, col, field);
       const bv = this.rawValue(b, col, field);
