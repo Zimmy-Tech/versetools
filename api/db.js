@@ -479,10 +479,16 @@ export async function importIfEmpty() {
     }
 
     if (data.meta) {
-      await client.query(
-        'INSERT INTO meta (id, data) VALUES (1, $1) ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()',
-        [data.meta]
-      );
+      // Seed both mode rows from the same payload — at first import time
+      // we don't have separate LIVE/PTU bundles. Subsequent admin imports
+      // will overwrite the mode-specific row.
+      for (const seedMode of ['live', 'ptu']) {
+        await client.query(
+          `INSERT INTO meta (mode, data) VALUES ($1, $2)
+           ON CONFLICT (mode) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+          [seedMode, data.meta]
+        );
+      }
     }
 
     await client.query('COMMIT');
@@ -672,6 +678,53 @@ export async function ensureReady() {
   await migrateExtractShopPrices();
   await migrateCoolingIrColumn();
   await migrateChangelogStreamColumns();
+  await migrateMetaAddModeColumn();
+}
+
+// Make the singleton `meta` table mode-aware. Without this, a PTU import
+// overwrites the only row and the LIVE-mode export then returns PTU's
+// `meta.version` (so the build label in the header is wrong on LIVE).
+//
+// Migration:
+//   1. Add `mode TEXT` column with default 'ptu' (the existing row's data
+//      currently reflects the most recent import — likely a PTU push if
+//      this migration is running for the first time after the 4.8 PTU
+//      session).
+//   2. Drop the id=1 CHECK that prevented multiple rows.
+//   3. Add UNIQUE(mode) so we can ON CONFLICT (mode) DO UPDATE.
+//
+// After the migration the LIVE row simply doesn't exist yet — the next
+// admin import of LIVE data will create it. exportFullDb's meta query
+// falls back to any existing row when the requested mode is missing,
+// so the LIVE-mode response keeps working (with whatever meta is
+// available) until LIVE is re-imported.
+export async function migrateMetaAddModeColumn() {
+  if (!pool) return;
+  const { rows } = await pool.query(`
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'versedb' AND table_name = 'meta' AND column_name = 'mode'
+  `);
+  if (rows.length > 0) return; // already migrated
+
+  console.log('[db] migrating: making meta table mode-aware...');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // Drop the singleton-id check so multiple rows are allowed.
+    await client.query(`ALTER TABLE versedb.meta DROP CONSTRAINT IF EXISTS meta_id_check`);
+    // Add mode column. Default 'ptu' — the only existing row's data is
+    // whatever was last imported, and after the 4.8 push that's PTU.
+    await client.query(`ALTER TABLE versedb.meta ADD COLUMN mode TEXT NOT NULL DEFAULT 'ptu'`);
+    // Future inserts use mode as the conflict key instead of id.
+    await client.query(`ALTER TABLE versedb.meta ADD CONSTRAINT meta_mode_unique UNIQUE (mode)`);
+    await client.query('COMMIT');
+    console.log('[db] meta mode-aware migration complete');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 /** Coerce arbitrary input into a valid mode value. */
@@ -1042,7 +1095,20 @@ export async function exportFullDb(mode = 'live') {
     pool.query('SELECT data FROM items WHERE mode = $1 ORDER BY class_name', [m]),
     pool.query('SELECT data FROM mining_locations ORDER BY id'),
     pool.query('SELECT data FROM mining_elements ORDER BY id'),
-    pool.query('SELECT data FROM meta WHERE id = 1'),
+    // Mode-aware meta. Falls back to any row if the requested mode
+    // hasn't been populated yet (e.g. after the mode-column migration
+    // before LIVE has been re-imported). Keeps the build badge filled
+    // during the transition; the next mode-specific import sets it
+    // correctly.
+    pool.query(
+      `SELECT data FROM versedb.meta
+       WHERE mode = $1
+       UNION ALL
+       SELECT data FROM versedb.meta
+       WHERE NOT EXISTS (SELECT 1 FROM versedb.meta WHERE mode = $1)
+       LIMIT 1`,
+      [m]
+    ),
     pool.query(`
       SELECT entity_type, entity_class, shop_nickname, shop_company,
              star_system, planet, moon, orbit, space_station, city, outpost,

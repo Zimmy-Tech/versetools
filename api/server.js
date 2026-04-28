@@ -684,12 +684,14 @@ const diffApplyHandler = async (req, res) => {
     // makes the version string in the public header advance after an
     // import.
     if (meta) {
-      const oldRes = await client.query('SELECT data FROM meta WHERE id = 1');
+      // Mode-aware meta: each mode keeps its own row so the build label
+      // tracks the most recent import for that mode independently.
+      const oldRes = await client.query('SELECT data FROM versedb.meta WHERE mode = $1', [mode]);
       const before = oldRes.rows[0]?.data ?? null;
       await client.query(
-        `INSERT INTO meta (id, data, updated_at) VALUES (1, $1, NOW())
-         ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
-        [meta]
+        `INSERT INTO versedb.meta (mode, data, updated_at) VALUES ($1, $2, NOW())
+         ON CONFLICT (mode) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+        [mode, meta]
       );
       await logAudit(
         client,

@@ -106,9 +106,12 @@ CREATE TABLE IF NOT EXISTS mining_elements (
   data            JSONB NOT NULL
 );
 
--- Singleton row holding the top-level meta blob
+-- Mode-aware meta: one row per (live, ptu) mode so a PTU import doesn't
+-- clobber the LIVE-mode build label. The migrateMetaAddModeColumn
+-- function adds the `mode` column to existing single-row deployments.
 CREATE TABLE IF NOT EXISTS meta (
-  id              INT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  id              SERIAL PRIMARY KEY,
+  mode            TEXT NOT NULL DEFAULT 'live' UNIQUE,
   data            JSONB NOT NULL,
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
