@@ -64,7 +64,16 @@ export class DpsPanelComponent {
     return this.effectiveDPS(w) * ratio;
   }
 
-  private loadoutEntries = computed(() => Object.entries(this.data.loadout()));
+  /** Loadout entries with crafting modifiers layered on. Anywhere this
+   *  panel computes a stat — total shield HP, total cooling, total
+   *  power output, weapon DPS — it should read effective values so
+   *  CRAFTED rolls flow through the rollups. */
+  private loadoutEntries = computed(() =>
+    Object.keys(this.data.loadout()).map(slotId => {
+      const item = this.data.effectiveItem(slotId);
+      return [slotId, item] as const;
+    }).filter((e): e is readonly [string, NonNullable<typeof e[1]>] => e[1] != null)
+  );
   private equippedItems  = computed(() => this.loadoutEntries().map(([, item]) => item));
   private shipHardpoints  = computed(() => this.data.selectedShip()?.hardpoints ?? []);
 
@@ -355,16 +364,19 @@ export class DpsPanelComponent {
     if (!ship) return [];
     const loadout = this.data.loadout();
     const shieldEntries: { hpId: string; item: any }[] = [];
-    // Top-level shield hardpoints
+    // Top-level shield hardpoints — read effective items so crafted
+    // HP / regen rolls flow into the rollup.
     for (const hp of ship.hardpoints) {
       if (loadout[hp.id]?.type === 'Shield') {
-        shieldEntries.push({ hpId: hp.id, item: loadout[hp.id] });
+        const effective = this.data.effectiveItem(hp.id) ?? loadout[hp.id];
+        shieldEntries.push({ hpId: hp.id, item: effective });
       }
     }
     // Module sub-slot shields
     for (const [key, item] of Object.entries(loadout)) {
       if (item?.type === 'Shield' && key.includes('.') && !shieldEntries.some(e => e.hpId === key)) {
-        shieldEntries.push({ hpId: key, item });
+        const effective = this.data.effectiveItem(key) ?? item;
+        shieldEntries.push({ hpId: key, item: effective });
       }
     }
     return shieldEntries.slice(0, 2);
@@ -516,7 +528,8 @@ export class DpsPanelComponent {
     let supply = 0;
     let demand = 0;
     for (const hp of ship.hardpoints) {
-      const item = loadout[hp.id];
+      // Read effective items so crafted Coolant Rating rolls into supply.
+      const item = this.data.effectiveItem(hp.id) ?? loadout[hp.id];
       if (!item) continue;
       const pips = alloc[hp.id] ?? 0;
       if (item.type === 'Cooler' && item.coolingRate) {
