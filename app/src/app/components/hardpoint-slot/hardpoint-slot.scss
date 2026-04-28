@@ -13,6 +13,10 @@
   // its lower edge merges into the picker's top. Gradient + cyan
   // border keep it visually attached to the picker so it doesn't
   // read as an orphaned chip floating above an empty row.
+  //
+  // Two ::before/::after foothills extend the tab's footprint
+  // outward at the base so the vertical sides curve smoothly into
+  // the picker's horizontal top — "mountain fading into a plain."
   align-self: flex-start;
   margin: 0 0 -1px 14px;
   position: relative;
@@ -69,6 +73,49 @@
         0 -3px 10px rgba(0, 0, 0, 0.45),
         0 -1px 10px rgba(74, 255, 122, 0.22);
     }
+  }
+
+  // ── Foothills: curved bottom corners merging into the picker ──
+  // Each pseudo is a small box positioned just outside the tab's
+  // bottom-left / bottom-right corner. Filled with the same gradient
+  // bottom-tones as the tab body, with the INNER-TOP corner rounded —
+  // which makes the tab's vertical side appear to curve outward and
+  // down to meet the picker's horizontal top.
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 7px;
+    height: 7px;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(20, 32, 45, 0.92) 0%,
+      rgba(14, 22, 32, 0.92) 100%);
+    border: 1px solid rgba(0, 200, 255, 0.30);
+  }
+  &::before {
+    left: -7px;
+    border-right: none;
+    border-bottom: none;
+    border-top-right-radius: 7px;
+  }
+  &::after {
+    right: -7px;
+    border-left: none;
+    border-bottom: none;
+    border-top-left-radius: 7px;
+  }
+  &.crafted::before, &.crafted::after {
+    background: linear-gradient(180deg,
+      rgba(22, 40, 28, 0.92) 0%,
+      rgba(12, 22, 16, 0.92) 100%);
+    border-color: rgba(74, 255, 122, 0.50);
+  }
+  &:hover::before, &:hover::after {
+    border-color: rgba(0, 200, 255, 0.65);
+  }
+  &.crafted:hover::before, &.crafted:hover::after {
+    border-color: rgba(74, 255, 122, 0.85);
   }
 }
 
