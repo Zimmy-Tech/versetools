@@ -159,7 +159,12 @@ export class CraftingViewComponent {
     const lookup = this.mineralLocations();
     const sources: { resource: string; locations: { location: string; system: string; type: string; probability: number }[] }[] = [];
     for (const ing of sr.ingredients) {
-      if (ing.type === 'resource' && lookup[ing.resource]) {
+      // Some minerals come through as type='item' (entity-based pickup,
+      // e.g. harvestable_mineral_1h_glacosite) rather than type='resource'
+      // (abstract ResourceType ref). The mining-locs lookup is keyed by
+      // mineral display name regardless of how CIG models the cost, so we
+      // include any ingredient whose name has location data.
+      if (lookup[ing.resource]) {
         sources.push({ resource: ing.resource, locations: lookup[ing.resource] });
       }
     }

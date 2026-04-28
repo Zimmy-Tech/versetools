@@ -1238,7 +1238,13 @@ def main():
 
     # Blueprint pools
     print("\n[4/7] Building blueprint pool map...")
-    bp_pool_dir = FORGE_DIR / "crafting" / "blueprintrewards" / "blueprintmissionpools"
+    # Scan the entire blueprintrewards/ tree, not just blueprintmissionpools/.
+    # 4.8 PTU added 48blueprints/, collectorwikelo/, and xenothreat2rewards/
+    # as sibling subfolders — each carries BlueprintPoolRecord entries that
+    # contracts reference via blueprintPool="GUID". The original code only
+    # looked at one of those folders, so ship-component blueprint rewards
+    # (which all live in 48blueprints/) were silently dropped.
+    bp_pool_dir = FORGE_DIR / "crafting" / "blueprintrewards"
     bp_pool_map = {}  # sorted GUID → pool name
     bp_pool_items = {}  # pool name → [resolved item names]
     if bp_pool_dir.exists():
@@ -1316,12 +1322,24 @@ def main():
                 except Exception:
                     pass
 
-        for f in bp_pool_dir.glob("*.xml.xml"):
+        # Subfolders use slightly different naming (bp_missionreward_*,
+        # bp_rewards_*, bp_reward_*) — strip whichever prefix matches.
+        _BP_POOL_PREFIXES = ("bp_missionreward_", "bp_rewards_", "bp_reward_")
+        for f in bp_pool_dir.rglob("*.xml.xml"):
             try:
                 txt = open(f, encoding="utf-8").read()
+                # Skip files that aren't pool records (the tree also holds
+                # crafting blueprints under crafting/blueprints/, but that's
+                # a different parent — defensive check anyway).
+                if "BlueprintPoolRecord" not in txt:
+                    continue
                 ref_m = re.search(r'__ref="([^"]+)"', txt)
                 if ref_m:
-                    pool_name = f.stem.replace(".xml", "").replace("bp_missionreward_", "")
+                    pool_name = f.stem.replace(".xml", "")
+                    for pref in _BP_POOL_PREFIXES:
+                        if pool_name.startswith(pref):
+                            pool_name = pool_name[len(pref):]
+                            break
                     bp_pool_map[guid_key(ref_m.group(1))] = pool_name
                     # Resolve blueprint items. Pools occasionally include a
                     # null / all-zero blueprintRecord — that's a "no drop"

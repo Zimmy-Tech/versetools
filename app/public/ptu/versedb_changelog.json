@@ -1,9 +1,33 @@
 {
   "meta": {
-    "generatedAt": "2026-04-20T00:58:16.370329+00:00",
-    "entries": 4
+    "generatedAt": "2026-04-28T06:29:09.704566+00:00",
+    "entries": 5
   },
   "changelog": [
+    {
+      "fromVersion": "4.8.0-ptu.11733560",
+      "toVersion": "4.8.0-ptu.11733560",
+      "date": "2026-04-28",
+      "changes": [
+        {
+          "category": "mission",
+          "className": "TheCollector_NoneAssultRifle",
+          "name": "Your Best Shot"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_Vehicle_L22_Wolf",
+          "name": "Extra Special Wolf"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_vglFlightsuit",
+          "name": "Suit Up Take Off"
+        }
+      ],
+      "added": [],
+      "removed": []
+    },
     {
       "fromVersion": "4.7.0-live.11638371",
       "toVersion": "4.7.0-ptu.11494258",

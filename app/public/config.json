@@ -1,4 +1,4 @@
 {
-  "ptuEnabled": false,
-  "ptuLabel": "No active PTU build"
+  "ptuEnabled": true,
+  "ptuLabel": "4.8.0 PTU"
 }

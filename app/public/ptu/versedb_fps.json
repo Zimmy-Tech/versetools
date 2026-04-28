@@ -1,7 +1,9 @@
 {
   "meta": {
-    "count": 42,
-    "version": "4.7.0"
+    "count": 48,
+    "magazineCount": 59,
+    "attachmentCount": 89,
+    "version": "4.8.0"
   },
   "weapons": [
     {
@@ -11,10 +13,16 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 60,
-      "fireModes": [],
+      "fireRate": 300.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single",
+        "Single",
+        "Single"
+      ],
       "magazineSize": 0,
       "projectileSpeed": 0,
+      "range": 0,
       "damage": {
         "physical": 0,
         "energy": 0,
@@ -25,9 +33,22 @@
       },
       "alphaDamage": 0,
       "dps": 0.0,
+      "sequenceEntries": 3,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Ship"
+      "category": "Anti-Ship",
+      "mass": 16.83,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "apar_special_ballistic_02"
+          ]
+        }
+      ]
     },
     {
       "className": "apar_special_ballistic_01",
@@ -36,10 +57,14 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 30,
-      "fireModes": [],
+      "fireRate": 70.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 5,
       "projectileSpeed": 50.0,
+      "range": 200.0,
       "damage": {
         "physical": 6000.0,
         "energy": 0,
@@ -49,10 +74,53 @@
         "stun": 0
       },
       "alphaDamage": 6000.0,
-      "dps": 3000.0,
+      "dps": 7000.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Ship"
+      "category": "Anti-Ship",
+      "mass": 12.05,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "apar_special_ballistic_01"
+          ]
+        }
+      ]
+    },
+    {
+      "className": "behr_gren_frag_01",
+      "name": "MK-4 Frag Grenade",
+      "manufacturer": "Behring",
+      "type": "Grenade",
+      "subType": "Ballistic",
+      "size": 1,
+      "fireRate": 0,
+      "isCharged": null,
+      "fireModes": [],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "range": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0,
+      "sequenceEntries": null,
+      "pelletCount": null,
+      "isBeam": null,
+      "category": "Anti-Personnel",
+      "mass": 0.4,
+      "ports": []
     },
     {
       "className": "behr_glauncher_ballistic_01",
@@ -62,24 +130,53 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 60.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 6,
-      "projectileSpeed": 0,
+      "projectileSpeed": 50.0,
+      "range": 200.0,
       "damage": {
-        "physical": 3.0,
-        "energy": 0.0,
-        "distortion": 0.0,
-        "thermal": 0.0,
-        "biochemical": 0.0,
-        "stun": 0.0
+        "physical": 15.5,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
       },
-      "alphaDamage": 3.0,
-      "dps": 3.0,
+      "alphaDamage": 15.5,
+      "dps": 15.5,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 5.31,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_glauncher_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "behr_lmg_ballistic_01",
@@ -89,11 +186,13 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 650.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
       "magazineSize": 75,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 14.5,
         "energy": 0.0,
@@ -104,9 +203,46 @@
       },
       "alphaDamage": 14.5,
       "dps": 157.08,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 6.75,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_lmg_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.28,
       "recoilYaw": 0.03,
       "recoilSmooth": 0.4
@@ -119,11 +255,13 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 450.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 20,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 22.5,
         "energy": 0.0,
@@ -134,9 +272,46 @@
       },
       "alphaDamage": 22.5,
       "dps": 168.75,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 0.95,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_pistol_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.06,
       "recoilSmooth": 0.09
@@ -149,12 +324,14 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 810.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid",
         "Single"
       ],
       "magazineSize": 40,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 12.0,
         "energy": 0.0,
@@ -165,9 +342,46 @@
       },
       "alphaDamage": 12.0,
       "dps": 162.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 2.65,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_rifle_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.02,
       "recoilSmooth": 0.09
@@ -180,11 +394,13 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 235.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 15,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 18.0,
         "energy": 0.0,
@@ -195,9 +411,49 @@
       },
       "alphaDamage": 18.0,
       "dps": 70.5,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 2.4,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_rifle_ballistic_02_civilian"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
+      "recoilPitch": 1.15,
+      "recoilYaw": 0.1,
+      "recoilSmooth": 0.06
     },
     {
       "className": "behr_smg_ballistic_01",
@@ -207,12 +463,14 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 850.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid",
         "Burst"
       ],
       "magazineSize": 45,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 13.75,
         "energy": 0.0,
@@ -223,9 +481,46 @@
       },
       "alphaDamage": 13.75,
       "dps": 194.79,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 1.95,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_smg_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.235,
       "recoilYaw": 0.2,
       "recoilSmooth": 0.09
@@ -238,11 +533,13 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 90.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 12,
       "projectileSpeed": 225.0,
+      "range": 450.0,
       "damage": {
         "physical": 88.0,
         "energy": 0.0,
@@ -253,9 +550,112 @@
       },
       "alphaDamage": 88.0,
       "dps": 132.0,
+      "sequenceEntries": null,
       "pelletCount": 8,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 2.37,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_shotgun_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 3,
+          "maxSize": 3,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ]
+    },
+    {
+      "className": "behr_shotgun_ballistic_01_mr01",
+      "name": "behr_shotgun_ballistic_01_mr01",
+      "manufacturer": "Behring",
+      "type": "Shotgun",
+      "subType": "Ballistic",
+      "size": 3,
+      "fireRate": 90.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "range": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0,
+      "sequenceEntries": null,
+      "pelletCount": 8,
+      "isBeam": null,
+      "category": "Anti-Personnel",
+      "mass": 2.37,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_shotgun_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 3,
+          "maxSize": 3,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "behr_sniper_ballistic_01",
@@ -265,11 +665,13 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 55.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 8,
       "projectileSpeed": 725.0,
+      "range": 1450.0,
       "damage": {
         "physical": 100.0,
         "energy": 0.0,
@@ -280,9 +682,49 @@
       },
       "alphaDamage": 100.0,
       "dps": 91.67,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 6.87,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "behr_sniper_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
+      "recoilPitch": 1.55,
+      "recoilYaw": 0.44,
+      "recoilSmooth": 0.09
     },
     {
       "className": "gmni_lmg_ballistic_01",
@@ -292,11 +734,13 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 1200.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
       "magazineSize": 150,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 10.0,
         "energy": 0.0,
@@ -307,9 +751,36 @@
       },
       "alphaDamage": 10.0,
       "dps": 200.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 7.5,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_lmg_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.25,
       "recoilYaw": 0.125,
       "recoilSmooth": 0.4
@@ -322,11 +793,13 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 950.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
       "magazineSize": 25,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 13.0,
         "energy": 0.0,
@@ -337,9 +810,46 @@
       },
       "alphaDamage": 13.0,
       "dps": 205.83,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 1.0,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_pistol_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.1,
       "recoilSmooth": 0.09
@@ -352,11 +862,13 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 500.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 30,
       "projectileSpeed": 1200.0,
+      "range": 2400.0,
       "damage": {
         "physical": 21.5,
         "energy": 0.0,
@@ -367,12 +879,115 @@
       },
       "alphaDamage": 21.5,
       "dps": 179.17,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 2.55,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_rifle_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.3,
       "recoilYaw": 0.01,
       "recoilSmooth": 0.09
+    },
+    {
+      "className": "gmni_rifle_ballistic_01_mr01",
+      "name": "gmni_rifle_ballistic_01_mr01",
+      "manufacturer": "Gemini",
+      "type": "Rifle",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 500.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "range": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0,
+      "sequenceEntries": null,
+      "pelletCount": null,
+      "isBeam": null,
+      "category": "Anti-Personnel",
+      "mass": 2.55,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_rifle_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "gmni_smg_ballistic_01",
@@ -382,11 +997,13 @@
       "subType": "Ballistic",
       "size": 2,
       "fireRate": 925.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
       "magazineSize": 50,
       "projectileSpeed": 500.0,
+      "range": 950.0,
       "damage": {
         "physical": 11.5,
         "energy": 0.0,
@@ -397,12 +1014,115 @@
       },
       "alphaDamage": 11.5,
       "dps": 177.29,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 2.0,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_smg_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.14,
       "recoilYaw": 0.155,
       "recoilSmooth": 0.09
+    },
+    {
+      "className": "gmni_smg_ballistic_01_sf01",
+      "name": "gmni_smg_ballistic_01_sf01",
+      "manufacturer": "Gemini",
+      "type": "SMG",
+      "subType": "Ballistic",
+      "size": 2,
+      "fireRate": 925.0,
+      "isCharged": null,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "range": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0,
+      "sequenceEntries": null,
+      "pelletCount": null,
+      "isBeam": null,
+      "category": "Anti-Personnel",
+      "mass": 2.0,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_smg_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "gmni_shotgun_ballistic_01",
@@ -411,12 +1131,15 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 150.0,
+      "fireRate": 455.0,
+      "isCharged": null,
       "fireModes": [
+        "Single",
         "Single"
       ],
       "magazineSize": 18,
       "projectileSpeed": 225.0,
+      "range": 450.0,
       "damage": {
         "physical": 48.0,
         "energy": 0.0,
@@ -426,10 +1149,37 @@
         "stun": 0.0
       },
       "alphaDamage": 48.0,
-      "dps": 120.0,
+      "dps": 364.0,
+      "sequenceEntries": null,
       "pelletCount": 12,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 2.43,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_shotgun_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 1.75,
       "recoilYaw": 0.45,
       "recoilSmooth": 0.09
@@ -442,11 +1192,13 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 225.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 15,
       "projectileSpeed": 800.0,
+      "range": 1600.0,
       "damage": {
         "physical": 42.5,
         "energy": 0.0,
@@ -457,9 +1209,49 @@
       },
       "alphaDamage": 42.5,
       "dps": 159.38,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 4.65,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "gmni_sniper_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
+      "recoilPitch": 0.876,
+      "recoilYaw": 0.2,
+      "recoilSmooth": 0.09
     },
     {
       "className": "hdgw_pistol_ballistic_01",
@@ -468,10 +1260,14 @@
       "type": "Pistol",
       "subType": "Ballistic",
       "size": 1,
-      "fireRate": 120,
-      "fireModes": [],
+      "fireRate": 170.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 8,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 45.0,
         "energy": 0.0,
@@ -481,10 +1277,47 @@
         "stun": 0.0
       },
       "alphaDamage": 45.0,
-      "dps": 90.0,
+      "dps": 127.5,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 0.83,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "hdgw_pistol_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "ksar_pistol_ballistic_01",
@@ -494,11 +1327,13 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 180.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 6,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 60.0,
         "energy": 0.0,
@@ -509,9 +1344,46 @@
       },
       "alphaDamage": 60.0,
       "dps": 180.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 1.31,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "ksar_pistol_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.1,
       "recoilSmooth": 0.09
@@ -524,11 +1396,14 @@
       "subType": "Energy",
       "size": 3,
       "fireRate": 600.0,
+      "isCharged": null,
       "fireModes": [
-        "Rapid"
+        "Rapid",
+        "Single"
       ],
       "magazineSize": 35,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 17.5,
@@ -539,9 +1414,46 @@
       },
       "alphaDamage": 17.5,
       "dps": 175.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 3.48,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "ksar_rifle_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.345,
       "recoilYaw": 0.05,
       "recoilSmooth": 0.09
@@ -553,12 +1465,15 @@
       "type": "SMG",
       "subType": "Energy",
       "size": 2,
-      "fireRate": 800.0,
+      "fireRate": 900.0,
+      "isCharged": null,
       "fireModes": [
-        "Rapid"
+        "Rapid",
+        "Burst"
       ],
       "magazineSize": 60,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 13.0,
@@ -568,10 +1483,47 @@
         "stun": 0.0
       },
       "alphaDamage": 13.0,
-      "dps": 173.33,
+      "dps": 195.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 3.35,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "ksar_smg_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.12,
       "recoilYaw": 0.185,
       "recoilSmooth": 0.09
@@ -583,10 +1535,14 @@
       "type": "Shotgun",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 60,
-      "fireModes": [],
+      "fireRate": 60.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 12,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 0.0,
         "energy": 120.0,
@@ -597,9 +1553,46 @@
       },
       "alphaDamage": 120.0,
       "dps": 120.0,
+      "sequenceEntries": null,
       "pelletCount": 12,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 5.0,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "ksar_shotgun_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 3,
+          "maxSize": 3,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.07,
       "recoilSmooth": 0.09
@@ -611,10 +1604,15 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 120,
-      "fireModes": [],
+      "fireRate": 800.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 16,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 52.0,
         "energy": 0.0,
@@ -624,10 +1622,37 @@
         "stun": 0.0
       },
       "alphaDamage": 52.0,
-      "dps": 104.0,
+      "dps": 693.33,
+      "sequenceEntries": 2,
       "pelletCount": 8,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 3.91,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "ksar_shotgun_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 3.25,
       "recoilYaw": 1.25,
       "recoilSmooth": 0.03
@@ -640,9 +1665,16 @@
       "subType": "Ballistic",
       "size": 3,
       "fireRate": 40,
-      "fireModes": [],
+      "isCharged": null,
+      "fireModes": [
+        "Single",
+        "Single",
+        "Single",
+        "Single"
+      ],
       "magazineSize": 12,
       "projectileSpeed": 875.0,
+      "range": 1750.0,
       "damage": {
         "physical": 45.0,
         "energy": 0.0,
@@ -653,9 +1685,36 @@
       },
       "alphaDamage": 45.0,
       "dps": 30.0,
+      "sequenceEntries": 4,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 5.08,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "ksar_sniper_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.2,
       "recoilYaw": 0.01,
       "recoilSmooth": 0.09
@@ -668,11 +1727,13 @@
       "subType": "Energy",
       "size": 4,
       "fireRate": 800.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
       "magazineSize": 100,
       "projectileSpeed": 600.0,
+      "range": 2400.0,
       "damage": {
         "physical": 0.0,
         "energy": 11.5,
@@ -683,12 +1744,115 @@
       },
       "alphaDamage": 11.5,
       "dps": 153.33,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 9.8,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "klwe_lmg_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.13,
       "recoilSmooth": 0.09
+    },
+    {
+      "className": "klwe_lmg_energy_01_mr01",
+      "name": "klwe_lmg_energy_01_mr01",
+      "manufacturer": "Klaus & Werner",
+      "type": "LMG",
+      "subType": "Energy",
+      "size": 4,
+      "fireRate": 800.0,
+      "isCharged": null,
+      "fireModes": [
+        "Rapid"
+      ],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "range": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0,
+      "sequenceEntries": null,
+      "pelletCount": null,
+      "isBeam": null,
+      "category": "Anti-Personnel",
+      "mass": 9.8,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "klwe_lmg_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "klwe_pistol_energy_01",
@@ -698,12 +1862,14 @@
       "subType": "Energy",
       "size": 1,
       "fireRate": 700.0,
+      "isCharged": null,
       "fireModes": [
         "Burst",
         "Single"
       ],
       "magazineSize": 30,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 18.0,
@@ -714,9 +1880,46 @@
       },
       "alphaDamage": 18.0,
       "dps": 210.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 1.4,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "klwe_pistol_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.125,
       "recoilYaw": 0.01,
       "recoilSmooth": 0.09
@@ -729,12 +1932,14 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 900.0,
+      "isCharged": null,
       "fireModes": [
         "Burst",
         "Burst"
       ],
       "magazineSize": 45,
       "projectileSpeed": 1200.0,
+      "range": 4800.0,
       "damage": {
         "physical": 0.0,
         "energy": 21.0,
@@ -745,12 +1950,116 @@
       },
       "alphaDamage": 21.0,
       "dps": 315.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 3.75,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "klwe_rifle_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.35,
       "recoilYaw": 0.03,
       "recoilSmooth": 0.09
+    },
+    {
+      "className": "klwe_rifle_energy_01_sf01",
+      "name": "klwe_rifle_energy_01_sf01",
+      "manufacturer": "Klaus & Werner",
+      "type": "Rifle",
+      "subType": "Energy",
+      "size": 2,
+      "fireRate": 900.0,
+      "isCharged": null,
+      "fireModes": [
+        "Burst",
+        "Burst"
+      ],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "range": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0.0,
+      "sequenceEntries": null,
+      "pelletCount": null,
+      "isBeam": null,
+      "category": "Anti-Personnel",
+      "mass": 3.75,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "klwe_rifle_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "klwe_smg_energy_01",
@@ -759,10 +2068,14 @@
       "type": "SMG",
       "subType": "Energy",
       "size": 2,
-      "fireRate": 600,
-      "fireModes": [],
+      "fireRate": 700.0,
+      "isCharged": null,
+      "fireModes": [
+        "Burst"
+      ],
       "magazineSize": 45,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 21.0,
@@ -772,10 +2085,47 @@
         "stun": 0.0
       },
       "alphaDamage": 21.0,
-      "dps": 210.0,
+      "dps": 245.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 2.65,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "klwe_smg_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.33,
       "recoilYaw": 0.1,
       "recoilSmooth": 0.09
@@ -787,10 +2137,14 @@
       "type": "Sniper",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 60,
-      "fireModes": [],
+      "fireRate": 70.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 16,
       "projectileSpeed": 1000.0,
+      "range": 4000.0,
       "damage": {
         "physical": 0.0,
         "energy": 50.0,
@@ -800,10 +2154,47 @@
         "stun": 0.0
       },
       "alphaDamage": 50.0,
-      "dps": 50.0,
+      "dps": 58.33,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 6.76,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "klwe_sniper_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "energy_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.3,
       "recoilYaw": 0.1,
       "recoilSmooth": 0.09
@@ -816,11 +2207,13 @@
       "subType": "Energy",
       "size": 1,
       "fireRate": 350.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 10,
       "projectileSpeed": 500.0,
+      "range": 1000.0,
       "damage": {
         "physical": 0.0,
         "energy": 32.5,
@@ -831,9 +2224,36 @@
       },
       "alphaDamage": 41.0,
       "dps": 239.17,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 1.6,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "lbco_pistol_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "lbco_sniper_energy_01",
@@ -843,11 +2263,13 @@
       "subType": "Energy",
       "size": 3,
       "fireRate": 30.0,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
       "magazineSize": 8,
       "projectileSpeed": 500.0,
+      "range": 1000.0,
       "damage": {
         "physical": 0.0,
         "energy": 120.0,
@@ -858,9 +2280,36 @@
       },
       "alphaDamage": 165.0,
       "dps": 82.5,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 9.08,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "lbco_sniper_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "none_lmg_ballistic_01",
@@ -870,11 +2319,13 @@
       "subType": "Ballistic",
       "size": 4,
       "fireRate": 355.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
       "magazineSize": 120,
       "projectileSpeed": 1050.0,
+      "range": 2100.0,
       "damage": {
         "physical": 27.0,
         "energy": 0.0,
@@ -885,9 +2336,29 @@
       },
       "alphaDamage": 27.0,
       "dps": 159.75,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 12.2,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "none_lmg_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.8,
       "recoilYaw": 0.32,
       "recoilSmooth": 0.2
@@ -900,6 +2371,7 @@
       "subType": "Ballistic",
       "size": 1,
       "fireRate": 60.0,
+      "isCharged": null,
       "fireModes": [
         "Single",
         "Single",
@@ -907,6 +2379,7 @@
       ],
       "magazineSize": 12,
       "projectileSpeed": 550.0,
+      "range": 1100.0,
       "damage": {
         "physical": 36.0,
         "energy": 0.0,
@@ -917,9 +2390,36 @@
       },
       "alphaDamage": 36.0,
       "dps": 36.0,
+      "sequenceEntries": null,
       "pelletCount": 3,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 1.495,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "none_pistol_ballistic_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 1.75,
       "recoilYaw": 0.45,
       "recoilSmooth": 0.09
@@ -931,10 +2431,15 @@
       "type": "Rifle",
       "subType": "Ballistic",
       "size": 2,
-      "fireRate": 300,
-      "fireModes": [],
+      "fireRate": 600.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 45,
       "projectileSpeed": 0,
+      "range": 0,
       "damage": {
         "physical": 11.0,
         "energy": 9.5,
@@ -944,10 +2449,47 @@
         "stun": 0
       },
       "alphaDamage": 20.5,
-      "dps": 102.5,
+      "dps": 205.0,
+      "sequenceEntries": 2,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 4.99,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "none_rifle_multi_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "barrel_attach",
+          "attachSlot": "barrel",
+          "minSize": 2,
+          "maxSize": 2,
+          "requiredPortTags": [
+            "FPS_Barrel",
+            "ballistic_attach"
+          ]
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.45,
       "recoilYaw": 0.09,
       "recoilSmooth": 0.15
@@ -960,11 +2502,13 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 0,
+      "isCharged": null,
       "fireModes": [
         "Beam"
       ],
       "magazineSize": 60,
       "projectileSpeed": 0,
+      "range": 0,
       "damage": {
         "physical": 0.0,
         "energy": 165.0,
@@ -975,9 +2519,36 @@
       },
       "alphaDamage": 165.0,
       "dps": 165.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": true,
       "category": "Anti-Personnel",
+      "mass": 2.42,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "none_smg_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.07,
       "recoilSmooth": 0.09
@@ -989,10 +2560,15 @@
       "type": "Shotgun",
       "subType": "Ballistic",
       "size": 3,
-      "fireRate": 80,
-      "fireModes": [],
+      "fireRate": 50.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 8,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 72.0,
         "energy": 0.0,
@@ -1002,10 +2578,23 @@
         "stun": 0.0
       },
       "alphaDamage": 72.0,
-      "dps": 96.0,
+      "dps": 60.0,
+      "sequenceEntries": 2,
       "pelletCount": 8,
       "isBeam": null,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 4.21,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "none_shotgun_ballistic_01"
+          ]
+        }
+      ]
     },
     {
       "className": "none_special_ballistic_01",
@@ -1014,12 +2603,14 @@
       "type": "Special",
       "subType": "Ballistic",
       "size": 5,
-      "fireRate": 500.0,
+      "fireRate": 37,
+      "isCharged": null,
       "fireModes": [
         "Single"
       ],
-      "magazineSize": 0,
+      "magazineSize": 1,
       "projectileSpeed": 135.0,
+      "range": 2160.0,
       "damage": {
         "physical": 1000.0,
         "energy": 0,
@@ -1029,10 +2620,23 @@
         "stun": 0
       },
       "alphaDamage": 1500.0,
-      "dps": 12500.0,
+      "dps": 925.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
-      "category": "Anti-Ship"
+      "category": "Anti-Ship",
+      "mass": 11.56,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "none_special_ballistic_01_rocket"
+          ]
+        }
+      ]
     },
     {
       "className": "volt_lmg_energy_01",
@@ -1041,25 +2645,57 @@
       "type": "LMG",
       "subType": "Energy",
       "size": 4,
-      "fireRate": 0,
+      "fireRate": 550.0,
+      "isCharged": null,
       "fireModes": [
+        "Single",
+        "Single",
+        "Single",
         "Beam"
       ],
       "magazineSize": 165,
       "projectileSpeed": 1100.0,
+      "range": 4400.0,
       "damage": {
         "physical": 0.0,
-        "energy": 225.0,
-        "distortion": 50.0,
+        "energy": 9.0,
+        "distortion": 0.0,
         "thermal": 0.0,
         "biochemical": 0.0,
         "stun": 0.0
       },
-      "alphaDamage": 275.0,
-      "dps": 275.0,
+      "alphaDamage": 9.0,
+      "dps": 9.0,
+      "sequenceEntries": 3,
       "pelletCount": null,
       "isBeam": true,
-      "category": "Anti-Personnel"
+      "category": "Anti-Personnel",
+      "mass": 6.05,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "volt_lmg_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        }
+      ]
     },
     {
       "className": "volt_pistol_energy_01",
@@ -1069,11 +2705,13 @@
       "subType": "Energy",
       "size": 1,
       "fireRate": 500.0,
+      "isCharged": null,
       "fireModes": [
         "Rapid"
       ],
       "magazineSize": 60,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 11.75,
@@ -1084,9 +2722,36 @@
       },
       "alphaDamage": 11.75,
       "dps": 97.92,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 1.15,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "volt_pistol_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.19,
       "recoilYaw": 0.1,
       "recoilSmooth": 0.09
@@ -1098,12 +2763,15 @@
       "type": "Rifle",
       "subType": "Energy",
       "size": 2,
-      "fireRate": 0,
+      "fireRate": 600.0,
+      "isCharged": null,
       "fireModes": [
+        "Rapid",
         "Beam"
       ],
       "magazineSize": 80,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 210.0,
@@ -1114,9 +2782,36 @@
       },
       "alphaDamage": 260.0,
       "dps": 260.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": true,
       "category": "Anti-Personnel",
+      "mass": 2.6,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "volt_rifle_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.2,
       "recoilYaw": 0.05,
       "recoilSmooth": 1.0
@@ -1129,11 +2824,13 @@
       "subType": "Energy",
       "size": 2,
       "fireRate": 0,
+      "isCharged": null,
       "fireModes": [
         "Beam"
       ],
       "magazineSize": 45,
       "projectileSpeed": 600.0,
+      "range": 1200.0,
       "damage": {
         "physical": 0.0,
         "energy": 225.0,
@@ -1144,9 +2841,36 @@
       },
       "alphaDamage": 275.0,
       "dps": 275.0,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": true,
       "category": "Anti-Personnel",
+      "mass": 1.55,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "volt_smg_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 1.0,
       "recoilYaw": 0.2,
       "recoilSmooth": 1.0
@@ -1158,10 +2882,15 @@
       "type": "Shotgun",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 120,
-      "fireModes": [],
+      "fireRate": 385.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single",
+        "Single"
+      ],
       "magazineSize": 20,
       "projectileSpeed": 300.0,
+      "range": 600.0,
       "damage": {
         "physical": 0.0,
         "energy": 46.0,
@@ -1171,10 +2900,37 @@
         "stun": 0.0
       },
       "alphaDamage": 46.0,
-      "dps": 92.0,
+      "dps": 295.17,
+      "sequenceEntries": null,
       "pelletCount": 8,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 2.15,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "volt_shotgun_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 1.0,
       "recoilYaw": 0.3,
       "recoilSmooth": 0.09
@@ -1186,10 +2942,14 @@
       "type": "Sniper",
       "subType": "Energy",
       "size": 3,
-      "fireRate": 45,
-      "fireModes": [],
+      "fireRate": 325.0,
+      "isCharged": null,
+      "fireModes": [
+        "Single"
+      ],
       "magazineSize": 22,
       "projectileSpeed": 700.0,
+      "range": 1400.0,
       "damage": {
         "physical": 0.0,
         "energy": 42.5,
@@ -1199,13 +2959,2618 @@
         "stun": 0.0
       },
       "alphaDamage": 42.5,
-      "dps": 31.88,
+      "dps": 230.21,
+      "sequenceEntries": null,
       "pelletCount": null,
       "isBeam": null,
       "category": "Anti-Personnel",
+      "mass": 3.82,
+      "ports": [
+        {
+          "name": "magazine_attach",
+          "attachSlot": "magazine",
+          "minSize": 1,
+          "maxSize": 1,
+          "requiredPortTags": [
+            "volt_sniper_energy_01"
+          ]
+        },
+        {
+          "name": "optics_attach",
+          "attachSlot": "optics",
+          "minSize": 1,
+          "maxSize": 3,
+          "requiredPortTags": []
+        },
+        {
+          "name": "underbarrel_attach",
+          "attachSlot": "underbarrel",
+          "minSize": 1,
+          "maxSize": 2,
+          "requiredPortTags": []
+        }
+      ],
       "recoilPitch": 0.26,
       "recoilYaw": 0.02,
       "recoilSmooth": 0.09
+    }
+  ],
+  "magazines": [
+    {
+      "className": "apar_special_ballistic_02_mag",
+      "name": "Animus Missile Launcher Magazine (3 cap)",
+      "weaponTag": "apar_special_ballistic_02",
+      "manufacturer": "Apocalypse Arms",
+      "ammoCount": 0,
+      "mass": 0.25,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "apar_special_ballistic_01_mag",
+      "name": "Scourge Railgun Magazine (5 cap)",
+      "weaponTag": "apar_special_ballistic_01",
+      "manufacturer": "Apocalypse Arms",
+      "ammoCount": 5,
+      "mass": 2.05,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_shotgun_ballistic_01_mag",
+      "name": "BR-2 Shotgun Magazine (12 cap)",
+      "weaponTag": "behr_shotgun_ballistic_01",
+      "manufacturer": "Behring",
+      "ammoCount": 12,
+      "mass": 0.72,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_lmg_ballistic_01_mag",
+      "name": "FS-9 Magazine (75 cap)",
+      "weaponTag": "behr_lmg_ballistic_01",
+      "manufacturer": "Behring",
+      "ammoCount": 75,
+      "mass": 1.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_glauncher_ballistic_01_mag",
+      "name": "GP-33 MOD Grenade Launcher Magazine (6 cap)",
+      "weaponTag": "behr_glauncher_ballistic_01",
+      "manufacturer": "Behring",
+      "ammoCount": 6,
+      "mass": 2.86,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_rifle_ballistic_01_mag",
+      "name": "P4-AR Magazine (40 cap)",
+      "weaponTag": "behr_rifle_ballistic_01",
+      "manufacturer": "Behring",
+      "ammoCount": 40,
+      "mass": 1.0,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_sniper_ballistic_01_mag",
+      "name": "P6-LR Magazine (8 cap)",
+      "weaponTag": "behr_sniper_ballistic_01",
+      "manufacturer": "Behring",
+      "ammoCount": 8,
+      "mass": 1.08,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_rifle_ballistic_02_mag_civilian",
+      "name": "P8-AR Rifle Magazine (15 Cap)",
+      "weaponTag": "behr_rifle_ballistic_02_civilian",
+      "manufacturer": "Behring",
+      "ammoCount": 15,
+      "mass": 0.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_rifle_ballistic_02_mag",
+      "name": "P8-ARM Rifle Magazine (30 cap)",
+      "weaponTag": "behr_rifle_ballistic_02",
+      "manufacturer": "Behring",
+      "ammoCount": 30,
+      "mass": 0.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_smg_ballistic_01_mag",
+      "name": "P8-SC SMG Magazine (45 cap)",
+      "weaponTag": "behr_smg_ballistic_01",
+      "manufacturer": "Behring",
+      "ammoCount": 45,
+      "mass": 1.05,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "behr_pistol_ballistic_01_mag",
+      "name": "S-38 Magazine (20 cap)",
+      "weaponTag": "behr_pistol_ballistic_01",
+      "manufacturer": "Behring",
+      "ammoCount": 20,
+      "mass": 0.5,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "crlf_medgun_vial_01",
+      "name": "ParaMed Refill",
+      "weaponTag": "crlf_medgun_01",
+      "manufacturer": "Crusader",
+      "ammoCount": 200,
+      "mass": 0.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "glsn_shotgun_ballistic_01_mag",
+      "name": "Gallenson Shotgun Magazine",
+      "weaponTag": "glsn_shotgun_ballistic_01",
+      "manufacturer": "Gallenson",
+      "ammoCount": 5,
+      "mass": 0.78,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "gmni_sniper_ballistic_01_mag",
+      "name": "A03 Sniper Rifle Magazine (15 cap)",
+      "weaponTag": "gmni_sniper_ballistic_01",
+      "manufacturer": "Gemini",
+      "ammoCount": 15,
+      "mass": 1.15,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "gmni_smg_ballistic_01_mag",
+      "name": "C54 SMG Magazine (50 cap)",
+      "weaponTag": "gmni_smg_ballistic_01",
+      "manufacturer": "Gemini",
+      "ammoCount": 50,
+      "mass": 1.1,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "gmni_lmg_ballistic_01_mag",
+      "name": "F55 LMG Magazine (150 cap)",
+      "weaponTag": "gmni_lmg_ballistic_01",
+      "manufacturer": "Gemini",
+      "ammoCount": 150,
+      "mass": 2.5,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "gmni_pistol_ballistic_01_mag",
+      "name": "LH86 Pistol Magazine (25 cap)",
+      "weaponTag": "gmni_pistol_ballistic_01",
+      "manufacturer": "Gemini",
+      "ammoCount": 25,
+      "mass": 0.55,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "gmni_shotgun_ballistic_01_mag",
+      "name": "R97 Shotgun Magazine (18 cap)",
+      "weaponTag": "gmni_shotgun_ballistic_01",
+      "manufacturer": "Gemini",
+      "ammoCount": 18,
+      "mass": 0.78,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "gmni_rifle_ballistic_01_mag",
+      "name": "S71 Rifle Magazine (30 cap)",
+      "weaponTag": "gmni_rifle_ballistic_01",
+      "manufacturer": "Gemini",
+      "ammoCount": 30,
+      "mass": 0.9,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_tool_resource_salvage_repair_01",
+      "name": "Cambio SRT Canister",
+      "weaponTag": "grin_tool_salvage_01_canister",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 750,
+      "mass": 0.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_tool_resource_salvage_repair_01_filled",
+      "name": "Cambio SRT Canister",
+      "weaponTag": "grin_tool_salvage_01_canister",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 750,
+      "mass": 0.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_multitool_resource_salvage_repair_01",
+      "name": "Cambio-Lite SRT Canister",
+      "weaponTag": "grin_multitool_01",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 250,
+      "mass": 0.25,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_multitool_resource_salvage_repair_01_filled",
+      "name": "Cambio-Lite SRT Canister",
+      "weaponTag": "grin_multitool_01",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 250,
+      "mass": 0.25,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_tool_01_mag",
+      "name": "Cambrio SRT Battery",
+      "weaponTag": "grin_salvage_repair_01",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 50,
+      "mass": 0.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_multitool_resource_healing_01",
+      "name": "LifeGuard Refill",
+      "weaponTag": "grin_multitool_01",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 300,
+      "mass": 0.25,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_tractor_01_mag",
+      "name": "MaxLift Tractor Beam Battery",
+      "weaponTag": "grin_tractor_01",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 60,
+      "mass": 0.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "grin_multitool_energy_01_mag",
+      "name": "Pyro RYT Multi-Tool Battery",
+      "weaponTag": "grin_multitool_energy_01",
+      "manufacturer": "Greycat Industrial",
+      "ammoCount": 100,
+      "mass": 0.25,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "hdgw_pistol_ballistic_01_mag",
+      "name": "Salvo Frag Pistol Magazine (8 cap)",
+      "weaponTag": "hdgw_pistol_ballistic_01",
+      "manufacturer": "Hedgeway",
+      "ammoCount": 8,
+      "mass": 0.38,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "ksar_pistol_ballistic_01_mag",
+      "name": "Coda Pistol Magazine (6 cap)",
+      "weaponTag": "ksar_pistol_ballistic_01",
+      "manufacturer": "Kastak Arms",
+      "ammoCount": 6,
+      "mass": 0.36,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "ksar_smg_energy_01_mag",
+      "name": "Custodian SMG Magazine (60 cap)",
+      "weaponTag": "ksar_smg_energy_01",
+      "manufacturer": "Kastak Arms",
+      "ammoCount": 60,
+      "mass": 1.26,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "ksar_shotgun_energy_01_mag",
+      "name": "Devastator Shotgun Battery (12 cap)",
+      "weaponTag": "ksar_shotgun_energy_01",
+      "manufacturer": "Kastak Arms",
+      "ammoCount": 12,
+      "mass": 0.9,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "ksar_rifle_energy_01_mag",
+      "name": "Karna Rifle Battery (35 cap)",
+      "weaponTag": "ksar_rifle_energy_01",
+      "manufacturer": "Kastak Arms",
+      "ammoCount": 35,
+      "mass": 1.13,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "ksar_shotgun_ballistic_01_mag",
+      "name": "Ravager-212 Twin Shotgun Magazine (16 cap)",
+      "weaponTag": "ksar_shotgun_ballistic_01",
+      "manufacturer": "Kastak Arms",
+      "ammoCount": 16,
+      "mass": 0.76,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "ksar_sniper_ballistic_01_mag",
+      "name": "Scalpel Sniper Rifle Magazine (12 cap)",
+      "weaponTag": "ksar_sniper_ballistic_01",
+      "manufacturer": "Kastak Arms",
+      "ammoCount": 12,
+      "mass": 1.12,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "kegr_fire_extinguisher_01_mag",
+      "name": "APX Fire Extinguisher Canister",
+      "weaponTag": "kegr_fire_extinguisher_01",
+      "manufacturer": "Klaus & Werner",
+      "ammoCount": 3000,
+      "mass": 10.0,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "klwe_pistol_energy_01_mag",
+      "name": "Arclight Pistol Battery (30 cap)",
+      "weaponTag": "klwe_pistol_energy_01",
+      "manufacturer": "Klaus & Werner",
+      "ammoCount": 30,
+      "mass": 0.63,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "klwe_sniper_energy_01_mag",
+      "name": "Arrowhead Sniper Rifle Battery (16 cap)",
+      "weaponTag": "klwe_sniper_energy_01",
+      "manufacturer": "Klaus & Werner",
+      "ammoCount": 16,
+      "mass": 1.26,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "klwe_lmg_energy_01_mag",
+      "name": "Demeco LMG Battery (100 cap)",
+      "weaponTag": "klwe_lmg_energy_01",
+      "manufacturer": "Klaus & Werner",
+      "ammoCount": 100,
+      "mass": 2.1,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "klwe_rifle_energy_01_mag",
+      "name": "Gallant Rifle Battery (45 cap)",
+      "weaponTag": "klwe_rifle_energy_01",
+      "manufacturer": "Klaus & Werner",
+      "ammoCount": 45,
+      "mass": 1.11,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "klwe_smg_energy_01_mag",
+      "name": "Lumin V SMG Battery (45 cap)",
+      "weaponTag": "klwe_smg_energy_01",
+      "manufacturer": "Klaus & Werner",
+      "ammoCount": 45,
+      "mass": 1.11,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "lbco_sniper_energy_01_mag",
+      "name": "Atzkav Sniper Rifle Battery (8 cap)",
+      "weaponTag": "lbco_sniper_energy_01",
+      "manufacturer": "Lightning Bolt Co.",
+      "ammoCount": 8,
+      "mass": 1.28,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "lbco_pistol_energy_01_mag",
+      "name": "Yubarev Pistol Battery (10 cap)",
+      "weaponTag": "lbco_pistol_energy_01",
+      "manufacturer": "Lightning Bolt Co.",
+      "ammoCount": 10,
+      "mass": 0.46,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "sasu_pistol_toy_01_mag",
+      "name": "WowBlast Desperado Toy Pistol Magazine (10 cap)",
+      "weaponTag": "sasu_pistol_toy_01",
+      "manufacturer": "Sakura Sun",
+      "ammoCount": 10,
+      "mass": 0.11,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "sasu_pistol_toy_01_mag_ea_elim",
+      "name": "WowBlast Desperado Toy Pistol Magazine (10 cap)",
+      "weaponTag": "sasu_pistol_toy_01",
+      "manufacturer": "Sakura Sun",
+      "ammoCount": 100,
+      "mass": 0.11,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "none_special_ballistic_01_rocket",
+      "name": "Boomtube Rocket",
+      "weaponTag": "none_special_ballistic_01_rocket",
+      "manufacturer": "Unknown",
+      "ammoCount": 1,
+      "mass": 4.21,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "none_shotgun_ballistic_01_mag",
+      "name": "Deadrig Shotgun Magazine (8 cap)",
+      "weaponTag": "none_shotgun_ballistic_01",
+      "manufacturer": "Unknown",
+      "ammoCount": 8,
+      "mass": 0.68,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "none_rifle_multi_01_mag",
+      "name": "Killshot Rifle Magazine (45 Cap)",
+      "weaponTag": "none_rifle_multi_01",
+      "manufacturer": "Unknown",
+      "ammoCount": 45,
+      "mass": 1.11,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "none_lmg_ballistic_01_mag",
+      "name": "Pulverizer LMG Magazine (120 Cap)",
+      "weaponTag": "none_lmg_ballistic_01",
+      "manufacturer": "Unknown",
+      "ammoCount": 120,
+      "mass": 2.2,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "none_smg_energy_01_mag",
+      "name": "Ripper SMG Battery (60 cap)",
+      "weaponTag": "none_smg_energy_01",
+      "manufacturer": "Unknown",
+      "ammoCount": 60,
+      "mass": 1.26,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "none_pistol_ballistic_01_mag",
+      "name": "Tripledown Pistol Magazine (12 Cap)",
+      "weaponTag": "none_pistol_ballistic_01",
+      "manufacturer": "Unknown",
+      "ammoCount": 12,
+      "mass": 0.42,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "vlk_spewgun_ballistic_01_mag",
+      "name": "BR-2 Shotgun Magazine (12 cap)",
+      "weaponTag": "behr_shotgun_ballistic_01",
+      "manufacturer": "VLK",
+      "ammoCount": 99999,
+      "mass": 0.98,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "vlk_spewgun_ballistic_01_mag_juvi",
+      "name": "BR-2 Shotgun Magazine (12 cap)",
+      "weaponTag": "",
+      "manufacturer": "VLK",
+      "ammoCount": 99999,
+      "mass": 0.98,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "vlk_spewgun_ballistic_01_mag_adult",
+      "name": "BR-2 Shotgun Magazine (12 cap)",
+      "weaponTag": "",
+      "manufacturer": "VLK",
+      "ammoCount": 99999,
+      "mass": 0.98,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Ballistic"
+    },
+    {
+      "className": "volt_lmg_energy_01_mag",
+      "name": "Fresnel Energy LMG Battery (165 Cap)",
+      "weaponTag": "volt_lmg_energy_01",
+      "manufacturer": "Voltaire",
+      "ammoCount": 165,
+      "mass": 2.75,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "volt_rifle_energy_01_mag",
+      "name": "Parallax Rifle Battery (80 Cap)",
+      "weaponTag": "volt_rifle_energy_01",
+      "manufacturer": "Voltaire",
+      "ammoCount": 80,
+      "mass": 1.52,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "volt_shotgun_energy_01_mag",
+      "name": "Prism Laser Shotgun Battery (20 cap)",
+      "weaponTag": "volt_shotgun_energy_01",
+      "manufacturer": "Voltaire",
+      "ammoCount": 20,
+      "mass": 0.98,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "volt_pistol_energy_01_mag",
+      "name": "Pulse Laser Pistol Battery (60 Cap)",
+      "weaponTag": "volt_pistol_energy_01",
+      "manufacturer": "Voltaire",
+      "ammoCount": 60,
+      "mass": 0.93,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "volt_smg_energy_01_mag",
+      "name": "Quartz Energy SMG Battery (45 cap)",
+      "weaponTag": "volt_smg_energy_01",
+      "manufacturer": "Voltaire",
+      "ammoCount": 45,
+      "mass": 1.11,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    },
+    {
+      "className": "volt_sniper_energy_01_mag",
+      "name": "Zenith Laser Sniper Rifle Battery (22 Cap)",
+      "weaponTag": "volt_sniper_energy_01",
+      "manufacturer": "Voltaire",
+      "ammoCount": 22,
+      "mass": 1.42,
+      "size": 1,
+      "subType": "Magazine",
+      "ammoType": "Energy"
+    }
+  ],
+  "attachments": [
+    {
+      "className": "arma_barrel_stab_s1_firerats01",
+      "name": "Emod \"Scorched\" Stabilizer1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "projectileSpeedMultiplier": 0.875,
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 1.4,
+        "recoil_endDecayMultiplier": 1.4,
+        "recoil_fireRecoilStrengthFirstMultiplier": 1.4,
+        "recoil_fireRecoilStrengthMultiplier": 1.4,
+        "recoil_angleRecoilStrengthMultiplier": 1.4,
+        "recoil_randomnessMultiplier": 1.4,
+        "recoil_randomnessBackPushMultiplier": 1.4,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_stab_s1",
+      "name": "Emod Stabilizer1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_stab_s1_02",
+      "name": "Escalate Stabilizer1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 1.3,
+        "damageMultiplier": 0.9,
+        "burstShots": 1.0
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s1_02",
+      "name": "Quell Suppressor1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 0.95,
+        "heatGenerationMultiplier": 1.1,
+        "soundRadiusMultiplier": 0.66
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s1_contestedzonereward",
+      "name": "Sion \"Tweaker\" Compensator1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 1.125,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s1",
+      "name": "Sion Compensator1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s1_04",
+      "name": "Stark Compensator1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 0.8,
+        "damageMultiplier": 1.175,
+        "recoil_fireRecoilTimeMultiplier": 1.1
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s1_03",
+      "name": "Stoic Suppressor1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 0.66,
+        "recoil_fireRecoilTimeMultiplier": 0.8
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s1",
+      "name": "Tacit Suppressor1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 0.92,
+        "soundRadiusMultiplier": 0.66
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s1_03",
+      "name": "Torrent Compensator1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 1.075,
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_flhd_s1",
+      "name": "Veil Flash Hider1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "recoil_decayMultiplier": 0.85,
+        "recoil_endDecayMultiplier": 0.85,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.85,
+        "recoil_fireRecoilStrengthMultiplier": 0.85,
+        "recoil_angleRecoilStrengthMultiplier": 0.85,
+        "recoil_randomnessMultiplier": 0.85,
+        "recoil_randomnessBackPushMultiplier": 0.85,
+        "recoil_animatedRecoilMultiplier": 0.85
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s1_02",
+      "name": "Vera Compensator1",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "arma_barrel_stab_s2_contestedzonereward",
+      "name": "Emod \"Tweaker\" Stabilizer2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 1.125,
+        "ammoCostMultiplier": 2.0,
+        "heatGenerationMultiplier": 0.2,
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.85,
+        "recoil_endDecayMultiplier": 0.85,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.85,
+        "recoil_fireRecoilStrengthMultiplier": 0.85,
+        "recoil_angleRecoilStrengthMultiplier": 0.85,
+        "recoil_randomnessMultiplier": 0.85,
+        "recoil_randomnessBackPushMultiplier": 0.85,
+        "recoil_animatedRecoilMultiplier": 0.85
+      }
+    },
+    {
+      "className": "arma_barrel_stab_s2",
+      "name": "Emod Stabilizer2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_stab_s2_02",
+      "name": "Escalate Stabilizer2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 1.1,
+        "damageMultiplier": 0.95,
+        "soundRadiusMultiplier": 1.2,
+        "chargeTimeMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s2_02",
+      "name": "Quell Suppressor2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "heatGenerationMultiplier": 0.75,
+        "soundRadiusMultiplier": 0.66
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s2_firerats01",
+      "name": "Sion \"Scorched\" Compensator2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 0.9,
+        "projectileSpeedMultiplier": 0.875,
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.6,
+        "recoil_endDecayMultiplier": 0.6,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.6,
+        "recoil_fireRecoilStrengthMultiplier": 0.6,
+        "recoil_angleRecoilStrengthMultiplier": 0.6,
+        "recoil_randomnessMultiplier": 0.6,
+        "recoil_randomnessBackPushMultiplier": 0.6,
+        "recoil_animatedRecoilMultiplier": 0.6
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s2_contestedzonereward",
+      "name": "Sion \"Tweaker\" Compensator2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 0.9,
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.3,
+        "recoil_fireRecoilStrengthMultiplier": 0.3,
+        "recoil_angleRecoilStrengthMultiplier": 0.3,
+        "recoil_randomnessMultiplier": 0.3,
+        "recoil_randomnessBackPushMultiplier": 0.3,
+        "recoil_animatedRecoilMultiplier": 0.3
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s2",
+      "name": "Sion Compensator2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s2_04",
+      "name": "Stark Compensator2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "arma_barrel_supp_s2_03",
+      "name": "Stoic Suppressor2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 0.66
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s2",
+      "name": "Tacit Suppressor2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 0.92,
+        "soundRadiusMultiplier": 0.4
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s2_03",
+      "name": "Torrent Compensator2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 1.05,
+        "projectileSpeedMultiplier": 1.35
+      }
+    },
+    {
+      "className": "arma_barrel_flhd_s2",
+      "name": "Veil Flash Hider2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "recoil_decayMultiplier": 0.85,
+        "recoil_endDecayMultiplier": 0.85,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.85,
+        "recoil_fireRecoilStrengthMultiplier": 0.85,
+        "recoil_angleRecoilStrengthMultiplier": 0.85,
+        "recoil_randomnessMultiplier": 0.85,
+        "recoil_randomnessBackPushMultiplier": 0.85,
+        "recoil_animatedRecoilMultiplier": 0.85
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s2_02",
+      "name": "Vera Compensator2",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 1.06
+      }
+    },
+    {
+      "className": "arma_barrel_stab_s3",
+      "name": "Emod Stabilizer3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_stab_s3_02",
+      "name": "Escalate Stabilizer3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 1.1,
+        "ammoCostMultiplier": 2.0,
+        "chargeTimeMultiplier": 0.5
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s3_02",
+      "name": "Quell Suppressor3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 0.66
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s3",
+      "name": "Sion Compensator3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s3_04",
+      "name": "Stark Compensator3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 1.15,
+        "damageMultiplier": 1.075,
+        "projectileSpeedMultiplier": 1.075,
+        "soundRadiusMultiplier": 1.2,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s3_03",
+      "name": "Stoic Suppressor3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 0.66
+      }
+    },
+    {
+      "className": "arma_barrel_supp_s3",
+      "name": "Tacit Suppressor3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "damageMultiplier": 0.92,
+        "soundRadiusMultiplier": 0.4
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s3_03",
+      "name": "Torrent Compensator3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "soundRadiusMultiplier": 1.2,
+        "pellets": -3.0,
+        "recoil_decayMultiplier": 0.7,
+        "recoil_endDecayMultiplier": 0.7,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.7,
+        "recoil_fireRecoilStrengthMultiplier": 0.7,
+        "recoil_angleRecoilStrengthMultiplier": 0.7,
+        "recoil_randomnessMultiplier": 0.7,
+        "recoil_randomnessBackPushMultiplier": 0.7,
+        "recoil_animatedRecoilMultiplier": 0.7
+      }
+    },
+    {
+      "className": "arma_barrel_flhd_s3",
+      "name": "Veil Flash Hider3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach",
+        "energy_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "recoil_decayMultiplier": 0.85,
+        "recoil_endDecayMultiplier": 0.85,
+        "recoil_fireRecoilStrengthFirstMultiplier": 0.85,
+        "recoil_fireRecoilStrengthMultiplier": 0.85,
+        "recoil_angleRecoilStrengthMultiplier": 0.85,
+        "recoil_randomnessMultiplier": 0.85,
+        "recoil_randomnessBackPushMultiplier": 0.85,
+        "recoil_animatedRecoilMultiplier": 0.85
+      }
+    },
+    {
+      "className": "arma_barrel_comp_s3_02",
+      "name": "Vera Compensator3",
+      "manufacturer": "ARMA",
+      "attachSlot": "barrel",
+      "attachType": "WeaponAttachment",
+      "subType": "Barrel",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ],
+      "requiredTags": [],
+      "modifiers": {
+        "fireRateMultiplier": 1.15,
+        "projectileSpeedMultiplier": 0.85
+      }
+    },
+    {
+      "className": "behr_binoculars_01_fakeoptic",
+      "name": "EE16 (16x Telescopic)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 10.0,
+        "secondZoomScale": 12.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.63,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "behr_optics_holo_x1_s1",
+      "name": "PT1 (1x Holographic)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 2.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "behr_optics_holo_x2_s1",
+      "name": "PT2 (2x Holographic)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 2.0,
+        "secondZoomScale": 3.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "behr_optics_holo_x3_s1",
+      "name": "PT3 (3x Holographic)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 3.0,
+        "secondZoomScale": 4.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "behr_optics_rdot_x1_s1",
+      "name": "RF1 (1x Reflex)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "klwe_optics_holo_x1_5_s1",
+      "name": "HG-15 Jaeger (1.5x Holographic)",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.5,
+        "secondZoomScale": 3.0,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "klwe_optics_holo_x2_s1",
+      "name": "HG-2 Jaeger (2x Holographic)",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 2.0,
+        "secondZoomScale": 4.0,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "klwe_optics_holo_x3_s1",
+      "name": "HG-3 Jaeger (3x Holographic)",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 3.0,
+        "secondZoomScale": 4.5,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "klwe_optics_rdot_x1_s1",
+      "name": "RD-1 Jaeger (1x Red Dot)",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 3.0,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_rdot_x1_s1_firerats01",
+      "name": "Delta \"Scorched\" (1x Reflex)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 3.0,
+        "zoomTimeScale": 1.025,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_rdot_x1_s1",
+      "name": "Delta (1x Reflex)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "nvtc_optics_rdot_x1_s1_lamp",
+      "name": "Delta (1x Reflex)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_holo_x1_s1",
+      "name": "Gamma (1x Holographic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "nvtc_optics_holo_x1_s1_lamp",
+      "name": "Gamma (1x Holographic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_holo_x2_s1",
+      "name": "Gamma Duo (2x Holographic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 2.0,
+        "secondZoomScale": 3.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_holo_x2_s1_lamp",
+      "name": "Gamma Duo (2x Holographic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 2.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_holo_x3_s1",
+      "name": "Gamma Plus (3x Holographic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 3.0,
+        "secondZoomScale": 3.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "nvtc_optics_holo_x3_s1_lamp",
+      "name": "Gamma Plus (3x Holographic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 3.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.15,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "volt_optics_holo_x1_s1",
+      "name": "FocalWave-10 (1x Holographic)",
+      "manufacturer": "Voltaire",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.08,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "None",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "volt_optics_holo_x2_s1",
+      "name": "FocalWave-20 (2x Holographic)",
+      "manufacturer": "Voltaire",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 2.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.08,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "None",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "volt_optics_holo_x3_s1",
+      "name": "FocalWave-30 (3x Holographic)",
+      "manufacturer": "Voltaire",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 3.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.08,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "None",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "behr_optics_tsco_x4_s2",
+      "name": "EE04 (4x Telescopic)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 4.0,
+        "secondZoomScale": 6.0,
+        "zoomTimeScale": 1.25,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "gmni_optics_tsco_x4_s2_firerats01",
+      "name": "OT4-RF \"Scorched\" (4x Telescopic)",
+      "manufacturer": "Gemini",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 4.0,
+        "secondZoomScale": 2.5,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.45,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "gmni_optics_tsco_x4_s2",
+      "name": "OT4-RF (4x Telescopic)",
+      "manufacturer": "Gemini",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 4.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.25,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.45,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "klwe_optics_tsco_2_5x_s2",
+      "name": "TS-25 Basara (2.5x Telescopic)",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 2.0,
+        "secondZoomScale": 5.0,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "klwe_optics_tsco_3_5x_s2",
+      "name": "TS-35 Basara (3.5x Telescopic)",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 3.0,
+        "secondZoomScale": 5.5,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.2,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_tsco_x4_s2_firerats01",
+      "name": "Tau Plus \"Scorched\" (4x Telescopic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 4.0,
+        "secondZoomScale": 2.0,
+        "zoomTimeScale": 1.05,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_tsco_x4_s2",
+      "name": "Tau Plus (4x Telescopic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 4.0,
+        "secondZoomScale": 6.0,
+        "zoomTimeScale": 1.25,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "nvtc_optics_tsco_x4_s2_lamp",
+      "name": "Tau Plus (4x Telescopic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 2,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 4.0,
+        "secondZoomScale": 6.0,
+        "zoomTimeScale": 1.25,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "behr_optics_tsco_x8_s3",
+      "name": "EE08 (8x Telescopic)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 8.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "behr_optics_tsco_x16_s3",
+      "name": "EE16 (16x Telescopic)",
+      "manufacturer": "Behring",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 16.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.63,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "gmni_optics_tsco_x8_s3_firerats01",
+      "name": "OT8-RF \"Scorched\" (8x Telescopic)",
+      "manufacturer": "Gemini",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 8.0,
+        "secondZoomScale": 4.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "gmni_optics_tsco_x8_s3",
+      "name": "OT8-RF (8x Telescopic)",
+      "manufacturer": "Gemini",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 8.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "ksar_optics_tsco_x8_s3",
+      "name": "Black Prism (8x Telescopic)",
+      "manufacturer": "Kastak Arms",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 8.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "klwe_optics_disp_x8_s3",
+      "name": "Touchstone (8x Monitor)",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 8.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.52,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "lbco_optics_tsco_x16_s3",
+      "name": "Omarof (16x Telescopic)",
+      "manufacturer": "Lightning Bolt Co.",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 16.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 0.75,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.66,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "nvtc_optics_tsco_x8_s3",
+      "name": "Theta Pro (8x Telescopic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 6.0,
+        "secondZoomScale": 10.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "nvtc_optics_tsco_x8_s3_lamp",
+      "name": "Theta Pro (8x Telescopic)",
+      "manufacturer": "NVTC",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 6.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false,
+        "scopeType": "Nightvision",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "volt_optics_tsco_x8_s3",
+      "name": "FarSight (8x Telescopic)",
+      "manufacturer": "Voltaire",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 3,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 4.0,
+        "secondZoomScale": 8.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.5,
+        "forceIronSightSetup": false,
+        "scopeType": "Zoom",
+        "scopeDefault": false
+      }
+    },
+    {
+      "className": "weaponmount_nvtc_optics_holo_x1_s1",
+      "name": "Gamma (1x Holographic)",
+      "manufacturer": "WEAPONMOUNT",
+      "attachSlot": "optics",
+      "attachType": "WeaponAttachment",
+      "subType": "IronSight",
+      "size": 4,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {},
+      "opticSpec": {
+        "zoomScale": 1.0,
+        "secondZoomScale": 1.0,
+        "zoomTimeScale": 1.0,
+        "fstopMultiplier": 1.0,
+        "hideWeaponInADS": false,
+        "adsNearClipPlaneMultiplier": 0.0,
+        "forceIronSightSetup": false
+      }
+    },
+    {
+      "className": "klwe_ubarrel_flsh_s1",
+      "name": "Brightspot Flashlight Purple",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "klwe_ubarrel_lasr_s1_02",
+      "name": "Tracer Laser Pointer Green",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "klwe_ubarrel_lasr_s1",
+      "name": "Tracer Laser Pointer Orange",
+      "manufacturer": "Klaus & Werner",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "nvtc_ubarrel_lasr_s1",
+      "name": "250-E Laser Pointer",
+      "manufacturer": "NVTC",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "nvtc_ubarrel_flsh_s1_firerats01",
+      "name": "FieldLite \"Scorched\" Flashlight",
+      "manufacturer": "NVTC",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "nvtc_ubarrel_flsh_s1",
+      "name": "FieldLite Flashlight",
+      "manufacturer": "NVTC",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "nvtc_ubarrel_flsh_s1_02",
+      "name": "FieldLite Flashlight Blue",
+      "manufacturer": "NVTC",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "nvtc_ubarrel_flsh_s1_04",
+      "name": "FieldLite Flashlight Red",
+      "manufacturer": "NVTC",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "nvtc_ubarrel_flsh_s1_03",
+      "name": "FieldLite Flashlight Yellow",
+      "manufacturer": "NVTC",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "volt_ubarrel_flsh_s1",
+      "name": "Lux Flashlight",
+      "manufacturer": "Voltaire",
+      "attachSlot": "underbarrel",
+      "attachType": "WeaponAttachment",
+      "subType": "BottomAttachment",
+      "size": 1,
+      "mass": 0.1,
+      "tags": [],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "weapon_underbarrel_light_narrow",
+      "name": "Narrow Tactical Flashlight",
+      "manufacturer": "WEAPON",
+      "attachSlot": "underbarrel",
+      "attachType": "Light",
+      "subType": "Weapon",
+      "size": 1,
+      "mass": 0.0,
+      "tags": [
+        "uneditable"
+      ],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "weapon_underbarrel_light_narrow_darkblue_01",
+      "name": "Narrow Tactical Flashlight (Dark Blue)",
+      "manufacturer": "WEAPON",
+      "attachSlot": "underbarrel",
+      "attachType": "Light",
+      "subType": "Weapon",
+      "size": 1,
+      "mass": 0.0,
+      "tags": [
+        "uneditable"
+      ],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "weapon_underbarrel_light_wide",
+      "name": "Wide Tactical Flashlight",
+      "manufacturer": "WEAPON",
+      "attachSlot": "underbarrel",
+      "attachType": "Light",
+      "subType": "Weapon",
+      "size": 1,
+      "mass": 0.0,
+      "tags": [
+        "uneditable"
+      ],
+      "requiredTags": [],
+      "modifiers": {}
+    },
+    {
+      "className": "weapon_underbarrel_light_wide_darkblue_01",
+      "name": "Wide Tactical Flashlight (Dark Blue)",
+      "manufacturer": "WEAPON",
+      "attachSlot": "underbarrel",
+      "attachType": "Light",
+      "subType": "Weapon",
+      "size": 1,
+      "mass": 0.0,
+      "tags": [
+        "uneditable"
+      ],
+      "requiredTags": [],
+      "modifiers": {}
     }
   ]
 }
