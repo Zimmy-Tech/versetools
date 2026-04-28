@@ -8,12 +8,15 @@
 }
 
 .craft-btn {
-  // Anchored to the top-right corner of the slot so it stays out of
-  // the natural content flow — adjacent slots (e.g. the jump drive
+  // Anchored to the top-center of the slot so it stays out of the
+  // natural content flow — adjacent slots (e.g. the jump drive
   // sub-slot directly under a Quantum Drive) can't crash into it.
+  // Top-right was the first try but the picker expand arrow (▸/▾)
+  // sits there already and the badge clipped it.
   position: absolute;
   top: 4px;
-  right: 6px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   padding: 1px 8px;
   font-family: 'Rajdhani', sans-serif;
