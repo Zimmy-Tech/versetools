@@ -8,65 +8,66 @@
 }
 
 .craft-btn {
-  // Sits at the top-left of the slot in natural flow — above the
-  // picker bar, never overlapping it. Same 3D bevel as the loadout
-  // PARTS button — tri-stop dark gradient with cyan tint, full
-  // inset bevel, outer drop shadow, lift on hover.
+  // Hangs off the top of the picker bar like a manila-folder tab —
+  // rounded top corners, square bottom, slight negative margin so
+  // its lower edge merges into the picker's top. Gradient + cyan
+  // border keep it visually attached to the picker so it doesn't
+  // read as an orphaned chip floating above an empty row.
   align-self: flex-start;
-  margin: 0 0 4px 2px;
-  z-index: 2;
-  padding: 4px 12px;
+  margin: 0 0 -1px 14px;
+  position: relative;
+  z-index: 1;
+  padding: 3px 16px 4px;
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
   background: linear-gradient(180deg,
-    rgba(40, 60, 78, 0.82) 0%,
-    rgba(20, 32, 45, 0.78) 55%,
-    rgba(8, 14, 22, 0.82) 100%);
+    rgba(40, 60, 78, 0.92) 0%,
+    rgba(20, 32, 45, 0.92) 55%,
+    rgba(14, 22, 32, 0.92) 100%);
   border: 1px solid rgba(0, 200, 255, 0.30);
-  border-radius: 3px;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
   cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
+  transition: color 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.18s;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
     inset 1px 0 0 rgba(255, 255, 255, 0.04),
     inset -1px 0 0 rgba(0, 0, 0, 0.28),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.50),
-    0 3px 8px rgba(0, 0, 0, 0.42),
-    0 1px 2px rgba(0, 0, 0, 0.30);
+    0 -2px 6px rgba(0, 0, 0, 0.35);
 
   &:hover {
-    border-color: rgba(0, 200, 255, 0.55);
+    border-color: rgba(0, 200, 255, 0.65);
+    color: #c8edff;
     transform: translateY(-1px);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.16),
-      inset 1px 0 0 rgba(255, 255, 255, 0.05),
-      inset -1px 0 0 rgba(0, 0, 0, 0.30),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.52),
-      0 5px 14px rgba(0, 0, 0, 0.52),
-      0 0 12px rgba(0, 200, 255, 0.22);
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      inset 1px 0 0 rgba(255, 255, 255, 0.06),
+      inset -1px 0 0 rgba(0, 0, 0, 0.32),
+      0 -3px 10px rgba(0, 0, 0, 0.45),
+      0 -1px 8px rgba(0, 200, 255, 0.20);
   }
 
   &.crafted {
     color: #4aff7a;
     background: linear-gradient(180deg,
-      rgba(50, 80, 60, 0.82) 0%,
-      rgba(22, 40, 28, 0.78) 55%,
-      rgba(10, 20, 14, 0.82) 100%);
-    border-color: rgba(74, 255, 122, 0.42);
+      rgba(50, 80, 60, 0.92) 0%,
+      rgba(22, 40, 28, 0.92) 55%,
+      rgba(12, 22, 16, 0.92) 100%);
+    border-color: rgba(74, 255, 122, 0.50);
 
     &:hover {
-      border-color: rgba(74, 255, 122, 0.75);
+      border-color: rgba(74, 255, 122, 0.85);
+      color: #80ff9c;
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.16),
-        inset 1px 0 0 rgba(255, 255, 255, 0.05),
-        inset -1px 0 0 rgba(0, 0, 0, 0.30),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.52),
-        0 5px 14px rgba(0, 0, 0, 0.52),
-        0 0 14px rgba(74, 255, 122, 0.25);
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        inset 1px 0 0 rgba(255, 255, 255, 0.06),
+        inset -1px 0 0 rgba(0, 0, 0, 0.32),
+        0 -3px 10px rgba(0, 0, 0, 0.45),
+        0 -1px 10px rgba(74, 255, 122, 0.22);
     }
   }
 }
