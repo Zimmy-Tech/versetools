@@ -8,14 +8,12 @@
 }
 
 .craft-btn {
-  // Anchored to the bottom-right corner of the slot, out of the
-  // natural content flow so adjacent slots (jump drive under the
-  // QD) can't crash into it. Same 3D bevel as the loadout PARTS
-  // button — tri-stop dark gradient with cyan tint, full inset
-  // bevel, outer drop shadow, lift on hover.
-  position: absolute;
-  bottom: 4px;
-  right: 6px;
+  // Sits at the top-left of the slot in natural flow — above the
+  // picker bar, never overlapping it. Same 3D bevel as the loadout
+  // PARTS button — tri-stop dark gradient with cyan tint, full
+  // inset bevel, outer drop shadow, lift on hover.
+  align-self: flex-start;
+  margin: 0 0 4px 2px;
   z-index: 2;
   padding: 4px 12px;
   font-family: 'Rajdhani', sans-serif;

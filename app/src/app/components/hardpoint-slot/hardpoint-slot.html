@@ -9,6 +9,15 @@
     </div>
   }
 
+  @if (isCraftable() && !isLocked() && !pickerOpen()) {
+    <button type="button"
+            class="craft-btn"
+            [class.crafted]="isCrafted()"
+            (click)="openCraft($event)">
+      {{ isCrafted() ? 'CRAFTED' : 'CRAFT' }}
+    </button>
+  }
+
   @if (isLifeSupportSlot()) {
 
     <!-- Life Support display -->
@@ -931,12 +940,4 @@
     </div>
   }
 
-  @if (isCraftable() && !isLocked() && !pickerOpen()) {
-    <button type="button"
-            class="craft-btn"
-            [class.crafted]="isCrafted()"
-            (click)="openCraft($event)">
-      {{ isCrafted() ? 'CRAFTED' : 'CRAFT' }}
-    </button>
-  }
 </div>
