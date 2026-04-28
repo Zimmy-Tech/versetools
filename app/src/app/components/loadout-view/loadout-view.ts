@@ -56,7 +56,10 @@ export class LoadoutViewComponent {
   }
 
   // ─── Crafting info banner (dismissible) ─────────────────────────────
-  private static readonly CRAFT_BANNER_KEY = 'versedb.craftBannerDismissed';
+  // Bump the key suffix whenever the banner copy changes substantively
+  // so users who'd already dismissed an earlier version see the new
+  // wording fresh.
+  private static readonly CRAFT_BANNER_KEY = 'versedb.craftBannerDismissed.v2';
   private craftBannerDismissed = signal(
     typeof localStorage !== 'undefined' &&
     localStorage.getItem(LoadoutViewComponent.CRAFT_BANNER_KEY) === '1'
