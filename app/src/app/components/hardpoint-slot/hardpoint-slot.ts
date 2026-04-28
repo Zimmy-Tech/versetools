@@ -148,16 +148,11 @@ export class HardpointSlotComponent {
    *  on the per-card badge. */
   isCrafted = computed(() => this.data.isCrafted(this.hardpoint().id));
 
-  /** True when the equipped item has a recipe AND that recipe has at
-   *  least one quality modifier. Recipes without qmods (most ship
-   *  weapons in the current 4.8 PTU data set) would open an empty
-   *  modal — hide the button so the affordance only shows when there
-   *  is something to actually slide. */
-  isCraftable = computed(() => {
-    const recipe = this.data.recipeForItem(this.currentItem());
-    if (!recipe) return false;
-    return recipe.ingredients.some(i => (i.qualityModifiers?.length ?? 0) > 0);
-  });
+  /** True when the equipped item has a crafting recipe. The button
+   *  shows even when the recipe has no quality modifiers (e.g. ship
+   *  weapon recipes in the current data set are stubs without sliders);
+   *  the modal handles the empty-qmods case with a friendly note. */
+  isCraftable = computed(() => !!this.data.recipeForItem(this.currentItem()));
 
   openCraft(e: MouseEvent): void {
     e.stopPropagation();

@@ -2322,6 +2322,17 @@ select {
   overflow-y: auto;
 }
 
+.craft-empty {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text3);
+  background: rgba(255, 192, 77, 0.05);
+  border: 1px solid rgba(255, 192, 77, 0.2);
+  border-radius: 3px;
+  padding: 10px 12px;
+}
+
 .craft-actions {
   display: flex; gap: 8px; justify-content: flex-end;
   margin-top: 6px;

@@ -1007,6 +1007,15 @@
           [baseStats]="data.baseStatsForItem(ctx.item)"
           (qualityEffectsChange)="onCraftEffects(ctx.slotId, $event)" />
 
+        @if (!recipeHasQmods(ctx.recipe)) {
+          <div class="craft-empty">
+            This item has a crafting recipe but no quality-tunable
+            modifiers in the current data set. CIG hasn't enabled
+            quality rolls for this category yet — the recipe is a
+            placeholder and crafting it would produce a base item.
+          </div>
+        }
+
         <div class="craft-actions">
           <button class="craft-reset" (click)="resetCraft(ctx.slotId)">Reset to base</button>
           <button class="craft-done" (click)="closeCraftModal()">Done</button>

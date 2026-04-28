@@ -48,6 +48,13 @@ export class LoadoutViewComponent {
     this.data.craftModalSlotId.set(null);
   }
 
+  /** True when the recipe has at least one ingredient with a
+   *  qualityModifiers array. Drives the no-tunable-stats notice
+   *  inside the CRAFT modal (most ship-weapon recipes are stubs). */
+  recipeHasQmods(recipe: { ingredients: { qualityModifiers?: unknown[] }[] } | null | undefined): boolean {
+    return !!recipe?.ingredients.some(i => (i.qualityModifiers?.length ?? 0) > 0);
+  }
+
   private readonly CATEGORY_ICONS: Record<string, string> = {
     vital: '✦', secondary: '◌', breakable: '⇄', sub: '⊢', thruster: '∷',
   };
