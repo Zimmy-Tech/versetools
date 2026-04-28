@@ -298,6 +298,11 @@ export class DataService {
     this.powerAlloc.set({});
     this.weaponsPower.set(0);
     this.tractorPower.set(0);
+    // Crafting state is per-slot — wipe it whenever the loadout is
+    // rebuilt from a ship default, including resetLoadout() which
+    // calls back into here.
+    this.craftEffects.set({});
+    this.craftModalSlotId.set(null);
     // Thrusters: default to 50% of max bars
     const thrustMax = ship.thrusterPowerBars ?? 4;
     this.thrusterPower.set(Math.max(1, Math.round(thrustMax * 0.5)));
