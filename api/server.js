@@ -579,7 +579,12 @@ const diffPreviewHandler = async (req, res) => {
       // missing array means "don't touch this stream" (lets the admin
       // upload ships-only or FPS-only payloads without proposing deletes
       // for the untouched streams).
-      if (Array.isArray(body[key])) {
+      //
+      // body.partial=true also suppresses Pass 2 for ALL streams. Used by
+      // the chunking utility (PY SCRIPTS/chunk_merged.py) to upload one
+      // 500-entity slice at a time without each chunk proposing deletes
+      // for every entity NOT in that chunk.
+      if (Array.isArray(body[key]) && !body.partial) {
         for (const [className, cur] of current) {
           if (!uploadedKeys.has(className)) {
             changes.push({
