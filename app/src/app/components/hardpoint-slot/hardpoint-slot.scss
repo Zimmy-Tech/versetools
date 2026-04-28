@@ -9,30 +9,15 @@
 
 .craft-btn {
   // Hangs off the top of the picker bar like a folder tab.
-  // Asymmetric clip — left edge is a concave quadratic curve
-  // (bulges inward into the tab body, so the corner where it
-  // meets the picker reads as a soft scoop), right edge is the
-  // straight HUD-style slash mirroring fps-items / mining-view
-  // cutoffs.
-  //
-  // Curve sampled from a quadratic bezier P0(10px,0) → P1(10px,50%)
-  // → P2(0,100%) at five intermediate steps. Control point pulled
-  // toward the tab body produces the inward radius.
+  // Left edge squared off, right edge keeps the HUD-style slash
+  // (top-right full-width slanting down to bottom-right inset 10px)
+  // so the tab still leans into the slot's wider content area.
   align-self: flex-start;
   margin: 0 0 -1px 14px;
   position: relative;
   z-index: 1;
   padding: 3px 22px 4px;
-  clip-path: polygon(
-    10px 0,
-    100% 0,
-    calc(100% - 10px) 100%,
-    0 100%,
-    3.6px 80%,
-    6.4px 60%,
-    8.4px 40%,
-    9.6px 20%
-  );
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
