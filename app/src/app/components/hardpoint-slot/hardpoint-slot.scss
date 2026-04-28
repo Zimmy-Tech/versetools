@@ -8,20 +8,19 @@
 }
 
 .craft-btn {
-  // Hangs off the top of the picker bar like a manila-folder tab —
-  // rounded top corners, square bottom, slight negative margin so
-  // its lower edge merges into the picker's top. Gradient + cyan
-  // border keep it visually attached to the picker so it doesn't
-  // read as an orphaned chip floating above an empty row.
-  //
-  // Two ::before/::after foothills extend the tab's footprint
-  // outward at the base so the vertical sides curve smoothly into
-  // the picker's horizontal top — "mountain fading into a plain."
+  // Hangs off the top of the picker bar like a folder tab.
+  // Asymmetric clip — top-left is inset (left edge slopes outward
+  // and down to the picker), top-right is flat, bottom-right is
+  // inset (right edge slashes from full-width top down to the
+  // picker). The two angles run in the same direction so the tab
+  // reads as a leaning shape rather than a symmetric trapezoid,
+  // matching the HUD-cutoff pattern used in fps-items / mining-view.
   align-self: flex-start;
   margin: 0 0 -1px 14px;
   position: relative;
   z-index: 1;
-  padding: 3px 16px 4px;
+  padding: 3px 22px 4px;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
   font-family: 'Rajdhani', sans-serif;
   font-size: 11px;
   font-weight: 700;
@@ -32,27 +31,20 @@
     rgba(40, 60, 78, 0.92) 0%,
     rgba(20, 32, 45, 0.92) 55%,
     rgba(14, 22, 32, 0.92) 100%);
-  border: 1px solid rgba(0, 200, 255, 0.30);
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
+  border: none;
   cursor: pointer;
-  transition: color 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.18s;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 1px 0 0 rgba(255, 255, 255, 0.04),
-    inset -1px 0 0 rgba(0, 0, 0, 0.28),
-    0 -2px 6px rgba(0, 0, 0, 0.35);
+  transition: color 0.18s, background 0.18s, transform 0.18s;
+  // Top-edge highlight for a touch of bevel — clip-path will cut the
+  // outer drop shadow so we keep the depth cue inset.
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 
   &:hover {
-    border-color: rgba(0, 200, 255, 0.65);
     color: #c8edff;
     transform: translateY(-1px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.18),
-      inset 1px 0 0 rgba(255, 255, 255, 0.06),
-      inset -1px 0 0 rgba(0, 0, 0, 0.32),
-      0 -3px 10px rgba(0, 0, 0, 0.45),
-      0 -1px 8px rgba(0, 200, 255, 0.20);
+    background: linear-gradient(180deg,
+      rgba(50, 78, 100, 0.96) 0%,
+      rgba(26, 42, 58, 0.96) 55%,
+      rgba(16, 28, 40, 0.96) 100%);
   }
 
   &.crafted {
@@ -61,76 +53,14 @@
       rgba(50, 80, 60, 0.92) 0%,
       rgba(22, 40, 28, 0.92) 55%,
       rgba(12, 22, 16, 0.92) 100%);
-    border-color: rgba(74, 255, 122, 0.50);
 
     &:hover {
-      border-color: rgba(74, 255, 122, 0.85);
       color: #80ff9c;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.18),
-        inset 1px 0 0 rgba(255, 255, 255, 0.06),
-        inset -1px 0 0 rgba(0, 0, 0, 0.32),
-        0 -3px 10px rgba(0, 0, 0, 0.45),
-        0 -1px 10px rgba(74, 255, 122, 0.22);
+      background: linear-gradient(180deg,
+        rgba(64, 100, 76, 0.96) 0%,
+        rgba(28, 50, 36, 0.96) 55%,
+        rgba(14, 26, 18, 0.96) 100%);
     }
-  }
-
-  // ── Asymmetric base: curved left foothill, angled right slash ──
-  // Mimics the pattern used elsewhere in the app for HUD-style cutoffs.
-  // ::before extends the bottom-left outward with a smooth curve up
-  // to the tab's vertical side ("the .:| ramp"). ::after is a right
-  // triangle hugging the tab's right edge — its hypotenuse runs from
-  // the tab's top-right corner down-and-right to the picker level,
-  // mirroring the angled "/" cutoff.
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: -7px;
-    width: 7px;
-    height: 7px;
-    pointer-events: none;
-    background: linear-gradient(180deg,
-      rgba(20, 32, 45, 0.92) 0%,
-      rgba(14, 22, 32, 0.92) 100%);
-    border: 1px solid rgba(0, 200, 255, 0.30);
-    border-right: none;
-    border-bottom: none;
-    border-top-right-radius: 7px;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: -10px;
-    width: 10px;
-    height: 100%;
-    pointer-events: none;
-    background: linear-gradient(180deg,
-      rgba(40, 60, 78, 0.92) 0%,
-      rgba(20, 32, 45, 0.92) 55%,
-      rgba(14, 22, 32, 0.92) 100%);
-    // Right triangle: top-left vertex hugs the tab's top-right corner,
-    // hypotenuse drops down-and-right to meet the picker 10px out.
-    clip-path: polygon(0 0, 100% 100%, 0 100%);
-  }
-  &.crafted::before {
-    background: linear-gradient(180deg,
-      rgba(22, 40, 28, 0.92) 0%,
-      rgba(12, 22, 16, 0.92) 100%);
-    border-color: rgba(74, 255, 122, 0.50);
-  }
-  &.crafted::after {
-    background: linear-gradient(180deg,
-      rgba(50, 80, 60, 0.92) 0%,
-      rgba(22, 40, 28, 0.92) 55%,
-      rgba(12, 22, 16, 0.92) 100%);
-  }
-  &:hover::before {
-    border-color: rgba(0, 200, 255, 0.65);
-  }
-  &.crafted:hover::before {
-    border-color: rgba(74, 255, 122, 0.85);
   }
 }
 
