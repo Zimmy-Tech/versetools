@@ -1116,8 +1116,15 @@ export class DataService {
     // Port-tag filtering: if the hardpoint has portTags, items with ship-specific
     // itemTags must share at least one tag with the port. Items without itemTags
     // (universal items) always pass.
+    //
+    // Tag normalization: CIG decorates some portTags with a leading `$` to
+    // indicate a stricter lock (e.g. 4.8 PTU adds `$AEGS_Retaliator_Module_Rear`
+    // to the Retaliator's module slots while the matching modules still
+    // carry `AEGS_Retaliator_Module_Rear` — no $). Strip leading `$` from
+    // both sides so the string comparison still matches.
+    const normalizeTag = (t: string) => t.toLowerCase().replace(/^\$+/, '');
     const hpPortTagSet = hp.portTags
-      ? new Set(hp.portTags.toLowerCase().split(/\s+/))
+      ? new Set(hp.portTags.split(/\s+/).filter(Boolean).map(normalizeTag))
       : null;
 
     const shipCls = this.selectedShip()?.className?.toLowerCase() ?? '';
@@ -1142,7 +1149,7 @@ export class DataService {
       const tags = new Set<string>(hpPortTagSet ?? []);
       if (slotDefaultCls) {
         const di = this.itemMap().get(slotDefaultCls);
-        for (const t of di?.itemTags ?? []) tags.add(t.toLowerCase());
+        for (const t of di?.itemTags ?? []) tags.add(normalizeTag(t));
       }
       hornetEffectiveTags = tags.size > 0 ? tags : null;
     }
@@ -1223,7 +1230,7 @@ export class DataService {
         // items. Skips the exclusive-ship heuristic entirely.
         if (isHornet) {
           if (clsL === slotDefaultCls) return true;
-          const itemTagSet = (i.itemTags ?? []).map(t => t.toLowerCase());
+          const itemTagSet = (i.itemTags ?? []).map(normalizeTag);
           if (hornetEffectiveTags) {
             if (!itemTagSet.some(t => hornetEffectiveTags!.has(t))) return false;
           } else {
@@ -1240,7 +1247,7 @@ export class DataService {
           if (hpPortTagSet) {
             const isExclusive = hp.flags?.includes('exclusive_tags');
             if (i.itemTags && i.itemTags.length > 0) {
-              if (!i.itemTags.some(t => hpPortTagSet.has(t.toLowerCase()))) return false;
+              if (!i.itemTags.some(t => hpPortTagSet.has(normalizeTag(t)))) return false;
             } else if (isExclusive || i.type === 'FlightController') {
               return false;  // no matching tags → excluded
             }
