@@ -75,16 +75,18 @@
     }
   }
 
-  // ── Foothills: curved bottom corners merging into the picker ──
-  // Each pseudo is a small box positioned just outside the tab's
-  // bottom-left / bottom-right corner. Filled with the same gradient
-  // bottom-tones as the tab body, with the INNER-TOP corner rounded —
-  // which makes the tab's vertical side appear to curve outward and
-  // down to meet the picker's horizontal top.
-  &::before, &::after {
+  // ── Asymmetric base: curved left foothill, angled right slash ──
+  // Mimics the pattern used elsewhere in the app for HUD-style cutoffs.
+  // ::before extends the bottom-left outward with a smooth curve up
+  // to the tab's vertical side ("the .:| ramp"). ::after is a right
+  // triangle hugging the tab's right edge — its hypotenuse runs from
+  // the tab's top-right corner down-and-right to the picker level,
+  // mirroring the angled "/" cutoff.
+  &::before {
     content: '';
     position: absolute;
     bottom: 0;
+    left: -7px;
     width: 7px;
     height: 7px;
     pointer-events: none;
@@ -92,29 +94,42 @@
       rgba(20, 32, 45, 0.92) 0%,
       rgba(14, 22, 32, 0.92) 100%);
     border: 1px solid rgba(0, 200, 255, 0.30);
-  }
-  &::before {
-    left: -7px;
     border-right: none;
     border-bottom: none;
     border-top-right-radius: 7px;
   }
   &::after {
-    right: -7px;
-    border-left: none;
-    border-bottom: none;
-    border-top-left-radius: 7px;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    width: 10px;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(40, 60, 78, 0.92) 0%,
+      rgba(20, 32, 45, 0.92) 55%,
+      rgba(14, 22, 32, 0.92) 100%);
+    // Right triangle: top-left vertex hugs the tab's top-right corner,
+    // hypotenuse drops down-and-right to meet the picker 10px out.
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
   }
-  &.crafted::before, &.crafted::after {
+  &.crafted::before {
     background: linear-gradient(180deg,
       rgba(22, 40, 28, 0.92) 0%,
       rgba(12, 22, 16, 0.92) 100%);
     border-color: rgba(74, 255, 122, 0.50);
   }
-  &:hover::before, &:hover::after {
+  &.crafted::after {
+    background: linear-gradient(180deg,
+      rgba(50, 80, 60, 0.92) 0%,
+      rgba(22, 40, 28, 0.92) 55%,
+      rgba(12, 22, 16, 0.92) 100%);
+  }
+  &:hover::before {
     border-color: rgba(0, 200, 255, 0.65);
   }
-  &.crafted:hover::before, &.crafted:hover::after {
+  &.crafted:hover::before {
     border-color: rgba(74, 255, 122, 0.85);
   }
 }
