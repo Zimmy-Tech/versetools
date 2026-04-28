@@ -206,6 +206,22 @@
         <button class="btn-cart-add" (click)="data.addNonStockToCart()">Add Non-Stock to Cart</button>
       </div>
 
+      @if (showCraftBanner()) {
+        <div class="craft-banner">
+          <span class="craft-banner-icon">◇</span>
+          <span class="craft-banner-text">
+            <strong>Crafting available</strong> on shields, coolers,
+            power plants, QDs, and radars (PTU 4.8). Weapons, mining
+            lasers, tractor beams, and salvage modules ship with
+            placeholder recipes only — quality rolls disabled.
+          </span>
+          <button type="button"
+                  class="craft-banner-close"
+                  (click)="dismissCraftBanner()"
+                  aria-label="Dismiss">×</button>
+        </div>
+      }
+
       <!-- Four-column layout: Weapons | Shields+PP | Everything Else | Stats -->
       <div class="three-columns">
         <div class="loadout-columns">

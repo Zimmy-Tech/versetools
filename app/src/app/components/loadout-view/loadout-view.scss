@@ -2333,6 +2333,52 @@ select {
   padding: 10px 12px;
 }
 
+.craft-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0 4px;
+  padding: 8px 12px;
+  background: linear-gradient(180deg,
+    rgba(0, 60, 90, 0.42) 0%,
+    rgba(8, 24, 40, 0.42) 100%);
+  border: 1px solid rgba(0, 200, 255, 0.28);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text2);
+
+  .craft-banner-icon {
+    color: var(--accent);
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .craft-banner-text {
+    flex: 1;
+    strong {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  .craft-banner-close {
+    background: transparent;
+    border: none;
+    color: var(--text3);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    flex-shrink: 0;
+    &:hover { color: var(--accent); }
+  }
+}
+
 .craft-actions {
   display: flex; gap: 8px; justify-content: flex-end;
   margin-top: 6px;

@@ -55,6 +55,19 @@ export class LoadoutViewComponent {
     return !!recipe?.ingredients.some(i => (i.qualityModifiers?.length ?? 0) > 0);
   }
 
+  // ─── Crafting info banner (dismissible) ─────────────────────────────
+  private static readonly CRAFT_BANNER_KEY = 'versedb.craftBannerDismissed';
+  private craftBannerDismissed = signal(
+    typeof localStorage !== 'undefined' &&
+    localStorage.getItem(LoadoutViewComponent.CRAFT_BANNER_KEY) === '1'
+  );
+  /** Show the crafting-feature banner until the user dismisses it. */
+  showCraftBanner = computed(() => !this.craftBannerDismissed());
+  dismissCraftBanner(): void {
+    this.craftBannerDismissed.set(true);
+    try { localStorage.setItem(LoadoutViewComponent.CRAFT_BANNER_KEY, '1'); } catch { /* ignore */ }
+  }
+
   private readonly CATEGORY_ICONS: Record<string, string> = {
     vital: '✦', secondary: '◌', breakable: '⇄', sub: '⊢', thruster: '∷',
   };
