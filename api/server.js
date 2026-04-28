@@ -51,11 +51,50 @@ const healthHandler = (req, res) => {
   });
 };
 
+// ─── /api/db cache ──────────────────────────────────────────────────
+// The dbHandler returns a ~5MB JSON payload assembled from many
+// SELECTs in exportFullDb(). The contents only change on admin writes
+// (full diff/import, curations, shop-price refresh, etc.) — typically
+// once per game patch — so caching the assembled payload in process
+// memory is a massive load reduction. Every cache hit avoids the
+// SELECTs + JOINs + JSON serialization entirely.
+//
+// Active invalidation: any successful admin write response triggers
+// invalidateCache() on the affected mode (and the sibling mode for
+// cross-mode flows like syncPtuFromLive). The TTL is a safety net,
+// not the primary refresh mechanism.
+//
+// Per-replica only: each App Platform replica has its own cache, so
+// at scale-out (>1 replica) some replicas may briefly serve stale data
+// after an admin write until their TTLs expire. Acceptable for our
+// data cadence; revisit if/when we run multiple replicas.
+const CACHE_TTL_MS = 30 * 60 * 1000; // 30 min — data changes weekly at most
+const dbCache = {
+  live: { data: null, fetchedAt: 0 },
+  ptu:  { data: null, fetchedAt: 0 },
+};
+
+async function refreshCache(mode) {
+  const data = await exportFullDb(mode);
+  dbCache[mode] = { data, fetchedAt: Date.now() };
+  console.log(`[cache] ${mode} refreshed (${data?.ships?.length ?? 0} ships, ${data?.items?.length ?? 0} items)`);
+  return data;
+}
+
+function invalidateCache(mode) {
+  if (mode && dbCache[mode]) {
+    dbCache[mode] = { data: null, fetchedAt: 0 };
+    console.log(`[cache] ${mode} invalidated`);
+  }
+}
+
 const dbHandler = async (req, res) => {
   try {
     if (dbEnabled) {
       const mode = normalizeMode(req.query.mode);
-      const data = await exportFullDb(mode);
+      const slot = dbCache[mode];
+      const fresh = slot.data && (Date.now() - slot.fetchedAt) < CACHE_TTL_MS;
+      const data = fresh ? slot.data : await refreshCache(mode);
       res.setHeader('Content-Type', 'application/json');
       res.json(data);
     } else {
@@ -71,10 +110,31 @@ const dbHandler = async (req, res) => {
   }
 };
 
+// Middleware: after any admin write returns a 2xx, invalidate both
+// mode caches. Cross-mode admin flows (syncPtuFromLive, sometimes
+// shop-price/wiki refreshes that touch live data PTU mirrors) make
+// blanket invalidation safer than guessing per-handler. The cost is a
+// fresh refreshCache() on the next /api/db hit per mode — fine.
+function invalidateCacheOnWrite(req, res, next) {
+  if (req.method === 'GET') return next();
+  res.on('finish', () => {
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      invalidateCache('live');
+      invalidateCache('ptu');
+    }
+  });
+  next();
+}
+
 app.get('/health', healthHandler);
 app.get('/api/health', healthHandler);
 app.get('/db', dbHandler);
 app.get('/api/db', dbHandler);
+
+// All admin write paths share this middleware. Applied as a path-level
+// gate so every existing and future admin POST/PATCH/DELETE picks it
+// up automatically without per-handler code changes.
+app.use(['/admin', '/api/admin'], invalidateCacheOnWrite);
 
 // ─── Admin auth ──────────────────────────────────────────────────────
 
@@ -1339,6 +1399,18 @@ async function start() {
     } catch (err) {
       console.error('[db] init failed:', err);
       // Don't crash — fall back to file proxy so the site stays up
+    }
+
+    // Warm the /api/db cache before accepting traffic so the first
+    // user after deploy doesn't pay the 5MB SELECT-and-serialize
+    // latency. Wrapped in try/catch — if the warm fails (transient
+    // DB hiccup at boot) the server still starts and dbHandler will
+    // populate lazily on first request.
+    try {
+      await refreshCache('live');
+      await refreshCache('ptu');
+    } catch (err) {
+      console.warn('[cache] startup warm failed; falling back to lazy population:', err.message);
     }
   } else {
     console.log('[db] DATABASE_URL not set — running in file-proxy mode');
