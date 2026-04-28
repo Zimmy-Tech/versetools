@@ -137,6 +137,27 @@
 @if (isMobile() && hamburgerOpen()) {
   <div class="mobile-overlay" (click)="hamburgerOpen.set(false)"></div>
   <div class="mobile-nav">
+
+    <!-- LIVE / PTU toggle + build label (desktop hides .header-right
+         for mobile, so this is the only place mobile users can switch
+         data mode). -->
+    <div class="mobile-nav-title">DATA SOURCE</div>
+    <div class="mobile-data-source">
+      <div class="data-toggle" [class.disabled]="!data.ptuEnabled()"
+           [title]="data.ptuEnabled() ? '' : (data.ptuLabel() || 'PTU not available')">
+        <span class="toggle-label" [class.active]="data.dataMode() === 'live'">LIVE</span>
+        <div class="toggle-track" [class.disabled]="!data.ptuEnabled()"
+             (click)="data.ptuEnabled() && toggleDataMode()">
+          <div class="toggle-thumb" [class.ptu]="data.dataMode() === 'ptu'"></div>
+        </div>
+        <span class="toggle-label" [class.active]="data.dataMode() === 'ptu'"
+              [class.disabled]="!data.ptuEnabled()">PTU</span>
+      </div>
+      @if (data.isLoaded() && data.db()!.meta.version) {
+        <div class="build-label">{{ data.db()!.meta.version }}</div>
+      }
+    </div>
+
     <div class="mobile-nav-title">NAVIGATE</div>
     <button class="mobile-nav-item" [class.active]="isTabActive('compact')" (click)="navigateTo('compact')">Compact UI</button>
     <button class="mobile-nav-item" [class.active]="isTabActive('loadout')" (click)="navigateTo('loadout')">Loadout</button>

@@ -160,6 +160,36 @@ header {
   padding: 12px 20px 4px;
 }
 
+/* Mobile slide-out data-source row. Hosts the LIVE/PTU toggle +
+   build label since the desktop .header-right is hidden on mobile.
+   The toggle widget itself reuses .data-toggle / .toggle-track /
+   .toggle-thumb / .build-label styles — declared at the top level
+   of this file, so they render correctly inside the slide-out. */
+.mobile-data-source {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+
+  .toggle-track {
+    width: 44px;
+    height: 22px;
+    border-radius: 11px;
+  }
+  .toggle-thumb {
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    left: 2px;
+    &.ptu { left: 24px; }
+  }
+  .toggle-label { font-size: 13px; }
+  .build-label { font-size: 11px; }
+}
+
 .mobile-nav-item {
   display: block;
   width: 100%;
