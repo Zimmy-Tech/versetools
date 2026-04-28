@@ -118,6 +118,20 @@ export class QualitySimulatorComponent {
     return pct >= 0 ? `+${pct.toFixed(1)}%` : `${pct.toFixed(1)}%`;
   }
 
+  /** Recipe data ships some opaque property names (CIG-internal terms);
+   *  rewrite them to user-facing labels for the effects table. The raw
+   *  string still flows through to the parent's stat-layering code,
+   *  which matches on `.toLowerCase().includes(...)` — display rename
+   *  has no functional effect. */
+  private static readonly PROPERTY_DISPLAY_NAMES: Record<string, string> = {
+    'integrity': 'Component HP',
+    'max. shield strength': 'Max Shield HP',
+    'coolant rating': 'Coolant Generation',
+  };
+  displayProperty(raw: string): string {
+    return QualitySimulatorComponent.PROPERTY_DISPLAY_NAMES[raw.toLowerCase()] ?? raw;
+  }
+
   /** Case-insensitive "any fragment matches" lookup against the caller's
    *  baseStats map. Lets callers provide aliases like "recoilPitch" OR "Recoil
    *  Kick" and the simulator finds the right field. */

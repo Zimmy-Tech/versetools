@@ -15,7 +15,7 @@
           <span class="qr-name"
                 [class.ore]="isOre(entry.ing)"
                 [class.gem]="isGem(entry.ing)">{{ entry.ing.resource }}</span>
-          <input type="range" class="qr-slider" min="0" max="1000" step="10"
+          <input type="range" class="qr-slider" min="0" max="1000" step="1"
                  [value]="qualityValues()[entry.key] ?? 500"
                  (input)="setQuality(entry.key, +$any($event.target).value)">
           <span class="qr-val">{{ qualityValues()[entry.key] ?? 500 }}</span>
@@ -38,7 +38,7 @@
         @for (eff of qualityEffects(); track eff.property) {
           <div class="ql-row">
             <div class="ql-left">
-              <span class="ql-property">{{ eff.property }}</span>
+              <span class="ql-property">{{ displayProperty(eff.property) }}</span>
               @if (eff.description) {
                 <span class="ql-desc">{{ eff.description }}</span>
               }
