@@ -8,27 +8,29 @@
 }
 
 .craft-btn {
-  // Anchored to the top-center of the slot so it stays out of the
+  // Anchored to the visual centre of the slot so it stays out of the
   // natural content flow — adjacent slots (e.g. the jump drive
-  // sub-slot directly under a Quantum Drive) can't crash into it.
-  // Top-right was the first try but the picker expand arrow (▸/▾)
-  // sits there already and the badge clipped it.
+  // sub-slot directly under a Quantum Drive) can't crash into it,
+  // and the focus button + picker arrow on the trigger row stay
+  // unobscured. Sized large enough that the click target doesn't
+  // bleed onto the underlying picker-trigger row.
   position: absolute;
-  top: 4px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   z-index: 2;
-  padding: 1px 8px;
+  padding: 5px 14px;
   font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  background: rgba(8, 14, 22, 0.85);
-  color: rgba(159, 223, 255, 0.85);
-  border: 1px solid rgba(80, 180, 255, 0.45);
-  border-radius: 2px;
+  letter-spacing: 0.14em;
+  background: rgba(8, 14, 22, 0.92);
+  color: rgba(159, 223, 255, 0.95);
+  border: 1px solid rgba(80, 180, 255, 0.55);
+  border-radius: 3px;
   cursor: pointer;
   text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 
   &:hover {
