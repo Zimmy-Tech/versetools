@@ -8,17 +8,15 @@
 }
 
 .craft-btn {
-  // Anchored to the visual centre of the slot so it stays out of the
-  // natural content flow — adjacent slots (e.g. the jump drive
-  // sub-slot directly under a Quantum Drive) can't crash into it,
-  // and the focus button + picker arrow on the trigger row stay
-  // unobscured. Sized large enough that the click target doesn't
-  // bleed onto the underlying picker-trigger row.
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
+  // Anchored to the bottom-centre of the slot. Earlier attempts
+  // (top-right, then geometric centre) either clipped the picker
+  // arrow or covered the jane-card stats. Bottom-centre keeps the
+  // badge clear of the trigger row and the stat panel — and stays
+  // out of the natural content flow so adjacent slots (jump drive
+  // under the QD) can't crash into it. Sized large enough that the
+  // click target doesn't bleed onto the picker-trigger row.
+  align-self: center;
+  margin-top: 6px;
   padding: 5px 14px;
   font-family: 'Rajdhani', sans-serif;
   font-size: 12px;
