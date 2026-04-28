@@ -2345,16 +2345,17 @@ select {
   border: 1px solid rgba(255, 192, 77, 0.40);
   border-left: 3px solid #ffc04d;
   border-radius: 3px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  line-height: 1.45;
-  color: var(--text2);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
 
   .craft-banner-icon {
     color: #ffc04d;
-    font-size: 16px;
+    font-size: 18px;
     flex-shrink: 0;
-    margin-top: 1px;
+    margin-top: 0;
     text-shadow: 0 0 6px rgba(255, 192, 77, 0.4);
   }
 
@@ -2363,7 +2364,7 @@ select {
     strong {
       color: #ffc04d;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
     }
   }
 
