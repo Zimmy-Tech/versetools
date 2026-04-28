@@ -931,7 +931,7 @@
     </div>
   }
 
-  @if (isCraftable() && !isLocked() && !pickerOpen() && !collapsed()) {
+  @if (isCraftable() && !isLocked() && !pickerOpen()) {
     <button type="button"
             class="craft-btn"
             [class.crafted]="isCrafted()"
