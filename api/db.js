@@ -679,6 +679,7 @@ export async function ensureReady() {
   await migrateCoolingIrColumn();
   await migrateChangelogStreamColumns();
   await migrateMetaAddModeColumn();
+  await migrateMetaDropLegacyIdColumn();
 }
 
 // Make the singleton `meta` table mode-aware. Without this, a PTU import
@@ -719,6 +720,42 @@ export async function migrateMetaAddModeColumn() {
     await client.query(`ALTER TABLE versedb.meta ADD CONSTRAINT meta_mode_unique UNIQUE (mode)`);
     await client.query('COMMIT');
     console.log('[db] meta mode-aware migration complete');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+// Follow-on fix for the previous migration: the original `id` column
+// remained as the PRIMARY KEY with a DEFAULT of 1, so the first
+// admin import that tried to insert a second mode row defaulted id to
+// 1 and collided with the existing row's id=1 → "duplicate key value
+// violates unique constraint meta_pkey".
+//
+// Drop the legacy id column entirely. mode is the natural primary key
+// (one row per mode), so there's no need for a synthetic id.
+export async function migrateMetaDropLegacyIdColumn() {
+  if (!pool) return;
+  const { rows } = await pool.query(`
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'versedb' AND table_name = 'meta' AND column_name = 'id'
+  `);
+  if (rows.length === 0) return; // already migrated (no id column)
+
+  console.log('[db] migrating: replace meta.id PK with mode PK...');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query(`ALTER TABLE versedb.meta DROP CONSTRAINT IF EXISTS meta_pkey`);
+    await client.query(`ALTER TABLE versedb.meta DROP COLUMN IF EXISTS id`);
+    // The earlier UNIQUE(mode) supersedes any PK; promote it to the PK
+    // for clarity. UNIQUE constraint can coexist but having both is noise.
+    await client.query(`ALTER TABLE versedb.meta DROP CONSTRAINT IF EXISTS meta_mode_unique`);
+    await client.query(`ALTER TABLE versedb.meta ADD PRIMARY KEY (mode)`);
+    await client.query('COMMIT');
+    console.log('[db] meta legacy-id removal complete');
   } catch (err) {
     await client.query('ROLLBACK');
     throw err;
