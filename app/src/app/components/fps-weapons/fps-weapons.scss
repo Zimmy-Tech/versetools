@@ -233,7 +233,11 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     inset 0 -1px 0 rgba(0, 0, 0, 0.25),
     0 4px 20px rgba(0, 0, 0, 0.3);
-  max-width: 1500px;
+  // Cap at 1920 so the FPS Weapons DB stretches into ultra-wide
+  // viewports (table is ~19 columns wide and the previous 1500
+  // cap forced horizontal scroll on most modern monitors). Narrow
+  // viewports still get scroll via the parent overflow:auto.
+  max-width: 1920px;
 
   &::-webkit-scrollbar { width: 4px; height: 4px; }
   &::-webkit-scrollbar-track { background: transparent; }
