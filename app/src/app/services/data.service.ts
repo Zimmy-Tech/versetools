@@ -662,13 +662,17 @@ export class DataService {
       // Skip identity for both kinds.
       if (isAdd ? a === 0 : Math.abs(m - 1) < 1e-4) continue;
       const p = e.property.toLowerCase();
+      // HP-style stats are whole numbers in-game; round them so the
+      // per-slot panel doesn't show 296.94589178356716 from a 0.99×
+      // intermediate. Coolant/aim/speed/fuel can stay fractional —
+      // they're naturally non-integer.
       if (p.includes('integrity')) {
-        if (eff.componentHp != null) { eff.componentHp = eff.componentHp * m; dirty = true; }
-        else if (eff.hp != null)     { eff.hp = eff.hp * m;                   dirty = true; }
+        if (eff.componentHp != null) { eff.componentHp = Math.round(eff.componentHp * m); dirty = true; }
+        else if (eff.hp != null)     { eff.hp = Math.round(eff.hp * m);                   dirty = true; }
       } else if (p.includes('coolant')) {
         if (eff.coolingRate != null) { eff.coolingRate = eff.coolingRate * m; dirty = true; }
       } else if (p.includes('shield strength') || p.includes('shield hp')) {
-        if (eff.type === 'Shield' && eff.hp != null) { eff.hp = eff.hp * m; dirty = true; }
+        if (eff.type === 'Shield' && eff.hp != null) { eff.hp = Math.round(eff.hp * m); dirty = true; }
       } else if (p.includes('power pips') || p.includes('power output')) {
         // Power Pips is additive — recipe ingredients contribute -1/0/+1
         // per band, summed across two ingredients on a power plant
