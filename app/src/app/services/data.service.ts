@@ -99,10 +99,14 @@ export class DataService {
    * Single PP: full powerOutput.
    * Multiple PPs: each contributes ceil(output/2) + size (pairing penalty).
    * Validated across S1/S2/S3 on Sabre, Redeemer, Valkyrie (6 configs, 0% error).
+   *
+   * Reads via effectiveItem so crafted Power Pips (additive +/-N from the
+   * crafting modifiers) flow into the total.
    */
   totalPowerOut = computed(() => {
     const loadout = this.loadout();
-    const pps = Object.values(loadout)
+    const pps = Object.keys(loadout)
+      .map(slotId => this.effectiveItem(slotId))
       .filter((item): item is Item => item !== null && item.type === 'PowerPlant' && (item.powerOutput ?? 0) > 0);
     if (pps.length <= 1) {
       return pps.reduce((sum, pp) => sum + (pp.powerOutput ?? 0), 0);
