@@ -541,20 +541,34 @@ function deepEqualUnordered(a, b) {
   return true;
 }
 
+// Fields the extractor intentionally never writes — these live DB-side
+// only (community-submitted ship accel, accel-tested-date metadata,
+// future curation-only fields). Stripped from BOTH sides of every
+// diffEntity comparison so partial=false uploads don't propose to
+// null them out and partial=true uploads don't accidentally include
+// them either. Add to this set rather than relying on partial mode
+// to suppress null proposals.
+const NEVER_DIFFED_FIELDS = new Set([
+  'accelFwd', 'accelAbFwd',
+  'accelRetro', 'accelAbRetro',
+  'accelStrafe', 'accelAbStrafe',
+  'accelUp', 'accelAbUp',
+  'accelDown', 'accelAbDown',
+  'accelTestedDate',
+]);
+
 function diffEntity(uploaded, current, partial = false) {
   // Returns a list of { field, oldValue, newValue } describing fields
   // that differ between the uploaded blob and the current DB blob.
   //
   // partial=true: only walk fields present in the upload. Fields that
   // exist in the DB but are missing from the upload are treated as
-  // "no change" (preserve DB value). Used by chunked uploads so that
-  // the extractor's intentional omissions (e.g. accel data, which now
-  // lives DB-side only via community submissions) don't surface as
-  // proposed deletes on every diff.
+  // "no change" (preserve DB value). Used by chunked uploads.
   //
   // partial=false (default): walk the union — any field present in
   // either side is considered. A field missing from the upload but
-  // present in the DB shows as a "→ null" proposed change.
+  // present in the DB shows as a "→ null" proposed change EXCEPT for
+  // fields in NEVER_DIFFED_FIELDS, which are always preserved DB-side.
   const changes = [];
   const keys = partial
     ? new Set(Object.keys(uploaded || {}))
@@ -562,6 +576,7 @@ function diffEntity(uploaded, current, partial = false) {
         ...Object.keys(uploaded || {}),
         ...Object.keys(current || {}),
       ]);
+  for (const k of NEVER_DIFFED_FIELDS) keys.delete(k);
   for (const key of keys) {
     const a = current ? current[key] : undefined;
     const b = uploaded ? uploaded[key] : undefined;
