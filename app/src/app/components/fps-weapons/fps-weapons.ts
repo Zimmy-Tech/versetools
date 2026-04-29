@@ -55,7 +55,7 @@ export class FpsWeaponsComponent {
   typeFilter = signal('');
   subTypeFilter = signal('');
   searchQuery = signal('');
-  sortBy = signal<'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name' | 'mass'>('name');
+  sortBy = signal<'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name' | 'mass' | 'adsTime' | 'adsZoomScale'>('name');
   sortDir = signal<'asc' | 'desc'>('asc');
 
   magSortBy = signal<'name' | 'ammoCount' | 'mass' | 'size'>('name');
@@ -149,7 +149,7 @@ export class FpsWeaponsComponent {
     });
   }
 
-  toggleSort(col: 'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name' | 'mass'): void {
+  toggleSort(col: 'dps' | 'alphaDamage' | 'fireRate' | 'magazineSize' | 'name' | 'mass' | 'adsTime' | 'adsZoomScale'): void {
     if (this.sortBy() === col) {
       this.sortDir.set(this.sortDir() === 'desc' ? 'asc' : 'desc');
     } else {
