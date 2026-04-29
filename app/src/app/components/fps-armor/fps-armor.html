@@ -62,7 +62,7 @@
             <th class="col-num">Temp</th>
             <th class="col-num">Rad</th>
             <th class="col-num">Carry (K µSCU)</th>
-            <th class="sortable col-num" title="G-force tolerance modifier from this piece. Sums across the whole worn outfit. Positive = bonus (flight suits), negative = penalty (heavy armor)." (click)="toggleSort('gForceResistance')">G-Tol{{ sortIndicator('gForceResistance') }}</th>
+            <th class="sortable col-num" title="Absolute G-tolerance modifier from this piece, in G units. Sums across the whole worn outfit. Positive = bonus (flight suits add G's), negative = penalty (heavy armor reduces G's)." (click)="toggleSort('gForceResistance')">G-Tol{{ sortIndicator('gForceResistance') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -83,7 +83,7 @@
               <td class="col-num">{{ p.carryingCapacity ?? '\u2014' }}</td>
               <td class="col-num"
                   [class.positive]="(p.gForceResistance ?? 0) > 0"
-                  [class.negative]="(p.gForceResistance ?? 0) < 0">{{ p.gForceResistance != null ? (p.gForceResistance > 0 ? '+' : '') + p.gForceResistance : '\u2014' }}</td>
+                  [class.negative]="(p.gForceResistance ?? 0) < 0">{{ p.gForceResistance != null ? (p.gForceResistance > 0 ? '+' : '') + p.gForceResistance + ' G' : '\u2014' }}</td>
             </tr>
             @if (expandedPiece() === p.className && p.variants.length > 0) {
               <tr class="variant-row">
