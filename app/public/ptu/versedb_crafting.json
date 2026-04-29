@@ -1,11 +1,11 @@
 {
   "meta": {
-    "totalRecipes": 1415,
+    "totalRecipes": 1425,
     "categories": {
       "MissionItem": 1,
       "FPSWeapons": 192,
       "ShipMiningLaser": 14,
-      "FPSArmours": 861,
+      "FPSArmours": 871,
       "ShipWeapon": 25,
       "ShipSalvage": 3,
       "ShipTractorBeam": 11,
@@ -3672,18 +3672,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.2,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 4
+          "quantity": 4,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.06,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3699,18 +3732,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.19,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3726,18 +3792,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.19,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3753,18 +3852,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.19,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3780,18 +3912,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.19,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3807,18 +3972,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.19,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3834,18 +4032,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.19,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3861,18 +4092,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.11,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3888,18 +4152,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.11,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3915,18 +4212,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.11,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3942,18 +4272,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.11,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3969,18 +4332,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.11,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -3996,18 +4392,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.11,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -4023,18 +4452,51 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.11,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Impact Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            }
+          ]
         }
       ]
     },
@@ -5053,6 +5515,42 @@
     {
       "className": "vgl_flightsuit_helmet_01_02_01",
       "itemName": "vgl_flightsuit_helmet_01_02_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "mrai_flightsuit_helmet_01_07_02",
+      "itemName": "*PLACEHOLDER*",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -11647,6 +12145,42 @@
     {
       "className": "syfb_flightsuit_suit_01_01_01",
       "itemName": "Xanthule Suit",
+      "category": "FPSArmours",
+      "subtype": "Other",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.06,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_01_01_01",
+      "itemName": "vgl_flightsuit_01_01_01",
       "category": "FPSArmours",
       "subtype": "Other",
       "tier": 0,
@@ -30090,6 +30624,294 @@
           "resource": "Laranite",
           "quantity": 0.06,
           "minQuality": 0
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_09_01",
+      "itemName": "vgl_flightsuit_helmet_01_09_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_05_01",
+      "itemName": "vgl_flightsuit_helmet_01_05_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_08_01",
+      "itemName": "vgl_flightsuit_helmet_01_08_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_07_01",
+      "itemName": "vgl_flightsuit_helmet_01_07_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_03_01",
+      "itemName": "vgl_flightsuit_helmet_01_03_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_10_01",
+      "itemName": "vgl_flightsuit_helmet_01_10_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_06_01",
+      "itemName": "vgl_flightsuit_helmet_01_06_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "vgl_flightsuit_helmet_01_04_01",
+      "itemName": "vgl_flightsuit_helmet_01_04_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
         }
       ]
     },
@@ -63580,18 +64402,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.06,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Efficiency",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.06,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 6
+          "quantity": 6,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63607,18 +64498,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.04,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Efficiency",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.04,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 4
+          "quantity": 4,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63634,18 +64594,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.04,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Efficiency",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Copper",
           "quantity": 0.04,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Sadaryx",
-          "quantity": 4
+          "quantity": 4,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_HullScraping_Radius",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_HullScraping_Speed",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.95,
+              "modifierAtEnd": 1.05,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63661,18 +64690,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.26,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63688,18 +64786,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.26,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63715,18 +64882,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.26,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63742,18 +64978,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.64,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.26,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 13
+          "quantity": 13,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63769,18 +65074,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.14,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63796,18 +65170,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.14,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63823,18 +65266,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.14,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63850,18 +65362,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 0.36,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.14,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 7
+          "quantity": 7,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63877,18 +65458,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 1.16,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.46,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 23
+          "quantity": 23,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63904,18 +65554,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 1.16,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.46,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 23
+          "quantity": 23,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },
@@ -63931,18 +65650,87 @@
           "type": "resource",
           "resource": "Iron",
           "quantity": 1.16,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Integrity",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "resource",
           "resource": "Agricium",
           "quantity": 0.46,
-          "minQuality": 0
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Beam Force",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f %%"
+            },
+            {
+              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         },
         {
           "type": "item",
           "resource": "Dolivine",
-          "quantity": 23
+          "quantity": 23,
+          "qualityModifiers": [
+            {
+              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": ""
+            },
+            {
+              "property": "GPP_Weapon_Tractor_MaxDist",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.9,
+              "modifierAtEnd": 1.1,
+              "unit": ""
+            }
+          ]
         }
       ]
     },

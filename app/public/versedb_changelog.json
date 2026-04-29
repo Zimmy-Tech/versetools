@@ -1,9 +1,130 @@
 {
   "meta": {
-    "generatedAt": "2026-04-28T09:15:46.330046+00:00",
-    "entries": 1
+    "generatedAt": "2026-04-29T00:53:56.410114+00:00",
+    "entries": 2
   },
   "changelog": [
+    {
+      "channel": "ptu",
+      "fromVersion": "4.8.0-ptu.11733560",
+      "toVersion": "4.8.0-ptu.11740071",
+      "date": "2026-04-29",
+      "changes": [
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Nyx_VeryEasy",
+          "name": "Keep [Objects] Safe From Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Pyro_VeryEasy",
+          "name": "Keep [Objects] Safe From Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendDestructibleEntities_Stanton_VeryEasy",
+          "name": "Keep [Objects] Safe From Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Nyx",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Pyro",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Stanton",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Nyx_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Pyro_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Stanton_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Easy",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Moderate",
+          "name": "URGENT REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Easy",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Moderate",
+          "name": "URGENT REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Stanton_Easy",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Stanton_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission_refs",
+          "className": "missionRefs",
+          "name": "Mission reference data"
+        }
+      ],
+      "added": [
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Nyx_Hard",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Nyx_Super",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Pyro_Hard",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Pyro_Super",
+          "name": "URGENT FLEET REFUEL"
+        }
+      ],
+      "removed": []
+    },
     {
       "channel": "ptu",
       "fromVersion": "4.7.2-live.11715810",
