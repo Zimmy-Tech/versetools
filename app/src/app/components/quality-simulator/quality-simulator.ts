@@ -216,8 +216,7 @@ export class QualitySimulatorComponent {
   }
 
   setAllQuality(value: number): void {
-    const r = this.recipe();
-    const entries = this.ingredientsWithQuality(r);
+    const entries = this.qualityIngredients();
     const updated: Record<string, number> = {};
     for (const e of entries) updated[e.key] = value;
     this.qualityValues.update(qv => ({ ...qv, ...updated }));
