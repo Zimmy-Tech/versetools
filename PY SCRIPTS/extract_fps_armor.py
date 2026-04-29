@@ -188,8 +188,25 @@ def parse_armor_piece(xml_path, loc, slot, weight):
     loc_key = name_match.group(1) if name_match else ""
     display_name = resolve_name(loc, loc_key) if loc_key else ""
 
+    # Fallback: CIG sometimes ships entity files with @LOC_UNINITIALIZED
+    # / @item_Name_… keys that have no localization entry yet (e.g. the
+    # VGL flightsuits in 4.8 PTU). Rather than drop them, derive a
+    # humanish label from the className so the row still appears.
+    # Strip the trailing _NN_NN texture/color suffix (last two purely
+    # numeric segments) so we keep the set number but lose the
+    # variant indices.
     if not display_name:
-        return None  # Can't identify this piece
+        parts = stem.split("_")
+        for _ in range(2):
+            if parts and parts[-1].isdigit():
+                parts.pop()
+        if not parts:
+            return None
+        mfr_token = parts[0].upper()
+        rest = " ".join(p.capitalize() for p in parts[1:])
+        display_name = f"{mfr_token} {rest}".strip()
+        if not display_name:
+            return None
 
     # Get damage reduction from description
     dmg_reduction = get_damage_reduction(loc, loc_key) if loc_key else None
@@ -256,6 +273,18 @@ def parse_armor_piece(xml_path, loc, slot, weight):
         try: mass = float(m_mass.group(1))
         except ValueError: mass = None
 
+    # G-force resistance — clothing/armor flight performance modifier.
+    # Lives on SCItemClothingFlightParams. Positive = improves G
+    # tolerance (flight suits); negative = restricts (heavy armor).
+    # Per-piece values sum across the worn outfit (sign convention
+    # observed from the data: -0.875…+0.975 range, halving sequence
+    # on negatives strongly suggests additive composition).
+    g_force = None
+    m_g = re.search(r'gForceResistance="(-?[\d.]+)"', txt)
+    if m_g:
+        try: g_force = float(m_g.group(1))
+        except ValueError: g_force = None
+
     # Port schema — drives the paper-doll slot layout + picker filters
     ports = parse_ports(txt)
 
@@ -273,6 +302,7 @@ def parse_armor_piece(xml_path, loc, slot, weight):
         "radiationScrub": radiation_scrub,
         "carryingCapacity": carrying,
         "mass": round(mass, 4) if mass is not None else None,
+        "gForceResistance": g_force,
         "ports": ports,
     }
 

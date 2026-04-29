@@ -15,6 +15,7 @@ interface ArmorPiece {
   radiationProtection: number | null;
   radiationScrub: number | null;
   carryingCapacity: number | null;
+  gForceResistance: number | null;
   variants: string[];
 }
 
@@ -54,7 +55,7 @@ export class FpsArmorComponent {
     return ['', ...Array.from(roots).sort()];
   });
   searchQuery = signal('');
-  sortBy = signal<'name' | 'damageReduction' | 'weight' | 'slot'>('name');
+  sortBy = signal<'name' | 'damageReduction' | 'weight' | 'slot' | 'gForceResistance'>('name');
   sortDir = signal<'asc' | 'desc'>('asc');
 
   filtered = computed(() => {
@@ -98,7 +99,7 @@ export class FpsArmorComponent {
     this.expandedPiece.set(this.expandedPiece() === className ? null : className);
   }
 
-  toggleSort(col: 'name' | 'damageReduction' | 'weight' | 'slot'): void {
+  toggleSort(col: 'name' | 'damageReduction' | 'weight' | 'slot' | 'gForceResistance'): void {
     if (this.sortBy() === col) {
       this.sortDir.set(this.sortDir() === 'desc' ? 'asc' : 'desc');
     } else {
