@@ -1,5 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from '../../services/data.service';
 
 interface ArmorPiece {
   className: string;
@@ -88,10 +89,16 @@ export class FpsArmorComponent {
     return list;
   });
 
-  constructor(private http: HttpClient) {
-    this.http.get<{ armor: ArmorPiece[] }>('live/versedb_fps_armor.json').subscribe(data => {
-      this.allPieces.set(data.armor);
-      this.loaded.set(true);
+  constructor(private http: HttpClient, private data: DataService) {
+    // Re-load whenever the LIVE/PTU slider flips. data.dataPrefix() is
+    // a computed that returns 'live/' or 'ptu/'.
+    effect(() => {
+      const prefix = this.data.dataPrefix();
+      this.loaded.set(false);
+      this.http.get<{ armor: ArmorPiece[] }>(`${prefix}versedb_fps_armor.json`).subscribe({
+        next: (d) => { this.allPieces.set(d.armor); this.loaded.set(true); },
+        error: () => this.loaded.set(true),
+      });
     });
   }
 

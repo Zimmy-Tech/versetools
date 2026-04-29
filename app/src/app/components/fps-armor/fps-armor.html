@@ -58,11 +58,11 @@
           <tr>
             <th class="sortable" (click)="toggleSort('name')">Name{{ sortIndicator('name') }}</th>
             <th class="sortable" (click)="toggleSort('weight')">Weight{{ sortIndicator('weight') }}</th>
-            <th class="sortable" (click)="toggleSort('damageReduction')">DR{{ sortIndicator('damageReduction') }}</th>
-            <th>Temp</th>
-            <th>Rad</th>
-            <th>Carry (K µSCU)</th>
-            <th class="sortable" title="G-force tolerance modifier from this piece. Sums across the whole worn outfit. Positive = bonus (flight suits), negative = penalty (heavy armor)." (click)="toggleSort('gForceResistance')">G-Tol{{ sortIndicator('gForceResistance') }}</th>
+            <th class="sortable col-num" (click)="toggleSort('damageReduction')">DR{{ sortIndicator('damageReduction') }}</th>
+            <th class="col-num">Temp</th>
+            <th class="col-num">Rad</th>
+            <th class="col-num">Carry (K µSCU)</th>
+            <th class="sortable col-num" title="G-force tolerance modifier from this piece. Sums across the whole worn outfit. Positive = bonus (flight suits), negative = penalty (heavy armor)." (click)="toggleSort('gForceResistance')">G-Tol{{ sortIndicator('gForceResistance') }}</th>
           </tr>
         </thead>
         <tbody>

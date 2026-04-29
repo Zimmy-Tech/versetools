@@ -210,11 +210,14 @@
   }
 
   .col-num {
-    text-align: right;
+    text-align: center;
     font-family: 'Share Tech Mono', monospace;
     font-size: 13px;
     color: var(--text);
   }
+  // Header cells with the col-num class also pick up center alignment
+  // so the column heading sits over its data cells, not skewed right.
+  thead th.col-num { text-align: center; }
 
   .col-dr { color: var(--green); font-weight: 600; }
 
