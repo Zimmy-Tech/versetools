@@ -249,6 +249,64 @@
   &.negative { color: var(--red); }
 }
 
+/* Per-ingredient quality-band strip — sits under the slider and
+   shows the breakpoints (e.g. Power Pips: 0-399 -1 / 400-899 0 /
+   900-1000 +1). Active band is highlighted so users can see at a
+   glance which threshold they're inside. */
+.qr-bands {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 0 4px 14px;
+  margin-top: -4px;
+  margin-bottom: 6px;
+  border-left: 1px dashed rgba(0, 200, 255, 0.18);
+  margin-left: 6px;
+}
+
+.qr-bands-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text3);
+  flex-shrink: 0;
+  min-width: 96px;
+}
+
+.qr-bands-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex: 1;
+}
+
+.qr-band {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  background: rgba(8, 14, 22, 0.55);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+
+  .qr-band-range { color: var(--text3); opacity: 0.7; }
+  .qr-band-val   { color: var(--text2); font-weight: 700; }
+
+  &.active {
+    border-color: rgba(0, 200, 255, 0.55);
+    background: rgba(0, 200, 255, 0.08);
+    color: var(--accent);
+    .qr-band-range { color: var(--accent); opacity: 1; }
+    .qr-band-val   { color: #c8edff; }
+  }
+}
+
 /* Per-ingredient breakdown rows under a property. Only rendered when
    2+ ingredients contribute to the same property — single-contributor
    props don't need the breakdown. */

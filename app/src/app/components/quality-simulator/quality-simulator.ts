@@ -106,10 +106,50 @@ export class QualitySimulatorComponent {
     return recipe.ingredients.some(i => i.qualityModifiers?.length);
   }
 
-  ingredientsWithQuality(recipe: CraftingRecipe): { ing: CraftingIngredient; key: string }[] {
+  ingredientsWithQuality(recipe: CraftingRecipe): { ing: CraftingIngredient; key: string; idx: number }[] {
     return recipe.ingredients
-      .map((ing, i) => ({ ing, key: `${i}_${ing.resource}` }))
+      .map((ing, i) => ({ ing, key: `${i}_${ing.resource}`, idx: i }))
       .filter(x => !!x.ing.qualityModifiers?.length);
+  }
+
+  /** Per-ingredient quality-band breakdown for the slider strip.
+   *  Groups bands by property; for each band, returns the q-range,
+   *  a human-readable value label, and whether the slider position
+   *  is currently inside it. The UI uses this to render a row of
+   *  band chips below each slider so users see breakpoints at a
+   *  glance — e.g. "drop quality below 400 and you lose a pip." */
+  ingredientBands(idx: number, ing: CraftingIngredient): {
+    property: string;
+    bands: { start: number; end: number; label: string; active: boolean }[];
+  }[] {
+    const q = this.qualityValues()[`${idx}_${ing.resource}`] ?? 500;
+    const byProp: Record<string, { start: number; end: number; label: string; active: boolean }[]> = {};
+    for (const m of (ing.qualityModifiers ?? [])) {
+      const isAdd = m.kind === 'additive';
+      const startVal = isAdd ? (m.additiveModifierAtStart ?? 0) : (m.modifierAtStart ?? 1);
+      const endVal   = isAdd ? (m.additiveModifierAtEnd ?? 0)   : (m.modifierAtEnd ?? 1);
+      let label: string;
+      if (isAdd) {
+        const sign = (n: number) => (n > 0 ? '+' : '');
+        label = startVal === endVal
+          ? `${sign(startVal)}${startVal}`
+          : `${sign(startVal)}${startVal} → ${sign(endVal)}${endVal}`;
+      } else {
+        const pct = (v: number) => {
+          const p = Math.round((v - 1) * 100);
+          return p > 0 ? `+${p}%` : `${p}%`;
+        };
+        label = startVal === endVal
+          ? pct(startVal)
+          : `${pct(startVal)} → ${pct(endVal)}`;
+      }
+      const active = q >= m.startQuality && q <= m.endQuality;
+      (byProp[m.property] ??= []).push({ start: m.startQuality, end: m.endQuality, label, active });
+    }
+    return Object.entries(byProp).map(([property, bands]) => ({
+      property: this.displayProperty(property),
+      bands: bands.sort((a, b) => a.start - b.start),
+    }));
   }
 
   setQuality(key: string, value: number): void {

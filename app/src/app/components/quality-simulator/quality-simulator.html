@@ -20,6 +20,20 @@
                  (input)="setQuality(entry.key, +$any($event.target).value)">
           <span class="qr-val">{{ qualityValues()[entry.key] ?? 500 }}</span>
         </div>
+
+        @for (group of ingredientBands(entry.idx, entry.ing); track group.property) {
+          <div class="qr-bands">
+            <span class="qr-bands-label">{{ group.property }}</span>
+            <div class="qr-bands-strip">
+              @for (b of group.bands; track b.start) {
+                <span class="qr-band" [class.active]="b.active">
+                  <span class="qr-band-range">{{ b.start }}–{{ b.end }}</span>
+                  <span class="qr-band-val">{{ b.label }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        }
       }
     </div>
 
