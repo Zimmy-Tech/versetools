@@ -1,5 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from '../../services/data.service';
 
 interface FpsWeapon {
   className: string;
@@ -141,11 +142,20 @@ export class FpsWeaponsComponent {
     return list;
   });
 
-  constructor(private http: HttpClient) {
-    this.http.get<{ weapons: FpsWeapon[]; magazines?: FpsMagazine[] }>('live/versedb_fps.json').subscribe(data => {
-      this.weapons.set(data.weapons);
-      this.magazines.set(data.magazines ?? []);
-      this.loaded.set(true);
+  constructor(private http: HttpClient, private data: DataService) {
+    // Re-fetch when the LIVE/PTU slider flips so the table tracks
+    // whichever mode is active.
+    effect(() => {
+      const prefix = this.data.dataPrefix();
+      this.loaded.set(false);
+      this.http.get<{ weapons: FpsWeapon[]; magazines?: FpsMagazine[] }>(`${prefix}versedb_fps.json`).subscribe({
+        next: (d) => {
+          this.weapons.set(d.weapons);
+          this.magazines.set(d.magazines ?? []);
+          this.loaded.set(true);
+        },
+        error: () => this.loaded.set(true),
+      });
     });
   }
 

@@ -251,9 +251,13 @@ export class FpsItemsComponent {
         this.hydrateFromDb(fpsItems, fpsGear);
       }
     });
-    // Kick off the JSON fallback regardless — it's a no-op if DataService
-    // wins the race, and it prevents a blank table on the preview host.
-    this.loadFromStaticJson();
+    // JSON fallback fires inside an effect so a LIVE/PTU slider toggle
+    // re-fetches against the new mode prefix. No-op when the DB-backed
+    // path has already populated `loaded`.
+    effect(() => {
+      const prefix = this.data.dataPrefix();
+      this.loadFromStaticJson(prefix);
+    });
   }
 
   private hydrateFromDb(fpsItems: any[], fpsGear: any[]): void {
@@ -262,9 +266,9 @@ export class FpsItemsComponent {
     this.loaded.set(true);
   }
 
-  private loadFromStaticJson(): void {
-    const gear$ = this.http.get<{ items: FpsItem[] }>('live/versedb_fps_gear.json');
-    const fps$  = this.http.get<{ attachments?: any[] }>('live/versedb_fps.json');
+  private loadFromStaticJson(prefix: string = 'live/'): void {
+    const gear$ = this.http.get<{ items: FpsItem[] }>(`${prefix}versedb_fps_gear.json`);
+    const fps$  = this.http.get<{ attachments?: any[] }>(`${prefix}versedb_fps.json`);
     let gearItems: FpsItem[] = [];
     let attachItems: FpsItem[] = [];
     let gearDone = false, fpsDone = false;
