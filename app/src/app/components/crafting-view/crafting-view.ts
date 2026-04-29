@@ -63,9 +63,9 @@ export class CraftingViewComponent {
 
   searchQuery = signal('');
   resourceFilter = signal('');
-  /** Single hierarchical filter — replaces the previous 14-dropdown
-   *  pile (category + subtype + armor set + 6 weapon families + 9
-   *  ship-component family selects). Encoded as one of:
+  /** Hierarchical filter, encoded as `top` or `top.sub`. Driven by the
+   *  top-tab strip + the contextual sub-category dropdown in the
+   *  sidebar. Encoded values:
    *    ''                              All Recipes
    *    'fpsWeapons'                    All FPS Weapons
    *    'fpsWeapons.<subtype>'          Pistol / Rifle / Sniper / etc.
@@ -74,12 +74,34 @@ export class CraftingViewComponent {
    *    'flightSuits'                   Flight suits (name predicate)
    *    'shipComponents'                All ship recipes
    *    'shipComponents.<category>'     ShipCooler / ShipPowerPlant / ...
-   *  The handler in allFiltered() splits on '.' and applies the
-   *  category/subtype filter accordingly. */
+   *  Split on '.' inside allFiltered() to apply category/subtype
+   *  filtering. */
   groupFilter = signal('');
   sortBy = signal<'name' | 'time' | 'ingredients'>('name');
   page = signal(1);
   readonly pageSize = 100;
+
+  /** Tabs surfaced as a horizontal strip at the top of the page. The
+   *  empty slug = "All Recipes" — matches groupFilter '' so no filter
+   *  is applied. The order here is the order they render. */
+  readonly tabs: { slug: string; label: string }[] = [
+    { slug: '',               label: 'All' },
+    { slug: 'fpsWeapons',     label: 'FPS Weapons' },
+    { slug: 'fpsArmor',       label: 'FPS Armor' },
+    { slug: 'flightSuits',    label: 'Flight Suits' },
+    { slug: 'shipComponents', label: 'Ship Components' },
+  ];
+
+  /** Top-level slug derived from groupFilter — used to highlight the
+   *  active tab and to drive the contextual sub-dropdown. */
+  activeTab = computed(() => this.groupFilter().split('.', 1)[0]);
+
+  /** Sub-category portion of groupFilter (after the dot), or '' for
+   *  "all within this tab". Drives the sidebar sub-dropdown value. */
+  activeSub = computed(() => {
+    const parts = this.groupFilter().split('.');
+    return parts.length > 1 ? parts[1] : '';
+  });
 
   /** Concrete subtype options surfaced under each group in the
    *  template. Auto-derived from the data so new recipes light up
@@ -109,6 +131,43 @@ export class CraftingViewComponent {
   // distinct from generic FPS armor/undersuits.
   private isFlightSuit(r: CraftingRecipe): boolean {
     return /flight\s*suit/i.test(r.itemName);
+  }
+
+  /** Recipe count per top tab — drives the "(N)" suffix on each tab
+   *  label. Computed from the same predicates allFiltered() uses so
+   *  the numbers always match what the list will show. */
+  tabCounts = computed(() => {
+    const recipes = this.allRecipes();
+    const counts: Record<string, number> = {
+      '':               recipes.length,
+      'fpsWeapons':     0,
+      'fpsArmor':       0,
+      'flightSuits':    0,
+      'shipComponents': 0,
+    };
+    for (const r of recipes) {
+      if (r.category === 'FPSWeapons')           counts['fpsWeapons']++;
+      else if (r.category === 'FPSArmours')      counts['fpsArmor']++;
+      if (this.isFlightSuit(r))                  counts['flightSuits']++;
+      if (r.category.startsWith('Ship'))         counts['shipComponents']++;
+    }
+    return counts;
+  });
+
+  /** Click handler for the top tab strip — drops any sub-filter so a
+   *  tab switch lands you on "all within this tab", not a stale sub
+   *  selection from the previous tab. */
+  setTab(slug: string): void {
+    this.groupFilter.set(slug);
+    this.page.set(1);
+  }
+
+  /** Change handler for the contextual sub-dropdown — appends the sub
+   *  to the active tab's slug. Empty value = "all within this tab". */
+  setSub(sub: string): void {
+    const top = this.activeTab();
+    this.groupFilter.set(sub ? `${top}.${sub}` : top);
+    this.page.set(1);
   }
 
   /** Click handler on result tags / cards — drops a name into the

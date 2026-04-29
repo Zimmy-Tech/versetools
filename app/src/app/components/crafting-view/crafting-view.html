@@ -6,6 +6,21 @@
     </div>
   } @else {
 
+    <!-- Top tab strip — categorizes the recipe set. Active tab drives
+         the contextual sub-dropdown in the sidebar. -->
+    <nav class="cv-tabs" role="tablist" aria-label="Crafting category">
+      @for (t of tabs; track t.slug) {
+        <button class="cv-tab"
+                role="tab"
+                [class.active]="activeTab() === t.slug"
+                [attr.aria-selected]="activeTab() === t.slug"
+                (click)="setTab(t.slug)">
+          {{ t.label }}
+          <span class="cv-tab-count">{{ tabCounts()[t.slug] }}</span>
+        </button>
+      }
+    </nav>
+
     <div class="crafting-layout">
 
     <!-- Sidebar: search + filters + item sets -->
@@ -20,39 +35,48 @@
                (input)="searchQuery.set($any($event.target).value); resetPage()">
       </div>
 
-      <!-- Single hierarchical Group dropdown — replaces the previous
-           14-dropdown pile. Pick a top-level group ("All FPS Weapons")
-           or drill into a specific subtype ("Pistol"). Auto-populated
-           from the data via groupOptions(). -->
-      <div class="filter-group">
-        <label>Group</label>
-        <select class="filter-select"
-                [value]="groupFilter()"
-                (change)="groupFilter.set($any($event.target).value); resetPage()">
-          <option value="">All Recipes</option>
-          <optgroup label="FPS Weapons">
-            <option value="fpsWeapons">All FPS Weapons</option>
+      <!-- Contextual sub-category dropdown — only renders when the
+           active tab actually has subdivisions. FPS Weapons →
+           Pistol/Rifle/etc, FPS Armor → Core/Helmet/etc, Ship
+           Components → Cooler/PP/Shield/etc. Flight Suits + All have
+           no sub-categories so the dropdown is hidden. -->
+      @if (activeTab() === 'fpsWeapons') {
+        <div class="filter-group">
+          <label>Subtype</label>
+          <select class="filter-select"
+                  [value]="activeSub()"
+                  (change)="setSub($any($event.target).value)">
+            <option value="">All FPS Weapons</option>
             @for (s of groupOptions().fpsWeaponSubs; track s) {
-              <option [value]="'fpsWeapons.' + s">{{ s }}</option>
+              <option [value]="s">{{ s }}</option>
             }
-          </optgroup>
-          <optgroup label="FPS Armor">
-            <option value="fpsArmor">All FPS Armor</option>
+          </select>
+        </div>
+      } @else if (activeTab() === 'fpsArmor') {
+        <div class="filter-group">
+          <label>Slot</label>
+          <select class="filter-select"
+                  [value]="activeSub()"
+                  (change)="setSub($any($event.target).value)">
+            <option value="">All FPS Armor</option>
             @for (s of groupOptions().fpsArmorSubs; track s) {
-              <option [value]="'fpsArmor.' + s">{{ s }}</option>
+              <option [value]="s">{{ s }}</option>
             }
-          </optgroup>
-          <optgroup label="Flight Suits">
-            <option value="flightSuits">All Flight Suits</option>
-          </optgroup>
-          <optgroup label="Ship Components">
-            <option value="shipComponents">All Ship Components</option>
+          </select>
+        </div>
+      } @else if (activeTab() === 'shipComponents') {
+        <div class="filter-group">
+          <label>Component</label>
+          <select class="filter-select"
+                  [value]="activeSub()"
+                  (change)="setSub($any($event.target).value)">
+            <option value="">All Ship Components</option>
             @for (c of groupOptions().shipCats; track c.value) {
-              <option [value]="'shipComponents.' + c.value">{{ c.label }}</option>
+              <option [value]="c.value">{{ c.label }}</option>
             }
-          </optgroup>
-        </select>
-      </div>
+          </select>
+        </div>
+      }
 
       <div class="filter-group">
         <label>Resource</label>
