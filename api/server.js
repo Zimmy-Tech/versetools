@@ -578,6 +578,13 @@ function diffEntity(uploaded, current, partial = false) {
         ...Object.keys(current || {}),
       ]);
   for (const k of NEVER_DIFFED_FIELDS) keys.delete(k);
+  // Internal scratch fields (underscore-prefix convention) — never
+  // diff regardless of which side they appear on. Catches both the
+  // DB-side leftovers from older imports (e.g. _modifications,
+  // _idToHp) and any new extractor leaks before they propagate.
+  for (const k of [...keys]) {
+    if (k.startsWith('_')) keys.delete(k);
+  }
   for (const key of keys) {
     const a = current ? current[key] : undefined;
     const b = uploaded ? uploaded[key] : undefined;

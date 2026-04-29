@@ -6334,9 +6334,13 @@ def main(mode: str = "live"):
     # leaking into versedb_data.json and producing massive admin-diff noise
     # on every re-extraction (insertion-order changes, internal CIG variant
     # rule tweaks). Drop them at output-write time.
+    # Underscore-prefix is the convention for internal extractor
+    # scratch — drop ALL such keys at output-write time so any future
+    # _foo field added during processing doesn't leak into the public
+    # JSON or the admin diff.
     for ship in output["ships"]:
-        ship.pop("_modifications", None)
-        ship.pop("_idToHp", None)
+        for k in [k for k in ship.keys() if k.startswith("_")]:
+            ship.pop(k, None)
 
     # Normalize whole-number floats to ints so 78400.0 and 78400 don't
     # diff as different values across re-extractions. Most of our numeric
