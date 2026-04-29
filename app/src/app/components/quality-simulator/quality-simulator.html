@@ -15,6 +15,7 @@
           <span class="qr-name"
                 [class.ore]="isOre(entry.ing)"
                 [class.gem]="isGem(entry.ing)">{{ entry.ing.resource }}</span>
+          <span class="qr-qty">{{ fmtQty(entry.ing) }}</span>
           <input type="range" class="qr-slider" min="0" max="1000" step="1"
                  [value]="qualityValues()[entry.key] ?? 500"
                  (input)="setQuality(entry.key, +$any($event.target).value)">

@@ -234,6 +234,14 @@ export class QualitySimulatorComponent {
     return pct >= 0 ? `+${pct.toFixed(1)}%` : `${pct.toFixed(1)}%`;
   }
 
+  /** Quantity label shown next to ingredient names — sub-1 SCU values
+   *  (ore fractions) read as "0.28 SCU", whole-or-larger counts (gems
+   *  / items) read as "×3". Mirrors crafting-view.fmtQty. */
+  fmtQty(ing: CraftingIngredient): string {
+    if (ing.quantity < 1) return `${ing.quantity} SCU`;
+    return `×${ing.quantity}`;
+  }
+
   /** Top-line "% change" cell. Multiplicative renders as a signed
    *  percent off identity (1.0); additive renders as a signed integer
    *  with the unit (e.g. "+2 SEG"). */

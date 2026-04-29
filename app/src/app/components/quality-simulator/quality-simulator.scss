@@ -69,6 +69,15 @@
   &.gem { color: #e87ae8; }
 }
 
+.qr-qty {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  width: 64px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
 .qr-slider {
   flex: 1;
   height: 4px;
