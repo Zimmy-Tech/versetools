@@ -248,3 +248,37 @@
   &.cold { color: var(--accent); }
   &.negative { color: var(--red); }
 }
+
+/* Per-ingredient breakdown rows under a property. Only rendered when
+   2+ ingredients contribute to the same property — single-contributor
+   props don't need the breakdown. */
+.ql-contributions {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 2px 0 6px 18px;
+  margin-top: -2px;
+  border-left: 1px dashed rgba(0, 200, 255, 0.18);
+  margin-left: 6px;
+}
+
+.ql-contrib {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.ql-contrib-name {
+  letter-spacing: 0.04em;
+}
+
+.ql-contrib-val {
+  color: var(--text2);
+  font-weight: 700;
+  width: 64px;
+  text-align: center;
+}

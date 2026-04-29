@@ -306,17 +306,41 @@ def _extract_quality_modifiers(context_list):
                     continue
                 sq = vr.get("startQuality", 0)
                 eq = vr.get("endQuality", 0)
-                ms = vr.get("modifierAtStart", 1.0)
-                me = vr.get("modifierAtEnd", 1.0)
-                if sq == eq == 0 and ms == me == 1.0:
-                    continue  # no-op modifier
-                mods.append({
-                    "property": prop_short,
-                    "startQuality": sq,
-                    "endQuality": eq,
-                    "modifierAtStart": round(ms, 4),
-                    "modifierAtEnd": round(me, 4),
-                })
+                # Two value-range shapes ship in DCB:
+                #   *_Linear:                multiplicative float
+                #     modifierAtStart / modifierAtEnd, no-op = 1.0 → 1.0
+                #   *_LinearIntegerAdditive: additive integer (e.g.
+                #     Power Pips: -1 / 0 / +1 across quality bands),
+                #     additiveModifierAtStart / additiveModifierAtEnd,
+                #     no-op = 0 → 0
+                vr_type = vr.get("_Type_", "") or ""
+                is_additive = vr_type.endswith("_LinearIntegerAdditive")
+                if is_additive:
+                    ms = vr.get("additiveModifierAtStart", 0)
+                    me = vr.get("additiveModifierAtEnd", 0)
+                    if sq == eq == 0 and ms == me == 0:
+                        continue  # no-op
+                    mods.append({
+                        "property": prop_short,
+                        "kind": "additive",
+                        "startQuality": sq,
+                        "endQuality": eq,
+                        "additiveModifierAtStart": int(ms),
+                        "additiveModifierAtEnd": int(me),
+                    })
+                else:
+                    ms = vr.get("modifierAtStart", 1.0)
+                    me = vr.get("modifierAtEnd", 1.0)
+                    if sq == eq == 0 and ms == me == 1.0:
+                        continue  # no-op
+                    mods.append({
+                        "property": prop_short,
+                        "kind": "multiplicative",
+                        "startQuality": sq,
+                        "endQuality": eq,
+                        "modifierAtStart": round(ms, 4),
+                        "modifierAtEnd": round(me, 4),
+                    })
     return mods
 
 

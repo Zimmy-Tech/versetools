@@ -3,10 +3,19 @@ import { Component, computed, input, output, signal, effect } from '@angular/cor
 export interface QualityModifier {
   property: string;
   unit: string;
+  /** Two CIG variants ship in DCB:
+   *   'multiplicative' — modifierAtStart/modifierAtEnd as floats,
+   *      combined across ingredients via product. Default for omitted
+   *      `kind` field (back-compat with older recipe JSONs).
+   *   'additive' — additiveModifierAtStart/End as integers (e.g.
+   *      Power Pips: -1/0/+1 per ingredient), combined via sum. */
+  kind?: 'multiplicative' | 'additive';
   startQuality: number;
   endQuality: number;
-  modifierAtStart: number;
-  modifierAtEnd: number;
+  modifierAtStart?: number;
+  modifierAtEnd?: number;
+  additiveModifierAtStart?: number;
+  additiveModifierAtEnd?: number;
 }
 
 export interface CraftingIngredient {
@@ -30,8 +39,17 @@ export interface CraftingRecipe {
 /** A single live stat effect derived from the current quality-slider values. */
 export interface QualityEffect {
   property: string;
+  /** 'multiplicative' uses `combined` (product of ingredient mods, identity 1.0).
+   *  'additive' uses `summed` (sum of ingredient mods, identity 0). */
+  kind: 'multiplicative' | 'additive';
   combined: number;
-  contributions: { resource: string; modifier: number }[];
+  /** Sum of additive contributions; only meaningful when kind === 'additive'. */
+  summed: number;
+  /** Per-ingredient breakdown so the UI can show e.g.
+   *  "Voltage Regulator: -1, Stator Cores: +1, total: 0" instead of just
+   *  the combined number. `modifier` is multiplicative, `additive` is the
+   *  per-ingredient delta. Caller can pick the field that matches `kind`. */
+  contributions: { resource: string; modifier: number; additive: number }[];
   baseValue: number | null;
   modifiedValue: number | null;
   unit: string;
@@ -118,6 +136,29 @@ export class QualitySimulatorComponent {
     return pct >= 0 ? `+${pct.toFixed(1)}%` : `${pct.toFixed(1)}%`;
   }
 
+  /** Top-line "% change" cell. Multiplicative renders as a signed
+   *  percent off identity (1.0); additive renders as a signed integer
+   *  with the unit (e.g. "+2 SEG"). */
+  fmtChange(eff: QualityEffect): string {
+    if (eff.kind === 'additive') {
+      const sign = eff.summed > 0 ? '+' : '';
+      return `${sign}${eff.summed}${eff.unit}`;
+    }
+    return this.fmtMod(eff.combined);
+  }
+
+  /** Per-ingredient row label. Renders multiplicative as a signed
+   *  percent and additive as a signed integer. */
+  fmtContribution(kind: 'multiplicative' | 'additive', c: { modifier: number; additive: number }): string {
+    if (kind === 'additive') {
+      const sign = c.additive > 0 ? '+' : '';
+      return `${sign}${c.additive}`;
+    }
+    const pct = (c.modifier - 1) * 100;
+    const sign = pct >= 0 ? '+' : '';
+    return `${sign}${pct.toFixed(1)}%`;
+  }
+
   /** Recipe data ships some opaque property names (CIG-internal terms);
    *  rewrite them to user-facing labels for the effects table. The raw
    *  string still flows through to the parent's stat-layering code,
@@ -151,8 +192,17 @@ export class QualitySimulatorComponent {
     if (!r) return [];
     const qv = this.qualityValues();
 
-    // Aggregate all modifiers by property.
-    const propMap: Record<string, { combined: number; contributions: { resource: string; modifier: number }[] }> = {};
+    // Aggregate by property. The skip-out-of-range guard ensures only
+    // the active band per (ingredient, property) contributes — recipes
+    // ship non-overlapping bands (e.g. Power Pips at 0-399 / 400-899 /
+    // 900-1000), so each ingredient lands exactly one contribution row.
+    type Agg = {
+      kind: 'multiplicative' | 'additive';
+      combined: number;
+      summed: number;
+      contributions: { resource: string; modifier: number; additive: number }[];
+    };
+    const propMap: Record<string, Agg> = {};
 
     for (let idx = 0; idx < r.ingredients.length; idx++) {
       const ing = r.ingredients[idx];
@@ -160,15 +210,32 @@ export class QualitySimulatorComponent {
       const quality = qv[`${idx}_${ing.resource}`] ?? 500;
 
       for (const m of mods) {
+        if (quality < m.startQuality || quality > m.endQuality) continue;
         const range = m.endQuality - m.startQuality;
         if (range <= 0) continue;
-        const clampedQ = Math.max(m.startQuality, Math.min(m.endQuality, quality));
-        const t = (clampedQ - m.startQuality) / range;
-        const modifier = m.modifierAtStart + t * (m.modifierAtEnd - m.modifierAtStart);
+        const t = (quality - m.startQuality) / range;
 
-        if (!propMap[m.property]) propMap[m.property] = { combined: 1.0, contributions: [] };
-        propMap[m.property].combined *= modifier;
-        propMap[m.property].contributions.push({ resource: ing.resource, modifier });
+        const isAdditive = m.kind === 'additive';
+        const startVal = isAdditive ? (m.additiveModifierAtStart ?? 0) : (m.modifierAtStart ?? 1);
+        const endVal   = isAdditive ? (m.additiveModifierAtEnd ?? 0)   : (m.modifierAtEnd ?? 1);
+        const value = startVal + t * (endVal - startVal);
+
+        if (!propMap[m.property]) {
+          propMap[m.property] = {
+            kind: isAdditive ? 'additive' : 'multiplicative',
+            combined: 1.0,
+            summed: 0,
+            contributions: [],
+          };
+        }
+        const agg = propMap[m.property];
+        agg.contributions.push({
+          resource: ing.resource,
+          modifier: isAdditive ? 1 : value,
+          additive: isAdditive ? value : 0,
+        });
+        if (isAdditive) agg.summed += value;
+        else            agg.combined *= value;
       }
     }
 
@@ -221,12 +288,13 @@ export class QualitySimulatorComponent {
         baseValue = this.lookupBase('shield strength') ?? this.lookupBase('shield hp') ?? this.lookupBase('hp');
         if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined); unit = ' HP'; }
       }
-      // Power Pips — current PTU values are stub 1.0×1.0 placeholders so this
-      // is a no-op today, but we wire the pipe so the moment CIG ships real
-      // numbers the simulator + effective-stats layer pick them up for free.
+      // Power Pips — additive integer modifier (per-ingredient -1/0/+1
+      // across stepped quality bands; with two ingredients combined,
+      // the rolled-up range is -2..+2). Layered onto powerOutput as
+      // base+sum, not base×product.
       else if (pl.includes('power pips') || pl.includes('power output')) {
         baseValue = this.lookupBase('power pips') ?? this.lookupBase('power output');
-        if (baseValue != null) { modifiedValue = Math.round(baseValue * data.combined * 10) / 10; unit = ' SEG'; }
+        if (baseValue != null) { modifiedValue = baseValue + data.summed; unit = ' SEG'; }
       }
       // Radar aim distances.
       else if (pl.includes('min') && pl.includes('assist')) {
@@ -263,6 +331,15 @@ export class QualitySimulatorComponent {
       if (pl.includes('min temp') && modifiedValue != null && baseValue != null) {
         if (modifiedValue < baseValue) colorClass = 'positive';
         else if (modifiedValue > baseValue) colorClass = 'negative';
+      } else if (data.kind === 'additive') {
+        // Additive — buff/nerf judged by sign of the summed delta.
+        if (invertComparison) {
+          if (data.summed < 0) colorClass = 'positive';
+          else if (data.summed > 0) colorClass = 'negative';
+        } else {
+          if (data.summed > 0) colorClass = 'positive';
+          else if (data.summed < 0) colorClass = 'negative';
+        }
       } else if (invertComparison) {
         if (data.combined < 0.999) colorClass = 'positive';
         else if (data.combined > 1.001) colorClass = 'negative';
@@ -273,7 +350,9 @@ export class QualitySimulatorComponent {
 
       return {
         property: prop,
+        kind: data.kind,
         combined: data.combined,
+        summed: data.summed,
         contributions: data.contributions,
         baseValue,
         modifiedValue,

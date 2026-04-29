@@ -1,33 +1,20 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../services/data.service';
-import { QualitySimulatorComponent, QualityEffect } from '../quality-simulator/quality-simulator';
+import {
+  QualitySimulatorComponent,
+  QualityEffect,
+  QualityModifier,
+  CraftingIngredient as BaseCraftingIngredient,
+  CraftingRecipe as BaseCraftingRecipe,
+} from '../quality-simulator/quality-simulator';
 
-interface QualityModifier {
-  property: string;
-  unit: string;
-  startQuality: number;
-  endQuality: number;
-  modifierAtStart: number;
-  modifierAtEnd: number;
-}
-
-interface CraftingIngredient {
-  type: string;
-  resource: string;
-  quantity: number;
-  minQuality?: number;
-  qualityModifiers?: QualityModifier[];
-}
-
-interface CraftingRecipe {
-  className: string;
-  itemName: string;
-  category: string;
-  subtype: string;
-  tier: number;
-  craftTimeSeconds: number;
-  ingredients: CraftingIngredient[];
+// Local extensions add the optional/research fields the standalone
+// /crafting page surfaces. Core ingredient + modifier shape is shared
+// with the simulator so the additive vs multiplicative kind flag and
+// `additiveModifierAtStart/End` flow through automatically.
+type CraftingIngredient = BaseCraftingIngredient;
+interface CraftingRecipe extends BaseCraftingRecipe {
   optionalIngredients?: CraftingIngredient[];
   research?: { timeSeconds: number; ingredients: CraftingIngredient[] };
 }

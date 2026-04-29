@@ -656,8 +656,11 @@ export class DataService {
     let dirty = false;
     const eff: any = { ...base };
     for (const e of effects) {
+      const isAdd = (e as any).kind === 'additive';
       const m = e.combined;
-      if (Math.abs(m - 1) < 1e-4) continue;
+      const a = (e as any).summed ?? 0;
+      // Skip identity for both kinds.
+      if (isAdd ? a === 0 : Math.abs(m - 1) < 1e-4) continue;
       const p = e.property.toLowerCase();
       if (p.includes('integrity')) {
         if (eff.componentHp != null) { eff.componentHp = eff.componentHp * m; dirty = true; }
@@ -667,11 +670,14 @@ export class DataService {
       } else if (p.includes('shield strength') || p.includes('shield hp')) {
         if (eff.type === 'Shield' && eff.hp != null) { eff.hp = eff.hp * m; dirty = true; }
       } else if (p.includes('power pips') || p.includes('power output')) {
-        // Today the PTU recipe values are 1.0×1.0 stubs — this branch is
-        // a no-op until CIG fills them in. Wired now so the day they ship
-        // real numbers, the powerOutput rolls through with no further
-        // changes here or in the simulator.
-        if (eff.powerOutput != null) { eff.powerOutput = eff.powerOutput * m; dirty = true; }
+        // Power Pips is additive — recipe ingredients contribute -1/0/+1
+        // per band, summed across two ingredients on a power plant
+        // (rolled-up range -2..+2). Layered onto powerOutput as
+        // base + sum, not base × product.
+        if (isAdd && eff.powerOutput != null) {
+          eff.powerOutput = eff.powerOutput + a;
+          dirty = true;
+        }
       } else if (p.includes('min') && p.includes('assist')) {
         if (eff.aimMin != null) { eff.aimMin = eff.aimMin * m; dirty = true; }
       } else if (p.includes('max') && p.includes('assist')) {

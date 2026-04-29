@@ -58,10 +58,20 @@
                     [class.positive]="eff.colorClass === 'positive'"
                     [class.cold]="eff.colorClass === 'cold'"
                     [class.negative]="eff.colorClass === 'negative'">
-                {{ fmtMod(eff.combined) }}
+                {{ fmtChange(eff) }}
               </span>
             </div>
           </div>
+          @if (eff.contributions.length > 1) {
+            <div class="ql-contributions">
+              @for (c of eff.contributions; track c.resource) {
+                <div class="ql-contrib">
+                  <span class="ql-contrib-name">{{ c.resource }}</span>
+                  <span class="ql-contrib-val">{{ fmtContribution(eff.kind, c) }}</span>
+                </div>
+              }
+            </div>
+          }
         }
       </div>
     }
