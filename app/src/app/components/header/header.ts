@@ -125,7 +125,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { id: 'miningSignatures', label: 'Mining Signatures' },
     { id: 'miningLasers',  label: 'Mining Lasers',  route: '/ship-items', queryParams: { cat: 'mining-lasers' } },
     { id: 'miningModules', label: 'Mining Modules', route: '/ship-items', queryParams: { cat: 'mining-modules' } },
-    { id: 'crafting', label: 'Crafting' },
   ];
 
   readonly fpsGearTabs: { id: TabName; label: string }[] = [

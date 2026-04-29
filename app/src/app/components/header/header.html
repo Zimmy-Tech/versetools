@@ -52,10 +52,10 @@
       }
     </div>
 
-    <!-- Mining/Crafting dropdown -->
+    <!-- Mining dropdown -->
     <div class="nav-group">
       <button class="nav-tab" [class.active]="isIndustryToolActive()"
-              (click)="toggleIndustryTools()">Mining/Crafting <span class="nav-arrow">{{ industryToolsOpen() ? '▾' : '▸' }}</span></button>
+              (click)="toggleIndustryTools()">Mining <span class="nav-arrow">{{ industryToolsOpen() ? '▾' : '▸' }}</span></button>
       @if (industryToolsOpen()) {
         <div class="nav-dropdown">
           @for (tab of industryToolsTabs; track tab.id) {
@@ -65,6 +65,12 @@
         </div>
       }
     </div>
+
+    <!-- Crafting — promoted to its own flat tab now that it's a top
+         user concern. Lives next to Mining since they share the
+         industry/economy context. -->
+    <button class="nav-tab" [class.active]="isTabActive('crafting')"
+            (click)="navigateTo('crafting')">Crafting</button>
 
     <!-- FPS Gear dropdown -->
     <div class="nav-group">
@@ -171,10 +177,11 @@
     @for (tab of missionsTabs; track tab.id) {
       <button class="mobile-nav-item" [class.active]="isNavTabActive(tab)" (click)="navigateTo(tab)">{{ tab.label }}</button>
     }
-    <div class="mobile-nav-title">MINING / CRAFTING</div>
+    <div class="mobile-nav-title">MINING</div>
     @for (tab of industryToolsTabs; track tab.id) {
       <button class="mobile-nav-item" [class.active]="isNavTabActive(tab)" (click)="navigateTo(tab)">{{ tab.label }}</button>
     }
+    <button class="mobile-nav-item" [class.active]="isTabActive('crafting')" (click)="navigateTo('crafting')">Crafting</button>
     <div class="mobile-nav-title">FPS GEAR</div>
     @for (tab of fpsGearTabs; track tab.id) {
       <button class="mobile-nav-item" [class.active]="isNavTabActive(tab)" (click)="navigateTo(tab)">{{ tab.label }}</button>
