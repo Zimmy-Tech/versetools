@@ -555,6 +555,7 @@ const NEVER_DIFFED_FIELDS = new Set([
   'accelUp', 'accelAbUp',
   'accelDown', 'accelAbDown',
   'accelTestedDate',
+  'accelCheckedBy',
 ]);
 
 function diffEntity(uploaded, current, partial = false) {
