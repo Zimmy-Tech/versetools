@@ -106,51 +106,80 @@ export class QualitySimulatorComponent {
     return recipe.ingredients.some(i => i.qualityModifiers?.length);
   }
 
-  ingredientsWithQuality(recipe: CraftingRecipe): { ing: CraftingIngredient; key: string; idx: number }[] {
-    return recipe.ingredients
+  /** Recipe ingredients that have any qualityModifiers. Computed once
+   *  per recipe change and cached — the template iterates this list
+   *  on every change-detection cycle, so we don't want a function call
+   *  rebuilding the array each time. */
+  qualityIngredients = computed<{ ing: CraftingIngredient; key: string; idx: number }[]>(() => {
+    const r = this.recipe();
+    if (!r) return [];
+    return r.ingredients
       .map((ing, i) => ({ ing, key: `${i}_${ing.resource}`, idx: i }))
       .filter(x => !!x.ing.qualityModifiers?.length);
-  }
+  });
 
-  /** Per-ingredient quality-band breakdown for the slider strip.
-   *  Groups bands by property; for each band, returns the q-range,
-   *  a human-readable value label, and whether the slider position
-   *  is currently inside it. The UI uses this to render a row of
-   *  band chips below each slider so users see breakpoints at a
-   *  glance — e.g. "drop quality below 400 and you lose a pip." */
-  ingredientBands(idx: number, ing: CraftingIngredient): {
+  /** Pre-computed band metadata per ingredient. The "active" flag is
+   *  data-driven from the slider position so it updates as the user
+   *  drags, but the band shape (q-range, value label) only changes
+   *  on recipe swap. Splitting into two computeds keeps the heavy
+   *  string formatting out of the per-frame path. */
+  private ingredientBandShapes = computed<Map<number, {
+    property: string;
+    bands: { start: number; end: number; label: string }[];
+  }[]>>(() => {
+    const r = this.recipe();
+    const out = new Map<number, { property: string; bands: { start: number; end: number; label: string }[] }[]>();
+    if (!r) return out;
+    for (const entry of this.qualityIngredients()) {
+      const byProp: Record<string, { start: number; end: number; label: string }[]> = {};
+      for (const m of (entry.ing.qualityModifiers ?? [])) {
+        const isAdd = m.kind === 'additive';
+        const startVal = isAdd ? (m.additiveModifierAtStart ?? 0) : (m.modifierAtStart ?? 1);
+        const endVal   = isAdd ? (m.additiveModifierAtEnd ?? 0)   : (m.modifierAtEnd ?? 1);
+        let label: string;
+        if (isAdd) {
+          const sign = (n: number) => (n > 0 ? '+' : '');
+          label = startVal === endVal
+            ? `${sign(startVal)}${startVal}`
+            : `${sign(startVal)}${startVal} → ${sign(endVal)}${endVal}`;
+        } else {
+          const pct = (v: number) => {
+            const p = Math.round((v - 1) * 100);
+            return p > 0 ? `+${p}%` : `${p}%`;
+          };
+          label = startVal === endVal ? pct(startVal) : `${pct(startVal)} → ${pct(endVal)}`;
+        }
+        (byProp[m.property] ??= []).push({ start: m.startQuality, end: m.endQuality, label });
+      }
+      out.set(entry.idx, Object.entries(byProp).map(([property, bands]) => ({
+        property: this.displayProperty(property),
+        bands: bands.sort((a, b) => a.start - b.start),
+      })));
+    }
+    return out;
+  });
+
+  /** Per-ingredient bands with the active flag overlaid on the cached
+   *  shapes. Slider drags only touch this layer, not the string
+   *  formatting in ingredientBandShapes. Returns a stable array
+   *  reference per ingredient to keep @for tracking happy. */
+  ingredientBands = computed<Map<number, {
     property: string;
     bands: { start: number; end: number; label: string; active: boolean }[];
-  }[] {
-    const q = this.qualityValues()[`${idx}_${ing.resource}`] ?? 500;
-    const byProp: Record<string, { start: number; end: number; label: string; active: boolean }[]> = {};
-    for (const m of (ing.qualityModifiers ?? [])) {
-      const isAdd = m.kind === 'additive';
-      const startVal = isAdd ? (m.additiveModifierAtStart ?? 0) : (m.modifierAtStart ?? 1);
-      const endVal   = isAdd ? (m.additiveModifierAtEnd ?? 0)   : (m.modifierAtEnd ?? 1);
-      let label: string;
-      if (isAdd) {
-        const sign = (n: number) => (n > 0 ? '+' : '');
-        label = startVal === endVal
-          ? `${sign(startVal)}${startVal}`
-          : `${sign(startVal)}${startVal} → ${sign(endVal)}${endVal}`;
-      } else {
-        const pct = (v: number) => {
-          const p = Math.round((v - 1) * 100);
-          return p > 0 ? `+${p}%` : `${p}%`;
-        };
-        label = startVal === endVal
-          ? pct(startVal)
-          : `${pct(startVal)} → ${pct(endVal)}`;
-      }
-      const active = q >= m.startQuality && q <= m.endQuality;
-      (byProp[m.property] ??= []).push({ start: m.startQuality, end: m.endQuality, label, active });
+  }[]>>(() => {
+    const shapes = this.ingredientBandShapes();
+    const qv = this.qualityValues();
+    const out = new Map<number, { property: string; bands: { start: number; end: number; label: string; active: boolean }[] }[]>();
+    for (const entry of this.qualityIngredients()) {
+      const groups = shapes.get(entry.idx) ?? [];
+      const q = qv[entry.key] ?? 500;
+      out.set(entry.idx, groups.map(g => ({
+        property: g.property,
+        bands: g.bands.map(b => ({ ...b, active: q >= b.start && q <= b.end })),
+      })));
     }
-    return Object.entries(byProp).map(([property, bands]) => ({
-      property: this.displayProperty(property),
-      bands: bands.sort((a, b) => a.start - b.start),
-    }));
-  }
+    return out;
+  });
 
   setQuality(key: string, value: number): void {
     this.qualityValues.update(qv => ({ ...qv, [key]: value }));

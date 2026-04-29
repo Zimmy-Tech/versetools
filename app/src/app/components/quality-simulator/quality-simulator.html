@@ -10,7 +10,7 @@
     </div>
 
     <div class="quality-sliders">
-      @for (entry of ingredientsWithQuality(recipe()); track entry.key) {
+      @for (entry of qualityIngredients(); track entry.key) {
         <div class="quality-row">
           <span class="qr-name"
                 [class.ore]="isOre(entry.ing)"
@@ -21,7 +21,7 @@
           <span class="qr-val">{{ qualityValues()[entry.key] ?? 500 }}</span>
         </div>
 
-        @for (group of ingredientBands(entry.idx, entry.ing); track group.property) {
+        @for (group of ingredientBands().get(entry.idx) ?? []; track group.property) {
           <div class="qr-bands">
             <span class="qr-bands-label">{{ group.property }}</span>
             <div class="qr-bands-strip">
