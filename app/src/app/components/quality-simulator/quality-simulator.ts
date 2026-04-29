@@ -83,15 +83,20 @@ export class QualitySimulatorComponent {
 
   qualityValues = signal<Record<string, number>>({});
 
-  /** rAF token + emit-throttle bookkeeping. Slider drags fire (input)
-   *  at high frequency; without throttling, every tick cascades through
-   *  the parent's setCraftEffects → effectiveItem clones → every
-   *  per-slot stat rollup → DPS panel totals → DOM re-render, which
-   *  pegs the main thread and visibly lags the slider thumb. Coalesce
-   *  to one emit per animation frame: the slider stays smooth (browser
-   *  handles the thumb position natively) and downstream consumers
-   *  only see one update per ~16ms tick. */
-  private _emitRaf: number | null = null;
+  /** Trailing-edge debounce for the emit. Slider drags fire (input)
+   *  at high frequency, and on the loadout page each emit cascades
+   *  through DataService.setCraftEffects → effectiveItem clones →
+   *  every per-slot stat rollup → DPS panel totals → DOM re-render.
+   *  Even rAF-throttled (60 fires/sec) that pegs the main thread.
+   *
+   *  The simulator's own modal preview reads `qualityEffects()`
+   *  directly, so it stays live during drag — only the downstream
+   *  emit (which the parent uses to update the per-slot panel /
+   *  DPS rollups behind the modal) is debounced. ~120ms keeps the
+   *  panel feeling responsive when the user pauses or releases,
+   *  with effectively zero cost during continuous drag. */
+  private _emitTimer: ReturnType<typeof setTimeout> | null = null;
+  private static readonly EMIT_DEBOUNCE_MS = 120;
 
   constructor() {
     // Reset sliders when the recipe changes — each recipe has its own set of
@@ -106,26 +111,23 @@ export class QualitySimulatorComponent {
       this.qualityValues.set(qv);
     });
 
-    // Re-emit whenever the effects change. Parents get a live stream,
-    // but throttled to one update per frame.
+    // Trailing-edge debounce: clear any pending emit on every change,
+    // schedule a fresh one. During continuous drag the timer keeps
+    // resetting and never fires; on pause/release the cascade runs
+    // once with the latest values.
     effect(() => {
-      // Touch the signal so this effect re-runs whenever it changes.
-      this.qualityEffects();
-      if (this._emitRaf !== null) return; // already scheduled
-      this._emitRaf = requestAnimationFrame(() => {
-        this._emitRaf = null;
-        // Read the latest value at frame time — multiple intermediate
-        // updates have collapsed into this single emit.
+      this.qualityEffects(); // subscribe
+      if (this._emitTimer !== null) clearTimeout(this._emitTimer);
+      this._emitTimer = setTimeout(() => {
+        this._emitTimer = null;
         this.qualityEffectsChange.emit(this.qualityEffects());
-      });
+      }, QualitySimulatorComponent.EMIT_DEBOUNCE_MS);
     });
 
-    // Cancel any pending rAF on destroy so we don't emit into a dead
-    // component after the modal closes.
     inject(DestroyRef).onDestroy(() => {
-      if (this._emitRaf !== null) {
-        cancelAnimationFrame(this._emitRaf);
-        this._emitRaf = null;
+      if (this._emitTimer !== null) {
+        clearTimeout(this._emitTimer);
+        this._emitTimer = null;
       }
     });
   }
