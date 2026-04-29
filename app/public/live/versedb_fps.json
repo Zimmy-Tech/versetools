@@ -3,7 +3,7 @@
     "count": 43,
     "magazineCount": 59,
     "attachmentCount": 89,
-    "version": "4.7.0"
+    "version": "4.7.2"
   },
   "weapons": [
     {
@@ -38,6 +38,8 @@
       "isBeam": null,
       "category": "Anti-Ship",
       "mass": 15.0,
+      "adsTime": 0.2,
+      "adsZoomScale": 1.8,
       "ports": [
         {
           "name": "magazine_attach",
@@ -80,6 +82,8 @@
       "isBeam": null,
       "category": "Anti-Ship",
       "mass": 15.0,
+      "adsTime": 0.28,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -120,6 +124,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 0.4,
+      "adsTime": 0.0,
+      "adsZoomScale": 0.0,
       "ports": []
     },
     {
@@ -152,6 +158,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 5.0,
+      "adsTime": 0.25,
+      "adsZoomScale": 1.6,
       "ports": [
         {
           "name": "magazine_attach",
@@ -208,6 +216,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 10.0,
+      "adsTime": 0.4,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -277,6 +287,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.1,
+      "adsTime": 0.14,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -347,6 +359,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 3.2,
+      "adsTime": 0.25,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -416,6 +430,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 3.6,
+      "adsTime": 0.3,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -486,6 +502,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 2.75,
+      "adsTime": 0.23,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -555,6 +573,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 4.5,
+      "adsTime": 0.35,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -621,6 +641,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 7.5,
+      "adsTime": 0.55,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -690,6 +712,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 10.0,
+      "adsTime": 0.44,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -749,6 +773,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.1,
+      "adsTime": 0.14,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -818,6 +844,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 3.4,
+      "adsTime": 0.275,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -887,6 +915,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 2.75,
+      "adsTime": 0.19,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -957,6 +987,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 4.0,
+      "adsTime": 0.29,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1016,6 +1048,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 6.0,
+      "adsTime": 0.35,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1085,6 +1119,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.0,
+      "adsTime": 0.21,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1151,6 +1187,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.1,
+      "adsTime": 0.21,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1221,6 +1259,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 4.2,
+      "adsTime": 0.28,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1291,6 +1331,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 2.75,
+      "adsTime": 0.21,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1360,6 +1402,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 4.3,
+      "adsTime": 0.35,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1430,6 +1474,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 4.3,
+      "adsTime": 0.29,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1492,6 +1538,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 6.0,
+      "adsTime": 0.28,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1551,6 +1599,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 10.0,
+      "adsTime": 0.375,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1621,6 +1671,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.5,
+      "adsTime": 0.15,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1691,6 +1743,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 3.7,
+      "adsTime": 0.3,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1760,6 +1814,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 3.2,
+      "adsTime": 0.22,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1829,6 +1885,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 7.5,
+      "adsTime": 0.5,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1898,6 +1956,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.5,
+      "adsTime": 0.185,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -1954,6 +2014,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 6.0,
+      "adsTime": 0.52,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2010,6 +2072,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 18.0,
+      "adsTime": 0.46,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2064,6 +2128,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.1,
+      "adsTime": 0.21,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2124,6 +2190,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 3.5,
+      "adsTime": 0.17,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2193,6 +2261,8 @@
       "isBeam": true,
       "category": "Anti-Personnel",
       "mass": 2.75,
+      "adsTime": 0.156,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2253,6 +2323,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 4.3,
+      "adsTime": 0.35,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2295,6 +2367,8 @@
       "isBeam": null,
       "category": "Anti-Ship",
       "mass": 15.0,
+      "adsTime": 0.4,
+      "adsZoomScale": 1.8,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2340,6 +2414,8 @@
       "isBeam": true,
       "category": "Anti-Personnel",
       "mass": 15.0,
+      "adsTime": 0.43,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2396,6 +2472,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 1.5,
+      "adsTime": 0.15,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2456,6 +2534,8 @@
       "isBeam": true,
       "category": "Anti-Personnel",
       "mass": 3.2,
+      "adsTime": 0.17,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2515,6 +2595,8 @@
       "isBeam": true,
       "category": "Anti-Personnel",
       "mass": 2.75,
+      "adsTime": 0.22,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2575,6 +2657,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 4.3,
+      "adsTime": 0.175,
+      "adsZoomScale": 1.2,
       "ports": [
         {
           "name": "magazine_attach",
@@ -2634,6 +2718,8 @@
       "isBeam": null,
       "category": "Anti-Personnel",
       "mass": 6.0,
+      "adsTime": 0.32,
+      "adsZoomScale": 1.4,
       "ports": [
         {
           "name": "magazine_attach",

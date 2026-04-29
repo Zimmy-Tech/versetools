@@ -84,6 +84,10 @@
                                              [class.negative]="multPolarity(stats.visualRecoilMult) === 'negative'">
                       {{ fmtMultPct(stats.visualRecoilMult) }}
                     </span>
+                    <span class="dps-rec-label" title="Time in seconds to enter aim-down-sights">ADS</span>
+                    <span class="dps-rec-val">{{ stats.adsTime ? fmt2(stats.adsTime) + 's' : '—' }}</span>
+                    <span class="dps-rec-label" title="Magnification multiplier when aiming">Zoom</span>
+                    <span class="dps-rec-val">{{ stats.adsZoomScale ? fmt2(stats.adsZoomScale) + 'x' : '—' }}</span>
                   </div>
                 </div>
               </div>

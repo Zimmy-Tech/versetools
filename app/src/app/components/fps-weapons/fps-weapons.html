@@ -86,10 +86,12 @@
             <th class="recoil-header">Pitch (&deg;) <button class="info-btn" (click)="showRecoilModal.set(true)">?</button></th>
             <th class="recoil-header">Yaw (&deg;)</th>
             <th class="recoil-header">Smooth (s)</th>
+            <th class="col-num sortable" title="Time in seconds to transition into aim-down-sights." (click)="toggleSort('adsTime')">ADS (s){{ sortIndicator('adsTime') }}</th>
+            <th class="col-num sortable" title="Magnification multiplier when aiming down sights." (click)="toggleSort('adsZoomScale')">Zoom{{ sortIndicator('adsZoomScale') }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="section-header"><td colspan="17">Anti-Personnel</td></tr>
+          <tr class="section-header"><td colspan="19">Anti-Personnel</td></tr>
           @for (w of antiPersonnel(); track w.className) {
             <tr>
               <td class="col-name">{{ w.name }}</td>
@@ -109,10 +111,12 @@
               <td class="col-num col-recoil">{{ fmt(w.recoilPitch ?? 0, 2) }}</td>
               <td class="col-num col-recoil">{{ fmt(w.recoilYaw ?? 0, 2) }}</td>
               <td class="col-num col-recoil">{{ fmt(w.recoilSmooth ?? 0, 2) }}</td>
+              <td class="col-num">{{ w.adsTime ? fmt(w.adsTime, 2) + 's' : '—' }}</td>
+              <td class="col-num">{{ w.adsZoomScale ? fmt(w.adsZoomScale, 2) + 'x' : '—' }}</td>
             </tr>
           }
           @if (antiShip().length) {
-            <tr class="section-header"><td colspan="17">Anti-Ship</td></tr>
+            <tr class="section-header"><td colspan="19">Anti-Ship</td></tr>
             @for (w of antiShip(); track w.className) {
               <tr>
                 <td class="col-name">{{ w.name }}</td>
@@ -132,6 +136,8 @@
                 <td class="col-num col-recoil">&mdash;</td>
                 <td class="col-num col-recoil">&mdash;</td>
                 <td class="col-num col-recoil">&mdash;</td>
+                <td class="col-num">{{ w.adsTime ? fmt(w.adsTime, 2) + 's' : '—' }}</td>
+                <td class="col-num">{{ w.adsZoomScale ? fmt(w.adsZoomScale, 2) + 'x' : '—' }}</td>
               </tr>
             }
           }

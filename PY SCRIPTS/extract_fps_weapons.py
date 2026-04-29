@@ -870,6 +870,24 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
             if all(v == 0 for v in inline_beam_damage.values()):
                 inline_beam_damage = None
 
+    # ADS (aim-down-sights) parameters live on SWeaponActionAimSimpleParams.
+    # A weapon can declare multiple aim actions (one per fire-mode bind in
+    # most cases) but they typically share the same zoomTime/zoomScale —
+    # take the first non-zero zoomTime as the canonical value.
+    ads_time = 0.0
+    ads_zoom_scale = 0.0
+    for m in re.finditer(
+        r'<SWeaponActionAimSimpleParams\b([^>]*)>',
+        xml_text,
+    ):
+        attrs = m.group(1)
+        zt = re.search(r'zoomTime="([^"]+)"', attrs)
+        zs = re.search(r'zoomScale="([^"]+)"', attrs)
+        ads_time = safe_float(zt.group(1)) if zt else 0.0
+        ads_zoom_scale = safe_float(zs.group(1)) if zs else 0.0
+        if ads_time > 0:
+            break
+
     return {
         "className": stem,
         "locKey": loc_key.lstrip("@").lower(),
@@ -887,6 +905,8 @@ def parse_weapon_xml(xml_path: Path) -> dict | None:
         "beamRefs": beam_refs,
         "inlineBeamDamage": inline_beam_damage,
         "mass": round(mass, 4),
+        "adsTime": round(ads_time, 4),
+        "adsZoomScale": round(ads_zoom_scale, 4),
         "ports": parse_weapon_ports(xml_text),
     }
 
@@ -1177,6 +1197,8 @@ def extract_fps_weapons():
             "isBeam": is_beam or None,
             "category": "Anti-Ship" if class_name in ANTI_SHIP else "Anti-Personnel",
             "mass": wpn.get("mass", 0),
+            "adsTime": wpn.get("adsTime", 0),
+            "adsZoomScale": wpn.get("adsZoomScale", 0),
             "ports": wpn.get("ports", []),
         }
         if recoil:

@@ -40,6 +40,8 @@ interface FpsWeaponRaw {
   recoilPitch?: number | null;
   recoilYaw?: number | null;
   recoilSmooth?: number | null;
+  adsTime?: number;
+  adsZoomScale?: number;
   ports?: WeaponPort[];
 }
 
@@ -67,6 +69,8 @@ interface EffectiveStats {
   recoilTimeMult: number;       // duration of each recoil impulse
   magAlpha: number;             // total damage per full mag (before reload)
   mass: number;
+  adsTime: number;              // seconds to enter aim-down-sights
+  adsZoomScale: number;         // magnification when aiming
 }
 interface OpticSpec {
   zoomScale?: number;
@@ -802,6 +806,8 @@ export class FpsLoadoutComponent {
     let recoilPitch  = w.recoilPitch  ?? 0;
     let recoilYaw    = w.recoilYaw    ?? 0;
     let recoilSmooth = w.recoilSmooth ?? 0;
+    let adsTime      = w.adsTime      ?? 0;
+    let adsZoomScale = w.adsZoomScale ?? 0;
 
     // ─── Attachment modifier composition ─────────────────────────────
     // Each attachment's modifier record is applied multiplicatively onto
@@ -843,6 +849,18 @@ export class FpsLoadoutComponent {
       if (rSpr) spreadMult        *= rSpr;
       if (rTim) recoilTimeMult    *= rTim;
       if (frAdd) fireRate += frAdd;
+
+      // ADS time + zoom scale come from the attachment's opticSpec.
+      // zoomTimeScale is a multiplier on the base ADS transition.
+      // zoomScale is the optic's magnification — when any attachment
+      // provides one, it overrides the iron-sight default. Multiple
+      // attachments stack multiplicatively (rare; usually just one
+      // optic equipped at a time, but a flashlight + reflex sight
+      // combination would compose this way).
+      const zts = att.opticSpec?.zoomTimeScale;
+      const zs  = att.opticSpec?.zoomScale;
+      if (zts && zts !== 1) adsTime      *= zts;
+      if (zs  && zs  !== 1) adsZoomScale *= zs;
     }
 
     // ─── Crafting quality modifiers ──────────────────────────────────
@@ -906,6 +924,8 @@ export class FpsLoadoutComponent {
       recoilTimeMult,
       magAlpha: alpha * magCrafted,
       mass: w.mass ?? 0,
+      adsTime,
+      adsZoomScale,
     };
   }
 

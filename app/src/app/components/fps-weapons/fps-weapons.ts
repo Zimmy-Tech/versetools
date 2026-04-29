@@ -23,6 +23,8 @@ interface FpsWeapon {
   recoilYaw?: number | null;
   recoilSmooth?: number | null;
   mass?: number;
+  adsTime?: number;
+  adsZoomScale?: number;
 }
 
 interface FpsMagazine {
