@@ -1,4 +1,4 @@
-import { Component, computed, input, output, signal, effect } from '@angular/core';
+import { Component, computed, input, output, signal, effect, DestroyRef, inject } from '@angular/core';
 
 export interface QualityModifier {
   property: string;
@@ -83,6 +83,16 @@ export class QualitySimulatorComponent {
 
   qualityValues = signal<Record<string, number>>({});
 
+  /** rAF token + emit-throttle bookkeeping. Slider drags fire (input)
+   *  at high frequency; without throttling, every tick cascades through
+   *  the parent's setCraftEffects → effectiveItem clones → every
+   *  per-slot stat rollup → DPS panel totals → DOM re-render, which
+   *  pegs the main thread and visibly lags the slider thumb. Coalesce
+   *  to one emit per animation frame: the slider stays smooth (browser
+   *  handles the thumb position natively) and downstream consumers
+   *  only see one update per ~16ms tick. */
+  private _emitRaf: number | null = null;
+
   constructor() {
     // Reset sliders when the recipe changes — each recipe has its own set of
     // ingredient keys. Default every quality-bearing ingredient to 500 (base).
@@ -96,9 +106,27 @@ export class QualitySimulatorComponent {
       this.qualityValues.set(qv);
     });
 
-    // Re-emit whenever the effects change. Parents get a live stream.
+    // Re-emit whenever the effects change. Parents get a live stream,
+    // but throttled to one update per frame.
     effect(() => {
-      this.qualityEffectsChange.emit(this.qualityEffects());
+      // Touch the signal so this effect re-runs whenever it changes.
+      this.qualityEffects();
+      if (this._emitRaf !== null) return; // already scheduled
+      this._emitRaf = requestAnimationFrame(() => {
+        this._emitRaf = null;
+        // Read the latest value at frame time — multiple intermediate
+        // updates have collapsed into this single emit.
+        this.qualityEffectsChange.emit(this.qualityEffects());
+      });
+    });
+
+    // Cancel any pending rAF on destroy so we don't emit into a dead
+    // component after the modal closes.
+    inject(DestroyRef).onDestroy(() => {
+      if (this._emitRaf !== null) {
+        cancelAnimationFrame(this._emitRaf);
+        this._emitRaf = null;
+      }
     });
   }
 
