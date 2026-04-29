@@ -20,29 +20,39 @@
                (input)="searchQuery.set($any($event.target).value); resetPage()">
       </div>
 
+      <!-- Single hierarchical Group dropdown — replaces the previous
+           14-dropdown pile. Pick a top-level group ("All FPS Weapons")
+           or drill into a specific subtype ("Pistol"). Auto-populated
+           from the data via groupOptions(). -->
       <div class="filter-group">
-        <label>Category</label>
+        <label>Group</label>
         <select class="filter-select"
-                [value]="categoryFilter()"
-                (change)="categoryFilter.set($any($event.target).value); subtypeFilter.set(''); resetPage()">
-          @for (cat of categories(); track cat) {
-            <option [value]="cat">{{ cat || 'All' }}</option>
-          }
+                [value]="groupFilter()"
+                (change)="groupFilter.set($any($event.target).value); resetPage()">
+          <option value="">All Recipes</option>
+          <optgroup label="FPS Weapons">
+            <option value="fpsWeapons">All FPS Weapons</option>
+            @for (s of groupOptions().fpsWeaponSubs; track s) {
+              <option [value]="'fpsWeapons.' + s">{{ s }}</option>
+            }
+          </optgroup>
+          <optgroup label="FPS Armor">
+            <option value="fpsArmor">All FPS Armor</option>
+            @for (s of groupOptions().fpsArmorSubs; track s) {
+              <option [value]="'fpsArmor.' + s">{{ s }}</option>
+            }
+          </optgroup>
+          <optgroup label="Flight Suits">
+            <option value="flightSuits">All Flight Suits</option>
+          </optgroup>
+          <optgroup label="Ship Components">
+            <option value="shipComponents">All Ship Components</option>
+            @for (c of groupOptions().shipCats; track c.value) {
+              <option [value]="'shipComponents.' + c.value">{{ c.label }}</option>
+            }
+          </optgroup>
         </select>
       </div>
-
-      @if (subtypes().length > 1) {
-        <div class="filter-group">
-          <label>Type</label>
-          <select class="filter-select"
-                  [value]="subtypeFilter()"
-                  (change)="subtypeFilter.set($any($event.target).value); resetPage()">
-            @for (sub of subtypes(); track sub) {
-              <option [value]="sub">{{ sub || 'All' }}</option>
-            }
-          </select>
-        </div>
-      }
 
       <div class="filter-group">
         <label>Resource</label>
@@ -54,191 +64,6 @@
           }
         </select>
       </div>
-
-      <div class="filter-group">
-        <label>Armor Set</label>
-        <select class="filter-select"
-                [value]="armorSets.includes(setFilter()) ? setFilter() : ''"
-                (change)="setFilter.set($any($event.target).value); resetPage()">
-          <option value="">All Armor Sets</option>
-          @for (set of armorSets; track set) {
-            <option [value]="set">{{ set }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Pistol</label>
-        <select class="filter-select"
-                [value]="weaponPistols.includes(setFilter()) ? setFilter() : ''"
-                (change)="setFilter.set($any($event.target).value); resetPage()">
-          <option value="">All Pistols</option>
-          @for (w of weaponPistols; track w) { <option [value]="w">{{ w }}</option> }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Rifle</label>
-        <select class="filter-select"
-                [value]="weaponRifles.includes(setFilter()) ? setFilter() : ''"
-                (change)="setFilter.set($any($event.target).value); resetPage()">
-          <option value="">All Rifles</option>
-          @for (w of weaponRifles; track w) { <option [value]="w">{{ w }}</option> }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Sniper</label>
-        <select class="filter-select"
-                [value]="weaponSnipers.includes(setFilter()) ? setFilter() : ''"
-                (change)="setFilter.set($any($event.target).value); resetPage()">
-          <option value="">All Snipers</option>
-          @for (w of weaponSnipers; track w) { <option [value]="w">{{ w }}</option> }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Shotgun</label>
-        <select class="filter-select"
-                [value]="weaponShotguns.includes(setFilter()) ? setFilter() : ''"
-                (change)="setFilter.set($any($event.target).value); resetPage()">
-          <option value="">All Shotguns</option>
-          @for (w of weaponShotguns; track w) { <option [value]="w">{{ w }}</option> }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>SMG</label>
-        <select class="filter-select"
-                [value]="weaponSMGs.includes(setFilter()) ? setFilter() : ''"
-                (change)="setFilter.set($any($event.target).value); resetPage()">
-          <option value="">All SMGs</option>
-          @for (w of weaponSMGs; track w) { <option [value]="w">{{ w }}</option> }
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>LMG</label>
-        <select class="filter-select"
-                [value]="weaponLMGs.includes(setFilter()) ? setFilter() : ''"
-                (change)="setFilter.set($any($event.target).value); resetPage()">
-          <option value="">All LMGs</option>
-          @for (w of weaponLMGs; track w) { <option [value]="w">{{ w }}</option> }
-        </select>
-      </div>
-
-      <!-- Ship-component dropdowns. Each lists every craftable item in
-           that category and applies an exact-name match — separate from
-           the prefix-matched setFilter used for armor/FPS-weapon families.
-           Auto-populated from data, so new TP/PTU/LIVE recipes surface
-           without code changes. -->
-      @if (shipCoolers().length) {
-        <div class="filter-group">
-          <label>Ship Cooler</label>
-          <select class="filter-select"
-                  [value]="shipCoolers().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Coolers</option>
-            @for (n of shipCoolers(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipPowerPlants().length) {
-        <div class="filter-group">
-          <label>Power Plant</label>
-          <select class="filter-select"
-                  [value]="shipPowerPlants().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Power Plants</option>
-            @for (n of shipPowerPlants(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipShields().length) {
-        <div class="filter-group">
-          <label>Shield</label>
-          <select class="filter-select"
-                  [value]="shipShields().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Shields</option>
-            @for (n of shipShields(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipRadars().length) {
-        <div class="filter-group">
-          <label>Radar</label>
-          <select class="filter-select"
-                  [value]="shipRadars().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Radars</option>
-            @for (n of shipRadars(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipQuantumDrives().length) {
-        <div class="filter-group">
-          <label>Quantum Drive</label>
-          <select class="filter-select"
-                  [value]="shipQuantumDrives().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Quantum Drives</option>
-            @for (n of shipQuantumDrives(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipMiningLasers().length) {
-        <div class="filter-group">
-          <label>Mining Laser</label>
-          <select class="filter-select"
-                  [value]="shipMiningLasers().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Mining Lasers</option>
-            @for (n of shipMiningLasers(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipWeapons().length) {
-        <div class="filter-group">
-          <label>Ship Weapon</label>
-          <select class="filter-select"
-                  [value]="shipWeapons().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Ship Weapons</option>
-            @for (n of shipWeapons(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipTractorBeams().length) {
-        <div class="filter-group">
-          <label>Tractor Beam</label>
-          <select class="filter-select"
-                  [value]="shipTractorBeams().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Tractor Beams</option>
-            @for (n of shipTractorBeams(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
-
-      @if (shipSalvage().length) {
-        <div class="filter-group">
-          <label>Salvage Module</label>
-          <select class="filter-select"
-                  [value]="shipSalvage().includes(shipItemFilter()) ? shipItemFilter() : ''"
-                  (change)="shipItemFilter.set($any($event.target).value); resetPage()">
-            <option value="">All Salvage Modules</option>
-            @for (n of shipSalvage(); track n) { <option [value]="n">{{ n }}</option> }
-          </select>
-        </div>
-      }
 
       <div class="filter-group">
         <label>Sort</label>

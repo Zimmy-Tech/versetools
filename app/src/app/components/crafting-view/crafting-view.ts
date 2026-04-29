@@ -62,59 +62,59 @@ export class CraftingViewComponent {
   weaponLookup = signal<Record<string, FpsWeaponRef>>({});
 
   searchQuery = signal('');
-  categoryFilter = signal('');
-  subtypeFilter = signal('');
   resourceFilter = signal('');
-  setFilter = signal('');
-  /** Exact item-name filter for ship-component dropdowns (Cooler, Power
-   *  Plant, Shield, Radar, Quantum Drive, Mining Laser, Ship Weapon,
-   *  Tractor Beam). Distinct from setFilter (which is prefix-matched
-   *  for armor sets and FPS weapon families) — ship components don't
-   *  share a common name prefix per category, so each item is its own
-   *  filter target. */
-  shipItemFilter = signal('');
+  /** Single hierarchical filter — replaces the previous 14-dropdown
+   *  pile (category + subtype + armor set + 6 weapon families + 9
+   *  ship-component family selects). Encoded as one of:
+   *    ''                              All Recipes
+   *    'fpsWeapons'                    All FPS Weapons
+   *    'fpsWeapons.<subtype>'          Pistol / Rifle / Sniper / etc.
+   *    'fpsArmor'                      All FPS Armor
+   *    'fpsArmor.<subtype>'            Core / Helmet / Arms / Legs / Undersuit
+   *    'flightSuits'                   Flight suits (name predicate)
+   *    'shipComponents'                All ship recipes
+   *    'shipComponents.<category>'     ShipCooler / ShipPowerPlant / ...
+   *  The handler in allFiltered() splits on '.' and applies the
+   *  category/subtype filter accordingly. */
+  groupFilter = signal('');
   sortBy = signal<'name' | 'time' | 'ingredients'>('name');
   page = signal(1);
   readonly pageSize = 100;
 
-  readonly armorSets = [
-    'ADP', 'Antium', 'Argus', 'Arden-SL', 'Aril', 'Artimex', 'Aves',
-    'Balor HCH', 'CBH-3', 'Calico', 'Citadel', 'Corbel', 'Defiance', 'DustUp',
-    'G-2', 'Geist', 'Inquisitor', 'Lynx', 'Monde', 'Morozov-SH',
-    'ORC-mkV', 'ORC-mkX', 'Overlord', 'PAB-1', 'Palatino', 'Strata',
-    'Testudo', 'TrueDef-Pro', 'Venture',
-  ];
-
-  readonly weaponPistols = ['Arclight', 'Coda', 'LH86', 'Pulse', 'Tripledown', 'Yubarev'];
-  readonly weaponRifles = ['Gallant', 'Karna', 'Killshot', 'P4-AR', 'S71'];
-  readonly weaponSnipers = ['A03', 'Arrowhead', 'Atzkav', 'P6-LR', 'Scalpel', 'Zenith'];
-  readonly weaponShotguns = ['BR-2', 'Deadrig', 'Devastator', 'Prism', 'R97', 'Ravager'];
-  readonly weaponSMGs = ['C54', 'Custodian', 'Lumin', 'P8-SC', 'Quartz', 'S-38'];
-  readonly weaponLMGs = ['Demeco', 'F55', 'FS-9', 'Fresnel', 'Pulverizer'];
-
-  /** Unique sorted itemNames per ship-component category. Drives the
-   *  per-category dropdowns in the sidebar — auto-populates from data
-   *  so new TP/PTU/LIVE recipes surface without code changes. */
-  private shipItemsForCategory(category: string): string[] {
-    const set = new Set<string>();
-    for (const r of this.allRecipes()) {
-      if (r.category === category) set.add(r.itemName);
+  /** Concrete subtype options surfaced under each group in the
+   *  template. Auto-derived from the data so new recipes light up
+   *  without code changes — see the @for over groupOptions in the
+   *  template. */
+  groupOptions = computed(() => {
+    const recipes = this.allRecipes();
+    const fpsWeaponSubs = new Set<string>();
+    const fpsArmorSubs = new Set<string>();
+    const shipCats = new Set<string>();
+    for (const r of recipes) {
+      if (r.category === 'FPSWeapons' && r.subtype) fpsWeaponSubs.add(r.subtype);
+      else if (r.category === 'FPSArmours' && r.subtype) fpsArmorSubs.add(r.subtype);
+      else if (r.category.startsWith('Ship')) shipCats.add(r.category);
     }
-    return [...set].sort((a, b) => a.localeCompare(b));
-  }
-  shipCoolers       = computed(() => this.shipItemsForCategory('ShipCooler'));
-  shipPowerPlants   = computed(() => this.shipItemsForCategory('ShipPowerPlant'));
-  shipShields       = computed(() => this.shipItemsForCategory('ShipShield'));
-  shipRadars        = computed(() => this.shipItemsForCategory('ShipRadar'));
-  shipQuantumDrives = computed(() => this.shipItemsForCategory('ShipQuantumDrive'));
-  shipMiningLasers  = computed(() => this.shipItemsForCategory('ShipMiningLaser'));
-  shipWeapons       = computed(() => this.shipItemsForCategory('ShipWeapon'));
-  shipTractorBeams  = computed(() => this.shipItemsForCategory('ShipTractorBeam'));
-  shipSalvage       = computed(() => this.shipItemsForCategory('ShipSalvage'));
+    const shipLabel = (cat: string) => cat.replace(/^Ship/, '').replace(/([A-Z])/g, ' $1').trim() || cat;
+    return {
+      fpsWeaponSubs: [...fpsWeaponSubs].sort(),
+      fpsArmorSubs: [...fpsArmorSubs].sort(),
+      shipCats: [...shipCats].sort().map(c => ({ value: c, label: shipLabel(c) })),
+    };
+  });
 
+  // Predicate that classifies a recipe as a flight suit. Surfaces the
+  // VGL/NVY/MRAI/Origin/BASL flightsuits as their own virtual group
+  // since they're a meaningful gameplay subset (G-tolerance bonus)
+  // distinct from generic FPS armor/undersuits.
+  private isFlightSuit(r: CraftingRecipe): boolean {
+    return /flight\s*suit/i.test(r.itemName);
+  }
+
+  /** Click handler on result tags / cards — drops a name into the
+   *  search field instead of the old prefix-matched setFilter. */
   toggleSet(set: string): void {
-    this.setFilter.set(this.setFilter() === set ? '' : set);
-    this.searchQuery.set('');
+    this.searchQuery.set(this.searchQuery() === set ? '' : set);
     this.page.set(1);
   }
 
@@ -197,18 +197,6 @@ export class CraftingViewComponent {
     };
   }
 
-  categories = computed(() => {
-    const cats = new Set(this.allRecipes().map(r => r.category));
-    return ['', ...Array.from(cats).sort()];
-  });
-
-  subtypes = computed(() => {
-    const cat = this.categoryFilter();
-    if (!cat) return [] as string[];
-    const subs = new Set(this.allRecipes().filter(r => r.category === cat).map(r => r.subtype).filter(Boolean));
-    return ['', ...Array.from(subs).sort()];
-  });
-
   resources = computed(() => {
     const res = new Set<string>();
     for (const r of this.allRecipes()) {
@@ -218,26 +206,31 @@ export class CraftingViewComponent {
   });
 
   hasActiveFilter = computed(() =>
-    this.searchQuery().length >= 2 || this.categoryFilter() !== '' ||
-    this.resourceFilter() !== '' || this.setFilter() !== '' ||
-    this.shipItemFilter() !== ''
+    this.searchQuery().length >= 2 || this.groupFilter() !== '' ||
+    this.resourceFilter() !== ''
   );
 
   private allFiltered = computed(() => {
     const search = this.searchQuery().toLowerCase();
-    const cat = this.categoryFilter();
-    const sub = this.subtypeFilter();
+    const group = this.groupFilter();
     const res = this.resourceFilter();
-    const setF = this.setFilter();
-    const shipItem = this.shipItemFilter();
     const sort = this.sortBy();
 
     let recipes = this.allRecipes();
-    if (cat) recipes = recipes.filter(r => r.category === cat);
-    if (sub) recipes = recipes.filter(r => r.subtype === sub);
+    // Single hierarchical group filter — see groupFilter doc above.
+    if (group) {
+      const [top, sub] = group.split('.', 2);
+      if (top === 'flightSuits') {
+        recipes = recipes.filter(r => this.isFlightSuit(r));
+      } else if (top === 'fpsWeapons') {
+        recipes = recipes.filter(r => r.category === 'FPSWeapons' && (!sub || r.subtype === sub));
+      } else if (top === 'fpsArmor') {
+        recipes = recipes.filter(r => r.category === 'FPSArmours' && (!sub || r.subtype === sub));
+      } else if (top === 'shipComponents') {
+        recipes = recipes.filter(r => r.category.startsWith('Ship') && (!sub || r.category === sub));
+      }
+    }
     if (res) recipes = recipes.filter(r => r.ingredients.some(i => i.resource === res));
-    if (setF) recipes = recipes.filter(r => r.itemName.toLowerCase().startsWith(setF.toLowerCase()));
-    if (shipItem) recipes = recipes.filter(r => r.itemName === shipItem);
     if (search) {
       recipes = recipes.filter(r =>
         r.itemName.toLowerCase().includes(search) ||
@@ -392,11 +385,8 @@ export class CraftingViewComponent {
 
   clearFilters(): void {
     this.searchQuery.set('');
-    this.categoryFilter.set('');
-    this.subtypeFilter.set('');
+    this.groupFilter.set('');
     this.resourceFilter.set('');
-    this.setFilter.set('');
-    this.shipItemFilter.set('');
     this.page.set(1);
   }
 
