@@ -22,6 +22,7 @@
         <div class="sidebar-ship-image">
           <img [src]="shipImageSrc()"
                [alt]="data.selectedShip()!.name"
+               [style.display]="shipImageHidden() ? 'none' : null"
                (error)="onShipImageError($any($event.target))">
         </div>
 

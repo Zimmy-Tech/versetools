@@ -674,6 +674,14 @@ export class LoadoutViewComponent {
     return `ship-images/${cls}.jpg`;
   });
 
+  /** Tracked-via-signal hidden flag for the ship image. Imperative
+   *  `img.style.display = 'none'` on the previous version stuck across
+   *  ship swaps — Angular reuses the <img> DOM node, so once an
+   *  image-less ship hid it, every subsequent ship's image loaded but
+   *  stayed invisible. The constructor effect resets this flag on every
+   *  ship change so the next image gets a clean slate. */
+  shipImageHidden = signal(false);
+
   onShipImageError(img: HTMLImageElement): void {
     const cls = this.data.selectedShip()?.className ?? '';
     if (img.src.endsWith('.jpg')) {
@@ -681,7 +689,7 @@ export class LoadoutViewComponent {
     } else if (img.src.endsWith('.webp')) {
       img.src = `ship-images/${cls}.png`;
     } else {
-      img.style.display = 'none';
+      this.shipImageHidden.set(true);
     }
   }
 
@@ -1377,7 +1385,15 @@ export class LoadoutViewComponent {
   });
 
   private router = inject(Router);
-  constructor(public data: DataService) {}
+  constructor(public data: DataService) {
+    // Reset the ship-image hidden flag on every ship swap so a
+    // previously-image-less ship doesn't keep the next ship's image
+    // invisible. See shipImageHidden doc comment for why.
+    effect(() => {
+      this.data.selectedShip();
+      this.shipImageHidden.set(false);
+    });
+  }
 
   signalPct(val: number | undefined): string {
     if (val === undefined) return '—';
