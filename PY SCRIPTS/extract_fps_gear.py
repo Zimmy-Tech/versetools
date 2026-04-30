@@ -34,9 +34,11 @@ _SC   = _BASE / "SC FILES"
 
 FORGE = _SC / f"sc_data_forge_{_MODE}" / "libs" / "foundry" / "records" / "entities" / "scitem"
 GLOBAL_INI = _SC / f"sc_data_xml_{_MODE}" / "Data" / "Localization" / "english" / "global.ini"
+HAZARD_ZONES_DIR = _SC / f"sc_data_forge_{_MODE}" / "libs" / "foundry" / "records" / "entities" / "hazardzones"
 
 if not FORGE.exists():
     FORGE = _SC / "sc_data_forge" / "libs" / "foundry" / "records" / "entities" / "scitem"
+    HAZARD_ZONES_DIR = _SC / "sc_data_forge" / "libs" / "foundry" / "records" / "entities" / "hazardzones"
 if not GLOBAL_INI.exists():
     GLOBAL_INI = _SC / "sc_data_xml_live" / "Data" / "Localization" / "english" / "global.ini"
 
@@ -288,20 +290,153 @@ def parse_melee_spec(desc: str) -> dict:
     return {"bladeSizeCm": safe_float(m.group(1))} if m else {}
 
 
+_DAMAGE_KEYS = (
+    ("DamagePhysical",    "physical"),
+    ("DamageEnergy",      "energy"),
+    ("DamageDistortion",  "distortion"),
+    ("DamageThermal",     "thermal"),
+    ("DamageBiochemical", "biochemical"),
+    ("DamageStun",        "stun"),
+)
+
+
+def _parse_damage_info(blob: str) -> dict:
+    """Pull the first <DamageInfo .../> attribute set in `blob` and return
+    a dict keyed by short name (physical/energy/...). Empty dict if none
+    found or all values are 0."""
+    m = re.search(r'<DamageInfo\s+([^>]+)', blob)
+    if not m:
+        return {}
+    attrs = m.group(1)
+    out = {}
+    for full, short in _DAMAGE_KEYS:
+        mm = re.search(rf'{full}="([^"]+)"', attrs)
+        if mm:
+            v = safe_float(mm.group(1))
+            if v > 0:
+                out[short] = v
+    return out
+
+
+def _parse_explosion_params(attrs: str) -> dict:
+    """Parse the <explosionParams ...> attribute set into structured form.
+    Used by both pattern-A throwable blocks and pattern-C mine
+    DeathExplosionParams which carry the same fields."""
+    out = {}
+    for src, dst in (("minRadius",   "radiusMin"),
+                     ("maxRadius",   "radiusMax"),
+                     ("soundRadius", "soundRadius"),
+                     ("pressure",    "pressure")):
+        m = re.search(rf'{src}="([^"]+)"', attrs)
+        if m:
+            out[dst] = safe_float(m.group(1))
+    return out
+
+
+# Map: hazard-zone __ref GUID → parsed { tickDamage, tickPeriod,
+# durationSeconds, totalTicks, totalDoTDamage, radius, ignoresShields,
+# damageInShipScalar }. Built once at extractor startup so per-throwable
+# SpawnEntity GUID resolution is O(1). Only ~2-3 hazardzone files exist
+# in the tree, so the upfront scan is near-free.
+_HAZARD_ZONE_INDEX: dict[str, dict] = {}
+
+
+def _build_hazard_zone_index() -> None:
+    """Populate _HAZARD_ZONE_INDEX from entities/hazardzones/*.xml.xml.
+    Skips hazardzone_template (boilerplate) — it has no real damage."""
+    if not HAZARD_ZONES_DIR.exists():
+        return
+    for f in HAZARD_ZONES_DIR.iterdir():
+        if not f.name.endswith(".xml.xml"):
+            continue
+        if "template" in f.stem.lower():
+            continue
+        try:
+            txt = f.read_text(errors="replace")
+        except Exception:
+            continue
+        m_ref = re.search(r'<EntityClassDefinition\.[^\s]+\s+[^>]*__ref="([a-f0-9-]{36})"', txt)
+        if not m_ref:
+            continue
+        guid = m_ref.group(1)
+        # HazardComponentParams attrs (damagePeriod, ignoreShields, ...)
+        m_hcp = re.search(r'<HazardComponentParams\s+([^>]+?)(?:/>|>)', txt)
+        if not m_hcp:
+            continue
+        hcp_attrs = m_hcp.group(1)
+        period = 0.0
+        m_p = re.search(r'damagePeriod="([^"]+)"', hcp_attrs)
+        if m_p:
+            period = safe_float(m_p.group(1))
+        ignore_shields = bool(re.search(r'ignoreShields="1"', hcp_attrs))
+        # damagePerHit DamageInfo (the per-tick damage)
+        m_dph_block = re.search(r'<damagePerHit>(.*?)</damagePerHit>', txt, re.DOTALL)
+        tick_damage = _parse_damage_info(m_dph_block.group(1)) if m_dph_block else {}
+        # damageInShipScalar — separate DamageInfo, anti-board scaling
+        m_dis_block = re.search(r'<damageInShipScalar>(.*?)</damageInShipScalar>', txt, re.DOTALL)
+        in_ship_damage = _parse_damage_info(m_dis_block.group(1)) if m_dis_block else {}
+        # Sphere radius
+        radius = 0.0
+        m_r = re.search(r'<SSphereHazardAreaShapeParams\s+radius="([^"]+)"', txt)
+        if m_r:
+            radius = safe_float(m_r.group(1))
+        # Lifetime — the SInteractionState named "Default" has an
+        # SStateAutoChange Delay before transitioning to DestroySelf.
+        # Match within the Default state block specifically; other
+        # states (DestroySelf) may also carry SStateAutoChange but
+        # those don't represent the hazard's lifetime.
+        duration = 0.0
+        m_def = re.search(
+            r'<SInteractionState\s+StateName="Default"[^>]*>(.*?)</SInteractionState>',
+            txt, re.DOTALL,
+        )
+        if m_def:
+            m_d = re.search(r'<SStateAutoChange\s+Delay="([^"]+)"', m_def.group(1))
+            if m_d:
+                duration = safe_float(m_d.group(1))
+        total_ticks = int(duration / period) if period > 0 and duration > 0 else 0
+        # Total DoT damage = per-tick damage * total ticks, summed across
+        # damage types into a single number for the alpha-style display.
+        per_tick_alpha = sum(tick_damage.values())
+        hz = {
+            "tickDamage": tick_damage,
+            "tickPeriod": round(period, 3),
+            "durationSeconds": round(duration, 2),
+            "totalTicks": total_ticks,
+            "totalDoTDamage": round(per_tick_alpha * total_ticks, 2),
+            "tickDPS": round(per_tick_alpha / period, 2) if period > 0 else 0,
+            "radius": round(radius, 2),
+            "ignoresShields": ignore_shields,
+            "damageInShipScalar": in_ship_damage,
+        }
+        _HAZARD_ZONE_INDEX[guid] = hz
+
+
 def parse_throwable_spec(xml: str, desc: str) -> dict:
-    """Extract trigger, timing, and explosion params for grenades / mines /
-    deployables. Reads the inline polymorphic struct data published in the
-    newer forge export — damage numbers and radii are directly available
-    (earlier DCB-ref format is not supported here)."""
+    """Extract trigger, timing, explosion, and DoT/hazard-zone params for
+    grenades, mines, and deployables. Three XML shapes are supported:
+
+      Pattern A — STriggerableDevicesBehaviorExplosionParams chain (most
+        throwables). Each block has a <DamageInfo> inside an
+        <explosionParams ...> child. Multi-stage entities (e.g. Kastak
+        Plasma Grenade has both an impact puff and a fused main
+        explosion) get an `explosion.stages[]` list; the highest-damage
+        stage drives the back-compat single-stage fields.
+
+      Pattern B — STriggerableDevicesBehaviorSpawnEntityParams that
+        spawns a HazardZone entity (the 4.8 PTU Kastak DoT cloud).
+        Resolved through _HAZARD_ZONE_INDEX into a `hazardZone` dict.
+
+      Pattern C — Bare <DeathExplosionParams><ExplosionParams>...
+        <damage><DamageInfo></damage>... shape used by mines.
+        Falls through here when no STriggerableDevicesBehaviorExplosion
+        was found."""
     out: dict = {}
 
-    # Trigger type — the new format is a child polymorphic tag
-    # (e.g. <SSensorMineProximityTrigger>), not an attribute ref.
+    # ── Trigger / sensor data (unchanged from the previous version) ──
     m_trig_new = re.search(r'<SSensorMine(Proximity|Laser|\w+)Trigger\b', xml)
     if m_trig_new:
         out["triggerType"] = m_trig_new.group(1)
-
-    # Proximity / laser trigger geometry (inline attrs on the trigger tag).
     m_prox = re.search(r'<SSensorMineProximityTrigger\s+([^>]+)', xml)
     if m_prox:
         attrs = m_prox.group(1)
@@ -315,75 +450,112 @@ def parse_throwable_spec(xml: str, desc: str) -> dict:
         ll = re.search(r'LaserLength="([^"]+)"', attrs)
         if ll: out["laserLengthM"] = safe_float(ll.group(1))
 
-    # Primary explosion — pick the one named "Explosion". Some items publish
-    # a secondary (e.g. frag's cluster sub-blast, LTP "MineDestroyed")
-    # which we skip to avoid misleading numbers. explosionParams is a child
-    # tag of STriggerableDevicesBehaviorExplosionParams in the new format.
-    explosion_block = None
+    # ── Pattern A — collect every STriggerableDevicesBehaviorExplosionParams ──
+    # name="MineDestroyed" and similar self-destruction blocks are skipped
+    # so the main weapon damage isn't shadowed by an unrelated end-of-life
+    # explosion (LTP variants ship that pattern).
+    stages: list[dict] = []
     for m in re.finditer(
-        r'<STriggerableDevicesBehaviorExplosionParams\s+name="([^"]*)"[^>]*>(.*?)</STriggerableDevicesBehaviorExplosionParams>',
-        xml,
-        re.DOTALL,
+        r'<STriggerableDevicesBehaviorExplosionParams\s+name="([^"]*)"[^>]*>(.*?)'
+        r'</STriggerableDevicesBehaviorExplosionParams>',
+        xml, re.DOTALL,
     ):
-        name = m.group(1)
-        if name in ("Explosion", "") and explosion_block is None:
-            explosion_block = m.group(2)
-            break
-    if explosion_block is None:
-        # Fall back to first ExplosionParams found anywhere.
-        m_ep = re.search(r'<explosionParams\s+([^>]+)', xml)
-        if m_ep:
-            explosion_block = m.group(0)
+        name = m.group(1).strip()
+        block = m.group(2)
+        if name and "destroyed" in name.lower():
+            continue  # MineDestroyed end-of-life cleanup blast — not the player-facing damage
+        m_ep = re.search(r'<explosionParams\s+([^>]+?)(?:/>|>)', block)
+        ep_attrs = m_ep.group(1) if m_ep else ""
+        stage = _parse_explosion_params(ep_attrs)
+        damage = _parse_damage_info(block)
+        if damage:
+            stage["damage"] = damage
+            stage["alphaDamage"] = round(sum(damage.values()), 2)
+        stage["name"] = name or "Explosion"
+        if stage.get("alphaDamage", 0) > 0 or stage.get("radiusMax", 0) > 0:
+            stages.append(stage)
 
-    if explosion_block:
-        m_ep = re.search(r'<explosionParams\s+([^>]+?)(?:/>|>)', explosion_block)
-        if m_ep:
-            ea = m_ep.group(1)
-            for k, field in (("minRadius", "minRadiusM"),
-                             ("maxRadius", "maxRadiusM"),
-                             ("soundRadius", "soundRadiusM")):
-                mm = re.search(rf'{k}="([^"]+)"', ea)
-                if mm: out[field] = safe_float(mm.group(1))
-
-        # Damage (first DamageInfo within the primary explosion block).
-        m_di = re.search(r'<DamageInfo\s+([^>]+)', explosion_block)
-        if m_di:
-            a = m_di.group(1)
-            dmg = {}
-            for k, short in (("DamagePhysical", "physical"),
-                             ("DamageEnergy", "energy"),
-                             ("DamageDistortion", "distortion"),
-                             ("DamageThermal", "thermal"),
-                             ("DamageBiochemical", "biochemical"),
-                             ("DamageStun", "stun")):
-                mm = re.search(rf'{k}="([^"]+)"', a)
-                if mm:
-                    v = safe_float(mm.group(1))
-                    if v > 0: dmg[short] = v
-            if dmg:
-                out["damage"] = dmg
-                out["alphaDamage"] = round(sum(dmg.values()), 2)
-
-    # Fuse / arm / detonation timers (new format keeps the same tag shape).
+    # Fuse timers — name-match keeps the "main" detonation timer when
+    # multiple are present (Kastak has both "Hazard Area" duration=0 and
+    # "Explosion Timer" duration=3; we want the latter).
     timers = []
     for m in re.finditer(
         r'<STriggerableDevicesTriggerTimerParams\s+name="([^"]*)"[^>]*duration="([^"]+)"',
         xml,
     ):
-        timers.append((m.group(1).strip(), safe_float(m.group(2))))
+        nm = m.group(1).strip()
+        dur = safe_float(m.group(2))
+        if dur > 0:
+            timers.append((nm, dur))
     fuse = None
-    for name, dur in timers:
-        nlow = name.lower()
-        if ("explosion" in nlow and "pre" not in nlow) or name == "":
+    for nm, dur in timers:
+        nlow = nm.lower()
+        if "explosion" in nlow and "pre" not in nlow:
             fuse = dur; break
     if fuse is None and timers:
         fuse = timers[0][1]
-    if fuse and fuse > 0:
-        out["fuseSec"] = round(fuse, 2)
+    if fuse:
+        # Attach the fuse to the highest-alpha stage so a single-stage
+        # consumer reads consistent values.
+        if stages:
+            stages.sort(key=lambda s: s.get("alphaDamage", 0), reverse=True)
+            stages[0]["fuseSec"] = round(fuse, 2)
 
-    # Fall back to loc Desc lines when XML doesn't publish an explosion
-    # block (older mine variants). Keeps grenade's "Area of Effect" +
-    # "Damage Type" available for display.
+    # Pick the highest-alpha stage as primary. The Kastak's impact puff
+    # (2 thermal) was previously winning over the 14-phys main explosion
+    # because both are named "Explosion" and the old code took the first
+    # occurrence — sort by damage to make this robust.
+    if stages:
+        stages.sort(key=lambda s: s.get("alphaDamage", 0), reverse=True)
+        primary = stages[0]
+        if primary.get("damage"):
+            out["damage"] = primary["damage"]
+            out["alphaDamage"] = primary["alphaDamage"]
+        if primary.get("radiusMin") is not None:
+            out["minRadiusM"] = primary["radiusMin"]
+        if primary.get("radiusMax") is not None:
+            out["maxRadiusM"] = primary["radiusMax"]
+        if primary.get("soundRadius") is not None:
+            out["soundRadiusM"] = primary["soundRadius"]
+        if primary.get("fuseSec") is not None:
+            out["fuseSec"] = primary["fuseSec"]
+        if len(stages) > 1:
+            out["explosionStages"] = stages
+
+    # ── Pattern B — SpawnEntity → HazardZone DoT cloud ──
+    m_spawn = re.search(
+        r'<STriggerableDevicesBehaviorSpawnEntityParams[^>]*entityToSpawn="([a-f0-9-]{36})"',
+        xml,
+    )
+    if m_spawn:
+        guid = m_spawn.group(1)
+        hz = _HAZARD_ZONE_INDEX.get(guid)
+        if hz:
+            out["hazardZone"] = hz
+
+    # ── Pattern C — DeathExplosionParams (mines) when Pattern A found nothing ──
+    if not stages:
+        m_dep = re.search(
+            r'<DeathExplosionParams>\s*<ExplosionParams\s+([^>]+?)>(.*?)</ExplosionParams>',
+            xml, re.DOTALL,
+        )
+        if m_dep:
+            stage = _parse_explosion_params(m_dep.group(1))
+            inner = m_dep.group(2)
+            # Mines wrap DamageInfo in an extra <damage> tag.
+            m_dmg = re.search(r'<damage>(.*?)</damage>', inner, re.DOTALL)
+            damage = _parse_damage_info(m_dmg.group(1)) if m_dmg else _parse_damage_info(inner)
+            if damage:
+                out["damage"] = damage
+                out["alphaDamage"] = round(sum(damage.values()), 2)
+            if stage.get("radiusMin") is not None:
+                out["minRadiusM"] = stage["radiusMin"]
+            if stage.get("radiusMax") is not None:
+                out["maxRadiusM"] = stage["radiusMax"]
+            if stage.get("soundRadius") is not None:
+                out["soundRadiusM"] = stage["soundRadius"]
+
+    # ── Fallback — desc strings ("Area of Effect: 5m") for anything still bare ──
     if desc:
         m_aoe = re.search(r"Area\s+of\s+Effect:\s*(\d+(?:\.\d+)?)\s*m", desc, re.I)
         if m_aoe and "maxRadiusM" not in out:
@@ -424,6 +596,8 @@ def extract_gear():
     print("=" * 60); print(f"FPS Gear Extraction ({_MODE})"); print("=" * 60)
     loc = load_localization(GLOBAL_INI)
     print(f"  Loaded {len(loc)} localization entries")
+    _build_hazard_zone_index()
+    print(f"  Indexed {len(_HAZARD_ZONE_INDEX)} hazard-zone entities")
 
     out: list[dict] = []
 

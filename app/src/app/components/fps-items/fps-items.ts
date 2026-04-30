@@ -18,6 +18,31 @@ interface MeleeSpec {
   bladeSizeCm?: number;
 }
 
+type DamageBreakdown = Partial<Record<'physical'|'energy'|'distortion'|'thermal'|'biochemical'|'stun', number>>;
+
+interface ExplosionStage {
+  name: string;
+  damage?: DamageBreakdown;
+  alphaDamage?: number;
+  radiusMin?: number;
+  radiusMax?: number;
+  soundRadius?: number;
+  pressure?: number;
+  fuseSec?: number;
+}
+
+interface HazardZoneSpec {
+  tickDamage: DamageBreakdown;
+  tickPeriod: number;          // seconds between ticks
+  durationSeconds: number;     // total lifetime of the cloud
+  totalTicks: number;
+  totalDoTDamage: number;      // tick alpha × total ticks
+  tickDPS: number;             // tick alpha / tick period
+  radius: number;              // sphere radius in meters
+  ignoresShields: boolean;     // FPS shield bypass flag
+  damageInShipScalar?: DamageBreakdown;  // 10× nerf when target is inside a ship
+}
+
 interface ThrowableSpec {
   triggerType?: 'Proximity' | 'Laser' | string;
   triggerRadiusM?: number;
@@ -26,11 +51,16 @@ interface ThrowableSpec {
   minRadiusM?: number;
   maxRadiusM?: number;
   soundRadiusM?: number;
-  damage?: Partial<Record<'physical'|'energy'|'distortion'|'thermal'|'biochemical'|'stun', number>>;
+  damage?: DamageBreakdown;
   alphaDamage?: number;
   fuseSec?: number;
   areaOfEffectM?: number;    // loc-Desc fallback
   damageType?: string;       // loc-Desc fallback
+  // Multi-stage explosions (e.g. impact puff + fused main explosion).
+  // The single-stage fields above mirror the highest-alpha stage.
+  explosionStages?: ExplosionStage[];
+  // Lingering DoT cloud (Kastak Plasma Grenade in 4.8 PTU).
+  hazardZone?: HazardZoneSpec;
 }
 
 interface MiningSpec {
@@ -252,10 +282,14 @@ export class FpsItemsComponent {
       }
     });
     // JSON fallback fires inside an effect so a LIVE/PTU slider toggle
-    // re-fetches against the new mode prefix. No-op when the DB-backed
-    // path has already populated `loaded`.
+    // re-fetches against the new mode prefix. Reset `loaded` first
+    // so the commit() short-circuit in loadFromStaticJson doesn't
+    // bail on every subsequent mode flip — without this, the initial
+    // load's `loaded=true` blocks all further updates and the page
+    // stays on whichever mode loaded first.
     effect(() => {
       const prefix = this.data.dataPrefix();
+      this.loaded.set(false);
       this.loadFromStaticJson(prefix);
     });
   }
@@ -433,6 +467,72 @@ export class FpsItemsComponent {
     if (mx != null && mx > 0) return `${mx} m`;
     if (s.areaOfEffectM) return `${s.areaOfEffectM} m`;
     return '\u2014';
+  }
+
+  /** Damage label for the primary explosion. Appends a "+" when the item
+   *  has additional damage sources (multi-stage explosion or DoT cloud)
+   *  the tooltip will spell out. */
+  throwableDamageLabel(item: FpsItem): string {
+    const s = item.throwableSpec;
+    if (!s?.alphaDamage) return '\u2014';
+    const hasExtra = (s.explosionStages?.length ?? 0) > 1 || !!s.hazardZone;
+    return hasExtra ? `${s.alphaDamage}+` : `${s.alphaDamage}`;
+  }
+
+  /** Tooltip text for the Damage column \u2014 lists all explosion stages and
+   *  flags whether a DoT cloud is present. Empty string when there's
+   *  nothing extra to surface (single-stage with no hazard zone). */
+  throwableDamageTooltip(item: FpsItem): string {
+    const s = item.throwableSpec;
+    if (!s) return '';
+    const lines: string[] = [];
+    if (s.explosionStages && s.explosionStages.length > 1) {
+      lines.push('Explosion stages:');
+      for (const st of s.explosionStages) {
+        const dmgs = Object.entries(st.damage ?? {})
+          .map(([k, v]) => `${v} ${k}`).join(' + ') || '\u2014';
+        const fuse = st.fuseSec ? ` (${st.fuseSec}s fuse)` : '';
+        const r = st.radiusMax ? ` \u00b7 ${st.radiusMax}m` : '';
+        lines.push(`  \u2022 ${dmgs}${r}${fuse}`);
+      }
+    }
+    if (s.hazardZone) {
+      if (lines.length) lines.push('');
+      lines.push('Plus a lingering hazard cloud \u2014 see DoT column.');
+    }
+    return lines.join('\n');
+  }
+
+  /** Compact DoT cell \u2014 "250 thermal" style summary. Em-dash when
+   *  no hazard zone is associated with the throwable. */
+  dotCellLabel(item: FpsItem): string {
+    const hz = item.throwableSpec?.hazardZone;
+    if (!hz) return '\u2014';
+    const dmgEntries = Object.entries(hz.tickDamage);
+    if (!dmgEntries.length) return `${hz.totalDoTDamage}`;
+    const typeLabel = dmgEntries.length === 1
+      ? dmgEntries[0][0]
+      : `${dmgEntries[0][0]}+`;
+    return `${hz.totalDoTDamage} ${typeLabel}`;
+  }
+
+  /** DoT tooltip \u2014 full breakdown of tick rate, duration, radius,
+   *  shield bypass, and the in-ship damage scalar. Lifts the mechanics
+   *  off the compact cell for users who need the details. */
+  dotTooltip(item: FpsItem): string {
+    const hz = item.throwableSpec?.hazardZone;
+    if (!hz) return '';
+    const tickAlpha = Object.values(hz.tickDamage).reduce((a, b) => a + b, 0);
+    const lines = [
+      `${tickAlpha} damage/tick \u00b7 every ${hz.tickPeriod}s \u00b7 ${hz.durationSeconds}s total`,
+      `${hz.tickDPS} DPS \u00b7 ${hz.totalTicks} ticks \u00b7 ${hz.radius}m sphere`,
+    ];
+    if (hz.ignoresShields) lines.push('Bypasses FPS shields.');
+    if (hz.damageInShipScalar && Object.keys(hz.damageInShipScalar).length) {
+      const inShipAlpha = Object.values(hz.damageInShipScalar).reduce((a, b) => a + b, 0);
+      lines.push(`Reduced to ${inShipAlpha} dmg/tick if target is inside a ship.`);
+    }
+    return lines.join('\n');
   }
 
   /** Zoom readout: "Nx" — em-dash when absent. */

@@ -120,32 +120,50 @@
           </select>
         </div>
 
-        <div class="picker-group">
+        <div class="picker-group" [class.slot-blocked]="!allowedArmorSlots().has('core')">
           <label>Core</label>
-          <select [value]="coreClass() ?? ''" (change)="coreClass.set($any($event.target).value || null)">
-            <option value="">— none —</option>
-            @for (c of cores(); track c.className) {
-              <option [value]="c.className">{{ c.name }}</option>
+          <select [value]="coreClass() ?? ''"
+                  [disabled]="!allowedArmorSlots().has('core')"
+                  (change)="coreClass.set($any($event.target).value || null)">
+            @if (allowedArmorSlots().has('core')) {
+              <option value="">— none —</option>
+              @for (c of cores(); track c.className) {
+                <option [value]="c.className">{{ c.name }}</option>
+              }
+            } @else {
+              <option value="">Not allowed by current flight suit</option>
             }
           </select>
         </div>
 
-        <div class="picker-group">
+        <div class="picker-group" [class.slot-blocked]="!allowedArmorSlots().has('arms')">
           <label>Arms</label>
-          <select [value]="armsClass() ?? ''" (change)="armsClass.set($any($event.target).value || null)">
-            <option value="">— none —</option>
-            @for (a of arms(); track a.className) {
-              <option [value]="a.className">{{ a.name }}</option>
+          <select [value]="armsClass() ?? ''"
+                  [disabled]="!allowedArmorSlots().has('arms')"
+                  (change)="armsClass.set($any($event.target).value || null)">
+            @if (allowedArmorSlots().has('arms')) {
+              <option value="">— none —</option>
+              @for (a of arms(); track a.className) {
+                <option [value]="a.className">{{ a.name }}</option>
+              }
+            } @else {
+              <option value="">Not allowed by current flight suit</option>
             }
           </select>
         </div>
 
-        <div class="picker-group">
+        <div class="picker-group" [class.slot-blocked]="!allowedArmorSlots().has('legs')">
           <label>Legs</label>
-          <select [value]="legsClass() ?? ''" (change)="legsClass.set($any($event.target).value || null)">
-            <option value="">— none —</option>
-            @for (l of legs(); track l.className) {
-              <option [value]="l.className">{{ l.name }}</option>
+          <select [value]="legsClass() ?? ''"
+                  [disabled]="!allowedArmorSlots().has('legs')"
+                  (change)="legsClass.set($any($event.target).value || null)">
+            @if (allowedArmorSlots().has('legs')) {
+              <option value="">— none —</option>
+              @for (l of legs(); track l.className) {
+                <option [value]="l.className">{{ l.name }}</option>
+              }
+            } @else {
+              <option value="">Not allowed by current flight suit</option>
             }
           </select>
         </div>

@@ -481,13 +481,13 @@
       "size": 1,
       "mass": 1.0,
       "throwableSpec": {
-        "minRadiusM": 0.75,
-        "maxRadiusM": 3.0,
-        "soundRadiusM": 50.0,
         "damage": {
           "physical": 15.0
         },
         "alphaDamage": 15.0,
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
         "fuseSec": 2.35
       },
       "category": "Throwable / Deployable"
@@ -501,13 +501,13 @@
       "size": 1,
       "mass": 1.0,
       "throwableSpec": {
-        "minRadiusM": 0.75,
-        "maxRadiusM": 3.0,
-        "soundRadiusM": 50.0,
         "damage": {
           "physical": 15.0
         },
         "alphaDamage": 15.0,
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
         "fuseSec": 2.35
       },
       "category": "Throwable / Deployable"
@@ -521,13 +521,13 @@
       "size": 1,
       "mass": 1.0,
       "throwableSpec": {
-        "minRadiusM": 0.75,
-        "maxRadiusM": 3.0,
-        "soundRadiusM": 50.0,
         "damage": {
           "physical": 15.0
         },
         "alphaDamage": 15.0,
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
         "fuseSec": 2.35
       },
       "category": "Throwable / Deployable"
@@ -541,13 +541,13 @@
       "size": 1,
       "mass": 1.0,
       "throwableSpec": {
-        "minRadiusM": 0.75,
-        "maxRadiusM": 3.0,
-        "soundRadiusM": 50.0,
         "damage": {
           "physical": 15.0
         },
         "alphaDamage": 15.0,
+        "minRadiusM": 0.75,
+        "maxRadiusM": 3.0,
+        "soundRadiusM": 50.0,
         "fuseSec": 2.35
       },
       "category": "Throwable / Deployable"
@@ -561,13 +561,13 @@
       "size": 1,
       "mass": 1.0,
       "throwableSpec": {
-        "minRadiusM": 2.5,
-        "maxRadiusM": 5.0,
-        "soundRadiusM": 50.0,
         "damage": {
           "physical": 70.0
         },
         "alphaDamage": 70.0,
+        "minRadiusM": 2.5,
+        "maxRadiusM": 5.0,
+        "soundRadiusM": 50.0,
         "fuseSec": 15.0
       },
       "category": "Throwable / Deployable"
@@ -581,14 +581,39 @@
       "size": 1,
       "mass": 0.4,
       "throwableSpec": {
-        "minRadiusM": 4.0,
-        "maxRadiusM": 5.5,
-        "soundRadiusM": 150.0,
         "damage": {
           "physical": 20.0
         },
         "alphaDamage": 20.0,
-        "fuseSec": 3.0
+        "minRadiusM": 4.0,
+        "maxRadiusM": 5.5,
+        "soundRadiusM": 150.0,
+        "fuseSec": 3.0,
+        "explosionStages": [
+          {
+            "radiusMin": 4.0,
+            "radiusMax": 5.5,
+            "soundRadius": 150.0,
+            "pressure": 280.0,
+            "damage": {
+              "physical": 20.0
+            },
+            "alphaDamage": 20.0,
+            "name": "Explosion",
+            "fuseSec": 3.0
+          },
+          {
+            "radiusMin": 0.25,
+            "radiusMax": 7.0,
+            "soundRadius": 50.0,
+            "pressure": 280.0,
+            "damage": {
+              "physical": 14.0
+            },
+            "alphaDamage": 14.0,
+            "name": "Explosion"
+          }
+        ]
       },
       "category": "Throwable / Grenade"
     },
@@ -601,14 +626,54 @@
       "size": 1,
       "mass": 0.4,
       "throwableSpec": {
-        "minRadiusM": 4.0,
-        "maxRadiusM": 5.5,
-        "soundRadiusM": 150.0,
         "damage": {
-          "thermal": 2.0
+          "physical": 14.0
         },
-        "alphaDamage": 2.0,
-        "fuseSec": 3.0
+        "alphaDamage": 14.0,
+        "minRadiusM": 0.25,
+        "maxRadiusM": 7.0,
+        "soundRadiusM": 50.0,
+        "fuseSec": 3.0,
+        "explosionStages": [
+          {
+            "radiusMin": 0.25,
+            "radiusMax": 7.0,
+            "soundRadius": 50.0,
+            "pressure": 280.0,
+            "damage": {
+              "physical": 14.0
+            },
+            "alphaDamage": 14.0,
+            "name": "Explosion",
+            "fuseSec": 3.0
+          },
+          {
+            "radiusMin": 4.0,
+            "radiusMax": 5.5,
+            "soundRadius": 150.0,
+            "pressure": 5.0,
+            "damage": {
+              "thermal": 2.0
+            },
+            "alphaDamage": 2.0,
+            "name": "Explosion"
+          }
+        ],
+        "hazardZone": {
+          "tickDamage": {
+            "thermal": 10.0
+          },
+          "tickPeriod": 0.4,
+          "durationSeconds": 10.0,
+          "totalTicks": 25,
+          "totalDoTDamage": 250.0,
+          "tickDPS": 25.0,
+          "radius": 4.25,
+          "ignoresShields": true,
+          "damageInShipScalar": {
+            "thermal": 1.0
+          }
+        }
       },
       "category": "Throwable / Grenade"
     },
@@ -623,8 +688,13 @@
       "throwableSpec": {
         "triggerType": "Laser",
         "laserLengthM": 2.0,
-        "areaOfEffectM": 15.0,
-        "damageType": "Kinetic"
+        "damage": {
+          "physical": 35.0
+        },
+        "alphaDamage": 35.0,
+        "minRadiusM": 0.5,
+        "maxRadiusM": 5.0,
+        "soundRadiusM": 50.0
       },
       "category": "Throwable / Mine"
     },
@@ -639,7 +709,14 @@
       "throwableSpec": {
         "triggerType": "Proximity",
         "triggerRadiusM": 2.5,
-        "warningRadiusM": 3.0
+        "warningRadiusM": 3.0,
+        "damage": {
+          "physical": 35.0
+        },
+        "alphaDamage": 35.0,
+        "minRadiusM": 0.0,
+        "maxRadiusM": 5.0,
+        "soundRadiusM": 50.0
       },
       "category": "Throwable / Mine"
     },

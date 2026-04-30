@@ -288,6 +288,18 @@ export class FpsLoadoutComponent {
     // JSON-first path (preview / GitHub Pages): no-op once DB has won
     // but keeps the preview deployment populated without an API.
     this.loadFromStaticJson();
+
+    // Auto-clear armor pieces in slots the equipped undersuit doesn't
+    // permit. Triggers whenever allowedArmorSlots() changes — i.e.
+    // when the user swaps undersuits. Silent (no toast) per user
+    // preference; the disabled-dropdown state in the template is the
+    // visible cue that the slot isn't accepting armor.
+    effect(() => {
+      const allowed = this.allowedArmorSlots();
+      if (!allowed.has('core') && this.coreClass() !== null) this.coreClass.set(null);
+      if (!allowed.has('arms') && this.armsClass() !== null) this.armsClass.set(null);
+      if (!allowed.has('legs') && this.legsClass() !== null) this.legsClass.set(null);
+    });
   }
 
   private hydrateFromDb(fpsArmor: ArmorPiece[], fpsItems: any[], fpsGear: FpsGearRaw[]): void {
@@ -1077,6 +1089,29 @@ export class FpsLoadoutComponent {
   equippedLegs      = computed(() => this.find(this.legsClass()));
   equippedBackpack  = computed(() => this.find(this.backpackClass()));
   equippedUndersuit = computed(() => this.find(this.undersuitClass()));
+
+  /** Which body-armor slot keys (core/arms/legs) the equipped undersuit
+   *  permits. Driven by the suit's `Armor_*` ports — flight suits like
+   *  the Mirai Murray Cup expose only Armor_Helmet and silently reject
+   *  Core/Arms/Legs in-game. When no undersuit is equipped we permit
+   *  everything (matches engine behavior — armor attaches directly to
+   *  the player chassis when no undersuit is present).
+   *  Backpack stays universally allowed; the `backpack` port is on
+   *  every undersuit and isn't part of this restriction.
+   *  Helmet isn't gated here because the loadout page doesn't expose a
+   *  helmet slot (matches the comment at fps-loadout.ts:191). */
+  allowedArmorSlots = computed(() => {
+    const u = this.equippedUndersuit();
+    if (!u) return new Set(['core', 'arms', 'legs']);
+    const allowed = new Set<string>();
+    for (const p of u.ports) {
+      const n = p.name.toLowerCase();
+      if (n === 'armor_torso') allowed.add('core');
+      if (n === 'armor_arms')  allowed.add('arms');
+      if (n === 'armor_legs')  allowed.add('legs');
+    }
+    return allowed;
+  });
 
   /** Sum of gForceResistance across the five equipped slots. Null when
    *  every equipped piece's gForceResistance is null (i.e. LIVE-mode

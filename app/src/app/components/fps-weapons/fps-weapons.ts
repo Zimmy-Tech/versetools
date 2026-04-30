@@ -150,7 +150,15 @@ export class FpsWeaponsComponent {
       this.loaded.set(false);
       this.http.get<{ weapons: FpsWeapon[]; magazines?: FpsMagazine[] }>(`${prefix}versedb_fps.json`).subscribe({
         next: (d) => {
-          this.weapons.set(d.weapons);
+          // Drop throwables (Grenades) from the FPS Weapons table — the
+          // per-shot stat columns (RPM, alpha, magazine, recoil) don't
+          // describe fused-explosive damage well, and adding DoT/blast
+          // columns would clutter the table for the 47 firearms that
+          // don't need them. Throwables live on the FPS Items page's
+          // Throwable sub-table where the row shape fits. Grenade
+          // Launchers (proper shoulder-fired firearms like the GP-33)
+          // stay — they're RPM-based and belong here.
+          this.weapons.set((d.weapons ?? []).filter(w => w.type !== 'Grenade'));
           this.magazines.set(d.magazines ?? []);
           this.loaded.set(true);
         },

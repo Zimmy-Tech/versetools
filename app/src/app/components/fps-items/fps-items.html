@@ -82,7 +82,8 @@
               <th class="col-num sortable" title="Proximity mines sense targets via a radius, Laser mines trip on an invisible beam, everything else is on a fuse timer." (click)="toggleSort('throwableSpec.triggerType')">Trigger{{ sortIndicator('throwableSpec.triggerType') }}</th>
               <th class="col-num sortable" title="Seconds from priming/throwing until detonation (or arming delay for mines)." (click)="toggleSort('throwableSpec.fuseSec')">Fuse (s){{ sortIndicator('throwableSpec.fuseSec') }}</th>
               <th class="col-num sortable" title="Outer blast radius in meters — edge of effective damage." (click)="toggleSort('throwableSpec.maxRadiusM')">Radius (m){{ sortIndicator('throwableSpec.maxRadiusM') }}</th>
-              <th class="col-num sortable" title="Raw damage of the primary explosion (sum across all damage types)." (click)="toggleSort('throwableSpec.alphaDamage')">Damage{{ sortIndicator('throwableSpec.alphaDamage') }}</th>
+              <th class="col-num sortable" title="Raw damage of the primary explosion (sum across all damage types). A trailing '+' indicates the item also has secondary explosion stages or a DoT cloud \u2014 hover the cell for details." (click)="toggleSort('throwableSpec.alphaDamage')">Damage{{ sortIndicator('throwableSpec.alphaDamage') }}</th>
+              <th class="col-num sortable" title="Damage-over-time cloud: total damage if a target stays in the area for the full duration. Hover for tick rate, radius, shield-bypass flag, and in-ship damage scaling." (click)="toggleSort('throwableSpec.hazardZone.totalDoTDamage')">DoT{{ sortIndicator('throwableSpec.hazardZone.totalDoTDamage') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -96,7 +97,8 @@
                 <td class="col-num">{{ throwableTriggerLabel(i) }}</td>
                 <td class="col-num">{{ i.throwableSpec?.fuseSec ? i.throwableSpec?.fuseSec + ' s' : '\u2014' }}</td>
                 <td class="col-num">{{ throwableRadius(i) }}</td>
-                <td class="col-num">{{ i.throwableSpec?.alphaDamage ? i.throwableSpec?.alphaDamage : '\u2014' }}</td>
+                <td class="col-num" [title]="throwableDamageTooltip(i)">{{ throwableDamageLabel(i) }}</td>
+                <td class="col-num" [title]="dotTooltip(i)">{{ dotCellLabel(i) }}</td>
               </tr>
             }
           </tbody>
