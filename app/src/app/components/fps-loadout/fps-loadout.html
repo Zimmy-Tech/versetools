@@ -164,6 +164,15 @@
           <div class="summary-row"><span>Armor mass</span><span>{{ totalMass() }} kg</span></div>
           <div class="summary-row"><span>Total loadout</span><span>{{ totalLoadoutMass() }} kg</span></div>
           <div class="summary-row"><span>Open slots</span><span>{{ slots().length }}</span></div>
+          @if (totalGForceResistance() != null) {
+            <div class="summary-row"
+                 title="Sum of gForceResistance across equipped pieces. PTU 4.8+ only."
+                 [class.positive]="totalGForceResistance()! > 0"
+                 [class.negative]="totalGForceResistance()! < 0">
+              <span>G-Tol</span>
+              <span>{{ (totalGForceResistance()! > 0 ? '+' : '') + totalGForceResistance()! }} G</span>
+            </div>
+          }
         </div>
 
         <div class="encumbrance" [class]="'enc-' + encumbranceLevel()">

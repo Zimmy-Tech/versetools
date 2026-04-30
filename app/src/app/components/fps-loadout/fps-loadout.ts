@@ -129,6 +129,12 @@ interface ArmorPiece {
   slot: string;    // core | arms | legs | backpack | undersuit | helmet
   damageReduction: number | null;
   mass: number | null;
+  // 4.8 PTU only — null on LIVE extracts. Working hypothesis is that
+  // outfit total = sum of equipped pieces' gForceResistance values
+  // (see research_armor_flight_performance.md). Sum surfaces as a
+  // G-Tol summary row in the loadout panel; when every equipped
+  // piece is null (LIVE mode), the row hides.
+  gForceResistance: number | null;
   ports: Port[];
 }
 
@@ -257,6 +263,28 @@ export class FpsLoadoutComponent {
         this.hydrateFromDb(fpsArmor, fpsItems, fpsGear);
       }
     });
+    // Armor JSON: mode-aware fallback so the G-Tol summary reflects the
+    // active mode's gForceResistance values (4.8 PTU only). The other
+    // three static fallbacks (weapons / gear / crafting) stay hardcoded
+    // to live/ for now — the full mode-aware refactor is tracked in
+    // project_mode_aware_db_pages.md.
+    //
+    // Always overwrite this.armor() on mode flip — equipped slot
+    // computeds resolve by className, so a user's selections persist
+    // across modes when the className exists in both, and gracefully
+    // degrade to "no piece" when it doesn't.
+    effect(() => {
+      const prefix = this.data.dataPrefix();
+      this.http.get<{ armor: ArmorPiece[] }>(`${prefix}versedb_fps_armor.json`).subscribe({
+        next: d => {
+          this.armor.set(d.armor);
+          if (!this.loaded()) {
+            this.seedArmorDefaults(d.armor);
+            this.loaded.set(true);
+          }
+        },
+      });
+    });
     // JSON-first path (preview / GitHub Pages): no-op once DB has won
     // but keeps the preview deployment populated without an API.
     this.loadFromStaticJson();
@@ -305,14 +333,10 @@ export class FpsLoadoutComponent {
   }
 
   private loadFromStaticJson(): void {
-    this.http.get<{ armor: ArmorPiece[] }>('live/versedb_fps_armor.json').subscribe({
-      next: d => {
-        if (this.loaded()) return; // DB path already won
-        this.armor.set(d.armor);
-        this.seedArmorDefaults(d.armor);
-        this.loaded.set(true);
-      },
-    });
+    // NOTE: armor JSON is loaded via the mode-aware effect in the
+    // constructor — not here. The other three URLs (fps weapons, gear,
+    // crafting) are still hardcoded to live/ pending the full
+    // mode-aware refactor (see project_mode_aware_db_pages.md).
     this.http.get<{ weapons: FpsWeaponRaw[]; magazines: FpsMagRaw[]; attachments?: FpsAttachRaw[] }>('live/versedb_fps.json').subscribe({
       next: d => {
         if (this.weapons().length > 0) return;
@@ -1053,6 +1077,31 @@ export class FpsLoadoutComponent {
   equippedLegs      = computed(() => this.find(this.legsClass()));
   equippedBackpack  = computed(() => this.find(this.backpackClass()));
   equippedUndersuit = computed(() => this.find(this.undersuitClass()));
+
+  /** Sum of gForceResistance across the five equipped slots. Null when
+   *  every equipped piece's gForceResistance is null (i.e. LIVE-mode
+   *  data where the field hasn't shipped yet) — the template hides
+   *  the summary row in that case. Working hypothesis is straight
+   *  additive sum across the outfit; revisit when CIG documents the
+   *  scaling factor or sum clamping. */
+  totalGForceResistance = computed(() => {
+    const pieces: Array<ArmorPiece | null> = [
+      this.equippedUndersuit(),
+      this.equippedCore(),
+      this.equippedArms(),
+      this.equippedLegs(),
+      this.equippedBackpack(),
+    ];
+    let sum = 0;
+    let anyValue = false;
+    for (const p of pieces) {
+      const v = p?.gForceResistance;
+      if (v != null) { sum += v; anyValue = true; }
+    }
+    if (!anyValue) return null;
+    // Guard against fp drift like 0.1 + 0.2 → 0.30000000000000004.
+    return Math.round(sum * 1000) / 1000;
+  });
 
   // Reset choices when tier changes (except undersuit — always full pool).
   setTier(t: WeightTier): void {

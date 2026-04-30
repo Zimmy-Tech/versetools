@@ -176,6 +176,13 @@
     display: flex; justify-content: space-between;
     color: var(--text2);
     span:last-child { color: var(--accent); font-weight: 700; }
+
+    /* G-Tol row uses positive/negative cues like the FPS Armor DB
+       column — cyan (default accent) for the bonus/zero case,
+       reddish for negative net G-Tol. */
+    &.negative span:last-child {
+      color: rgb(255, 150, 140);
+    }
   }
 }
 
