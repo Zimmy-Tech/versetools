@@ -133,6 +133,16 @@ TRACKED_FIELDS: dict[str, list[str]] = {
     "QuantumInterdictionGenerator": [
         "powerDraw", "powerMax", "basePowerDrawFraction",
     ],
+    # FPS armor — surfaces real CIG balance changes (DR nerfs, temp/rad
+    # tweaks) which were previously buried in coarse "this entity
+    # changed" entries. gForceResistance is included now that it's
+    # established; the mass-null-flip suppressor (see _suppress_…
+    # below) handles the one-time wave when a field is first added.
+    "fps_armor": [
+        "damageReduction", "weight",
+        "tempMin", "tempMax", "radiationProtection",
+        "carryingCapacity", "gForceResistance",
+    ],
 }
 
 # Maps item `type` → display category. Keys also drive the section
@@ -247,6 +257,96 @@ def _diff_ship_item_stream(
     return changes, added, removed
 
 
+def _diff_typed_fps_stream(
+    prev_list: list[dict],
+    new_list: list[dict],
+    *,
+    fields: list[str],
+    category: str,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    """Field-level diff for an FPS stream against a whitelist. Same
+    output shape as `_diff_ship_item_stream` so the existing changelog
+    UI can render the `fields` array unchanged."""
+    prev_map = {e["className"]: e for e in prev_list if e.get("className")}
+    new_map = {e["className"]: e for e in new_list if e.get("className")}
+    changes, added, removed = [], [], []
+    for key in sorted(set(prev_map) | set(new_map)):
+        p, n = prev_map.get(key), new_map.get(key)
+        if not p and n:
+            added.append({"category": category, "className": key, "name": n.get("name", key)})
+            continue
+        if p and not n:
+            removed.append({"category": category, "className": key, "name": p.get("name", key)})
+            continue
+        field_diffs = _deep_diff(p, n, fields)
+        if field_diffs:
+            changes.append({
+                "category": category,
+                "className": key,
+                "name": n.get("name", key),
+                "fields": field_diffs,
+            })
+    return changes, added, removed
+
+
+def _suppress_mass_null_flips(
+    changes: list[dict],
+    *,
+    threshold_pct: int = 50,
+    min_entities: int = 20,
+) -> tuple[list[dict], list[dict]]:
+    """Detect and suppress mass `null → value` waves caused by extractor
+    capability additions (e.g. a new field newly populated across most
+    entries). Returns (filtered_changes, metadata_entries).
+
+    A field qualifies if: (a) >= `threshold_pct`% of changed entries
+    flipped that field null→non-null, and (b) the absolute count is
+    >= `min_entities` (so we don't suppress legit small-batch changes).
+
+    Only the noisy field is stripped from each entry — entries with
+    other real changes survive with their remaining `fields` intact.
+    Entries whose `fields` empties out after stripping are dropped, and
+    a single `metadata` entry per suppressed field is appended."""
+    if not changes:
+        return changes, []
+    null_flip_count: dict[tuple[str, str], int] = {}
+    total_changed_per_field: dict[tuple[str, str], int] = {}
+    for entry in changes:
+        cat = entry.get("category", "")
+        for fd in entry.get("fields", []):
+            key = (cat, fd["field"])
+            total_changed_per_field[key] = total_changed_per_field.get(key, 0) + 1
+            if fd.get("old") is None and fd.get("new") is not None:
+                null_flip_count[key] = null_flip_count.get(key, 0) + 1
+    suppressed: set[tuple[str, str]] = set()
+    metadata: list[dict] = []
+    for key, flips in null_flip_count.items():
+        total = total_changed_per_field.get(key, 0)
+        if total >= min_entities and flips * 100 >= total * threshold_pct:
+            suppressed.add(key)
+            cat, field = key
+            metadata.append({
+                "category": "metadata",
+                "className": f"{cat}.{field}",
+                "name": f"{field} — newly tracked on {cat} ({flips} entries)",
+            })
+    if not suppressed:
+        return changes, []
+    filtered: list[dict] = []
+    for entry in changes:
+        cat = entry.get("category", "")
+        kept = [
+            fd for fd in entry.get("fields", [])
+            if (cat, fd["field"]) not in suppressed
+            or not (fd.get("old") is None and fd.get("new") is not None)
+        ]
+        if kept:
+            new_entry = dict(entry)
+            new_entry["fields"] = kept
+            filtered.append(new_entry)
+    return filtered, metadata
+
+
 def _diff_shallow_stream(
     prev_list: list[dict],
     new_list: list[dict],
@@ -301,9 +401,10 @@ def build_entry(prev_merged: dict, new_merged: dict, channel: str) -> dict:
     )
     changes += c; added += a; removed += r
 
-    c, a, r = _diff_shallow_stream(
+    c, a, r = _diff_typed_fps_stream(
         prev_merged.get("fpsArmor", []), new_merged.get("fpsArmor", []),
-        category_fn=lambda _: "fps_armor",
+        fields=TRACKED_FIELDS["fps_armor"],
+        category="fps_armor",
     )
     changes += c; added += a; removed += r
 
@@ -321,6 +422,13 @@ def build_entry(prev_merged: dict, new_merged: dict, channel: str) -> dict:
             "className": "missionRefs",
             "name": "Mission reference data",
         })
+
+    # Mass null→value suppressor: when an extractor capability is added
+    # (e.g. a new field newly populated across most entries), strip
+    # those noisy field-level transitions and emit one summary
+    # `metadata` entry per affected stream/field instead.
+    changes, metadata_entries = _suppress_mass_null_flips(changes)
+    changes += metadata_entries
 
     prev_version = (prev_merged.get("meta") or {}).get("version", "unknown")
     new_version = (new_merged.get("meta") or {}).get("version", "unknown")

@@ -48,6 +48,7 @@ const CATEGORY_ORDER = [
   'salvage', 'salvage_modifier', 'tool',
   'fps_weapon', 'fps_magazine', 'fps_attachment', 'fps_gear', 'fps_armor',
   'mission', 'mission_refs',
+  'metadata',
 ];
 const CATEGORY_LABELS: Record<string, string> = {
   ship: 'Ships',
@@ -80,6 +81,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   fps_armor: 'FPS Armor',
   mission: 'Missions',
   mission_refs: 'Mission Reference Data',
+  metadata: 'Extractor Notes',
 };
 
 @Component({
