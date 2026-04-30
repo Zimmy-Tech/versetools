@@ -98,36 +98,40 @@
                [value]="pickerSearch()"
                (input)="pickerSearch.set($any($event.target).value)"
                autofocus>
-        @if (availableSizes().length > 1) {
-          <div class="picker-size-filters">
+        <!-- Size buttons collapse to nothing when the slot only accepts a
+             single size (4.8 PTU locked every gimbal mount to a single
+             weapon size), but VELO must keep rendering for weapon pickers
+             regardless — it doesn't depend on size variety. -->
+        <div class="picker-size-filters">
+          @if (availableSizes().length > 1) {
             <button class="size-btn" [class.active]="pickerSizeFilter() === null"
                     (click)="pickerSizeFilter.set(null)">All</button>
             @for (sz of availableSizes(); track sz) {
               <button class="size-btn" [class.active]="pickerSizeFilter() === sz"
                       (click)="pickerSizeFilter.set(sz)">S{{ sz }}</button>
             }
-            <div class="picker-velo-filter" [class.active]="pickerVeloEnabled()">
-              <label class="velo-toggle" title="Filter by projectile velocity">
-                <input type="checkbox"
-                       [checked]="pickerVeloEnabled()"
-                       (change)="pickerVeloEnabled.set($any($event.target).checked)">
-                <span>VELO</span>
-              </label>
-              <input type="range" class="velo-slider"
-                     min="100" max="3500" step="50"
-                     [value]="pickerVeloSetpoint()"
-                     (input)="pickerVeloSetpoint.set(+$any($event.target).value)"
-                     [disabled]="!pickerVeloEnabled()">
-              <span class="velo-value">{{ pickerVeloSetpoint() }}<span class="velo-unit">m/s</span></span>
-              <span class="velo-pm">±</span>
-              <input type="number" class="velo-delta"
-                     min="0" max="2000" step="25"
-                     [value]="pickerVeloDelta()"
-                     (input)="pickerVeloDelta.set(+$any($event.target).value || 0)"
-                     [disabled]="!pickerVeloEnabled()">
-            </div>
+          }
+          <div class="picker-velo-filter" [class.active]="pickerVeloEnabled()">
+            <label class="velo-toggle" title="Filter by projectile velocity">
+              <input type="checkbox"
+                     [checked]="pickerVeloEnabled()"
+                     (change)="pickerVeloEnabled.set($any($event.target).checked)">
+              <span>VELO</span>
+            </label>
+            <input type="range" class="velo-slider"
+                   min="100" max="3500" step="50"
+                   [value]="pickerVeloSetpoint()"
+                   (input)="pickerVeloSetpoint.set(+$any($event.target).value)"
+                   [disabled]="!pickerVeloEnabled()">
+            <span class="velo-value">{{ pickerVeloSetpoint() }}<span class="velo-unit">m/s</span></span>
+            <span class="velo-pm">±</span>
+            <input type="number" class="velo-delta"
+                   min="0" max="2000" step="25"
+                   [value]="pickerVeloDelta()"
+                   (input)="pickerVeloDelta.set(+$any($event.target).value || 0)"
+                   [disabled]="!pickerVeloEnabled()">
           </div>
-        }
+        </div>
         <div class="picker-table-wrap">
           <table class="picker-table">
             <thead>
