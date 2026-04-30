@@ -16,30 +16,14 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
+          # Single-line summary only — the commit title becomes the
+          # whole notification. The body-as-bulleted-description path
+          # used to produce wall-of-text Discord posts on multi-section
+          # commits; users prefer one-liners with a link out for detail.
           TITLE=$(git log -1 --pretty=%s)
-
-          # Get body, strip Co-Authored-By and blank lines at end
-          BODY=$(git log -1 --pretty=%b | sed '/^Co-Authored-By:/d' | sed -e :a -e '/^\n*$/{$d;N;ba}')
-
-          # Build description from body lines, prefix with bullet if not already
-          if [ -n "$BODY" ]; then
-            DESCRIPTION=$(echo "$BODY" | while IFS= read -r line; do
-              if [ -n "$line" ]; then
-                case "$line" in
-                  -\ *|*\ *) echo "$line" ;;
-                  *) echo "- $line" ;;
-                esac
-              fi
-            done)
-          else
-            DESCRIPTION=""
-          fi
-
-          # Escape for JSON
           TITLE=$(printf '%s' "$TITLE" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read())[1:-1])')
-          DESCRIPTION=$(printf '%s' "$DESCRIPTION" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read())[1:-1])')
 
-          PAYLOAD=$(TITLE="$TITLE" DESCRIPTION="$DESCRIPTION" python3 -c "
+          PAYLOAD=$(TITLE="$TITLE" python3 -c "
           import json, datetime, os
           embed = {
               'title': os.environ['TITLE'],
@@ -48,13 +32,6 @@ jobs:
               'footer': {'text': 'VerseTools'},
               'timestamp': datetime.datetime.now(datetime.timezone.utc).isoformat().replace('+00:00', 'Z'),
           }
-          desc = os.environ['DESCRIPTION']
-          # Discord caps embed descriptions at 4096 chars; leave headroom
-          # for the truncation marker so long commit bodies still post.
-          if len(desc) > 4000:
-              desc = desc[:4000].rsplit('\n', 1)[0] + '\n\n…(truncated — see full commit on GitHub)'
-          if desc:
-              embed['description'] = desc
           print(json.dumps({'embeds': [embed]}))
           ")
 

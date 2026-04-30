@@ -120,6 +120,22 @@
           </select>
         </div>
 
+        <div class="picker-group" [class.slot-blocked]="!allowedArmorSlots().has('helmet')">
+          <label>Helmet</label>
+          <select [value]="helmetClass() ?? ''"
+                  [disabled]="!allowedArmorSlots().has('helmet')"
+                  (change)="helmetClass.set($any($event.target).value || null)">
+            @if (allowedArmorSlots().has('helmet')) {
+              <option value="">— none —</option>
+              @for (h of helmets(); track h.className) {
+                <option [value]="h.className">{{ h.name }}</option>
+              }
+            } @else {
+              <option value="">Not allowed by current flight suit</option>
+            }
+          </select>
+        </div>
+
         <div class="picker-group" [class.slot-blocked]="!allowedArmorSlots().has('core')">
           <label>Core</label>
           <select [value]="coreClass() ?? ''"
@@ -184,10 +200,10 @@
           <div class="summary-row"><span>Open slots</span><span>{{ slots().length }}</span></div>
           @if (totalGForceResistance() != null) {
             <div class="summary-row"
-                 title="Sum of gForceResistance across equipped pieces. PTU 4.8+ only."
+                 title="Cumulative G-tolerance modifier from equipped pieces — sum of gForceResistance values. The base G tolerance is unknown but irrelevant for comparing loadouts. Naked = 0 modifier. PTU 4.8+ only."
                  [class.positive]="totalGForceResistance()! > 0"
                  [class.negative]="totalGForceResistance()! < 0">
-              <span>G-Tol</span>
+              <span>G-Tol Modifier</span>
               <span>{{ (totalGForceResistance()! > 0 ? '+' : '') + totalGForceResistance()! }} G</span>
             </div>
           }

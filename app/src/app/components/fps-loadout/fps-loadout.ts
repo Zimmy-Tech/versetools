@@ -217,6 +217,7 @@ export class FpsLoadoutComponent {
   loaded = signal(false);
 
   tier = signal<WeightTier>('medium');
+  helmetClass = signal<string | null>(null);
   coreClass = signal<string | null>(null);
   armsClass = signal<string | null>(null);
   legsClass = signal<string | null>(null);
@@ -296,9 +297,10 @@ export class FpsLoadoutComponent {
     // visible cue that the slot isn't accepting armor.
     effect(() => {
       const allowed = this.allowedArmorSlots();
-      if (!allowed.has('core') && this.coreClass() !== null) this.coreClass.set(null);
-      if (!allowed.has('arms') && this.armsClass() !== null) this.armsClass.set(null);
-      if (!allowed.has('legs') && this.legsClass() !== null) this.legsClass.set(null);
+      if (!allowed.has('helmet') && this.helmetClass() !== null) this.helmetClass.set(null);
+      if (!allowed.has('core')   && this.coreClass()   !== null) this.coreClass.set(null);
+      if (!allowed.has('arms')   && this.armsClass()   !== null) this.armsClass.set(null);
+      if (!allowed.has('legs')   && this.legsClass()   !== null) this.legsClass.set(null);
     });
   }
 
@@ -312,33 +314,39 @@ export class FpsLoadoutComponent {
     this.loaded.set(true);
   }
 
-  private seedArmorDefaults(armor: ArmorPiece[], force = false): void {
-    if (!force && this.undersuitClass() !== null) return; // don't clobber user pick
-    const pickFirst = (slot: string, weight: string) =>
-      armor.find(a => a.slot === slot && a.weight === weight)?.className ?? null;
-    this.undersuitClass.set(pickFirst('undersuit', 'undersuit'));
-    this.coreClass.set(pickFirst('core', 'medium'));
-    this.legsClass.set(pickFirst('legs', 'medium'));
-    this.armsClass.set(pickFirst('arms', 'medium'));
-    this.backpackClass.set(pickFirst('backpack', 'medium'));
+  private seedArmorDefaults(_armor: ArmorPiece[], _force = false): void {
+    // Intentionally a no-op. Characters in SC start naked — there's no
+    // "default" character loadout the way ships have a stock fitting,
+    // so the FPS Loadout page lands with every slot empty and the
+    // G-Tol Modifier reads 0 (true naked baseline). Reset Loadout
+    // also clears everything to empty rather than seeding a kit.
+    // Kept as a callable so the existing call sites compile; remove
+    // entirely if/when those call sites get cleaned up.
   }
 
-  /** Wipe the entire loadout back to the medium-tier armor defaults.
-   *  Clears every equipped item, every crafting override, and any
-   *  open picker/focus state. User gets a confirm prompt first since
-   *  this is destructive to in-flight work. */
+  /** Wipe the entire loadout to a fully naked state. Characters in SC
+   *  start with nothing equipped (unlike ships, which have a stock
+   *  default loadout) — Reset reflects that, leaving every slot empty
+   *  and the G-Tol Modifier at 0. User gets a confirm prompt first
+   *  since this is destructive to in-flight work. */
   resetToDefault(): void {
     const ok = window.confirm(
       'Reset the loadout?\n\n' +
-      'This clears every equipped weapon, magazine, attachment, grenade, ' +
-      'medpen, and utility item, plus any crafting quality rolls. Armor ' +
-      'reverts to the default medium set. This cannot be undone.'
+      'This clears every equipped armor piece, weapon, magazine, ' +
+      'attachment, grenade, medpen, and utility item, plus any ' +
+      'crafting quality rolls. The character will be fully naked. ' +
+      'This cannot be undone.'
     );
     if (!ok) return;
     this.equipped.set({});
     this.craftEffects.set({});
     this.tier.set('medium');
-    this.seedArmorDefaults(this.armor(), true);
+    this.helmetClass.set(null);
+    this.coreClass.set(null);
+    this.armsClass.set(null);
+    this.legsClass.set(null);
+    this.backpackClass.set(null);
+    this.undersuitClass.set(null);
     this.pickerSlotKey.set(null);
     this.focusedSlotKey.set(null);
     this.craftModalSlotKey.set(null);
@@ -1072,6 +1080,7 @@ export class FpsLoadoutComponent {
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  helmets   = computed(() => this.piecesFor('helmet', this.tier()));
   cores     = computed(() => this.piecesFor('core', this.tier()));
   arms      = computed(() => this.piecesFor('arms', this.tier()));
   legs      = computed(() => this.piecesFor('legs', this.tier()));
@@ -1084,31 +1093,31 @@ export class FpsLoadoutComponent {
     return this.armor().find(a => a.className === cls) ?? null;
   }
 
+  equippedHelmet    = computed(() => this.find(this.helmetClass()));
   equippedCore      = computed(() => this.find(this.coreClass()));
   equippedArms      = computed(() => this.find(this.armsClass()));
   equippedLegs      = computed(() => this.find(this.legsClass()));
   equippedBackpack  = computed(() => this.find(this.backpackClass()));
   equippedUndersuit = computed(() => this.find(this.undersuitClass()));
 
-  /** Which body-armor slot keys (core/arms/legs) the equipped undersuit
-   *  permits. Driven by the suit's `Armor_*` ports — flight suits like
-   *  the Mirai Murray Cup expose only Armor_Helmet and silently reject
-   *  Core/Arms/Legs in-game. When no undersuit is equipped we permit
-   *  everything (matches engine behavior — armor attaches directly to
-   *  the player chassis when no undersuit is present).
-   *  Backpack stays universally allowed; the `backpack` port is on
-   *  every undersuit and isn't part of this restriction.
-   *  Helmet isn't gated here because the loadout page doesn't expose a
-   *  helmet slot (matches the comment at fps-loadout.ts:191). */
+  /** Which body-armor slot keys (helmet/core/arms/legs) the equipped
+   *  undersuit permits. Driven by the suit's `Armor_*` ports — flight
+   *  suits like the Mirai Murray Cup expose only Armor_Helmet and
+   *  silently reject Core/Arms/Legs in-game. When no undersuit is
+   *  equipped we permit everything (matches engine behavior — armor
+   *  attaches directly to the player chassis when no undersuit is
+   *  present). Backpack stays universally allowed; its port is on
+   *  every undersuit and isn't part of this restriction. */
   allowedArmorSlots = computed(() => {
     const u = this.equippedUndersuit();
-    if (!u) return new Set(['core', 'arms', 'legs']);
+    if (!u) return new Set(['helmet', 'core', 'arms', 'legs']);
     const allowed = new Set<string>();
     for (const p of u.ports) {
       const n = p.name.toLowerCase();
-      if (n === 'armor_torso') allowed.add('core');
-      if (n === 'armor_arms')  allowed.add('arms');
-      if (n === 'armor_legs')  allowed.add('legs');
+      if (n === 'armor_helmet') allowed.add('helmet');
+      if (n === 'armor_torso')  allowed.add('core');
+      if (n === 'armor_arms')   allowed.add('arms');
+      if (n === 'armor_legs')   allowed.add('legs');
     }
     return allowed;
   });
@@ -1120,27 +1129,43 @@ export class FpsLoadoutComponent {
    *  additive sum across the outfit; revisit when CIG documents the
    *  scaling factor or sum clamping. */
   totalGForceResistance = computed(() => {
+    // The displayed value is a *modifier* — the cumulative ± from
+    // equipped pieces against the (unknown) base G tolerance. Naked
+    // = 0 modifier is a meaningful, accurate state, so we show it.
+    // The only time we hide is on LIVE-mode data where the field
+    // hasn't shipped: detect that by checking whether any piece in
+    // the loaded armor catalog carries a non-null gForceResistance.
+    const armor = this.armor();
+    const dataAvailable = armor.some(a => a.gForceResistance != null);
+    if (!dataAvailable) return null;
     const pieces: Array<ArmorPiece | null> = [
       this.equippedUndersuit(),
+      this.equippedHelmet(),
       this.equippedCore(),
       this.equippedArms(),
       this.equippedLegs(),
       this.equippedBackpack(),
     ];
     let sum = 0;
-    let anyValue = false;
     for (const p of pieces) {
       const v = p?.gForceResistance;
-      if (v != null) { sum += v; anyValue = true; }
+      if (v != null) sum += v;
     }
-    if (!anyValue) return null;
     // Guard against fp drift like 0.1 + 0.2 → 0.30000000000000004.
     return Math.round(sum * 1000) / 1000;
   });
 
   // Reset choices when tier changes (except undersuit — always full pool).
   setTier(t: WeightTier): void {
+    // Tier click is a FILTER operation, not an equip operation —
+    // clears every body slot so the user re-picks against the new
+    // tier's pool. (An earlier attempt at auto-filling first-of-tier
+    // pieces silently changed equipped state and read as "ghost item"
+    // values in the G-Tol summary; users couldn't tell what was
+    // contributing because the dropdowns appeared to update without
+    // explicit input.) Undersuit isn't tier-bound so it stays.
     this.tier.set(t);
+    this.helmetClass.set(null);
     this.coreClass.set(null);
     this.armsClass.set(null);
     this.legsClass.set(null);
@@ -1380,6 +1405,7 @@ export class FpsLoadoutComponent {
     let m = 0;
     for (const p of [
       this.equippedUndersuit(),
+      this.equippedHelmet(),
       this.equippedCore(),
       this.equippedArms(),
       this.equippedLegs(),
