@@ -113,30 +113,44 @@ export class App implements OnInit, OnDestroy {
     this.showWelcome.set(false);
   }
 
-  refresh(): void {
+  async refresh(): Promise<void> {
     // Close the popup immediately so the UI feels responsive even if the
-    // SW activation takes a moment or fails.
+    // teardown below takes a moment.
     this.updateAvailable.set(false);
 
-    // After activateUpdate() resolves, the new SW version is in control and
-    // will serve the new bundle on the next fetch. We still append a cache-
-    // busting query string to the URL on reload so any browser HTTP cache
-    // for index.html is bypassed — the combination guarantees the user
-    // lands on the new version without needing Ctrl+Shift+R.
-    const tag = Date.now().toString();
-    const doReload = () => {
-      const url = new URL(window.location.href);
-      url.searchParams.set('_v', tag);
-      window.location.replace(url.toString());
-    };
+    // History note: previous versions of this method called
+    // swUpdate.activateUpdate() and trusted the Angular service worker
+    // lifecycle to swap to the new bundle before reloading. That flow
+    // consistently left users on stale content (banner copy, changelog
+    // entries) until they did a hard refresh. The root cause: detection
+    // (version.json poll) sees server-side bumps before the SW has
+    // downloaded the new bundle, so activateUpdate() is a no-op and the
+    // post-reload SW intercepts with the old cached set.
+    //
+    // The "ringer" approach — unregister all service workers + evict
+    // every Cache API entry, then reload — sidesteps the SW lifecycle
+    // entirely. Next page load fetches everything from network and
+    // Angular re-registers the SW fresh on bootstrap.
+    //
+    // Only Cache API entries are evicted. localStorage (blueprint
+    // checklist, saved loadouts, compare slots, banner dismissals,
+    // welcome flag, update ack), sessionStorage, and IndexedDB are all
+    // separate namespaces and survive byte-identical.
+    try {
+      const regs = (await navigator.serviceWorker?.getRegistrations()) ?? [];
+      await Promise.all(regs.map(r => r.unregister()));
+    } catch { /* ignore */ }
+    try {
+      const keys = (await caches?.keys()) ?? [];
+      await Promise.all(keys.map(k => caches.delete(k)));
+    } catch { /* ignore */ }
 
-    if (this.swUpdate.isEnabled) {
-      const timer = setTimeout(doReload, 2000);
-      this.swUpdate.activateUpdate()
-        .catch(() => {})
-        .finally(() => { clearTimeout(timer); doReload(); });
-    } else {
-      doReload();
-    }
+    // Cache-buster on the URL bypasses the browser HTTP cache for
+    // index.html. The ?_v= param is stripped on the next bootstrap by
+    // the ngOnInit cleanup above so it doesn't interfere with the
+    // header's URL-matching for active-tab detection.
+    const url = new URL(window.location.href);
+    url.searchParams.set('_v', Date.now().toString());
+    window.location.replace(url.toString());
   }
 }
