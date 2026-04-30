@@ -1,6 +1,6 @@
 {
   "meta": {
-    "count": 63,
+    "count": 64,
     "version": "4.8.0"
   },
   "items": [
@@ -588,6 +588,26 @@
           "physical": 20.0
         },
         "alphaDamage": 20.0,
+        "fuseSec": 3.0
+      },
+      "category": "Throwable / Grenade"
+    },
+    {
+      "className": "ksar_gren_frag_01",
+      "name": "Scorch Plasma Grenade",
+      "manufacturer": "Kastak Arms",
+      "attachType": "WeaponPersonal",
+      "subType": "Grenade",
+      "size": 1,
+      "mass": 0.4,
+      "throwableSpec": {
+        "minRadiusM": 4.0,
+        "maxRadiusM": 5.5,
+        "soundRadiusM": 150.0,
+        "damage": {
+          "thermal": 2.0
+        },
+        "alphaDamage": 2.0,
         "fuseSec": 3.0
       },
       "category": "Throwable / Grenade"

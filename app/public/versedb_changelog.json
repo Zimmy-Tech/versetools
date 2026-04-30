@@ -1,9 +1,3136 @@
 {
   "meta": {
-    "generatedAt": "2026-04-29T00:53:56.410114+00:00",
-    "entries": 2
+    "generatedAt": "2026-04-30T04:20:20.431122+00:00",
+    "entries": 3
   },
   "changelog": [
+    {
+      "channel": "ptu",
+      "fromVersion": "4.8.0-ptu.11740071",
+      "toVersion": "4.8.0-ptu.11753569",
+      "date": "2026-04-30",
+      "changes": [
+        {
+          "category": "fps_armor",
+          "className": "basl_combat_light_flightsuit_02_01_01",
+          "name": "Ace Interceptor Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "basl_combat_light_helmet_01_01_01",
+          "name": "Advocacy Interceptor Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "basl_combat_light_helmet_02_01_01",
+          "name": "Ace Interceptor Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_combat_heavy_helmet_01_01_01",
+          "name": "Berserker Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_heavy_armor_helmet_01_01_01",
+          "name": "Neoni Tengubi Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_heavy_armor_helmet_01_01_10",
+          "name": "Neoni Yuki Onna Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_heavy_armor_helmet_01_01_16",
+          "name": "Neoni Jami Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_arms_01_01_01",
+          "name": "Aves Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_arms_01_01_shrike",
+          "name": "Aves Shrike Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_arms_01_01_talon",
+          "name": "Aves Talon Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_core_01_01_01",
+          "name": "Aves Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_core_01_01_shrike",
+          "name": "Aves Shrike Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_core_01_01_talon",
+          "name": "Aves Talon Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_helmet_01_01_01",
+          "name": "Aves Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_helmet_01_01_shrike",
+          "name": "Aves Shrike Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_helmet_01_01_talon",
+          "name": "Aves Talon Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_legs_01_01_01",
+          "name": "Aves Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_legs_01_01_shrike",
+          "name": "Aves Shrike Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ccc_medium_armor_legs_01_01_talon",
+          "name": "Aves Talon Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_heavy_arms_01_01_01",
+          "name": "ADP-mk4 Arms Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_heavy_core_01_01_01",
+          "name": "ADP-mk4 Core Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_heavy_helmet_01_01_01",
+          "name": "ADP-mk4 Helmet Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_heavy_legs_01_01_01",
+          "name": "ADP-mk4 Legs Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_light_arms_01_01_01",
+          "name": "Field Recon Suit Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_light_arms_02_01_01",
+          "name": "FBL-8a Arms Arctic Digital"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_light_core_01_01_01",
+          "name": "Field Recon Suit Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_light_core_02_01_01",
+          "name": "FBL-8a Core Arctic Digital"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_light_helmet_01_01_01",
+          "name": "Field Recon Suit Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_light_legs_01_01_01",
+          "name": "Field Recon Suit Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_light_legs_02_01_01",
+          "name": "FBL-8a Legs Arctic Digital"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_medium_arms_01_01_01",
+          "name": "ORC-mkX Arms Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_medium_core_01_01_01",
+          "name": "ORC-mkX Core Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_medium_helmet_01_01_01",
+          "name": "ORC-mkX Helmet Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_armor_medium_legs_01_01_01",
+          "name": "ORC-mkX Legs Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_heavy_arms_03_01_01",
+          "name": "DCP Armor Arms Hunter Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_heavy_backpack_01_01_01",
+          "name": "CSP-68H Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_heavy_core_03_01_01",
+          "name": "DCP Armor Core Hunter Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_heavy_helmet_03_01_01",
+          "name": "DCP Armor Helmet Hunter Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_heavy_legs_03_01_01",
+          "name": "DCP Armor Legs Hunter Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_light_backpack_01_01_01",
+          "name": "CSP-68L Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_light_backpack_01_02_01",
+          "name": "Geist Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_medium_arms_04_01_01",
+          "name": "GCD-Army Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_medium_backpack_01_01_01",
+          "name": "CSP-68M Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_medium_backpack_02_01_01",
+          "name": "GCD-Army Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_medium_core_04_01_01",
+          "name": "GCD-Army Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_medium_helmet_04_01_01",
+          "name": "GCD-Army Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_combat_medium_legs_04_01_01",
+          "name": "GCD-Army Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_heavy_arms_01_01_01",
+          "name": "ADP Arms Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_heavy_core_01_01_01",
+          "name": "ADP Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_heavy_helmet_01_01_01",
+          "name": "Balor HCH Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_heavy_legs_01_01_01",
+          "name": "ADP Legs Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_light_arms_01_01_01",
+          "name": "PAB-1 Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_light_core_01_01_01",
+          "name": "PAB-1 Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_light_helmet_01_01_01",
+          "name": "CBH-3 Helmet Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_light_legs_01_01_01",
+          "name": "PAB-1 Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_medium_arms_01_01_01",
+          "name": "ORC-mkV Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_medium_core_01_01_01",
+          "name": "ORC-mkV Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_medium_helmet_01_01_01",
+          "name": "G-2 Helmet Woodland"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_legacy_armor_medium_legs_01_01_01",
+          "name": "ORC-mkV Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_undersuit_01_01_01",
+          "name": "TCS-4 Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_undersuit_01_02_01",
+          "name": "GCD-Army Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "cds_undersuit_02_01_01",
+          "name": "FBL-8u Undersuit Arctic Digital"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_combat_light_helmet_01_01_01",
+          "name": "Badami Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_env_armor_heavy_helmet_01_01_01",
+          "name": "Novikov Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_env_armor_heavy_helmet_01_01_expo",
+          "name": "Novikov \"Expo\" Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_env_heavy_backpack_01_01_01",
+          "name": "Novikov Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_env_heavy_backpack_01_01_expo",
+          "name": "Novikov \"Expo\" Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_env_heavy_backpack_01_iae2023_01",
+          "name": "Novikov \"Ascension\" Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_env_heavy_helmet_01_iae2023_01",
+          "name": "Novikov \"Ascension\" Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_undersuit_01_01_01",
+          "name": "Levin Undersuit (Refurbished)"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_undersuit_02_01_01",
+          "name": "Markanda Undersuit (Refurbished)"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_utility_heavy_helmet_01_01_01",
+          "name": "Pembroke Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_utility_heavy_helmet_03_01_01",
+          "name": "Siebe Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_utility_heavy_helmet_04_01_01",
+          "name": "Stirling Exploration Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clda_utility_heavy_helmet_06_01_01",
+          "name": "Stirling Hazard Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_armor_medium_arms_02_01_01",
+          "name": "Stitcher Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_armor_medium_core_02_01_01",
+          "name": "Stitcher Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_armor_medium_helmet_02_01_01",
+          "name": "The Butcher Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_armor_medium_helmet_04_01_01",
+          "name": "Holiday Butcher Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_armor_medium_legs_02_01_01",
+          "name": "Stitcher Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_combat_medium_backpack_01_01_01",
+          "name": "Sinkhole Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "fta_medium_helmet_01_01_01",
+          "name": "Strata Helmet Shooting Star"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_arms_01_01_01",
+          "name": "Aril Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_arms_02_01_01",
+          "name": "Strata Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_backpack_01_01_01",
+          "name": "Aril Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_backpack_02_01_01",
+          "name": "Strata Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_core_01_01_01",
+          "name": "Aril Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_core_02_01_01",
+          "name": "Strata Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_helmet_01_01_01",
+          "name": "Aril Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_legs_01_01_01",
+          "name": "Aril Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "grin_utility_medium_legs_02_01_01",
+          "name": "Strata Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_helmet_03_01_01",
+          "name": "Exo-8 Helmet (Used)"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_jacket_01_01_01",
+          "name": "Carnifex Armor Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_jacket_stl01_01_01",
+          "name": "Carnifex Core Windfall"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_jacket_stl01_02_01",
+          "name": "Carnifex Armor Lucky Break"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_pants_01_01_01",
+          "name": "Carnifex Armor Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_pants_stl01_01_01",
+          "name": "Carnifex Pants Windfall"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_pants_stl01_02_01",
+          "name": "Carnifex Pants Lucky Break"
+        },
+        {
+          "category": "fps_armor",
+          "className": "gys_undersuit_01_01_01",
+          "name": "Deep-Space Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "hdtc_undersuit_01_01_01",
+          "name": "Lamont Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "hdtc_undersuit_01_01_02",
+          "name": "Lamont Xy'kara Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "hdtc_undersuit_01_01_03",
+          "name": "Lamont Corvus Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "hdtc_undersuit_01_01_12",
+          "name": "Lamont Arroyo Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "hdtc_undersuit_01_01_20",
+          "name": "Lamont Tawny Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "hdtc_utility_light_backpack_01_01_01",
+          "name": "Cataby Backpack MPUV-1C Edition"
+        },
+        {
+          "category": "fps_armor",
+          "className": "invisible_medium_legs",
+          "name": "Testudo Legs Nightveil"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_arms_02_01_01",
+          "name": "Monde Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_core_02_01_01",
+          "name": "Monde Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_helmet_02_01_01",
+          "name": "Monde Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_heavy_legs_02_01_01",
+          "name": "Monde Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_light_arms_01_01_01",
+          "name": "Geist Armor Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_light_core_01_01_01",
+          "name": "Geist Armor Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_light_helmet_01_01_01",
+          "name": "Geist Armor Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "kap_combat_light_legs_01_01_01",
+          "name": "Geist Armor Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ksar_armor_heavy_helmet_01_01_01",
+          "name": "Manticore Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ksar_armor_light_arms_01_01_01",
+          "name": "Microid Battle Suit Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ksar_armor_light_core_01_01_01",
+          "name": "Microid Battle Suit Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ksar_armor_light_helmet_01_01_01",
+          "name": "Microid Battle Suit Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ksar_armor_light_legs_01_01_01",
+          "name": "Microid Battle Suit Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "ksar_undersuit_01_01_01",
+          "name": "Scaleweave Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mannequin_displaycore",
+          "name": "TEST STRING NAME"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mannequin_undersuit",
+          "name": "Beacon Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_01_01_01",
+          "name": "Mirai Racing Flight Suit\\n"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_01_03_01",
+          "name": "Origin Racing Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_01_04_01",
+          "name": "Murray Cup Racing Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_01_05_01",
+          "name": "Star Kitten Racing Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_02_01_01",
+          "name": "Fortuna Racing Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "nvs_pilot_flightsuit_helmet_01_01_01",
+          "name": "OMNI-AFS-Sapphire Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "nvy_flightsuit_01_01_01",
+          "name": "Sol-III Flight Suit Aviator"
+        },
+        {
+          "category": "fps_armor",
+          "className": "nvy_flightsuit_01_02_01",
+          "name": "Sol-III Flight Suit Bombardier"
+        },
+        {
+          "category": "fps_armor",
+          "className": "omc_utility_heavy_arms_01_01_01",
+          "name": "Corbel Arms Smolder"
+        },
+        {
+          "category": "fps_armor",
+          "className": "omc_utility_heavy_core_01_01_01",
+          "name": "Corbel Core Smolder"
+        },
+        {
+          "category": "fps_armor",
+          "className": "omc_utility_heavy_helmet_01_01_01",
+          "name": "Corbel Helmet Smolder"
+        },
+        {
+          "category": "fps_armor",
+          "className": "omc_utility_heavy_legs_01_01_01",
+          "name": "Corbel Legs Smolder"
+        },
+        {
+          "category": "fps_armor",
+          "className": "orig_armor_medium_helmet_01_01_01",
+          "name": "Giocoso Helmet Ivory"
+        },
+        {
+          "category": "fps_armor",
+          "className": "orig_flightsuit_01_01_01",
+          "name": "Origin 350r Racing Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_heavy_arms_01_01_01",
+          "name": "Citadel Arms Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_heavy_core_01_01_01",
+          "name": "Citadel Core Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_heavy_helmet_01_01_01",
+          "name": "Fortifier Helmet Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_heavy_legs_01_01_01",
+          "name": "Citadel Legs Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_light_arms_01_01_01",
+          "name": "Lynx Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_light_core_01_01_01",
+          "name": "Lynx Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_light_helmet_01_01_01",
+          "name": "Oracle Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_light_helmet_01_01_11",
+          "name": "Oracle Helmet Cold Steel"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_light_legs_01_01_01",
+          "name": "Lynx Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_light_legs_01_01_11",
+          "name": "Lynx Legs Cold Steel"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_medium_arms_01_01_01",
+          "name": "Inquisitor Arms Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_medium_core_01_01_01",
+          "name": "Inquisitor Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_medium_helmet_01_01_01",
+          "name": "Morningstar Helmet Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_armor_medium_legs_01_01_01",
+          "name": "Inquisitor Legs Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_heavy_armor_arms_02_01_01",
+          "name": "Citadel-SE Arms Maroon"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_heavy_armor_core_02_01_01",
+          "name": "Citadel-SE Core Maroon"
+        },
+        {
+          "category": "fps_armor",
+          "className": "outlaw_legacy_heavy_armor_legs_02_01_01",
+          "name": "Citadel-SE Legs Maroon"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_arms_02_01_01",
+          "name": "Bokto Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_arms_02_02_01",
+          "name": "Ana Arms Endro"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_core_02_01_01",
+          "name": "Bokto Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_core_02_02_01",
+          "name": "Ana Core Endro"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_helmet_02_01_01",
+          "name": "Bokto Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_helmet_02_02_01",
+          "name": "Ana Helmet Endro"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_legs_02_01_01",
+          "name": "Bokto Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_heavy_legs_02_02_01",
+          "name": "Ana Legs Endro"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_arms_01_01_01",
+          "name": "Testudo Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_arms_01_02_01",
+          "name": "Tetsudo Arms Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_backpack_01_01_01",
+          "name": "Testudo Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_backpack_01_02_01",
+          "name": "Tetsudo Backpack Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_core_01_01_01",
+          "name": "Testudo Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_core_01_02_01",
+          "name": "Tetsudo Core Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_helmet_01_01_01",
+          "name": "Testudo Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_helmet_01_02_01",
+          "name": "Tetsudo Helmet Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_legs_01_02_01",
+          "name": "Tetsudo Legs Purgatory Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_mantis_undersuit_01_01_01",
+          "name": "Sabine Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_arms_01_01_01",
+          "name": "Antium Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_arms_01_01_13",
+          "name": "Antium Helmet Jet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_core_01_01_01",
+          "name": "Antium Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_helmet_01_01_01",
+          "name": "Antium Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_helmet_01_01_12",
+          "name": "Antium Core Jet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_heavy_legs_01_01_01",
+          "name": "Antium Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_medium_arms_01_01_01",
+          "name": "Artimex Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_medium_core_01_01_01",
+          "name": "Artimex Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_medium_helmet_01_01_01",
+          "name": "Artimex Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_specialist_medium_legs_01_01_01",
+          "name": "Artimex Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_utility_heavy_arms_01_01_01",
+          "name": "Palatino Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_utility_heavy_backpack_01_01_01",
+          "name": "Palatino Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_utility_heavy_core_01_01_01",
+          "name": "Palatino Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_utility_heavy_helmet_01_01_01",
+          "name": "Palatino Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_utility_heavy_legs_01_01_01",
+          "name": "Palatino Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_combat_heavy_backpack_01_01_01",
+          "name": "Morozov-CH Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_combat_heavy_backpack_05_01_01",
+          "name": "Morozov-CH-I Backpack Gideon"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_combat_light_backpack_01_01_01",
+          "name": "Arden-CL Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_arms_01_01_01",
+          "name": "Morozov-SH Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_arms_04_01_01",
+          "name": "Morozov-SH-I Arms Pyrotechnic"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_core_01_01_01",
+          "name": "Morozov-SH Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_core_04_01_01",
+          "name": "Morozov-SH-I Core Pyrotechnic"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_helmet_01_01_01",
+          "name": "Morozov-SH Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_helmet_02_01_01",
+          "name": "Morozov-SH-C Helmet Brushdrift"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_helmet_03_01_02",
+          "name": "Morozov-SH-S Helmet Scorched"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_helmet_04_01_01",
+          "name": "Morozov-SH-I Helmet Pyrotechnic"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_legs_01_01_01",
+          "name": "Morozov-SH Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_heavy_legs_04_01_01",
+          "name": "Morozov-SH-I Legs Pyrotechnic"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_light_arms_01_01_01",
+          "name": "Arden-SL Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_light_core_01_01_01",
+          "name": "Arden-SL Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_light_helmet_01_01_01",
+          "name": "Arden-SL Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rrs_specialist_light_legs_01_01_01",
+          "name": "Arden-SL Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_deckcrew_armor_light_arms_01_01_01",
+          "name": "MacFlex Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_deckcrew_armor_light_core_01_01_01",
+          "name": "MacFlex Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_deckcrew_armor_light_helmet_01_01_01",
+          "name": "Horizon Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_deckcrew_armor_light_legs_01_01_01",
+          "name": "MacFlex Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_deckcrew_undersuit_01_lum01_01",
+          "name": "One Light Undersuit Red"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_explorer_armor_light_arms_01_01_01",
+          "name": "Venture Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_explorer_armor_light_core_01_01_01",
+          "name": "Venture Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_explorer_armor_light_helmet_01_01_01",
+          "name": "Venture Helmet White"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_explorer_armor_light_legs_01_01_01",
+          "name": "Venture Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_explorer_undersuit_01_01_01",
+          "name": "Venture Undersuit Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_light_utility_backpack_01_01_01",
+          "name": "MacFlex \"Rucksack\" Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_light_utility_backpack_01_01_02",
+          "name": "MacFlex Backpack Orange"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_odyssey_undersuit_01_01_01",
+          "name": "Odyssey II Undersuit Alpha"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_utility_heavy_backpack_02_01_01",
+          "name": "Stirling Exploration Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_utility_heavy_backpack_02_05_01",
+          "name": "Stirling Hazard Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_utility_heavy_helmet_01_01_01",
+          "name": "Zeus Exploration Suit Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "rsi_utility_heavy_helmet_01_01_12",
+          "name": "Zeus Exploration Helmet Starscape"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_armor_light_helmet_01_01_01",
+          "name": "Mandible Snowfly Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_armor_light_helmet_01_01_02",
+          "name": "Mandible Firestrike Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_armor_light_helmet_01_01_03",
+          "name": "Mandible Sandcrawler Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_armor_light_helmet_01_9tails_01",
+          "name": "Mandible Helmet (Modified)"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_combat_heavy_helmet_01_01_01",
+          "name": "Voidripper Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_combat_heavy_helmet_01_01_03",
+          "name": "Voidripper Sunbeam Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_combat_heavy_helmet_01_01_10",
+          "name": "Voidripper Sea Shiver Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_combat_heavy_helmet_01_01_12",
+          "name": "Voidripper Dark Cloud Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_medium_armor_helmet_01_01_01",
+          "name": "Star Kitten Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_medium_armor_helmet_01_01_10",
+          "name": "Star Kitten Sally Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sasu_medium_armor_helmet_01_01_19",
+          "name": "Star Kitten Damon Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_heavy_arms_01_01_01",
+          "name": "Defiance Arms Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_heavy_core_01_01_01",
+          "name": "Defiance Core Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_heavy_helmet_01_01_01",
+          "name": "Defiance Helmet Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_heavy_legs_01_01_01",
+          "name": "Defiance Legs Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_light_arms_01_01_01",
+          "name": "Calico Arms Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_light_core_01_01_01",
+          "name": "Calico Core Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_light_helmet_01_01_01",
+          "name": "Calico Helmet Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_light_helmet_02_01_01",
+          "name": "Renegade Helmet Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_light_legs_01_01_01",
+          "name": "Calico Legs Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_medium_arms_01_01_01",
+          "name": "DustUp Arms Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_medium_core_01_01_01",
+          "name": "DustUp Core Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_medium_helmet_01_01_01",
+          "name": "DustUp Helmet Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_armor_medium_legs_01_01_01",
+          "name": "DustUp Legs Tactical"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_undersuit_01_01_01",
+          "name": "Stoneskin Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "slaver_undersuit_01_01_15",
+          "name": "Stoneskin Agra Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_arms_01_01_01",
+          "name": "Overlord Arms Supernova"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_arms_02_01_01",
+          "name": "Dust Devil Armor Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_core_01_01_01",
+          "name": "Overlord Core Supernova"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_core_02_01_01",
+          "name": "Dust Devil Armor Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_core_02_02_01",
+          "name": "Dust Devil Core Epoque"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_helmet_01_01_01",
+          "name": "Overlord Helmet Supernova"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_legs_01_01_01",
+          "name": "Overlord Legs Supernova"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_legs_02_01_01",
+          "name": "Dust Devil Armor Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_legs_02_02_01",
+          "name": "Dust Devil Legs Epoque"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_arms_03_02_01",
+          "name": "Wrecker Arms Payback"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_core_03_02_01",
+          "name": "Wrecker Core Payback"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_helmet_03_02_01",
+          "name": "Wrecker Helmet Payback"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_legs_03_02_01",
+          "name": "Wrecker Legs Payback"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_light_arms_01_01_01",
+          "name": "Piecemeal Armor Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_light_core_01_01_01",
+          "name": "Piecemeal Armor Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_light_legs_01_01_01",
+          "name": "Piecemeal Armor Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_medium_arms_01_01_01",
+          "name": "Carrion Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_medium_core_01_01_01",
+          "name": "Carrion Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_medium_helmet_01_01_01",
+          "name": "Carrion Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_medium_helmet_04_01_01",
+          "name": "Voss Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_medium_helmet_05_01_01",
+          "name": "Sureshot Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_medium_legs_01_01_01",
+          "name": "Carrion Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_helmet_01_01_01",
+          "name": "Deadhead Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_undersuit_01_01_01",
+          "name": "Second Life Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_undersuit_02_01_01",
+          "name": "Wastelander Undersuit Ransacker"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_utility_light_arms_01_01_01",
+          "name": "Outback Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_utility_light_core_01_01_01",
+          "name": "Outback Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_utility_light_helmet_01_01_01",
+          "name": "Outback Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_utility_light_legs_01_01_01",
+          "name": "Outback Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_arms_01_01_01",
+          "name": "Xy'kara Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_core_01_01_01",
+          "name": "Xy'kara Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_helmet_01_01_01",
+          "name": "Xy'kara Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "syfb_combat_light_legs_01_01_01",
+          "name": "Xy'kara Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_helmet_01_01_01",
+          "name": "Ixonia Helmet Desert Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_jacket_01_01_01",
+          "name": "Ixonia Armor Desert Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_jacket_01_02_01",
+          "name": "Ixonia Armor Verdant Steel"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_arms_01_01_01",
+          "name": "Aztalan Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_arms_01_01_03",
+          "name": "Aztalan Tamarack Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_arms_01_01_12",
+          "name": "Aztalan Galena Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_core_01_01_01",
+          "name": "Aztalan Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_core_01_01_03",
+          "name": "Aztalan Tamarack Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_core_01_01_12",
+          "name": "Aztalan Galena Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_helmet_01_01_01",
+          "name": "Aztalan Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_helmet_01_01_03",
+          "name": "Aztalan Tamarack Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_helmet_01_01_12",
+          "name": "Aztalan Galena Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_legs_01_01_01",
+          "name": "Aztalan Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_legs_01_01_03",
+          "name": "Aztalan Tamarack Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_light_legs_01_01_12",
+          "name": "Aztalan Galena Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_pants_01_01_01",
+          "name": "Ixonia Pants Desert Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "thp_pants_01_02_01",
+          "name": "Ixonia Pants Swamp Camo"
+        },
+        {
+          "category": "fps_armor",
+          "className": "uba_prison_undersuit_01_01_01",
+          "name": "Inmate Worksuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_armor_light_arms_01_01_01",
+          "name": "TrueDef-Pro Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_armor_light_core_01_01_01",
+          "name": "TrueDef-Pro Core Base"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_armor_light_helmet_01_01_01",
+          "name": "Argus Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_armor_light_legs_01_01_01",
+          "name": "TrueDef-Pro Legs"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_armor_light_legs_01_02_01",
+          "name": "TruDef-Pro Legs Scorched"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_armor_medium_helmet_01_01_01",
+          "name": "Paladin Helmet Black/Silver"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_specialist_heavy_helmet_01_01_01",
+          "name": "Sangar Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_undersuit_01_01_01",
+          "name": "ForceFlex Undersuit Black/Gold"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_arms_01_01_01",
+          "name": "Chiron Arms"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_backpack_01_01_01",
+          "name": "Chiron Backpack"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_core_01_01_01",
+          "name": "Chiron Core"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_helmet_01_01_01",
+          "name": "Chiron Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_utility_light_legs_01_01_01",
+          "name": "Chiron Legs"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank0_RMCSmall",
+          "name": "Salvager Needed (Small Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank0_RMC_Rubble_Parts_Salvage_Choice",
+          "name": "Salvager Needed (Small Supply of RMC / UCM)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank1_RMCMedium",
+          "name": "Salvager Needed (Med. Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank1_RMC_CMats",
+          "name": "Salvager Needed (Med. Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank1_RMC_CMats_Components_Unique",
+          "name": "Salvager Needed (Med. Special Order of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank1_RMC_CMats_S1Components",
+          "name": "Salvager Needed (Med. Supply of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank2_RMC_CMats_Components_Unique",
+          "name": "Salvager Needed (Lrg. Special Order of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Nyx_Rank2_RMC_CMats_IndustrialComponents",
+          "name": "Salvager Needed (Lrg. Supply of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Rank0_RMCSmall",
+          "name": "Salvager Needed (Small Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Rank0_RMC_Rubble_Parts_Salvage_Choice",
+          "name": "Salvager Needed (Small Supply of RMC / UCM)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Rank1_RMCMedium",
+          "name": "Salvager Needed (Med. Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Rank1_RMC_CMats_Component_Unique",
+          "name": "Salvager Needed (Med. Special Order of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Rank1_RMC_CMats_S1Component",
+          "name": "Salvager Needed (Med. Supply of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Rank2_RMC_CMats_Components_Unique",
+          "name": "Salvager Needed (Lrg. Special Order of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Rank2_RMC_CMats_MilitaryComponents",
+          "name": "Salvager Needed (Lrg. Supply of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Pyro_Safe_Rank1_RMC_CMats",
+          "name": "Salvager Needed (Med. Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank0_RMCSmall",
+          "name": "Salvager Needed (Small Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank0_RMC_Rubble_Parts_Salvage_Choice",
+          "name": "Salvager Needed (Small Supply of RMC / UCM)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank1_RMCMedium",
+          "name": "Salvager Needed (Med. Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank1_RMC_CMats",
+          "name": "Salvager Needed (Med. Supply of RMC)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank1_RMC_CMats_Component_Unique",
+          "name": "Salvager Needed (Med. Special Order of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank1_RMC_CMats_S1Component",
+          "name": "Salvager Needed (Med. Supply of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank2_Components_Unique",
+          "name": "Salvager Needed (Lrg. Special Order of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_RG_ShipSalvage_Stanton_Rank2_RMC_CMats_CivilianComponents",
+          "name": "Salvager Needed (Lrg. Supply of RMC / UCM / Components)"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_Salvage_Nyx_Intro",
+          "name": "Adagio Holdings in Need of Salvagers"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_Salvage_Pyro_Intro",
+          "name": "Adagio Holdings in Need of Salvagers"
+        },
+        {
+          "category": "mission",
+          "className": "Adagio_Salvage_Stanton_Intro",
+          "name": "Adagio Holdings in Need of Salvagers"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_DC_Stanton4_S4Compex-A_Storage_EliminateBoss",
+          "name": "High-Risk Bounty: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_EscortShips_Nyx_Easy",
+          "name": "Executive Protection Detail"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_EscortShips_Nyx_Hard",
+          "name": "VIP Client Needs Protection"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_EscortShips_Nyx_Medium",
+          "name": "Experienced Protection Detail Needed"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_EscortShips_Nyx_Super",
+          "name": "Top Tier Operator Needed"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_EscortShips_Nyx_VeryEasy",
+          "name": "Low Risk Protection Detail"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_EscortShips_Nyx_VeryHard",
+          "name": "Protection Detail Needed. High Risk."
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Nyx_Easy",
+          "name": "Time to Teach a Lesson"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Nyx_Hard",
+          "name": "Tricky Ambush"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Nyx_Intro",
+          "name": "New Opportunity - Ambush Strike"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Nyx_Medium",
+          "name": "Launch Surprise Attack"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Nyx_Super",
+          "name": "Highly Dangerous Ambush"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Nyx_VeryEasy",
+          "name": "Settle a Score"
+        },
+        {
+          "category": "mission",
+          "className": "EckhartSecurity_ShipAmbush_Nyx_VeryHard",
+          "name": "Dangerous Ambush"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Nyx_Fluorine_Rank0",
+          "name": "ENTRY LVL. COURIER NEEDED IN NYX"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Stanton_Chlorine_Rank1",
+          "name": "JR. LVL. COURIER NEEDED IN STANTON"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Stanton_Food_Rank0",
+          "name": "ENTRY LVL. COURIER NEEDED IN STANTON"
+        },
+        {
+          "category": "mission",
+          "className": "FTL_Courier_Stanton_LocalDC_Any_Rank0",
+          "name": "ENTRY LVL. COURIER NEEDED IN STANTON"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_Super",
+          "name": "Red Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_VeryEasy_From",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_VeryEasy_To",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Nyx_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_Super",
+          "name": "Red Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_VeryEasy_From",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_VeryEasy_To",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Pyro_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Easy",
+          "name": "Yellow Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Hard",
+          "name": "Orange Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Medium",
+          "name": "Orange Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_Super",
+          "name": "Red Lvl. Contract: Protect [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_VeryEasy_From",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_VeryEasy_To",
+          "name": "Yellow Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "Foxwell_DefendEntitiesAndEscort_Stanton_VeryHard",
+          "name": "Red Lvl. Contract: Defend [Objects] and Escort Employees"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_ERT_XenoThreat_KillShip",
+          "name": "Ghost some XenoTrash"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_HRT_CitizensForProsperity_KillShip",
+          "name": "Kill Order"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_HRT_Criminals_KillShip",
+          "name": "Wanted: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_LRT_Criminals_KillShip",
+          "name": "Simple Hit"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_MRT_CitizensForProsperity_KillShip",
+          "name": "Hit a CFP Ship"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_MRT_Criminals_KillShip",
+          "name": "Treat yourself to a fight"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_M_2AsteroidBase_Criminals_MultiKillship",
+          "name": "Crash some ships"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_Rank0_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target takedown for a fast track in"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_Rank0_VLRT_Criminals_KillShip",
+          "name": "Wanna be a Headhunter?"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_VHRT_CitizensForProsperity_KillShip",
+          "name": "Primo Target"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionA_VLRT_Criminals_KillShip",
+          "name": "[TargetName] needs stomping"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_E_CFPOutpost_MultiBombingRun",
+          "name": "Teach Citizens for Prosperity A Lesson"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_HRT_Criminals_KillShip",
+          "name": "Wanted: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Ag_Med_Iod",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Agri_MedSup_Iod",
+          "name": "Rookie Hauler Needed for Direct Large Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Ammon_PlasFu_Arg_PreIce_CM_862c1b61",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Ammon_PlasFu_Arg_PreIce_CM_ee62e767",
+          "name": "Rookie Hauler Needed for Direct Large Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Arg_PlasFu_PreIce_Atlas",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_DistSp_Dia_FresFoo_Gol_Aphor",
+          "name": "Rookie Hauler Needed for Direct Large Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Iron_Copper_Atlas",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Plas_Scr_Cob_0a54b393",
+          "name": "Rookie Hauler Needed for Direct Large Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Plas_Scr_Cob_adefa893",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Plas_ShipAm_RMC_LARIN",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Plas_ShipAmm_RMC",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_PreIce_Tung_Lara",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_Quart_DisSpir_Stim_OrganMass",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Bulk_tita_Hydro_Merc_Agri",
+          "name": "Master Rank - Direct Large Cargo Haul"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Medium_DistSpri_PartyFav_ElecEq_Souv",
+          "name": "Ling Family Rookie Cargo Haul - Medium Scale"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Small_SunB_GolDMed",
+          "name": "Ling Family Rookie Cargo Haul - Small Scale"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_AToB_Interstellar_Small_SunB_GolDMed_Intro",
+          "name": "Cargo Hauling Opportunity with Ling Hauling"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_Multi2ToSingle_Interstellar_Medium_Souv",
+          "name": "Ling Family Rookie Cargo Haul - Medium Scale"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_Multi2ToSingle_Interstellar_Medium_Souv_Intro",
+          "name": "Cargo Hauling Opportunity with Ling Hauling"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_MultiToSingle_Interstellar_Medium_Nitro_OrganiMass_Shit",
+          "name": "Rookie Hauler Needed for Medium Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_MultiToSingle_Interstellar_Small_Souv_DistSpri_ProFoo_Stim",
+          "name": "Ling Family Rookie Cargo Haul - Small Scale"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_MultiToSingle_Interstellar_Small_Souv_DistSpri_ProFoo_Stim_Intro",
+          "name": "Cargo Hauling Opportunity with Ling Hauling"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_SingleToMulti_Interstellar_Bulk_AltUnpro_Trit",
+          "name": "Rookie Hauler Needed for Large Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "HaulCargo_SingleToMulti_Interstellar_Bulk_ShipAmm_Hydro_Med",
+          "name": "Rookie Hauler Needed for Large Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Easy",
+          "name": "Provide Protection at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Hard",
+          "name": "Stop Rival Attack at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Medium",
+          "name": "Secure [Location] from Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_Super",
+          "name": "Guard [Location] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_VeryEasy_From",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_VeryEasy_To",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Nyx_VeryHard",
+          "name": "Defend [Location] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Easy",
+          "name": "Provide Protection at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Hard",
+          "name": "Stop Rival Attack at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Medium",
+          "name": "Secure [Location] from Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_Super",
+          "name": "Guard [Location] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_VeryEasy_From",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_VeryEasy_To",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Pyro_VeryHard",
+          "name": "Defend [Location] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Easy",
+          "name": "Provide Protection at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Hard",
+          "name": "Stop Rival Attack at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Medium",
+          "name": "Secure [Location] from Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_Super",
+          "name": "Guard [Location] From Rivals"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_VeryEasy_From",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_VeryEasy_To",
+          "name": "Keep [Location] Safe"
+        },
+        {
+          "category": "mission",
+          "className": "HeadHunters_DefendEntitiesAndEscort_Stanton_VeryHard",
+          "name": "Defend [Location] From Mercs"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_S",
+          "name": "Outsmarting our Enemies"
+        },
+        {
+          "category": "mission",
+          "className": "Headhunters_BombingRun_Stanton_VE",
+          "name": "Ground The Upstarts"
+        },
+        {
+          "category": "mission",
+          "className": "Redwind_ASD_Medical Supplies",
+          "name": "Cargo Transfer from Shuttered Facility"
+        },
+        {
+          "category": "mission",
+          "className": "Redwind_Stanton_SmallGrade_Planetary_Hydrogen",
+          "name": "Rookie Hauler Needed for Direct Small Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Nyx",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Decoy_Pyro",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Nyx_Hard",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Nyx_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Nyx_Super",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Pyro_Hard",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Pyro_Moderate",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Multi_Pyro_Super",
+          "name": "URGENT FLEET REFUEL"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Easy",
+          "name": "REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Nyx_Moderate",
+          "name": "URGENT REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Hard",
+          "name": "CRITICAL REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Refueling_Pyro_Moderate",
+          "name": "URGENT REFUEL REQUEST: [Ship]"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx/Stanton_Stileron",
+          "name": "Mjr. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Gold",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Iron_Beryl",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Quantanium",
+          "name": "Mjr. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Rank0_Local_Choice",
+          "name": "XS Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Rank1_SmallQ_Alimunium_Quartz",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Silicon_Beryl",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Tin_Taranite",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Titanium_Ice",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_Titanium_Taranite",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_unlawful_Common_Aluminium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_unlawful_Common_Beryl",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_unlawful_Uncommon_Hephaestanite_Laranite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Nyx_unlawful_Uncommon_Torite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Org_ConstructionCompany",
+          "name": "Special Purchase Order: Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Org_EnergyEngineer",
+          "name": "Special Purchase Order: Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Org_IndustrialEngineer",
+          "name": "Special Purchase Order: Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Org_TechEngineer",
+          "name": "Special Purchase Order: Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Org_VehicleEngineer",
+          "name": "Special Purchase Order: Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Org_WeaponManufacturer",
+          "name": "Special Purchase Order: Mined Materials"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro/Stanton_Savrilium",
+          "name": "Mjr. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Aluminum_Copper_Silicon_Tin_Beryl_Agricium_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Bexalite_Taranite",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Gold",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Lindinium",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Quartz_Iron_Silicon_Ice_Titainum_Hephestanite_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Rank1_SmallQ_Iron_Titainum_Tin_Copper",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Rank1_SmallQ_Quartz_Aluminium_Titanium",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Rank1_SmallQ_Tungsten_Copper",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Stileron",
+          "name": "Mjr. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Torite_Beryl",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_Unlawful_Common_Aluminium_Copper_Silicon_Tin",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Agricium_Laranite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Aluminium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Beryl",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Copper",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Corundum",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Hephaestanite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Ice",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Iron",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Laranite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Quartz",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Quartz_Ice",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Silicon",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Tin",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Titanium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Pyro_unlawful_Common_Tungsten",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton1_Rank0_Local_Choice",
+          "name": "XS Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton2_Rank0_Local_Choice",
+          "name": "XS Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton3_Rank0_Local_Choice",
+          "name": "XS Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton4_Rank0_Local_Choice",
+          "name": "XS Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Copper_Beryl_Agricium_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Copper_Titainum_Beryl_Agricium_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Quartz_Copper_Beryl_Agricium_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Quartz_Copper_Corundum_Titainum_Beryl_Hephestanite_Agricium_Laranite_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Quartz_Iron_Tungsten_Corundum_Titainum_Hephestanite_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Aluminum_Quartz_Iron_Tungsten_Titainum_Beryl",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Bexalite_Ice",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Gold",
+          "name": "XL Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Aluminium_Quartz_Iron_Copper_Corundum_Titainum",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium_Copper",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium_Quartz_Copper",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium_Quartz_Iron_Copper_Tungsten_Corundum_Titanium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium_Quartz_Iron_Tungsten_Titanium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Aluminium_Titainum",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Beryl",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Copper",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Corundum",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Hephaestanite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Iron",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Iron_Titanium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Laranite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Quartz",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Quartz_Copper",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Quartz_Titanium",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Tungsten",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Common_Tungsten_Corundum",
+          "name": "Med. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lawful_Uncommon_Beryl_Agricium",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Lindinium",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Quantanium",
+          "name": "Mjr. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Quartz_Copper_Beryl_Hephestanite_Agricium_Borase",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Rank1_SmallQ_Aluminum_Iron_Titainum_Copper",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Rank1_SmallQ_Aluminum_Tungsten_Corundurm",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Rank1_SmallQ_Iron_Quartz_Copper",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Rank1_SmallQ_Quartz_Corundum_Copper",
+          "name": "Small Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "Shubin_RG_Discovery_ShipMining_Stanton_Torite_Bexalite",
+          "name": "Lrg. Purchase Order: Ship Mined Ore"
+        },
+        {
+          "category": "mission",
+          "className": "TheCollector_Vehicle_L22_Wolf",
+          "name": "Extra Special Wolf"
+        },
+        {
+          "category": "mission",
+          "className": "haulcargo_singletomulti3_gas_hydrogen_stanton_bulkgrade",
+          "name": "Master Rank - Large Cargo Haul"
+        },
+        {
+          "category": "mission_refs",
+          "className": "missionRefs",
+          "name": "Mission reference data"
+        }
+      ],
+      "added": [
+        {
+          "category": "fps_weapon",
+          "className": "ksar_gren_frag_01",
+          "name": "Scorch Plasma Grenade"
+        },
+        {
+          "category": "fps_armor",
+          "className": "clothing_undersuit",
+          "name": "CLOTHING Undersuit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_combat_medium_arms_01_01_01",
+          "name": "DOOM Combat Medium Arms 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_combat_medium_core_01_01_01",
+          "name": "DOOM Combat Medium Core 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_combat_medium_helmet_01_01_01",
+          "name": "DOOM Combat Medium Helmet 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "doom_combat_medium_legs_01_01_01",
+          "name": "DOOM Combat Medium Legs 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "heavyarmor_core_skelext_test",
+          "name": "HEAVYARMOR Core Skelext Test"
+        },
+        {
+          "category": "fps_armor",
+          "className": "heavyarmor_legs_skelext_test",
+          "name": "HEAVYARMOR Legs Skelext Test"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_01_07_02",
+          "name": "WhiteHot Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_01_07_12",
+          "name": "BlackFire Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "mrai_flightsuit_01_07_18",
+          "name": "BlueFlame Flight Suit"
+        },
+        {
+          "category": "fps_armor",
+          "className": "nvy_flightsuit_light_core_01_01_01",
+          "name": "NVY Flightsuit Light Core 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "qrt_combat_medium_legs_02_01_01",
+          "name": "QRT Combat Medium Legs 02"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sc_nvy_pilot_light_helmet_01_01_01",
+          "name": "SC Nvy Pilot Light Helmet 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_arms_02_02_01",
+          "name": "SRVL Armor Heavy Arms 02"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_armor_heavy_helmet_01_01_03",
+          "name": "SRVL Armor Heavy Helmet 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_arms_03_01_01",
+          "name": "SRVL Combat Heavy Arms 03"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_core_03_01_01",
+          "name": "SRVL Combat Heavy Core 03"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_helmet_03_01_01",
+          "name": "SRVL Combat Heavy Helmet 03"
+        },
+        {
+          "category": "fps_armor",
+          "className": "srvl_combat_heavy_legs_03_01_01",
+          "name": "SRVL Combat Heavy Legs 03"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_heavy_cold_helmet",
+          "name": "SW Heavy Cold Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_heavy_environment_helmet",
+          "name": "SW Heavy Environment Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_heavy_eva_helmet",
+          "name": "SW Heavy Eva Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_heavy_heat_helmet",
+          "name": "SW Heavy Heat Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_heavy_helmet",
+          "name": "SW Heavy Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_heavy_radiation_helmet",
+          "name": "SW Heavy Radiation Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_light_helmet",
+          "name": "SW Light Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "sw_medium_helmet",
+          "name": "SW Medium Helmet"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_flightsuit_01_01_01",
+          "name": "VGL Flightsuit 01"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_flightsuit_02_01_01",
+          "name": "VGL Flightsuit 02"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_flightsuit_03_01_01",
+          "name": "VGL Flightsuit 03"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_flightsuit_04_01_01",
+          "name": "VGL Flightsuit 04"
+        },
+        {
+          "category": "fps_armor",
+          "className": "vgl_flightsuit_05_01_01",
+          "name": "VGL Flightsuit 05"
+        },
+        {
+          "category": "fps_armor",
+          "className": "volume_foot_01",
+          "name": "VOLUME Foot"
+        },
+        {
+          "category": "fps_armor",
+          "className": "volume_head_01",
+          "name": "VOLUME Head"
+        },
+        {
+          "category": "fps_armor",
+          "className": "volume_jacket_01",
+          "name": "VOLUME Jacket"
+        },
+        {
+          "category": "fps_armor",
+          "className": "volume_pants_01",
+          "name": "VOLUME Pants"
+        },
+        {
+          "category": "fps_armor",
+          "className": "volume_shirt_01",
+          "name": "VOLUME Shirt"
+        },
+        {
+          "category": "fps_armor",
+          "className": "volume_undersuit_01",
+          "name": "VOLUME Undersuit"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_ERT_XenoThreat_KillShip",
+          "name": "Ghost some XenoTrash"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_HRT_CitizensForProsperity_KillShip",
+          "name": "Kill Order"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_HRT_Criminals_KillShip",
+          "name": "Wanted: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_LRT_Criminals_KillShip",
+          "name": "Simple Hit"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_MRT_CitizensForProsperity_KillShip",
+          "name": "Hit a CFP Ship"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_MRT_Criminals_KillShip",
+          "name": "Treat yourself to a fight"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_M_2AsteroidBase_Criminals_MultiKillship",
+          "name": "Crash some ships"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_Rank0_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target takedown for a fast track in"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_Rank0_VLRT_Criminals_KillShip",
+          "name": "Wanna be a Headhunter?"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_VHRT_CitizensForProsperity_KillShip",
+          "name": "Primo Target"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionB_VLRT_Criminals_KillShip",
+          "name": "[TargetName] needs stomping"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_ERT_XenoThreat_KillShip",
+          "name": "Ghost some XenoTrash"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_HRT_CitizensForProsperity_KillShip",
+          "name": "Kill Order"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_LRT_Criminals_KillShip",
+          "name": "Simple Hit"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_MRT_CitizensForProsperity_KillShip",
+          "name": "Hit a CFP Ship"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_MRT_Criminals_KillShip",
+          "name": "Treat yourself to a fight"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_M_2AsteroidBase_Criminals_MultiKillship",
+          "name": "Crash some ships"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_Rank0_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target takedown for a fast track in"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_Rank0_VLRT_Criminals_KillShip",
+          "name": "Wanna be a Headhunter?"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_VHRT_CitizensForProsperity_KillShip",
+          "name": "Primo Target"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionC_VLRT_Criminals_KillShip",
+          "name": "[TargetName] needs stomping"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_ERT_XenoThreat_KillShip",
+          "name": "Ghost some XenoTrash"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_HRT_CitizensForProsperity_KillShip",
+          "name": "Kill Order"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_HRT_Criminals_KillShip",
+          "name": "Wanted: [TargetName]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_LRT_Criminals_KillShip",
+          "name": "Simple Hit"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_MRT_CitizensForProsperity_KillShip",
+          "name": "Hit a CFP Ship"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_MRT_Criminals_KillShip",
+          "name": "Treat yourself to a fight"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_M_2AsteroidBase_Criminals_MultiKillship",
+          "name": "Crash some ships"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_Rank0_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target takedown for a fast track in"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_Rank0_VLRT_Criminals_KillShip",
+          "name": "Wanna be a Headhunter?"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_VE_1AsteroidBase_Criminals_KillShip",
+          "name": "Target at [Location]"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_VHRT_CitizensForProsperity_KillShip",
+          "name": "Primo Target"
+        },
+        {
+          "category": "mission",
+          "className": "HH_Pyro_RegionD_VLRT_Criminals_KillShip",
+          "name": "[TargetName] needs stomping"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Nyx_TSG_Solo_AssistShipInCombat",
+          "name": "Assist People's Alliance Vessel Tranquility"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Nyx_TSG_Solo_BombingRun",
+          "name": "Strategic Bombing"
+        },
+        {
+          "category": "mission",
+          "className": "RedWind_Pyro_SmallGrade_RegionA_CFP_TradepostToOutpost_ProcessedFood_CargoHauling_AtoB",
+          "name": "Hostile Hauler Needed for Direct Small Shipment"
+        },
+        {
+          "category": "mission",
+          "className": "RoX_Idders",
+          "name": "Target: XenoThreat Attack Group"
+        }
+      ],
+      "removed": [
+        {
+          "category": "mission",
+          "className": "InterSec_Nyx_TSG_AssistShipInCombat",
+          "name": "Assist People's Alliance Vessel Tranquility"
+        },
+        {
+          "category": "mission",
+          "className": "InterSec_Nyx_TSG_BombingRun",
+          "name": "Strategic Bombing"
+        },
+        {
+          "category": "mission",
+          "className": "TarPits_Stanton1_Unlawful_Salvage_Easy",
+          "name": "Tar Pits"
+        }
+      ]
+    },
     {
       "channel": "ptu",
       "fromVersion": "4.8.0-ptu.11733560",

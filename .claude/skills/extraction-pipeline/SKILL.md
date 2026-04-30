@@ -83,13 +83,31 @@ VERSEDB_DATA_MODE=live python3 "PY SCRIPTS/crafting_extract.py"
 ### Step 4: FPS Weapons Extraction
 
 ```bash
-python3 "PY SCRIPTS/extract_fps_weapons.py"
+python3 "PY SCRIPTS/extract_fps_weapons.py" --target live
 ```
+
+The `--target` flag controls which forge tree the script reads.
+Without it the script defaults to LIVE — running it in a PTU pipeline
+without the flag silently extracts from the LIVE forge and drops any
+PTU-only weapons/throwables (e.g. new grenades).
 
 ### Step 5: FPS Armor Extraction
 
 ```bash
 python3 "PY SCRIPTS/extract_fps_armor.py" --target live
+```
+
+### Step 5b: FPS Gear / Items Extraction
+
+Grenades, mines, deployables, multi-tools, medical and consumables.
+Throwables (grenades) end up in BOTH this output AND in
+`versedb_fps.json` — distinct surfaces in the UI: FPS Weapons DB
+shows them as weapons; FPS Items / Throwable tab reads from this
+file. Skipping this step means new throwables won't appear in the
+Items tab even if they're correct in the Weapons tab.
+
+```bash
+python3 "PY SCRIPTS/extract_fps_gear.py" --target live
 ```
 
 ### Step 6: Copy to Root
@@ -129,7 +147,8 @@ Deployment takes 2-3 minutes.
 For PTU extraction, replace `live` with `ptu` in all commands:
 - `--mode ptu` for versedb_extract.py
 - `VERSEDB_DATA_MODE=ptu` for missions and crafting
-- `--target ptu` for FPS armor
+- `--target ptu` for FPS weapons AND FPS armor (both scripts use the
+  same flag)
 
 To enable PTU mode on the live site, edit `app/public/config.json`:
 ```json

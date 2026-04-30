@@ -1,11 +1,11 @@
 {
   "meta": {
-    "totalRecipes": 1425,
+    "totalRecipes": 1431,
     "categories": {
-      "MissionItem": 1,
+      "MissionItem": 2,
       "FPSWeapons": 192,
       "ShipMiningLaser": 14,
-      "FPSArmours": 871,
+      "FPSArmours": 876,
       "ShipWeapon": 25,
       "ShipSalvage": 3,
       "ShipTractorBeam": 11,
@@ -17,6 +17,33 @@
     }
   },
   "recipes": [
+    {
+      "className": "carryable_2h_cy_collectormaterial_001",
+      "itemName": "Metamaterial Test #146",
+      "category": "MissionItem",
+      "subtype": "",
+      "tier": 0,
+      "craftTimeSeconds": 70,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Titanium",
+          "quantity": 2.0,
+          "minQuality": 900
+        },
+        {
+          "type": "resource",
+          "resource": "Riccite",
+          "quantity": 2.0,
+          "minQuality": 800
+        },
+        {
+          "type": "item",
+          "resource": "Marok Gem",
+          "quantity": 4
+        }
+      ]
+    },
     {
       "className": "carryable_2h_fl_missionitem_microsatellite_a",
       "itemName": "carryable_2h_fl_missionitem_microsatellite_a",
@@ -5550,7 +5577,7 @@
     },
     {
       "className": "mrai_flightsuit_helmet_01_07_02",
-      "itemName": "*PLACEHOLDER*",
+      "itemName": "WhiteHot Helmet",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -12101,6 +12128,42 @@
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
               "unit": "%.2f mRem/s"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "mrai_flightsuit_01_07_02",
+      "itemName": "WhiteHot Flight Suit",
+      "category": "FPSArmours",
+      "subtype": "Other",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.06,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
             }
           ]
         }
@@ -30882,6 +30945,78 @@
     {
       "className": "vgl_flightsuit_helmet_01_04_01",
       "itemName": "vgl_flightsuit_helmet_01_04_01",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "mrai_flightsuit_helmet_01_07_18",
+      "itemName": "BlueFlame Helmet",
+      "category": "FPSArmours",
+      "subtype": "Helmet",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.03,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "mrai_flightsuit_helmet_01_07_12",
+      "itemName": "BlackFire Helmet",
       "category": "FPSArmours",
       "subtype": "Helmet",
       "tier": 0,
@@ -61632,6 +61767,78 @@
       ]
     },
     {
+      "className": "mrai_flightsuit_01_07_12",
+      "itemName": "BlackFire Flight Suit",
+      "category": "FPSArmours",
+      "subtype": "Other",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.06,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "className": "mrai_flightsuit_01_07_18",
+      "itemName": "BlueFlame Flight Suit",
+      "category": "FPSArmours",
+      "subtype": "Other",
+      "tier": 0,
+      "craftTimeSeconds": 90,
+      "ingredients": [
+        {
+          "type": "resource",
+          "resource": "Silicon",
+          "quantity": 0.06,
+          "minQuality": 0,
+          "qualityModifiers": [
+            {
+              "property": "Max Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            },
+            {
+              "property": "Min Temp",
+              "kind": "multiplicative",
+              "startQuality": 0,
+              "endQuality": 1000,
+              "modifierAtStart": 0.8,
+              "modifierAtEnd": 1.2,
+              "unit": "%+.2f \u00baC"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "className": "vgl_utility_light_arms_01_04_01",
       "itemName": "Chiron Arms Purgatory Camo",
       "category": "FPSArmours",
@@ -64405,7 +64612,7 @@
           "minQuality": 0,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Efficiency",
+              "property": "Efficiency",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64414,7 +64621,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64423,7 +64630,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64440,7 +64647,7 @@
           "minQuality": 0,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64449,7 +64656,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64465,7 +64672,7 @@
           "quantity": 6,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64474,7 +64681,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64501,7 +64708,7 @@
           "minQuality": 0,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Efficiency",
+              "property": "Efficiency",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64510,7 +64717,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64519,7 +64726,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64536,7 +64743,7 @@
           "minQuality": 0,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64545,7 +64752,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64561,7 +64768,7 @@
           "quantity": 4,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64570,7 +64777,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64597,7 +64804,7 @@
           "minQuality": 0,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Efficiency",
+              "property": "Efficiency",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64606,7 +64813,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64615,7 +64822,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64632,7 +64839,7 @@
           "minQuality": 0,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64641,7 +64848,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64657,7 +64864,7 @@
           "quantity": 4,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_HullScraping_Radius",
+              "property": "Radius",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64666,7 +64873,7 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_HullScraping_Speed",
+              "property": "Speed",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
@@ -64702,22 +64909,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -64734,16 +64941,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -64753,22 +64960,22 @@
           "quantity": 13,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -64798,22 +65005,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -64830,16 +65037,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -64849,22 +65056,22 @@
           "quantity": 13,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -64894,22 +65101,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -64926,16 +65133,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -64945,22 +65152,22 @@
           "quantity": 13,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -64990,22 +65197,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65022,16 +65229,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65041,22 +65248,22 @@
           "quantity": 13,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65086,22 +65293,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65118,16 +65325,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65137,22 +65344,22 @@
           "quantity": 7,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65182,22 +65389,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65214,16 +65421,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65233,22 +65440,22 @@
           "quantity": 7,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65278,22 +65485,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65310,16 +65517,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65329,22 +65536,22 @@
           "quantity": 7,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65374,22 +65581,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65406,16 +65613,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65425,22 +65632,22 @@
           "quantity": 7,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65470,22 +65677,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65502,16 +65709,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65521,22 +65728,22 @@
           "quantity": 23,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65566,22 +65773,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65598,16 +65805,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65617,22 +65824,22 @@
           "quantity": 23,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65662,22 +65869,22 @@
               "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65694,16 +65901,16 @@
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": "%+.2f %%"
+              "unit": ""
             },
             {
-              "property": "GPP_Weapon_Tractor_FullStrengthDist",
+              "property": "Full Strength Dist.",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65713,22 +65920,22 @@
           "quantity": 23,
           "qualityModifiers": [
             {
-              "property": "GPP_Weapon_Tractor_MaxVolume",
+              "property": "Max. Volume",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.2,
-              "unit": ""
+              "unit": "Rating"
             },
             {
-              "property": "GPP_Weapon_Tractor_MaxDist",
+              "property": "Max. Distance",
               "kind": "multiplicative",
               "startQuality": 0,
               "endQuality": 1000,
               "modifierAtStart": 0.9,
               "modifierAtEnd": 1.1,
-              "unit": ""
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65781,7 +65988,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -65790,7 +65997,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65807,7 +66014,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -65816,7 +66023,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65869,7 +66076,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -65878,7 +66085,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65895,7 +66102,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -65904,7 +66111,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -65957,7 +66164,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -65966,7 +66173,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -65983,7 +66190,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -65992,7 +66199,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66045,7 +66252,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66054,7 +66261,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66071,7 +66278,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66080,7 +66287,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66133,7 +66340,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66142,7 +66349,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66159,7 +66366,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66168,7 +66375,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66221,7 +66428,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66230,7 +66437,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66247,7 +66454,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66256,7 +66463,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66309,7 +66516,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66318,7 +66525,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66335,7 +66542,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66344,7 +66551,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66397,7 +66604,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66406,7 +66613,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66423,7 +66630,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66432,7 +66639,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66485,7 +66692,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66494,7 +66701,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66511,7 +66718,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66520,7 +66727,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66573,7 +66780,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66582,7 +66789,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66599,7 +66806,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66608,7 +66815,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66661,7 +66868,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66670,7 +66877,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66687,7 +66894,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66696,7 +66903,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66749,7 +66956,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66758,7 +66965,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66775,7 +66982,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66784,7 +66991,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66837,7 +67044,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66846,7 +67053,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66863,7 +67070,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66872,7 +67079,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -66925,7 +67132,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -66934,7 +67141,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -66951,7 +67158,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -66960,7 +67167,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67013,7 +67220,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67022,7 +67229,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67039,7 +67246,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67048,7 +67255,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67101,7 +67308,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67110,7 +67317,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67127,7 +67334,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67136,7 +67343,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67189,7 +67396,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67198,7 +67405,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67215,7 +67422,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67224,7 +67431,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67277,7 +67484,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67286,7 +67493,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67303,7 +67510,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67312,7 +67519,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67365,7 +67572,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67374,7 +67581,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67391,7 +67598,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67400,7 +67607,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67453,7 +67660,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67462,7 +67669,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67479,7 +67686,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67488,7 +67695,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67541,7 +67748,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67550,7 +67757,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67567,7 +67774,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67576,7 +67783,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67629,7 +67836,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67638,7 +67845,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67655,7 +67862,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67664,7 +67871,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67717,7 +67924,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67726,7 +67933,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67743,7 +67950,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67752,7 +67959,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67805,7 +68012,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67814,7 +68021,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67831,7 +68038,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67840,7 +68047,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67893,7 +68100,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67902,7 +68109,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -67919,7 +68126,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -67928,7 +68135,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -67981,7 +68188,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -67990,7 +68197,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68007,7 +68214,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68016,7 +68223,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68069,7 +68276,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68078,7 +68285,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68095,7 +68302,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68104,7 +68311,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68157,7 +68364,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68166,7 +68373,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68183,7 +68390,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68192,7 +68399,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68245,7 +68452,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68254,7 +68461,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68271,7 +68478,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68280,7 +68487,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68333,7 +68540,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68342,7 +68549,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68359,7 +68566,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68368,7 +68575,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68421,7 +68628,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68430,7 +68637,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68447,7 +68654,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68456,7 +68663,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68509,7 +68716,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68518,7 +68725,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68535,7 +68742,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68544,7 +68751,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68597,7 +68804,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68606,7 +68813,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68623,7 +68830,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68632,7 +68839,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68685,7 +68892,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68694,7 +68901,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68711,7 +68918,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68720,7 +68927,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68773,7 +68980,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68782,7 +68989,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68799,7 +69006,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68808,7 +69015,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68861,7 +69068,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68870,7 +69077,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68887,7 +69094,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68896,7 +69103,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -68949,7 +69156,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -68958,7 +69165,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -68975,7 +69182,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -68984,7 +69191,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69037,7 +69244,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69046,7 +69253,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69063,7 +69270,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69072,7 +69279,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69125,7 +69332,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69134,7 +69341,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69151,7 +69358,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69160,7 +69367,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69213,7 +69420,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69222,7 +69429,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69239,7 +69446,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69248,7 +69455,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69301,7 +69508,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69310,7 +69517,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69327,7 +69534,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69336,7 +69543,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69389,7 +69596,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69398,7 +69605,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69415,7 +69622,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69424,7 +69631,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69477,7 +69684,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69486,7 +69693,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69503,7 +69710,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69512,7 +69719,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69565,7 +69772,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69574,7 +69781,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69591,7 +69798,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69600,7 +69807,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69653,7 +69860,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69662,7 +69869,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69679,7 +69886,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69688,7 +69895,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69741,7 +69948,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69750,7 +69957,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69767,7 +69974,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69776,7 +69983,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69829,7 +70036,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69838,7 +70045,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69855,7 +70062,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69864,7 +70071,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -69917,7 +70124,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -69926,7 +70133,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -69943,7 +70150,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -69952,7 +70159,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70005,7 +70212,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -70014,7 +70221,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -70031,7 +70238,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -70040,7 +70247,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70093,7 +70300,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -70102,7 +70309,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -70119,7 +70326,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -70128,7 +70335,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70181,7 +70388,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -70190,7 +70397,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -70207,7 +70414,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -70216,7 +70423,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70269,7 +70476,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -70278,7 +70485,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -70295,7 +70502,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -70304,7 +70511,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70357,7 +70564,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -70366,7 +70573,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -70383,7 +70590,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -70392,7 +70599,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70445,7 +70652,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -70454,7 +70661,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -70471,7 +70678,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -70480,7 +70687,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70533,7 +70740,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Min. Assist Distance",
@@ -70542,7 +70749,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         },
@@ -70559,7 +70766,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             },
             {
               "property": "Max. Assist Distance",
@@ -70568,7 +70775,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Meters"
+              "unit": "%.2f M"
             }
           ]
         }
@@ -70580,7 +70787,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 2580,
       "ingredients": [
         {
           "type": "resource",
@@ -70621,7 +70828,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -70630,7 +70837,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -70668,7 +70875,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 2460,
       "ingredients": [
         {
           "type": "resource",
@@ -70709,7 +70916,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -70718,7 +70925,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -70756,7 +70963,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1560,
       "ingredients": [
         {
           "type": "resource",
@@ -70797,7 +71004,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -70806,7 +71013,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -70844,7 +71051,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1560,
       "ingredients": [
         {
           "type": "resource",
@@ -70885,7 +71092,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -70894,7 +71101,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -70932,7 +71139,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1650,
       "ingredients": [
         {
           "type": "resource",
@@ -70973,7 +71180,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -70982,7 +71189,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71020,7 +71227,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1650,
       "ingredients": [
         {
           "type": "resource",
@@ -71061,7 +71268,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71070,7 +71277,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71108,7 +71315,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1650,
       "ingredients": [
         {
           "type": "resource",
@@ -71149,7 +71356,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71158,7 +71365,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71196,7 +71403,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1680,
       "ingredients": [
         {
           "type": "resource",
@@ -71237,7 +71444,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71246,7 +71453,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71284,7 +71491,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1620,
       "ingredients": [
         {
           "type": "resource",
@@ -71325,7 +71532,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71334,7 +71541,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71372,7 +71579,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1620,
       "ingredients": [
         {
           "type": "resource",
@@ -71413,7 +71620,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71422,7 +71629,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71460,7 +71667,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1620,
       "ingredients": [
         {
           "type": "resource",
@@ -71501,7 +71708,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71510,7 +71717,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71548,7 +71755,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1620,
       "ingredients": [
         {
           "type": "resource",
@@ -71589,7 +71796,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71598,7 +71805,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71636,7 +71843,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1680,
       "ingredients": [
         {
           "type": "resource",
@@ -71677,7 +71884,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71686,7 +71893,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71724,7 +71931,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1710,
       "ingredients": [
         {
           "type": "resource",
@@ -71765,7 +71972,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71774,7 +71981,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71812,7 +72019,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1770,
       "ingredients": [
         {
           "type": "resource",
@@ -71853,7 +72060,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71862,7 +72069,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71900,7 +72107,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1800,
       "ingredients": [
         {
           "type": "resource",
@@ -71941,7 +72148,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -71950,7 +72157,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -71988,7 +72195,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1740,
       "ingredients": [
         {
           "type": "resource",
@@ -72029,7 +72236,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72038,7 +72245,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72076,7 +72283,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1170,
       "ingredients": [
         {
           "type": "resource",
@@ -72117,7 +72324,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72126,7 +72333,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72164,7 +72371,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1200,
       "ingredients": [
         {
           "type": "resource",
@@ -72205,7 +72412,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72214,7 +72421,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72252,7 +72459,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1230,
       "ingredients": [
         {
           "type": "resource",
@@ -72293,7 +72500,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72302,7 +72509,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72340,7 +72547,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1140,
       "ingredients": [
         {
           "type": "resource",
@@ -72381,7 +72588,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72390,7 +72597,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72428,7 +72635,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1110,
       "ingredients": [
         {
           "type": "resource",
@@ -72469,7 +72676,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72478,7 +72685,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72516,7 +72723,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1230,
       "ingredients": [
         {
           "type": "resource",
@@ -72557,7 +72764,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72566,7 +72773,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72604,7 +72811,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1200,
       "ingredients": [
         {
           "type": "resource",
@@ -72645,7 +72852,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72654,7 +72861,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72692,7 +72899,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1260,
       "ingredients": [
         {
           "type": "resource",
@@ -72733,7 +72940,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72742,7 +72949,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72780,7 +72987,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1140,
       "ingredients": [
         {
           "type": "resource",
@@ -72821,7 +73028,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72830,7 +73037,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72868,7 +73075,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1020,
       "ingredients": [
         {
           "type": "resource",
@@ -72909,7 +73116,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -72918,7 +73125,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -72956,7 +73163,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1020,
       "ingredients": [
         {
           "type": "resource",
@@ -72997,7 +73204,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73006,7 +73213,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73044,7 +73251,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1110,
       "ingredients": [
         {
           "type": "resource",
@@ -73085,7 +73292,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73094,7 +73301,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73132,7 +73339,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1110,
       "ingredients": [
         {
           "type": "resource",
@@ -73173,7 +73380,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73182,7 +73389,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73220,7 +73427,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1110,
       "ingredients": [
         {
           "type": "resource",
@@ -73261,7 +73468,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73270,7 +73477,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73308,7 +73515,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1080,
       "ingredients": [
         {
           "type": "resource",
@@ -73349,7 +73556,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73358,7 +73565,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73396,7 +73603,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1080,
       "ingredients": [
         {
           "type": "resource",
@@ -73437,7 +73644,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73446,7 +73653,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73484,7 +73691,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1080,
       "ingredients": [
         {
           "type": "resource",
@@ -73525,7 +73732,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73534,7 +73741,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73572,7 +73779,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1170,
       "ingredients": [
         {
           "type": "resource",
@@ -73613,7 +73820,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73622,7 +73829,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73660,7 +73867,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1140,
       "ingredients": [
         {
           "type": "resource",
@@ -73701,7 +73908,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73710,7 +73917,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73748,7 +73955,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 1080,
       "ingredients": [
         {
           "type": "resource",
@@ -73789,7 +73996,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73798,7 +74005,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73836,7 +74043,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 870,
       "ingredients": [
         {
           "type": "resource",
@@ -73877,7 +74084,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73886,7 +74093,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -73924,7 +74131,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 810,
       "ingredients": [
         {
           "type": "resource",
@@ -73965,7 +74172,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -73974,7 +74181,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74012,7 +74219,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 840,
       "ingredients": [
         {
           "type": "resource",
@@ -74053,7 +74260,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74062,7 +74269,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74100,7 +74307,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 900,
       "ingredients": [
         {
           "type": "resource",
@@ -74141,7 +74348,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74150,7 +74357,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74188,7 +74395,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 840,
       "ingredients": [
         {
           "type": "resource",
@@ -74229,7 +74436,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74238,7 +74445,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74276,7 +74483,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 870,
       "ingredients": [
         {
           "type": "resource",
@@ -74317,7 +74524,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74326,7 +74533,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74364,7 +74571,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 660,
       "ingredients": [
         {
           "type": "resource",
@@ -74405,7 +74612,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74414,7 +74621,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74452,7 +74659,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 660,
       "ingredients": [
         {
           "type": "resource",
@@ -74493,7 +74700,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74502,7 +74709,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74540,7 +74747,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 720,
       "ingredients": [
         {
           "type": "resource",
@@ -74581,7 +74788,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74590,7 +74797,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74628,7 +74835,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 720,
       "ingredients": [
         {
           "type": "resource",
@@ -74669,7 +74876,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74678,7 +74885,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74716,7 +74923,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 720,
       "ingredients": [
         {
           "type": "resource",
@@ -74757,7 +74964,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74766,7 +74973,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74804,7 +75011,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 780,
       "ingredients": [
         {
           "type": "resource",
@@ -74845,7 +75052,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74854,7 +75061,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74892,7 +75099,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 750,
       "ingredients": [
         {
           "type": "resource",
@@ -74933,7 +75140,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -74942,7 +75149,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -74980,7 +75187,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 750,
       "ingredients": [
         {
           "type": "resource",
@@ -75021,7 +75228,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -75030,7 +75237,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -75068,7 +75275,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 750,
       "ingredients": [
         {
           "type": "resource",
@@ -75109,7 +75316,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -75118,7 +75325,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -75156,7 +75363,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 750,
       "ingredients": [
         {
           "type": "resource",
@@ -75197,7 +75404,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -75206,7 +75413,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -75244,7 +75451,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 720,
       "ingredients": [
         {
           "type": "resource",
@@ -75285,7 +75492,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -75294,7 +75501,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },
@@ -75332,7 +75539,7 @@
       "category": "ShipQuantumDrive",
       "subtype": "",
       "tier": 0,
-      "craftTimeSeconds": 90,
+      "craftTimeSeconds": 810,
       "ingredients": [
         {
           "type": "resource",
@@ -75373,7 +75580,7 @@
               "endQuality": 500,
               "modifierAtStart": 0.8,
               "modifierAtEnd": 1.0,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             },
             {
               "property": "Quantum Speed",
@@ -75382,7 +75589,7 @@
               "endQuality": 1000,
               "modifierAtStart": 1.0,
               "modifierAtEnd": 1.2,
-              "unit": "%.2f Km/s"
+              "unit": "%.2f Mm/s"
             }
           ]
         },

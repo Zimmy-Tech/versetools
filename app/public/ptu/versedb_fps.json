@@ -1,6 +1,6 @@
 {
   "meta": {
-    "count": 48,
+    "count": 49,
     "magazineCount": 59,
     "attachmentCount": 89,
     "version": "4.8.0"
@@ -1360,6 +1360,38 @@
           "requiredPortTags": []
         }
       ]
+    },
+    {
+      "className": "ksar_gren_frag_01",
+      "name": "Scorch Plasma Grenade",
+      "manufacturer": "Kastak Arms",
+      "type": "Grenade",
+      "subType": "Ballistic",
+      "size": 1,
+      "fireRate": 0,
+      "isCharged": null,
+      "fireModes": [],
+      "magazineSize": 0,
+      "projectileSpeed": 0,
+      "range": 0,
+      "damage": {
+        "physical": 0,
+        "energy": 0,
+        "distortion": 0,
+        "thermal": 0,
+        "biochemical": 0,
+        "stun": 0
+      },
+      "alphaDamage": 0,
+      "dps": 0,
+      "sequenceEntries": null,
+      "pelletCount": null,
+      "isBeam": null,
+      "category": "Anti-Personnel",
+      "mass": 0.4,
+      "adsTime": 0.0,
+      "adsZoomScale": 0.0,
+      "ports": []
     },
     {
       "className": "ksar_pistol_ballistic_01",
