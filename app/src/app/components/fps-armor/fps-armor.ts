@@ -82,6 +82,7 @@ export class FpsArmorComponent {
           return dir === 'asc' ? (wo[a.weight] ?? 0) - (wo[b.weight] ?? 0) : (wo[b.weight] ?? 0) - (wo[a.weight] ?? 0);
         }
         case 'slot': return dir === 'asc' ? a.slot.localeCompare(b.slot) : b.slot.localeCompare(a.slot);
+        case 'gForceResistance': return dir === 'asc' ? (a.gForceResistance ?? 0) - (b.gForceResistance ?? 0) : (b.gForceResistance ?? 0) - (a.gForceResistance ?? 0);
         default: return 0;
       }
     });
